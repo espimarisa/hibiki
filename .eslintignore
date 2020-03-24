@@ -1,0 +1,5 @@
+# Prevents eslint from checking some things
+node_modules/*
+rethinkdb_data/*
+.vscode/*
+.github/*
