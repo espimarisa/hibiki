@@ -1,0 +1,40 @@
+{
+  "name": "hibiki",
+  "version": "3.0.0",
+  "description": "The ultimate all-in-one Discord bot.",
+  "author": "smolespi (https://lesbian.codes)",
+  "contributors": [
+    "resolved (https://github.com/resolvedxd)"
+  ],
+  "license": "GPL-3.0",
+  "homepage": "https://hibiki.app",
+  "main": "hibiki.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "bot": "node hibiki.js",
+    "lint": "npx eslint --fix ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smolespi/Hibiki-v3.git"
+  },
+  "bugs": {
+    "url": "https://github.com/smolespi/Hibiki-v3/issues"
+  },
+  "engines": {
+    "npm": ">=6.9.0",
+    "node": ">=10.0.0"
+  },
+  "dependencies": {
+    "eris": "^0.11.2",
+    "eventemitter3": "^4.0.0",
+    "node-superfetch": "^0.1.10",
+    "rethinkdbdash": "^2.3.31"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0"
+  }
+}

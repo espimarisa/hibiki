@@ -1,0 +1,10 @@
+{
+  "cfg": {
+    "owners": [""],
+    "prefix": ""
+  },
+  "token": "",
+  "rethink": {
+    "db": ""
+  }
+}
