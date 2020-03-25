@@ -1,13 +1,3 @@
-/* 
-  Optimized for Hibiki's coding style, not 100% perfect code.
-  Most of these options try to keep our coding styles in-sync 
-  as we all have slightly different ways of developing things.
-
-  A few options are disabled as they either interfere with
-  styling, or they interfere with unrelated functionality.
-*/
-
-// Easier to read
 let OFF = 0,
   WARN = 1
 
@@ -16,6 +6,9 @@ module.exports = exports = {
     "es6": true,
     "amd": true
   },
+
+  // Ignores
+  "ignorePatterns": ["rethinkdb_data/", "node_modules/"],
 
   // Parser options
   extends: "eslint:recommended",
