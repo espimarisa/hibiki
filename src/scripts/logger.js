@@ -1,3 +1,9 @@
+/*
+  Verniy Core Logger
+  © 2020 smolespi & resolved
+  github.com/smolespi/Verniy
+*/
+
 // Sets console colours
 const Colours = {
   // Default styles
@@ -56,7 +62,7 @@ function date(syear = true) {
   return `${Colours[ConfigColours.date]}[${month} ${day}${syear ? ` ${year} ` : " "}${time}]${Colours.NC}`;
 }
 
-// Exports logging
+// Exports logging options
 module.exports = (args) => {
   console.log(`${date(false)} ${Colours[ConfigColours.general]}${args} ${Colours.NC}`);
 }
