@@ -1,14 +1,23 @@
-const Command = require("../../lib/Structures/Command");
+const Command = require("../../lib/structures/Command");
 
-class ping extends Command {
+class pingcmd extends Command {
   constructor(...args) {
-    super(...args);
+    super(...args, {});
   }
 
-  run(msg) {
-    msg.channel.createMessage("ping omg :o");
-    this.bot.log("ping command OMG!");
+  async run(msg) {
+    // Sends the original latency message
+    let message = await msg.channel.createMessage(this.bot.embed("🏓 Ping", `API Latency: ${msg.channel.guild.shard.latency}ms`, "general"));
+    // Edits the message
+    message.edit({
+      embed: {
+        title: "🏓 Ping",
+        description: `This message took ${message.timestamp - msg.timestamp}ms.`,
+        // todo: this.bot.colour.whatever
+        color: require("../../lib/scripts/Colour")("general"),
+      }
+    });
   }
 }
 
-module.exports = ping;
+module.exports = pingcmd;

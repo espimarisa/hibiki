@@ -1,0 +1,15 @@
+{
+  "cfg": {
+    "owners": [""],
+    "prefix": ""
+  },
+  "colours": {
+    "general": "",
+    "error": "",
+    "success": ""
+  },
+  "token": "",
+  "rethink": {
+    "db": ""
+  }
+}
