@@ -2,7 +2,7 @@ const Command = require("../../lib/structures/Command");
 
 class pingcmd extends Command {
   constructor(...args) {
-    super(...args, {});
+    super(...args);
   }
 
   async run(msg) {
@@ -13,8 +13,7 @@ class pingcmd extends Command {
       embed: {
         title: "🏓 Ping",
         description: `This message took ${message.timestamp - msg.timestamp}ms.`,
-        // todo: this.bot.colour.whatever
-        color: require("../../lib/scripts/Colour")("general"),
+        color: this.bot.embed.colour("general"),
       }
     });
   }
