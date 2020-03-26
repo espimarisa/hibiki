@@ -1,14 +1,17 @@
 const Command = require("../../lib/structures/Command");
 const fetch = require("node-fetch");
 
-class nekocmd extends Command {
+class catgirlcmd extends Command {
   constructor(...args) {
-    super(...args);
+    super(...args, {
+      aliases: ["neko"],
+      description: "Sends a picture of a catgirl.",
+      cooldown: 3
+    });
   }
 
   async run(msg) {
     // Fetches the API
-    // we should use weeb.sh ... but I don't feel like messing with their dumbs API tonight
     let res = await fetch("https://nekos.life/api/neko");
     let body = await res.json();
 
@@ -19,11 +22,10 @@ class nekocmd extends Command {
         image: {
           url: body.neko,
         },
-        // todo: this.bot.colour.whatever
-        color: require("../../lib/scripts/Colour")("general"),
+        color: this.bot.embed.colour("general"),
       }
     });
   }
 }
 
-module.exports = nekocmd;
+module.exports = catgirlcmd;
