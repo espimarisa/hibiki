@@ -13,15 +13,17 @@ const Event = require("./structures/Event")
 class Verniy extends Client {
   constructor(token, erisOptions, db) {
     super(token, erisOptions);
-    // Sets this.cfg to the config array
-    this.cfg = require("../cfg").config;
+    this.cfg = require("../cfg.json").cfg;
     this.embed = require("./Embed")
     this.log = require("./Log");
-
     this.db = db;
-
+    // Collections
     this.commands = new Collection(Command);
     this.events = new Collection(Event);
+    // Arg parsing
+    let argParser = require("../lib/utils/Args.js");
+    this.argParser = new argParser(this);
+
     // Logs when ready
     this.on("ready", async () => {
       this.log.success(`Logged in as ${this.user.username}#${this.user.discriminator} on ${this.guilds.size} servers`)
@@ -74,9 +76,8 @@ class Verniy extends Client {
       this.events.add(new event(this, item.split(".js")[0]));
       event = this.events.find(e => e.id == item.split(".js")[0]);
       // Runs the event
-      this.on(event.name, (arg1, arg2) => {
-        event.run(arg1, arg2);
-      });
+      let eargs = (arg1, arg2, arg3, arg4, arg5) => { event.run(arg1, arg2, arg3, arg4, arg5) };
+      this.on(event.name, eargs);
     });
     // Logs how many events are loaded
     this.log.success(`${this.events.size} events loaded`);
