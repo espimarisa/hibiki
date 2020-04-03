@@ -20,29 +20,28 @@ class Command {
     // Unload handler
     this.unload = () => {
       this.bot.commands.delete(id);
-      return `unloaded`;
+      return "unloaded";
     }
 
     // Reload handler
     this.reload = () => {
-      let command = require.cache[require.resolve(`../../cmds/${this.category}/${this.id}`)];
+      let command = bot.commands.find(c => c.id == this.id);
       // Deletes the cached command
       delete require.cache[require.resolve(`../../cmds/${this.category}/${this.id}`)];
       try {
         command = require(`../../cmds/${this.category}/${this.id}`);
       } catch (err) {
-        command = err.message;
+        command = err;
         // Sends if a command couldn't be reloaded
         this.bot.log.error(`${this.id} was unable to be reloaded: ${err}`)
       }
-      if (!command || typeof command == "string") return Error(typeof command == "string" ? command : `${this.id} was unable to be reloaded`);
+      if (!command || command instanceof Error) return Error(command instanceof Error ? command : `${this.id} was unable to be reloaded`);
       // Unloads & loads
       this.unload();
       this.bot.commands.add(new command(this.bot, this.category, this.id));
-      return `reloaded`;
+      return "reloaded";
     }
   }
-
 }
 
 module.exports = Command;
