@@ -1,8 +1,9 @@
 /*
-  Verniy Database Initialiser
-  © 2020 smolespi & resolved
-  github.com/smolespi/Verniy
+  This configures a Verniy instance's db to function.
+  Right now, it only handles setting up RethinkDB.
 */
+
+// todo - make the array not be static. maybe read cfg.json?
 
 const { rethink } = require("../../cfg");
 const log = require("../Log");

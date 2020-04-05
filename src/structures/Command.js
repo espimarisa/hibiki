@@ -1,9 +1,3 @@
-/*
-  Verniy Command Class
-  © 2020 smolespi & resolved
-  github.com/smolespi/Verniy
-*/
-
 class Command {
   constructor(bot, category, id, params) {
     this.bot = bot;

@@ -1,7 +1,6 @@
 /*
-  Verniy Core Client
-  © 2020 smolespi & resolved
-  github.com/smolespi/Verniy
+  This is the core Verniy client, built for Eris.
+  It handles command loads/unloads & Echo errors.
 */
 
 const { Client, Collection } = require("eris");
@@ -9,11 +8,19 @@ const { readdirSync } = require("fs");
 const Command = require("./structures/Command")
 const Event = require("./structures/Event")
 
+// todo - move Echo to a npm package
+// Echo will logs & handle errors
+const echo = require("../../Echo/sdk/index");
+// Sets Echo settings & initialises it
+echo.setSettings(require("../cfg").echo);
+echo.init();
+
 // Client constructor
 class Verniy extends Client {
   constructor(token, erisOptions, db) {
     super(token, erisOptions);
     this.cfg = require("../cfg.json").cfg;
+    this.key = require("../cfg.json").keys;
     this.embed = require("./Embed")
     this.log = require("./Log");
     this.db = db;
@@ -35,16 +42,15 @@ class Verniy extends Client {
   // Command loader
   loadCommands(path) {
     path = `${process.cwd()}/${path}`;
-    // Reads the commands directory
+    // Looks for all commands
     const items = readdirSync(path, { withFileTypes: true });
     items.forEach(item => {
       if (!item.isDirectory()) return;
-      // Gets the commands
       const cmds = readdirSync(`${path}/${item.name}`);
       cmds.forEach(cmd => {
         let command;
-        // Tries to load each command
         try {
+          // Tries to load each command
           command = require(`${path}/${item.name}/${cmd}`);
         } catch (err) {
           this.log.error(`Failed to load ${cmd}: ${err}`);
@@ -61,12 +67,12 @@ class Verniy extends Client {
   // Event loader
   loadEvents(path) {
     path = `${process.cwd()}/${path}`;
-    // Reads the events directory
+    // Looks for all events
     const events = readdirSync(path);
     events.forEach(item => {
       let event;
-      // Tries to load each event
       try {
+        // Tries to load each event
         event = require(`${path}/${item}`);
       } catch (err) {
         this.log.error(`Failed to load ${item}: ${err}`);
@@ -75,7 +81,7 @@ class Verniy extends Client {
       // Loads the events
       this.events.add(new event(this, item.split(".js")[0]));
       event = this.events.find(e => e.id == item.split(".js")[0]);
-      // Runs the event
+      // Runs the events
       let eargs = (arg1, arg2, arg3, arg4, arg5) => { event.run(arg1, arg2, arg3, arg4, arg5) };
       this.on(event.name, eargs);
     });

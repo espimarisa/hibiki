@@ -1,8 +1,12 @@
 const Command = require("../../lib/structures/Command");
 
-class pingcmd extends Command {
+class pingCommand extends Command {
   constructor(...args) {
-    super(...args);
+    super(...args, {
+      aliases: ["pig", "pingpong", "pog", "pong"],
+      description: "Shows the bot's ping & latency.",
+      allowdisable: false,
+    });
   }
 
   async run(msg) {
@@ -19,4 +23,4 @@ class pingcmd extends Command {
   }
 }
 
-module.exports = pingcmd;
+module.exports = pingCommand;

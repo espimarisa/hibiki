@@ -1,7 +1,7 @@
+// todo: allow non-staff (not implemented yet..) users to check the prefix but not set it, like v2
 const Command = require("../../lib/structures/Command");
 
-// todo: allow non-staff (not implemented yet..) users to check the prefix but not set it, like v2
-class prefixcmd extends Command {
+class prefixCommand extends Command {
   constructor(...args) {
     super(...args, {
       args: "<prefix:string>",
@@ -16,4 +16,4 @@ class prefixcmd extends Command {
   }
 }
 
-module.exports = prefixcmd;
+module.exports = prefixCommand;

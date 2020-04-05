@@ -9,24 +9,24 @@
   "license": "AGPL-3.0",
   "homepage": "https://hibiki.app",
   "main": "hibiki.js",
+  "bugs": {
+    "url": "https://github.com/smolespi/Hibiki-v3/issues"
+  },
   "directories": {
     "lib": "lib"
-  },
-  "scripts": {
-    "bot": "node hibiki.js",
-    "db": "node lib/scripts/Database.js",
-    "lint": "npx eslint --fix ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/smolespi/Hibiki-v3.git"
   },
-  "bugs": {
-    "url": "https://github.com/smolespi/Hibiki-v3/issues"
-  },
   "engines": {
     "npm": ">=6.9.0",
     "node": ">=10.0.0"
+  },
+  "scripts": {
+    "hibiki": "node hibiki.js",
+    "setup": "node lib/scripts/Setup.js",
+    "lint": "npx eslint --fix ."
   },
   "dependencies": {
     "eris": "^0.11.2",

@@ -1,6 +1,6 @@
 const Command = require("../../lib/structures/Command");
 
-class pingcmd extends Command {
+class unloadCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["ul"],
@@ -12,11 +12,12 @@ class pingcmd extends Command {
   }
 
   async run(msg, args, pargs) {
-    // Sends when unloaded
+    // Unloads
     let r = pargs[0].value.unload();
-    if(r == "unloaded") msg.channel.createMessage(this.bot.embed("🔄 Unload", `**${pargs[0].value.id}** was unloaded.`, "success"));
-    else msg.channel.createMessage(this.bot.embed("🔄 Unload", `there was prob an error: ${r}`, "error"));
+    // Sends when unloaded
+    if (r == "unloaded") msg.channel.createMessage(this.bot.embed("🔄 Unload", `**${pargs[0].value.id}** was unloaded.`, "success"));
+    else msg.channel.createMessage(this.bot.embed("🔄 Unload", `Error while unloading: ${r}`, "error"));
   }
 }
 
-module.exports = pingcmd;
+module.exports = unloadCommand;
