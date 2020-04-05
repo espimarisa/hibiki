@@ -1,6 +1,6 @@
 const Command = require("../../lib/structures/Command");
 
-class pingcmd extends Command {
+class reloadCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["rl"],
@@ -12,11 +12,12 @@ class pingcmd extends Command {
   }
 
   async run(msg, args, pargs) {
-    // Sends when reloaded
+    // Reloads
     let r = pargs[0].value.reload();
-    if(r == "reloaded") msg.channel.createMessage(this.bot.embed("🔄 Reload", `**${pargs[0].value.id}** was reloaded.`, "success"));
-    else msg.channel.createMessage(this.bot.embed("🔄 Reload", `there was prob an error: ${r}`, "error"));
+    // Sends when reloaded
+    if (r == "reloaded") msg.channel.createMessage(this.bot.embed("🔄 Reload", `**${pargs[0].value.id}** was reloaded.`, "success"));
+    else msg.channel.createMessage(this.bot.embed("🔄 Reload", `Error while reloading: ${r}`, "error"));
   }
 }
 
-module.exports = pingcmd;
+module.exports = reloadCommand;
