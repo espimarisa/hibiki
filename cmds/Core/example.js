@@ -11,6 +11,7 @@ class exampleCommand extends Command {
       cooldown: 0,
       allowdisable: true,
       owner: false,
+      nsfw: false,
       staff: false,
     });
   }
