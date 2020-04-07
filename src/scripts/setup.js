@@ -24,7 +24,7 @@ try { db = require("rethinkdbdash")(rethink); } catch (_) {
 }
 
 // Sets the required tables
-const requiredTables = ["guildcfg"];
+const requiredTables = ["blacklist", "guildcfg", "usercfg"];
 
 (async () => {
   // Creates the database if it doesn't exist
