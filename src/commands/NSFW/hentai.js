@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class hentaiCommand extends Command {
   constructor(...args) {
     super(...args, {
-      description: "Posts a random Hentai image.",
+      description: "Sends a random hentai image.",
       cooldown: 3,
       nsfw: true,
     });
