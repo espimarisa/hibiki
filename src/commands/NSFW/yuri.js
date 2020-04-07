@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class yuriCommand extends Command {
   constructor(...args) {
     super(...args, {
-      description: "Posts a random NSFW Yuri image.",
+      description: "Sends a NSFW yuri image.",
       cooldown: 3,
       nsfw: true,
     });

@@ -5,7 +5,7 @@ class lewdfemboyCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["lewdtrap"],
-      description: "Posts a NSFW femboy image.",
+      description: "Sends a NSFW femboy image.",
       cooldown: 3,
       nsfw: true,
     });
