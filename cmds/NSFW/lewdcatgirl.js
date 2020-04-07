@@ -5,7 +5,7 @@ class lewdnekoCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["lewdneko"],
-      description: "Posts a NSFW catgirl image.",
+      description: "Sends a NSFW catgirl image.",
       cooldown: 3,
       nsfw: true,
     });
