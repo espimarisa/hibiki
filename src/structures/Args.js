@@ -16,7 +16,8 @@ class argParser {
       role: (a, msg) => msg.guild.roles.find(r => r.id == a || a.startsWith(`<@&${r.id}>`) || r.name.startsWith(a)),
       string: (a) => { return a },
       user: (a, msg, flag) => {
-        let user = msg.guild.members.find(m => m.id == a || msg.mentions.includes(msg.author.user));
+        console.log(a);
+        let user = msg.guild.members.find(m => m.id == a || a.startsWith(`<@!${m.id}>`) || msg.mentions.includes(msg.author.user));
         if (!user && flag == "fallback") return msg.author;
         return user;
       },
@@ -28,6 +29,7 @@ class argParser {
     let argObj = [];
     // Sets each arg
     argString.split(delimiter).forEach(arg => {
+      // Hibiki, powered by unreliable regexes
       let r = /(<|\[)(\w{1,}):(\w{1,})&?(\w{1,})?(>|\])/.exec(arg);
       if (!r) return;
       argObj.push({
