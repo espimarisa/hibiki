@@ -16,8 +16,9 @@ class argParser {
       role: (a, msg) => msg.guild.roles.find(r => r.id == a || a.startsWith(`<@&${r.id}>`) || r.name.startsWith(a)),
       string: (a) => { return a },
       user: (a, msg, flag) => {
-        console.log(a);
+        // console.log(a);
         let user = msg.guild.members.find(m => m.id == a || a.startsWith(`<@!${m.id}>`) || msg.mentions.includes(msg.author.user));
+        // console.log(user)
         if (!user && flag == "fallback") return msg.author;
         return user;
       },
@@ -43,6 +44,7 @@ class argParser {
 
     // Splits each arg
     args.split(delimiter).forEach((arg, i) => {
+      // console.log(arg)
       let argg = argObj[i];
       if (!argg) return;
       if (!this.argTypes[argg.type]) return;

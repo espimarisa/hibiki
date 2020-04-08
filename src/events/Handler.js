@@ -65,7 +65,6 @@ class Handler extends Event {
       parsedArgs = this.bot.argParser.parse(cmd.args, args.join(" "), cmd.argsDelimiter, msg);
       // Filters for missingArgs & sends if it's missing any
       let missingargs = parsedArgs.filter(a => !a.value && !a.optional);
-      console.log(missingargs.length);
       // todo: clean this output up
       if (missingargs.length) return msg.channel.createMessage(this.bot.embed("❌ Error", `You didn't provide a **${missingargs.map(a => a.name).join(",")}**.`, "error"));
     }
