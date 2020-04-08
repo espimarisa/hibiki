@@ -16,7 +16,8 @@ class patCommand extends Command {
     // Sets weebsh auth & image type
     let res = await fetch(`https://staging.weeb.sh/images/random?type=pat`, { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
     let body = await res.json();
-    console.log(pargs[0]);
+
+    console.log(pargs)
     // Sends the embed
     msg.channel.createMessage({
       embed: {
