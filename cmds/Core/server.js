@@ -35,13 +35,13 @@ class serverCommand extends Command {
       name: "👥",
       value: `${users || "0"} members, ${bots} bots`,
     }, {
-      name: "▶",
+      name: "📚",
       value: `${msg.guild.roles.size} roles`,
     }, {
       name: "😃",
       value: `${msg.guild.emojis.length} emojis`
     }, {
-      name: "🌍",
+      name: "🌐",
       value: `${format.region(msg.guild.region)}`,
     }, {
       name: "💬",
