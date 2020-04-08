@@ -1,11 +1,11 @@
 const Command = require("../../lib/structures/Command");
-const os = require("os");
 const format = require("../../lib/scripts/Format");
+const os = require("os");
 
 class aboutCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["ab", "aboutbot", "stats", "uptime"],
+      aliases: ["ab", "aboutbot", "info", "stats", "uptime"],
       description: "Shows info & stats about the bot.",
     });
   }
@@ -26,37 +26,37 @@ class aboutCommand extends Command {
       value: "**Bot Stats**",
     }, {
       name: "👥",
-      value: `**${users}** users`,
+      value: `${users} users`,
     }, {
       name: "💬",
-      value: `**${this.bot.guilds.size}** servers`,
+      value: `${this.bot.guilds.size} servers`,
     }, {
       name: "📔",
-      value: `**${this.bot.commands.size}** commands`,
+      value: `${this.bot.commands.size} commands`,
     }, {
       name: "📕",
-      value: `**Node ${process.version}**`,
+      value: `Node ${process.version}`,
     }, {
       name: "📚",
-      value: `**Eris v${require("eris").VERSION}**`,
+      value: `Eris v${require("eris").VERSION}`,
     }, {
       name: "🤖",
-      value: `**Hibiki v${require("../../package").version}**`,
+      value: `Hibiki v${require("../../package").version}`,
     }, {
       name: "🕒",
-      value: `**${format.uptimeFormat(process.uptime())}**`,
+      value: `${format.uptimeFormat(process.uptime())}`,
     }, {
       name: "🧮",
-      value: `**${Math.round(process.memoryUsage().rss / 1024 / 1024 * 100) / 100} mb of RAM** `,
+      value: `${Math.round(process.memoryUsage().rss / 1024 / 1024 * 100) / 100} mb used `,
     }, {
       name: "🖥",
-      value: `**${format.formatOs(os.platform(), os.release())}**`,
+      value: `${format.formatOs(os.platform(), os.release())}`,
     }, {
       name: "\n",
       value: "**About**",
     }, {
       name: "",
-      value: `${this.bot.user.username} is an all-in-one Discord bot based on the [Verniy](https://github.com/smolespi/Verniy) core. It's a simple and easy-to-use bot for most of your server's needs`,
+      value: `${this.bot.user.username} is a general-purpose bot powered by [Verniy](https://github.com/smolespi/Verniy). \n It's simple & easy-to-use for most server's needs.`,
     }, {
       name: "",
       value: `[GitHub](${this.bot.cfg.repo}) • [Invite](https://${this.bot.cfg.homepage}/invite/) • [Support](https://discord.gg/${this.bot.cfg.support}) • [Vote](https://top.gg/bot/${this.bot.user.id}/vote) • [Website](${this.bot.cfg.homepage})`,

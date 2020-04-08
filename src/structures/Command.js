@@ -5,7 +5,7 @@ class Command {
     this.id = id;
     // Cmd params
     if (params) {
-      this.aliases = params.aliases;
+      this.aliases = params.aliases ? params.aliases : [];
       this.allowdms = params.allowdms ? params.allowdms : false;
       this.args = params.args;
       this.argsDelimiter = params.argsDelimiter || " ";
