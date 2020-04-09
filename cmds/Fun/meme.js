@@ -1,10 +1,10 @@
 const Command = require("../../lib/structures/Command");
 const fetch = require("node-fetch");
 
-class randommemeCommand extends Command {
+class memeCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["meme"],
+      aliases: ["randommeme"],
       description: "Posts a random meme.",
       cooldown: 3,
     });
@@ -29,4 +29,4 @@ class randommemeCommand extends Command {
   }
 }
 
-module.exports = randommemeCommand;
+module.exports = memeCommand;
