@@ -1,24 +1,18 @@
 const Command = require("../../lib/structures/Command");
-const fetch = require("node-fetch");
 
-class meguminCommand extends Command {
+class coinCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["megu"],
-      description: "Sends a picture of Megumin.",
-      cooldown: 3,
+      aliases: ["coinflip", "flipcoin"],
+      description: "Flips a coin.",
     });
   }
 
   async run(msg) {
-    // Sets weebsh auth & image type
-    let res = await fetch(`https://api.weeb.sh/images/random?type=megumin`, { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
-    let body = await res.json();
-
     // Sends the embed
     msg.channel.createMessage({
       embed: {
-        title: "🔥 Megumin",
+        description: `❤ **${msg.author.username}** is cuddling **${pargs[0].value.username}**!`,
         color: this.bot.embed.colour("general"),
         image: {
           url: body.url,
@@ -32,4 +26,4 @@ class meguminCommand extends Command {
   }
 }
 
-module.exports = meguminCommand;
+module.exports = coinCommand;

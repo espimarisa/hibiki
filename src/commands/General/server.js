@@ -5,6 +5,8 @@ class serverCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["guild", "guildinfo", "serverinfo"],
+      description: "Shows information about a server.",
+      cooldown: 2,
     });
   }
 
@@ -72,11 +74,11 @@ class serverCommand extends Command {
         description: desc.map(t => `${t.name} ${t.value}`).join("\n"),
         color: this.bot.embed.colour("general"),
         author: {
-          icon_url: msg.guild.iconURL || "",
+          icon_url: msg.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
           name: msg.guild.name,
         },
         thumbnail: {
-          url: msg.guild.iconURL || "",
+          url: msg.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
         },
       }
     })

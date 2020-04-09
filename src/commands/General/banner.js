@@ -17,7 +17,7 @@ class bannerCommand extends Command {
         title: `🖼 ${msg.guild.name}'s banner`,
         color: require("../../utils/Colour")("general"),
         image: {
-          url: msg.guild.dynamicBannerURL(null),
+          url: msg.guild.dynamicBannerURL(),
         },
       },
     });

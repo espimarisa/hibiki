@@ -3,13 +3,13 @@ module.exports = {
   status: status => {
     switch (status) {
       case "online":
-        return "Online";
+        return "🟢 Online";
       case "idle":
-        return "Idle";
+        return "🟡 Idle";
       case "dnd":
-        return "Do not Disturb";
+        return "🔴 Do Not Disturb";
       case "offline":
-        return "Offline/Invisible";
+        return "⚪ Invisible/Offline";
       default:
         return status;
     }

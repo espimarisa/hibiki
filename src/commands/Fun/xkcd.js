@@ -30,7 +30,7 @@ class xkcdCommand extends Command {
           url: comic.img,
         },
         footer: {
-          icon_url: this.bot.user.dynamicAvatarURL("png"),
+          icon_url: this.bot.user.dynamicAvatarURL(),
           text: `Published on ${comic.day <= 10 ? `0${comic.day}` : comic.day}/${comic.month <= 10 ? `0${comic.month}` : comic.day}/${comic.year}`,
         },
       },

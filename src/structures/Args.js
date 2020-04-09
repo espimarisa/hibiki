@@ -12,15 +12,12 @@ class argParser {
       command: (a) => this.bot.commands.find(c => c.id.startsWith(a) || (c.aliases && c.aliases.includes(a))),
       event: (a) => this.bot.events.find(e => e.id.toLowerCase().startsWith(a)),
       guild: (a) => this.bot.guilds.find(g => g.id == a || g.name == a),
-      module: (a) => this.bot.commands.find(c => c.id.toLowerCase().startsWith(a) || (c.aliases && c.aliases.includes(a))) || this.bot.events.find(e => e.id.toLowerCase().startsWith(a)),
+      module: (a) => this.bot.commands.find(c => c.id.toLowerCase().startsWith(a) || (c.aliases && c.aliases.includes(a))),
       role: (a, msg) => msg.guild.roles.find(r => r.id == a || a.startsWith(`<@&${r.id}>`) || r.name.startsWith(a)),
       string: (a) => { return a },
       user: (a, msg, flag) => {
-        let user = msg.guild.members.find(m => m.id == a || a.startsWith(`<@!${m.id}>`) || msg.mentions.includes(m.id));
-        if (!user && flag == "fallback") return msg.author;
-        if (!user && !flag == "fallback") return;
-        if (!flag && user.id == msg.author.id) return;
-        if (flag == "fallback" && user.id == msg.author.id) return msg.author;
+        let user = msg.guild.members.find(m => m.username.startsWith(a) || m.id == a || a.startsWith(`<@!${m.id}>`) || msg.mentions.includes(m.id));
+        if (!a || !user && flag == "fallback") return msg.guild.members.get(msg.author.id);
         return user;
       },
     };
@@ -32,7 +29,7 @@ class argParser {
     // Sets each arg
     argString.split(delimiter).forEach(arg => {
       // Hibiki, powered by unreliable regexes
-      let r = /(<|\[)(\w{1,}):(\w{1,})&?(\w{1,})?(>|\])/.exec(arg);
+      let r = /(<|\[)(\w{1,}):(\w{1,})&?([\w=*]{1,})?(>|\])/.exec(arg);
       if (!r) return;
       argObj.push({
         name: r[2],
@@ -46,7 +43,10 @@ class argParser {
     // Splits each arg
     args.split(delimiter).forEach((arg, i) => {
       let argg = argObj[i];
-      if (!argg) return;
+      if (!argg || (!arg && argg.flag != "fallback")) return;
+      // Ignores certain patternss
+      // console.log(argg.flag.startsWith("ignore=") && arg == argg.flag.split("ignore=")[1]);
+      if (argg.flag.startsWith("ignore=") && arg == argg.flag.split("ignore=")[1]) return argObj.splice(i, 1);
       if (!this.argTypes[argg.type]) return;
       let value = this.argTypes[argg.type](arg.toLowerCase(), msg, argg.flag);
       if (!value) return;
