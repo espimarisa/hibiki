@@ -24,7 +24,7 @@ class biteCommand extends Command {
           url: body.url,
         },
         footer: {
-          icon_url: this.bot.user.dynamicAvatarURL("png"),
+          icon_url: this.bot.user.dynamicAvatarURL(),
           text: "Powered by weeb.sh",
         }
       }
