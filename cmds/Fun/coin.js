@@ -3,26 +3,15 @@ const Command = require("../../lib/structures/Command");
 class coinCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["coinflip", "flipcoin"],
+      aliases: ["coinflip", "flip", "flipcoin"],
       description: "Flips a coin.",
     });
   }
 
   async run(msg) {
-    // Sends the embed
-    msg.channel.createMessage({
-      embed: {
-        description: `❤ **${msg.author.username}** is cuddling **${pargs[0].value.username}**!`,
-        color: this.bot.embed.colour("general"),
-        image: {
-          url: body.url,
-        },
-        footer: {
-          icon_url: this.bot.user.dynamicAvatarURL(),
-          text: "Powered by weeb.sh",
-        }
-      }
-    });
+    // Flips the coin
+    let coin = ["heads", "tails"][Math.round(Math.random())];
+    msg.channel.createMessage(this.bot.embed("💰 Coin", `The coin landed on **${coin}**.`, "general"))
   }
 }
 
