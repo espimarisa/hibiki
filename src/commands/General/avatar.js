@@ -4,8 +4,8 @@ const format = require("../../lib/scripts/Format");
 class avatarCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "[user:user&fallback]",
       aliases: ["pfp", "profilepic", "profilepicture", "uicon", "usericon"],
+      args: "[user:user&fallback]",
       description: "Displays a user's avatar.",
       cooldown: 3,
     });
