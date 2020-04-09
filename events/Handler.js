@@ -29,13 +29,13 @@ class Handler extends Event {
     let prefix;
     // Sets the prefix
     if (msg.content.startsWith(this.bot.cfg.prefix)) prefix = this.bot.cfg.prefix;
-    else if (msg.content.startsWith(`<@${this.bot.user.id}>`)) prefix = `<@${this.bot.user.id}>`;
-    else if (msg.content.startsWith(`<@!${this.bot.user.id}>`)) prefix = `<@!${this.bot.user.id}>`;
+    else if (msg.content.startsWith(`<@${this.bot.user.id}> `)) prefix = `<@${this.bot.user.id}> `;
+    else if (msg.content.startsWith(`<@!${this.bot.user.id}> `)) prefix = `<@!${this.bot.user.id}> `;
     else if (guildcfg && guildcfg.prefix && msg.content.startsWith(guildcfg.prefix)) prefix = guildcfg.prefix;
     if (!prefix) return;
     // Looks for the command ran
     const [cmdName, ...args] = msg.content.slice(prefix.length).split(" ").map(s => s.trim());
-    let cmd = this.bot.commands.find(c => c.id == cmdName.toLowerCase());
+    let cmd = this.bot.commands.find(c => c.id == cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
     if (!cmd) return;
     // Disabled commands/categories
     if (guildcfg && (guildcfg.disabledCategories || []).includes(cmd.category) && cmd.allowdisable) return msg.channel.createMessage(this.bot.embed("❌ Error", "The category that command is in is disabled in this server.", "error"));

@@ -11,37 +11,20 @@ class avatarCommand extends Command {
     });
   }
 
-  // todo - remove if else, find a way to make it one (pargs[0].value.user doesnt work on msg.author)
   async run(msg, args, pargs) {
-    // Sends the author's avatar
-    if (!pargs[0].value.user) {
-      msg.channel.createMessage({
-        embed: {
-          color: this.bot.embed.colour("general"),
-          author: {
-            icon_url: pargs[0].value.dynamicAvatarURL(null, 1024),
-            name: format.tag(pargs[0].value, false),
-          },
-          image: {
-            url: pargs[0].value.dynamicAvatarURL(null, 1024),
-          },
+    // Sends the avatar
+    msg.channel.createMessage({
+      embed: {
+        color: this.bot.embed.colour("general"),
+        author: {
+          icon_url: pargs[0].value.user.dynamicAvatarURL(null),
+          name: format.tag(pargs[0].value.user, false),
         },
-      });
-    } else {
-      // Sends the user's avatar
-      msg.channel.createMessage({
-        embed: {
-          color: this.bot.embed.colour("general"),
-          author: {
-            icon_url: pargs[0].value.user.dynamicAvatarURL(null, 1024),
-            name: format.tag(pargs[0].value.user, false),
-          },
-          image: {
-            url: pargs[0].value.user.dynamicAvatarURL(null, 1024),
-          },
+        image: {
+          url: pargs[0].value.user.dynamicAvatarURL(null),
         },
-      });
-    }
+      },
+    });
   }
 }
 

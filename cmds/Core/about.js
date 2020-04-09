@@ -69,7 +69,7 @@ class aboutCommand extends Command {
         description: desc.map(t => `${t.name} ${t.value}`).join("\n"),
         color: this.bot.embed.colour("general"),
         thumbnail: {
-          url: this.bot.user.dynamicAvatarURL("png", 512),
+          url: this.bot.user.dynamicAvatarURL(),
         },
       }
     });
