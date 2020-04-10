@@ -7,7 +7,7 @@
 */
 
 const express = require("express");
-const voting = require("../../cfg").voting;
+const voting = require("../cfg").voting;
 
 // Sets up express
 const app = express();
@@ -57,14 +57,14 @@ module.exports = async (bot, port) => {
       embed: {
         title: "🗳 User Voted",
         description: `**${user != undefined ? user.username : req.body.user}** has voted. ${req.body.isWeekend == true ? "(received 2 votes)" : ""}`,
-        color: this.bot.embed.colour("general"),
+        color: bot.embed.colour("general"),
       }
     });
     // Logs when a user voted
-    this.log.info(`${user != undefined ? user.username : req.body.user} has voted (requested from: ${req.connection.remoteAddress}`);
+    bot.log.info(`${user != undefined ? user.username : req.body.user} has voted (requested from: ${req.connection.remoteAddress}`);
     res.sendStatus(200);
   });
 
   // Listens on port
-  const listener = app.listen(port, "0.0.0.0", () => this.log.info(`Voting handler loaded on ${listener.address().address}:${listener.address().port}`));
+  const listener = app.listen(port, "0.0.0.0", () => bot.log.info(`Voting handler loaded on ${listener.address().address}:${listener.address().port}`));
 };
