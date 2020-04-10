@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "eris": "^0.11.2",
+    "express": "^4.17.1",
     "node-fetch": "^2.6.0",
     "rethinkdbdash": "^2.3.31"
   },

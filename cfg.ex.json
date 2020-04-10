@@ -1,5 +1,6 @@
 {
   "cfg": {
+    "logchannel": "",
     "homepage": "https://hibiki.app",
     "owners": [""],
     "perms": "506850534",
@@ -32,6 +33,10 @@
   },
   "rethink": {
     "db": "hibiki"
+  },
+  "voting": {
+    "auth": "",
+    "port": ""
   },
   "echo": {
     "auth": "",
