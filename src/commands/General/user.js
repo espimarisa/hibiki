@@ -20,20 +20,17 @@ class userCommand extends Command {
       if (user.game.emoji && user.game.emoji.name && !user.game.emoji.id) playing = `${user.game.emoji.name} ${user.game.state || ""}`;
       else playing = user.game.state;
     }
+
     // Sets the description
     let usercfg = await this.bot.db.table("usercfg").get(msg.author.id);
-    // Bio
     if (usercfg && usercfg.bio) desc.push({ name: "", value: `${usercfg.bio}` })
     if (user.nick) desc.push({ name: "📛", value: user.nick, });
     desc.push({ name: "📩", value: `Joined ${format.prettyDate(user.joinedAt)}`, });
     desc.push({ name: "✉", value: `Created ${format.prettyDate(user.createdAt)}`, });
-    // Top role
     if (user.roles.length > 0) desc.push({ name: "📚", value: `Top role is ${user.roles.map(r => msg.guild.roles.get(r)).sort((a, b) => b.position - a.position)[0].name}`, })
-    // Statuses
     desc.push({ name: "", value: format.status(user.status), });
     if (user.game) desc.push({ name: `${user.game.emoji ? "" : "▶"}`, value: playing, });
     desc.push({ name: "🆔", value: user.id, });
-    // Custom fields
     if (usercfg && usercfg.info) desc.push(Object.keys(usercfg.info).map(k => `**${k}**: ${usercfg.info[k]}`).join("\n"));
 
     // Sends the embed

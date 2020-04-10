@@ -12,16 +12,17 @@ class avatarCommand extends Command {
   }
 
   async run(msg, args, pargs) {
+    let user = pargs[0].value;
     // Sends the avatar
     msg.channel.createMessage({
       embed: {
         color: this.bot.embed.colour("general"),
         author: {
-          icon_url: pargs[0].value.user.dynamicAvatarURL(null),
-          name: format.tag(pargs[0].value.user, false),
+          icon_url: user.user.dynamicAvatarURL(null),
+          name: format.tag(user.user, false),
         },
         image: {
-          url: pargs[0].value.user.dynamicAvatarURL(null),
+          url: user.user.dynamicAvatarURL(null),
         },
       },
     });
