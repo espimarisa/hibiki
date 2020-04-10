@@ -11,6 +11,7 @@ class Command {
       this.argsDelimiter = params.argsDelimiter || " ";
       this.clientperms = params.clientperms;
       this.cooldown = params.cooldown;
+      this.description = params.description;
       this.nsfw = params.nsfw ? params.nsfw : false;
       this.owner = params.owner ? params.owner : false;
       this.requiredperms = params.requiredperms;

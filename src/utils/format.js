@@ -228,4 +228,33 @@ module.exports = {
     const dateString = segments.join(", ");
     return dateString;
   },
+
+  // Prettier categories
+  categoryEmoji(category) {
+    let label;
+    switch (category) {
+      case "Core":
+        label = "🤖 Core";
+        break;
+      case "Fun":
+        label = "🎉 Fun";
+        break;
+      case "Misc":
+        label = "❓ Misc";
+        break;
+      case "Moderation":
+        label = "🔨 Moderation";
+        break;
+      case "NSFW":
+        label = "🔞 NSFW";
+        break;
+      case "Owner":
+        label = "⛔ Owner";
+        break;
+      default:
+        label = "Unknown";
+        break;
+    }
+    return label;
+  }
 };
