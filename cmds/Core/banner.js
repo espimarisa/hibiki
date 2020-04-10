@@ -4,7 +4,7 @@ class bannerCommand extends Command {
   constructor(...args) {
     super(...args, {
       description: "Displays the server's banner.",
-      cooldown: 3000,
+      cooldown: 3,
     });
   }
 
@@ -14,8 +14,11 @@ class bannerCommand extends Command {
     // Sends the banner
     msg.channel.createMessage({
       embed: {
-        title: `🖼 ${msg.guild.name}'s banner`,
-        color: require("../../utils/Colour")("general"),
+        color: this.bot.embed.colour("general"),
+        author: {
+          icon_url: msg.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
+          name: msg.guild.name,
+        },
         image: {
           url: msg.guild.dynamicBannerURL(),
         },
