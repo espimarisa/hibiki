@@ -73,10 +73,11 @@ class Handler extends Event {
       // Tries to run the command
       await cmd.run(msg, args, parsedArgs);
     } catch (e) {
-      // Captures errors with Echo
-      const echo = require("../../Echo/sdk/index");
-      echo.setSettings(require("../cfg").echo);
-      echo.capture(e);
+      // // Captures errors with Echo
+      // const echo = require("../../Echo/sdk/index");
+      // echo.setSettings(require("../cfg").echo);
+      // echo.capture(e);
+      console.log(e);
       msg.channel.createMessage(this.bot.embed("❌ Error", `An error occured and has been logged. \n \`\`\`js\n${e}\n\`\`\``, "error"));
     }
   }

@@ -24,7 +24,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "hibiki": "node hibiki.js",
+    "bot": "node hibiki.js",
     "setup": "node lib/scripts/Setup.js",
     "lint": "npx eslint --fix ."
   },

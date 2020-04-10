@@ -1,3 +1,4 @@
+// todo: filter token from this.bot.cfg whenever evaluated
 const Command = require("../../lib/structures/Command");
 const fetch = require("node-fetch");
 const { inspect } = require("util");
@@ -24,7 +25,7 @@ class evalCommand extends Command {
         const { key } = await res.json();
         msg.channel.createMessage(this.bot.embed("❌ Error", `Output longer than 2000. View the output [here](https://hasteb.in/${key}).`, "error"));
       } else {
-        msg.channel.createMessage(this.bot.embed("✅ Success", `\`\`\`js\n${evalstring.replace(this.bot.token, "This would have displayed a key or token, so I hid it.")}\n\`\`\``, "success"));
+        msg.channel.createMessage(this.bot.embed("✅ Success", `\`\`\`js\n${evalstring.replace(this.bot.token, "This would have displayed a key or token. Check the console.")}\n\`\`\``, "success"));
       }
     } catch (err) {
       // Sends if an error returned
