@@ -61,6 +61,7 @@ class helpCommand extends Command {
       let DMChannel = await msg.author.getDMChannel();
       let dmson = await DMChannel.createMessage({
         embed: {
+          color: this.bot.embed.colour("general"),
           fields: categories.map(category => ({
             name: sortedcategories[categories.indexOf(category)],
             // Hides disabled commands
