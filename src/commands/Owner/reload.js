@@ -5,7 +5,7 @@ class reloadCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["rl"],
-      args: "<command:module&ignore=*,all>",
+      args: "<command:module&ignore=*>",
       description: "Reloads one or more commands.",
       allowdisable: false,
       owner: true,
@@ -14,7 +14,7 @@ class reloadCommand extends Command {
 
   async run(msg, args, pargs) {
     // Reload all functionality
-    if (args[0] == "*" || args[0] == "all") {
+    if (args[0] == "*") {
       let errors = [];
       this.bot.commands.map(c => ({ id: c.id, reload: c.reload })).forEach(cmd => {
         let r = cmd.reload();
