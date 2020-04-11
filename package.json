@@ -3,9 +3,7 @@
   "version": "3.0.0",
   "description": "The ultimate all-in-one Discord bot.",
   "author": "smolespi (https://lesbian.codes)",
-  "contributors": [
-    "resolved (https://github.com/resolvedxd)"
-  ],
+  "contributors": ["resolved (https://github.com/resolvedxd)"],
   "license": "AGPL-3.0",
   "homepage": "https://hibiki.app",
   "main": "hibiki.js",

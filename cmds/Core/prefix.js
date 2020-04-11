@@ -7,12 +7,11 @@ class prefixCommand extends Command {
       args: "<prefix:string>",
       descriptiom: "Views or changes the bot's prefix.",
       allowdisable: false,
-      staff: true
     });
   }
 
   async run(msg, pargs) {
-    msg.channel.createMessage(pargs[0].value);
+    msg.channel.createMessage(pargs[0]);
   }
 }
 

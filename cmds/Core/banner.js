@@ -16,11 +16,11 @@ class bannerCommand extends Command {
       embed: {
         color: this.bot.embed.colour("general"),
         author: {
-          icon_url: msg.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
-          name: msg.guild.name,
+          icon_url: msg.channel.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
+          name: msg.channel.guild.name,
         },
         image: {
-          url: msg.guild.dynamicBannerURL(),
+          url: msg.channel.guild.dynamicBannerURL(),
         },
       },
     });

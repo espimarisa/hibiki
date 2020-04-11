@@ -12,7 +12,7 @@ class catCommand extends Command {
 
   async run(msg) {
     // Fetches the API
-    let res = await fetch("http://aws.random.cat/meow");
+    let res = await fetch(`https://api.weeb.sh/images/random?type=animal_cat`, { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
     let body = await res.json().catch(() => {});
 
     // Sends the embed
@@ -20,7 +20,7 @@ class catCommand extends Command {
       embed: {
         title: "🐱 Meow!",
         image: {
-          url: body.file,
+          url: body.url,
         },
         color: this.bot.embed.colour("general"),
       },

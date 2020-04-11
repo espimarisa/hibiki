@@ -1,10 +1,6 @@
 /*
-  Hibiki, based on the Verniy core.
-  © 2018 - 2020 smolespi & resolved.
-  Source licensed under the GNU AGPL v3.
-
-  github.com/smolespi/Hibiki
-  github.com/smolespi/Verniy
+  Hibiki © 2020 smolespi & resolved.
+  Code licensed under the GNU AGPL v3.
 */
 
 const { cfg, options, rethink } = require("./cfg");

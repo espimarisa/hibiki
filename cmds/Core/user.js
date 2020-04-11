@@ -21,14 +21,30 @@ class userCommand extends Command {
       else playing = user.game.state;
     }
 
+    // Formats statuses
+    function statusFormat(status) {
+      switch (status) {
+        case "online":
+          return "🟢 Online";
+        case "idle":
+          return "🟡 Idle";
+        case "dnd":
+          return "🔴 Do Not Disturb";
+        case "offline":
+          return "⚪ Invisible/Offline";
+        default:
+          return status;
+      }
+    }
+
     // Sets the description
     let usercfg = await this.bot.db.table("usercfg").get(msg.author.id);
     if (usercfg && usercfg.bio) desc.push({ name: "", value: `${usercfg.bio}` })
     if (user.nick) desc.push({ name: "📛", value: user.nick, });
-    desc.push({ name: "📩", value: `Joined ${format.prettyDate(user.joinedAt)}`, });
-    desc.push({ name: "✉", value: `Created ${format.prettyDate(user.createdAt)}`, });
-    if (user.roles.length > 0) desc.push({ name: "📚", value: `Top role is ${user.roles.map(r => msg.guild.roles.get(r)).sort((a, b) => b.position - a.position)[0].name}`, })
-    desc.push({ name: "", value: format.status(user.status), });
+    desc.push({ name: "📩", value: `Joined ${format.date(user.joinedAt)}`, });
+    desc.push({ name: "✉", value: `Created ${format.date(user.createdAt)}`, });
+    if (user.roles.length > 0) desc.push({ name: "📚", value: `Top role is ${user.roles.map(r => msg.channel.guild.roles.get(r)).sort((a, b) => b.position - a.position)[0].name}`, })
+    desc.push({ name: "", value: statusFormat(user.status), });
     if (user.game) desc.push({ name: `${user.game.emoji ? "" : "▶"}`, value: playing, });
     desc.push({ name: "🆔", value: user.id, });
     if (usercfg && usercfg.info) desc.push(Object.keys(usercfg.info).map(k => `**${k}**: ${usercfg.info[k]}`).join("\n"));

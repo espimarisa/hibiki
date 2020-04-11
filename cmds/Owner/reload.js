@@ -1,4 +1,3 @@
-// todo: fix reloading individual commands; fix unloading, add loading
 const Command = require("../../lib/structures/Command");
 
 class reloadCommand extends Command {
