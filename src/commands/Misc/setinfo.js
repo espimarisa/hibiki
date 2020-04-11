@@ -1,3 +1,4 @@
+// todo: utilise this properly for things such as pronouns.. etc.
 const Command = require("../../lib/structures/Command");
 // Sets valid fields
 const fields = { field1: (a) => a == "yes" || a == "no" || a == "maybe" };

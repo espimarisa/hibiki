@@ -8,7 +8,7 @@ module.exports = exports = {
   },
 
   // Ignores
-  "ignorePatterns": ["rethinkdb_data/", "node_modules/"],
+  "ignorePatterns": ["dist/", "rethinkdb_data/", "node_modules/"],
 
   // Parser options
   extends: "eslint:recommended",
@@ -18,7 +18,7 @@ module.exports = exports = {
   },
 
   "rules": {
-    // Stylistic options - warn the user that it's bad
+    // Stylistic options
     "block-spacing": [WARN, "always"],
     "brace-style": [WARN, "1tbs", { allowSingleLine: true }],
     "comma-spacing": [WARN, { before: false, after: true }],
@@ -40,6 +40,7 @@ module.exports = exports = {
     "no-new-object": WARN,
     "no-spaced-func": WARN,
     "no-trailing-spaces": WARN,
+    "no-undef": OFF,
     "no-unneeded-ternary": WARN,
     "object-curly-spacing": [WARN, "always"],
     "operator-linebreak": [WARN, "after"],
@@ -50,10 +51,5 @@ module.exports = exports = {
     "space-in-parens": [WARN, "never"],
     "space-infix-ops": [WARN, { int32Hint: true }],
     "spaced-comment": [WARN, "always"],
-
-    // Disabled - interfere with coding style or functionality
-    "no-prototype-builtins": OFF,
-    "no-undef": OFF,
-    "no-empty": OFF,
   }
 };

@@ -32,7 +32,8 @@
     "weebsh": ""
   },
   "rethink": {
-    "db": "hibiki"
+    "db": "hibiki",
+    "tables": ["blacklist", "economy", "guildcfg", "usercfg"]
   },
   "voting": {
     "auth": "",

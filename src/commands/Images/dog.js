@@ -12,7 +12,7 @@ class dogCommand extends Command {
 
   async run(msg) {
     // Fetches the API
-    let res = await fetch("https://dog.ceo/api/breeds/image/random");
+    let res = await fetch(`https://api.weeb.sh/images/random?type=animal_dog`, { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
     let body = await res.json().catch(() => {});
 
     // Sends the embed
@@ -20,7 +20,7 @@ class dogCommand extends Command {
       embed: {
         title: "🐶 Woof!",
         image: {
-          url: body.message,
+          url: body.url,
         },
         color: this.bot.embed.colour("general"),
       },

@@ -22,15 +22,10 @@ module.exports = (title, description, type) => {
     color = parseInt(colours.general.replace(/#/g, "0x"));
   }
 
-  // Sets the description; fallback to none
-  if (!description || description != undefined) {
-    construct.embed.description = description;
-  }
-
   // Sets the title; fallback to none
-  if (!title || title != undefined) {
-    construct.embed.title = title;
-  }
+  if (!title || title != undefined) construct.embed.title = title;
+  // Sets the description; fallback to none
+  if (!description || description != undefined) construct.embed.description = description;
 
   // Sets the embed colour
   construct.embed.color = color;

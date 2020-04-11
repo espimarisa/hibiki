@@ -4,7 +4,7 @@ class pingCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["pig", "pingpong", "pog", "pong"],
-      description: "Shows the bot's ping & latency.",
+      description: "Checks the bot's ping.",
       allowdisable: false,
     });
   }

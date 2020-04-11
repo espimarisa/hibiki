@@ -1,6 +1,5 @@
 // todo: somehow return prettied args using the label for args
 const Command = require("../../lib/structures/Command");
-const format = require("../../lib/scripts/Format");
 
 class helpCommand extends Command {
   constructor(...args) {
@@ -14,13 +13,47 @@ class helpCommand extends Command {
   }
 
   async run(msg, args) {
-    let cmd;
+    // Prettier categories
+    function categoryEmoji(category) {
+      let label;
+      switch (category) {
+        case "Core":
+          label = "🤖 Core";
+          break;
+        case "Fun":
+          label = "🎉 Fun";
+          break;
+        case "Images":
+          label = "🖼 Images";
+          break;
+        case "Misc":
+          label = "❓ Misc";
+          break;
+        case "Moderation":
+          label = "🔨 Moderation";
+          break;
+        case "NSFW":
+          label = "🔞 NSFW";
+          break;
+        case "Roleplay":
+          label = "️️️❤️ Roleplay";
+          break;
+        case "Owner":
+          label = "⛔ Owner";
+          break;
+        default:
+          label = "Unknown";
+          break;
+      }
+      return label;
+    }
     // Finds the cmd
+    let cmd;
     if (args) cmd = this.bot.commands.find(c => c.id.toLowerCase() == args.join(" ").toLowerCase() || c.aliases.includes(args.join(" ").toLowerCase()));
     // If cmd not found
     if (!cmd) {
       let db = undefined;
-      if (msg.channel.type != "1") db = await this.bot.db.table("guildcfg").get(msg.guild.id);
+      if (msg.channel.type != "1") db = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
       let categories = [];
       // Removes owner commands
       this.bot.commands.forEach(c => { if (!categories.includes(c.category) && c.category != "Owner") categories.push(c.category); });
@@ -37,7 +70,7 @@ class helpCommand extends Command {
       });
 
       // Sets category labels
-      categories.forEach(e => { sortedcategories[categories.indexOf(e)] = format.categoryEmoji(e); });
+      categories.forEach(e => { sortedcategories[categories.indexOf(e)] = categoryEmoji(e); });
       // Lets users run help here to get help in the channel
       if (args && args.join(" ").toLowerCase() == "here") {
         // Sends the embed

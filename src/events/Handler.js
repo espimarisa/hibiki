@@ -1,15 +1,9 @@
 /*
-  This handles all commands & some functionality.
-  It also enables Echo to capture most errors.
+  This handles all commands & paramater functions.
+  It also enables Echo to capture command errors.
 */
 
-const Eris = require("eris");
 const Event = require("../lib/structures/Event");
-
-// Allows msg.guild to work
-Object.defineProperty(Eris.Message.prototype, "guild", {
-  get: function() { return this.channel.guild; },
-});
 
 class Handler extends Event {
   constructor(...args) {
@@ -25,7 +19,7 @@ class Handler extends Event {
     const [blacklist] = await this.bot.db.table("blacklist").filter({ user: msg.author.id });
     if (blacklist) return;
     // Gets the server's ID
-    let guildcfg = await this.bot.db.table("guildcfg").get(msg.guild.id);
+    let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
     let prefix;
     // Sets the prefix
     if (msg.content.startsWith(this.bot.cfg.prefix)) prefix = this.bot.cfg.prefix;
@@ -41,7 +35,8 @@ class Handler extends Event {
     if (guildcfg && (guildcfg.disabledCategories || []).includes(cmd.category) && cmd.allowdisable) return msg.channel.createMessage(this.bot.embed("❌ Error", "The category that command is in is disabled in this server.", "error"));
     if (guildcfg && (guildcfg.disabledCmds || []).includes(cmd.id) && cmd.allowdisable) return msg.channel.createMessage(this.bot.embed("❌ Error", "That command is disabled in this server.", "error"));
     // Handlers for cmd parameters
-    if (Array.isArray(cmd.clientperms) && !cmd.clientperms.map(c => msg.guild.members.get(this.bot.user.id).permission.has(c)).includes(false)) return msg.channel.createMessage("❌ Error", "I don't have permission to do this.", "error");
+    // todo: fix clientperms
+    if (Array.isArray(cmd.clientperms) && !cmd.clientperms.map(c => msg.channel.guild.members.get(this.bot.user.id).permission.has(c)).includes(false)) return msg.channel.createMessage("❌ Error", "I don't have permission to do this.", "error");
     if (cmd.owner == true && !this.bot.cfg.owners.includes(msg.author.id)) return;
     if (cmd.nsfw == true && (msg.channel.nsfw == false || msg.channel.nsfw == undefined)) return msg.channel.createMessage(this.bot.embed("❌ Error", "That command can only be ran in NSFW channels.", "error"))
     if (cmd.requiredperms != undefined && (!msg.member.permission.has(cmd.requiredperms) || !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffrole)) return msg.channel.createMessage(this.bot.embed("❌ Error", "You don't have permission to run this command.", "error"));
@@ -61,9 +56,8 @@ class Handler extends Event {
 
     let parsedArgs;
     if (cmd.args) {
-      // Sets the parsedArgs
-      parsedArgs = this.bot.argParser.parse(cmd.args, args.join(" "), cmd.argsDelimiter, msg);
       // Filters for missingArgs & sends if it's missing any
+      parsedArgs = this.bot.argParser.parse(cmd.args, args.join(" "), cmd.argsDelimiter, msg);
       let missingargs = parsedArgs.filter(a => !a.value && !a.optional);
       // todo: clean this output up
       if (missingargs.length) return msg.channel.createMessage(this.bot.embed("❌ Error", `You didn't provide a **${missingargs.map(a => a.name).join(",")}**.`, "error"));

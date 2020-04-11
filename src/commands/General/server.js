@@ -10,63 +10,82 @@ class serverCommand extends Command {
     });
   }
 
-  async run(msg) {
+  async run(msg, args) {
+    let guild = msg.channel.guild;
+    // Lets owners show other server info
+    if (args[0] && this.bot.cfg.owners.includes(msg.author.id)) guild = await this.bot.guilds.find(g => g.name.toLowerCase().startsWith(args.join(" ")) || g.id == args.join(" "));
+    else guild = msg.channel.guild;
+    if (!guild) return msg.channel.guild;
     // Seperates bots & members
     let bots = 0;
     let users = 0;
-    await msg.guild.members.forEach(mem => {
+    await guild.members.forEach(mem => {
       if (mem.bot == true) bots++;
       else users++;
     });
 
-    // Seperates voice and text channels
-    let voice = 0;
-    let text = 0;
-    await msg.guild.channels.forEach(chan => {
-      if (chan.type === 0) text++;
-      if (chan.type === 2) voice++;
-    });
+    // Formats server regions
+    function regionFormat(region) {
+      switch (region) {
+        case "amsterdam":
+          return ":flag_nl: Amsterdam";
+        case "brazil":
+          return ":flag_br: Brazil";
+        case "eu-central":
+          return ":flag_eu: Central Europe";
+        case "eu-west":
+          return ":flag_eu: Western Europe";
+        case "europe":
+          return ":flag_eu: Europe";
+        case "dubai":
+          return ":flag_ae: Dubai";
+        case "frankfurt":
+          return ":flag_de: Frankfurt";
+        case "hongkong":
+          return ":flag_hk: Hong Kong";
+        case "london":
+          return ":flag_gb: London";
+        case "japan":
+          return ":flag_jp: Japan";
+        case "india":
+          return ":flag_in: India";
+        case "russia":
+          return ":flag_ru: Russia";
+        case "singapore":
+          return ":flag_sg: Singapore";
+        case "southafrica":
+          return ":flag_za: South Africa";
+        case "sydney":
+          return ":flag_au: Sydney";
+        case "us-central":
+          return ":flag_us: US Central";
+        case "us-east":
+          return ":flag_us: US East";
+        case "us-south":
+          return ":flag_us: US South";
+        case "us-west":
+          return ":flag_us: US West";
+        default:
+          return region;
+      }
+    }
 
-    // Sets channels string
-    let channels = `${text} text, ${voice} voice`;
     // Sets the description
-    let desc = [{
-      name: "👑",
-      value: `Owned by ${format.tag(msg.guild.members.find(mem => mem.id == msg.guild.ownerID, false))}`,
-    }, {
-      name: "👥",
-      value: `${users || "0"} members, ${bots} bots`,
-    }, {
-      name: "📚",
-      value: `${msg.guild.roles.size} roles`,
-    }, {
-      name: "😃",
-      value: `${msg.guild.emojis.length} emojis`
-    }, {
-      name: "🌐",
-      value: `${format.region(msg.guild.region)}`,
-    }, {
-      name: "💬",
-      value: `${channels}, ${msg.guild.channels.size} channels`,
-    }, {
-      name: "🗑",
-      value: `${format.contentfilter(msg.guild.explicitContentFilter)}`,
-    }, {
-      name: "🔓",
-      value: `${format.verificationlevel(msg.guild.verificationLevel)}`,
-    }, {
-      name: "🔐",
-      value: `${format.mfaLevel(msg.guild.mfaLevel)}`
-    }, {
-      name: "🔔",
-      value: format.notifsettings(msg.guild.defaultNotifications),
-    }, {
-      name: "🆔",
-      value: `${msg.guild.id}`,
-    }, {
-      name: "📅",
-      value: `Created on ${format.prettyDate(msg.guild.createdAt)}`,
-    }]
+    let desc = [];
+    desc.push({ name: "👑", value: `Owned by ${format.tag(guild.members.find(mem => mem.id == guild.ownerID, false))}`, });
+    desc.push({ name: "🆔", value: `${guild.id}`, });
+    desc.push({ name: "📅", value: `Created ${format.date(guild.createdAt)}`, });
+    desc.push({ name: "", value: `${regionFormat(guild.region)} server region`, });
+    desc.push({ name: "👥", value: `${users} members, ${bots} bots`, });
+    desc.push({ name: "📚", value: `${guild.roles.size} roles`, });
+    desc.push({ name: "💬", value: `${guild.channels.size} channels`, });
+    if (guild.emojis.length) desc.push({ name: "😃", value: `${guild.emojis.length} emojis` });
+    if (guild.explicitContentFilter > 0) desc.push({ name: "🗑", value: `Filter level ${guild.explicitContentFilter}`, });
+    if (guild.verificationLevel > 0) desc.push({ name: "🔐", value: `Verification level ${guild.verificationLevel}`, });
+    if (guild.mfaLevel == "1") desc.push({ name: "🔐", value: "2FA Enabled", });
+    if (guild.defaultNotifications == "0") desc.push({ name: "🔔", value: "All messages notify", });
+    if (guild.premiumSubscriptionCount > 0) desc.push({ name: "👤", value: `${guild.premiumSubscriptionCount} members boosting`, });
+    if (guild.premiumTier > 0) desc.push({ name: "⭐", value: `Boost level ${guild.premiumTier}`, })
 
     // Sends the embed
     msg.channel.createMessage({
@@ -74,11 +93,11 @@ class serverCommand extends Command {
         description: desc.map(t => `${t.name} ${t.value}`).join("\n"),
         color: this.bot.embed.colour("general"),
         author: {
-          icon_url: msg.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
-          name: msg.guild.name,
+          icon_url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
+          name: guild.name,
         },
         thumbnail: {
-          url: msg.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
+          url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
         },
       }
     })

@@ -24,12 +24,12 @@ module.exports = async (bot, port) => {
     // Gets the user from the request
     let user = bot.users.get(req.body.user);
     // Gets the user from the cookies DB
-    let cookies = await bot.db.table("cookies").get(req.body.user);
+    let cookies = await bot.db.table("economy").get(req.body.user);
 
     // Inserts 0 if user doesn't exist
     if (!cookies) {
       cookies = { id: req.body.user, amount: 0, lastclaim: 9999, };
-      await bot.db.table("cookies").insert(cookies);
+      await bot.db.table("economy").insert(cookies);
     }
 
     // Sets amount; if weekend give 200
@@ -38,7 +38,7 @@ module.exports = async (bot, port) => {
     cookies = { id: req.body.user, amount: amnt, lastclaim: cookies.lastclaim, };
 
     // Updates db
-    await bot.db.table("cookies").get(req.body.user).update(cookies);
+    await bot.db.table("economy").get(req.body.user).update(cookies);
     // Gets DM channel
     if (user != undefined) {
       let DMChannel = await user.getDMChannel();
