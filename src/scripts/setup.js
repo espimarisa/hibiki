@@ -1,13 +1,10 @@
 /*
-  This configures a Verniy instance's db to function.
-  Right now, it only handles setting up RethinkDB.
+  This configures the bot for production.
+  Right now, it only configures RethinkDB.
 */
-
-// todo - make the array not be static. maybe read cfg.json?
 
 const { rethink } = require("../../cfg");
 const log = require("../Log");
-
 let db;
 
 // Hides redundant rethinkdbdash errors
@@ -24,7 +21,7 @@ try { db = require("rethinkdbdash")(rethink); } catch (_) {
 }
 
 // Sets the required tables
-const requiredTables = ["blacklist", "guildcfg", "usercfg"];
+const requiredTables = rethink.tables;
 
 (async () => {
   // Creates the database if it doesn't exist

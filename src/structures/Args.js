@@ -13,11 +13,11 @@ class argParser {
       event: (a) => this.bot.events.find(e => e.id.toLowerCase().startsWith(a)),
       guild: (a) => this.bot.guilds.find(g => g.id == a || g.name == a),
       module: (a) => this.bot.commands.find(c => c.id.toLowerCase().startsWith(a) || (c.aliases && c.aliases.includes(a))),
-      role: (a, msg) => msg.guild.roles.find(r => r.id == a || a.startsWith(`<@&${r.id}>`) || r.name.startsWith(a)),
+      role: (a, msg) => msg.channel.guild.roles.find(r => r.id == a || a.startsWith(`<@&${r.id}>`) || r.name.startsWith(a)),
       string: (a) => { return a },
       user: (a, msg, flag) => {
-        let user = msg.guild.members.find(m => m.username.startsWith(a) || m.id == a || a.startsWith(`<@!${m.id}>`) || msg.mentions.includes(m.id));
-        if (!a || !user && flag == "fallback") return msg.guild.members.get(msg.author.id);
+        let user = msg.channel.guild.members.find(m => m.username.startsWith(a) || m.id == a || a.startsWith(`<@!${m.id}>`) || msg.mentions.includes(m.id));
+        if (!a || !user && flag == "fallback") return msg.channel.guild.members.get(msg.author.id);
         return user;
       },
     };

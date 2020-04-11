@@ -1,0 +1,21 @@
+# Checks for stale issues/PRs and marks them as so
+
+name: Marks stale issues and PRs
+
+on:
+  schedule:
+  - cron: "0 0 * * *"
+
+jobs:
+  stale:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/stale@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        stale-issue-message: "Stale issue message"
+        stale-pr-message: "Stale PR message"
+        stale-issue-label: "no-issue-activity"
+        stale-pr-label: "no-pr-activity"

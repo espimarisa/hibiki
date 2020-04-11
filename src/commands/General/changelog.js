@@ -1,3 +1,4 @@
+// todo - use github releases for changelogs instead of CHANGELOG.md
 const Command = require("../../lib/structures/Command");
 const { readFileSync } = require("fs");
 

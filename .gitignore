@@ -4,9 +4,12 @@ config.json
 configuration.json
 
 # DB & Modules
+ffmpeg
+ffmpeg.exe
 rethinkdb
 rethinkdb.exe
 rethinkdb_data/
+dist/
 node_modules/
 
 # Logs & lockfiles
@@ -17,6 +20,7 @@ npm-error.log*
 report.*
 yarn-debug.log*
 yarn-error.log*
+package.lock*
 yarn.lock*
 
 # Windows

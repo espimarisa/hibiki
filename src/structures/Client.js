@@ -1,6 +1,6 @@
 /*
-  This is the core Verniy client, built for Eris.
-  It handles command loads/unloads & Echo errors.
+  This is the core client for Hibiki, Verniy.
+  It handles command loads/unloads & errors.
 */
 
 const { Client, Collection } = require("eris");
@@ -9,14 +9,13 @@ const Command = require("./structures/Command")
 const Event = require("./structures/Event")
 
 // todo - move Echo to a npm package
-// Echo will logs & handle errors
+// Echo logs & handles errors
 const echo = require("../../Echo/sdk/index");
-// Sets Echo settings & initialises it
 echo.setSettings(require("../cfg").echo);
 echo.init();
 
-// Client constructor
 class Verniy extends Client {
+  // Client constructor
   constructor(token, erisOptions, db) {
     super(token, erisOptions);
     this.cfg = require("../cfg.json").cfg;
@@ -24,17 +23,13 @@ class Verniy extends Client {
     this.embed = require("./Embed")
     this.log = require("./Log");
     this.db = db;
-    // Collections
     this.commands = new Collection(Command);
     this.events = new Collection(Event);
-    // Arg parsing
     let argParser = require("../lib/utils/Args.js");
     this.argParser = new argParser(this);
-
     // Logs when ready
     this.on("ready", async () => {
       this.log.success(`Logged in as ${this.user.username}#${this.user.discriminator} on ${this.guilds.size} servers`)
-      // Sets the status
       this.editStatus("online", { name: `${this.guilds.size} servers`, type: 3 });
     });
   }
