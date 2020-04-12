@@ -10,7 +10,7 @@
 # New Commands
   - More roleplay commands have been added; it's now it's own category.
   - More random image commands have been added; it now has it's own category.
-  - More booru/NSFW commands have been added (safebooru, x, x).
+  - More booru/NSFW commands have been added.
 
 # Major Changes
 

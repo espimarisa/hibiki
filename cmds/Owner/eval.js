@@ -17,7 +17,7 @@ class evalCommand extends Command {
     try {
       // Tries to eval
       const evaluated = await eval(`(async () => {\n${args.join(" ")}\n})()`);
-      const evalstring = typeof evaluated === "string" ? evaluated : inspect(evaluated);
+      const evalstring = typeof evaluated == "string" ? evaluated : inspect(evaluated);
       console.log(evalstring);
       // Uploads if over embed limit
       if (evalstring.length > 2000) {
