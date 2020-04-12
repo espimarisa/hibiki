@@ -23,7 +23,7 @@ class rule34Command extends Command {
     let random = Math.floor(Math.random() * body.length);
 
     // Sends the embed
-    if (typeof body[random] != "undefined") {
+    if (typeof body[random] !== "undefined") {
       await msg.channel.createMessage({
         embed: {
           title: "🔞 Rule 34",

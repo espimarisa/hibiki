@@ -16,7 +16,7 @@ class userCommand extends Command {
     // Finds user's game
     let playing = user.game && user.game.name.trim() ? user.game.name.trim() : "Nothing";
     // Custom statuses
-    if (user.game && user.game.type == 4) {
+    if (user.game && user.game.type === 4) {
       if (user.game.emoji && user.game.emoji.name && !user.game.emoji.id) playing = `${user.game.emoji.name} ${user.game.state || ""}`;
       else playing = user.game.state;
     }
@@ -52,7 +52,7 @@ class userCommand extends Command {
     // Sends the embed
     msg.channel.createMessage({
       embed: {
-        description: desc.map(t => typeof t == "object" ? `${t.name} ${t.value}` : t).join("\n"),
+        description: desc.map(t => typeof t === "object" ? `${t.name} ${t.value}` : t).join("\n"),
         color: this.bot.embed.colour("general"),
         author: {
           icon_url: user.user.dynamicAvatarURL(null),
