@@ -13,9 +13,9 @@ module.exports = (title, description, type) => {
     },
   };
 
-  if (type != undefined) {
+  if (type !== undefined) {
     // If an invalid colour is given
-    if (colours[type] != undefined) color = parseInt(colours[type].replace(/#/g, "0x"));
+    if (colours[type] !== undefined) color = parseInt(colours[type].replace(/#/g, "0x"));
     else throw Error("Invalid colour");
   } else {
     // Converts hexes
@@ -23,9 +23,9 @@ module.exports = (title, description, type) => {
   }
 
   // Sets the title; fallback to none
-  if (!title || title != undefined) construct.embed.title = title;
+  if (!title || title !== undefined) construct.embed.title = title;
   // Sets the description; fallback to none
-  if (!description || description != undefined) construct.embed.description = description;
+  if (!description || description !== undefined) construct.embed.description = description;
 
   // Sets the embed colour
   construct.embed.color = color;

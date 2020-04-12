@@ -16,7 +16,7 @@ app.use(express.json());
 module.exports = async (bot, port) => {
   app.post("/voteReceive", async (req, res) => {
     // Sends if unauthorised
-    if (req.headers.authorization != voting.auth) {
+    if (req.headers.authorization !== voting.auth) {
       if (req.headers.authorization && req.headers.authorization.length) bot.log.warn(`${req.connection.remoteAddress} tried to make a request with the wrong auth key.`);
       return res.sendStatus(403);
     }
@@ -40,9 +40,9 @@ module.exports = async (bot, port) => {
     // Updates db
     await bot.db.table("economy").get(req.body.user).update(cookies);
     // Gets DM channel
-    if (user != undefined) {
+    if (user !== undefined) {
       let DMChannel = await user.getDMChannel();
-      if (DMChannel == undefined) return;
+      if (DMChannel === undefined) return;
       DMChannel.createMessage({
         embed: {
           title: "✨ Thanks for voting!",
@@ -56,12 +56,12 @@ module.exports = async (bot, port) => {
     bot.createMessage(bot.cfg.logchannel, {
       embed: {
         title: "🗳 User Voted",
-        description: `**${user != undefined ? user.username : req.body.user}** has voted. ${req.body.isWeekend == true ? "(received 2 votes)" : ""}`,
+        description: `**${user !== undefined ? user.username : req.body.user}** has voted. ${req.body.isWeekend === true ? "(received 2 votes)" : ""}`,
         color: bot.embed.colour("general"),
       }
     });
     // Logs when a user voted
-    bot.log.info(`${user != undefined ? user.username : req.body.user} has voted (requested from: ${req.connection.remoteAddress}`);
+    bot.log.info(`${user !== undefined ? user.username : req.body.user} has voted (requested from: ${req.connection.remoteAddress}`);
     res.sendStatus(200);
   });
 

@@ -16,17 +16,17 @@ class enableCommand extends Command {
     if (!command) {
       let disabledCmds = [];
       let disabledCategories = [];
-      if (guildcfg != undefined && guildcfg.disabledCmds != undefined && guildcfg.disabledCmds.length) disabledCmds = guildcfg.disabledCmds;
+      if (guildcfg !== undefined && guildcfg.disabledCmds !== undefined && guildcfg.disabledCmds.length) disabledCmds = guildcfg.disabledCmds;
       // Categories
-      if (guildcfg != undefined && guildcfg.disabledCategories != undefined && guildcfg.disabledCategories.length) disabledCategories = guildcfg.disabledCategories.map(cat => `**${cat}**`);
+      if (guildcfg !== undefined && guildcfg.disabledCategories !== undefined && guildcfg.disabledCategories.length) disabledCategories = guildcfg.disabledCategories.map(cat => `**${cat}**`);
       // List of disabled commands
-      return msg.channel.createMessage(this.bot.embed(`🚫 Disabled ${disabledCmds.length == 0 && disabledCategories.length > 0 ? "Categories" : "Commands"}`, disabledCmds.length || disabledCategories.length ? [...disabledCmds, disabledCategories].join(", ") : "No commands or categories are disabled.", "general"));
+      return msg.channel.createMessage(this.bot.embed(`🚫 Disabled ${disabledCmds.length === 0 && disabledCategories.length > 0 ? "Categories" : "Commands"}`, disabledCmds.length || disabledCategories.length ? [...disabledCmds, disabledCategories].join(", ") : "No commands or categories are disabled.", "general"));
     }
 
     // If no command name is given, error out, else continue
     const cmds = this.bot.commands.filter(cmd => cmd.allowdisable);
     let categories = [];
-    this.bot.commands.forEach(c => categories.includes(c.category) && c.category != "Owner" ? "filler" : categories.push(c.category));
+    this.bot.commands.forEach(c => categories.includes(c.category) && c.category !== "Owner" ? "filler" : categories.push(c.category));
 
     if (!guildcfg) {
       // Inserts blank cfg
@@ -35,8 +35,8 @@ class enableCommand extends Command {
     }
 
     // Looks for cmd/category
-    let cmd = cmds.find(c => (c.id == command || c.aliases.includes(command)) && c.allowdisable == true);
-    let category = categories.find(c => c.toLowerCase() == command.toLowerCase());
+    let cmd = cmds.find(c => (c.id === command || c.aliases.includes(command)) && c.allowdisable === true);
+    let category = categories.find(c => c.toLowerCase() === command.toLowerCase());
     // If it's a cmd & category
     if (!cmd && category) {
       if (!guildcfg.disabledCategories) guildcfg.disabledCategories = [];
@@ -50,11 +50,11 @@ class enableCommand extends Command {
     }
 
     // Handler for if an invalid command was provided
-    if (cmd == undefined) return msg.channel.createMessage(this.bot.embed("❌ Error", "That command doesn't exist.", "error"));
+    if (cmd === undefined) return msg.channel.createMessage(this.bot.embed("❌ Error", "That command doesn't exist.", "error"));
     if (!guildcfg.disabledCmds) guildcfg.disabledCmds = [];
 
     // If the command is already disabled, error out, else continue
-    if (guildcfg.disabledCmds != undefined && !guildcfg.disabledCmds.includes(cmd.id)) return msg.channel.createMessage(this.bot.embed("❌ Error", `That command isn't disabled.`, "error"));
+    if (guildcfg.disabledCmds !== undefined && !guildcfg.disabledCmds.includes(cmd.id)) return msg.channel.createMessage(this.bot.embed("❌ Error", `That command isn't disabled.`, "error"));
 
     if (cmd) {
       guildcfg.disabledCmds.splice(guildcfg.disabledCmds.indexOf(cmd.id), 1);

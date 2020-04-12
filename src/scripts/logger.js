@@ -51,9 +51,9 @@ function date(syear = true) {
   let month = monthNames[date.getMonth()];
   let day = date.getDate();
   // Sets the dates
-  if (day == 1 || day == 21 || day == 31) day = `${date.getDate()}st`;
-  else if (day == 2 || day == 22 || day == 32) day = `${date.getDate()}nd`;
-  else if (day == 3 || day == 23 || day == 32) day = `${date.getDate()}rd`;
+  if (day === 1 || day === 21 || day === 31) day = `${date.getDate()}st`;
+  else if (day === 2 || day === 22 || day === 32) day = `${date.getDate()}nd`;
+  else if (day === 3 || day === 23 || day === 32) day = `${date.getDate()}rd`;
   else day = `${date.getDate()}th`;
   let year = date.getFullYear();
   // Gets the date & formats it

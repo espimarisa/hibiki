@@ -21,7 +21,7 @@ class hypnohubCommand extends Command {
     let random = Math.floor(Math.random() * body.posts.length);
 
     // Sends the embed
-    if (typeof body.posts[random] != "undefined") {
+    if (typeof body.posts[random] !== "undefined") {
       await msg.channel.createMessage({
         embed: {
           title: "🔞 Hypnohub",

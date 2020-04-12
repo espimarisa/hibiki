@@ -13,14 +13,14 @@ class serverCommand extends Command {
   async run(msg, args) {
     let guild = msg.channel.guild;
     // Lets owners show other server info
-    if (args[0] && this.bot.cfg.owners.includes(msg.author.id)) guild = await this.bot.guilds.find(g => g.name.toLowerCase().startsWith(args.join(" ")) || g.id == args.join(" "));
+    if (args[0] && this.bot.cfg.owners.includes(msg.author.id)) guild = await this.bot.guilds.find(g => g.name.toLowerCase().startsWith(args.join(" ")) || g.id === args.join(" "));
     else guild = msg.channel.guild;
     if (!guild) return msg.channel.guild;
     // Seperates bots & members
     let bots = 0;
     let users = 0;
     await guild.members.forEach(mem => {
-      if (mem.bot == true) bots++;
+      if (mem.bot === true) bots++;
       else users++;
     });
 
@@ -72,7 +72,7 @@ class serverCommand extends Command {
 
     // Sets the description
     let desc = [];
-    desc.push({ name: "👑", value: `Owned by ${format.tag(guild.members.find(mem => mem.id == guild.ownerID, false))}`, });
+    desc.push({ name: "👑", value: `Owned by ${format.tag(guild.members.find(mem => mem.id === guild.ownerID, false))}`, });
     desc.push({ name: "🆔", value: `${guild.id}`, });
     desc.push({ name: "📅", value: `Created ${format.date(guild.createdAt)}`, });
     desc.push({ name: "", value: `${regionFormat(guild.region)} server region`, });
@@ -82,8 +82,8 @@ class serverCommand extends Command {
     if (guild.emojis.length) desc.push({ name: "😃", value: `${guild.emojis.length} emojis` });
     if (guild.explicitContentFilter > 0) desc.push({ name: "🗑", value: `Filter level ${guild.explicitContentFilter}`, });
     if (guild.verificationLevel > 0) desc.push({ name: "🔐", value: `Verification level ${guild.verificationLevel}`, });
-    if (guild.mfaLevel == 1) desc.push({ name: "🔐", value: "2FA Enabled", });
-    if (guild.defaultNotifications == 0) desc.push({ name: "🔔", value: "All messages notify", });
+    if (guild.mfaLevel === 1) desc.push({ name: "🔐", value: "2FA Enabled", });
+    if (guild.defaultNotifications === 0) desc.push({ name: "🔔", value: "All messages notify", });
     if (guild.premiumSubscriptionCount > 0) desc.push({ name: "👤", value: `${guild.premiumSubscriptionCount} members boosting`, });
     if (guild.premiumTier > 0) desc.push({ name: "⭐", value: `Boost level ${guild.premiumTier}`, })
 

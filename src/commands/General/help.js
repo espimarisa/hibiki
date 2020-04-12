@@ -49,19 +49,19 @@ class helpCommand extends Command {
     }
     // Finds the cmd
     let cmd;
-    if (args) cmd = this.bot.commands.find(c => c.id.toLowerCase() == args.join(" ").toLowerCase() || c.aliases.includes(args.join(" ").toLowerCase()));
+    if (args) cmd = this.bot.commands.find(c => c.id.toLowerCase() === args.join(" ").toLowerCase() || c.aliases.includes(args.join(" ").toLowerCase()));
     // If cmd not found
     if (!cmd) {
       let db = undefined;
-      if (msg.channel.type != "1") db = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
+      if (msg.channel.type !== "1") db = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
       let categories = [];
       // Removes owner commands
-      this.bot.commands.forEach(c => { if (!categories.includes(c.category) && c.category != "Owner") categories.push(c.category); });
+      this.bot.commands.forEach(c => { if (!categories.includes(c.category) && c.category !== "Owner") categories.push(c.category); });
       // Hides disabled categories/cmds
       if (db && db.disabledCategories) categories = categories.filter(c => !db.disabledCategories.includes(c));
       let sortedcategories = [];
       let owneramt = 0;
-      this.bot.commands.forEach(c => c.category == "Owner" ? owneramt++ : null);
+      this.bot.commands.forEach(c => c.category === "Owner" ? owneramt++ : null);
       // Sorts the categories
       categories = categories.sort((a, b) => {
         if (a < b) return -1;
@@ -72,7 +72,7 @@ class helpCommand extends Command {
       // Sets category labels
       categories.forEach(e => { sortedcategories[categories.indexOf(e)] = categoryEmoji(e); });
       // Lets users run help here to get help in the channel
-      if (args && args.join(" ").toLowerCase() == "here") {
+      if (args && args.join(" ").toLowerCase() === "here") {
         // Sends the embed
         return msg.channel.createMessage({
           embed: {
@@ -81,8 +81,8 @@ class helpCommand extends Command {
               name: sortedcategories[categories.indexOf(category)],
               // Hides disabled commands
               value: this.bot.commands.map(c => {
-                if (db != undefined && db.disabledCmds != undefined && db.disabledCmds.includes(c.id)) return;
-                if (c.category != category) return;
+                if (db !== undefined && db.disabledCmds !== undefined && db.disabledCmds.includes(c.id)) return;
+                if (c.category !== category) return;
                 return `\`${c.id}\``;
               }).join(" "),
             })),
@@ -99,8 +99,8 @@ class helpCommand extends Command {
             name: sortedcategories[categories.indexOf(category)],
             // Hides disabled commands
             value: this.bot.commands.map(c => {
-              if (db != undefined && db.disabledCmds != undefined && db.disabledCmds.includes(c.id)) return;
-              if (c.category != category) return;
+              if (db !== undefined && db.disabledCmds !== undefined && db.disabledCmds.includes(c.id)) return;
+              if (c.category !== category) return;
               return `\`${c.id}\``;
             }).join(" "),
           })),
@@ -113,7 +113,7 @@ class helpCommand extends Command {
             fields: categories.map(category => ({
               name: sortedcategories[categories.indexOf(category)],
               value: this.bot.commands.map(c => {
-                if (c.category != category) return;
+                if (c.category !== category) return;
                 return `\`${c.id}\``;
               }).join(" "),
             })),
@@ -121,11 +121,11 @@ class helpCommand extends Command {
         });
       });
       // Sends confirmation message
-      if (dmson != undefined) msg.channel.createMessage(this.bot.embed("📚 Help", "Check your DMs for a list of commands.", "general"));
+      if (dmson !== undefined) msg.channel.createMessage(this.bot.embed("📚 Help", "Check your DMs for a list of commands.", "general"));
     } else {
       let construct = [];
       // Hides owner cmdss
-      if (cmd.category == "Owner") return;
+      if (cmd.category === "Owner") return;
       // Sets the fields
       if (cmd.aliases) construct.push({ name: "Aliases", value: `${cmd.aliases.map(alias => `\`${alias}\``).join(" ") || "No aliases"}`, inline: false, });
       if (cmd.args) construct.push({ name: "Usage", value: cmd.args, inline: false, });

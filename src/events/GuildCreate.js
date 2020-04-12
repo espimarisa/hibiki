@@ -17,9 +17,9 @@ class guildCreate extends Event {
     this.bot.log.info(`Added to server: ${guild.name}`)
     // DMs the server owner
     let owner = this.bot.users.get(guild.ownerID);
-    if (owner != undefined) {
+    if (owner !== undefined) {
       let ownerdm = await owner.getDMChannel();
-      if (ownerdm != undefined) ownerdm.createMessage(this.bot.embed(`👋 Hey, ${owner.username}, I was added to a server you own.`, `I'm **${this.bot.user.username}**, the ultimate all-in-one Discord bot.  \n To get started, type \`${this.bot.cfg.prefix}help\`. To configure me, you can use the [dashboard](${this.bot.cfg.homepage}/login/).`, "general"));
+      if (ownerdm !== undefined) ownerdm.createMessage(this.bot.embed(`👋 Hey, ${owner.username}, I was added to a server you own.`, `I'm **${this.bot.user.username}**, the ultimate all-in-one Discord bot.  \n To get started, type \`${this.bot.cfg.prefix}help\`. To configure me, you can use the [dashboard](${this.bot.cfg.homepage}/login/).`, "general"));
     }
 
     if (this.bot.key.topgg) {

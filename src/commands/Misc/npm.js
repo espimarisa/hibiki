@@ -15,7 +15,7 @@ class npmCommand extends Command {
     // Fetches the API
     const res = await fetch(`https://registry.npmjs.com/${encodeURIComponent(args.join(" ").toLowerCase())}`);
     let body = await res.json();
-    if (body.error != undefined || !body["dist-tags"]) return msg.channel.createMessage(this.bot.embed("❌ Error", "Package not found.", "error"));
+    if (body.error !== undefined || !body["dist-tags"]) return msg.channel.createMessage(this.bot.embed("❌ Error", "Package not found.", "error"));
     let pkg = body.versions[body["dist-tags"].latest];
 
     // Sends the embed
@@ -26,7 +26,7 @@ class npmCommand extends Command {
         color: this.bot.embed.colour("general"),
         fields: [{
           name: "Keywords",
-          value: pkg.keywords != undefined && pkg.keywords.length > 0 ? `${pkg.keywords.map(k => `\`${k}\``).join(", ")}` : "None",
+          value: pkg.keywords !== undefined && pkg.keywords.length > 0 ? `${pkg.keywords.map(k => `\`${k}\``).join(", ")}` : "None",
         }, {
           name: "Link",
           value: `[https://npmjs.com/package/${args.join(" ").toLowerCase()}](https://www.npmjs.com/package/${args.join(" ").toLowerCase()})`,
