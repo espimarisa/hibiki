@@ -16,7 +16,7 @@ class userCommand extends Command {
     // Finds user's game
     let playing = user.game && user.game.name.trim() ? user.game.name.trim() : "Nothing";
     // Custom statuses
-    if (user.game && user.game.type === 4) {
+    if (user.game && user.game.type == 4) {
       if (user.game.emoji && user.game.emoji.name && !user.game.emoji.id) playing = `${user.game.emoji.name} ${user.game.state || ""}`;
       else playing = user.game.state;
     }

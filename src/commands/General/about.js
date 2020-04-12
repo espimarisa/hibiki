@@ -34,7 +34,7 @@ class aboutCommand extends Command {
       let segments = [];
       if (days > 0) segments.push(`${days} day${days == 1 ? "" : "s"}`);
       if (hours > 0) segments.push(`${hours} hour${hours == 1 ? "" : "s"}`);
-      if (minutes === 0) segments.push("Less than a minute");
+      if (minutes == 0) segments.push("Less than a minute");
       if (minutes > 0) segments.push(`${minutes} minute${minutes == 1 ? "" : "s"}`);
       const dateString = segments.join(", ");
       return dateString;

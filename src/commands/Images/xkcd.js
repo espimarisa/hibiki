@@ -18,20 +18,20 @@ class xkcdCommand extends Command {
     // Gets a random comic
     let random = Math.floor(Math.random() * newest.num) + 1;
     res = await fetch(`https://xkcd.com/${random}/info.0.json`);
-    let comic = await res.json();
+    let body = await res.json();
 
     // Sends the embed
     msg.channel.createMessage({
       embed: {
-        title: `💭 ${comic.safe_title}`,
-        description: `${comic.alt}`,
+        title: `💭 ${body.safe_title}`,
+        description: `${body.alt}`,
         color: this.bot.embed.colour("general"),
         image: {
-          url: comic.img,
+          url: body.img,
         },
         footer: {
           icon_url: this.bot.user.dynamicAvatarURL(),
-          text: `Published on ${comic.day <= 10 ? `0${comic.day}` : comic.day}/${comic.month <= 10 ? `0${comic.month}` : comic.day}/${comic.year}`,
+          text: `Published on ${body.day <= 10 ? `0${body.day}` : body.day}/${body.month <= 10 ? `0${body.month}` : body.day}/${body.year}`,
         },
       },
     });

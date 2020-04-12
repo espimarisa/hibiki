@@ -9,6 +9,7 @@ class argParser {
     // Types of args
     this.argTypes = {
       bool: (a) => a == "on" || a == "true" || a == "enable" || a == "yes" || a == "y",
+      channel: (a, msg) => msg.channel.guild.channels.find(c => c.id == a || a.startsWith(`<#${c.id}>`) || c.name.startsWith(a)),
       command: (a) => this.bot.commands.find(c => c.id.startsWith(a) || (c.aliases && c.aliases.includes(a))),
       event: (a) => this.bot.events.find(e => e.id.toLowerCase().startsWith(a)),
       guild: (a) => this.bot.guilds.find(g => g.id == a || g.name == a),

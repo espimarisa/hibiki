@@ -4,7 +4,7 @@ class iconCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["guildicon", "servericon"],
-      description: "Shows a server's icon.",
+      description: "Displays a server's icon.",
       cooldown: 2,
     });
   }

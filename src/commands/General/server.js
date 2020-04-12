@@ -82,8 +82,8 @@ class serverCommand extends Command {
     if (guild.emojis.length) desc.push({ name: "😃", value: `${guild.emojis.length} emojis` });
     if (guild.explicitContentFilter > 0) desc.push({ name: "🗑", value: `Filter level ${guild.explicitContentFilter}`, });
     if (guild.verificationLevel > 0) desc.push({ name: "🔐", value: `Verification level ${guild.verificationLevel}`, });
-    if (guild.mfaLevel == "1") desc.push({ name: "🔐", value: "2FA Enabled", });
-    if (guild.defaultNotifications == "0") desc.push({ name: "🔔", value: "All messages notify", });
+    if (guild.mfaLevel == 1) desc.push({ name: "🔐", value: "2FA Enabled", });
+    if (guild.defaultNotifications == 0) desc.push({ name: "🔔", value: "All messages notify", });
     if (guild.premiumSubscriptionCount > 0) desc.push({ name: "👤", value: `${guild.premiumSubscriptionCount} members boosting`, });
     if (guild.premiumTier > 0) desc.push({ name: "⭐", value: `Boost level ${guild.premiumTier}`, })
 

@@ -13,7 +13,7 @@ module.exports = (title, description, type) => {
     },
   };
 
-  if (type !== undefined) {
+  if (type != undefined) {
     // If an invalid colour is given
     if (colours[type] != undefined) color = parseInt(colours[type].replace(/#/g, "0x"));
     else throw Error("Invalid colour");

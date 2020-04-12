@@ -31,16 +31,39 @@ class Handler extends Event {
     const [cmdName, ...args] = msg.content.slice(prefix.length).split(" ").map(s => s.trim());
     let cmd = this.bot.commands.find(c => c.id == cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
     if (!cmd) return;
-    // Disabled commands/categories
-    if (guildcfg && (guildcfg.disabledCategories || []).includes(cmd.category) && cmd.allowdisable) return msg.channel.createMessage(this.bot.embed("❌ Error", "The category that command is in is disabled in this server.", "error"));
-    if (guildcfg && (guildcfg.disabledCmds || []).includes(cmd.id) && cmd.allowdisable) return msg.channel.createMessage(this.bot.embed("❌ Error", "That command is disabled in this server.", "error"));
-    // Handlers for cmd parameters
-    // todo: fix clientperms
-    if (Array.isArray(cmd.clientperms) && !cmd.clientperms.map(c => msg.channel.guild.members.get(this.bot.user.id).permission.has(c)).includes(false)) return msg.channel.createMessage("❌ Error", "I don't have permission to do this.", "error");
+
+    // Owner cmds
     if (cmd.owner == true && !this.bot.cfg.owners.includes(msg.author.id)) return;
-    if (cmd.nsfw == true && (msg.channel.nsfw == false || msg.channel.nsfw == undefined)) return msg.channel.createMessage(this.bot.embed("❌ Error", "That command can only be ran in NSFW channels.", "error"))
-    if (cmd.requiredperms != undefined && (!msg.member.permission.has(cmd.requiredperms) || !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffrole)) return msg.channel.createMessage(this.bot.embed("❌ Error", "You don't have permission to run this command.", "error"));
-    if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg != undefined && guildcfg.staffrole != undefined && !msg.member.roles.includes(guildcfg.staffrole))) return msg.channel.createMessage(this.bot.embed("❌ Error", "This command is only for staff members.", "error"));
+
+    // Disabled categories
+    if (guildcfg && (guildcfg.disabledCategories || []).includes(cmd.category) && cmd.allowdisable) {
+      return msg.channel.createMessage(this.bot.embed("❌ Error", "The category that command is in is disabled in this server.", "error"));
+    }
+
+    // Disabled cmds
+    if (guildcfg && (guildcfg.disabledCmds || []).includes(cmd.id) && cmd.allowdisable) {
+      return msg.channel.createMessage(this.bot.embed("❌ Error", "That command is disabled in this server.", "error"));
+    }
+
+    // Client perms
+    if ((cmd.clientperms) && !cmd.clientperms.map(c => msg.channel.guild.members.get(this.bot.user.id).permission.has(c)).includes(false)) {
+      return msg.channel.createMessage("❌ Error", "I don't have permission to run this command. Be sure my role has the proper permissions.", "error");
+    }
+
+    // NSFW-only cmds
+    if (cmd.nsfw == true && (msg.channel.nsfw == false || msg.channel.nsfw == undefined)) {
+      return msg.channel.createMessage(this.bot.embed("❌ Error", "That command can only be ran in NSFW channels.", "error"))
+    }
+
+    // Required perms
+    if (cmd.requiredperms != undefined && (!msg.member.permission.has(cmd.requiredperms) || !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffrole)) {
+      return msg.channel.createMessage(this.bot.embed("❌ Error", "You don't have permission to run this command.", "error"));
+    }
+
+    // Staff cmds
+    if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg != undefined && guildcfg.staffrole != undefined && !msg.member.roles.includes(guildcfg.staffrole))) {
+      return msg.channel.createMessage(this.bot.embed("❌ Error", "That command is only for staff members.", "error"));
+    }
 
     // Cooldown handler
     if (cmd.cooldown && !this.bot.cfg.owners.includes(msg.author.id)) {

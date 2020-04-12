@@ -7,7 +7,7 @@ class wikipediaCommand extends Command {
       aliases: ["wiki"],
       args: "<query:string>",
       description: "Returns information from Wikipedia",
-      cooldown: 3
+      cooldown: 3,
     });
   }
 

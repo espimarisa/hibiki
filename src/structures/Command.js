@@ -6,6 +6,7 @@ class Command {
     // Cmd params
     if (params) {
       this.aliases = params.aliases ? params.aliases : [];
+      this.allowdisable = params.allowdisable == undefined ? true : params.allowdisable;
       this.allowdms = params.allowdms ? params.allowdms : false;
       this.args = params.args;
       this.argsDelimiter = params.argsDelimiter || " ";

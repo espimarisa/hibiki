@@ -8,7 +8,6 @@ class safebooruCommand extends Command {
       aliases: ["sb"],
       description: "Sends an image from Safebooru.",
       cooldown: 3,
-      nsfw: true,
     });
   }
 
