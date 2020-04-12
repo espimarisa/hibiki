@@ -29,11 +29,11 @@ class Handler extends Event {
     if (!prefix) return;
     // Looks for the command ran
     const [cmdName, ...args] = msg.content.slice(prefix.length).split(" ").map(s => s.trim());
-    let cmd = this.bot.commands.find(c => c.id == cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
+    let cmd = this.bot.commands.find(c => c.id === cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
     if (!cmd) return;
 
     // Owner cmds
-    if (cmd.owner == true && !this.bot.cfg.owners.includes(msg.author.id)) return;
+    if (cmd.owner === true && !this.bot.cfg.owners.includes(msg.author.id)) return;
 
     // Disabled categories
     if (guildcfg && (guildcfg.disabledCategories || []).includes(cmd.category) && cmd.allowdisable) {
@@ -51,17 +51,17 @@ class Handler extends Event {
     }
 
     // NSFW-only cmds
-    if (cmd.nsfw == true && (msg.channel.nsfw == false || msg.channel.nsfw == undefined)) {
+    if (cmd.nsfw === true && (msg.channel.nsfw === false || msg.channel.nsfw === undefined)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "That command can only be ran in NSFW channels.", "error"))
     }
 
     // Required perms
-    if (cmd.requiredperms != undefined && (!msg.member.permission.has(cmd.requiredperms) || !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffrole)) {
+    if (cmd.requiredperms !== undefined && (!msg.member.permission.has(cmd.requiredperms) || !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffrole)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "You don't have permission to run this command.", "error"));
     }
 
     // Staff cmds
-    if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg != undefined && guildcfg.staffrole != undefined && !msg.member.roles.includes(guildcfg.staffrole))) {
+    if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg !== undefined && guildcfg.staffrole !== undefined && !msg.member.roles.includes(guildcfg.staffrole))) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "That command is only for staff members.", "error"));
     }
 

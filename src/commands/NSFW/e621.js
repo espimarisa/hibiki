@@ -26,7 +26,7 @@ class e621Command extends Command {
     if (body.posts[random].file.url.endsWith(".webm") || body.posts[random].file.url.endsWith(".mp4")) return msg.channel.createMessage(this.bot.embed("❌ Error", `This post is a video, and can't be embedded. You can view it [here](${body.posts[random].file.url}).`, "error"));
 
     // Sends the embed
-    if (typeof body.posts[random] != "undefined") {
+    if (typeof body.posts[random] !== "undefined") {
       await msg.channel.createMessage({
         embed: {
           title: "🔞 e621",

@@ -6,7 +6,7 @@ class Command {
     // Cmd params
     if (params) {
       this.aliases = params.aliases ? params.aliases : [];
-      this.allowdisable = params.allowdisable == undefined ? true : params.allowdisable;
+      this.allowdisable = params.allowdisable === undefined ? true : params.allowdisable;
       this.allowdms = params.allowdms ? params.allowdms : false;
       this.args = params.args;
       this.argsDelimiter = params.argsDelimiter || " ";
@@ -27,7 +27,7 @@ class Command {
 
     // Reload handler
     this.reload = () => {
-      let command = bot.commands.find(c => c.id == this.id);
+      let command = bot.commands.find(c => c.id === this.id);
       // Deletes the cached command
       delete require.cache[require.resolve(`../../cmds/${this.category}/${this.id}`)];
       try {

@@ -18,7 +18,7 @@ class whitelistCommand extends Command {
       // Updates db
       await this.bot.db.table("blacklist").filter({ guild: args[1] }).delete();
       // Makes bot leave server
-      this.bot.guilds.find(o => o.id == args[1]).leave();
+      this.bot.guilds.find(o => o.id === args[1]).leave();
       msg.channel.createMessage(this.bot.embed("✅ Success", `Whitelisted **${args[1]}**.`, "success"));
     } else {
       // Blacklists user

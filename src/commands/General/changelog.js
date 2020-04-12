@@ -18,7 +18,7 @@ class changelogCommand extends Command {
     let ver = 0;
     clog.forEach(c => {
       // Newlines
-      if (c.indexOf("\r") == c.length - 1 && c.length != 1) c = c.substring(0, c.length - 1);
+      if (c.indexOf("\r") === c.length - 1 && c.length !== 1) c = c.substring(0, c.length - 1);
       // Only shows the latest version
       if (/# v[0-9].[0-9].[0-9] - [a-zA-Z, 0-9()]{1,100}/.test(c) && ver <= 1) ver++;
       if (ver > 1) return;

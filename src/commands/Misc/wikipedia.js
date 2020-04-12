@@ -17,8 +17,8 @@ class wikipediaCommand extends Command {
     let body = await res.json().catch(() => {});
     if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Page not found.", "error"));
     // Handles error & disambiguation pages
-    if (body.title == "Not found.") return msg.channel.createMessage(this.bot.embed("❌ Error", "Page not found.", "error"));
-    if (body.type == "disambiguation") return msg.channel.createMessage(this.bot.embed("🌐 Wikipedia", `[That page](${body.content_urls.desktop.page}) is a disambiguation. Maybe be more specific?`, "general"));
+    if (body.title === "Not found.") return msg.channel.createMessage(this.bot.embed("❌ Error", "Page not found.", "error"));
+    if (body.type === "disambiguation") return msg.channel.createMessage(this.bot.embed("🌐 Wikipedia", `[That page](${body.content_urls.desktop.page}) is a disambiguation. Maybe be more specific?`, "general"));
     // Sends the embed
     msg.channel.createMessage(this.bot.embed(`🌐 ${body.title}`, body.extract, "general"));
   }
