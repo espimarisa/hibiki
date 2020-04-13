@@ -3,6 +3,7 @@ const Command = require("../../lib/structures/Command");
 class blacklistCommand extends Command {
   constructor(...args) {
     super(...args, {
+      args: "<item:string>",
       description: "Blacklists a user or server.",
       allowdisable: false,
       owner: true,
@@ -10,7 +11,6 @@ class blacklistCommand extends Command {
   }
 
   async run(msg, args) {
-    if (!args.length) return msg.channel.createMessage(this.bot.embed("❌ Error", "No user or server given.", "error"));
     // Checks for id
     if (isNaN(args[0])) {
       if (!args[1]) return;
