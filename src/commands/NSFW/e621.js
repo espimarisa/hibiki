@@ -18,7 +18,7 @@ class e621Command extends Command {
       // Required for e621/e921
       headers: { "User-Agent": "Hibiki" }
     });
-    let body = await res.json().catch(() => {});
+    let body = await res.json();
     if (!body || !body.posts[0] || !body.posts[0].file.url) return msg.channel.createMessage(this.bot.embed("❌ Error", "No images were found.", "error"));
     // Randomly gets an image
     let random = Math.floor(Math.random() * body.posts.length);

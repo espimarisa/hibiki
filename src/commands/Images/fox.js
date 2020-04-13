@@ -5,7 +5,7 @@ class foxCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["floof", "randomfox"],
-      description: "Posts a random fox picture.",
+      description: "Sends a random fox picture.",
       cooldown: 3,
     });
   }
@@ -13,7 +13,7 @@ class foxCommand extends Command {
   async run(msg) {
     // Fetches the API
     let res = await fetch("https://randomfox.ca/floof/");
-    let body = await res.json().catch(() => {});
+    let body = await res.json();
 
     // Sends the embed
     await msg.channel.createMessage({

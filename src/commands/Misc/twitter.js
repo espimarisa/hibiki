@@ -18,7 +18,7 @@ class twitterCommand extends Command {
       headers: { "Authorization": `Bearer ${this.bot.key.twitter}`, "User-Agent": "Hibiki", }
     });
 
-    let body = await res.json().catch(() => {});
+    let body = await res.json();
     // Sends if the body encounters an error
     if (!body) return msg.channel.createMessage("❌ Error", "Account not found.")
     if (body.errors && body.errors[0].code === 215) return msg.channel.createMessage(this.bot.embed("❌ Error", "Unauthorised to access the Twitter API.", "error"))

@@ -3,7 +3,7 @@ const Command = require("../../lib/structures/Command");
 class bannerCommand extends Command {
   constructor(...args) {
     super(...args, {
-      description: "Displays the server's banner.",
+      description: "Sends the server's banner.",
       cooldown: 3,
     });
   }

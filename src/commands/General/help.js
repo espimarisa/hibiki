@@ -6,7 +6,7 @@ class helpCommand extends Command {
     super(...args, {
       args: "[command:string]",
       aliases: ["commands", "listcmds", "listcommands"],
-      description: "Displays a list of commands or info about a specific command.",
+      description: "Sends a list of commands or info about a specific command.",
       allowdisable: false,
       cooldown: 3,
     });

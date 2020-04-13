@@ -15,7 +15,7 @@ class rule34Command extends Command {
   async run(msg, args) {
     // Fetches the API
     let res = await fetch(`https://r34-json-api.herokuapp.com/posts?tags=${encodeURIComponent(args.join("%20"))}`);
-    let body = await res.json().catch(() => {});
+    let body = await res.json();
     if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "No images were found.", "error"));
     // Handles MP4 & WEBM
     if (body[0].sample_url.endsWith(".webm") || body[0].sample_url.endsWith(".mp4")) return msg.channel.createMessage(this.bot.embed("❌ Error", `This post is a video, and can't be embedded. You can view it [here](${body[0].sample_url}).`, "error"));

@@ -5,7 +5,7 @@ class dogCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["puppy", "randomdog"],
-      description: "Posts a random dog picture.",
+      description: "Sends a random dog picture.",
       cooldown: 3,
     });
   }
@@ -13,7 +13,7 @@ class dogCommand extends Command {
   async run(msg) {
     // Fetches the API
     let res = await fetch("https://api.weeb.sh/images/random?type=animal_dog", { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
-    let body = await res.json().catch(() => {});
+    let body = await res.json();
 
     // Sends the embed
     await msg.channel.createMessage({

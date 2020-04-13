@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class xkcdCommand extends Command {
   constructor(...args) {
     super(...args, {
-      description: "Posts a random comic from XKCD.",
+      description: "Sends a random comic from XKCD.",
       cooldown: 3,
     });
   }
