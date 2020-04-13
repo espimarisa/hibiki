@@ -13,7 +13,7 @@ class npmCommand extends Command {
 
   async run(msg, args) {
     // Fetches the API
-    const res = await fetch(`https://registry.npmjs.com/${encodeURIComponent(args.join(" ").toLowerCase())}`);
+    let res = await fetch(`https://registry.npmjs.com/${encodeURIComponent(args.join(" ").toLowerCase())}`);
     let body = await res.json();
     if (body.error !== undefined || !body["dist-tags"]) return msg.channel.createMessage(this.bot.embed("❌ Error", "Package not found.", "error"));
     let pkg = body.versions[body["dist-tags"].latest];

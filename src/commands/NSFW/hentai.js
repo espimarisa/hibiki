@@ -13,7 +13,7 @@ class hentaiCommand extends Command {
   async run(msg) {
     // Fetches the API
     let res = await fetch("https://nekos.life/api/v2/img/solo");
-    let body = await res.json().catch(() => {});
+    let body = await res.json();
     if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
 
     // Sends the embed

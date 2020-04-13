@@ -1,4 +1,5 @@
 // todo - use github releases for changelogs instead of CHANGELOG.md
+// this command will post the latest release's url once the bot is FOSS
 const Command = require("../../lib/structures/Command");
 const { readFileSync } = require("fs");
 
@@ -6,7 +7,7 @@ class changelogCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["cl", "clog", "updates", "whatsnew"],
-      description: "Shows the latest version's changelog.",
+      description: "Sends the latest version's changelog.",
       cooldown: 3,
     });
   }

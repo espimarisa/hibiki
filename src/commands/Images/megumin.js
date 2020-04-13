@@ -5,7 +5,7 @@ class meguminCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["megu"],
-      description: "Sends a picture of Megumin.",
+      description: "Sends a random picture of Megumin.",
       cooldown: 3,
     });
   }

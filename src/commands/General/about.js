@@ -5,7 +5,7 @@ class aboutCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["ab", "aboutbot", "info", "stats", "uptime"],
-      description: "Shows info & stats about the bot.",
+      description: "Returns info & stats about the bot.",
     });
   }
 
@@ -55,8 +55,8 @@ class aboutCommand extends Command {
     desc.push({ name: "🧮", value: `${Math.round(process.memoryUsage().rss / 1024 / 1024 * 100) / 100} mb used `, });
     desc.push({ name: "🖥", value: `${formatOS(os.platform(), os.release())}`, });
     desc.push({ name: "\n", value: "**About**", });
-    desc.push({ name: "", value: `${this.bot.user.username} is a general-purpose all-in-one bot.`, });
-    desc.push({ name: "", value: "It's simple & easy-to-use for most server's needs.", });
+    desc.push({ name: "", value: `${this.bot.user.username} is a fun, useful, and easy-to-use bot.`, });
+    desc.push({ name: "", value: "It's simple and made to fit most server's needs.", });
     desc.push({ name: "", value: `[GitHub](${this.bot.cfg.repo}) • [Invite](https://discordapp.com/oauth2/authorize?&client_id=${this.bot.user.id}&scope=bot&permissions=${this.bot.cfg.perms}) • [Support](https://discord.gg/${this.bot.cfg.support}) • [Vote](https://top.gg/bot/${this.bot.user.id}/vote)`, });
 
     // Sends the embed

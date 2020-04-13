@@ -5,7 +5,7 @@ class serverCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["guild", "guildinfo", "serverinfo"],
-      description: "Shows information about a server.",
+      description: "Returns info about a server.",
       cooldown: 2,
     });
   }
