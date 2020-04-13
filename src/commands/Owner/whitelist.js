@@ -3,6 +3,7 @@ const Command = require("../../lib/structures/Command");
 class whitelistCommand extends Command {
   constructor(...args) {
     super(...args, {
+      args: "<item:string>",
       description: "Removes a user or server from the blacklist.",
       allowdisable: false,
       owner: true,
@@ -10,7 +11,6 @@ class whitelistCommand extends Command {
   }
 
   async run(msg, args) {
-    if (!args.length) return msg.channel.createMessage(this.bot.embed("❌ Error", "No user or server given.", "error"));
     // Checks for id
     if (isNaN(args[0])) {
       if (!args[1]) return;
