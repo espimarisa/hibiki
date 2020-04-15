@@ -1,4 +1,5 @@
 const Command = require("../../lib/structures/Command");
+const Eris = require("eris");
 
 class helpCommand extends Command {
   constructor(...args) {
@@ -7,6 +8,7 @@ class helpCommand extends Command {
       aliases: ["commands", "listcmds", "listcommands"],
       description: "Sends a list of commands or info about a specific command.",
       allowdisable: false,
+      allowdms: true,
       cooldown: 3,
     });
   }
@@ -70,7 +72,7 @@ class helpCommand extends Command {
     if (args) cmd = this.bot.commands.find(c => c.id.toLowerCase() === args.join(" ").toLowerCase() || c.aliases.includes(args.join(" ").toLowerCase()));
     if (!cmd) {
       let db = undefined;
-      if (msg.channel.type !== "1") db = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
+      if (msg.channel.type !== 1) db = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
       let categories = [];
       // Hides owner & disabled cmds
       this.bot.commands.forEach(c => { if (!categories.includes(c.category) && c.category !== "Owner") categories.push(c.category); });
@@ -136,6 +138,7 @@ class helpCommand extends Command {
         });
       });
       // Confirmation message
+      if (msg.channel instanceof Eris.PrivateChannel) return;
       if (dmson !== undefined) msg.channel.createMessage(this.bot.embed("📚 Help", "Check your DMs for a list of commands."));
     } else {
       let construct = [];
