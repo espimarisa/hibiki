@@ -11,7 +11,7 @@ class avatarCommand extends Command {
     });
   }
 
-  async run(msg, args, pargs) {
+  run(msg, args, pargs) {
     let user = pargs[0].value;
     // Sends the avatar
     msg.channel.createMessage({
