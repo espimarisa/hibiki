@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class punchCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:user>",
+      args: "<user:member>",
       description: "Punches a member.",
       cooldown: 3,
     });

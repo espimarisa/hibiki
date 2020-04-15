@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class stareCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:user>",
+      args: "<user:member>",
       description: "Stares at another member.",
       cooldown: 3,
     });

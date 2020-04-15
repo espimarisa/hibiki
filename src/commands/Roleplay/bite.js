@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class biteCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:user>",
+      args: "<user:member>",
       description: "Bites a member.",
       cooldown: 3,
     });

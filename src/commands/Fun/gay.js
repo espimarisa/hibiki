@@ -4,7 +4,7 @@ class gayCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["calculategay", "gaylevel", "gayness"],
-      args: "[user:user&fallback]",
+      args: "[user:member&fallback]",
       description: "Calculates how gay a user is.",
     });
   }

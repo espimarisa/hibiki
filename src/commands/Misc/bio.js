@@ -1,4 +1,3 @@
-// todo: allow checking other user's bios
 const Command = require("../../lib/structures/Command");
 
 class bioCommand extends Command {
@@ -11,6 +10,13 @@ class bioCommand extends Command {
   }
 
   async run(msg, args) {
+    let member = this.bot.argParser.argTypes.member(args.join(" "), msg, "strict");
+    if (member) {
+      let cfg = await this.bot.db.table("usercfg").get(member.id);
+      return cfg && cfg.bio ?
+        msg.channel.createMessage(this.bot.embed("👤 Bio", `${member.username}'s bio is currently \`${cfg.bio}\`.`)) :
+        msg.channel.createMessage(this.bot.embed("👤 Bio", `${member.username} hasn't set a bio.`, "error"));
+    }
     // Bio limit
     if (args.join(" ").length > 120) return msg.channel.createMessage(this.bot.embed("❌ Error", "Max bio length is 120.", "error"));
     let cfg = await this.bot.db.table("usercfg").get(msg.author.id);
