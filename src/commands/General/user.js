@@ -4,7 +4,7 @@ const format = require("../../lib/scripts/Format");
 class userCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "[user:user&fallback]",
+      args: "[user:member&fallback]",
       aliases: ["profile", "uinfo", "userinfo"],
       cooldown: 2,
     });

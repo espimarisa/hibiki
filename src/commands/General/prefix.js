@@ -10,8 +10,8 @@ class prefixCommand extends Command {
     });
   }
 
-  async run(msg, pargs) {
-    msg.channel.createMessage(pargs[0]);
+  async run(msg, args) {
+    msg.channel.createMessage(args[0]);
   }
 }
 

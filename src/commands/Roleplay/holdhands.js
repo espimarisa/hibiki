@@ -5,7 +5,7 @@ class holdhandsCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["handhold"],
-      args: "<user:user>",
+      args: "<user:member>",
       description: "Holds hands with another member.",
       cooldown: 3,
     });

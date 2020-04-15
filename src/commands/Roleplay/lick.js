@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class lickCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:user>",
+      args: "<user:member>",
       description: "Licks a member.",
       cooldown: 3,
     });

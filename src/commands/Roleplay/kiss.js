@@ -5,7 +5,7 @@ class kissCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["smooch"],
-      args: "<user:user>",
+      args: "<user:member>",
       description: "Gives a member a kiss.",
       cooldown: 3,
     });

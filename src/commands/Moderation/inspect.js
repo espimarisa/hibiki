@@ -14,8 +14,8 @@ class inspectCommand extends Command {
     // Invite parser
     let urlargs = args.join(" ").split(".gg/");
     if (!urlargs || !urlargs[1]) urlargs = args.join(" ").split("discordapp.com/invite/");
-    // Invite info // todo - make this be a regex lol
-    let invinfo = await this.bot.getInvite(args[0].startsWith("https://discord.gg") || args[0].startsWith("http://discord.gg") || args[0].startsWith("discord.gg") || args[0].startsWith("https://discordapp.com/invite/") || args[0].startsWith("http://discordapp.com/invite/") || args[0].startsWith("discordapp.com/invite/") ? urlargs[1] : args.join(" "), true);
+    // Invite info
+    let invinfo = await this.bot.getInvite(/(https?:\/\/)?(www\.)?(discord\.(gg)|discordapp\.com\/invite)\/(.+[a-z])/.exec("https://discord.gg/ss4Jpd")[5], true);
     if (!invinfo) return msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid invite.", "error"));
 
     // Sets the description

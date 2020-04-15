@@ -82,9 +82,8 @@ class Handler extends Event {
       // Missing arguments; sends missing
       parsedArgs = this.bot.argParser.parse(cmd.args, args.join(" "), cmd.argsDelimiter, msg);
       let missingargs = parsedArgs.filter(a => !a.value && !a.optional);
-      // todo: clean this output up
       if (missingargs.length) {
-        return msg.channel.createMessage(this.bot.embed("❌ Error", `You didn't provide a **${missingargs.map(a => a.name).join(",")}**.`, "error"));
+        return msg.channel.createMessage(this.bot.embed("❌ Error", `You're missing the **${missingargs.map(a => a.name).join(",")}** argument${missingargs.length > 1 ? "s" : ""}.`, "error"));
       }
     }
 

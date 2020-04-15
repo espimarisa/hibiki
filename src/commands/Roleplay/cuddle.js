@@ -5,7 +5,7 @@ class cuddleCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["snug", "snuggle"],
-      args: "<user:user>",
+      args: "<user:member>",
       description: "Cuddles a user.",
       cooldown: 3,
     });
