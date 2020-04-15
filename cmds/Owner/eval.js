@@ -1,4 +1,3 @@
-// todo: filter token from this.bot.cfg whenever evaluated
 const Command = require("../../lib/structures/Command");
 const fetch = require("node-fetch");
 const { inspect } = require("util");

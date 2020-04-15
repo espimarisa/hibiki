@@ -1,3 +1,4 @@
+// todo - fix all FetchErrors in booru commands
 const Command = require("../../lib/structures/Command");
 const fetch = require("node-fetch");
 
