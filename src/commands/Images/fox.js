@@ -19,10 +19,10 @@ class foxCommand extends Command {
     await msg.channel.createMessage({
       embed: {
         title: "🦊 Floof!",
+        color: this.bot.embed.colour("general"),
         image: {
           url: body.image,
         },
-        color: this.bot.embed.colour("general"),
       },
     });
   }

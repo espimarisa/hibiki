@@ -20,7 +20,7 @@ class reloadCommand extends Command {
         if (r !== "reloaded") errors.push({ id: cmd.id, error: r });
       });
       // Sends any errors
-      return msg.channel.createMessage(this.bot.embed("🔄 Reload", errors.length ? errors.map(e => `**${e.id}**: \`\`\`js\n${e.error}\`\`\``).join("\n") : "All commands were reloaded."));
+      return msg.channel.createMessage(this.bot.embed("🔄 Reload", errors.length ? errors.map(e => `**${e.id}**: \`\`\`js\n${e.error}\`\`\``).join("\n") : "Reloaded all commands."));
     }
     // Reloads
     let r = pargs[0].value.reload();

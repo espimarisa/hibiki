@@ -14,26 +14,24 @@ class danbooruCommand extends Command {
 
   async run(msg, args) {
     // Fetches the API
-    let res = await fetch(`https://danbooru.donmai.us/posts.json?&tags=${aencodeURIComponent(args.join("%20"))}`);
+    if (args.length > 2) return msg.channel.createMessage(this.bot.embed("❌ Error", "You can only search for 2 tags at a time.", "error"));
+    let res = await fetch(`https://danbooru.donmai.us/posts.json?&tags=${encodeURIComponent(args.join(" "))}`);
     let body = await res.json();
-    if (!body || !body[0].file_url) return msg.channel.createMessage(this.bot.embed("❌ Error", "Either nothing was found or the image is restricted.", "error"));
-    // Handles MP4 & WEBM
-    if (body[0].file_url.endsWith(".webm") || body[0].file_url.endsWith(".mp4")) return msg.channel.createMessage(this.bot.embed("❌ Error", `This post is a video, and can't be embedded. You can view it [here](${body[0].file_url}).`, "error"));
-    // Randomly gets an image
+    if (!body || !body[0] || !body[0].file_url) return msg.channel.createMessage(this.bot.embed("❌ Error", "No posts were found.", "error"));
+    if (body[0].file_url.endsWith(".webm") || body[0].file_url.endsWith(".mp4")) {
+      return msg.channel.createMessage(this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body[0].file_url}).`, "error"));
+    }
     let random = Math.floor(Math.random() * body.length);
-
     // Sends the embed
-    if (typeof body[random] !== "undefined") {
-      await msg.channel.createMessage({
-        embed: {
-          title: "🔞 Danbooru",
-          color: this.bot.embed.colour("general"),
-          image: {
-            url: body[random].file_url,
-          },
+    await msg.channel.createMessage({
+      embed: {
+        title: "🔞 Danbooru",
+        color: this.bot.embed.colour("general"),
+        image: {
+          url: body[random].file_url,
         },
-      });
-    } else return msg.channel.createMessage(this.bot.embed("❌ Error", "Nothing was found.", "error"));
+      },
+    });
   }
 }
 

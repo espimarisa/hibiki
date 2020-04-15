@@ -26,8 +26,8 @@ class highfiveCommand extends Command {
         footer: {
           icon_url: this.bot.user.dynamicAvatarURL(),
           text: "Powered by weeb.sh",
-        }
-      }
+        },
+      },
     });
   }
 }

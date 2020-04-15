@@ -14,24 +14,21 @@ class hypnohubCommand extends Command {
 
   async run(msg, args) {
     // Fetches the API
-    let res = await fetch(`https://hypnohub.net/post.json?api_version=2&tags=${encodeURIComponent(args.join("%20"))}`);
+    let res = await fetch(`https://hypnohub.net/post.json?api_version=2&tags=${encodeURIComponent(args.join(" "))}`);
     let body = await res.json();
-    if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "No images were found.", "error"));
-    // Randomly gets an image
+    if (!body || !body.length) return msg.channel.createMessage(this.bot.embed("❌ Error", "No images were found.", "error"));
     let random = Math.floor(Math.random() * body.posts.length);
 
     // Sends the embed
-    if (typeof body.posts[random] !== "undefined") {
-      await msg.channel.createMessage({
-        embed: {
-          title: "🔞 Hypnohub",
-          color: this.bot.embed.colour("general"),
-          image: {
-            url: body.posts[random].sample_url,
-          },
+    await msg.channel.createMessage({
+      embed: {
+        title: "🔞 Hypnohub",
+        color: this.bot.embed.colour("general"),
+        image: {
+          url: body.posts[random].sample_url,
         },
-      });
-    } else return msg.channel.createMessage(this.bot.embed("❌ Error", "Nothing was found.", "error"));
+      },
+    });
   }
 }
 

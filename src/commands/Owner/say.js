@@ -10,11 +10,11 @@ class sayCommand extends Command {
     });
   }
 
-  async run(msg, args) {
+   run(msg, args) {
     // Sends message
     msg.channel.createMessage(args.join(" "));
     // Deletes author's message
-    await msg.delete();
+    msg.delete();
   }
 }
 

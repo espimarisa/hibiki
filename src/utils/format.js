@@ -7,7 +7,7 @@ module.exports = {
   // Tags a user by user#disc; replaces emojis if needed
   tag: (user, emojifilter = true) => {
     if (user && emojifilter === true) {
-      return `${/[,.\-_a-zA-Z0-9 ]{1,32}/.exec(user.username) !== null ? /[,.\-_a-zA-Z0-9 ]{1,32}/.exec(user.username)[0] : user.id}#${user.discriminator}`;
+      return `${/[,.\-_a-zA-Z0-9]{1,32}/.exec(user.username) !== null ? /[,.\-_a-zA-Z0-9]{1,32}/.exec(user.username)[0] : user.id}#${user.discriminator}`;
     } else if (user && emojifilter === false) {
       return `${user.username}#${user.discriminator}`;
     }

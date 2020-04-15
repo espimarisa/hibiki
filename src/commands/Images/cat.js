@@ -19,10 +19,14 @@ class catCommand extends Command {
     msg.channel.createMessage({
       embed: {
         title: "🐱 Meow!",
+        color: this.bot.embed.colour("general"),
         image: {
           url: body.url,
         },
-        color: this.bot.embed.colour("general"),
+        footer: {
+          icon_url: this.bot.user.dynamicAvatarURL(),
+          text: "Powered by weeb.sh",
+        },
       },
     });
   }

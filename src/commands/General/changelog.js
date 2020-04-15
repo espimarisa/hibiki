@@ -12,9 +12,9 @@ class changelogCommand extends Command {
     });
   }
 
-  async run(msg) {
+  run(msg) {
     let pLog = [];
-    // Reads the changelog file
+    // Reads changelog file
     const clog = readFileSync(`${process.cwd()}/CHANGELOG.md`, "UTF8").split("\n");
     let ver = 0;
     clog.forEach(c => {
@@ -34,7 +34,7 @@ class changelogCommand extends Command {
       else pLog.push(c);
     });
     // Sends the changelog
-    msg.channel.createMessage(this.bot.embed("📚 Changelog", pLog.join("\n"), "general"))
+    msg.channel.createMessage(this.bot.embed("📚 Changelog", pLog.join("\n")))
   }
 }
 

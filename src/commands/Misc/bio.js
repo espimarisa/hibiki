@@ -1,3 +1,4 @@
+// todo: allow checking other user's bios
 const Command = require("../../lib/structures/Command");
 
 class bioCommand extends Command {
@@ -15,7 +16,7 @@ class bioCommand extends Command {
     let cfg = await this.bot.db.table("usercfg").get(msg.author.id);
     if (!args.length && (!cfg || !cfg.bio)) return msg.channel.createMessage(this.bot.embed("❌ Error", "You didn't provide a bio.", "error"));
     // Shows the bio if it exists & no args given
-    else if (!args.length && cfg && cfg.bio) return msg.channel.createMessage(this.bot.embed("👤 Bio", `Your bio is currently \`${cfg.bio}\`.`, "general"));
+    else if (!args.length && cfg && cfg.bio) return msg.channel.createMessage(this.bot.embed("👤 Bio", `Your bio is currently \`${cfg.bio}\`.`));
     // Inserts blank usercfg
     if (!cfg) { cfg = { id: msg.author.id, bio: null } }
     await this.bot.db.table("usercfg").insert(cfg);
@@ -30,10 +31,12 @@ class bioCommand extends Command {
     // Sets bio
     cfg.bio = args.join(" ");
     // Blocks discord ads
-    if (/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|list)|discordapp\.com\/invite)\/.+[a-z]/.test(cfg.bio)) return msg.channel.createMessage(this.bot.embed("❌ Error", "Your bio included an advertisement.", "error"));
+    if (/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|list)|discordapp\.com\/invite)\/.+[a-z]/.test(cfg.bio)) {
+      return msg.channel.createMessage(this.bot.embed("❌ Error", "Your bio included an advertisement.", "error"));
+    }
     // Updates usercfg
     await this.bot.db.table("usercfg").get(msg.author.id).update(cfg);
-    msg.channel.createMessage(this.bot.embed("👤 Bio", `Bio set to \`${cfg.bio}\``, "general"));
+    msg.channel.createMessage(this.bot.embed("👤 Bio", `Bio set to \`${cfg.bio}\``));
   }
 }
 

@@ -20,7 +20,7 @@ class guildDelete extends Event {
       const res = await fetch(`https://top.gg/api/bots/${this.bot.key.topgg}/stats`, {
         method: "POST",
         body: JSON.stringify({ server_count: this.bot.guilds.size, shard_count: this.bot.shards.size }),
-        headers: { "cache-control": "no-cache", "Content-Type": "application/json", "Authorization": this.bot.key.topgg, },
+        headers: { "cache-control": "no-cache", "Content-Type": "application/json", "Authorization": this.bot.key.topgg },
       });
       let body = await res.json();
       if (!body) return this.bot.log.error("An error occured while trying to update the top.gg stats: 404");

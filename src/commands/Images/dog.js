@@ -19,10 +19,14 @@ class dogCommand extends Command {
     await msg.channel.createMessage({
       embed: {
         title: "🐶 Woof!",
+        color: this.bot.embed.colour("general"),
         image: {
           url: body.url,
         },
-        color: this.bot.embed.colour("general"),
+        footer: {
+          icon_url: this.bot.user.dynamicAvatarURL(),
+          text: "Powered by weeb.sh",
+        },
       },
     });
   }

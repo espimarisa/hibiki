@@ -8,10 +8,8 @@ class bannerCommand extends Command {
     });
   }
 
-  async run(msg) {
-    // Errors if the server doesn't have a banner
+  run(msg) {
     if (!msg.channel.guild.banner) return msg.channel.createMessage(this.bot.embed("❌ Error", "This server doesn't have a banner.", "error"));
-    // Sends the banner
     msg.channel.createMessage({
       embed: {
         color: this.bot.embed.colour("general"),

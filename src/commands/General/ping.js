@@ -10,8 +10,8 @@ class pingCommand extends Command {
   }
 
   async run(msg) {
-    let message = await msg.channel.createMessage(this.bot.embed("🏓 Ping", `API Latency: ${msg.channel.guild.shard.latency}ms`, "general"));
-    message.edit(this.bot.embed("🏓 Ping", `This message took ${message.timestamp - msg.timestamp}ms.`, "general"));
+    let message = await msg.channel.createMessage(this.bot.embed("🏓 Ping", `API Latency: ${msg.channel.guild.shard.latency}ms`));
+    message.edit(this.bot.embed("🏓 Ping", `This message took ${message.timestamp - msg.timestamp}ms.`));
   }
 }
 

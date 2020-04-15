@@ -9,7 +9,7 @@ class aboutCommand extends Command {
     });
   }
 
-  async run(msg) {
+  run(msg) {
     // Formats OS platform
     function formatOS(platform, release) {
       switch (platform) {
@@ -42,22 +42,22 @@ class aboutCommand extends Command {
 
     // Sets the description
     let desc = [];
-    desc.push({ name: "\n", value: "The ultimate all-in-one Discord bot.", });
-    desc.push({ name: "", value: "Made with 💜 by [smolespi](https://lesbian.codes) & [resolved](https://github.com/resolvedxd).", });
-    desc.push({ name: "\n", value: "**Bot Stats**", });
-    desc.push({ name: "👥", value: `${this.bot.users.size} users`, });
-    desc.push({ name: "💬", value: `${this.bot.guilds.size} servers`, });
-    desc.push({ name: "📔", value: `${this.bot.commands.size} commands`, });
-    desc.push({ name: "📕", value: `Node ${process.version}`, });
-    desc.push({ name: "📚", value: `Eris v${require("eris").VERSION}`, });
-    desc.push({ name: "🤖", value: `Hibiki v${require("../../package").version}`, });
-    desc.push({ name: "🕒", value: `${uptimeFormat(process.uptime())}`, });
-    desc.push({ name: "🧮", value: `${Math.round(process.memoryUsage().rss / 1024 / 1024 * 100) / 100} mb used `, });
-    desc.push({ name: "🖥", value: `${formatOS(os.platform(), os.release())}`, });
-    desc.push({ name: "\n", value: "**About**", });
-    desc.push({ name: "", value: `${this.bot.user.username} is a fun, useful, and easy-to-use bot.`, });
-    desc.push({ name: "", value: "It's simple and made to fit most server's needs.", });
-    desc.push({ name: "", value: `[GitHub](${this.bot.cfg.repo}) • [Invite](https://discordapp.com/oauth2/authorize?&client_id=${this.bot.user.id}&scope=bot&permissions=${this.bot.cfg.perms}) • [Support](https://discord.gg/${this.bot.cfg.support}) • [Vote](https://top.gg/bot/${this.bot.user.id}/vote)`, });
+    desc.push({ name: "\n", value: "The ultimate all-in-one Discord bot." });
+    desc.push({ name: "", value: "Made with 💜 by [smolespi](https://lesbian.codes) & [resolved](https://github.com/resolvedxd)." });
+    desc.push({ name: "\n", value: "**Bot Stats**" });
+    desc.push({ name: "👥", value: `${this.bot.users.size} users` });
+    desc.push({ name: "💬", value: `${this.bot.guilds.size} servers` });
+    desc.push({ name: "📔", value: `${this.bot.commands.size} commands` });
+    desc.push({ name: "📕", value: `Node ${process.version}` });
+    desc.push({ name: "📚", value: `Eris v${require("eris").VERSION}` });
+    desc.push({ name: "🤖", value: `Hibiki v${require("../../package").version}` });
+    desc.push({ name: "🕒", value: `${uptimeFormat(process.uptime())}` });
+    desc.push({ name: "🧮", value: `${Math.round(process.memoryUsage().rss / 1024 / 1024 * 100) / 100} mb used ` });
+    desc.push({ name: "🖥", value: `${formatOS(os.platform(), os.release())}` });
+    desc.push({ name: "\n", value: "**About**" });
+    desc.push({ name: "", value: `${this.bot.user.username} is a fun, useful, and easy-to-use bot.` });
+    desc.push({ name: "", value: "It's feature-packed and fits most server's needs." });
+    desc.push({ name: "", value: `[GitHub](${this.bot.cfg.repo}) • [Invite](https://discordapp.com/oauth2/authorize?&client_id=${this.bot.user.id}&scope=bot&permissions=${this.bot.cfg.perms}) • [Support](https://discord.gg/${this.bot.cfg.support}) • [Vote](https://top.gg/bot/${this.bot.user.id}/vote)` });
 
     // Sends the embed
     msg.channel.createMessage({
@@ -68,7 +68,7 @@ class aboutCommand extends Command {
         thumbnail: {
           url: this.bot.user.dynamicAvatarURL(),
         },
-      }
+      },
     });
   }
 }

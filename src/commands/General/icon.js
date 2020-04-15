@@ -13,10 +13,11 @@ class iconCommand extends Command {
     // Gets the guild
     let guild = msg.channel.guild;
     // Lets owners show other server icons
-    if (args[0] && this.bot.cfg.owners.includes(msg.author.id)) guild = await this.bot.guilds.find(g => g.name.toLowerCase().startsWith(args.join(" ")) || g.id === args.join(" "));
-    else guild = msg.channel.guild;
+    if (args[0] && this.bot.cfg.owners.includes(msg.author.id)) {
+      guild = await this.bot.guilds.find(g => g.name.toLowerCase().startsWith(args.join(" ")) || g.id === args.join(" "));
+    } else guild = msg.channel.guild;
     if (!guild) return msg.channel.guild;
-    // If a server doesn't have an icon
+    // If no icon
     if (!guild.iconURL) return msg.channel.createMessage(this.bot.embed("❌ Error", "This server doesn't have an icon set.", "error"));
 
     // Sends the embed
