@@ -5,7 +5,7 @@ class patCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["headpat, pet"],
-      args: "<user:user>",
+      args: "<user:member>",
       description: "Gives a member a headpat.",
       cooldown: 3,
     });

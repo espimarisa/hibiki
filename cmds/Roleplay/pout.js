@@ -5,7 +5,7 @@ class poutCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["hmph"],
-      args: "<user:user>",
+      args: "<user:member>",
       description: "Pouts at another member.",
       cooldown: 3,
     });

@@ -5,7 +5,7 @@ class avatarCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["pfp", "profilepic", "profilepicture", "uicon", "usericon"],
-      args: "[user:user&fallback]",
+      args: "[user:member&fallback]",
       description: "Sends a member's avatar.",
       cooldown: 3,
     });

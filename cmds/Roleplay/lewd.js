@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class lewdCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:user&fallback>",
+      args: "<user:member&fallback>",
       description: "Tells a member they're being too lewd.",
       cooldown: 3,
     });

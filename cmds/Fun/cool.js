@@ -4,7 +4,7 @@ class coolCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["calculatecool", "coolness", "howcool"],
-      args: "[user:user&fallback]",
+      args: "[user:member&fallback]",
       description: "Calculates how cool a user is.",
     });
   }
