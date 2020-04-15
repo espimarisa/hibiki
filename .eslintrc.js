@@ -21,6 +21,7 @@ module.exports = exports = {
     // Stylistic options
     "block-spacing": [WARN, "always"],
     "brace-style": [WARN, "1tbs", { allowSingleLine: true }],
+    "comma-dangle": [WARN, "always-multiline"],
     "comma-spacing": [WARN, { before: false, after: true }],
     "comma-style": [WARN, "last"],
     "computed-property-spacing": [WARN, "never"],
@@ -31,6 +32,7 @@ module.exports = exports = {
     "jsx-quotes": [WARN, "prefer-double"],
     "lines-around-comment": [WARN, { beforeBlockComment: true }],
     "max-depth": [WARN, 8],
+    "max-len": [WARN, { "code": 160, "ignoreComments": true, "ignoreStrings": true, "tabWidth": 2, }],
     "max-nested-callbacks": [WARN, 8],
     "max-params": [WARN, 8],
     "new-parens": WARN,
@@ -46,6 +48,7 @@ module.exports = exports = {
     "object-curly-spacing": [WARN, "always"],
     "operator-linebreak": [WARN, "after"],
     "padded-blocks": [WARN, "never"],
+    "quotes": [WARN, "double", { "avoidEscape": true, "allowTemplateLiterals": true }],
     "quote-props": [WARN, "consistent-as-needed"],
     "semi-spacing": [WARN, { before: false, after: true }],
     "space-before-blocks": [WARN, "always"],

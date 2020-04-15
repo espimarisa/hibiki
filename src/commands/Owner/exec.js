@@ -17,19 +17,19 @@ class execCommand extends Command {
       // Tries to execute
       child.exec(args.join(" "), async (stdout, stderr) => {
         // Sends if an error happened
-        if (stderr) return msg.channel.createMessage(this.bot.embed("⚡ Exec", stderr, "general"));
+        if (stderr) return msg.channel.createMessage(this.bot.embed("⚡ Exec", stderr));
         // Uploads if over embed limit
         if (stdout.length > 2000) {
           const res = await fetch("https://hasteb.in/documents", { referrer: "https://hasteb.in", body: stdout, method: "POST", mode: "cors" });
           const { key } = await res.json();
           msg.channel.createMessage(this.bot.embed("❌ Error", `Output longer than 2000. View the output [here](https://hasteb.in/${key})`, "error"));
         } else {
-          msg.channel.createMessage(this.bot.embed("⚡ Exec", `\`\`\`\n${stdout}\n\`\`\``, "general"));
+          msg.channel.createMessage(this.bot.embed("⚡ Exec", `\`\`\`\n${stdout}\n\`\`\``));
         }
       });
     } catch (e) {
       // Sends the error embed
-      msg.channel.createMessage(this.bot.embed("⚡ Exec", e, "general"));
+      msg.channel.createMessage(this.bot.embed("⚡ Exec", e));
     }
   }
 }

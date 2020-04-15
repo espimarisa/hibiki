@@ -16,10 +16,12 @@ class guildCreate extends Event {
   async run(guild) {
     this.bot.log.info(`Added to server: ${guild.name}`)
     // DMs the server owner
-    let owner = this.bot.users.get(guild.ownerID);
-    if (owner !== undefined) {
-      let ownerdm = await owner.getDMChannel();
-      if (ownerdm !== undefined) ownerdm.createMessage(this.bot.embed(`👋 Hey, ${owner.username}, I was added to a server you own.`, `I'm **${this.bot.user.username}**, the ultimate all-in-one Discord bot.  \n To get started, type \`${this.bot.cfg.prefix}help\`. To configure me, you can use the [dashboard](${this.bot.cfg.homepage}/login/).`, "general"));
+    let odm = this.bot.users.get(guild.ownerID);
+    if (odm !== undefined) {
+      let odm = await owner.getDMChannel();
+      if (odm !== undefined) {
+        odm.createMessage(this.bot.embed(`✨ Thanks for inviting me, ${odm.username}.`, `\n To get started, run \`${this.bot.cfg.prefix}help\`.`));
+      }
     }
 
     if (this.bot.key.topgg) {
@@ -27,7 +29,7 @@ class guildCreate extends Event {
       const res = await fetch(`https://top.gg/api/bots/${this.bot.key.topgg}/stats`, {
         method: "POST",
         body: JSON.stringify({ server_count: this.bot.guilds.size, shard_count: this.bot.shards.size }),
-        headers: { "cache-control": "no-cache", "Content-Type": "application/json", "Authorization": this.bot.key.topgg, },
+        headers: { "cache-control": "no-cache", "Content-Type": "application/json", "Authorization": this.bot.key.topgg },
       });
       let body = await res.json();
       if (!body) return this.bot.log.error("An error occured while trying to update the top.gg stats: 404");
