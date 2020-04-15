@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class lewdcatgirlgifCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["lewdcatgirlgif", "lewdkitsunegif"],
+      aliases: ["lewdkitsunegif", "lewdnekogif"],
       description: "Sends a NSFW catgirl gif.",
       cooldown: 3,
       nsfw: true,

@@ -4,7 +4,8 @@
 */
 
 const Event = require("../lib/structures/Event");
-
+const format = require("../lib/scripts/Format");
+const Eris = require("eris");
 class Handler extends Event {
   constructor(...args) {
     super(...args, {
@@ -14,6 +15,28 @@ class Handler extends Event {
   }
 
   async run(msg) {
+    // DM handler
+    if (msg.channel instanceof Eris.PrivateChannel) {
+      if (msg.author.id === this.bot.user.id) return;
+      let cmd = this.bot.commands.find(c => msg.content.toLowerCase().startsWith(`${this.bot.cfg.prefix}${c.id}`) || msg.content.toLowerCase().startsWith(c.id));
+      if (cmd && cmd.allowdms) cmd.run(msg, msg.content.substring(this.bot.cfg.prefix.length + cmd.id.length + 1).split(" "));
+      else if (cmd && !cmd.allowdms) msg.channel.createMessage(this.bot.embed("❌ Error", "This command can't be used in DMs.", "error"));
+      // Sends the embed
+      return this.bot.createMessage(this.bot.cfg.logchannel, {
+        embed: {
+          description: `${msg.content}`,
+          color: this.bot.embed.colour("general"),
+          author: {
+            icon_url: msg.author.dynamicAvatarURL(),
+            name: `Sent a DM by ${format.tag(msg.author, false)}`,
+          },
+          image: {
+            url: msg.attachments.length !== 0 ? msg.attachments[0].url : "",
+          },
+        },
+      })
+    }
+
     // Blocks bots & blacklisted users
     if (msg.author.bot) return;
     const [blacklist] = await this.bot.db.table("blacklist").filter({ user: msg.author.id });
@@ -88,6 +111,9 @@ class Handler extends Event {
     }
 
     try {
+      // Logs when cmds ran
+      if (args.length) this.bot.log(`${format.tag(msg.author)} ran ${cmd.id} in ${msg.channel.guild.name}: ${args}`)
+      else { this.bot.log(`${format.tag(msg.author)} ran ${cmd.id} in ${msg.channel.guild.name}`) }
       // Tries to run the command
       await cmd.run(msg, args, parsedArgs);
     } catch (e) {
