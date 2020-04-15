@@ -1,5 +1,22 @@
-// todo: somehow return prettied args using the label for args
 const Command = require("../../lib/structures/Command");
+
+function ilovepenis(argString, delimiter) {
+  let argObj = [];
+  // Sets each arg
+  argString.split(delimiter).forEach(arg => {
+    // Hibiki, powered by unreliable regexes
+    let r = /(<|\[)(\w{1,}):(\w{1,})&?([\w=*]{1,})?(>|\])/.exec(arg);
+    if (!r) return;
+    argObj.push({
+      name: r[2],
+      type: r[3],
+      flag: r[4],
+      // Optional args are in []
+      optional: r[1] === "[",
+    });
+  });
+  return argObj.map(ilovecum => `${ilovecum.optional ? "[" : "<"}${ilovecum.name}${ilovecum.optional ? "]" : ">"}`).join(delimiter);
+}
 
 class helpCommand extends Command {
   constructor(...args) {
@@ -128,7 +145,7 @@ class helpCommand extends Command {
       if (cmd.category === "Owner") return;
       // Sets the fields
       if (cmd.aliases) construct.push({ name: "Aliases", value: `${cmd.aliases.map(alias => `\`${alias}\``).join(" ") || "No aliases"}`, inline: false, });
-      if (cmd.args) construct.push({ name: "Usage", value: cmd.args, inline: false, });
+      if (cmd.args) construct.push({ name: "Usage", value: ilovepenis(cmd.args), inline: false, });
       if (cmd.category) construct.push({ name: "Category", value: cmd.category, inline: true });
       if (cmd.cooldown) construct.push({ name: "Cooldown", value: `${cmd.cooldown} seconds`, inline: true, });
       if (cmd.clientperms) construct.push({ name: "Bot Permissions", value: cmd.clientperms, inline: true, });

@@ -10,9 +10,9 @@ const Event = require("./structures/Event")
 
 // todo - move Echo to a npm package
 // Echo logs & handles errors
-const echo = require("../../Echo/sdk/index");
-echo.setSettings(require("../cfg").echo);
-echo.init();
+// const echo = require("../../Echo/sdk/index");
+// echo.setSettings(require("../cfg").echo);
+// echo.init();
 
 class Verniy extends Client {
   // Client constructor
