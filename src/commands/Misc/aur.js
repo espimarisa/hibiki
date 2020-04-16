@@ -1,4 +1,3 @@
-// todo: limit aur results to top 15... or pagify it?
 const Command = require("../../lib/structures/Command");
 const Wait = require("../../lib/utils/Wait");
 const fetch = require("node-fetch");
@@ -21,6 +20,10 @@ class aurCommand extends Command {
     if (res.resultcount === 1) {
       pkg = res.results[0];
     } else if (res.resultcount > 1) {
+      // Sort packages by vote amount
+      res.results = res.results.sort((a, b) => a.NumVotes - b.NumVotes);
+      res.results.length = 15;
+
       let emsg = await msg.channel.createMessage(this.bot.embed("📦 Multiple Results", res.results.map((r, i) => `**${i + 1}**: ${r.Name} (${r.Popularity.toFixed(2)}%)`).join("\n")))
       // Wait event
       await Wait("messageCreate", 60000, async (m) => {
@@ -55,13 +58,13 @@ class aurCommand extends Command {
     if (pkg.Maintainer) fields.push({ name: "Maintainer", value: pkg.Maintainer, inline: true });
     if (pkg.FirstSubmitted) fields.push({ name: "Submitted", value: format.date(pkg.FirstSubmitted * 1000), inline: true });
     if (pkg.LastModified) fields.push({ name: "Updated", value: format.date(pkg.LastModified * 1000), inline: true });
-    fields.push({ name: "Dependencies", value: [...pkginfo.Depends, ...pkginfo.MakeDepends].join(", ") || "None" })
+    if (pkginfo && (pkginfo.Depends || pkginfo.MakeDepends)) fields.push({ name: "Dependencies", value: [...pkginfo.Depends, ...pkginfo.MakeDepends].join(", ") || "None" })
     // Sends the embed
     msg.channel.createMessage({
       embed: {
         title: `📦 ${pkg.Name} ${pkg.Version}`,
         description: pkg.Description,
-        color: this.bot.embed.colour("general"),
+        color: 0x1793D1,
         fields: fields,
       },
     })
