@@ -1,5 +1,3 @@
-// todo: actually be able to load this using a specific loader
-
 /*
   This listens for proper requests from top.gg
   in order to know what users to add cookies
@@ -13,11 +11,11 @@ const voting = require("../../cfg").voting;
 const app = express();
 app.use(express.json());
 
-module.exports = async (bot, port) => {
+module.exports = async (bot) => {
   app.post("/voteReceive", async (req, res) => {
     // Sends if unauthorised
     if (req.headers.authorization !== voting.auth) {
-      if (req.headers.authorization && req.headers.authorization.length) {
+      if (req.headers.authorization && req.headers.authorization.length || !req.headers.authorization) {
         bot.log.warn(`${req.connection.remoteAddress} tried to make a request with the wrong auth key.`);
         return res.sendStatus(403);
       }
@@ -63,13 +61,13 @@ module.exports = async (bot, port) => {
       },
     });
     // Logs when a user voted
-    bot.log.info(`${user !== undefined ? user.username : req.body.user} has voted (requested from: ${req.connection.remoteAddress}`);
+    bot.log.info(`${user !== undefined ? user.username : req.body.user} has voted (requested from: ${req.connection.remoteAddress})`);
     res.sendStatus(200);
   });
 
   // Listens on port
-  const listener = app.listen(port, "0.0.0.0", () => bot.log.info(`Voting handler loaded on port ${listener.address().port}`));
+  const listener = app.listen(voting.port, "0.0.0.0", () => bot.log.success(`Voting handler loaded on port ${listener.address().port}`));
 };
 
-// tells the loader that it should load this file
+// Sets file to be loaded
 module.exports.extload = true;

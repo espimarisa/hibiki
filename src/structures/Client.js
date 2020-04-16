@@ -84,20 +84,22 @@ class Verniy extends Client {
     this.log.success(`${this.events.size} events loaded`);
   }
 
-  loadThings(path) {
+  // Extension loader
+  loadExtensions(path) {
     if (!path.startsWith(process.cwd())) path = `${process.cwd()}/${path}`;
-    const things = readdirSync(path, { withFileTypes: true });
-    things.forEach(thing => {
-      if (thing.isDirectory()) return this.loadThings(`${path}/${thing.name}`);
-      if (!thing.name.endsWith(".js")) return;
-      let mthing;
+    const extensions = readdirSync(path, { withFileTypes: true });
+    extensions.forEach(extension => {
+      if (extension.isDirectory()) return this.loadExtensions(`${path}/${extension.name}`);
+      if (!extension.name.endsWith(".js")) return;
+      let ext;
       try {
-        mthing = require(`${path}/${thing.name}`);
+        ext = require(`${path}/${extension.name}`);
       } catch (err) {
-        this.log.error(`failed to load ${thing.name} ${err}`);
+        this.log.error(`Failed to load ${extension.name}: ${err}`);
       }
-      if (!mthing) return;
-      if (typeof mthing === "function" && mthing.extload === true) mthing(this);
+      if (!ext) return;
+      // Loads the extension
+      if (typeof ext === "function" && ext.extload === true) ext(this);
     });
   }
 }
