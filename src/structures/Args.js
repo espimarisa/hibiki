@@ -17,7 +17,7 @@ class argParser {
       role: (a, msg) => msg.channel.guild.roles.find(r => r.id === a || a.startsWith(`<@&${r.id}>`) || r.name.startsWith(a)),
       string: (a) => { return a },
       member: (a, msg, flag) => {
-        let member = msg.channel.guild.members.find(m => flag == "strict" ? m.username.toLowerCase() == a || m.id == a || msg.mentions.includes(m.user) : m.username.startsWith(a) || m.id === a || a.startsWith(`<@!${m.id}>`) || msg.mentions.includes(m.user));
+        let member = msg.channel.guild.members.find(m => flag === "strict" ? m.username.toLowerCase() === a || m.id === a || msg.mentions.includes(m.user) : m.username.startsWith(a) || m.id === a || a.startsWith(`<@!${m.id}>`) || msg.mentions.includes(m.user));
         if ((!a || !member) && flag === "fallback") return msg.channel.guild.members.get(msg.author.id);
         return member;
       },
