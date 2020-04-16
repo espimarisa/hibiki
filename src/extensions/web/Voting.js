@@ -7,7 +7,7 @@
 */
 
 const express = require("express");
-const voting = require("../cfg").voting;
+const voting = require("../../cfg").voting;
 
 // Sets up express
 const app = express();
@@ -70,3 +70,6 @@ module.exports = async (bot, port) => {
   // Listens on port
   const listener = app.listen(port, "0.0.0.0", () => bot.log.info(`Voting handler loaded on port ${listener.address().port}`));
 };
+
+// tells the loader that it should load this file
+module.exports.extload = true;
