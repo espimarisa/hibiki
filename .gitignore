@@ -11,6 +11,7 @@ rethinkdb.exe
 rethinkdb_data/
 dist/
 node_modules/
+out/
 
 # Logs & lockfiles
 .npm

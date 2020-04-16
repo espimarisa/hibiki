@@ -10,10 +10,10 @@ const Verniy = require("./lib/Verniy");
 // Sets Eris options & creates an instance
 const bot = new Verniy(cfg.token, options, db);
 
-// Loads commands & events
+// Loads commands, events, extensions
 bot.loadCommands("cmds");
 bot.loadEvents("events");
-bot.loadThings("ext");
+bot.loadExtensions("ext");
 
 // Logs into Discord
 bot.connect();
