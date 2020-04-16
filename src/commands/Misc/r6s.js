@@ -31,16 +31,17 @@ class r6sCommand extends Command {
     if (!user.uplay && !platform === "pc") return emsg.edit(this.bot.embed("❌ Error", "No info on that user.", "error"));
     let stats = await fetch(`https://r6stats.com/api/stats/${encodeURI(user.uplay_id)}`);
     stats = await stats.json();
-
+    console.log(stats);
     // Sets the fields
     let fields = [];
     if (user.progressionStats) fields.push({ name: "🥇 Level", value: user.progressionStats.level });
     // Seasonal stats
-    user.seasonalStats &&
-      fields.push({ name: "🔢 MMR", value: user.seasonalStats.mmr }) &&
-      user.genericStats &&
-      fields.push({ name: "📈 K/D", value: user.genericStats.kd.toFixed(2) }) &&
+    if (user.seasonalStats)
+      fields.push({ name: "🔢 MMR", value: user.seasonalStats.mmr })
+    if (user.genericStats) {
+      fields.push({ name: "📈 K/D", value: user.genericStats.kd.toFixed(2) });
       fields.push({ name: "🏆 W/L", value: user.genericStats.wl.toFixed(2) });
+    }
     // Kills & HS
     let kills = 0;
     let headshots = 0;
