@@ -27,7 +27,7 @@ module.exports = exports = {
     "computed-property-spacing": [WARN, "never"],
     "consistent-this": [WARN, "self"],
     "eol-last": WARN,
-    "eqeqeq": WARN,
+    "eqeqeq": [WARN, "smart"],
     "no-inline-comments": WARN,
     "jsx-quotes": [WARN, "prefer-double"],
     "lines-around-comment": [WARN, { beforeBlockComment: true }],
