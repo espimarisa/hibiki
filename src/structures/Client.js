@@ -83,6 +83,23 @@ class Verniy extends Client {
     // Logs how many events are loaded
     this.log.success(`${this.events.size} events loaded`);
   }
+
+  loadThings(path) {
+    if (!path.startsWith(process.cwd())) path = `${process.cwd()}/${path}`;
+    const things = readdirSync(path, { withFileTypes: true });
+    things.forEach(thing => {
+      if (thing.isDirectory()) return this.loadThings(`${path}/${thing.name}`);
+      if (!thing.name.endsWith(".js")) return;
+      let mthing;
+      try {
+        mthing = require(`${path}/${thing.name}`);
+      } catch (err) {
+        this.log.error(`failed to load ${thing.name} ${err}`);
+      }
+      if (!mthing) return;
+      if (typeof mthing === "function" && mthing.extload === true) mthing(this);
+    });
+  }
 }
 
 module.exports = Verniy;

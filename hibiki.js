@@ -13,6 +13,7 @@ const bot = new Verniy(cfg.token, options, db);
 // Loads commands & events
 bot.loadCommands("cmds");
 bot.loadEvents("events");
+bot.loadThings("ext");
 
 // Logs into Discord
 bot.connect();
