@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class dabCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:member>",
+      args: "<member:member>",
       description: "Dabs on a member.",
       cooldown: 3,
     });

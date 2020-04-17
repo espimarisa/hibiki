@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class highfiveCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:member>",
+      args: "<member:member>",
       description: "Gives a member a high five.",
       cooldown: 3,
     });

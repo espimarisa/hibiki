@@ -4,7 +4,7 @@ class whitelistCommand extends Command {
   constructor(...args) {
     super(...args, {
       args: "<item:string>",
-      description: "Removes a user or server from the blacklist.",
+      description: "Removes a member or server from the blacklist.",
       allowdisable: false,
       owner: true,
     });

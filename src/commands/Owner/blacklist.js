@@ -4,7 +4,7 @@ class blacklistCommand extends Command {
   constructor(...args) {
     super(...args, {
       args: "<item:string>",
-      description: "Blacklists a user or server.",
+      description: "Blacklists a member or server.",
       allowdisable: false,
       owner: true,
     });

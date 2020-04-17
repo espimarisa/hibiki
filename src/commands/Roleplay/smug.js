@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class smugCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:member>",
+      args: "<member:member>",
       description: "Looks at another member smugly.",
       cooldown: 3,
     });

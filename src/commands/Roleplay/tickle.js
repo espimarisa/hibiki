@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class tickleCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:member>",
+      args: "<member:member>",
       description: "Tickles a member.",
       cooldown: 3,
     });

@@ -5,7 +5,7 @@ class gayCommand extends Command {
     super(...args, {
       aliases: ["calculategay", "gaylevel", "gayness"],
       args: "[user:member&fallback]",
-      description: "Calculates how gay a user is.",
+      description: "Calculates how gay a member is.",
     });
   }
 
