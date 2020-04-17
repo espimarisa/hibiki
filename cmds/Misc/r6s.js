@@ -31,7 +31,6 @@ class r6sCommand extends Command {
     if (!user.uplay && !platform === "pc") return emsg.edit(this.bot.embed("❌ Error", "No info on that user.", "error"));
     let stats = await fetch(`https://r6stats.com/api/stats/${encodeURI(user.uplay_id)}`);
     stats = await stats.json();
-    console.log(stats);
     // Sets the fields
     let fields = [];
     if (user.progressionStats) fields.push({ name: "🥇 Level", value: user.progressionStats.level });
@@ -55,7 +54,6 @@ class r6sCommand extends Command {
     Object.keys(ranks).forEach(r => {
       if (!smallest) smallest = r;
       if (Math.abs(user.seasonalStats.mmr - r) < smallest) smallest = r;
-      console.log(Math.abs(user.seasonalStats.mmr - r));
     });
     fields.push({ name: "📊 Rank", value: ranks[smallest] });
 

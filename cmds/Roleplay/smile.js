@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class smileCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:member>",
+      args: "<member:member>",
       description: "Smiles at another member.",
       cooldown: 3,
     });
