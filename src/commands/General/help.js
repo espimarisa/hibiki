@@ -144,7 +144,7 @@ class helpCommand extends Command {
       let construct = [];
       // Sets the fields
       if (cmd.category === "Owner") return;
-      if (cmd.aliases) construct.push({ name: "Aliases", value: `${cmd.aliases.map(alias => `\`${alias}\``).join(" ") || "No aliases"}`, inline: false });
+      if (cmd.aliases.length) construct.push({ name: "Aliases", value: `${cmd.aliases.map(alias => `\`${alias}\``).join(" ") || "No aliases"}`, inline: false });
       if (cmd.args) construct.push({ name: "Usage", value: cmdusage(cmd.args), inline: false });
       if (cmd.category) construct.push({ name: "Category", value: cmd.category, inline: true });
       if (cmd.cooldown) construct.push({ name: "Cooldown", value: `${cmd.cooldown} seconds`, inline: true });

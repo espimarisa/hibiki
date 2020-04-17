@@ -25,7 +25,6 @@ class npmCommand extends Command {
     fields.push({ name: "Latest Version", value: body["dist-tags"].latest, inline: true });
     if (body.license) fields.push({ name: "License", value: body.license, inline: true });
     if (pkg.maintainers.length) fields.push({ name: "Maintainers", value: pkg.maintainers.map(m => `\`${m.name}\``).join(", "), inline: true });
-    console.log(pkg.maintainers.length)
     // Sends the embed
     msg.channel.createMessage({
       embed: {

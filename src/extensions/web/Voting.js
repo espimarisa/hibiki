@@ -60,7 +60,7 @@ module.exports = async (bot) => {
         color: bot.embed.colour("general"),
       },
     });
-    // Logs when a user voted
+    // Logs when a member voted
     bot.log.info(`${user !== undefined ? user.username : req.body.user} has voted (requested from: ${req.connection.remoteAddress})`);
     res.sendStatus(200);
   });
