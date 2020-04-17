@@ -7,6 +7,7 @@ const { Client, Collection } = require("eris");
 const { readdir } = require("fs");
 const Command = require("./structures/Command")
 const Event = require("./structures/Event")
+const starttime = new Date();
 
 // todo - move Echo to a npm package
 // Echo logs & handles errors
@@ -30,14 +31,13 @@ class Verniy extends Client {
     this.argParser = new argParser(this);
     // Logs when ready
     this.on("ready", async () => {
-      // Logs how many commands are loaded
+      // Logs number of cmds, events, extensions
       this.log.success(`${this.commands.size} commands loaded`);
-      // Logs how many events are loaded
       this.log.success(`${this.events.size} events loaded`);
-      // Logs how many extensions are loaded
       this.log.success(`${this.extensions.length} extensions loaded`);
-
-      this.log.success(`Logged in as ${this.user.username}#${this.user.discriminator} on ${this.guilds.size} servers`)
+      // Logs user & startup time
+      this.log.success(`Logged in as ${this.user.username}#${this.user.discriminator} on ${this.guilds.size} servers`);
+      this.log.success(`Startup took ${new Date(new Date() - starttime).getSeconds()}.${new Date(new Date() - starttime).getMilliseconds()} seconds`)
       this.editStatus("online", { name: `${this.guilds.size} servers`, type: 3 });
     });
   }

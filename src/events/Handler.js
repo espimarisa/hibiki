@@ -6,6 +6,7 @@
 const Event = require("../lib/structures/Event");
 const format = require("../lib/scripts/Format");
 const Eris = require("eris");
+
 class Handler extends Event {
   constructor(...args) {
     super(...args, {
@@ -123,7 +124,7 @@ class Handler extends Event {
       // echo.setSettings(require("../cfg").echo);
       // echo.capture(e);
       console.log(e);
-      msg.channel.createMessage(this.bot.embed("❌ Error", `An error occured and has been logged. \n \`\`\`js\n${e}\n\`\`\``, "error"));
+      msg.channel.createMessage(this.bot.embed("❌ Error", `An error occurred, and it has been logged. \n \`\`\`js\n${e}\n\`\`\``, "error"));
     }
   }
 }
