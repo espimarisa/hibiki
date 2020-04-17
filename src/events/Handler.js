@@ -45,10 +45,11 @@ class Handler extends Event {
     let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
     let prefix;
     // Sets the prefix
-    if (msg.content.startsWith(this.bot.cfg.prefix)) prefix = this.bot.cfg.prefix;
+    // todo - figure out why a custom prefix still lets the cfg.prefix work
+    if (guildcfg && guildcfg.prefix && msg.content.startsWith(guildcfg.prefix)) prefix = guildcfg.prefix;
+    else if (msg.content.startsWith(this.bot.cfg.prefix)) prefix = this.bot.cfg.prefix;
     else if (msg.content.startsWith(`<@${this.bot.user.id}> `)) prefix = `<@${this.bot.user.id}> `;
     else if (msg.content.startsWith(`<@!${this.bot.user.id}> `)) prefix = `<@!${this.bot.user.id}> `;
-    else if (guildcfg && guildcfg.prefix && msg.content.startsWith(guildcfg.prefix)) prefix = guildcfg.prefix;
     if (!prefix) return;
     // Looks for the command ran
     const [cmdName, ...args] = msg.content.slice(prefix.length).split(" ").map(s => s.trim());
