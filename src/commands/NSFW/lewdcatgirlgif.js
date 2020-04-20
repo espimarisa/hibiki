@@ -13,8 +13,8 @@ class lewdcatgirlgifCommand extends Command {
 
   async run(msg) {
     // Fetches the API
-    let res = await fetch("https://nekos.life/api/v2/img/nsfw_neko_gif");
-    let body = await res.json();
+    const res = await fetch("https://nekos.life/api/v2/img/nsfw_neko_gif");
+    const body = await res.json();
     if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
 
     // Sends the embed

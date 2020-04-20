@@ -3,8 +3,8 @@
   Updates a user's bio automatically.
 */
 
-let express = require("express");
-let router = express.Router();
+const express = require("express");
+const router = express.Router();
 
 module.exports = (bot) => {
   router.get("/api/updateBio", async (req, res) => {

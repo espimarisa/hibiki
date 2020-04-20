@@ -5,7 +5,6 @@ const fetch = require("node-fetch");
 class execCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<command:string>",
       description: "Executes commands on the host.",
       allowdisable: false,
       owner: true,

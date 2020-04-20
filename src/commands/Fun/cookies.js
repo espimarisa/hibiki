@@ -11,10 +11,10 @@ class cookiesCommand extends Command {
   }
 
   async run(msg, args, pargs) {
-    let user = pargs[0].value;
+    const user = pargs[0].value;
     let cookies = 0;
     // Gets user's economy info
-    let economydb = await this.bot.db.table("economy").get(user.id);
+    const economydb = await this.bot.db.table("economy").get(user.id);
     if (!economydb) cookies = 0;
     else cookies = economydb.amount;
     // Sends the embed

@@ -5,7 +5,6 @@ const { inspect } = require("util");
 class evalCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<script:string>",
       description: "Evaluates some JavaScript.",
       allowdisable: false,
       owner: true,

@@ -19,7 +19,7 @@ class r6sCommand extends Command {
     else if (platform.join(" ").toLowerCase() === "pc") platform = "uplay";
     else platform = platform.join(" ").toLowerCase();
     // Sends temp message
-    let emsg = await msg.channel.createMessage(this.bot.embed("🎮 R6S Stats", "Loading..."));
+    const emsg = await msg.channel.createMessage(this.bot.embed("🎮 R6S Stats", "Loading..."));
     // Looks for user
     let user = await fetch(`https://r6stats.com/api/player-search/${encodeURI(username)}/${encodeURI(platform)}`).catch(() => {});
     if (!user) return emsg.edit(this.bot.embed("🎮 R6S Stats", "❌ User not found.", "error"));
@@ -31,7 +31,7 @@ class r6sCommand extends Command {
     let stats = await fetch(`https://r6stats.com/api/stats/${encodeURI(user.uplay_id)}`);
     stats = await stats.json();
     // Sets the fields
-    let fields = [];
+    const fields = [];
     if (user.progressionStats) fields.push({ name: "🥇 Level", value: user.progressionStats.level });
     // Stats
     if (user.seasonalStats) fields.push({ name: "🔢 MMR", value: user.seasonalStats.mmr });

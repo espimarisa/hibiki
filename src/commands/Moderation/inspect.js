@@ -14,12 +14,12 @@ class inspectCommand extends Command {
     // Invite parser
     let urlargs = args.join(" ").split(".gg/");
     if (!urlargs || !urlargs[1]) urlargs = args.join(" ").split("discordapp.com/invite/");
-    let parser = (/(https?:\/\/)?(www\.)?(discord\.(gg)|discordapp\.com\/invite)\/(.+[a-z])/).test();
+    const parser = (/(https?:\/\/)?(www\.)?(discord\.(gg)|discordapp\.com\/invite)\/(.+[a-z])/).test();
     // Gets the invite info
-    let invinfo = await this.bot.getInvite(args[0].startsWith(parser) ? urlargs[1] : args.join(" "), true).catch(() => {});
+    const invinfo = await this.bot.getInvite(args[0].startsWith(parser) ? urlargs[1] : args.join(" "), true).catch(() => {});
     if (!invinfo) return msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid invite.", "error"));
     // Sets the description
-    let fields = [];
+    const fields = [];
     fields.push({ name: "Server ID", value: invinfo.guild.id });
     if (invinfo.channel) fields.push({ name: "Channel", value: `#${invinfo.channel.name} (${invinfo.channel.id})` });
     if (invinfo.inviter) fields.push({ name: "Inviter", value: `${invinfo.inviter ? invinfo.inviter.username : "Widget"}${invinfo.inviter ? "#" : ""}${invinfo.inviter ? invinfo.inviter.discriminator : ""} (${invinfo.inviter ? invinfo.inviter.id : invinfo.guild.id})` });

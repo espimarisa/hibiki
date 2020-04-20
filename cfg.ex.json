@@ -40,7 +40,7 @@
   "rethink": {
     "db": "hibiki",
     "marriages": true,
-    "tables": ["blacklist", "economy", "guildcfg", "marriages", "points", "strikes", "usercfg"]
+    "tables": ["blacklist", "economy", "guildcfg", "marriages", "points", "usercfg", "warnings"]
   },
   "voting": {
     "auth": "",

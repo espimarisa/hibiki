@@ -14,16 +14,16 @@ class reloadCommand extends Command {
   async run(msg, args, pargs) {
     // Reload all functionality
     if (args[0] === "*") {
-      let errors = [];
+      const errors = [];
       this.bot.commands.map(c => ({ id: c.id, reload: c.reload })).forEach(cmd => {
-        let r = cmd.reload();
+        const r = cmd.reload();
         if (r !== "reloaded") errors.push({ id: cmd.id, error: r });
       });
       // Sends any errors
       return msg.channel.createMessage(this.bot.embed("🔄 Reload", errors.length ? errors.map(e => `**${e.id}**: \`\`\`js\n${e.error}\`\`\``).join("\n") : "Reloaded all commands."));
     }
     // Reloads
-    let r = pargs[0].value.reload();
+    const r = pargs[0].value.reload();
     // Sends when reloaded
     if (r === "reloaded") msg.channel.createMessage(this.bot.embed("🔄 Reload", `**${pargs[0].value.id}** was reloaded.`, "success"));
     else msg.channel.createMessage(this.bot.embed("🔄 Reload", `Error while reloading: ${r}`, "error"));
