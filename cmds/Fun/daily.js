@@ -23,7 +23,7 @@ class dailyCommand extends Command {
     }
     // If lastclaim expired
     if (new Date() - new Date(cookies.lastclaim) > 86400000) {
-      let amount = cookies.amount + 100;
+      const amount = cookies.amount + 100;
       cookies = {
         id: msg.author.id,
         amount: amount,
@@ -34,8 +34,8 @@ class dailyCommand extends Command {
       msg.channel.createMessage(this.bot.embed("🍪 Daily Cookies", "You have claimed your daily **100** cookies."));
     } else {
       // If user is on cooldown
-      let lastclaim = new Date(cookies.lastclaim);
-      let time = 86400000 - (new Date().getTime() - lastclaim.getTime());
+      const lastclaim = new Date(cookies.lastclaim);
+      const time = 86400000 - (new Date().getTime() - lastclaim.getTime());
       msg.channel.createMessage(this.bot.embed("🍪 Daily Cookies", `You can claim your daily cookies again in **${format.day(time)}**.`));
     }
   }

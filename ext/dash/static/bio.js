@@ -8,8 +8,8 @@ let lastText = "";
 
 window.addEventListener("load", async () => {
   // Sets bio txt
-  let res = await fetch("/api/getBio", { credentials: "include" });
-  let bio = await res.text();
+  const res = await fetch("/api/getBio", { credentials: "include" });
+  const bio = await res.text();
   if (bio && res.status === 200) {
     lastText = bio;
     document.getElementById("bio").value = bio;

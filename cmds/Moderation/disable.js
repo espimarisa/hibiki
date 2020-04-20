@@ -27,7 +27,7 @@ class disableCommand extends Command {
 
     // If no command name is given, error out, else continue
     const cmds = this.bot.commands.filter(cmd => cmd.allowdisable);
-    let categories = [];
+    const categories = [];
     this.bot.commands.forEach(c => categories.includes(c.category) && c.category !== "Owner" ? "filler" : categories.push(c.category));
 
     if (!guildcfg) {
@@ -37,8 +37,8 @@ class disableCommand extends Command {
     }
 
     // Looks for cmd/category
-    let cmd = cmds.find(c => (c.id === command || c.aliases.includes(command)));
-    let category = categories.find(c => c.toLowerCase() === command.toLowerCase());
+    const cmd = cmds.find(c => (c.id === command || c.aliases.includes(command)));
+    const category = categories.find(c => c.toLowerCase() === command.toLowerCase());
     // If it's a cmd & category
     if (!cmd && category) {
       if (!guildcfg.disabledCategories) guildcfg.disabledCategories = [];

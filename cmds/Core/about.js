@@ -27,7 +27,7 @@ class aboutCommand extends Command {
 
 
     // Sets the description
-    let desc = [];
+    const desc = [];
     desc.push({ name: "\n", value: "The ultimate all-in-one Discord bot." });
     desc.push({ name: "", value: "Built with 💖 by [smolespi](https://lesbian.codes) & [resolved](https://github.com/resolvedxd)." });
     desc.push({ name: "\n", value: "**Bot Stats**" });

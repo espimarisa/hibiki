@@ -12,8 +12,8 @@ class memeCommand extends Command {
 
   async run(msg) {
     // Fetches the API
-    let res = await fetch("https://meme-api.herokuapp.com/gimme");
-    let body = await res.json();
+    const res = await fetch("https://meme-api.herokuapp.com/gimme");
+    const body = await res.json();
     if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the meme. Try again later.", "error"));
 
     // Sends the embed

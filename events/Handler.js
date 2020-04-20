@@ -19,7 +19,7 @@ class Handler extends Event {
     // DM handler
     if (msg.channel instanceof Eris.PrivateChannel) {
       if (msg.author.id === this.bot.user.id) return;
-      let cmd = this.bot.commands.find(c => msg.content.toLowerCase().startsWith(`${this.bot.cfg.prefix}${c.id}`) || msg.content.toLowerCase().startsWith(c.id));
+      const cmd = this.bot.commands.find(c => msg.content.toLowerCase().startsWith(`${this.bot.cfg.prefix}${c.id}`) || msg.content.toLowerCase().startsWith(c.id));
       if (cmd && cmd.allowdms) cmd.run(msg, msg.content.substring(this.bot.cfg.prefix.length + cmd.id.length + 1).split(" "));
       else if (cmd && !cmd.allowdms) msg.channel.createMessage(this.bot.embed("❌ Error", "This command can't be used in DMs.", "error"));
       // Sends the embed
@@ -43,7 +43,7 @@ class Handler extends Event {
     const [blacklist] = await this.bot.db.table("blacklist").filter({ user: msg.author.id });
     if (blacklist) return;
     // Gets the server's ID
-    let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
+    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
     let prefix;
     // Sets the prefix
     // todo - figure out why a custom prefix still lets the cfg.prefix work
@@ -54,7 +54,7 @@ class Handler extends Event {
     if (!prefix) return;
     // Looks for the command ran
     const [cmdName, ...args] = msg.content.slice(prefix.length).split(" ").map(s => s.trim());
-    let cmd = this.bot.commands.find(c => c.id === cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
+    const cmd = this.bot.commands.find(c => c.id === cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
     if (!cmd) return;
 
     // Owner cmds
@@ -72,7 +72,7 @@ class Handler extends Event {
 
     // Client perms
     if (cmd.clientperms) {
-      let botperms = msg.channel.guild.members.get(this.bot.user.id).permission;
+      const botperms = msg.channel.guild.members.get(this.bot.user.id).permission;
       if (!botperms.has(cmd.clientperms)) return msg.channel.createMessage(this.bot.embed("❌ Error", `I need the ${cmd.clientperms} permission to run this.`, "error"));
     }
 
@@ -108,7 +108,7 @@ class Handler extends Event {
     if (cmd.args) {
       // Missing srgs; sends missing
       parsedArgs = this.bot.argParser.parse(cmd.args, args.join(" "), cmd.argsDelimiter, msg);
-      let missingargs = parsedArgs.filter(a => !a.value && !a.optional);
+      const missingargs = parsedArgs.filter(a => !a.value && !a.optional);
       if (missingargs.length) {
         return msg.channel.createMessage(this.bot.embed("❌ Error", `No **${missingargs.map(a => a.name).join(" or ")}** was provided.`, "error"));
       }

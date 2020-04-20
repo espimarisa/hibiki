@@ -10,11 +10,11 @@ class divorceCommand extends Command {
 
   async run(msg) {
     // Gets marriage states
-    let [state] = await this.bot.db.table("marriages").getAll(msg.author.id, { index: "marriages" });
+    const [state] = await this.bot.db.table("marriages").getAll(msg.author.id, { index: "marriages" });
     // If author isn't married
     if (!state) return msg.channel.createMessage(this.bot.embed("❌ Error", "You aren't married to anyone.", "error"));
     // Sends original message
-    let divorcemsg = await msg.channel.createMessage(this.bot.embed("💔 Divorce ", "Are you sure you want to divorce your spouse?"));
+    const divorcemsg = await msg.channel.createMessage(this.bot.embed("💔 Divorce ", "Are you sure you want to divorce your spouse?"));
     // Waits for response
     const response = await yn(this.bot, { author: msg.author, channel: msg.channel });
     if (!response) return divorcemsg.edit(this.bot.embed("💔 Divorce", "Cancelled the divorce."));

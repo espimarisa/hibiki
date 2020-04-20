@@ -12,8 +12,8 @@ class foxCommand extends Command {
 
   async run(msg) {
     // Fetches the API
-    let res = await fetch("https://randomfox.ca/floof/");
-    let body = await res.json();
+    const res = await fetch("https://randomfox.ca/floof/");
+    const body = await res.json();
 
     // Sends the embed
     await msg.channel.createMessage({

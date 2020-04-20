@@ -11,9 +11,9 @@ class marryCommand extends Command {
   }
 
   async run(msg, args, pargs) {
-    let user = pargs[0].value;
+    const user = pargs[0].value;
     // Gets marriage states
-    let state = await this.bot.db.table("marriages").getAll(msg.author.id, user.id, { index: "marriages" });
+    const state = await this.bot.db.table("marriages").getAll(msg.author.id, user.id, { index: "marriages" });
 
     // If author is married
     if (state.find(m => m.id === msg.author.id || m.marriedTo === msg.author.id)) {
@@ -26,7 +26,7 @@ class marryCommand extends Command {
     }
 
     // Sends original message
-    let marrymsg = await msg.channel.createMessage(this.bot.embed("💘 Marry", `**${user.username}**, do you wish to marry **${msg.author.username}**?`));
+    const marrymsg = await msg.channel.createMessage(this.bot.embed("💘 Marry", `**${user.username}**, do you wish to marry **${msg.author.username}**?`));
     // Waits for response
     const response = await yn(this.bot, { author: user, channel: msg.channel });
     if (response) {

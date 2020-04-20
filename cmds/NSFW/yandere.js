@@ -14,10 +14,10 @@ class yandereCommand extends Command {
 
   async run(msg, args) {
     // Fetches the API
-    let res = await fetch(`https://yande.re/post.json?api_version=2&tags=${encodeURIComponent(args.join(" "))}`);
-    let body = await res.json();
+    const res = await fetch(`https://yande.re/post.json?api_version=2&tags=${encodeURIComponent(args.join(" "))}`);
+    const body = await res.json();
     if (!body || !body.posts.length) return msg.channel.createMessage(this.bot.embed("❌ Error", "No images were found.", "error"));
-    let random = Math.floor(Math.random() * body.posts.length);
+    const random = Math.floor(Math.random() * body.posts.length);
 
     // Sends the embed
     await msg.channel.createMessage({

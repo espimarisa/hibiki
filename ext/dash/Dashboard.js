@@ -118,13 +118,13 @@ module.exports = (bot) => {
     // Displays if the user isn't authenticated
     if (!req.isAuthenticated()) { res.status(401).render("401"); }
     // User & guild perms
-    let user = getAuthUser(req.user);
-    let managableguilds = user.guilds.filter(g => (g.permissions & 32) === 32 && bot.guilds.get(g.id));
-    let guild = managableguilds.find(g => g.id === req.params.id);
+    const user = getAuthUser(req.user);
+    const managableguilds = user.guilds.filter(g => (g.permissions & 32) === 32 && bot.guilds.get(g.id));
+    const guild = managableguilds.find(g => g.id === req.params.id);
     // No perms to guild
     if (!guild) return res.status(403).render("403");
     // Renders the dashboard
-    let cfg = await bot.db.table("guildcfg").get(guild.id);
+    const cfg = await bot.db.table("guildcfg").get(guild.id);
     res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, validItems: validItems, user: user });
   });
 

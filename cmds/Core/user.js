@@ -11,8 +11,8 @@ class userCommand extends Command {
   }
 
   async run(msg, args, pargs) {
-    let user = pargs[0].value;
-    let desc = [];
+    const user = pargs[0].value;
+    const desc = [];
     // Finds user's game
     let playing = user.game && user.game.name.trim() ? user.game.name.trim() : "Nothing";
     // Custom statuses
@@ -37,18 +37,18 @@ class userCommand extends Command {
       }
     }
 
-    // Usercfg, marriagee, cookies, strikes, and points
+    // DB related
     let spouseid;
-    let [state] = await this.bot.db.table("marriages").getAll(user.id, { index: "marriages" });
+    const cookies = await this.bot.db.table("economy").get(user.id);
+    const usercfg = await this.bot.db.table("usercfg").get(user.id);
+    const [state] = await this.bot.db.table("marriages").getAll(user.id, { index: "marriages" });
     if (state) spouseid = state.id === user.id ? state.spouse : state.id;
-    let cookies = await this.bot.db.table("economy").get(user.id);
-    let usercfg = await this.bot.db.table("usercfg").get(user.id);
 
     // Sets the description
     if (usercfg && usercfg.bio) desc.push({ name: "", value: `${usercfg.bio}` });
     if (user.nick) desc.push({ name: "📛", value: user.nick });
     desc.push({ name: "", value: statusFormat(user.status) });
-    if (cookies && cookies.amount > 0) desc.push({ name: "🍪", value: `${Math.floor(cookies.amount)} cookies` })
+    if (cookies && cookies.amount > 0) desc.push({ name: "🍪", value: `${Math.floor(cookies.amount)} cookies` });
     desc.push({ name: "✉", value: `Joined ${format.date(user.joinedAt)}` });
     desc.push({ name: "📅", value: `Created ${format.date(user.createdAt)}` });
     desc.push({ name: "🆔", value: user.id });

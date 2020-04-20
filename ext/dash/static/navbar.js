@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     $navbarBurgers.forEach(el => {
       el.addEventListener("click", () => {
         // Get the target
-        let target = el.dataset.target;
-        let $target = document.getElementById(target);
+        const target = el.dataset.target;
+        const $target = document.getElementById(target);
         // Toggle is-active
         el.classList.toggle("is-active");
         $target.classList.toggle("is-active");
