@@ -11,13 +11,13 @@ class bioCommand extends Command {
 
   async run(msg, args) {
     // Other user's bios
-    let member = this.bot.argParser.argTypes.member(args.join(" "), msg, "strict");
-    if (member) {
-      let cfg = await this.bot.db.table("usercfg").get(member.id);
+    let user = this.bot.argParser.argTypes.member(args.join(" "), msg, "strict");
+    if (user) {
+      let cfg = await this.bot.db.table("usercfg").get(user.id);
       return cfg && cfg.bio ?
         // Sends the bio
-        msg.channel.createMessage(this.bot.embed("👤 Bio", `**${member.username}**'s bio is currently \`${cfg.bio}\`.`)) :
-        msg.channel.createMessage(this.bot.embed("❌ Error", `**${member.username}** doesn't have a bio.`, "error"));
+        msg.channel.createMessage(this.bot.embed("👤 Bio", `**${user.username}**'s bio is currently \`${cfg.bio}\`.`)) :
+        msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** doesn't have a bio.`, "error"));
     }
     // Bio limit
     if (args.join(" ").length > 120) return msg.channel.createMessage(this.bot.embed("❌ Error", "Max bio length is 120.", "error"));
@@ -26,14 +26,14 @@ class bioCommand extends Command {
     // Shows the bio if it exists & no args given
     else if (!args.length && cfg && cfg.bio) return msg.channel.createMessage(this.bot.embed("👤 Bio", `Your bio is currently \`${cfg.bio}\`.`));
     // Inserts blank usercfg
-    if (!cfg) { cfg = { id: msg.author.id, bio: null } }
+    if (!cfg) { cfg = { id: msg.author.id, bio: null }; }
     await this.bot.db.table("usercfg").insert(cfg);
 
     // Bio clearing
     if (["clear", "delete", "remove"].includes(args.join(" ").toLowerCase())) {
       cfg.bio = null;
       await this.bot.db.table("usercfg").get(msg.author.id).update(cfg);
-      return msg.channel.createMessage(this.bot.embed("👤 Bio", "Bio cleared.", "success"));
+      return msg.channel.createMessage(this.bot.embed("👤 Bio", "Your bio has been cleared."));
     }
 
     // Sets bio

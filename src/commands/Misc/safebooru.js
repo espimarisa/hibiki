@@ -1,4 +1,3 @@
-// todo - fix all FetchErrors in booru commands
 const Command = require("../../lib/structures/Command");
 const fetch = require("node-fetch");
 
@@ -14,8 +13,8 @@ class safebooruCommand extends Command {
 
   async run(msg, args) {
     // Fetches the API
-    let res = await fetch(`https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1&tags=${encodeURIComponent(args.join("%20"))}`);
-    let body = await res.json();
+    let res = await fetch(`https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1&tags=${encodeURIComponent(args.join(" "))}`);
+    let body = await res.json().catch(() => {});
     if (!body || !body[0].image || !body[0].directory) return msg.channel.createMessage(this.bot.embed("❌ Error", "No images were found.", "error"));
     if (body[0].image.endsWith(".webm") || body[0].image.endsWith(".mp4")) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body[0].image}).`, "error"));

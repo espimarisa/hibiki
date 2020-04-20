@@ -19,31 +19,28 @@ class helpCommand extends Command {
       let label;
       switch (category) {
         case "Core":
-          label = "🤖 Core";
+          label = "🤖 **Core**";
           break;
         case "Fun":
-          label = "🎉 Fun";
-          break;
-        case "Images":
-          label = "🖼 Images";
+          label = "🎉 **Fun**";
           break;
         case "Misc":
-          label = "❓ Misc";
+          label = "✨ **Misc**";
           break;
         case "Moderation":
-          label = "🔨 Moderation";
+          label = "🔨 **Moderation**";
           break;
         case "NSFW":
-          label = "🔞 NSFW";
+          label = "🔞 **NSFW**";
           break;
         case "Roleplay":
-          label = "️️️❤️ Roleplay";
+          label = "️️️❤️ **Roleplay**";
           break;
         case "Owner":
-          label = "⛔ Owner";
+          label = "⛔ **Owner**";
           break;
         default:
-          label = "Unknown";
+          label = "🚫 **Uncategorised**";
           break;
       }
       return label;
@@ -98,7 +95,7 @@ class helpCommand extends Command {
               name: sortedcategories[categories.indexOf(category)],
               // Hides disabled commands
               value: this.bot.commands.map(c => {
-                if (db && db !== undefined && db.disabledCmds !== undefined && db.disabledCmds.includes(c.id)) return;
+                if (db && db.disabledCmds && db.disabledCmds.includes(c.id)) return;
                 if (c.category !== category) return;
                 return `\`${c.id}\``;
               }).join(" "),
@@ -116,7 +113,7 @@ class helpCommand extends Command {
             name: sortedcategories[categories.indexOf(category)],
             // Hides disabled commands
             value: this.bot.commands.map(c => {
-              if (db && db !== undefined && db.disabledCmds !== undefined && db.disabledCmds.includes(c.id)) return;
+              if (db && db.disabledCmds && db.disabledCmds.includes(c.id)) return;
               if (c.category !== category) return;
               return `\`${c.id}\``;
             }).join(" "),
@@ -139,7 +136,7 @@ class helpCommand extends Command {
       });
       // Confirmation message
       if (msg.channel instanceof Eris.PrivateChannel) return;
-      if (dmson !== undefined) msg.channel.createMessage(this.bot.embed("📚 Help", "Check your DMs for a list of commands."));
+      if (!dmson) msg.channel.createMessage(this.bot.embed("📚 Help", "Check your DMs for a list of commands."));
     } else {
       let construct = [];
       // Sets the fields
@@ -161,7 +158,7 @@ class helpCommand extends Command {
             name: cmd.id,
           },
         },
-      })
+      });
     }
   }
 }

@@ -18,7 +18,7 @@ class cookiesCommand extends Command {
     if (!economydb) cookies = 0;
     else cookies = economydb.amount;
     // Sends the embed
-    msg.channel.createMessage(this.bot.embed("🍪 Cookies", `**${user.username}** has **${cookies}** cookies.`))
+    msg.channel.createMessage(this.bot.embed("🍪 Cookies", `**${user.username}** has **${cookies}** cookies.`));
   }
 }
 

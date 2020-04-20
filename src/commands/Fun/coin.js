@@ -11,7 +11,7 @@ class coinCommand extends Command {
   run(msg) {
     // Flips the coin
     let coin = ["heads", "tails"][Math.round(Math.random())];
-    msg.channel.createMessage(this.bot.embed("💰 Coin", `The coin landed on **${coin}**.`))
+    msg.channel.createMessage(this.bot.embed("💰 Coin", `The coin landed on **${coin}**.`));
   }
 }
 

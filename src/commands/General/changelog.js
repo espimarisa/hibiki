@@ -34,7 +34,7 @@ class changelogCommand extends Command {
       else pLog.push(c);
     });
     // Sends the changelog
-    msg.channel.createMessage(this.bot.embed("📚 Changelog", pLog.join("\n")))
+    msg.channel.createMessage(this.bot.embed("📚 Changelog", pLog.join("\n")));
   }
 }
 

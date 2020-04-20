@@ -1,0 +1,100 @@
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <%- include("../partials/head.ejs") %>
+    <link rel="stylesheet" href="../static/css/servers.css">
+    <script src="../static/bio.js"></script>
+    <title><%= bot.user.username %> - Servers</title>
+  </head>
+
+  <body>
+    <div class="spacer"></div>
+    <section class="section container">
+      <div class="columns is-mobile is-vcentered is-centered">
+        <div class="column is-narrow">
+          <%# User Avatar %>
+          <figure class="image is-96x96">
+            <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png" alt="Avatar" class="is-rounded" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+          </figure>
+        </div>
+        <div class="column is-narrow has-text-left">
+          <p class="title has-text-white is-size-4" style="margin-bottom: 16px;">Welcome to the dashboard, <strong><%= user.username %></strong>.</p>
+          <p class="subtitle has-text-white is-size-5" style="margin-bottom: 0px;">Select the server you'd like to config.</p>
+          <p class="is-size-5 subtitle">
+            <%# Buttons %>
+            <a class="has-text-info modal-button" data-target="#modal" aria-haspopup="true"> <i class="fas fa-user"></i> Edit Bio </a> &nbsp; <a href="/login/" class="has-text-link"> <i class="fas fa-sync-alt"></i> Refresh </a> &nbsp; <a href="/logout/" class="has-text-danger"> <i class="fas fa-power-off"></i> Logout </a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <%# Bio Modal %>
+    <div class="modal" id="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Enter your bio. Will automatically save.</p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <div class="modal-card-body">
+          <input class="input" id="bio" type="text" placeholder="bio" style="width: 50%; height: 30%; color: #000;">
+        </div>
+      </div>
+    </div>
+
+    <%# Looks for guilds the user has permissions in %>
+    <% let managableguilds = user["guilds"].filter(g => (g.permissions & 32) === 32 && bot.guilds.get(g.id)); %>
+
+    <%# No managableguilds %>
+    <% if (!managableguilds) { %>
+    <section class="section content container">
+      <div class="box has-text-centered">
+        <i class="fas fa-exclamation-triangle fa-3x has-text-warning"></i>
+        <p class="is-size-5 has-text-white">You can't manage any servers. Maybe <a href="/invite/">invite</a> the bot first?</p>
+      </div>
+    </section>
+    <%# Guilds the user can manage %>
+    <% } else { %>
+    <section class="section content">
+      <div class="list">
+        <% for (let i = 0; i < managableguilds.length; i++) { %>
+        <a class="list-item" href="/manage/<%= managableguilds[i].id %>">
+          <div class="columns is-mobile is-gapless is-vcentered">
+            <div class="column is-narrow">
+              <figure class="image is-48x48">
+                <img src="https://cdn.discordapp.com/icons/<%= managableguilds[i].id %>/<%= managableguilds[i].icon %>.png" alt="Server Icon" class="is-rounded" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+              </figure>
+            </div>
+            <div class="column is-narrow">
+              <p class="is-size-4 has-text-white"><%= managableguilds[i].name %></p>
+            </div>
+          </div>
+        </a>
+        <% } %>
+      </div>
+      <% } %>
+    </section>
+  </body>
+
+  </html>
+
+  <script>
+// Modal functionality
+document.querySelectorAll(".modal-button").forEach(function(el) {
+  let target = document.querySelector(el.getAttribute("data-target"));
+  let keyfunc = (key) => {
+    if (key.key === "Escape") target.querySelector(".delete").click();
+    if (key.key === "Enter") target.querySelector(".delete").click();
+  }
+  document.addEventListener("keydown", keyfunc);
+  el.addEventListener("click", function() {
+    target.classList.add("is-active");
+    target.querySelector(".delete").addEventListener("click", function() {
+      target.classList.remove("is-active");
+      document.removeEventListener("keydown", keyfunc);
+    });
+  });
+});
+
+  </script>
