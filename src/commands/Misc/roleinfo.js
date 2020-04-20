@@ -12,7 +12,7 @@ class roleinfoCommand extends Command {
   }
 
   run(msg, args, pargs) {
-    let role = pargs[0].value;
+    const role = pargs[0].value;
     // Member role amount
     let mems = 0;
     msg.channel.guild.members.forEach(m => {
@@ -20,8 +20,8 @@ class roleinfoCommand extends Command {
     });
 
     // Sets the description
-    let desc = [];
-    let settings = [];
+    const desc = [];
+    const settings = [];
     if (role.mentionable) settings.push("Mentionable");
     if (role.hoist) settings.push("Hoisted");
     if (role.managed) settings.push("Managed by an integration");

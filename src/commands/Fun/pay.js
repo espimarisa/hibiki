@@ -11,8 +11,8 @@ class payCommand extends Command {
   }
 
   async run(msg, args, pargs) {
-    let user = pargs[0].value;
-    let amount = parseInt(args[1]);
+    const user = pargs[0].value;
+    const amount = parseInt(args[1]);
     // Blocks bots, selfpaying; non-integers
     if (user.bot) return msg.channel.createMessage(this.bot.embed("❌ Error", "You can't give cookies to a bot.", "error"));
     if (user.id === msg.author.id) return msg.channel.createMessage(this.bot.embed("❌ Error", "You aren't allowed to commit fraud.", "error"));

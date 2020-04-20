@@ -13,8 +13,8 @@ class wikipediaCommand extends Command {
 
   async run(msg, args) {
     // Fetches the API
-    let res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(args.join(" ").toLowerCase())}`);
-    let body = await res.json();
+    const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(args.join(" ").toLowerCase())}`);
+    const body = await res.json();
     if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Page not found.", "error"));
     // Handles error & disambiguation pages
     if (body.title === "Not found.") return msg.channel.createMessage(this.bot.embed("❌ Error", "Page not found.", "error"));

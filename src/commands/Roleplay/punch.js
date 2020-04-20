@@ -12,8 +12,8 @@ class punchCommand extends Command {
 
   async run(msg, args, pargs) {
     // Sets weebsh auth & image type
-    let res = await fetch("https://api.weeb.sh/images/random?type=punch", { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
-    let body = await res.json();
+    const res = await fetch("https://api.weeb.sh/images/random?type=punch", { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
+    const body = await res.json();
 
     // Sends the embed
     msg.channel.createMessage({

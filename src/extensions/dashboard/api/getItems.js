@@ -3,8 +3,8 @@
   This sends cmds and items thru the API.
 */
 
-let express = require("express");
-let router = express.Router();
+const express = require("express");
+const router = express.Router();
 
 module.exports = (bot) => {
   router.get("/api/getitems", async (req, res) => {
@@ -12,7 +12,7 @@ module.exports = (bot) => {
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     // Sends loaded cmds
     if (req.query.commands) {
-      let cmds = [];
+      const cmds = [];
       bot.commands.forEach(cmd => {
         if (!cmds.find(c => c.label === cmd.category) && cmd.category !== "Owner")
           cmds.push({ label: cmd.category, type: "optgroup", children: [] });

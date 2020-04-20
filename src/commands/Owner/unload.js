@@ -13,7 +13,7 @@ class unloadCommand extends Command {
 
   async run(msg, args, pargs) {
     // Unloads
-    let r = pargs[0].value.unload();
+    const r = pargs[0].value.unload();
     // Sends when unloaded
     if (r === "unloaded") msg.channel.createMessage(this.bot.embed("🔄 Unload", `**${pargs[0].value.id}** was unloaded.`, "success"));
     else msg.channel.createMessage(this.bot.embed("🔄 Unload", `Error while unloading: ${r}`, "error"));

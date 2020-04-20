@@ -11,9 +11,9 @@ class bioCommand extends Command {
 
   async run(msg, args) {
     // Other user's bios
-    let user = this.bot.argParser.argTypes.member(args.join(" "), msg, "strict");
+    const user = this.bot.argParser.argTypes.member(args.join(" "), msg, "strict");
     if (user) {
-      let cfg = await this.bot.db.table("usercfg").get(user.id);
+      const cfg = await this.bot.db.table("usercfg").get(user.id);
       return cfg && cfg.bio ?
         // Sends the bio
         msg.channel.createMessage(this.bot.embed("👤 Bio", `**${user.username}**'s bio is currently \`${cfg.bio}\`.`)) :

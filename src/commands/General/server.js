@@ -72,7 +72,7 @@ class serverCommand extends Command {
     }
 
     // Sets the description
-    let desc = [];
+    const desc = [];
     desc.push({ name: "👑", value: `Owned by ${format.tag(guild.members.find(mem => mem.id === guild.ownerID, false))}` });
     desc.push({ name: "🆔", value: `${guild.id}` });
     desc.push({ name: "📅", value: `Created ${format.date(guild.createdAt)}` });

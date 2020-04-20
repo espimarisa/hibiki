@@ -22,7 +22,7 @@ module.exports = async (bot) => {
     }
 
     // Gets the user from the request
-    let user = bot.users.get(req.body.user);
+    const user = bot.users.get(req.body.user);
     // Gets the user from the cookies DB
     let cookies = await bot.db.table("economy").get(req.body.user);
 
@@ -41,7 +41,7 @@ module.exports = async (bot) => {
     await bot.db.table("economy").get(req.body.user).update(cookies);
     // Gets DM channel
     if (user !== undefined) {
-      let DMChannel = await user.getDMChannel();
+      const DMChannel = await user.getDMChannel();
       if (DMChannel === undefined) return;
       DMChannel.createMessage({
         embed: {

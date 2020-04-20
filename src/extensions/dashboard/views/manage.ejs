@@ -429,7 +429,7 @@
 
 <script>
 $(async () => {
-  let res = await fetch(`/api/getitems?commands=true`, {
+  const res = await fetch(`/api/getitems?commands=true`, {
     credentials: "include"
   });
   let cmds = await res.json();

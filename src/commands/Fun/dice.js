@@ -10,7 +10,7 @@ class diceCommand extends Command {
 
   run(msg) {
     // Picks between 1 & 6
-    let num = Math.floor(Math.random() * 6) + 1;
+    const num = Math.floor(Math.random() * 6) + 1;
     msg.channel.createMessage(this.bot.embed("🎲 Dice", `You rolled a **${num}**.`));
   }
 }

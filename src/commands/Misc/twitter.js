@@ -13,12 +13,12 @@ class twitterCommand extends Command {
 
   async run(msg, args) {
     // Fetches the API
-    let res = await fetch(`https://api.twitter.com/1.1/users/show.json?screen_name=${encodeURIComponent(args)}`, {
+    const res = await fetch(`https://api.twitter.com/1.1/users/show.json?screen_name=${encodeURIComponent(args)}`, {
       // Sets the required headers
       headers: { "Authorization": `Bearer ${this.bot.key.twitter}`, "User-Agent": "Hibiki" },
     });
 
-    let body = await res.json();
+    const body = await res.json();
     // Errors
     if (!body) return msg.channel.createMessage("❌ Error", "Account not found.");
     if (body.errors) {
@@ -29,7 +29,7 @@ class twitterCommand extends Command {
     }
 
     // Sets the fields
-    let fields = [];
+    const fields = [];
     if (body.statuses_count) fields.push({ name: "Tweets", value: `${body.statuses_count === 0 ? "No tweets" : body.statuses_count}`, inline: true });
     if (body.favourites_count) fields.push({ name: "Likes", value: `${body.favourites_count === 0 ? "None" : body.favourites_count}`, inline: true });
     if (body.followers_count) fields.push({ name: "Followers", value: `${body.followers_count === 0 ? "None" : body.followers_count}`, inline: true });
@@ -42,7 +42,7 @@ class twitterCommand extends Command {
     if (body.status) fields.push({ name: "Latest Tweet", value: body.status.text });
 
     // Sets the embed construct
-    let construct = {
+    const construct = {
       title: `🐦 ${body.name || "Unknown"} (@${body.screen_name})`,
       color: this.bot.embed.colour("general"),
       fields: fields,

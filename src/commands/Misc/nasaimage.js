@@ -13,9 +13,9 @@ class nasaimageCommand extends Command {
 
   async run(msg, args) {
     // Fetches the API
-    let nasamsg = await msg.channel.createMessage(this.bot.embed("☄ NASA Image", "Searching NASA's archive..."));
-    let res = await fetch(`https://images-api.nasa.gov/search?media_type=image&q=${encodeURIComponent(args.join(" "))}`);
-    let body = await res.json();
+    const nasamsg = await msg.channel.createMessage(this.bot.embed("☄ NASA Image", "Searching NASA's archive..."));
+    const res = await fetch(`https://images-api.nasa.gov/search?media_type=image&q=${encodeURIComponent(args.join(" "))}`);
+    const body = await res.json();
     const images = body.collection.items;
     const data = images[Math.floor(Math.random() * images.length)];
     if (!data) return nasamsg.edit(this.bot.embed("❌ Error", "No images found.", "error"));

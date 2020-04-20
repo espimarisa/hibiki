@@ -10,16 +10,16 @@ class garfieldCommand extends Command {
   }
 
   run(msg) {
-    let today = new Date();
+    const today = new Date();
     // Random comic function
     function GarfieldRandom() {
-      let start = new Date("1978/06/19").getTime();
-      let date = new Date(start + Math.random() * (today.getTime() - start));
+      const start = new Date("1978/06/19").getTime();
+      const date = new Date(start + Math.random() * (today.getTime() - start));
       // Comic URLs
       function pad(n) { return n < 10 ? `0${n}` : n; }
-      let archive = "https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/";
-      let url = `${archive + date.getFullYear()}/${date.getFullYear()}-${pad(date.getMonth())}-${pad(date.getDate())}.gif`;
-      let garfield = [url, date.getFullYear(), pad(date.getMonth()), pad(date.getDate())];
+      const archive = "https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/";
+      const url = `${archive + date.getFullYear()}/${date.getFullYear()}-${pad(date.getMonth())}-${pad(date.getDate())}.gif`;
+      const garfield = [url, date.getFullYear(), pad(date.getMonth()), pad(date.getDate())];
       return garfield;
     }
 

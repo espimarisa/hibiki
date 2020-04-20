@@ -14,19 +14,19 @@ class ipinfoCommand extends Command {
   async run(msg, args) {
     // Fetches the API
     if (!this.bot.key.ipinfo) return msg.channel.createMessage(this.bot.embed("❌ Error", "Unauthorized - no API key provided.", "error"));
-    let res = await fetch(`https://ipinfo.io/${encodeURIComponent(args.join(" "))}/json?token=${encodeURIComponent(this.bot.key.ipinfo)}`);
-    let body = await res.json();
+    const res = await fetch(`https://ipinfo.io/${encodeURIComponent(args.join(" "))}/json?token=${encodeURIComponent(this.bot.key.ipinfo)}`);
+    const body = await res.json();
 
     // IPAbuseDB
-    let ipdb = await fetch(`https://api.abuseipdb.com/api/v2/check?ipAddress=${encodeURIComponent(args.join(" "))}`, {
+    const ipdb = await fetch(`https://api.abuseipdb.com/api/v2/check?ipAddress=${encodeURIComponent(args.join(" "))}`, {
       headers: { Key: this.bot.key.abuseipdb, Accept: "application/json" },
     });
 
-    let abuseinfo = await ipdb.json();
+    const abuseinfo = await ipdb.json();
     if (body.error || !body.ip || !body.org) return msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid IP address.", "error"));
 
     // Sets the fields
-    let fields = [];
+    const fields = [];
     if (body.hostname) fields.push({ name: "Hostname", value: body.hostname, inline: true });
     if (body.org) fields.push({ name: "Org", value: body.org, inline: true });
     if (body.loc) fields.push({ name: "Location", value: body.loc, inline: true });
@@ -36,7 +36,7 @@ class ipinfoCommand extends Command {
     if (!abuseinfo.errors) fields.push({ name: "Abuse Info", value: `${abuseinfo.data.totalReports} reports; ${abuseinfo.data.abuseConfidenceScore}%` });
 
     // Sets the construct
-    let construct = {
+    const construct = {
       title: `🌐 ${body.ip}`,
       description: "Information may be slightly innacurate.",
       color: this.bot.embed.colour("general"),

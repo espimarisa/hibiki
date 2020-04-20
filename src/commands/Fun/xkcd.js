@@ -12,13 +12,13 @@ class xkcdCommand extends Command {
   async run(msg) {
     // Fetches the info file
     let res = await fetch("http://xkcd.com/info.0.json");
-    let newest = await res.json();
+    const newest = await res.json();
     // Sends if no comic
     if (!newest) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the comic. Try again later.", "error"));
     // Gets a random comic
-    let random = Math.floor(Math.random() * newest.num) + 1;
+    const random = Math.floor(Math.random() * newest.num) + 1;
     res = await fetch(`https://xkcd.com/${random}/info.0.json`);
-    let body = await res.json();
+    const body = await res.json();
 
     // Sends the embed
     msg.channel.createMessage({

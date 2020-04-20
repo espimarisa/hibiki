@@ -13,7 +13,7 @@ class changelogCommand extends Command {
   }
 
   run(msg) {
-    let pLog = [];
+    const pLog = [];
     // Reads changelog file
     const clog = readFileSync(`${process.cwd()}/CHANGELOG.md`, "UTF8").split("\n");
     let ver = 0;

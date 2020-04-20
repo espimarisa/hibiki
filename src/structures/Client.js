@@ -27,7 +27,7 @@ class Verniy extends Client {
     this.commands = new Collection(Command);
     this.events = new Collection(Event);
     this.extensions = "[]";
-    let argParser = require("../lib/utils/Args.js");
+    const argParser = require("../lib/utils/Args.js");
     this.argParser = new argParser(this);
     // Logs when ready
     this.on("ready", async () => {
@@ -85,7 +85,7 @@ class Verniy extends Client {
         this.events.add(new event(this, item.split(".js")[0]));
         event = this.events.find(e => e.id === item.split(".js")[0]);
         // Runs the events
-        let eargs = (arg1, arg2, arg3, arg4, arg5) => { event.run(arg1, arg2, arg3, arg4, arg5); };
+        const eargs = (arg1, arg2, arg3, arg4, arg5) => { event.run(arg1, arg2, arg3, arg4, arg5); };
         this.on(event.name, eargs);
       });
     });

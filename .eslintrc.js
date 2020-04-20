@@ -1,4 +1,4 @@
-let OFF = 0,
+const OFF = 0,
   WARN = 1
 
 module.exports = exports = {
@@ -48,6 +48,7 @@ module.exports = exports = {
     "object-curly-spacing": [WARN, "always"],
     "operator-linebreak": [WARN, "after"],
     "padded-blocks": [WARN, "never"],
+    "prefer-const": ["error", { "destructuring": "any", "ignoreReadBeforeAssign": false }],
     "quotes": [WARN, "double", { "avoidEscape": true, "allowTemplateLiterals": true }],
     "quote-props": [WARN, "consistent-as-needed"],
     "semi": [WARN, "always"],

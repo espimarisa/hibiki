@@ -24,16 +24,16 @@ class aurCommand extends Command {
       res.results = res.results.sort((a, b) => a.NumVotes - b.NumVotes);
       res.results.length = 15;
       // Sends original message
-      let aurmsg = await msg.channel.createMessage(this.bot.embed("📦 Multiple Results", res.results.map((r, i) => `**${i + 1}**: ${r.Name} (${r.Popularity.toFixed(2)}%)`).join("\n")));
+      const aurmsg = await msg.channel.createMessage(this.bot.embed("📦 Multiple Results", res.results.map((r, i) => `**${i + 1}**: ${r.Name} (${r.Popularity.toFixed(2)}%)`).join("\n")));
       // Wait event
       await Wait("messageCreate", 60000, async (m) => {
         if (m.author.id !== msg.author.id) return;
         if (m.channel.id !== msg.channel.id) return;
         if (!m.content) return;
-        let foundpkg = isNaN(m.content) ? res.results.find(r => r.Name.toLowerCase() === m.content.toLowerCase()) : res.results[parseInt(m.content) - 1];
+        const foundpkg = isNaN(m.content) ? res.results.find(r => r.Name.toLowerCase() === m.content.toLowerCase()) : res.results[parseInt(m.content) - 1];
         // Invalid package
         if (!foundpkg) {
-          let message = await msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid package", "error"));
+          const message = await msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid package", "error"));
           setTimeout(() => {
             message.delete();
           }, 2000);
@@ -52,7 +52,7 @@ class aurCommand extends Command {
     pkginfo = pkginfo.results.find(p => p.Name === pkg.Name);
 
     // Sets the fields
-    let fields = [];
+    const fields = [];
     if (pkg.numvotes) fields.push({ name: "Votes", value: pkg.NumVotes, inline: true });
     if (pkg.Popularity) fields.push({ name: "Popularity", value: pkg.Popularity.toFixed(2), inline: true });
     if (pkg.Maintainer) fields.push({ name: "Maintainer", value: pkg.Maintainer, inline: true });

@@ -3,16 +3,16 @@
   Updates a server config thru the dashboard.
 */
 
-let express = require("express");
-let router = express.Router();
-let items = require("../../../lib/utils/ValidItems");
+const express = require("express");
+const router = express.Router();
+const items = require("../../../lib/utils/ValidItems");
 
 module.exports = bot => {
   router.post("/api/updateconfig/:id", async (req, res) => {
     // If user unauthorised
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     // Looks for managable guilds
-    let managableguilds = req.user.guilds.filter(g => (g.permissions & 32) === 32);
+    const managableguilds = req.user.guilds.filter(g => (g.permissions & 32) === 32);
     // If no perms to guild
     if (!managableguilds.find(g => g.id === req.params.id)) return res.status(403).send({ error: "No access to guild" });
     // Reads the guildcfg
@@ -31,9 +31,9 @@ module.exports = bot => {
     // Each cfg type/option
     Object.keys(cfg).forEach(c => {
       if (c === "id") return;
-      let opt = cfg[c];
+      const opt = cfg[c];
       if (!opt) return;
-      let item = items.find(i => i.id === c);
+      const item = items.find(i => i.id === c);
       // Deletes if invalid
       if (!item) return delete cfg[c];
       // Number types
@@ -55,14 +55,14 @@ module.exports = bot => {
       // Disabled commands/categories
       if (item.type === "array" && !Array.isArray(cfg[c])) return cfg[c] = null;
       if (c === "disabledCategories") {
-        let categories = [];
+        const categories = [];
         bot.commands.forEach(c => {
           if (!categories.includes(c.category) && c.category !== "Owner") categories.push(c.category);
         });
         cfg[c] = cfg[c].filter(cat => categories.includes(cat));
       }
       if (c === "disabledCmds") cfg[c] = cfg[c].filter(cmd => {
-        let command = bot.commands.get(cmd);
+        const command = bot.commands.get(cmd);
         if (command && !command.allowdisable) return true;
         return false;
       });

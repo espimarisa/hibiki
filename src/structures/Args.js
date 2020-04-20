@@ -18,7 +18,7 @@ class argParser {
       string: (a) => { return a; },
       member: (a, msg, flag) => {
         // No autocomplete
-        let member = msg.channel.guild.members.find(m => flag !== "strict" ? m.username.toLowerCase() === a || m.id === a || msg.mentions.includes(m.user) :
+        const member = msg.channel.guild.members.find(m => flag !== "strict" ? m.username.toLowerCase() === a || m.id === a || msg.mentions.includes(m.user) :
           m.username.startsWith(a) || m.id === a || a.startsWith(`<@!${m.id}>`) || msg.mentions.includes(m.user));
         // Use user if no member found
         if ((!a || !member) && flag === "fallback") return msg.channel.guild.members.get(msg.author.id);
@@ -29,11 +29,11 @@ class argParser {
 
   // Parses each type of arg
   parse(argString, args, delimiter, msg) {
-    let argObj = [];
+    const argObj = [];
     // Sets each arg
     argString.split(delimiter).forEach(arg => {
       // Hibiki, powered by unreliable regexes
-      let r = /(<|\[)(\w{1,}):(\w{1,})&?([\w=*]{1,})?(>|\])/.exec(arg);
+      const r = /(<|\[)(\w{1,}):(\w{1,})&?([\w=*]{1,})?(>|\])/.exec(arg);
       if (!r) return;
       argObj.push({
         name: r[2],
@@ -46,12 +46,12 @@ class argParser {
 
     // Splits each arg
     args.split(delimiter).forEach((arg, i) => {
-      let argg = argObj[i];
+      const argg = argObj[i];
       if (!argg || (!arg && argg.flag !== "fallback")) return;
       // Ignore flag
       if (argg.flag && argg.flag.startsWith("ignore=") && arg === argg.flag.split("ignore=")[1]) return argObj.splice(i, 1);
       if (!this.argTypes[argg.type]) return;
-      let value = this.argTypes[argg.type](arg.toLowerCase(), msg, argg.flag);
+      const value = this.argTypes[argg.type](arg.toLowerCase(), msg, argg.flag);
       if (!value) return;
       argg.value = value;
       argObj[i] = argg;

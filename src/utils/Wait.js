@@ -10,7 +10,7 @@ module.exports = (event, timeout, check, bot) => {
   if (!check || typeof check !== "function") check = () => true;
   return new Promise((rs, rj) => {
     const listener = async (...args) => {
-      let finalCheck = await check(...args);
+      const finalCheck = await check(...args);
       if (check && typeof check === "function" && finalCheck) {
         dispose();
         rs([...args]);

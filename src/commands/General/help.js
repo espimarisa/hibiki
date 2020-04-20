@@ -48,10 +48,10 @@ class helpCommand extends Command {
 
     // Formats cmd usage
     function cmdusage(argString, delimiter) {
-      let argObj = [];
+      const argObj = [];
       // Sets each arg
       argString.split(delimiter).forEach(arg => {
-        let r = /(<|\[)(\w{1,}):(\w{1,})&?([\w=*]{1,})?(>|\])/.exec(arg);
+        const r = /(<|\[)(\w{1,}):(\w{1,})&?([\w=*]{1,})?(>|\])/.exec(arg);
         if (!r) return;
         argObj.push({
           name: r[2],
@@ -74,7 +74,7 @@ class helpCommand extends Command {
       // Hides owner & disabled cmds
       this.bot.commands.forEach(c => { if (!categories.includes(c.category) && c.category !== "Owner") categories.push(c.category); });
       if (db && db.disabledCategories) categories = categories.filter(c => !db.disabledCategories.includes(c));
-      let sortedcategories = [];
+      const sortedcategories = [];
       let owneramt = 0;
       this.bot.commands.forEach(c => c.category === "Owner" ? owneramt++ : null);
       // Sorts categories
@@ -105,8 +105,8 @@ class helpCommand extends Command {
       }
 
       // DMs command list
-      let DMChannel = await msg.author.getDMChannel();
-      let dmson = await DMChannel.createMessage({
+      const DMChannel = await msg.author.getDMChannel();
+      const dmson = await DMChannel.createMessage({
         embed: {
           color: this.bot.embed.colour("general"),
           fields: categories.map(category => ({
@@ -136,9 +136,9 @@ class helpCommand extends Command {
       });
       // Confirmation message
       if (msg.channel instanceof Eris.PrivateChannel) return;
-      if (!dmson) msg.channel.createMessage(this.bot.embed("📚 Help", "Check your DMs for a list of commands."));
+      if (dmson) msg.channel.createMessage(this.bot.embed("📚 Help", "Check your DMs for a list of commands."));
     } else {
-      let construct = [];
+      const construct = [];
       // Sets the fields
       if (cmd.category === "Owner") return;
       if (cmd.aliases.length) construct.push({ name: "Aliases", value: `${cmd.aliases.map(alias => `\`${alias}\``).join(" ") || "No aliases"}`, inline: false });

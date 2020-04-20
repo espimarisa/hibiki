@@ -12,7 +12,7 @@ class avatarCommand extends Command {
   }
 
   run(msg, args, pargs) {
-    let user = pargs[0].value;
+    const user = pargs[0].value;
     // Sends the avatar
     msg.channel.createMessage({
       embed: {

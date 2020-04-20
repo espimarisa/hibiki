@@ -13,7 +13,7 @@ class setinfoCommand extends Command {
   }
 
   async run(msg, args) {
-    let field = args.shift();
+    const field = args.shift();
     if (!field || !args || !fields[field]) return msg.channel.createMessage(`invalid, valid fields are: ${Object.keys(fields).map(f => `\`${f}\``).join(",")}`);
     if (!fields[field](args.join(" "))) return msg.channel.createMessage("invalid");
     let usercfg = await this.bot.db.table("usercfg").get(msg.author.id);

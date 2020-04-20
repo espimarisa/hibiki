@@ -12,11 +12,11 @@ class channelinfoCommand extends Command {
   }
 
   run(msg, args, pargs) {
-    let channel = pargs[0].value;
+    const channel = pargs[0].value;
     // Categories
     if (channel.type === 4) return msg.channel.createMessage(this.bot.embed("❌ Error", "A category was provided, not a channel.", "error"));
     // Sets the description
-    let desc = [];
+    const desc = [];
     if (channel.topic) desc.push({ name: "", value: `${channel.topic}` });
     if (channel.parentID) desc.push({ name: "📰", value: `${msg.channel.guild.channels.get(channel.parentID).name} category` });
     desc.push({ name: "📅", value: `${format.date(channel.createdAt)} (${format.dateParse(new Date() / 1000 - channel.createdAt / 1000)} ago)` });

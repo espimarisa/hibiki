@@ -11,7 +11,7 @@ class topcookiesCommand extends Command {
   async run(msg) {
     // Reads the DB
     const cookies = await this.bot.db.table("economy");
-    let leaderboardcookies = [];
+    const leaderboardcookies = [];
     // Sorts the cookie amount/userID
     Object.values(cookies).forEach(cookie => {
       leaderboardcookies.push([cookie.amount, cookie.id]);
@@ -26,7 +26,7 @@ class topcookiesCommand extends Command {
     leaderboardcookies.forEach(leaderboard => {
       // Finds top 10 users
       if (place > 10) return;
-      let user = this.bot.users.find(o => o.id === leaderboard[1]);
+      const user = this.bot.users.find(o => o.id === leaderboard[1]);
       if (!user) return;
       // Sets the message content
       content = `${content}\n**${place}.** ${user.username} **(${Math.floor(leaderboard[0])})**`;
