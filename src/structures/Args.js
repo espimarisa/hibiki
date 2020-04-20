@@ -15,9 +15,12 @@ class argParser {
       guild: (a) => this.bot.guilds.find(g => g.id === a || g.name === a),
       module: (a) => this.bot.commands.find(c => c.id.toLowerCase().startsWith(a) || (c.aliases && c.aliases.includes(a))),
       role: (a, msg) => msg.channel.guild.roles.find(r => r.id === a || a.startsWith(`<@&${r.id}>`) || r.name.startsWith(a)),
-      string: (a) => { return a },
+      string: (a) => { return a; },
       member: (a, msg, flag) => {
-        let member = msg.channel.guild.members.find(m => flag === "strict" ? m.username.toLowerCase() === a || m.id === a || msg.mentions.includes(m.user) : m.username.startsWith(a) || m.id === a || a.startsWith(`<@!${m.id}>`) || msg.mentions.includes(m.user));
+        // No autocomplete
+        let member = msg.channel.guild.members.find(m => flag !== "strict" ? m.username.toLowerCase() === a || m.id === a || msg.mentions.includes(m.user) :
+          m.username.startsWith(a) || m.id === a || a.startsWith(`<@!${m.id}>`) || msg.mentions.includes(m.user));
+        // Use user if no member found
         if ((!a || !member) && flag === "fallback") return msg.channel.guild.members.get(msg.author.id);
         return member;
       },

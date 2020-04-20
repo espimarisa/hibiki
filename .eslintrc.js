@@ -50,6 +50,7 @@ module.exports = exports = {
     "padded-blocks": [WARN, "never"],
     "quotes": [WARN, "double", { "avoidEscape": true, "allowTemplateLiterals": true }],
     "quote-props": [WARN, "consistent-as-needed"],
+    "semi": [WARN, "always"],
     "semi-spacing": [WARN, { before: false, after: true }],
     "space-before-blocks": [WARN, "always"],
     "space-in-parens": [WARN, "never"],

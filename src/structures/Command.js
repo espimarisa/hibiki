@@ -1,3 +1,8 @@
+/*
+  Command Structure
+  Holds command params & loading functionality.
+*/
+
 class Command {
   constructor(bot, category, id, params) {
     this.bot = bot;
@@ -23,7 +28,7 @@ class Command {
     this.unload = () => {
       this.bot.commands.delete(id);
       return "unloaded";
-    }
+    };
 
     // Reload handler
     this.reload = () => {
@@ -35,14 +40,14 @@ class Command {
       } catch (err) {
         command = err;
         // Sends if a command couldn't be reloaded
-        this.bot.log.error(`${this.id} was unable to be reloaded: ${err}`)
+        this.bot.log.error(`${this.id} was unable to be reloaded: ${err}`);
       }
       if (!command || command instanceof Error) return Error(command instanceof Error ? command : `${this.id} was unable to be reloaded`);
       // Unloads & loads
       this.unload();
       this.bot.commands.add(new command(this.bot, this.category, this.id));
       return "reloaded";
-    }
+    };
   }
 }
 

@@ -35,4 +35,4 @@ module.exports = (title, description, type) => {
 module.exports.colour = (type) => {
   // Converts hex colours
   return parseInt(colours[type].replace(/#/g, "0x"));
-}
+};

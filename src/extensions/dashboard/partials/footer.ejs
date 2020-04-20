@@ -1,0 +1,34 @@
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p class="has-text-white">
+      &copy; <%= new Date().getFullYear() %>
+      <a href="https://lesbian.codes" class="has-text-light">smolespi</a> &amp;
+      <a href="https://github.com/resolvedxd/" class="has-text-light">resolved</a>.
+      <br>
+      <%= bot.user.username %>, powered by <a href="https://nodejs.org" class="has-text-light">Node.js</a> and
+      <a href="https://github.com/abalabahaha/eris" class="has-text-light">Eris</a>.
+      <br>
+      Dash & WebUI built with <a href="https://bulma.io" class="has-text-light">Bulma</a> and <a href="https://expressjs.com/" class="has-text-light"> Express</a>.
+    </p>
+    <%# Required top.gg info (if featured) %>
+    <% if (bot.user.id === "493904957523623936") { %>
+    <a href="https://top.gg/bot/493904957523623936">
+      <img src="https://top.gg/api/widget/status/493904957523623936.svg?noavatar=true" alt="Hibiki" />
+    </a>
+    <a href="https://top.gg/bot/493904957523623936">
+      <img src="https://top.gg/api/widget/servers/493904957523623936.svg?noavatar=true" alt="Hibiki" />
+    </a>
+    <a href="https://top.gg/bot/493904957523623936">
+      <img src="https://top.gg/api/widget/upvotes/493904957523623936.svg?noavatar=true" alt="Hibiki" />
+    </a>
+    <% } %>
+  </div>
+</footer>
+
+<style>
+.footer {
+  background: #676cb8;
+  padding: 2.5em !important;
+}
+
+</style>

@@ -35,7 +35,7 @@ class Handler extends Event {
             url: msg.attachments.length !== 0 ? msg.attachments[0].url : "",
           },
         },
-      })
+      });
     }
 
     // Blocks bots & blacklisted users
@@ -58,7 +58,7 @@ class Handler extends Event {
     if (!cmd) return;
 
     // Owner cmds
-    if (cmd.owner === true && !this.bot.cfg.owners.includes(msg.author.id)) return;
+    if (cmd.owner && !this.bot.cfg.owners.includes(msg.author.id)) return;
 
     // Disabled categories
     if (guildcfg && (guildcfg.disabledCategories || []).includes(cmd.category) && cmd.allowdisable) {
@@ -71,29 +71,30 @@ class Handler extends Event {
     }
 
     // Client perms
-    if ((cmd.clientperms) && !cmd.clientperms.map(c => msg.channel.guild.members.get(this.bot.user.id).permission.has(c)).includes(false)) {
-      return msg.channel.createMessage("❌ Error", "I don't have permission to run this command. Be sure my role has the proper permissions.", "error");
+    if (cmd.clientperms) {
+      let botperms = msg.channel.guild.members.get(this.bot.user.id).permission;
+      if (!botperms.has(cmd.clientperms)) return msg.channel.createMessage(this.bot.embed("❌ Error", `I need the ${cmd.clientperms} permission to run this.`, "error"));
     }
 
     // NSFW-only cmds
-    if (cmd.nsfw === true && (msg.channel.nsfw === false || msg.channel.nsfw === undefined)) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "That command can only be ran in NSFW channels.", "error"))
+    if (cmd.nsfw && !msg.channel.nsfw) {
+      return msg.channel.createMessage(this.bot.embed("❌ Error", "That command can only be ran in NSFW channels.", "error"));
     }
 
     // Required perms
-    if (cmd.requiredperms !== undefined && (!msg.member.permission.has(cmd.requiredperms) || !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffrole)) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "You don't have permission to run this command.", "error"));
+    if (cmd.requiredperms && (!msg.member.permission.has(cmd.requiredperms) || !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffrole)) {
+      return msg.channel.createMessage(this.bot.embed("❌ Error", `You need the **${cmd.requiredperms}** permission to run this.`, "error"));
     }
 
     // Staff cmds
-    if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg !== undefined && guildcfg.staffrole !== undefined && !msg.member.roles.includes(guildcfg.staffrole))) {
+    if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg && guildcfg.staffrole && guildcfg.staffrole.length && !msg.member.roles.includes(guildcfg.staffrole))) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "That command is only for staff members.", "error"));
     }
 
     // Cooldown handler
     if (cmd.cooldown && !this.bot.cfg.owners.includes(msg.author.id)) {
       // Adds cooldown reaction
-      if (this.cooldowns.includes(`${cmd.id}:${msg.author.id}`)) return msg.addReaction("🕑")
+      if (this.cooldowns.includes(`${cmd.id}:${msg.author.id}`)) return msg.addReaction("⌛");
       else {
         this.cooldowns.push(`${cmd.id}:${msg.author.id}`);
         setTimeout(() => {
@@ -102,20 +103,21 @@ class Handler extends Event {
       }
     }
 
+    // Command args
     let parsedArgs;
     if (cmd.args) {
-      // Missing arguments; sends missing
+      // Missing srgs; sends missing
       parsedArgs = this.bot.argParser.parse(cmd.args, args.join(" "), cmd.argsDelimiter, msg);
       let missingargs = parsedArgs.filter(a => !a.value && !a.optional);
       if (missingargs.length) {
-        return msg.channel.createMessage(this.bot.embed("❌ Error", `You're missing the **${missingargs.map(a => a.name).join(",")}** argument${missingargs.length > 1 ? "s" : ""}.`, "error"));
+        return msg.channel.createMessage(this.bot.embed("❌ Error", `No **${missingargs.map(a => a.name).join(" or ")}** was provided.`, "error"));
       }
     }
 
     try {
       // Logs when cmds ran
-      if (args.length) this.bot.log(`${format.tag(msg.author)} ran ${cmd.id} in ${msg.channel.guild.name}: ${args}`)
-      else { this.bot.log(`${format.tag(msg.author)} ran ${cmd.id} in ${msg.channel.guild.name}`) }
+      if (args.length) this.bot.log(`${format.tag(msg.author)} ran ${cmd.id} in ${msg.channel.guild.name}: ${args}`);
+      else { this.bot.log(`${format.tag(msg.author)} ran ${cmd.id} in ${msg.channel.guild.name}`); }
       // Tries to run the command
       await cmd.run(msg, args, parsedArgs);
     } catch (e) {

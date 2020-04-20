@@ -1,3 +1,8 @@
+/*
+  Event Structure
+  Holds info used by events.
+*/
+
 class Event {
   constructor(bot, id, params) {
     this.bot = bot;

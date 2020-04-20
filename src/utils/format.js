@@ -6,9 +6,9 @@
 module.exports = {
   // Tags a member by user#disc; replaces emojis if needed
   tag: (user, emojifilter = true) => {
-    if (user && emojifilter === true) {
+    if (user && emojifilter) {
       return `${/[,.\-_a-zA-Z0-9]{1,32}/.exec(user.username) !== null ? /[,.\-_a-zA-Z0-9]{1,32}/.exec(user.username)[0] : user.id}#${user.discriminator}`;
-    } else if (user && emojifilter === false) {
+    } else if (user && !emojifilter) {
       return `${user.username}#${user.discriminator}`;
     }
     return undefined;
@@ -18,7 +18,7 @@ module.exports = {
   date: (EpochDate, syear = true) => {
     let date = new Date(EpochDate);
     // Sets the month names
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let month = monthNames[date.getMonth()];
     let day = date.getDate();
     // Sets the dates
@@ -51,28 +51,28 @@ module.exports = {
     // Parses hours
     if (options.hours) {
       hour = time / 3600;
-      if (options.autohide === true) finalstring = `${hour.toFixed(1)} hours`;
+      if (options.autohide) finalstring = `${hour.toFixed(1)} hours`;
       if (!options.autohide) finalstring += `${hour.toFixed(1)} hours `;
     }
 
     // Parses days
     if (options.days) {
       day = time / 86400;
-      if (hour > 24 && options.autohide === true) finalstring = `${day.toFixed(1)} days`;
+      if (hour > 24 && options.autohide) finalstring = `${day.toFixed(1)} days`;
       if (!options.autohide) finalstring += `${day.toFixed(0)} days `;
     }
 
     // Parses months
     if (options.months) {
       month = time / 2592000;
-      if (day > 31 && options.autohide === true) finalstring = `${month.toFixed(1)} months`;
+      if (day > 31 && options.autohide) finalstring = `${month.toFixed(1)} months`;
       if (!options.autohide) finalstring += `${month.toFixed(0)} months `;
     }
 
     // Parses years
     if (options.years) {
       year = time / 32140800;
-      if (month > 12 && options.autohide === true) finalstring = `${year.toFixed(2)} years`;
+      if (month > 12 && options.autohide) finalstring = `${year.toFixed(2)} years`;
       if (!options.autohide) finalstring += `${year.toFixed(0)} years`;
     }
     return finalstring;
@@ -90,5 +90,21 @@ module.exports = {
     h %= 24;
     h += d * 24;
     return `${h} hours and ${m} minutes`;
+  },
+
+  // Formats uptime
+  uptime: () => {
+    let uptime = process.uptime();
+    let date = new Date(uptime * 1000);
+    let days = date.getUTCDate() - 1,
+      hours = date.getUTCHours(),
+      minutes = date.getUTCMinutes();
+    let segments = [];
+    if (days > 0) segments.push(`${days} day${days === 1 ? "" : "s"}`);
+    if (hours > 0) segments.push(`${hours} hour${hours === 1 ? "" : "s"}`);
+    if (minutes === 0) segments.push("Less than a minute");
+    if (minutes > 0) segments.push(`${minutes} minute${minutes === 1 ? "" : "s"}`);
+    let dateString = segments.join(", ");
+    return dateString;
   },
 };

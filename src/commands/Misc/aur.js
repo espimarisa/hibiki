@@ -23,15 +23,15 @@ class aurCommand extends Command {
       // Sort packages by vote amount
       res.results = res.results.sort((a, b) => a.NumVotes - b.NumVotes);
       res.results.length = 15;
-
-      let emsg = await msg.channel.createMessage(this.bot.embed("📦 Multiple Results", res.results.map((r, i) => `**${i + 1}**: ${r.Name} (${r.Popularity.toFixed(2)}%)`).join("\n")))
+      // Sends original message
+      let aurmsg = await msg.channel.createMessage(this.bot.embed("📦 Multiple Results", res.results.map((r, i) => `**${i + 1}**: ${r.Name} (${r.Popularity.toFixed(2)}%)`).join("\n")));
       // Wait event
       await Wait("messageCreate", 60000, async (m) => {
         if (m.author.id !== msg.author.id) return;
         if (m.channel.id !== msg.channel.id) return;
         if (!m.content) return;
         let foundpkg = isNaN(m.content) ? res.results.find(r => r.Name.toLowerCase() === m.content.toLowerCase()) : res.results[parseInt(m.content) - 1];
-        // Invalid
+        // Invalid package
         if (!foundpkg) {
           let message = await msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid package", "error"));
           setTimeout(() => {
@@ -42,7 +42,7 @@ class aurCommand extends Command {
         pkg = foundpkg;
         return true;
         // Timeout
-      }, this.bot).catch(err => err.message === "timeout" && emsg.edit(this.bot.embed("❌ Error", "The **1 minute timeout** has been reached.", "error")));
+      }, this.bot).catch(err => err.message === "timeout" && aurmsg.edit(this.bot.embed("❌ Error", "The **1 minute timeout** has been reached.", "error")));
     }
 
     // No package found
@@ -58,7 +58,7 @@ class aurCommand extends Command {
     if (pkg.Maintainer) fields.push({ name: "Maintainer", value: pkg.Maintainer, inline: true });
     if (pkg.FirstSubmitted) fields.push({ name: "Submitted", value: format.date(pkg.FirstSubmitted * 1000), inline: true });
     if (pkg.LastModified) fields.push({ name: "Updated", value: format.date(pkg.LastModified * 1000), inline: true });
-    if (pkginfo && (pkginfo.Depends || pkginfo.MakeDepends)) fields.push({ name: "Dependencies", value: [...pkginfo.Depends, ...pkginfo.MakeDepends].join(", ") || "None" })
+    if (pkginfo && (pkginfo.Depends || pkginfo.MakeDepends)) fields.push({ name: "Dependencies", value: [...pkginfo.Depends, ...pkginfo.MakeDepends].join(", ") || "None" });
     // Sends the embed
     msg.channel.createMessage({
       embed: {
@@ -67,7 +67,7 @@ class aurCommand extends Command {
         color: 0x1793D1,
         fields: fields,
       },
-    })
+    });
   }
 }
 

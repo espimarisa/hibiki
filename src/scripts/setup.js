@@ -1,6 +1,6 @@
 /*
   This configures the bot for production.
-  Right now, it only configures RethinkDB.
+  This creates any Rethink db/tables/indexes.
 */
 
 const { rethink } = require("../../cfg");
@@ -9,14 +9,14 @@ let db;
 
 // Hides redundant rethinkdbdash errors
 process.on("unhandledRejection", () => {
-  log.error("RethinkDB isn't configured or running properly.")
+  log.error("RethinkDB isn't configured or running properly.");
   process.exit();
-})
+});
 
 // Checks for rethinkDB
 try { db = require("rethinkdbdash")(rethink); } catch (_) {
   // Errors & ends the script if an error happened
-  log.error("Either modules aren't installed or RethinkDB isn't configured properly.")
+  log.error("Either modules aren't installed or RethinkDB isn't configured properly.");
   process.exit();
 }
 
@@ -41,6 +41,15 @@ const requiredTables = rethink.tables;
       log.success(`Created the ${t} table`);
     }
   }));
+
+  // Creates the marriage index
+  if (rethink.marriages) {
+    let index = await db.table("marriages").indexList();
+    if (!index.includes("marriages")) {
+      await db.table("marriages").indexCreate("marriages", [db.row("id"), db.row("spouse")], { multi: true });
+      log.success(`Created the marriages index in the marriage table`);
+    }
+  }
 
   // Logs when completed
   log.success("RethinkDB is configured properly.");

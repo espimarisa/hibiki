@@ -14,7 +14,7 @@ class guildCreate extends Event {
   }
 
   async run(guild) {
-    this.bot.log.info(`Added to server: ${guild.name}`)
+    this.bot.log.info(`Added to server: ${guild.name}`);
     // DMs the server owner
     let odm = this.bot.users.get(guild.ownerID);
     if (odm !== undefined) {

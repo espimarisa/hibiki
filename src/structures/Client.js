@@ -5,8 +5,8 @@
 
 const { Client, Collection } = require("eris");
 const { readdir } = require("fs");
-const Command = require("./structures/Command")
-const Event = require("./structures/Event")
+const Command = require("./structures/Command");
+const Event = require("./structures/Event");
 const starttime = new Date();
 
 // todo - move Echo to a npm package
@@ -21,12 +21,12 @@ class Verniy extends Client {
     super(token, erisOptions);
     this.cfg = require("../cfg.json").cfg;
     this.key = require("../cfg.json").keys;
-    this.embed = require("./Embed")
+    this.embed = require("./Embed");
     this.log = require("./Log");
     this.db = db;
     this.commands = new Collection(Command);
     this.events = new Collection(Event);
-    this.extensions = [""];
+    this.extensions = "[]";
     let argParser = require("../lib/utils/Args.js");
     this.argParser = new argParser(this);
     // Logs when ready
@@ -37,7 +37,7 @@ class Verniy extends Client {
       this.log.success(`${this.extensions.length} extensions loaded`);
       // Logs user & startup time
       this.log.success(`Logged in as ${this.user.username}#${this.user.discriminator} on ${this.guilds.size} servers`);
-      this.log.success(`Startup took ${new Date(new Date() - starttime).getSeconds()}.${new Date(new Date() - starttime).getMilliseconds()} seconds`)
+      this.log.success(`Startup took ${new Date(new Date() - starttime).getSeconds()}.${new Date(new Date() - starttime).getMilliseconds()} seconds`);
       this.editStatus("online", { name: `${this.guilds.size} servers`, type: 3 });
     });
   }
@@ -85,7 +85,7 @@ class Verniy extends Client {
         this.events.add(new event(this, item.split(".js")[0]));
         event = this.events.find(e => e.id === item.split(".js")[0]);
         // Runs the events
-        let eargs = (arg1, arg2, arg3, arg4, arg5) => { event.run(arg1, arg2, arg3, arg4, arg5) };
+        let eargs = (arg1, arg2, arg3, arg4, arg5) => { event.run(arg1, arg2, arg3, arg4, arg5); };
         this.on(event.name, eargs);
       });
     });
@@ -100,6 +100,7 @@ class Verniy extends Client {
         if (!extension.name.endsWith(".js")) return;
         let ext;
         try {
+          // todo: proper check for extload loading; avoid errors
           ext = require(`${path}/${extension.name}`);
           extensions.push(`${path}/${extension.name}`);
         } catch (err) {
@@ -107,7 +108,7 @@ class Verniy extends Client {
         }
         if (!ext) return;
         // Loads the extension
-        if (typeof ext === "function" && ext.extload === true) ext(this);
+        if (ext.extload && typeof ext === "function") ext(this);
       });
     });
   }

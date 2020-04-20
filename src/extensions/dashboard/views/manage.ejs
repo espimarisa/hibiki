@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("../partials/head.ejs") %>
+  <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
+  <link rel="stylesheet" href="../static/css/manage.css">
+  <script src="../static/navbar.js"></script>
+  <script src="../static/manage.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+  <title><%= bot.user.username %> - Dashboard</title>
+</head>
+
+<body>
+  <!-- Features-->
+  <section class="hero gradient is-primary is-bold is-small">
+    <header class="navbar is-transparent">
+      <div class="container">
+        <span class="navbar-burger burger" data-target="navMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        <div class="navbar-menu" id="navMenu">
+          <div class="navbar-end">
+            <a href="#general" class="navbar-item has-text-white">
+              <span class="icon"><i class="fas fa-cog"></i></span>
+              <span>General</span>
+            </a>
+            <a href="#automod" class="navbar-item has-text-white">
+              <span class="icon"><i class="fas fa-hammer"></i></span>
+              <span>Automod</span>
+            </a>
+            <a href="#features" class="navbar-item has-text-white">
+              <span class="icon"><i class="fas fa-magic"></i></span>
+              <span>Features</span>
+            </a>
+            <a href="#logging" class="navbar-item has-text-white">
+              <span class="icon"><i class="fas fa-scroll"></i></span>
+              <span>Logging</span>
+            </a>
+            <a href="#roles" class="navbar-item has-text-white">
+              <span class="icon"><i class="fas fa-user-tag"></i></span>
+              <span>Roles</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-vcentered">
+          <div class="column is-narrow is-hidden-mobile">
+            <i class="icons fas fa-wrench fa-6x"></i>
+          </div>
+          <div class="column is-narrow">
+            <h1 class="title is-size-2" style="margin-bottom: 5px;">Configuring <%= guild.name %></h1>
+            <div class="control">
+              <button id="submit" class="button is-light">
+                <span class="icon is-small">
+                  <i class="fas fa-check"></i>
+                </span>
+                <span id="saved">Save configuration</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+    </div>
+    </div>
+  </section>
+
+  <section class="container section">
+    <!-- General Settings-->
+    <h2 class="title is-3"><i class="fas fa-cog icons" style="padding-right: 5px;"></i>General</h2>
+    <p class="subtitle has-text-white">Basic settings of <%= bot.user.username %>.</p>
+    <div class="columns">
+      <div class="column is-narrow is-vcentered">
+        <!-- Prefix -->
+        <div class="field">
+          <label class="label">Prefix</label>
+          <div class="control">
+            <input id="prefix" class="input" type="text" placeholder="15 chars or less">
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-narrow">
+        <div class="field">
+          <label class="label">Disabled Commands</label>
+          <div class="control">
+            <div id="disabledCmds" class="select">
+              <select multiple="multiple" class="multiple-select">
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Automod Config -->
+    <h2 class="title is-3" id="automod"><i class="fas fa-hammer icons" style="padding-right: 5px;"></i>Automod</h2>
+    <p class="subtitle has-text-white">These settings configure how automod behaves.</p>
+    <div class="columns">
+      <div class="column is-narrow is-vcentered">
+        <div class="field">
+          <label class="label">Anti Spam</label>
+          <div id="AntiSpam" class="control">
+            <label class="radio">
+              <input type="radio" name="antispam"> Enabled </input>
+            </label>
+            <label class="radio">
+              <input type="radio" name="antispam"> Disabled </input>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Spam Punishments</label>
+          <div id="spamPunishments" class="control">
+            <input type="checkbox"> Delete message</input>
+            <br>
+            <input type="checkbox"> Mute the user </input>
+            <br>
+            <input type="checkbox"> Strike the user</input>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Antispam Threshold</label>
+          <div class="control">
+            <div id="spamThreshold" class="select">
+              <select>
+                <option>5</option>
+                <option>6</option>
+                <option selected>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-narrow">
+        <div class="field">
+          <label class="label">Anti Invite</label>
+          <div id="AntiInvite" class="control">
+            <label class="radio">
+              <input type="radio" name="antiinvitea"> Enabled </input>
+            </label>
+            <label class="radio">
+              <input type="radio" name="antiinvitea"> Disabled </input>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Invite Punishments</label>
+          <div id="invitePunishments" class="control">
+            <input type="checkbox"> Delete message</input>
+            <br>
+            <input type="checkbox"> Mute the user </input>
+            <br>
+            <input type="checkbox"> Strike the user</input>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Message on punishment</label>
+          <div id="msgOnPunishment" class="control">
+            <label class="radio">
+              <input type="radio" name="msgOnPunishmenta"> Enabled </input>
+            </label>
+            <label class="radio">
+              <input type="radio" name="msgOnPunishmenta"> Disabled </input>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <h2 class="title is-3" id="features"><i class="fas fa-magic icons" style="padding-right: 5px;"></i>Features</h2>
+    <p class="subtitle has-text-white">Enable, disable, &amp; control some features.</p>
+    <div class="columns">
+      <div class="column is-narrow">
+        <div class="field">
+          <label class="label">Starboard Star Amount</label>
+          <div class="control">
+            <div id="starAmount" class="select">
+              <select>
+                <option>1</option>
+                <option>2</option>
+                <option selected>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <%# Finds channels %>
+        <% let channels = bot.guilds.get(guild.id).channels.map(c => ({name: c.name, id: c.id, type: c.type}));
+      channels = channels.filter(c => c.type === 0);
+      channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).permissionsOf(bot.user.id).has("sendMessages"));
+      let roles = bot.guilds.get(guild.id).roles.map(r => ({name: r.name, managed: r.managed, color: r.color.toString(16), id: r.id}));
+      roles.splice(roles.find(r => r.name === "@everyone"), 1);
+      roles = roles.filter(r => !r.managed); 
+      let cmds = bot.commands.filter(c => c.category !== "Owner") %>
+
+        <div class="field">
+          <label class="label">Easy Translate</label>
+          <div id="easyTranslate" class="control">
+            <label class="radio">
+              <input type="radio" name="easytranslate"> Enabled </input>
+            </label>
+            <label class="radio">
+              <input type="radio" name="easytranslate"> Disabled </input>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-narrow">
+        <div class="field">
+          <label class="label">Agreement Channel</label>
+          <div class="control">
+            <div id="agreeChannel" class="select">
+              <select>
+                <option id="none">None</option>
+                <% for(let i = 0; i < channels.length; i++) { %>
+                <% let channel = channels[i] %>
+                <option id=<%=channel.id%>>#<%= channel.name %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Starboard Channel</label>
+          <div class="control">
+            <div id="starChannel" class="select">
+              <select>
+                <option id="none">None</option>
+                <% for(let i = 0; i < channels.length; i++) { %>
+                <% let channel = channels[i] %>
+                <option id=<%=channel.id%>>#<%= channel.name %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <h2 class="title is-3" id="logging"><i class="fas fa-scroll icons" style="padding-right: 5px;"></i>Logging</h2>
+    <p class="subtitle has-text-white">Configure the way <%= bot.user.username %> logs.</p>
+    <div class="columns">
+      <div class="column is-narrow">
+        <div class="field">
+          <label class="label">Leave/Join Message Channel</label>
+          <div class="control">
+            <div id="leavejoin" class="select">
+              <select>
+                <option id="none">None</option>
+                <% for(let i = 0; i < channels.length; i++) { %>
+                <% let channel = channels[i] %>
+                <option id=<%=channel.id%>>#<%= channel.name %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Join Message</label>
+          <div class="control">
+            <input id="joinMessage" class="textarea" placeholder="100 chars max" cols="1" rows="1"></input>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Leave Message</label>
+          <div class="control">
+            <input id="leaveMessage" class="textarea" placeholder="100 chars max" cols="1" rows="1"></input>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-narrow">
+        <div class="field">
+          <label class="label">Guild Logging Channel</label>
+          <div class="control">
+            <div id="guildLogging" class="select">
+              <select>
+                <option id="none">None</option>
+                <% for(let i = 0; i < channels.length; i++) { %>
+                <% let channel = channels[i] %>
+                <option id=<%=channel.id%>>#<%= channel.name %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Mod Logging Channel</label>
+          <div class="control">
+            <div id="modLogging" class="select">
+              <select>
+                <option id="none">None</option>
+                <% for(let i = 0; i < channels.length; i++) { %>
+                <% let channel = channels[i] %>
+                <option id=<%=channel.id%>>#<%= channel.name %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <h2 class="title is-3" id="roles"><i class="fas fa-user-tag icons" style="padding-right: 5px;"></i>Roles</h2>
+    <p class="subtitle has-text-white">Choose what roles to use for certain actions.</p>
+    <div class="columns">
+      <div class="column is-narrow">
+        <div class="field">
+          <label class="label">Agree Role</label>
+          <div class="control">
+            <div id="agreeRole" class="select">
+              <select>
+                <option id="none">None</option>
+                <% for(let i = 0; i < roles.length; i++) { %>
+                <% let role = roles[i] %>
+                <option id=<%=role.id%>><%= role.name %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Muted Role</label>
+          <div class="control">
+            <div id="muted" class="select">
+              <select>
+                <option id="none">None</option>
+                <% for(let i = 0; i < roles.length; i++) { %>
+                <% let role = roles[i] %>
+                <option id=<%=role.id%>><%= role.name %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Automatic Roles</label>
+          <div class="control">
+            <div id="autorole" class="select">
+              <select multiple="multiple" class="multiple-select">
+                <% for(let i = 0; i < roles.length; i++) { %>
+                <% let role = roles[i] %>
+                <option><%= role.name %> (<%= role.id %>)</option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="column is-narrow">
+        <div class="field">
+          <label class="label">Staff Role</label>
+          <div class="control">
+            <div id="staffrole" class="select">
+              <select>
+                <option id="none">None</option>
+                <% for(let i = 0; i < roles.length; i++) { %>
+                <% let role = roles[i] %>
+                <option id=<%=role.id%>><%= role.name %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Verified Role</label>
+          <div class="control">
+            <div id="verified" class="select">
+              <select>
+                <option id="none">None</option>
+                <% for(let i = 0; i < roles.length; i++) { %>
+                <% let role = roles[i] %>
+                <option id=<%=role.id%>><%= role.name %></option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+  </section>
+</body>
+
+<%- include("../partials/footer.ejs") %>
+
+</html>
+
+<script>
+$(async () => {
+  let res = await fetch(`/api/getitems?commands=true`, {
+    credentials: "include"
+  });
+  let cmds = await res.json();
+
+  let baseOptions = {
+    selectAll: false,
+    width: 153,
+    placeholder: "None",
+    onOpen: () => {
+      // Opening & closing
+      document.getElementsByClassName("ms-choice")[0].style["border-color"] = "#1abc9c";
+      document.getElementsByClassName("ms-choice")[0].style.boxShadow = "0 0 0 0.125em rgba(26, 188, 156, .25)";
+    },
+    onClose: () => {
+      document.getElementsByClassName("ms-choice")[0].style["border-color"] = "";
+      document.getElementsByClassName("ms-choice")[0].style.boxShadow = "";
+    },
+  }
+
+  // Disabled cmds
+  $("#disabledCmds > select").multipleSelect({
+    ...baseOptions,
+    data: cmds,
+    filter: true,
+    formatCountSelected: (count) => {
+      let disabledcats = [];
+      document.querySelector("#disabledCmds > div > div > ul").children.forEach(c => {
+        if (c.children.length && c.children[0].classList[0] && c.children[0].children[0].checked)
+          disabledcats.push(c.children[0].innerText.replace(/\s/g, ""));
+      });
+      if (!disabledcats.length) return `${count} Commands`
+      return disabledcats.join(", ")
+    }
+  });
+
+  // Autoroles
+  $("#autorole > select").multipleSelect({
+    ...baseOptions,
+    minimumCountSelected: 1,
+    onClick: (v) => {
+      if ($("#autorole > select").val().length > 2) {
+        let values = $("#autorole > select").val();
+        values.length = 2;
+        $(document.getElementById("autorole").children[0]).multipleSelect("setSelects", values)
+      }
+    },
+    formatCountSelected: (count) => {
+      return `${count} Roles selected`
+    }
+  })
+});
+
+</script>

@@ -5,7 +5,7 @@
 */
 
 const express = require("express");
-const voting = require("../../cfg").voting;
+const voting = require("../cfg").voting;
 
 // Sets up express
 const app = express();
@@ -60,7 +60,7 @@ module.exports = async (bot) => {
         color: bot.embed.colour("general"),
       },
     });
-    // Logs when a member voted
+    // Logs when a user voted
     bot.log.info(`${user !== undefined ? user.username : req.body.user} has voted (requested from: ${req.connection.remoteAddress})`);
     res.sendStatus(200);
   });
@@ -69,5 +69,5 @@ module.exports = async (bot) => {
   const listener = app.listen(voting.port, "0.0.0.0", () => bot.log.success(`Voting handler loaded on port ${listener.address().port}`));
 };
 
-// Sets file to be loaded
-module.exports.extload = true;
+// Toggles loading file
+module.exports.extload = voting.enabled;

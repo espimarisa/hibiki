@@ -11,7 +11,7 @@ module.exports = (event, timeout, check, bot) => {
   return new Promise((rs, rj) => {
     const listener = async (...args) => {
       let finalCheck = await check(...args);
-      if (check && typeof check === "function" && finalCheck === true) {
+      if (check && typeof check === "function" && finalCheck) {
         dispose();
         rs([...args]);
       }

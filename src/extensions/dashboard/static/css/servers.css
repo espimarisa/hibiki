@@ -1,0 +1,35 @@
+/* General Styling */
+
+html,
+body {
+  background: url(../img/bg1.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+/* Layout Styling */
+
+.content {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.box,
+.list,
+.list-item {
+  background: rgba(255, 255, 255, 0.034) !important;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 40em;
+  padding-left: 0;
+}
+
+.modal-card {
+  width: 30em;
+}
+
+.spacer {
+  margin: 3em;
+}

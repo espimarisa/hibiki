@@ -37,17 +37,25 @@ class userCommand extends Command {
       }
     }
 
+    // Usercfg, marriagee, cookies, strikes, and points
+    let spouseid;
+    let [state] = await this.bot.db.table("marriages").getAll(user.id, { index: "marriages" });
+    if (state) spouseid = state.id === user.id ? state.spouse : state.id;
+    let cookies = await this.bot.db.table("economy").get(user.id);
+    let usercfg = await this.bot.db.table("usercfg").get(user.id);
+
     // Sets the description
-    let usercfg = await this.bot.db.table("usercfg").get(msg.author.id);
-    if (usercfg && usercfg.bio) desc.push({ name: "", value: `${usercfg.bio}` })
+    if (usercfg && usercfg.bio) desc.push({ name: "", value: `${usercfg.bio}` });
     if (user.nick) desc.push({ name: "📛", value: user.nick });
-    desc.push({ name: "📩", value: `Joined ${format.date(user.joinedAt)}` });
-    desc.push({ name: "✉", value: `Created ${format.date(user.createdAt)}` });
-    if (user.roles.length > 0) desc.push({ name: "📚", value: `Top role is ${user.roles.map(r => msg.channel.guild.roles.get(r)).sort((a, b) => b.position - a.position)[0].name}` })
     desc.push({ name: "", value: statusFormat(user.status) });
-    if (user.game) desc.push({ name: `${user.game.emoji ? "" : "▶"}`, value: playing });
+    if (cookies && cookies.amount > 0) desc.push({ name: "🍪", value: `${Math.floor(cookies.amount)} cookies` })
+    desc.push({ name: "✉", value: `Joined ${format.date(user.joinedAt)}` });
+    desc.push({ name: "📅", value: `Created ${format.date(user.createdAt)}` });
     desc.push({ name: "🆔", value: user.id });
+    if (user.roles.length) desc.push({ name: "🔢", value: `Top role is ${user.roles.map(r => msg.channel.guild.roles.get(r)).sort((a, b) => b.position - a.position)[0].name}` });
+    if (user.game) desc.push({ name: `${user.game.emoji ? "" : "▶"}`, value: playing });
     if (usercfg && usercfg.info) desc.push(Object.keys(usercfg.info).map(k => `**${k}**: ${usercfg.info[k]}`).join("\n"));
+    if (state) desc.push({ name: "💘", value: `Married to ${spouseid ? this.bot.users.find(m => m.id === spouseid) ? this.bot.users.find(m => m.id === spouseid).username : `<@!${spouseid}>` : "Nobody"}` });
 
     // Sends the embed
     msg.channel.createMessage({
@@ -62,7 +70,7 @@ class userCommand extends Command {
           url: user.user.dynamicAvatarURL(null),
         },
       },
-    })
+    });
   }
 }
 

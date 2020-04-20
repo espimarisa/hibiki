@@ -16,9 +16,9 @@ class disableCommand extends Command {
     if (!command) {
       let disabledCmds = [];
       let disabledCategories = [];
-      if (guildcfg !== undefined && guildcfg.disabledCmds !== undefined && guildcfg.disabledCmds.length) disabledCmds = guildcfg.disabledCmds;
+      if (guildcfg && guildcfg.disabledCmds && guildcfg.disabledCmds.length) disabledCmds = guildcfg.disabledCmds;
       // Categories
-      if (guildcfg !== undefined && guildcfg.disabledCategories !== undefined && guildcfg.disabledCategories.length) {
+      if (guildcfg && guildcfg.disabledCategories && guildcfg.disabledCategories.length) {
         disabledCategories = guildcfg.disabledCategories.map(cat => `**${cat}**`);
       }
       // List of disabled commands
@@ -37,7 +37,7 @@ class disableCommand extends Command {
     }
 
     // Looks for cmd/category
-    let cmd = cmds.find(c => (c.id === command || c.aliases.includes(command)) && c.allowdisable === true);
+    let cmd = cmds.find(c => (c.id === command || c.aliases.includes(command)));
     let category = categories.find(c => c.toLowerCase() === command.toLowerCase());
     // If it's a cmd & category
     if (!cmd && category) {
@@ -47,7 +47,7 @@ class disableCommand extends Command {
         return msg.channel.createMessage(this.bot.embed("❌ Error", "That category isn't allowed to be disabled.", "error"));
       }
 
-      if (guildcfg.disabledCategories !== undefined && guildcfg.disabledCategories.includes(category)) {
+      if (guildcfg.disabledCategories && guildcfg.disabledCategories.includes(category)) {
         return msg.channel.createMessage(this.bot.embed("❌ Error", "That command/category is already disabled.", "error"));
       }
 
@@ -65,7 +65,7 @@ class disableCommand extends Command {
 
     // If already disabled
     if (!guildcfg.disabledCmds) guildcfg.disabledCmds = [];
-    if (guildcfg.disabledCmds !== undefined && guildcfg.disabledCmds.includes(cmd.id)) {
+    if (guildcfg.disabledCmds && guildcfg.disabledCmds.includes(cmd.id)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `That is already disabled.`, "error"));
     }
 

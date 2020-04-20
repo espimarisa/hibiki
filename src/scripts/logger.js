@@ -31,14 +31,14 @@ const Colours = {
   BgMagenta: "\x1b[45m",
   BgCyan: "\x1b[46m",
   BgWhite: "\x1b[47m",
-}
+};
 
 // Logging colours
 let ConfigColours = {
   date: "Blue",
   error: "Red",
   info: "Cyan",
-  general: "White",
+  general: "Yellow",
   success: "Green",
   warn: "Yellow",
 };
@@ -65,20 +65,20 @@ function date(syear = true) {
 // Exports logging options
 module.exports = (args) => {
   console.log(`${date(false)} ${Colours[ConfigColours.general]}${args} ${Colours.NC}`);
-}
+};
 
 module.exports.error = (args) => {
   console.log(`${date(false)} ${Colours[ConfigColours.error]}${args} ${Colours.NC}`);
-}
+};
 
 module.exports.info = (args) => {
   console.log(`${date(false)} ${Colours[ConfigColours.info]}${args} ${Colours.NC}`);
-}
+};
 
 module.exports.success = (args) => {
   console.log(`${date(false)} ${Colours[ConfigColours.success]}${args} ${Colours.NC}`);
-}
+};
 
 module.exports.warn = (args) => {
   console.log(`${date(false)} ${Colours[ConfigColours.warn]}${args} ${Colours.NC}`);
-}
+};
