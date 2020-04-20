@@ -14,7 +14,7 @@ class guildDelete extends Event {
   }
 
   async run(guild) {
-    this.bot.log.info(`Removed from server: ${guild.name}`)
+    this.bot.log.info(`Removed from server: ${guild.name}`);
     if (this.bot.key.topgg) {
       // Updates top.gg stats
       const res = await fetch(`https://top.gg/api/bots/${this.bot.key.topgg}/stats`, {

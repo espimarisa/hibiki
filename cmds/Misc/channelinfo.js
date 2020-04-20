@@ -18,11 +18,11 @@ class channelinfoCommand extends Command {
     // Sets the description
     let desc = [];
     if (channel.topic) desc.push({ name: "", value: `${channel.topic}` });
-    if (channel.parentID !== undefined) desc.push({ name: "📰", value: `${msg.channel.guild.channels.get(channel.parentID).name} category` });
+    if (channel.parentID) desc.push({ name: "📰", value: `${msg.channel.guild.channels.get(channel.parentID).name} category` });
     desc.push({ name: "📅", value: `${format.date(channel.createdAt)} (${format.dateParse(new Date() / 1000 - channel.createdAt / 1000)} ago)` });
     desc.push({ name: "🆔", value: channel.id });
-    if (channel.type === 1) desc.push({ name: "📝", value: `Channel ${channel.nsfw === true ? "is" : "isn't"} NSFW; position ${channel.position}.` });
-    if (channel.type === 2) desc.push({ name: "📝", value: `Bitrate: ${channel.bitrate}; limited to ${channel.userLimit} users` })
+    if (channel.type === 0) desc.push({ name: "📝", value: `Channel ${channel.nsfw ? "is" : "isn't"} NSFW; position ${channel.position}.` });
+    if (channel.type === 2) desc.push({ name: "📝", value: `Bitrate: ${channel.bitrate}; limited to ${channel.userLimit} users` });
     // Sends the embed
     msg.channel.createMessage({
       embed: {

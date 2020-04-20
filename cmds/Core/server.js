@@ -21,7 +21,7 @@ class serverCommand extends Command {
     let bots = 0;
     let users = 0;
     await guild.members.forEach(mem => {
-      if (mem.bot === true) bots++;
+      if (mem.bot) bots++;
       else users++;
     });
 
@@ -86,7 +86,7 @@ class serverCommand extends Command {
     if (guild.mfaLevel === 1) desc.push({ name: "🔐", value: "2FA Enabled" });
     if (guild.defaultNotifications === 0) desc.push({ name: "🔔", value: "All messages notify" });
     if (guild.premiumSubscriptionCount > 0) desc.push({ name: "👤", value: `${guild.premiumSubscriptionCount} members boosting` });
-    if (guild.premiumTier > 0) desc.push({ name: "⭐", value: `Boost level ${guild.premiumTier}` })
+    if (guild.premiumTier > 0) desc.push({ name: "⭐", value: `Boost level ${guild.premiumTier}` });
 
     // Sends the embed
     msg.channel.createMessage({
@@ -101,7 +101,7 @@ class serverCommand extends Command {
           url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
         },
       },
-    })
+    });
   }
 }
 

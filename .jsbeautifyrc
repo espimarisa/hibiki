@@ -1,6 +1,6 @@
 {
   "js": {
-    "allowed_file_extensions": ["eslintrc", "js", "json", "jshintrc", "jsbeautifyrc", "ts"],
+    "allowed_file_extensions": ["ejs", "eslintrc", "js", "json", "jshintrc", "jsbeautifyrc", "ts"],
     "brace_style": "collapse,preserve-inline",
     "break_chained_methods": false,
     "e4x": false,
@@ -34,7 +34,7 @@
     "max_preserve_newlines": 10
   },
   "html": {
-    "allowed_file_extensions": ["dust", "htm", "html", "xhtml", "shtml", "xml", "svg"],
+    "allowed_file_extensions": ["ejs", "dust", "htm", "html", "xhtml", "shtml", "xml", "svg"],
     "brace_style": "collapse",
     "end_with_newline": true,
     "indent_char": " ",

@@ -16,9 +16,9 @@ class enableCommand extends Command {
     if (!command) {
       let disabledCmds = [];
       let disabledCategories = [];
-      if (guildcfg !== undefined && guildcfg.disabledCmds !== undefined && guildcfg.disabledCmds.length) disabledCmds = guildcfg.disabledCmds;
+      if (guildcfg && guildcfg.disabledCmds && guildcfg.disabledCmds.length) disabledCmds = guildcfg.disabledCmds;
       // Categories
-      if (guildcfg !== undefined && guildcfg.disabledCategories !== undefined && guildcfg.disabledCategories.length) {
+      if (guildcfg && guildcfg.disabledCategories && guildcfg.disabledCategories.length) {
         disabledCategories = guildcfg.disabledCategories.map(cat => `**${cat}**`);
       }
       // List of disabled commands
@@ -37,7 +37,7 @@ class enableCommand extends Command {
     }
 
     // Looks for cmd/category
-    let cmd = cmds.find(c => (c.id === command || c.aliases.includes(command)) && c.allowdisable === true);
+    let cmd = cmds.find(c => (c.id === command || c.aliases.includes(command)) && c.allowdisable);
     let category = categories.find(c => c.toLowerCase() === command.toLowerCase());
     // If it's a cmd & category
     if (!cmd && category) {
@@ -60,7 +60,7 @@ class enableCommand extends Command {
     if (!guildcfg.disabledCmds) guildcfg.disabledCmds = [];
 
     // Already disabled
-    if (guildcfg.disabledCmds !== undefined && !guildcfg.disabledCmds.includes(cmd.id)) {
+    if (guildcfg.disabledCmds && !guildcfg.disabledCmds.includes(cmd.id)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `That command isn't disabled.`, "error"));
     }
 

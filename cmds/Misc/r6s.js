@@ -1,8 +1,7 @@
-// todo: fix all bugs lol
 const Command = require("../../lib/structures/Command");
 const fetch = require("node-fetch");
 // R6S ranks
-const ranks = { 1100: "Copper 5", 1200: "Copper 4", 1300: "Copper 3", 1400: "Copper 2", 1500: "Copper 1", 1600: "Bronze 5", 1700: "Bronze 4", 1800: "Bronze 3", 1900: "Bronze 2", 2000: "Bronze 1", 2100: "Silver 5", 2200: "Silver 4", 2300: "Silver 3", 2400: "Silver 2", 2500: "Silver 1", 2600: "Gold 3", 2800: "Gold 2", 3000: "Gold 1", 3200: "Platinum 3", 3600: "Platinum 2", 4000: "Platinum 1", 4400: "Diamond", 5000: "Champions" }
+const ranks = { 1100: "Copper 5", 1200: "Copper 4", 1300: "Copper 3", 1400: "Copper 2", 1500: "Copper 1", 1600: "Bronze 5", 1700: "Bronze 4", 1800: "Bronze 3", 1900: "Bronze 2", 2000: "Bronze 1", 2100: "Silver 5", 2200: "Silver 4", 2300: "Silver 3", 2400: "Silver 2", 2500: "Silver 1", 2600: "Gold 3", 2800: "Gold 2", 3000: "Gold 1", 3200: "Platinum 3", 3600: "Platinum 2", 4000: "Platinum 1", 4400: "Diamond", 5000: "Champions" };
 
 class r6sCommand extends Command {
   constructor(...args) {
@@ -28,15 +27,14 @@ class r6sCommand extends Command {
     user = await user.json();
     user = user[0];
     // Gets user stats
-    if (!user.uplay && !platform === "pc") return emsg.edit(this.bot.embed("❌ Error", "No info on that user.", "error"));
+    if (!user || !user.uplay && !platform === "pc") return emsg.edit(this.bot.embed("❌ Error", "No info on that user.", "error"));
     let stats = await fetch(`https://r6stats.com/api/stats/${encodeURI(user.uplay_id)}`);
     stats = await stats.json();
     // Sets the fields
     let fields = [];
     if (user.progressionStats) fields.push({ name: "🥇 Level", value: user.progressionStats.level });
-    // Seasonal stats
-    if (user.seasonalStats)
-      fields.push({ name: "🔢 MMR", value: user.seasonalStats.mmr })
+    // Stats
+    if (user.seasonalStats) fields.push({ name: "🔢 MMR", value: user.seasonalStats.mmr });
     if (user.genericStats) {
       fields.push({ name: "📈 K/D", value: user.genericStats.kd.toFixed(2) });
       fields.push({ name: "🏆 W/L", value: user.genericStats.wl.toFixed(2) });
@@ -46,7 +44,7 @@ class r6sCommand extends Command {
     let headshots = 0;
     if (stats && stats.operators) stats.operators.forEach(s => {
       kills += s.kills;
-      headshots += s.headshots
+      headshots += s.headshots;
     });
     if (kills && headshots) fields.push({ name: "😎 Headshot%", value: `${(headshots * 100 / kills).toFixed(1)}%` });
     // Ranks
