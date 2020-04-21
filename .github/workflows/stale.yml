@@ -1,4 +1,4 @@
-name: Marks stale issues and PRs
+name: Stale check
 
 on:
   schedule:
