@@ -13,6 +13,8 @@ class removewarnCommand extends Command {
 
   async run(msg, args) {
     // todo: actually do this
+    const ids = args.join(" ");
+    msg.channel.createMessage(`${ids}`);
   }
 }
 
