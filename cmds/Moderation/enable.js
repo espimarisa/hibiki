@@ -70,7 +70,7 @@ class enableCommand extends Command {
       await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(guildcfg);
       msg.channel.createMessage(this.bot.embed("✅ Success", `The **${cmd.id}** command has been enabled.`, "success"));
     } else {
-      msg.channel.createMessage(this.bot.embed("❌ Error", `That command/category doesn't exist or it isn't disabled.`, "error"));
+      msg.channel.createMessage(this.bot.embed("❌ Error", "That doesn't exist or it isn't disabled.", "error"));
     }
   }
 }

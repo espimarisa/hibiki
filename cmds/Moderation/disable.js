@@ -60,7 +60,7 @@ class disableCommand extends Command {
 
     // If cmd not found
     if (cmd === undefined) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "That command/category doesn't exist or it isn't allowed to be disabled.", "error"));
+      return msg.channel.createMessage(this.bot.embed("❌ Error", "That command doesn't exist or it isn't allowed to be disabled.", "error"));
     }
 
     // If already disabled
