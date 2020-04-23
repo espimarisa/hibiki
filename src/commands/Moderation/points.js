@@ -6,7 +6,7 @@ class pointsCommand extends Command {
   constructor(...args) {
     super(...args, {
       args: "<user:member&fallback>",
-      aliases: ["merits", "points", "reps", "reputation"],
+      aliases: ["merits", "rep", "reps", "reputation"],
       description: "Shows what reputation points a user has.",
     });
   }
