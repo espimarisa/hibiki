@@ -8,7 +8,6 @@ class warningsCommand extends Command {
       args: "<user:member&fallback>",
       aliases: ["punishments", "strikes", "warns", "warnings"],
       description: "Shows what warnings a user has.",
-      staff: true,
     });
   }
 
