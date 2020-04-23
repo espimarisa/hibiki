@@ -8,7 +8,6 @@ class pointsCommand extends Command {
       args: "<user:member&fallback>",
       aliases: ["merits", "points", "reps", "reputation"],
       description: "Shows what reputation points a user has.",
-      staff: true,
     });
   }
 
