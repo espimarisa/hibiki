@@ -13,7 +13,7 @@ class urbanCommand extends Command {
 
   async run(msg, args) {
     // Fetches the API
-    const query = encodeURIComponent(args.join("  "));
+    const query = args.join("  ");
     const res = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`);
     const body = await res.json().catch(() => {});
     if (!body || !res) return msg.channel.createMessage(this.bot.embed("❌ Error", "An error occurred. Try again later.", "error"));
