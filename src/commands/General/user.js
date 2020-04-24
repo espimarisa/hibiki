@@ -49,7 +49,7 @@ class userCommand extends Command {
     if (user.nick) desc.push({ name: "📛", value: user.nick });
     desc.push({ name: "", value: statusFormat(user.status) });
     if (cookies && cookies.amount > 0) desc.push({ name: "🍪", value: `${Math.floor(cookies.amount)} cookies` });
-    desc.push({ name: "✉", value: `Joined ${format.date(user.joinedAt)}` });
+    desc.push({ name: "📩", value: `Joined ${format.date(user.joinedAt)}` });
     desc.push({ name: "📅", value: `Created ${format.date(user.createdAt)}` });
     desc.push({ name: "🆔", value: user.id });
     if (user.roles.length) desc.push({ name: "🔢", value: `Top role is ${user.roles.map(r => msg.channel.guild.roles.get(r)).sort((a, b) => b.position - a.position)[0].name}` });

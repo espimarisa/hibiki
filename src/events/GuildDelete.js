@@ -23,8 +23,8 @@ class guildDelete extends Event {
         headers: { "cache-control": "no-cache", "Content-Type": "application/json", "Authorization": this.bot.key.topgg },
       });
       const body = await res.json();
-      if (!body) return this.bot.log.error("An error occured while trying to update the top.gg stats: 404");
-      if (body.error) this.bot.log.error(`An error occured while trying to update the top.gg stats: ${body.error}`);
+      if (!body) return this.bot.log.error("An error occurred while trying to update the top.gg stats: 404");
+      if (body.error) this.bot.log.error(`An error occurred while trying to update the top.gg stats: ${body.error}`);
     }
   }
 }

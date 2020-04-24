@@ -10,14 +10,19 @@ class argParser {
     this.argTypes = {
       string: (a) => { return a; },
     };
-    require("fs").readdir(`${__dirname}/ArgTypes`, (err, files) => {
+    // Looks for argtypes
+    require("fs").readdir(`${__dirname}/ArgTypes`, (_err, files) => {
       files.forEach(a => {
         let argtype;
         try {
+          // Tries to load each argtype
           argtype = require(`${__dirname}/ArgTypes/${a}`);
-        } catch (err) {}
+        } catch (err) {
+          // Logs if an arg couldn't be loaded
+          bot.log.error(`Error while loading ArgType ${a}: ${err}`);
+        }
         if (!argtype) return;
-        argtype.forEach((adsafasdf, i) => this.argTypes[adsafasdf.name] = adsafasdf);
+        argtype.forEach((atype) => this.argTypes[atype.name] = atype);
       });
     });
   }
