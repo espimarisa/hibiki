@@ -7,7 +7,7 @@ class warningsCommand extends Command {
     super(...args, {
       args: "<user:member&fallback>",
       aliases: ["punishments", "strikes", "warns", "warnings"],
-      description: "Shows what warnings a user has.",
+      description: "Shows what warnings a member has.",
     });
   }
 
