@@ -73,7 +73,7 @@ module.exports = [{
   label: "🔇 Muted Role",
   type: "roleID",
   typelabel: "Role",
-  description: "The role given to a user when they're muted.",
+  description: "The role given to a member when they're muted.",
 }, {
   id: "staffrole",
   emoji: "🔨",
@@ -101,7 +101,7 @@ module.exports = [{
   label: "☑ Verified Role",
   type: "roleID",
   typelabel: "Role",
-  description: "The role given to a user when they're verified.",
+  description: "The role given to a member when they're verified.",
 }, {
   emoji: "📎",
   label: "📎 Anti Invite",
@@ -138,7 +138,7 @@ module.exports = [{
 }, {
   emoji: "🔕",
   label: "🔕 Spam Punishment",
-  description: "Punishments applied when a user spams.",
+  description: "Punishments applied when a member spams.",
   id: "spamPunishments",
   pickerLabel: "spam",
   type: "punishment",

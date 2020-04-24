@@ -14,7 +14,6 @@
   },
   "dashboard": {
     "cookiesecret": "",
-    "enabled": true,
     "id": "",
     "secret": "",
     "port": "",
@@ -44,7 +43,6 @@
   },
   "voting": {
     "auth": "",
-    "enabled": false,
     "port": ""
   },
   "echo": {

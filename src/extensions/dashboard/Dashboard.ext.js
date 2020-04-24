@@ -156,6 +156,3 @@ module.exports = (bot) => {
   // Listens on port
   app.listen(cfg.port);
 };
-
-// Toggles loading file
-module.exports.extload = cfg.enabled;

@@ -26,7 +26,7 @@ class Verniy extends Client {
     this.db = db;
     this.commands = new Collection(Command);
     this.events = new Collection(Event);
-    this.extensions = "[]";
+    this.extensions = [];
     const argParser = require("../lib/utils/Args.js");
     this.argParser = new argParser(this);
     // Logs when ready
@@ -34,6 +34,7 @@ class Verniy extends Client {
       // Logs number of cmds, events, extensions
       this.log.success(`${this.commands.size} commands loaded`);
       this.log.success(`${this.events.size} events loaded`);
+      this.extensions.forEach(e => e(this));
       this.log.success(`${this.extensions.length} extensions loaded`);
       // Logs user & startup time
       this.log.success(`Logged in as ${this.user.username}#${this.user.discriminator} on ${this.guilds.size} servers`);
@@ -97,10 +98,9 @@ class Verniy extends Client {
     readdir(path, { withFileTypes: true }, (err, extensions) => {
       extensions.forEach(extension => {
         if (extension.isDirectory()) return this.loadExtensions(`${path}/${extension.name}`);
-        if (!extension.name.endsWith(".js")) return;
+        if (!extension.name.endsWith(".ext.js")) return;
         let ext;
         try {
-          // todo: proper check for extload loading; avoid errors
           ext = require(`${path}/${extension.name}`);
           extensions.push(`${path}/${extension.name}`);
         } catch (err) {
@@ -108,7 +108,7 @@ class Verniy extends Client {
         }
         if (!ext) return;
         // Loads the extension
-        if (ext.extload && typeof ext === "function") ext(this);
+        if (typeof ext === "function") this.extensions.push(ext);
       });
     });
   }

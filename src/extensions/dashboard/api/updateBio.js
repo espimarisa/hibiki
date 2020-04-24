@@ -1,6 +1,6 @@
 /*
   Bio Updater
-  Updates a user's bio automatically.
+  Updates a member's bio automatically.
 */
 
 const express = require("express");
