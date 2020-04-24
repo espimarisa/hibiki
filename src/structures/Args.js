@@ -8,23 +8,18 @@ class argParser {
     this.bot = bot;
     // Types of args
     this.argTypes = {
-      bool: (a) => a === "on" || a === "true" || a === "enable" || a === "yes" || a === "y",
-      channel: (a, msg) => msg.channel.guild.channels.find(c => c.id === a || a.startsWith(`<#${c.id}>`) || c.name.startsWith(a)),
-      command: (a) => this.bot.commands.find(c => c.id.startsWith(a) || (c.aliases && c.aliases.includes(a))),
-      event: (a) => this.bot.events.find(e => e.id.toLowerCase().startsWith(a)),
-      guild: (a) => this.bot.guilds.find(g => g.id === a || g.name === a),
-      module: (a) => this.bot.commands.find(c => c.id.toLowerCase().startsWith(a) || (c.aliases && c.aliases.includes(a))),
-      role: (a, msg) => msg.channel.guild.roles.find(r => r.id === a || a.startsWith(`<@&${r.id}>`) || r.name.startsWith(a)),
       string: (a) => { return a; },
-      member: (a, msg, flag) => {
-        // No autocomplete
-        const member = msg.channel.guild.members.find(m => flag !== "strict" ? m.username.toLowerCase() === a || m.id === a || msg.mentions.includes(m.user) :
-          m.username.startsWith(a) || m.id === a || a.startsWith(`<@!${m.id}>`) || msg.mentions.includes(m.user));
-        // Use user if no member found
-        if ((!a || !member) && flag === "fallback") return msg.channel.guild.members.get(msg.author.id);
-        return member;
-      },
     };
+    require("fs").readdir(`${__dirname}/ArgTypes`, (err, files) => {
+      files.forEach(a => {
+        let argtype;
+        try {
+          argtype = require(`${__dirname}/ArgTypes/${a}`);
+        } catch (err) {}
+        if (!argtype) return;
+        argtype.forEach((adsafasdf, i) => this.argTypes[adsafasdf.name] = adsafasdf);
+      });
+    });
   }
 
   // Parses each type of arg
@@ -32,7 +27,6 @@ class argParser {
     const argObj = [];
     // Sets each arg
     argString.split(delimiter).forEach(arg => {
-      // Hibiki, powered by unreliable regexes
       const r = /(<|\[)(\w{1,}):(\w{1,})&?([\w=*]{1,})?(>|\])/.exec(arg);
       if (!r) return;
       argObj.push({
@@ -52,7 +46,7 @@ class argParser {
       if (argg.flag && argg.flag.startsWith("ignore=") && arg === argg.flag.split("ignore=")[1]) return argObj.splice(i, 1);
       if (!this.argTypes[argg.type]) return;
       const value = this.argTypes[argg.type](arg.toLowerCase(), msg, argg.flag);
-      if (!value) return;
+      if (typeof value == "undefined") return;
       argg.value = value;
       argObj[i] = argg;
     });

@@ -108,7 +108,7 @@ class Handler extends Event {
     if (cmd.args) {
       // Missing srgs; sends missing
       parsedArgs = this.bot.argParser.parse(cmd.args, args.join(" "), cmd.argsDelimiter, msg);
-      const missingargs = parsedArgs.filter(a => !a.value && !a.optional);
+      const missingargs = parsedArgs.filter(a => typeof a.value == "undefined" && !a.optional);
       if (missingargs.length) {
         return msg.channel.createMessage(this.bot.embed("❌ Error", `No **${missingargs.map(a => a.name).join(" or ")}** was provided.`, "error"));
       }
