@@ -12,6 +12,7 @@ const app = express();
 app.use(express.json());
 
 module.exports = async (bot) => {
+  if (!voting.port) return;
   app.post("/voteReceive", async (req, res) => {
     // Sends if unauthorised
     if (req.headers.authorization !== voting.auth) {

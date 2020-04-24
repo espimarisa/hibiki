@@ -61,7 +61,7 @@ class Verniy extends Client {
             }
             if (!command) return;
             // Loads the commands
-            this.commands.add(new command(this, item.name, cmd.split(".js")[0]));
+            this.commands.add(new command(this, item.name, /(.{1,})\.js/.exec(cmd)[1]));
           });
         });
       });
@@ -83,10 +83,10 @@ class Verniy extends Client {
         }
         if (!event) return;
         // Loads the events
-        this.events.add(new event(this, item.split(".js")[0]));
-        event = this.events.find(e => e.id === item.split(".js")[0]);
+        this.events.add(new event(this, /(.{1,})\.js/.exec(item)[1]));
+        event = this.events.find(e => e.id === /(.{1,})\.js/.exec(item)[1]);
         // Runs the events
-        const eargs = (arg1, arg2, arg3, arg4, arg5) => { event.run(arg1, arg2, arg3, arg4, arg5); };
+        const eargs = (arg1, arg2, arg3, arg4) => { event.run(arg1, arg2, arg3, arg4); };
         this.on(event.name, eargs);
       });
     });
