@@ -106,7 +106,7 @@ class Handler extends Event {
     // Command args
     let parsedArgs;
     if (cmd.args) {
-      // Missing srgs; sends missing
+      // Missing args; sends missing
       parsedArgs = this.bot.argParser.parse(cmd.args, args.join(" "), cmd.argsDelimiter, msg);
       const missingargs = parsedArgs.filter(a => typeof a.value == "undefined" && !a.optional);
       if (missingargs.length) {
