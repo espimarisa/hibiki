@@ -48,6 +48,7 @@ app.set("view engine", "ejs");
 
 // Loads auth system
 module.exports = (bot) => {
+  if (!cfg) return;
   app.use(session({
     secret: `${cfg.cookiesecret}`,
     resave: false,
