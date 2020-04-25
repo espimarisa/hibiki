@@ -1,19 +1,23 @@
+<%#
+  This is the main dashboard page.
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <%- include("../partials/head.ejs") %>
+  <%- include("../partials/meta.ejs") %>
   <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
   <link rel="stylesheet" href="../static/css/manage.css">
   <script src="../static/navbar.js"></script>
   <script src="../static/manage.js"></script>
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
-  <title><%= bot.user.username %> - Dashboard</title>
+  <title>Configure - <%= guild.name %></title>
 </head>
 
 <body>
-  <!-- Features-->
+  <%# Features %>
   <section class="hero gradient is-primary is-bold is-small">
     <header class="navbar is-transparent">
       <div class="container">
@@ -74,12 +78,12 @@
   </section>
 
   <section class="container section">
-    <!-- General Settings-->
+    <%# General Settings %>
     <h2 class="title is-3"><i class="fas fa-cog icons" style="padding-right: 5px;"></i>General</h2>
     <p class="subtitle has-text-white">Basic settings of <%= bot.user.username %>.</p>
     <div class="columns">
       <div class="column is-narrow is-vcentered">
-        <!-- Prefix -->
+        <%# Prefix %>
         <div class="field">
           <label class="label">Prefix</label>
           <div class="control">
@@ -103,7 +107,7 @@
 
     <hr>
 
-    <!-- Automod Config -->
+    <%# Automod Config %>
     <h2 class="title is-3" id="automod"><i class="fas fa-hammer icons" style="padding-right: 5px;"></i>Automod</h2>
     <p class="subtitle has-text-white">These settings configure how automod behaves.</p>
     <div class="columns">
@@ -195,9 +199,9 @@
     <div class="columns">
       <div class="column is-narrow">
         <div class="field">
-          <label class="label">Starboard Star Amount</label>
+          <label class="label">Pinboard Pin Amount</label>
           <div class="control">
-            <div id="starAmount" class="select">
+            <div id="pinAmount" class="select">
               <select>
                 <option>1</option>
                 <option>2</option>
@@ -253,9 +257,9 @@
         </div>
 
         <div class="field">
-          <label class="label">Starboard Channel</label>
+          <label class="label">Pinboard Channel</label>
           <div class="control">
-            <div id="starChannel" class="select">
+            <div id="pinChannel" class="select">
               <select>
                 <option id="none">None</option>
                 <% for(let i = 0; i < channels.length; i++) { %>

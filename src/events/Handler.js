@@ -1,11 +1,12 @@
 /*
   This handles all commands & paramater functions.
-  It also enables Echo to capture command errors.
+  It also enables Sentry to capture command errors.
 */
 
 const Event = require("../lib/structures/Event");
 const format = require("../lib/scripts/Format");
 const Eris = require("eris");
+const Sentry = require("@sentry/node");
 
 class Handler extends Event {
   constructor(...args) {
@@ -121,10 +122,13 @@ class Handler extends Event {
       // Tries to run the command
       await cmd.run(msg, args, parsedArgs);
     } catch (e) {
-      // // Captures errors with Echo
-      // const echo = require("../../Echo/sdk/index");
-      // echo.setSettings(require("../cfg").echo);
-      // echo.capture(e);
+      // Sentry info
+      Sentry.configureScope(scope => {
+        scope.setUser({ id: msg.author.id, username: format.tag(msg.author) });
+        scope.setExtra("guild", msg.channel.guild.name);
+      });
+      // Logs error
+      Sentry.captureException(e);
       console.log(e);
       msg.channel.createMessage(this.bot.embed("❌ Error", `An error occurred, and it has been logged. \n \`\`\`js\n${e}\n\`\`\``, "error"));
     }

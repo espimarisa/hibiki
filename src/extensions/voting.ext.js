@@ -1,7 +1,6 @@
 /*
-  This listens for proper requests from top.gg
-  in order to know what users to add cookies
-  to when they have voted for the bot.
+  This listens for proper requests from top.gg.
+  It also adds cookies to the user's account who voted.
 */
 
 const express = require("express");

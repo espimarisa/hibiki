@@ -3,26 +3,28 @@ cfg.json
 config.json
 configuration.json
 
-# DB & Modules
+# Binaries
 ffmpeg
 ffmpeg.exe
 rethinkdb
 rethinkdb.exe
-rethinkdb_data/
+
+# Modules
 dist/
 node_modules/
 out/
+rethinkdb_data/
 
 # Logs & lockfiles
 logs/*
 .npm
 npm
-npm-debug.log*
-npm-error.log*
+npm-debug.log
+npm-error.log
 report.*
-yarn-debug.log*
-yarn-error.log*
-package.lock*
+yarn-debug.log
+yarn-error.log
+package-lock.json
 yarn.lock*
 
 # Windows

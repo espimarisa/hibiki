@@ -1,6 +1,5 @@
 /*
   This configures how console logging will look.
-  Called using this.bot.log.x or bot.log.x.
 */
 
 // Sets console colours

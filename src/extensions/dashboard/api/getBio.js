@@ -1,5 +1,4 @@
 /*
-  Bio Loader
   Gets the logged in user's bio.
 */
 
@@ -18,5 +17,3 @@ module.exports = (bot) => {
   });
   return router;
 };
-
-module.exports.extload = false;

@@ -1,5 +1,4 @@
 /*
-  Navbar Functionality
   Handles Bulma's Navbar burger menus.
 */
 

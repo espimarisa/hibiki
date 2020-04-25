@@ -1,5 +1,4 @@
 /*
-  Dashboard Communicator
   Functionality for config reading & updates.
 */
 

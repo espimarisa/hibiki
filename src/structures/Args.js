@@ -1,6 +1,5 @@
 /*
-  This parses argument types & configs
-  how each type of arg works in commands.
+  This loads ArgTypes and parses args.
 */
 
 class argParser {

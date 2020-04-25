@@ -1,6 +1,5 @@
 /*
-  Static Bio Updater
-  Grabs the user's bio from input.
+  Grabs the user's bio from the input.
 */
 
 let lastInput = new Date().getTime();

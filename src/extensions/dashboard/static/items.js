@@ -1,0 +1,93 @@
+/*
+  Valid setup items & their info.
+*/
+
+module.exports = [{
+  id: "agreeChannel",
+  type: "channelID",
+  typelabel: "Channel",
+}, {
+  id: "agreeRole",
+  type: "roleID",
+  typelabel: "Role",
+}, {
+  id: "AntiInvite",
+  type: "bool",
+}, {
+  id: "AntiSpam",
+  type: "bool",
+}, {
+  id: "autorole",
+  type: "roleArray",
+  maximum: 3,
+  typelabel: "Roles",
+}, {
+  id: "disabledCategories",
+  type: "array",
+}, {
+  id: "disabledCmds",
+  type: "array",
+}, {
+  id: "easyTranslate",
+  type: "bool",
+  typelabel: "Option",
+}, {
+  id: "invitePunishments",
+  type: "punishment",
+}, {
+  id: "leavejoin",
+  type: "channelID",
+  typelabel: "Channel",
+}, {
+  id: "joinMessage",
+  type: "string",
+  typelabel: "Text",
+}, {
+  id: "leaveMessage",
+  type: "string",
+  typelabel: "Text",
+}, {
+  id: "guildLogging",
+  type: "channelID",
+  typelabel: "Channel",
+}, {
+  id: "modLogging",
+  type: "channelID",
+  typelabel: "Channel",
+}, {
+  id: "msgOnPunishment",
+  type: "bool",
+}, {
+  id: "muted",
+  type: "roleID",
+  typelabel: "Role",
+}, {
+  id: "pinAmount",
+  type: "number",
+  typelabel: "Number",
+}, {
+  id: "pinChannel",
+  type: "channelID",
+  typelabel: "Channel",
+}, {
+  id: "prefix",
+  type: "string",
+  minimum: 1,
+  maximum: 15,
+}, {
+  id: "spamPunishments",
+  type: "punishment",
+}, {
+  id: "spamThreshold",
+  minimum: 5,
+  maximum: 10,
+  type: "number",
+}, {
+  id: "staffrole",
+  type: "roleID",
+  typelabel: "Role",
+}, {
+  id: "verified",
+  type: "roleID",
+  typelabel: "Role",
+}];

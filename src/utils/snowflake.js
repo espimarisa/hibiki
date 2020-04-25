@@ -1,6 +1,5 @@
 /*
-  Snowflake Function
-  This generates random IDs for use in commands.
+  This generates random IDs.
 */
 
 module.exports = {

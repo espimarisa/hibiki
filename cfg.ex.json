@@ -27,6 +27,7 @@
   "keys": {
     "abuseipdb": "",
     "dictionary": "",
+    "dsn": "",
     "ipinfo": "",
     "maps": "",
     "osu": "",
@@ -44,10 +45,5 @@
   "voting": {
     "auth": "",
     "port": ""
-  },
-  "echo": {
-    "auth": "",
-    "id": "",
-    "host": ""
   }
 }
