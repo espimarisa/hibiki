@@ -1,6 +1,6 @@
 /*
   Ask Utility
-  This handles things such as asking for yes or no,
+  This handles asking for yes or no.
 */
 
 const Wait = require("../utils/Wait");
