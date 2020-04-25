@@ -6,6 +6,7 @@ class inspectCommand extends Command {
       args: "<invite:string>",
       aliases: ["lookup", "lookupinvite", "inspectinvite", "inviteinspect", "invitelookup"],
       description: "Returns info about a server invite.",
+      requiredPerms: "manageMessages",
       staff: true,
     });
   }
