@@ -5,7 +5,7 @@ class slapCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["hit"],
-      args: "<member:member>",
+      args: "<member:member&strict>",
       description: "Slaps a member.",
       cooldown: 3,
     });

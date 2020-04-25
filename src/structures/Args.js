@@ -50,7 +50,7 @@ class argParser {
       // Ignore flag
       if (argg.flag && argg.flag.startsWith("ignore=") && arg === argg.flag.split("ignore=")[1]) return argObj.splice(i, 1);
       if (!this.argTypes[argg.type]) return;
-      const value = this.argTypes[argg.type](arg.toLowerCase(), msg, argg.flag);
+      const value = this.argTypes[argg.type](arg.toLowerCase(), msg, argg.flag, this.bot);
       if (typeof value == "undefined") return;
       argg.value = value;
       argObj[i] = argg;
