@@ -1,5 +1,4 @@
 /*
-  Item Loader
   This sends cmds and items thru the API.
 */
 
@@ -26,9 +25,7 @@ module.exports = (bot) => {
       return res.status(200).send(cmds);
     }
     // Sends db items
-    res.status(200).send(require("../../../lib/utils/ValidItems"));
+    res.status(200).send(require("../static/items"));
   });
   return router;
 };
-
-module.exports.extload = false;

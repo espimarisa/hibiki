@@ -1,11 +1,10 @@
 /*
-  Config Updater
-  Updates a server config thru the dashboard.
+  Updates a server config.
 */
 
 const express = require("express");
 const router = express.Router();
-const items = require("../../../lib/utils/ValidItems");
+const items = require("../static/items");
 
 module.exports = bot => {
   router.post("/api/updateconfig/:id", async (req, res) => {
@@ -75,5 +74,3 @@ module.exports = bot => {
   });
   return router;
 };
-
-module.exports.extload = false;
