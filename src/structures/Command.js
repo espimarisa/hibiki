@@ -1,7 +1,8 @@
 /*
-  Command Structure
-  Holds command params & loading functionality.
+  Paramaters, unloading & reloading functionality.
 */
+
+const Sentry = require("@sentry/node");
 
 class Command {
   constructor(bot, category, id, params) {
@@ -39,7 +40,7 @@ class Command {
         command = require(`../../cmds/${this.category}/${this.id}`);
       } catch (err) {
         command = err;
-        // Sends if a command couldn't be reloaded
+        Sentry.captureException(err);
         this.bot.log.error(`${this.id} was unable to be reloaded: ${err}`);
       }
       if (!command || command instanceof Error) return Error(command instanceof Error ? command : `${this.id} was unable to be reloaded`);

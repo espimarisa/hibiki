@@ -1,5 +1,4 @@
 /*
-  Bio Updater
   Updates a user's bio automatically.
 */
 
@@ -32,5 +31,3 @@ module.exports = (bot) => {
   });
   return router;
 };
-
-module.exports.extload = false;

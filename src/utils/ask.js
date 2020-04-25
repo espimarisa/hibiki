@@ -1,5 +1,4 @@
 /*
-  Ask Utility
   This handles asking for yes or no.
 */
 

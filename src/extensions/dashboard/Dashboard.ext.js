@@ -1,6 +1,6 @@
 /*
-  Dashboard Backend
-  Handles dash rendering & authentication.
+  This is the main Dashboard file.
+  Handles rendering, authentication, and redirection.
 */
 
 const bodyparser = require("body-parser");
@@ -115,7 +115,7 @@ module.exports = (bot) => {
   // Server manager
   app.get("/manage/:id", checkAuth, async (req, res) => {
     // Sets the vaid items & props
-    const validItems = require("../../lib/utils/ValidItems");
+    const items = require("./static/items");
     // Displays if the user isn't authenticated
     if (!req.isAuthenticated()) { res.status(401).render("401"); }
     // User & guild perms
@@ -126,7 +126,7 @@ module.exports = (bot) => {
     if (!guild) return res.status(403).render("403");
     // Renders the dashboard
     const cfg = await bot.db.table("guildcfg").get(guild.id);
-    res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, validItems: validItems, user: user });
+    res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, items: items, user: user });
   });
 
   // Renders landing page

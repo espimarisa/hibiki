@@ -1,3 +1,7 @@
+<%#
+  This is the main landing page.
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +12,7 @@
   <meta content="The ultimate all-in-one Discord bot." property="og:description">
   <meta content="<%= bot.user.username %>" name="twitter:title">
   <meta content="The ultimate all-in-one Discord bot." name="twitter:description">
-  <%- include("../partials/head.ejs") %>
+  <%- include("../partials/meta.ejs") %>
   <link rel="stylesheet" href="../static/css/index.css">
   <script src="../static/navbar.js"></script>
   <title><%= bot.user.username %></title>

@@ -1,6 +1,5 @@
 /*
-  This is a waitFor listener.
-  It's used to set timeouts & remove listeners.
+  Used to set timeouts & remove listeners.
 */
 
 module.exports = (event, timeout, check, bot) => {

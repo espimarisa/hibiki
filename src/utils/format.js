@@ -1,6 +1,6 @@
 /*
-  This is used for things that need to
-  be formatted more than a few times.
+  Formats various things.
+  Only modules used a lot should be here.
 */
 
 module.exports = {

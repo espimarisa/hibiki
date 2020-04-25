@@ -1,5 +1,4 @@
 /*
-  Config Loader
   Gets the guildcfg of a server.
 */
 
@@ -22,5 +21,3 @@ module.exports = bot => {
   });
   return router;
 };
-
-module.exports.extload = false;

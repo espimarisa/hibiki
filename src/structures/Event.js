@@ -1,5 +1,4 @@
 /*
-  Event Structure
   Holds info used by events.
 */
 

@@ -1,6 +1,6 @@
 /*
-  This configures the bot for production.
-  This creates any Rethink db/tables/indexes.
+  This configures RethinkDB for use.
+  Creates indexes if set to true in cfg.
 */
 
 const { rethink } = require("../../cfg");
