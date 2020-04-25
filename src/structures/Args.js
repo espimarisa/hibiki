@@ -19,7 +19,7 @@ class argParser {
           argtype = require(`${__dirname}/ArgTypes/${a}`);
         } catch (err) {
           // Logs if an arg couldn't be loaded
-          bot.log.error(`Error while loading ArgType ${a}: ${err}`);
+          this.bot.log.error(`Error while loading ArgType ${a}: ${err}`);
         }
         if (!argtype) return;
         argtype.forEach((atype) => this.argTypes[atype.name] = atype);
