@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class pokeCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<member:member>",
+      args: "<member:member&strict>",
       description: "Pokes a member.",
       cooldown: 3,
     });
