@@ -6,7 +6,7 @@ class removewarnCommand extends Command {
       args: "<id:string>",
       aliases: ["removepunish", "rmpunish", "removestrike", "removestrikes", "rmstrike", "rw", "rmwarn", "removewarning"],
       description: "Removes one or more warnings.",
-      requiredPerms: "manageMessages",
+      requiredperms: "manageMessages",
       staff: true,
     });
   }

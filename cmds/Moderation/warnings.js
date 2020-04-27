@@ -24,7 +24,7 @@ class warningsCommand extends Command {
     // Uploads to hasteb.in if over 20
     if (warnings.length > 20) {
       // Joins warnings
-      const warnstring = `${warnings.map(m => `${m.id} (by ${format.tag(msg.channel.guild.members.get(m.giver) || { username: `Unknown User (${m.giverId})`, discriminator: "0000" }, false)})\n${m.reason}`).join("\n\n")}`;
+      const warnstring = `${warnings.map(m => `${m.id} (by ${format.tag(msg.channel.guild.members.get(m.giver) || { username: `Unknown User (${m.giverId})`, discriminator: "0000" })})\n${m.reason}`).join("\n\n")}`;
       const res = await fetch("https://hasteb.in/documents", { referrer: "https://hasteb.in/", body: warnstring, method: "POST", mode: "cors" });
       const { key } = await res.json();
       return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** has more than 20 warnings. You can view them [here](https://hasteb.in/${key}).`, "error"));

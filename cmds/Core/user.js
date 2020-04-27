@@ -52,7 +52,7 @@ class userCommand extends Command {
     desc.push({ name: "📩", value: `Joined ${format.date(user.joinedAt)}` });
     desc.push({ name: "📅", value: `Created ${format.date(user.createdAt)}` });
     desc.push({ name: "🆔", value: user.id });
-    if (user.roles.length) desc.push({ name: "🔢", value: `Top role is ${user.roles.map(r => msg.channel.guild.roles.get(r)).sort((a, b) => b.position - a.position)[0].name}` });
+    if (user.roles.length) desc.push({ name: "🔢", value: `Top role is ${user.highestRole.name}` });
     if (user.game) desc.push({ name: `${user.game.emoji ? "" : "▶"}`, value: playing });
     if (usercfg && usercfg.info) desc.push(Object.keys(usercfg.info).map(k => `**${k}**: ${usercfg.info[k]}`).join("\n"));
     if (state) desc.push({ name: "💘", value: `Married to ${spouseid ? this.bot.users.find(m => m.id === spouseid) ? this.bot.users.find(m => m.id === spouseid).username : `<@!${spouseid}>` : "Nobody"}` });
@@ -64,7 +64,7 @@ class userCommand extends Command {
         color: this.bot.embed.colour("general"),
         author: {
           icon_url: user.user.dynamicAvatarURL(null),
-          name: format.tag(user.user, false),
+          name: format.tag(user.user),
         },
         thumbnail: {
           url: user.user.dynamicAvatarURL(null),

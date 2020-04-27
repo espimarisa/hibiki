@@ -8,7 +8,7 @@ class addpointCommand extends Command {
       args: "<user:member&strict> [reason:string]",
       aliases: ["addreputation", "addmerit", "addrep", "merit"],
       description: "Gives a member a reputation point.",
-      requiredPerms: "manageMessages",
+      requiredperms: "manageMessages",
       staff: true,
     });
   }
