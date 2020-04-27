@@ -5,8 +5,8 @@
 
 const Event = require("../lib/structures/Event");
 const format = require("../lib/scripts/Format");
-const Eris = require("eris");
-const Sentry = require("@sentry/node");
+const Eris = require("eris-additions")(require("eris"));
+const sentry = require("@sentry/node");
 
 class Handler extends Event {
   constructor(...args) {
@@ -30,7 +30,7 @@ class Handler extends Event {
           color: this.bot.embed.colour("general"),
           author: {
             icon_url: msg.author.dynamicAvatarURL(),
-            name: `Sent a DM by ${format.tag(msg.author, false)}`,
+            name: `Sent a DM by ${format.tag(msg.author)}`,
           },
           image: {
             url: msg.attachments.length !== 0 ? msg.attachments[0].url : "",
@@ -56,6 +56,9 @@ class Handler extends Event {
     // Looks for the command ran
     const [cmdName, ...args] = msg.content.slice(prefix.length).split(" ").map(s => s.trim());
     const cmd = this.bot.commands.find(c => c.id === cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
+    // If no permission to send messages or embed links
+    if (!msg.channel.memberHasPermission(this.bot.user.id, "sendMessages")) return msg.member.createMessage(`I don't have permission to send messages in <#${msg.channel.id}>.`);
+    if (!msg.channel.memberHasPermission(this.bot.user.id, "embedLinks")) return msg.channel.createMessage(`In order to function properly, I need permission to **embed links**.`);
     if (!cmd) return;
 
     // Owner cmds
@@ -74,7 +77,8 @@ class Handler extends Event {
     // Client perms
     if (cmd.clientperms) {
       const botperms = msg.channel.guild.members.get(this.bot.user.id).permission;
-      if (!botperms.has(cmd.clientperms)) return msg.channel.createMessage(this.bot.embed("❌ Error", `I need the ${cmd.clientperms} permission to run this.`, "error"));
+      if (!botperms.has("embedLinks")) return msg.channel.createMessage(`❌ Error - I need permission to **embed links** to work properly.`);
+      if (!botperms.has(cmd.clientperms)) return msg.channel.createMessage(this.bot.embed("❌ Error", `I need the **${cmd.clientperms}** permission to run this command.`, "error"));
     }
 
     // NSFW-only cmds
@@ -123,12 +127,12 @@ class Handler extends Event {
       await cmd.run(msg, args, parsedArgs);
     } catch (e) {
       // Sentry info
-      Sentry.configureScope(scope => {
+      sentry.configureScope(scope => {
         scope.setUser({ id: msg.author.id, username: format.tag(msg.author) });
         scope.setExtra("guild", msg.channel.guild.name);
       });
       // Logs error
-      Sentry.captureException(e);
+      sentry.captureException(e);
       console.log(e);
       msg.channel.createMessage(this.bot.embed("❌ Error", `An error occurred, and it has been logged. \n \`\`\`js\n${e}\n\`\`\``, "error"));
     }

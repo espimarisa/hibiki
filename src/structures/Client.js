@@ -8,7 +8,7 @@ const { readdir } = require("fs");
 const argParser = require("../lib/utils/Args.js");
 const Command = require("./structures/Command");
 const Event = require("./structures/Event");
-const Sentry = require("@sentry/node");
+const sentry = require("@sentry/node");
 const starttime = new Date();
 
 class Verniy extends Client {
@@ -37,7 +37,7 @@ class Verniy extends Client {
       this.editStatus("online", { name: `${this.guilds.size} servers`, type: 3 });
     });
     // Initialises Sentry
-    try { Sentry.init({ dsn: this.key.dsn }); } catch (err) { this.log.error(`Sentry failed to initialise: ${err}`); }
+    try { sentry.init({ dsn: this.key.dsn }); } catch (err) { this.log.error(`Sentry failed to initialise: ${err}`); }
   }
 
 
@@ -55,7 +55,7 @@ class Verniy extends Client {
               // Tries to load each command
               command = require(`${path}/${item.name}/${cmd}`);
             } catch (err) {
-              Sentry.captureException(err);
+              sentry.captureException(err);
               this.log.error(`Failed to load ${cmd}: ${err}`);
             }
             if (!command) return;
@@ -78,7 +78,7 @@ class Verniy extends Client {
           // Tries to load each event
           event = require(`${path}/${item}`);
         } catch (err) {
-          Sentry.captureException(err);
+          sentry.captureException(err);
           this.log.error(`Failed to load ${item}: ${err}`);
         }
         if (!event) return;
@@ -105,7 +105,7 @@ class Verniy extends Client {
           ext = require(`${path}/${extension.name}`);
           extensions.push(`${path}/${extension.name}`);
         } catch (err) {
-          Sentry.captureException(err);
+          sentry.captureException(err);
           this.log.error(`Failed to load ${extension.name}: ${err}`);
         }
         if (!ext) return;

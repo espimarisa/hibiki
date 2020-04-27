@@ -19,7 +19,7 @@ class avatarCommand extends Command {
         color: this.bot.embed.colour("general"),
         author: {
           icon_url: user.user.dynamicAvatarURL(null),
-          name: format.tag(user.user, false),
+          name: format.tag(user.user),
         },
         image: {
           url: user.user.dynamicAvatarURL(null),

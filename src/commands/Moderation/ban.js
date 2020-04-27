@@ -3,13 +3,13 @@ const format = require("../../lib/scripts/Format");
 const hierarchy = require("../../lib/utils/Hierarchy");
 const yn = require("../../lib/utils/Ask.js").YesNo;
 
-class kickCommand extends Command {
+class banCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:member&strict> [string:reason]",
-      aliases: ["k"],
-      description: "Kicks a member from the server.",
-      clientperms: "kickMembers",
+      args: "<member:member> [string:reason]",
+      aliases: ["b"],
+      description: "Bans a member from the server.",
+      clientperms: "banMembers",
       requiredperms: "manageMessages",
       staff: true,
     });
@@ -23,30 +23,30 @@ class kickCommand extends Command {
 
     // If bot doesn't have high enough role
     if (!hierarchy(msg.channel.guild.members.get(this.bot.user.id), user)) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `I don't have a high enough role to kick **${user.username}**.`, "error"));
+      return msg.channel.createMessage(this.bot.embed("❌ Error", `I don't have a high enough role to ban **${user.username}**.`, "error"));
     }
 
     // If author passes hierarchy
     if (hierarchy(msg.member, user)) {
       // Asks for confirmation
-      const kickmsg = await msg.channel.createMessage(this.bot.embed("🔨 Kick", `Are you sure you'd like to kick **${user.username}**?`));
+      const banmsg = await msg.channel.createMessage(this.bot.embed("🔨 Ban", `Are you sure you'd like to ban **${user.username}**?`));
       const response = await yn(this.bot, { author: msg.author, channel: msg.channel });
-      if (!response) return kickmsg.edit(this.bot.embed("🔨 Kick", `Cancelled kicking **${user.username}**.`));
-      // Tries to DM kicked user
+      if (!response) return banmsg.edit(this.bot.embed("🔨 Ban", `Cancelled banning **${user.username}**.`));
+      // Tries to DM banned user
       const dmchannel = await user.user.getDMChannel();
       dmchannel.createMessage({
         embed: {
-          title: `🚪 Kicked from ${msg.channel.guild.name}`,
-          description: `You were kicked for \`${reason}\`.`,
+          title: `🚪 Banned from ${msg.channel.guild.name}`,
+          description: `You were banned for \`${reason}\`.`,
           color: this.bot.embed.colour("general"),
         },
       }).catch(() => {});
-      // Tries to kick the user; logs
-      await user.kick(`${reason} (by ${format.tag(msg.author, true)})`).catch(() => {});
-      // Edits the kickmsg
-      await kickmsg.edit(this.bot.embed("🔨 Kick", `**${user.username}** was kicked by **${msg.author.username}**.`));
+      // Tries to ban the user; logs
+      await user.ban(1, `${reason} (by ${format.tag(msg.author, true)})`).catch(() => {});
+      // Edits the banmsg
+      await banmsg.edit(this.bot.embed("🔨 Ban", `**${user.username}** was banned by **${msg.author.username}**.`));
     }
   }
 }
 
-module.exports = kickCommand;
+module.exports = banCommand;

@@ -1,0 +1,50 @@
+const Command = require("../../lib/structures/Command");
+const format = require("../../lib/scripts/Format");
+
+class unbanCommand extends Command {
+  constructor(...args) {
+    super(...args, {
+      args: "<userids:string>",
+      aliases: ["idunban", "ub", "unbanid"],
+      description: "Unbans a member by their ID.",
+      clientperms: "banMembers",
+      requiredperms: "manageMessages",
+      staff: true,
+    });
+  }
+
+  async run(msg, args) {
+    // Asks for confirmation
+    if (args.length > 10) return msg.channel.createMessage(this.bot.embed("❌ Error", "Only 10 IDs can be unbanned at a time.", "error"));
+    // Attempts to unban the IDs
+    const unbans = await Promise.all(args.map(async user => {
+      try {
+        // Unbans the IDs
+        await msg.channel.guild.unbanMember(user, `Unbanned by ${format.tag(msg.author, true)}`);
+        return { unbanned: true, user: user };
+      } catch (_) {
+        return { unbanned: false, user: user };
+      }
+    }));
+
+    // Sets amount of IDs unbanned / failed
+    const unbanned = unbans.filter(b => b.unbanned);
+    const failed = unbans.filter(b => !b.unbanned);
+    if (!unbanned.length) return msg.channel.createMessage(this.bot.embed("❌ Error", "Failed to unban all of the IDs given.", "error"));
+
+    // Edits the forcebanmsg
+    await msg.channel.createMessage({
+      embed: {
+        title: `⚒ Unbanned ${unbanned.length} ID${unbanned.length > 1 ? "s" : ""}.`,
+        description: `**${unbanned.map(m => m.user).join(", ")}**`,
+        color: this.bot.embed.colour("general"),
+        fields: failed.length ? [{
+          name: `${failed.length} ID${failed.length > 1 ? "s" : ""} failed to be unbanned.`,
+          value: `${failed.map(m => m.user).join(", ")}`,
+        }] : [],
+      },
+    });
+  }
+}
+
+module.exports = unbanCommand;

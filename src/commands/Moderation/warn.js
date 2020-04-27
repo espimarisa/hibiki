@@ -8,7 +8,7 @@ class warnCommand extends Command {
       args: "<user:member&strict> [reason:string]",
       aliases: ["punish", "s", "strike", "w", "warn"],
       description: "Gives a member a warning.",
-      requiredPerms: "manageMessages",
+      requiredperms: "manageMessages",
       staff: true,
     });
   }
