@@ -40,9 +40,9 @@ module.exports = async (bot) => {
     // Updates db
     await bot.db.table("economy").get(req.body.user).update(cookies);
     // Gets DM channel
-    if (user !== undefined) {
+    if (user) {
       const DMChannel = await user.getDMChannel();
-      if (DMChannel === undefined) return;
+      if (!DMChannel) return;
       DMChannel.createMessage({
         embed: {
           title: "✨ Thanks for voting!",
