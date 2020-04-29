@@ -59,8 +59,10 @@ class Verniy extends Client {
               this.log.error(`Failed to load ${cmd}: ${err}`);
             }
             if (!command) return;
-            // Loads the commands
-            this.commands.add(new command(this, item.name, /(.{1,})\.js/.exec(cmd)[1]));
+            // Loads the commands; ignores commands with missing requiredkeys
+            const _command = new command(this, item.name, /(.{1,})\.js/.exec(cmd)[1]);
+            if (_command.requiredkeys.map(k => k && this.key[k].length > 0).includes(false)) return;
+            this.commands.add(_command);
           });
         });
       });

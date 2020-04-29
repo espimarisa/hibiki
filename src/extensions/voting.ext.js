@@ -56,12 +56,12 @@ module.exports = async (bot) => {
     bot.createMessage(bot.cfg.logchannel, {
       embed: {
         title: "🗳 User Voted",
-        description: `**${user !== undefined ? user.username : req.body.user}** has voted.`,
+        description: `**${user ? user.username : req.body.user}** has voted.`,
         color: bot.embed.colour("general"),
       },
     });
     // Logs when a member voted
-    bot.log.info(`${user !== undefined ? user.username : req.body.user} has voted (requested from: ${req.connection.remoteAddress})`);
+    bot.log.info(`${user ? user.username : req.body.user} has voted (requested from: ${req.connection.remoteAddress})`);
     res.sendStatus(200);
   });
 

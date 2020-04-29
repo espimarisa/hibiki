@@ -11,21 +11,18 @@ class catgirlCommand extends Command {
   }
 
   async run(msg) {
-    // Sets weebsh auth & image type
-    const res = await fetch("https://api.weeb.sh/images/random?type=neko", { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
+    // Fetches the API
+    const res = await fetch("https://nekos.life/api/v2/img/neko");
     const body = await res.json();
+    if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
 
     // Sends the embed
     msg.channel.createMessage({
       embed: {
-        title: "🐱 Mew!",
+        title: "🐾 Mew!",
         color: this.bot.embed.colour("general"),
         image: {
           url: body.url,
-        },
-        footer: {
-          icon_url: this.bot.user.dynamicAvatarURL(),
-          text: "Powered by weeb.sh",
         },
       },
     });

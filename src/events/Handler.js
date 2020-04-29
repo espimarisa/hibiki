@@ -5,7 +5,7 @@
 
 const Event = require("../lib/structures/Event");
 const format = require("../lib/scripts/Format");
-const Eris = require("eris-additions")(require("eris"));
+const eris = require("eris-additions")(require("eris"));
 const sentry = require("@sentry/node");
 
 class Handler extends Event {
@@ -18,7 +18,7 @@ class Handler extends Event {
 
   async run(msg) {
     // DM handler
-    if (msg.channel instanceof Eris.PrivateChannel) {
+    if (msg.channel instanceof eris.PrivateChannel) {
       if (msg.author.id === this.bot.user.id) return;
       const cmd = this.bot.commands.find(c => msg.content.toLowerCase().startsWith(`${this.bot.cfg.prefix}${c.id}`) || msg.content.toLowerCase().startsWith(c.id));
       if (cmd && cmd.allowdms) cmd.run(msg, msg.content.substring(this.bot.cfg.prefix.length + cmd.id.length + 1).split(" "));
@@ -43,23 +43,28 @@ class Handler extends Event {
     if (msg.author.bot) return;
     const [blacklist] = await this.bot.db.table("blacklist").filter({ user: msg.author.id });
     if (blacklist) return;
-    // Gets the server's ID
-    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
-    let prefix;
     // Sets the prefix
-    // todo - figure out why a custom prefix still lets the cfg.prefix work
+    let prefix;
+    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
     if (guildcfg && guildcfg.prefix && msg.content.startsWith(guildcfg.prefix)) prefix = guildcfg.prefix;
-    else if (msg.content.startsWith(this.bot.cfg.prefix)) prefix = this.bot.cfg.prefix;
+    else if ((!guildcfg || !guildcfg.prefix) && msg.content.startsWith(this.bot.cfg.prefix)) prefix = this.bot.cfg.prefix;
     else if (msg.content.startsWith(`<@${this.bot.user.id}> `)) prefix = `<@${this.bot.user.id}> `;
     else if (msg.content.startsWith(`<@!${this.bot.user.id}> `)) prefix = `<@!${this.bot.user.id}> `;
     if (!prefix) return;
     // Looks for the command ran
     const [cmdName, ...args] = msg.content.slice(prefix.length).split(" ").map(s => s.trim());
     const cmd = this.bot.commands.find(c => c.id === cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
-    // If no permission to send messages or embed links
-    if (!msg.channel.memberHasPermission(this.bot.user.id, "sendMessages")) return msg.member.createMessage(`I don't have permission to send messages in <#${msg.channel.id}>.`);
-    if (!msg.channel.memberHasPermission(this.bot.user.id, "embedLinks")) return msg.channel.createMessage(`In order to function properly, I need permission to **embed links**.`);
     if (!cmd) return;
+
+    // No send message perms
+    if (!msg.channel.memberHasPermission(this.bot.user.id, "sendMessages")) {
+      return msg.member.createMessage(`I don't have permission to send messages in <#${msg.channel.id}>.`);
+    }
+
+    // No embed perms
+    if (!msg.channel.memberHasPermission(this.bot.user.id, "embedLinks")) {
+      return msg.channel.createMessage("In order to function properly, I need permission to **embed links**.");
+    }
 
     // Owner cmds
     if (cmd.owner && !this.bot.cfg.owners.includes(msg.author.id)) return;
@@ -78,7 +83,9 @@ class Handler extends Event {
     if (cmd.clientperms) {
       const botperms = msg.channel.guild.members.get(this.bot.user.id).permission;
       if (!botperms.has("embedLinks")) return msg.channel.createMessage(`❌ Error - I need permission to **embed links** to work properly.`);
-      if (!botperms.has(cmd.clientperms)) return msg.channel.createMessage(this.bot.embed("❌ Error", `I need the **${cmd.clientperms}** permission to run this command.`, "error"));
+      if (!botperms.has(cmd.clientperms)) {
+        return msg.channel.createMessage(this.bot.embed("❌ Error", `I need the **${cmd.clientperms}** permission to run this command.`, "error"));
+      }
     }
 
     // NSFW-only cmds
@@ -92,7 +99,7 @@ class Handler extends Event {
     }
 
     // Staff cmds
-    if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg && guildcfg.staffrole && guildcfg.staffrole.length && !msg.member.roles.includes(guildcfg.staffrole))) {
+    if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg && guildcfg.staffrole && !msg.member.roles.includes(guildcfg.staffrole))) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "That command is only for staff members.", "error"));
     }
 

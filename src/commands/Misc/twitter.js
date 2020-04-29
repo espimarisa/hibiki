@@ -7,6 +7,7 @@ class twitterCommand extends Command {
       aliases: ["twit"],
       args: "<account:string>",
       description: "Returns info about a Twitter account.",
+      requiredkeys: ["twitter"],
       cooldown: 3,
     });
   }

@@ -5,7 +5,7 @@ class patCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["headpat, pet"],
-      args: "<member:member&strict>",
+      args: "<member:member>",
       description: "Gives a member a headpat.",
       cooldown: 3,
     });
@@ -15,6 +15,11 @@ class patCommand extends Command {
     // Sets weebsh auth & image type
     const res = await fetch("https://api.weeb.sh/images/random?type=pat", { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
     const body = await res.json();
+    let image;
+
+    // Fallback image
+    if (body.status !== 200) image = "https://cdn.weeb.sh/images/SJmW1RKtb.gif";
+    else if (body.status === 200) image = body.url;
 
     // Sends the embed
     msg.channel.createMessage({
@@ -22,7 +27,7 @@ class patCommand extends Command {
         description: `♥ **${msg.author.username}** gave **${pargs[0].value.username}** a headpat!`,
         color: this.bot.embed.colour("general"),
         image: {
-          url: body.url,
+          url: image,
         },
         footer: {
           icon_url: this.bot.user.dynamicAvatarURL(),

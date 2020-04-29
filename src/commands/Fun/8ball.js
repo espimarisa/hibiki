@@ -5,7 +5,7 @@ class eightBallCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["ask", "askball", "ball"],
-      args: "<question:string>",
+      args: "[question:string]",
       description: "Asks a Magic 8-Ball a question.",
     });
   }

@@ -68,7 +68,7 @@ class helpCommand extends Command {
     // Finds the command
     if (args) cmd = this.bot.commands.find(c => c.id.toLowerCase() === args.join(" ").toLowerCase() || c.aliases.includes(args.join(" ").toLowerCase()));
     if (!cmd) {
-      let db = undefined;
+      let db;
       if (msg.channel.type !== 1) db = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
       let categories = [];
       // Hides owner & disabled cmds
@@ -134,9 +134,9 @@ class helpCommand extends Command {
           },
         });
       });
-      // Confirmation message
+      // Adds reaction
       if (msg.channel instanceof Eris.PrivateChannel) return;
-      if (dmson) msg.channel.createMessage(this.bot.embed("📚 Help", "Check your DMs for a list of commands."));
+      if (dmson) return msg.addReaction("📬");
     } else {
       const construct = [];
       // Sets the fields

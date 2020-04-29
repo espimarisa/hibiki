@@ -11,7 +11,7 @@ module.exports = {
     } else if (user && !emojifilter) {
       return `${user.username}#${user.discriminator}`;
     }
-    return undefined;
+    return;
   },
 
   // Makes dates look nicer
@@ -42,7 +42,7 @@ module.exports = {
     autohide: true,
   }) => {
     // Sets constants for date parsing
-    if (!time) return undefined;
+    if (!time) return;
     let finalstring = "";
     let hour;
     let day;
