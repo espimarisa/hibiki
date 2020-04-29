@@ -16,10 +16,10 @@ class guildCreate extends Event {
   async run(guild) {
     this.bot.log.info(`Added to server: ${guild.name}`);
     // DMs the server owner
-    const odm = this.bot.users.get(guild.ownerID);
-    if (odm !== undefined) {
+    const oid = this.bot.users.get(guild.ownerID);
+    if (oid) {
       const odm = await owner.getDMChannel();
-      if (odm !== undefined) {
+      if (odm) {
         odm.createMessage(this.bot.embed(`✨ Thanks for inviting me, ${odm.username}.`, `\n To get started, run \`${this.bot.cfg.prefix}help\`.`));
       }
     }

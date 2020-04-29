@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class smugCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<member:member&strict>",
+      args: "<member:member>",
       description: "Looks at another member smugly.",
       cooldown: 3,
     });
@@ -14,6 +14,11 @@ class smugCommand extends Command {
     // Sets weebsh auth & image type
     const res = await fetch("https://api.weeb.sh/images/random?type=smug", { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
     const body = await res.json();
+    let image;
+
+    // Fallback image
+    if (body.status !== 200) image = "https://cdn.weeb.sh/images/H1xgWUktPW.gif";
+    else if (body.status === 200) image = body.url;
 
     // Sends the embed
     msg.channel.createMessage({
@@ -21,7 +26,7 @@ class smugCommand extends Command {
         description: `💢 **${msg.author.username}** is being smug towards **${pargs[0].value.username}**!`,
         color: this.bot.embed.colour("general"),
         image: {
-          url: body.url,
+          url: image,
         },
         footer: {
           icon_url: this.bot.user.dynamicAvatarURL(),

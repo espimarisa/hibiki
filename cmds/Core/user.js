@@ -39,28 +39,36 @@ class userCommand extends Command {
 
     // DB related
     let spouseid;
+    let pointcount = 0;
+    let warningcount = 0;
     const cookies = await this.bot.db.table("economy").get(user.id);
+    const points = await this.bot.db.table("points");
     const usercfg = await this.bot.db.table("usercfg").get(user.id);
-    const [state] = await this.bot.db.table("marriages").getAll(user.id, { index: "marriages" });
-    if (state) spouseid = state.id === user.id ? state.spouse : state.id;
+    const warnings = await this.bot.db.table("warnings");
+    const [spouse] = await this.bot.db.table("marriages").getAll(user.id, { index: "marriages" });
+    if (spouse) spouseid = spouse.id === user.id ? spouse.spouse : spouse.id;
+    points.forEach(p => { if (p.guild === msg.channel.guild.id && p.receiver === user.id) pointcount++; });
+    warnings.forEach(w => { if (w.guild === msg.channel.guild.id && w.receiver === user.id) warningcount++; });
 
     // Sets the description
     if (usercfg && usercfg.bio) desc.push({ name: "", value: `${usercfg.bio}` });
     if (user.nick) desc.push({ name: "📛", value: user.nick });
     desc.push({ name: "", value: statusFormat(user.status) });
-    if (cookies && cookies.amount > 0) desc.push({ name: "🍪", value: `${Math.floor(cookies.amount)} cookies` });
     desc.push({ name: "📩", value: `Joined ${format.date(user.joinedAt)}` });
     desc.push({ name: "📅", value: `Created ${format.date(user.createdAt)}` });
     desc.push({ name: "🆔", value: user.id });
     if (user.roles.length) desc.push({ name: "🔢", value: `Top role is ${user.highestRole.name}` });
     if (user.game) desc.push({ name: `${user.game.emoji ? "" : "▶"}`, value: playing });
     if (usercfg && usercfg.info) desc.push(Object.keys(usercfg.info).map(k => `**${k}**: ${usercfg.info[k]}`).join("\n"));
-    if (state) desc.push({ name: "💘", value: `Married to ${spouseid ? this.bot.users.find(m => m.id === spouseid) ? this.bot.users.find(m => m.id === spouseid).username : `<@!${spouseid}>` : "Nobody"}` });
+    if (spouse) desc.push({ name: "💝", value: `Married to ${spouseid ? this.bot.users.find(m => m.id === spouseid) ? this.bot.users.find(m => m.id === spouseid).username : `<@!${spouseid}>` : "Nobody"}` });
+    if (cookies && cookies.amount > 0) desc.push({ name: "🍪", value: `${Math.floor(cookies.amount)} cookies` });
+    if (pointcount) desc.push({ name: "🌟", value: `${pointcount} points` });
+    if (warningcount) desc.push({ name: "🛠", value: `${warningcount} warnings` });
 
     // Sends the embed
     msg.channel.createMessage({
       embed: {
-        description: desc.map(t => typeof t === "object" ? `${t.name} ${t.value}` : t).join("\n"),
+        description: desc.map(d => `${d.name} ${d.value}`).join("\n"),
         color: this.bot.embed.colour("general"),
         author: {
           icon_url: user.user.dynamicAvatarURL(null),

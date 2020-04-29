@@ -91,7 +91,7 @@ class serverCommand extends Command {
     // Sends the embed
     msg.channel.createMessage({
       embed: {
-        description: desc.map(t => `${t.name} ${t.value}`).join("\n"),
+        description: desc.map(d => `${d.name} ${d.value}`).join("\n"),
         color: this.bot.embed.colour("general"),
         author: {
           icon_url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",

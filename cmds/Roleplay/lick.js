@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class lickCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<member:member&strict>",
+      args: "<member:member>",
       description: "Licks a member.",
       cooldown: 3,
     });
@@ -14,6 +14,11 @@ class lickCommand extends Command {
     // Sets weebsh auth & image type
     const res = await fetch("https://api.weeb.sh/images/random?type=lick", { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
     const body = await res.json();
+    let image;
+
+    // Fallback image
+    if (body.status !== 200) image = "https://cdn.weeb.sh/images/ryGpGsnAZ.gif";
+    else if (body.status === 200) image = body.url;
 
     // Sends the embed
     msg.channel.createMessage({
@@ -21,7 +26,7 @@ class lickCommand extends Command {
         description: `💚 **${msg.author.username}** licked **${pargs[0].value.username}**!`,
         color: this.bot.embed.colour("general"),
         image: {
-          url: body.url,
+          url: image,
         },
         footer: {
           icon_url: this.bot.user.dynamicAvatarURL(),
