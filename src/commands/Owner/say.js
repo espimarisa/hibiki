@@ -10,7 +10,7 @@ class sayCommand extends Command {
     });
   }
 
-   run(msg, args) {
+  run(msg, args) {
     // Sends message
     msg.channel.createMessage(args.join(" "));
     // Deletes author's message
