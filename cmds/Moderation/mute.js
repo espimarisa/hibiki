@@ -10,7 +10,6 @@ class muteCommand extends Command {
       description: "Mutes a member.",
       clientperms: "manageRoles",
       requiredperms: "manageMessages",
-      cooldown: 2000,
       staff: true,
     });
   }
