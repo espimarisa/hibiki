@@ -4,6 +4,7 @@ class agreeCommand extends Command {
   constructor(...args) {
     super(...args, {
       description: "Deletes the last 10 messages from the bot.",
+      clientperms: "manageMessages",
       requiredperms: "manageMessages",
       staff: true,
     });

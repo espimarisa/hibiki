@@ -7,6 +7,7 @@ class verifyCommand extends Command {
       args: "<member:member>",
       aliases: ["t", "trust", "v"],
       description: "Gives the verified role to a user.",
+      clientperms: "manageRoles",
       requiredperms: "manageRoles",
       staff: true,
     });
