@@ -5,7 +5,7 @@ class nasaimageCommand extends Command {
   constructor(...args) {
     super(...args, {
       args: "<query:string>",
-      aliases: ["nasaimg", "spaceimage", "spaceimg", "spacephoto"],
+      aliases: ["nasa", "nasaimg", "space", "spaceimage", "spaceimg", "spacephoto"],
       description: "Sends an image from NASAs archive.",
       cooldown: 3,
     });
@@ -23,7 +23,7 @@ class nasaimageCommand extends Command {
     // Edits the message
     nasamsg.edit({
       embed: {
-        title: "☄ Space Image",
+        title: "☄ Nasa Image",
         description: data.data[0].description.length > 2000 ? `${data.data[0].description.substring(0, 2000)}...` : data.data[0].description,
         color: this.bot.embed.colour("general"),
         image: {

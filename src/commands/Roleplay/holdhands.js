@@ -5,7 +5,7 @@ class holdhandsCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["handhold"],
-      args: "<member:member&strict>",
+      args: "<member:member>",
       description: "Holds hands with another member.",
       cooldown: 3,
     });
@@ -15,6 +15,11 @@ class holdhandsCommand extends Command {
     // Sets weebsh auth & image type
     const res = await fetch("https://api.weeb.sh/images/random?type=handholding", { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
     const body = await res.json();
+    let image;
+
+    // Fallback image
+    if (body.status !== 200) image = "https://cdn.weeb.sh/images/Sky0l65WM.gif";
+    else if (body.status === 200) image = body.url;
 
     // Sends the embed
     msg.channel.createMessage({
@@ -22,7 +27,7 @@ class holdhandsCommand extends Command {
         description: `👀 **${msg.author.username}** is holding hands with **${pargs[0].value.username}**!`,
         color: this.bot.embed.colour("general"),
         image: {
-          url: body.url,
+          url: image,
         },
         footer: {
           icon_url: this.bot.user.dynamicAvatarURL(),

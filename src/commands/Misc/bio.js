@@ -11,7 +11,7 @@ class bioCommand extends Command {
 
   async run(msg, args) {
     // Other user's bios
-    const user = this.bot.argParser.argTypes.member(args.join(" "), msg, "strict");
+    const user = this.bot.argParser.argTypes.member(args.join(" "), msg);
     if (user) {
       const cfg = await this.bot.db.table("usercfg").get(user.id);
       return cfg && cfg.bio ?

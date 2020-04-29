@@ -12,8 +12,9 @@ class catCommand extends Command {
 
   async run(msg) {
     // Fetches the API
-    const res = await fetch("https://api.weeb.sh/images/random?type=animal_cat", { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
+    const res = await fetch("http://aws.random.cat/meow");
     const body = await res.json();
+    if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
 
     // Sends the embed
     msg.channel.createMessage({
@@ -21,11 +22,7 @@ class catCommand extends Command {
         title: "🐱 Meow!",
         color: this.bot.embed.colour("general"),
         image: {
-          url: body.url,
-        },
-        footer: {
-          icon_url: this.bot.user.dynamicAvatarURL(),
-          text: "Powered by weeb.sh",
+          url: body.file,
         },
       },
     });

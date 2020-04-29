@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class highfiveCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<member:member&strict>",
+      args: "<member:member>",
       description: "Gives a member a high five.",
       cooldown: 3,
     });
@@ -14,6 +14,11 @@ class highfiveCommand extends Command {
     // Sets weebsh auth & image type
     const res = await fetch("https://api.weeb.sh/images/random?type=highfive", { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } });
     const body = await res.json();
+    let image;
+
+    // Fallback image
+    if (body.status !== 200) image = "https://cdn.weeb.sh/images/B1-7KkQsZ.gif";
+    else if (body.status === 200) image = body.url;
 
     // Sends the embed
     msg.channel.createMessage({
@@ -21,7 +26,7 @@ class highfiveCommand extends Command {
         description: `✋ **${msg.author.username}** gave **${pargs[0].value.username}** a high-five!`,
         color: this.bot.embed.colour("general"),
         image: {
-          url: body.url,
+          url: image,
         },
         footer: {
           icon_url: this.bot.user.dynamicAvatarURL(),

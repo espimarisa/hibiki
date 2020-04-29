@@ -21,6 +21,7 @@ class Command {
       this.description = params.description;
       this.nsfw = params.nsfw ? params.nsfw : false;
       this.owner = params.owner ? params.owner : false;
+      this.requiredkeys = params.requiredkeys ? params.requiredkeys : [];
       this.requiredperms = params.requiredperms;
       this.staff = params.staff ? params.staff : false;
     }

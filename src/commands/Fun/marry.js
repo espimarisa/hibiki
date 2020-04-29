@@ -26,14 +26,14 @@ class marryCommand extends Command {
     }
 
     // Sends original message
-    const marrymsg = await msg.channel.createMessage(this.bot.embed("💘 Marry", `**${user.username}**, do you wish to marry **${msg.author.username}**?`));
+    const marrymsg = await msg.channel.createMessage(this.bot.embed("💝 Marry", `**${user.username}**, do you wish to marry **${msg.author.username}**?`));
     // Waits for response
     const response = await yn(this.bot, { author: user, channel: msg.channel });
     if (response) {
       await this.bot.db.table("marriages").insert({ id: msg.author.id, spouse: user.id });
-      marrymsg.edit(this.bot.embed("💘 Marry", `**${msg.author.username}** and **${user.username}** are now married. Congrats!`));
+      marrymsg.edit(this.bot.embed("💝 Marry", `**${msg.author.username}** and **${user.username}** are now married.`));
     } else {
-      marrymsg.edit(this.bot.embed("💘 Marry", "Marriage cancelled. Better luck next time!", "error"));
+      marrymsg.edit(this.bot.embed("💝 Marry", "Marriage cancelled.", "error"));
     }
   }
 }

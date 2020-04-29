@@ -7,13 +7,13 @@ class ipinfoCommand extends Command {
       args: "<ip:string>",
       aliases: ["aboutip", "geolocation", "ip", "ipinformation"],
       description: "Returns info about an IP address.",
+      requiredkeys: ["ipinfo"],
       cooldown: 3,
     });
   }
 
   async run(msg, args) {
     // Fetches the API
-    if (!this.bot.key.ipinfo) return msg.channel.createMessage(this.bot.embed("❌ Error", "Unauthorized - no API key provided.", "error"));
     const res = await fetch(`https://ipinfo.io/${encodeURIComponent(args.join(" "))}/json?token=${encodeURIComponent(this.bot.key.ipinfo)}`);
     const body = await res.json();
 
