@@ -25,7 +25,9 @@ class prefixCommand extends Command {
     // Prefix over 15 chars
     if (prefix.length > 15) return msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid prefix. The max length is 15.", "error"));
     // Sends prefix if no args
-    if (!prefix.length) return msg.channel.createMessage(this.bot.embed("🤖 Prefix", `The prefix in this server is \`${guildcfg && guildcfg.prefix || !guildcfg.prefix ? guildcfg.prefix : this.bot.cfg.prefix}\`.`));
+    if (!prefix.length) {
+      return msg.channel.createMessage(this.bot.embed("🤖 Prefix", `The prefix in this server is \`${guildcfg && guildcfg.prefix || !guildcfg.prefix ? guildcfg.prefix : this.bot.cfg.prefix}\`.`));
+    }
     // Lets members without permission check but not set
     if (!msg.member.permission.has("manageGuild")) return msg.channel.createMessage(this.bot.embed("❌ Error", "You don't have permission to set the prefix.", "error"));
     // Updates DB
