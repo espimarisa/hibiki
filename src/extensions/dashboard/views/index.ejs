@@ -43,6 +43,10 @@
                 <span class="icon"><i class="fas fa-question-circle"></i></span>
                 <span>Support</span>
               </a>
+              <a href="/twitter/" class="navbar-item has-text-white">
+                <span class="icon"><i class="fab fa-twitter"></i></span>
+                <span>Twitter</span>
+              </a>
             </div>
           </div>
         </div>
@@ -69,8 +73,7 @@
     <br>
   </section>
 
-  <% let useramnt = 0; bot.guilds.forEach(g => { useramnt += g.memberCount; });
-  let owneramt = 0; bot.commands.forEach(c => c.category === "Owner" ? owneramt++ : null); %>
+  <% let useramnt = 0; bot.guilds.forEach(g => { useramnt += g.memberCount; }); %>
 
   <%# Statistics %>
   <section class="hero is-dark is-bold" id="stats">
@@ -87,7 +90,7 @@
           </div>
           <div class="column">
             <span class="icons is-large"><i class="fa fa-stream fa-3x"></i></span>
-            <p class="subtitle"><%= bot.commands.size - owneramt %> commands</p>
+            <p class="subtitle"><%= bot.commands.size %> commands</p>
           </div>
           <div class="column">
             <span class="icons is-large"><i class="fa fa-clock fa-3x"></i></span>

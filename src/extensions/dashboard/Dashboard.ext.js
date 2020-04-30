@@ -112,6 +112,10 @@ module.exports = (bot) => {
     res.redirect("https://github.com/smolespi/Hibiki");
   });
 
+  app.get("/twitter/", (_req, res) => {
+    res.redirect("https://twitter.com/HibikiApp");
+  });
+
   // Server manager
   app.get("/manage/:id", checkAuth, async (req, res) => {
     // Sets the vaid items & props
