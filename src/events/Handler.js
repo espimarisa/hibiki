@@ -1,5 +1,5 @@
 /*
-  This handles all commands & paramater functions.
+  This handles all commands & parameter functions.
   It also enables Sentry to capture command errors.
 */
 

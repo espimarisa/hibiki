@@ -1,5 +1,5 @@
 /*
-  Paramaters, unloading & reloading functionality.
+  Parameter, unloading & reloading functionality.
 */
 
 const sentry = require("@sentry/node");
