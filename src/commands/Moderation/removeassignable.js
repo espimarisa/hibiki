@@ -1,9 +1,9 @@
 const Command = require("../../lib/structures/Command");
 
-class rmassignableCommand extends Command {
+class removeassignableCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["removeassign", "removeassignable", "removeassignablerole", "rmassign", "unassignablerole"],
+      aliases: ["removeassign", "removeassignablerole", "rmassign", "rmassignable", "unassignablerole"],
       args: "<role:role>",
       description: "Makes an assignable remove unassignable.",
       staff: true,
@@ -36,4 +36,4 @@ class rmassignableCommand extends Command {
   }
 }
 
-module.exports = rmassignableCommand;
+module.exports = removeassignableCommand;

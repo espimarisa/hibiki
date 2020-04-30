@@ -52,7 +52,7 @@ class Handler extends Event {
     else if (msg.content.startsWith(`<@!${this.bot.user.id}> `)) prefix = `<@!${this.bot.user.id}> `;
     if (!prefix) return;
     // Looks for the command ran
-    const [cmdName, ...args] = msg.content.slice(prefix.length).split(" ").map(s => s.trim());
+    const [cmdName, ...args] = msg.content.trim().toLowerCase().slice(prefix.length).split(/ +/g);
     const cmd = this.bot.commands.find(c => c.id === cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
     if (!cmd) return;
 
