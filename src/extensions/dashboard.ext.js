@@ -9,8 +9,8 @@ const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
 const strategy = require("passport-discord");
-const format = require("../../lib/scripts/Format");
-const cfg = require("../../cfg").dashboard;
+const format = require("../lib/scripts/Format");
+const cfg = require("../cfg").dashboard;
 
 const scope = ["identify", "guilds"];
 const app = express();
@@ -41,9 +41,9 @@ const getAuthUser = user => ({
 });
 
 // Directories & viewengine
-app.set("views", `${__dirname}/views`);
-app.set("partials", `${__dirname}/partials`);
-app.use("/static", express.static(`${__dirname}/static`, { dotfiles: "allow" }));
+app.set("views", `${__dirname}/dash/views`);
+app.set("partials", `${__dirname}/dash/partials`);
+app.use("/static", express.static(`${__dirname}/dash/static`, { dotfiles: "allow" }));
 app.set("view engine", "ejs");
 
 // Loads auth system
@@ -119,7 +119,7 @@ module.exports = (bot) => {
   // Server manager
   app.get("/manage/:id", checkAuth, async (req, res) => {
     // Sets the vaid items & props
-    const items = require("./static/items");
+    const items = require("./dash/static/items");
     // Displays if the user isn't authenticated
     if (!req.isAuthenticated()) { res.status(401).render("401"); }
     // User & guild perms
@@ -145,11 +145,11 @@ module.exports = (bot) => {
   });
 
   // API
-  app.use(require("./api/getItems")(bot));
-  app.use(require("./api/getConfig")(bot));
-  app.use(require("./api/updateConfig")(bot));
-  app.use(require("./api/getBio")(bot));
-  app.use(require("./api/updateBio")(bot));
+  app.use(require("./dash/api/getItems")(bot));
+  app.use(require("./dash/api/getConfig")(bot));
+  app.use(require("./dash/api/updateConfig")(bot));
+  app.use(require("./dash/api/getBio")(bot));
+  app.use(require("./dash/api/updateBio")(bot));
 
   // 404 handler
   app.use((req, res) => {
