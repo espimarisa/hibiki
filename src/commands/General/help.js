@@ -75,8 +75,6 @@ class helpCommand extends Command {
       this.bot.commands.forEach(c => { if (!categories.includes(c.category) && c.category !== "Owner") categories.push(c.category); });
       if (db && db.disabledCategories) categories = categories.filter(c => !db.disabledCategories.includes(c));
       const sortedcategories = [];
-      let owneramt = 0;
-      this.bot.commands.forEach(c => c.category === "Owner" ? owneramt++ : null);
       // Sorts categories
       categories = categories.sort((a, b) => {
         if (a < b) return -1;
