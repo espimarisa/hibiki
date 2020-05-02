@@ -1,6 +1,5 @@
 /*
-  This updates the bot stats on top.gg
-  when the bot is added to a server.
+  This updates the bot stats on top.gg added to a server.
 */
 
 const Event = require("../lib/structures/Event");
@@ -18,9 +17,9 @@ class guildCreate extends Event {
     // DMs the server owner
     const oid = this.bot.users.get(guild.ownerID);
     if (oid) {
-      const odm = await owner.getDMChannel();
+      const odm = await oid.getDMChannel();
       if (odm) {
-        odm.createMessage(this.bot.embed(`✨ Thanks for inviting me, ${odm.username}.`, `\n To get started, run \`${this.bot.cfg.prefix}help\`.`));
+        odm.createMessage(this.bot.embed(`✨ Thanks for inviting me, ${oid.username}.`, `\n To get started, run \`${this.bot.cfg.prefix}help\`.`));
       }
     }
 

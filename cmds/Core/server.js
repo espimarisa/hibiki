@@ -25,58 +25,12 @@ class serverCommand extends Command {
       else users++;
     });
 
-    // Formats server regions
-    function regionFormat(region) {
-      switch (region) {
-        case "amsterdam":
-          return ":flag_nl: Amsterdam";
-        case "brazil":
-          return ":flag_br: Brazil";
-        case "eu-central":
-          return ":flag_eu: Central Europe";
-        case "eu-west":
-          return ":flag_eu: Western Europe";
-        case "europe":
-          return ":flag_eu: Europe";
-        case "dubai":
-          return ":flag_ae: Dubai";
-        case "frankfurt":
-          return ":flag_de: Frankfurt";
-        case "hongkong":
-          return ":flag_hk: Hong Kong";
-        case "london":
-          return ":flag_gb: London";
-        case "japan":
-          return ":flag_jp: Japan";
-        case "india":
-          return ":flag_in: India";
-        case "russia":
-          return ":flag_ru: Russia";
-        case "singapore":
-          return ":flag_sg: Singapore";
-        case "southafrica":
-          return ":flag_za: South Africa";
-        case "sydney":
-          return ":flag_au: Sydney";
-        case "us-central":
-          return ":flag_us: US Central";
-        case "us-east":
-          return ":flag_us: US East";
-        case "us-south":
-          return ":flag_us: US South";
-        case "us-west":
-          return ":flag_us: US West";
-        default:
-          return region;
-      }
-    }
-
     // Sets the description
     const desc = [];
     desc.push({ name: "👑", value: `Owned by ${format.tag(guild.members.find(mem => mem.id === guild.ownerID))}` });
     desc.push({ name: "🆔", value: `${guild.id}` });
     desc.push({ name: "📅", value: `Created ${format.date(guild.createdAt)}` });
-    desc.push({ name: "", value: `${regionFormat(guild.region)} server region` });
+    desc.push({ name: "", value: `${format.region(guild.region)} region` });
     desc.push({ name: "👥", value: `${users} members, ${bots} bots` });
     desc.push({ name: "📚", value: `${guild.roles.size} roles` });
     desc.push({ name: "💬", value: `${guild.channels.size} channels` });
