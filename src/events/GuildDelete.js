@@ -1,6 +1,5 @@
 /*
-  This updates the bot stats on top.gg
-  when the bot is removed from a server.
+  This updates the bot stats on top.gg when removed from a server.
 */
 
 const Event = require("../lib/structures/Event");
