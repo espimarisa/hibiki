@@ -93,7 +93,7 @@ module.exports = async (bot) => {
           text: `${guild.name} now has ${guild.memberCount} members`,
         },
       },
-    });
+    }).catch(() => {});
   });
 
   // Logs details about a member that left
@@ -129,6 +129,6 @@ module.exports = async (bot) => {
           text: `${guild.name} now has ${guild.memberCount} members`,
         },
       },
-    });
+    }).catch(() => {});
   });
 };

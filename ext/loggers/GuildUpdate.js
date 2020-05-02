@@ -41,7 +41,7 @@ module.exports = async (bot) => {
           inline: true,
         }],
       },
-    });
+    }).catch(() => {});
   });
 
   // Logs when removed from a server
@@ -80,6 +80,6 @@ module.exports = async (bot) => {
           inline: true,
         }],
       },
-    });
+    }).catch(() => {});
   });
 };
