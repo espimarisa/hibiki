@@ -1,6 +1,5 @@
 /*
   This handles all commands & parameter functions.
-  It also enables Sentry to capture command errors.
 */
 
 const Event = require("../lib/structures/Event");

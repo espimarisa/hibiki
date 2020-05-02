@@ -9,6 +9,7 @@ module.exports = async (bot) => {
   // Logging database
   const loggingdb = new Logging(bot.db);
   const cansend = async (guild) => {
+    if (!guild || !guild.channels) return;
     const canlog = await loggingdb.canLog(guild);
     if (!canlog) return;
     // Sets type as memberLogging
@@ -66,7 +67,6 @@ module.exports = async (bot) => {
   bot.on("loggingMemberAdd", async (guild, member) => {
     const channel = await cansend(guild, "loggingMemberAdd");
     if (!channel || !member) return;
-    // Sets the embed
     bot.createMessage(channel, {
       embed: {
         color: bot.embed.colour("success"),
@@ -100,7 +100,6 @@ module.exports = async (bot) => {
   bot.on("loggingMemberRemove", async (guild, member) => {
     const channel = await cansend(guild, "loggingMemberRemove");
     if (!channel || !member) return;
-    // Sets the embed
     bot.createMessage(channel, {
       embed: {
         color: bot.embed.colour("error"),
