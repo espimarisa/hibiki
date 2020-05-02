@@ -18,4 +18,4 @@ module.exports = (bot, db) => {
       if (!logger) return;
     });
   });
-}
+};
