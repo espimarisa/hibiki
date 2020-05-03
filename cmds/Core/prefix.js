@@ -36,6 +36,7 @@ class prefixCommand extends Command {
       prefix: prefix,
     });
     // Sends embed
+    this.bot.emit("prefixUpdate", msg.channel.guild, msg.member, prefix);
     msg.channel.createMessage(this.bot.embed("✅ Success", `The prefix was set to \`${prefix}\`.`, "success"));
   }
 }

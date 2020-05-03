@@ -44,4 +44,13 @@ module.exports = async (bot) => {
       icon_url: user.avatarURL,
     },
   }));
+
+  // Logs when prefix is changed
+  bot.on("prefixUpdate", async (guild, user, prefix) => trysend(guild, "prefixUpdate", {
+    color: bot.embed.colour("general"),
+    author: {
+      name: `Prefix changed to ${prefix} by ${format.tag(user)}.`,
+      icon_url: user.avatarURL,
+    },
+  }));
 };
