@@ -74,7 +74,7 @@ module.exports = async (bot) => {
   });
 
   // Logs details about a new member
-  bot.on("loggingMemberAdd", async (guild, member) => trysend(guild, "loggingMemberAdd", {
+  bot.on("loggingMemberAdd", (guild, member) => trysend(guild, "loggingMemberAdd", {
     color: bot.embed.colour("success"),
     timestamp: new Date(),
     author: {
@@ -101,7 +101,7 @@ module.exports = async (bot) => {
   }));
 
   // Logs details about a member that left
-  bot.on("loggingMemberRemove", async (guild, member) => trysend(guild, "loggingMemberRemove", {
+  bot.on("loggingMemberRemove", (guild, member) => trysend(guild, "loggingMemberRemove", {
     color: bot.embed.colour("error"),
     timestamp: new Date(),
     author: {

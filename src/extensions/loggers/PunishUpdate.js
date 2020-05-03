@@ -28,7 +28,7 @@ module.exports = async (bot) => {
   };
 
   // Logs when a member is warned
-  bot.on("memberWarn", async (guild, giver, receiver, id, reason) => trysend(guild, "memberWarn", {
+  bot.on("memberWarn", (guild, giver, receiver, id, reason) => trysend(guild, "memberWarn", {
     description: `**Reason:** ${reason} \n **ID:** ${id}`,
     color: bot.embed.colour("error"),
     author: {
@@ -38,7 +38,7 @@ module.exports = async (bot) => {
   }));
 
   // Logs when warnings are removed
-  bot.on("warningRemove", async (guild, user, ids) => trysend(guild, "warningRemove", {
+  bot.on("warningRemove", (guild, user, ids) => trysend(guild, "warningRemove", {
     description: ids.join(" "),
     color: bot.embed.colour("error"),
     author: {
@@ -48,7 +48,7 @@ module.exports = async (bot) => {
   }));
 
   // Logs when a member is muted
-  bot.on("memberMute", async (guild, giver, receiver, reason) => trysend(guild, "memberMute", {
+  bot.on("memberMute", (guild, giver, receiver, reason) => trysend(guild, "memberMute", {
     description: `**Reason:** ${reason}`,
     color: bot.embed.colour("error"),
     author: {
@@ -58,7 +58,7 @@ module.exports = async (bot) => {
   }));
 
   // Logs when a member is unmuted
-  bot.on("memberUnmute", async (guild, giver, receiver) => trysend(guild, "memberUnmute", {
+  bot.on("memberUnmute", (guild, giver, receiver) => trysend(guild, "memberUnmute", {
     color: bot.embed.colour("success"),
     author: {
       name: `${format.tag(giver, false)} unmuted ${format.tag(receiver, false)}.`,
