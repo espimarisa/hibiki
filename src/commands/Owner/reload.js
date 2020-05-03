@@ -11,7 +11,7 @@ class reloadCommand extends Command {
     });
   }
 
-  async run(msg, args, pargs) {
+  run(msg, args, pargs) {
     // Reload all functionality
     if (args[0] === "*") {
       const errors = [];

@@ -25,7 +25,7 @@ class Verniy extends Client {
     this.events = new Collection(Event);
     this.extensions = [];
     // Logs when ready
-    this.on("ready", async () => {
+    this.on("ready", () => {
       // Logs number of cmds, events, extensions
       this.log.success(`${this.commands.size} commands loaded`);
       this.log.success(`${this.events.size} events loaded`);

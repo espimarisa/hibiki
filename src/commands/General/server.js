@@ -10,17 +10,17 @@ class serverCommand extends Command {
     });
   }
 
-  async run(msg, args) {
+  run(msg, args) {
     let guild = msg.channel.guild;
     // Lets owners show other server info
     if (args[0] && this.bot.cfg.owners.includes(msg.author.id)) {
-      guild = await this.bot.guilds.find(g => g.name.toLowerCase().startsWith(args.join(" ")) || g.id === args.join(" "));
+      guild = this.bot.guilds.find(g => g.name.toLowerCase().startsWith(args.join(" ")) || g.id === args.join(" "));
     } else guild = msg.channel.guild;
     if (!guild) return msg.channel.guild;
     // Seperates bots & members
     let bots = 0;
     let users = 0;
-    await guild.members.forEach(mem => {
+    guild.members.forEach(mem => {
       if (mem.bot) bots++;
       else users++;
     });
