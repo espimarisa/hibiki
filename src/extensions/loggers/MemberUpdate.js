@@ -17,6 +17,16 @@ module.exports = async (bot) => {
     if (guild.channels.has(channel)) return channel;
   };
 
+  // Tries to log
+  const trysend = async (guild, event, embed) => {
+    const channel = await cansend(guild, event);
+    if (channel) {
+      bot.createMessage(channel, {
+        embed: embed,
+      }).catch(() => {});
+    }
+  };
+
   // Logs to the leavejoin channel when a member joins
   bot.on("guildMemberAdd", async function(guild, member) {
     // Invalid member
@@ -53,7 +63,7 @@ module.exports = async (bot) => {
     if (!guildcfg || !guildcfg.leavejoin) return;
     const leavejoin = guildcfg.leavejoin;
     const leavejoinchannel = guild.channels.find(c => c.id === leavejoin);
-    // Sends when a member leaes
+    // Sends when a member leaves
     leavejoinchannel.createMessage({
       embed: {
         title: "👋 Member Left",
@@ -64,71 +74,59 @@ module.exports = async (bot) => {
   });
 
   // Logs details about a new member
-  bot.on("loggingMemberAdd", async (guild, member) => {
-    const channel = await cansend(guild, "loggingMemberAdd");
-    if (!channel || !member) return;
-    bot.createMessage(channel, {
-      embed: {
-        color: bot.embed.colour("success"),
-        timestamp: new Date(),
-        author: {
-          name: `${format.tag(member, false)} joined`,
-          icon_url: member.avatarURL,
-        },
-        thumbnail: {
-          url: member.user ? member.user.dynamicAvatarURL(null, 1024) : member.dynamicAvatarURL(null, 1024),
-        },
-        fields: [{
-          name: "ID",
-          value: member.id,
-        }, {
-          name: "Created",
-          value: format.date(member.user.createdAt),
-        }, {
-          name: "Account Age",
-          value: `**${Math.floor((new Date() - member.user.createdAt) / 86400000)}** days old`,
-        }],
-        footer: {
-          icon_url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
-          text: `${guild.name} now has ${guild.memberCount} members`,
-        },
-      },
-    }).catch(() => {});
-  });
+  bot.on("loggingMemberAdd", async (guild, member) => trysend(guild, "loggingMemberAdd", {
+    color: bot.embed.colour("success"),
+    timestamp: new Date(),
+    author: {
+      name: `${format.tag(member, false)} joined`,
+      icon_url: member.avatarURL,
+    },
+    thumbnail: {
+      url: member.user ? member.user.dynamicAvatarURL(null, 1024) : member.dynamicAvatarURL(null, 1024),
+    },
+    fields: [{
+      name: "ID",
+      value: member.id,
+    }, {
+      name: "Created",
+      value: format.date(member.user.createdAt),
+    }, {
+      name: "Account Age",
+      value: `**${Math.floor((new Date() - member.user.createdAt) / 86400000)}** days old`,
+    }],
+    footer: {
+      icon_url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
+      text: `${guild.name} now has ${guild.memberCount} members`,
+    },
+  }));
 
   // Logs details about a member that left
-  bot.on("loggingMemberRemove", async (guild, member) => {
-    const channel = await cansend(guild, "loggingMemberRemove");
-    if (!channel || !member) return;
-    bot.createMessage(channel, {
-      embed: {
-        color: bot.embed.colour("error"),
-        timestamp: new Date(),
-        author: {
-          name: `${format.tag(member, false)} left`,
-          icon_url: member.avatarURL,
-        },
-        thumbnail: {
-          url: member.user ? member.user.dynamicAvatarURL(null, 1024) : member.dynamicAvatarURL(null, 1024),
-        },
-        fields: [{
-          name: "ID",
-          value: member.id,
-        }, {
-          name: "Joined",
-          value: format.date(member.joinedAt),
-        }, {
-          name: "Created",
-          value: format.date(member.user.createdAt),
-        }, {
-          name: "Account Age",
-          value: `**${Math.floor((new Date() - member.user.createdAt) / 86400000)}** days old`,
-        }],
-        footer: {
-          icon_url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
-          text: `${guild.name} now has ${guild.memberCount} members`,
-        },
-      },
-    }).catch(() => {});
-  });
+  bot.on("loggingMemberRemove", async (guild, member) => trysend(guild, "loggingMemberRemove", {
+    color: bot.embed.colour("error"),
+    timestamp: new Date(),
+    author: {
+      name: `${format.tag(member, false)} left`,
+      icon_url: member.avatarURL,
+    },
+    thumbnail: {
+      url: member.user ? member.user.dynamicAvatarURL(null, 1024) : member.dynamicAvatarURL(null, 1024),
+    },
+    fields: [{
+      name: "ID",
+      value: member.id,
+    }, {
+      name: "Joined",
+      value: format.date(member.joinedAt),
+    }, {
+      name: "Created",
+      value: format.date(member.user.createdAt),
+    }, {
+      name: "Account Age",
+      value: `**${Math.floor((new Date() - member.user.createdAt) / 86400000)}** days old`,
+    }],
+    footer: {
+      icon_url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
+      text: `${guild.name} now has ${guild.memberCount} members`,
+    },
+  }));
 };
