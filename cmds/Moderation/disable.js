@@ -33,6 +33,7 @@ class disableCommand extends Command {
       guildcfg.disabledCategories.push(category);
       // Updates DB
       await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(guildcfg);
+      this.bot.emit("categoryDisable", msg.channel.guild, msg.member, category);
       return msg.channel.createMessage(this.bot.embed("✅ Success", `The **${category}** category have been disabled`, "success"));
     }
 
@@ -45,6 +46,7 @@ class disableCommand extends Command {
       // Updates DB
       guildcfg.disabledCmds.push(cmd.id);
       await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(guildcfg);
+      this.bot.emit("commandDisable", msg.channel.guild, msg.member, command);
       msg.channel.createMessage(this.bot.embed("✅ Success", `The **${cmd.id}** command has been disabled.`, "success"));
     } else {
       msg.channel.createMessage(this.bot.embed("❌ Error", `That isn't allowed to be disabled.`, "error"));
