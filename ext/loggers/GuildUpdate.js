@@ -1,0 +1,3 @@
+/*
+  This logs when a guild is updated.
+*/

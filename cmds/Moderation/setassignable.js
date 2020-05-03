@@ -3,9 +3,9 @@ const Command = require("../../lib/structures/Command");
 class addassignableCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["addassign", "addassignablerole", "assignablerole", "makeassign", "makeassignable", "makeassignablerole"],
+      aliases: ["addassign", "addassignable", "addassignablerole", "assignablerole", "makeassign", "makeassignable", "makeassignablerole"],
       args: "<role:role>",
-      description: "Sets a role to be assignable by other members.",
+      description: "Sets a role to be assignable.",
       staff: true,
     });
   }
@@ -26,6 +26,7 @@ class addassignableCommand extends Command {
       });
 
       // Sends the embed
+      this.bot.emit("setAssignable", msg.channel.guild, msg.member, role);
       msg.channel.createMessage(this.bot.embed("✅ Success", `**${role.name}** can now be assigned using the assign command.`, "success"));
     } else {
       msg.channel.createMessage(this.bot.embed("❌ Error", `**${role.name}** is already set to be assignable.`, "error"));
