@@ -1,0 +1,3 @@
+/*
+  This logs when points are added or removed.
+*/

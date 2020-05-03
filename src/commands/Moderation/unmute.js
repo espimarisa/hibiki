@@ -50,6 +50,7 @@ class unmuteCommand extends Command {
     });
 
     // Clears mutecache
+    this.bot.emit("memberUnmute", msg.channel.guild, msg.member, user);
     msg.channel.createMessage(this.bot.embed("✅ Success", `**${user.username}** was unmuted.`, "success"));
     await this.bot.db.table("mutecache").filter({ member: user.id, guild: msg.channel.guild.id }).delete();
   }
