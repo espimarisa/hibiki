@@ -29,6 +29,7 @@ class warnCommand extends Command {
     });
 
     // Sends the embed
+    this.bot.emit("memberWarn", msg.channel.guild, msg.member, user, id, reason || "No reason given.");
     msg.channel.createMessage(this.bot.embed("⚠ Warn", `**${user.username}** was given a warning.`));
   }
 }

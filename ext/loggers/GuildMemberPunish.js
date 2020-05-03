@@ -1,0 +1,3 @@
+/*
+  This logs when a member is kicked or banned.
+*/

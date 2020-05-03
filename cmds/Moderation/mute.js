@@ -17,7 +17,7 @@ class muteCommand extends Command {
   async run(msg, args, pargs) {
     const user = pargs[0].value;
     let reason = args.slice(1).join(" ");
-    if (!reason.length) reason = "no reason provided";
+    if (!reason.length) reason = "No reason given.";
     if (reason.length > 512) reason = reason.slice(0, 512);
 
     // Reads db; finds role
@@ -54,6 +54,7 @@ class muteCommand extends Command {
         await user.addRole(guildcfg.muted, `Muted by ${format.tag(msg.author)} for ${reason}`).catch(() => {
           msg.channel.createMessage(this.bot.embed("❌ Error", `Failed to add the muted role to **${user.username}**.`));
         });
+        this.bot.emit("memberMute", msg.channel.guild, msg.member, user, reason);
         return msg.channel.createMessage(this.bot.embed("✅ Success", `**${user.username}** was muted.`, "success"));
       }
 
@@ -76,6 +77,7 @@ class muteCommand extends Command {
         });
 
         // Sends success embed
+        this.bot.emit("memberMute", msg.channel.guild, msg.member, user, reason);
         msg.channel.createMessage(this.bot.embed("✅ Success", `**${user.username}** was muted.`, "success"));
       });
     } else {
