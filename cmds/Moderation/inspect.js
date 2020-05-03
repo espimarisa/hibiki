@@ -13,6 +13,8 @@ class inspectCommand extends Command {
 
   async run(msg, args) {
     // Invite parser
+    // todo - fix parser, api bitches
+    // it worked fine before lol
     let urlargs = args.join(" ").split(".gg/");
     if (!urlargs || !urlargs[1]) urlargs = args.join(" ").split("discordapp.com/invite/");
     const parser = (/(https?:\/\/)?(www\.)?(discord\.(gg)|discordapp\.com\/invite)\/(.+[a-z])/).test();

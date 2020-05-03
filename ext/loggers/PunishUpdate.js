@@ -5,7 +5,7 @@
 const Logging = require("../../lib/structures/Logging");
 const format = require("../../lib/scripts/Format");
 
-module.exports = async (bot) => {
+module.exports = (bot) => {
   // Logging database
   const loggingdb = new Logging(bot.db);
   const cansend = async (guild) => {

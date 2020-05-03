@@ -11,7 +11,7 @@ class unloadCommand extends Command {
     });
   }
 
-  async run(msg, args, pargs) {
+   run(msg, args, pargs) {
     // Unloads
     const r = pargs[0].value.unload();
     // Sends when unloaded

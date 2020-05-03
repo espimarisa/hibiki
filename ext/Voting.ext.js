@@ -10,7 +10,7 @@ const voting = require("../cfg").voting;
 const app = express();
 app.use(express.json());
 
-module.exports = async (bot) => {
+module.exports = (bot) => {
   if (!voting.port) return;
   app.post("/voteReceive", async (req, res) => {
     // Sends if unauthorised
