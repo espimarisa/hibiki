@@ -39,6 +39,7 @@ class removewarnCommand extends Command {
     }
 
     // Sends the embed
+    this.bot.emit("warningRemove", msg.channel.guild, msg.member, removed.map(w => `\`${w.warning}\``));
     await msg.channel.createMessage({
       embed: {
         title: `⚠ Removed ${removed.length} warning${removed.length === 1 ? "" : "s"}.`,
