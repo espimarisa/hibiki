@@ -12,71 +12,57 @@ module.exports = async (bot) => {
     if (!guild || !guild.channels) return;
     const canlog = await loggingdb.canLog(guild);
     if (!canlog) return;
-    // Sets type as modLogging
+    // Sets type
     const channel = await loggingdb.guildlogging(guild, "modLogging");
     if (guild.channels.has(channel)) return channel;
   };
 
+  // Tries to log
+  const trysend = async (guild, event, embed) => {
+    const channel = await cansend(guild, event);
+    if (channel) {
+      bot.createMessage(channel, {
+        embed: embed,
+      }).catch(() => {});
+    }
+  };
+
   // Logs when a member is warned
-  bot.on("memberWarn", async (guild, giver, receiver, id, reason) => {
-    const channel = await cansend(guild, "memberWarn");
-    if (!channel) return;
-    bot.createMessage(channel, {
-      embed: {
-        description: `**Reason:** ${reason} \n **ID:** ${id}`,
-        color: bot.embed.colour("error"),
-        author: {
-          name: `${format.tag(giver, false)} warned ${format.tag(receiver)}.`,
-          icon_url: receiver.avatarURL,
-        },
-      },
-    });
-  });
+  bot.on("memberWarn", async (guild, giver, receiver, id, reason) => trysend(guild, "memberWarn", {
+    description: `**Reason:** ${reason} \n **ID:** ${id}`,
+    color: bot.embed.colour("error"),
+    author: {
+      name: `${format.tag(giver, false)} warned ${format.tag(receiver)}.`,
+      icon_url: receiver.avatarURL,
+    },
+  }));
 
   // Logs when warnings are removed
-  bot.on("warningRemove", async (guild, user, ids) => {
-    const channel = await cansend(guild, "warningRemove");
-    if (!channel) return;
-    bot.createMessage(channel, {
-      embed: {
-        description: ids.join(" "),
-        color: bot.embed.colour("error"),
-        author: {
-          name: `${format.tag(user, false)} removed warnings.`,
-          icon_url: user.avatarURL,
-        },
-      },
-    });
-  });
+  bot.on("warningRemove", async (guild, user, ids) => trysend(guild, "warningRemove", {
+    description: ids.join(" "),
+    color: bot.embed.colour("error"),
+    author: {
+      name: `${format.tag(user, false)} removed warnings.`,
+      icon_url: user.avatarURL,
+    },
+  }));
 
   // Logs when a member is muted
-  bot.on("memberMute", async (guild, giver, receiver, reason) => {
-    const channel = await cansend(guild, "memberMute");
-    if (!channel) return;
-    bot.createMessage(channel, {
-      embed: {
-        description: `**Reason:** ${reason}`,
-        color: bot.embed.colour("error"),
-        author: {
-          name: `${format.tag(giver, false)} muted ${format.tag(receiver)}.`,
-          icon_url: receiver.avatarURL,
-        },
-      },
-    });
-  });
+  bot.on("memberMute", async (guild, giver, receiver, reason) => trysend(guild, "memberMute", {
+    description: `**Reason:** ${reason}`,
+    color: bot.embed.colour("error"),
+    author: {
+      name: `${format.tag(giver, false)} muted ${format.tag(receiver)}.`,
+      icon_url: receiver.avatarURL,
+    },
+  }));
 
   // Logs when a member is unmuted
-  bot.on("memberUnmute", async (guild, giver, receiver) => {
-    const channel = await cansend(guild, "memberUnmute");
-    if (!channel) return;
-    bot.createMessage(channel, {
-      embed: {
-        color: bot.embed.colour("success"),
-        author: {
-          name: `${format.tag(giver, false)} unmuted ${format.tag(receiver, false)}.`,
-          icon_url: receiver.avatarURL,
-        },
-      },
-    });
-  });
+  bot.on("memberUnmute", async (guild, giver, receiver) => trysend(guild, "memberUnmute", {
+    color: bot.embed.colour("success"),
+    author: {
+      name: `${format.tag(giver, false)} unmuted ${format.tag(receiver, false)}.`,
+      icon_url: receiver.avatarURL,
+    },
+  }));
 };
