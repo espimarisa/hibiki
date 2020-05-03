@@ -39,6 +39,7 @@ class removepointCommand extends Command {
     }
 
     // Sends the embed
+    this.bot.emit("pointRemove", msg.channel.guild, msg.member, removed.map(p => `\`${p.point}\``));
     await msg.channel.createMessage({
       embed: {
         title: `✨ Removed ${removed.length} point${removed.length === 1 ? "" : "s"}.`,

@@ -1,5 +1,5 @@
 /*
-  This logs when points are added or removed.
+  This logs when bot functionality is changed.
 */
 
 const Logging = require("../../lib/structures/Logging");
@@ -27,22 +27,20 @@ module.exports = async (bot) => {
     }
   };
 
-  // Logs when a member is given a point
-  bot.on("pointAdd", async (guild, giver, receiver, id, reason) => trysend(guild, "pointAdd", {
-    description: `**Reason:** ${reason} \n **ID:** ${id}`,
-    color: bot.embed.colour("success"),
+  // Logs when a role is set to be assignable
+  bot.on("setAssignable", async (guild, user, role) => trysend(guild, "setAssignable", {
+    color: bot.embed.colour("general"),
     author: {
-      name: `${format.tag(giver, false)} gave ${format.tag(receiver)} a point.`,
-      icon_url: receiver.avatarURL,
+      name: `${format.tag(user, false)} made ${role.name} assignable.`,
+      icon_url: user.avatarURL,
     },
   }));
 
-  // Logs when warnings are removed
-  bot.on("pointRemove", async (guild, user, ids) => trysend(guild, "pointRemove", {
-    description: ids.join(" "),
-    color: bot.embed.colour("error"),
+  // Logs when a role is set to be assignable
+  bot.on("removeAssignable", async (guild, user, role) => trysend(guild, "removeAssignable", {
+    color: bot.embed.colour("general"),
     author: {
-      name: `${format.tag(user, false)} removed points.`,
+      name: `${format.tag(user, false)} made ${role.name} unassignable.`,
       icon_url: user.avatarURL,
     },
   }));

@@ -30,7 +30,10 @@ class unverifyCommand extends Command {
     }
 
     // Removes the role
-    await user.removeRole(guildcfg.verified, `Unverified by ${format.tag(msg.author, true)}`);
+    await user.removeRole(guildcfg.verified, `Unverified by ${format.tag(msg.author, true)}`).catch(() => {
+      msg.channel.createMessage(this.bot.embed("❌ Error", `Failed to unverify **${user.username}**.`));
+    });
+    this.bot.emit("memberUnverify", msg.channel.guild, msg.member, user);
     msg.channel.createMessage(this.bot.embed("✅ Success", `The verified role was removed from **${user.username}**.`, "success"));
   }
 }

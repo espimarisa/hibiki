@@ -32,7 +32,10 @@ class assignCommand extends Command {
     // Sends the embed
     if (assignable.length) {
       // Adds the role
-      await msg.member.addRole(role.id, "Self-assignable role").catch(() => {});
+      await msg.member.addRole(role.id, "Self-assignable role").catch(() => {
+        msg.channel.createMessage(this.bot.embed("❌ Error", "Failed to give you the role."));
+      });
+      this.bot.emit("roleAssign", msg.channel.guild, msg.member, role);
       msg.channel.createMessage(this.bot.embed("✅ Success", `You now have the **${role.name}** role.`, "success"));
     } else if (!assignable.length) return msg.channel.createMessage(this.bot.embed("❌ Error", "That isn't an assignable role.", "error"));
   }
