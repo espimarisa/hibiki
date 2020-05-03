@@ -3,7 +3,7 @@ const Command = require("../../lib/structures/Command");
 class removeassignableCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["removeassign", "removeassignablerole", "rmassign", "rmassignable", "unassignablerole"],
+      aliases: ["removeassign", "removeassignablerole", "rmassign", "rmassignable", "unassignable", "unassignablerole"],
       args: "<role:role>",
       description: "Makes an assignable remove unassignable.",
       staff: true,
@@ -32,6 +32,7 @@ class removeassignableCommand extends Command {
     }).delete();
 
     // Sends the embed
+    this.bot.emit("removeAssignable", msg.channel.guild, msg.member, role);
     msg.channel.createMessage(this.bot.embed("✅ Success", `**${role.name}** is no longer assignable.`, "success"));
   }
 }

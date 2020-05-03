@@ -30,7 +30,10 @@ class verifyCommand extends Command {
     }
 
     // Gives member the role
-    await user.addRole(guildcfg.verified, `Verified by ${format.tag(msg.author, true)}`);
+    await user.addRole(guildcfg.verified, `Verified by ${format.tag(msg.author, true)}`).catch(() => {
+      msg.channel.createMessage(this.bot.embed("❌ Error", `Failed to verify **${format.tag(user.username)}**.`));
+    });
+    this.bot.emit("memberVerify", msg.channel.guild, msg.member, user);
     msg.channel.createMessage(this.bot.embed("✅ Success", `The verified role was given to **${user.username}**.`, "success"));
   }
 }

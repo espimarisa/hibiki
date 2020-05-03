@@ -22,7 +22,10 @@ class unassignCommand extends Command {
     // Sends the embed
     if (assignable.length) {
       // Adds the role
-      await msg.member.removeRole(role.id, "Self-assignable role").catch(() => {});
+      await msg.member.removeRole(role.id, "Self-assignable role").catch(() => {
+        msg.channel.createMessage(this.bot.embed("❌ Error", "Failed to remove the role from you."));
+      });
+      this.bot.emit("roleUnassign", msg.channel.guild, msg.member, role);
       msg.channel.createMessage(this.bot.embed("✅ Success", `The **${role.name}** role was removed from you.`, "success"));
     } else if (!assignable.length) return msg.channel.createMessage(this.bot.embed("❌ Error", "That isn't an assignable role.", "error"));
   }
