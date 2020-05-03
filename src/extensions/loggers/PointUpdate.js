@@ -28,7 +28,7 @@ module.exports = async (bot) => {
   };
 
   // Logs when a member is given a point
-  bot.on("pointAdd", async (guild, giver, receiver, id, reason) => trysend(guild, "pointAdd", {
+  bot.on("pointAdd", (guild, giver, receiver, id, reason) => trysend(guild, "pointAdd", {
     description: `**Reason:** ${reason} \n **ID:** ${id}`,
     color: bot.embed.colour("success"),
     author: {
@@ -38,7 +38,7 @@ module.exports = async (bot) => {
   }));
 
   // Logs when warnings are removed
-  bot.on("pointRemove", async (guild, user, ids) => trysend(guild, "pointRemove", {
+  bot.on("pointRemove", (guild, user, ids) => trysend(guild, "pointRemove", {
     description: ids.join(" "),
     color: bot.embed.colour("error"),
     author: {

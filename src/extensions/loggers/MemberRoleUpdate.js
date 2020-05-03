@@ -28,7 +28,7 @@ module.exports = async (bot) => {
   };
 
   // Logs when a member is verified
-  bot.on("memberVerify", async (guild, giver, receiver) => trysend(guild, "memberVerify", {
+  bot.on("memberVerify", (guild, giver, receiver) => trysend(guild, "memberVerify", {
     color: bot.embed.colour("success"),
     author: {
       name: `${format.tag(giver, false)} verified ${format.tag(receiver)}.`,
@@ -37,7 +37,7 @@ module.exports = async (bot) => {
   }));
 
   // Logs when a member is unverified
-  bot.on("memberUnverify", async (guild, giver, receiver) => trysend(guild, "memberUnverify", {
+  bot.on("memberUnverify", (guild, giver, receiver) => trysend(guild, "memberUnverify", {
     color: bot.embed.colour("error"),
     author: {
       name: `${format.tag(giver, false)} unverified ${format.tag(receiver)}.`,
@@ -46,7 +46,7 @@ module.exports = async (bot) => {
   }));
 
   // Logs when a member assigns a role
-  bot.on("roleAssign", async (guild, member, role) => trysend(guild, "roleAssign", {
+  bot.on("roleAssign", (guild, member, role) => trysend(guild, "roleAssign", {
     color: bot.embed.colour("general"),
     author: {
       name: `${format.tag(member)} self-assigned the ${role.name} role.`,
@@ -55,7 +55,7 @@ module.exports = async (bot) => {
   }));
 
   // Logs when a member unassigns a role
-  bot.on("roleUnassign", async (guild, member, role) => trysend(guild, "roleUnassign", {
+  bot.on("roleUnassign", (guild, member, role) => trysend(guild, "roleUnassign", {
     color: bot.embed.colour("general"),
     author: {
       name: `${format.tag(member)} unassigned the ${role.name} role.`,
