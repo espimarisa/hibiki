@@ -1,5 +1,5 @@
 /*
-  This logs when a channel is updated.
+  This logs when a channel is created, deleted, or edited.
 */
 
 const Logging = require("../../lib/structures/Logging");
@@ -27,9 +27,10 @@ module.exports = (bot) => {
       color: bot.embed.colour("general"),
       description: `<#${channel.id}> (${channel.id})`,
       author: {
-        name: `Channel Created`,
+        name: `#${channel.name} created`,
       },
     };
+
     // Reads the audit logs
     const logs = await channel.guild.getAuditLogs(1, null, 10).catch(() => {});
     if (logs) {
@@ -41,6 +42,7 @@ module.exports = (bot) => {
         embed.author.icon_url = user.avatarURL;
       }
     }
+
     bot.createMessage(logchannel, { embed: embed }).catch(() => {});
   });
 
@@ -57,6 +59,7 @@ module.exports = (bot) => {
         name: `#${channel.name} deleted`,
       },
     };
+
     // Reads the audit logs
     const logs = await channel.guild.getAuditLogs(1, null, 12).catch(() => {});
     if (logs) {
@@ -68,10 +71,11 @@ module.exports = (bot) => {
         embed.author.icon_url = user.avatarURL;
       }
     }
+
     bot.createMessage(logchannel, { embed: embed }).catch(() => {});
   });
 
-  // Logs when a channel is updated
+  // Logs when a channel is edited
   bot.on("channelUpdate", async (channel, oldchannel) => {
     // Finds channel; returns if it shouldn't log
     if (channel.type === 1 || channel.type === 3) return;
@@ -126,8 +130,8 @@ module.exports = (bot) => {
       });
     }
 
-    if (!embed.fields.length) return;
     // Reads the audit logs
+    if (!embed.fields.length) return;
     const logs = await channel.guild.getAuditLogs(1, null, 11).catch(() => {});
     if (logs) {
       // Updates embed if needed
@@ -138,7 +142,7 @@ module.exports = (bot) => {
         embed.author.icon_url = user.avatarURL;
       }
     }
-    // Sends the embed
+
     bot.createMessage(logchannel, { embed: embed }).catch(() => {});
   });
 };
