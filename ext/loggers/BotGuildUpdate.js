@@ -14,7 +14,7 @@ module.exports = (bot) => {
     const owner = guild.members.get(guild.ownerID);
     bot.createMessage(bot.cfg.logchannel, {
       embed: {
-        color: bot.embed.colour("success"),
+        color: bot.embed.color("success"),
         author: {
           name: `Added to ${guild.name}`,
           icon_url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
@@ -53,7 +53,7 @@ module.exports = (bot) => {
     const owner = guild.members.get(guild.ownerID);
     bot.createMessage(bot.cfg.logchannel, {
       embed: {
-        color: bot.embed.colour("error"),
+        color: bot.embed.color("error"),
         author: {
           name: `Removed from ${guild.name}`,
           icon_url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",

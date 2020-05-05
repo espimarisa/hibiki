@@ -28,7 +28,7 @@ class e621Command extends Command {
     await msg.channel.createMessage({
       embed: {
         title: "🔞 e621",
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         image: {
           url: body.posts[random].file.url,
         },

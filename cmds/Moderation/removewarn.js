@@ -44,7 +44,7 @@ class removewarnCommand extends Command {
       embed: {
         title: `⚠ Removed ${removed.length} warning${removed.length === 1 ? "" : "s"}.`,
         description: `${removed.map(w => w.warning).join(", ")}`,
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         fields: failed.length ? [{
           name: "Failed to remove some warnings.",
           value: `${failed.map(w => w.warning).join(", ")}`,

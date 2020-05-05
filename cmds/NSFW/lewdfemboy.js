@@ -21,7 +21,7 @@ class lewdfemboyCommand extends Command {
     await msg.channel.createMessage({
       embed: {
         title: "🔞 Lewd Femboy",
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         image: {
           url: body.url,
         },

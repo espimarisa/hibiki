@@ -19,7 +19,7 @@ class guildCreate extends Event {
     if (oid) {
       const odm = await oid.getDMChannel();
       if (odm) {
-        odm.createMessage(this.bot.embed(`✨ Thanks for inviting me, ${oid.username}.`, `\n To get started, run \`${this.bot.cfg.prefix}help\`.`));
+        odm.createMessage(this.bot.embed(`✨ I was added to your server, ${oid.username}.`, `\n To get started, run \`${this.bot.cfg.prefix}help\`.`));
       }
     }
 

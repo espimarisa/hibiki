@@ -25,7 +25,7 @@ class xkcdCommand extends Command {
       embed: {
         title: `💭 ${body.safe_title}`,
         description: `${body.alt}`,
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         image: {
           url: body.img,
         },

@@ -24,7 +24,7 @@ class smileCommand extends Command {
     msg.channel.createMessage({
       embed: {
         description: `😊 **${msg.author.username}** is smiling at **${pargs[0].value.username}**!`,
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         image: {
           url: image,
         },

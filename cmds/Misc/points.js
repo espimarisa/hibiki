@@ -34,7 +34,7 @@ class pointsCommand extends Command {
     await msg.channel.createMessage({
       embed: {
         title: `✨ ${user.username} has ${points.length} point${points.length === 1 ? "" : "s"}.`,
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         fields: points.map(m => ({
           name: `${m.id} - from **${msg.channel.guild.members.get(m.giver) ? msg.channel.guild.members.get(m.giver).username : m.giver}**`,
           value: `${m.reason.slice(0, 150) || "No reason given."}`,

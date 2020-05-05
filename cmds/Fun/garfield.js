@@ -34,7 +34,7 @@ class garfieldCommand extends Command {
         image: {
           url: garfield[0],
         },
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
       },
     });
   }

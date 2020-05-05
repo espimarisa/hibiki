@@ -57,7 +57,7 @@ class forcebanCommand extends Command {
       embed: {
         title: `⚒ Forcebanned ${banned.length} ID${banned.length > 1 ? "s" : ""}.`,
         description: `**${banned.map(m => m.user).join(", ")}**`,
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         fields: failed.length ? [{
           name: `${failed.length} ID${failed.length > 1 ? "s" : ""} failed to be banned.`,
           value: `${failed.map(m => m.user).join(", ")}`,

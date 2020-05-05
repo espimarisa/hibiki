@@ -59,7 +59,7 @@ class r6sCommand extends Command {
     emsg.edit({
       embed: {
         description: fields.map(f => `${f.name}: ${f.value}`).join("\n"),
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         author: {
           name: `R6S stats for ${user.username} on ${platform.replace(/uplay/i, "PC")}`,
           url: `https://r6stats.com/stats/${user.uplay_id}`,

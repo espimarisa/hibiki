@@ -69,7 +69,7 @@ class userCommand extends Command {
     msg.channel.createMessage({
       embed: {
         description: desc.map(d => `${d.name} ${d.value}`).join("\n"),
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         author: {
           icon_url: user.user.dynamicAvatarURL(null),
           name: format.tag(user.user),

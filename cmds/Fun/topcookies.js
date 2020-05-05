@@ -38,7 +38,7 @@ class topcookiesCommand extends Command {
       embed: {
         title: "🍪 Top Cookies",
         description: content,
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
       },
     });
   }

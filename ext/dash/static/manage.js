@@ -41,21 +41,21 @@ window.addEventListener("load", async () => {
 
   // Hides elements when not necessary
   function visibilityLogic() {
-    // AntiSpam
-    if (typeof cfg.AntiSpam === "boolean") {
-      document.getElementById("spamPunishments").parentElement.parentElement.children[2].hidden = !cfg.AntiSpam;
-      document.getElementById("spamPunishments").parentElement.hidden = !cfg.AntiSpam;
+    // antiSpam
+    if (typeof cfg.antiSpam === "boolean") {
+      document.getElementById("spamPunishments").parentElement.parentElement.children[2].hidden = !cfg.antiSpam;
+      document.getElementById("spamPunishments").parentElement.hidden = !cfg.antiSpam;
     }
 
     // InvitePunishments
-    if (typeof cfg.AntiInvite === "boolean") {
-      document.getElementById("invitePunishments").parentElement.parentElement.children[2].hidden = !cfg.AntiInvite;
-      document.getElementById("invitePunishments").parentElement.hidden = !cfg.AntiInvite;
+    if (typeof cfg.antiInvite === "boolean") {
+      document.getElementById("invitePunishments").parentElement.parentElement.children[1].hidden = !cfg.antiInvite;
+      document.getElementById("invitePunishments").parentElement.hidden = !cfg.antiInvite;
     }
 
-    // Join & leave messages
-    document.getElementById("joinMessage").parentElement.parentElement.hidden = document.querySelector("#leavejoin > select").value === "None";
-    document.getElementById("leaveMessage").parentElement.parentElement.hidden = document.querySelector("#leavejoin > select").value === "None";
+    // Joinleave messages
+    document.getElementById("joinMessage").parentElement.parentElement.hidden = document.querySelector("#leaveJoin > select").value === "None";
+    document.getElementById("leaveMessage").parentElement.parentElement.hidden = document.querySelector("#leaveJoin > select").value === "None";
   }
 
   // Inserts blank cfg
@@ -115,7 +115,7 @@ window.addEventListener("load", async () => {
         if (cfg[p] && cfg[p].includes(id)) cc.push(r);
       });
       // Autoroles
-      $(document.getElementById("autorole").children[0]).multipleSelect("setSelects", cc);
+      $(document.getElementById("autoRoles").children[0]).multipleSelect("setSelects", cc);
       // Disabled commands/categories
     } else if (p === "disabledCmds") {
       $("#disabledCmds > select").multipleSelect("setSelects", [...cfg[p], ...$("#disabledCmds > select").multipleSelect("getSelects")]);
@@ -193,10 +193,9 @@ window.addEventListener("load", async () => {
         button.classList.remove("is-loading");
         button.classList.remove("is-light");
         button.classList.add("is-success");
-        document.getElementById("saved").innerText = "Configuration saved";
+        document.getElementById("saved").innerText = "Changes saved";
         setTimeout(() => {
-          document.getElementById("saved").innerText = "Save configuration";
-          button.classList.add("is-light");
+          document.getElementById("saved").innerText = "Save changes";
           button.classList.remove("is-success");
         }, 2000);
       } else {

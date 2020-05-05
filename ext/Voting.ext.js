@@ -9,11 +9,12 @@ const voting = require("../cfg").voting;
 // Sets up express
 const app = express();
 app.use(express.json());
+app.disable("x-powered-by");
 
 module.exports = (bot) => {
   if (!voting.port) return;
   app.post("/voteReceive", async (req, res) => {
-    // Sends if unauthorised
+    // Sends if unauthorized
     if (req.headers.authorization !== voting.auth) {
       if (req.headers.authorization && req.headers.authorization.length || !req.headers.authorization) {
         bot.log.warn(`${req.connection.remoteAddress} tried to make a request with the wrong auth key.`);
@@ -47,7 +48,7 @@ module.exports = (bot) => {
         embed: {
           title: "✨ Thanks for voting!",
           description: `**${req.body.isWeekend ? "200" : "150"} cookies** have been added to your account.`,
-          color: bot.embed.colour("general"),
+          color: bot.embed.color("general"),
         },
       });
     }
@@ -57,7 +58,7 @@ module.exports = (bot) => {
       embed: {
         title: "🗳 User Voted",
         description: `**${user ? user.username : req.body.user}** has voted.`,
-        color: bot.embed.colour("general"),
+        color: bot.embed.color("general"),
       },
     });
     // Logs when a member voted

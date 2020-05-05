@@ -30,7 +30,7 @@ module.exports = (bot) => {
   // Logs when a member is given a point
   bot.on("pointAdd", (guild, giver, receiver, id, reason) => trysend(guild, "pointAdd", {
     description: `**Reason:** ${reason} \n **ID:** ${id}`,
-    color: bot.embed.colour("success"),
+    color: bot.embed.color("success"),
     author: {
       name: `${format.tag(giver, false)} gave ${format.tag(receiver)} a point.`,
       icon_url: receiver.avatarURL,
@@ -40,7 +40,7 @@ module.exports = (bot) => {
   // Logs when warnings are removed
   bot.on("pointRemove", (guild, user, ids) => trysend(guild, "pointRemove", {
     description: ids.join(" "),
-    color: bot.embed.colour("error"),
+    color: bot.embed.color("error"),
     author: {
       name: `${format.tag(user, false)} removed points.`,
       icon_url: user.avatarURL,

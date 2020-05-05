@@ -12,7 +12,7 @@ class bannerCommand extends Command {
     if (!msg.channel.guild.banner) return msg.channel.createMessage(this.bot.embed("❌ Error", "This server doesn't have a banner.", "error"));
     msg.channel.createMessage({
       embed: {
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         author: {
           icon_url: msg.channel.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
           name: msg.channel.guild.name,
