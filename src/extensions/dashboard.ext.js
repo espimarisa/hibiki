@@ -117,6 +117,10 @@ module.exports = (bot) => {
     res.redirect("https://twitter.com/HibikiApp");
   });
 
+  app.get("/vote/", (_req, res) => {
+    res.redirect("https://top.gg/bot/493904957523623936/vote");
+  });
+
   // Server manager
   app.get("/manage/:id", checkAuth, async (req, res) => {
     // Sets vaild items

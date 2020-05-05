@@ -7,7 +7,11 @@ html {
 /* Layout Styling */
 
 .about {
-  max-width: 45em;
+  max-width: 55em;
+}
+
+.spacing {
+  margin: 5em;
 }
 
 /* Text Styling */
