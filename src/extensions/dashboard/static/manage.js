@@ -22,7 +22,6 @@ async function updateConfig(id, cfg) {
   });
 }
 
-// Copy of the original cfg
 let ocfg;
 
 // Adds the event listener
@@ -100,11 +99,11 @@ window.addEventListener("load", async () => {
       // Strings
     } else if (type === "string") {
       element.value = cfg[p];
+      // RoleArray
     } else if (type === "roleArray") {
       if (typeof cfg[p] !== "object") cfg[p] = [cfg[p]];
       const roles = [];
       const cc = [];
-      // RoleArray for AutoRole
       const aSelects = Array.from(document.querySelector(`#${p} > div > div > ul`).children);
       aSelects.forEach(e => {
         if (!e.children[0]) return;
