@@ -24,6 +24,7 @@ class Verniy extends Client {
     this.commands = new Collection(Command);
     this.events = new Collection(Event);
     this.extensions = [];
+    this.antiSpam = [];
     // Logs when ready
     this.on("ready", () => {
       // Logs number of cmds, events, extensions

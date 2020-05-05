@@ -42,11 +42,20 @@ module.exports = (bot) => {
     if (!guildcfg || !guildcfg.leaveJoin) return;
     const leaveJoin = guildcfg.leaveJoin;
     const leavejoinchannel = guild.channels.find(c => c.id === leaveJoin);
+    if (!leavejoinchannel) return;
+    // Handler for custom join messages
+    let joinMessage = `Welcome to **${guild.name}, **${member.username}.`;
+    if (guildcfg.joinMessage && guildcfg.joinMessage.length < 2000) {
+      joinMessage = guildcfg.joinMessage;
+      joinMessage = joinMessage.replace("{member}", `${member.username}`);
+      joinMessage = joinMessage.replace("{membercount}", `${guild.memberCount}`);
+      joinMessage = joinMessage.replace("{servername}", `${guild.name}`);
+    }
     // Sends when a member joined
     leavejoinchannel.createMessage({
       embed: {
         title: "🎉 New Member",
-        description: `Welcome to **${guild.name}**, **${member.username}**.`,
+        description: joinMessage,
         color: bot.embed.color("success"),
       },
     }).catch(() => {});
@@ -63,11 +72,20 @@ module.exports = (bot) => {
     if (!guildcfg || !guildcfg.leaveJoin) return;
     const leaveJoin = guildcfg.leaveJoin;
     const leavejoinchannel = guild.channels.find(c => c.id === leaveJoin);
+    if (!leavejoinchannel) return;
+    // Handler for custom leave messages
+    let leaveMessage = `We'll miss you, **${member.username}.`;
+    if (guildcfg.leaveMessage && guildcfg.leaveMessage.length < 2000) {
+      leaveMessage = guildcfg.leaveMessage;
+      leaveMessage = leaveMessage.replace("{member}", `**${member.username}**`);
+      leaveMessage = leaveMessage.replace("{membercount}", `**${guild.memberCount}**`);
+      leaveMessage = leaveMessage.replace("{servername}", `**${guild.name}**`);
+    }
     // Sends when a member leaves
     leavejoinchannel.createMessage({
       embed: {
         title: "👋 Member Left",
-        description: `We'll miss you, **${member.username}**.`,
+        description: leaveMessage,
         color: bot.embed.color("error"),
       },
     }).catch(() => {});
