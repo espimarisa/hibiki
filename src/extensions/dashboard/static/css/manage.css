@@ -5,8 +5,35 @@ html {
 }
 
 /* Layout Styling */
+
 .container {
-  max-width: 70em;
+  max-width: 90em;
+}
+
+.sticky {
+  position: sticky;
+  top: 30px;
+}
+
+.sticky-buttons {
+  position: sticky;
+  top: 0px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  z-index: 35;
+  background: #1f2424;
+}
+
+/* Image Styling */
+
+.avatar {
+  border-radius: 50%;
+}
+
+.guild-icon {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
 }
 
 /* Text Styling */
@@ -22,7 +49,7 @@ a.navbar-item,
 .input,
 .select select,
 .textarea {
-  max-width: 200px;
+  max-width: 450px;
   color: #000 !important;
 }
 

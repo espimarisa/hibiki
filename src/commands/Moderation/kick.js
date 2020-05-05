@@ -38,7 +38,7 @@ class kickCommand extends Command {
         embed: {
           title: `🚪 Kicked from ${msg.channel.guild.name}`,
           description: `You were kicked for \`${reason}\`.`,
-          color: this.bot.embed.colour("general"),
+          color: this.bot.embed.color("general"),
         },
       }).catch(() => {});
       // Tries to kick the user; logs

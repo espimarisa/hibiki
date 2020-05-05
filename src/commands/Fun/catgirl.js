@@ -20,7 +20,7 @@ class catgirlCommand extends Command {
     msg.channel.createMessage({
       embed: {
         title: "🐾 Mew!",
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         image: {
           url: body.url,
         },

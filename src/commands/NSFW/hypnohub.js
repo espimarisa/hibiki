@@ -23,7 +23,7 @@ class hypnohubCommand extends Command {
     await msg.channel.createMessage({
       embed: {
         title: "🔞 Hypnohub",
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         image: {
           url: body.posts[random].sample_url,
         },

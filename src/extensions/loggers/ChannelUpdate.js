@@ -24,7 +24,7 @@ module.exports = (bot) => {
     const logchannel = await cansend(channel.guild, "channelCreate");
     if (!logchannel) return;
     const embed = {
-      color: bot.embed.colour("general"),
+      color: bot.embed.color("general"),
       description: `<#${channel.id}> (${channel.id})`,
       author: {
         name: `#${channel.name} created`,
@@ -53,7 +53,7 @@ module.exports = (bot) => {
     const logchannel = await cansend(channel.guild, "channelCreate");
     if (!logchannel) return;
     const embed = {
-      color: bot.embed.colour("error"),
+      color: bot.embed.color("error"),
       description: `**ID:** ${channel.id}`,
       author: {
         name: `#${channel.name} deleted`,
@@ -82,7 +82,7 @@ module.exports = (bot) => {
     const logchannel = await cansend(channel.guild, "channelUpdate");
     if (!logchannel) return;
     const embed = {
-      color: bot.embed.colour("general"),
+      color: bot.embed.color("general"),
       author: {
         name: `#${oldchannel.name} edited`,
       },

@@ -25,7 +25,7 @@ class safebooruCommand extends Command {
     await msg.channel.createMessage({
       embed: {
         title: "🖼 Safebooru",
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         image: {
           url: `https://safebooru.org/images/${body[random].directory}/${body[random].image}`,
         },

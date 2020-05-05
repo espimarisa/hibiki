@@ -20,9 +20,9 @@ class catCommand extends Command {
     msg.channel.createMessage({
       embed: {
         title: "🐱 Meow!",
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         image: {
-          url: body.file,
+          url: `${body.file}`,
         },
       },
     });

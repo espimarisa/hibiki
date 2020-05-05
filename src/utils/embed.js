@@ -1,8 +1,8 @@
 /*
-  This generates an embed. "title", "desc", "colourtype".
+  This generates an embed. "title", "desc", "colortype".
 */
 
-const { colours } = require("../cfg");
+const { colors } = require("../cfg");
 
 module.exports = (title, description, type) => {
   let color = "";
@@ -13,25 +13,25 @@ module.exports = (title, description, type) => {
   };
 
   if (type) {
-    // If an invalid colour is given
-    if (colours[type]) color = parseInt(colours[type].replace(/#/g, "0x"));
-    else throw Error("Invalid colour");
+    // If an invalid color is given
+    if (colors[type]) color = parseInt(colors[type].replace(/#/g, "0x"));
+    else throw Error("Invalid color");
   } else {
     // Converts hexes
-    color = parseInt(colours.general.replace(/#/g, "0x"));
+    color = parseInt(colors.general.replace(/#/g, "0x"));
   }
 
   // Sets the title & description
   if (title) construct.embed.title = title;
   if (description) construct.embed.description = description;
 
-  // Sets the embed colour
+  // Sets the embed color
   construct.embed.color = color;
   construct.embed.addField = (name, text, icon) => addField(name, text, icon);
   return construct;
 };
 
-module.exports.colour = (type) => {
-  // Converts hex colours
-  return parseInt(colours[type].replace(/#/g, "0x"));
+module.exports.color = (type) => {
+  // Converts hex colors
+  return parseInt(colors[type].replace(/#/g, "0x"));
 };

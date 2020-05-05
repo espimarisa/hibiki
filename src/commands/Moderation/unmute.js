@@ -19,16 +19,16 @@ class unmuteCommand extends Command {
 
     // Reads db; finds role
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
-    const mutedrole = await msg.channel.guild.roles.find(r => r.id === guildcfg.muted);
+    const mutedrole = await msg.channel.guild.roles.find(r => r.id === guildcfg.mutedRole);
 
     // If no role or cfg
-    if (!guildcfg || !guildcfg.muted || !mutedrole) {
+    if (!guildcfg || !guildcfg.mutedRole || !mutedrole) {
       await this.bot.db.table("guildcfg").insert({ id: msg.channel.guild.id });
       return msg.channel.createMessage(this.bot.embed("❌ Error", "The muted role hasn't been configured yet.", "error"));
     }
 
     // If member doesn't have role
-    if (!user.roles.includes(guildcfg.muted)) {
+    if (!user.roles.includes(guildcfg.mutedRole)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** isn't muted.`, "error"));
     }
 
@@ -39,7 +39,7 @@ class unmuteCommand extends Command {
     });
 
     // Removes the mutedrole
-    await user.removeRole(guildcfg.muted, `Unmuted by ${format.tag(msg.author)}`).catch(() => {
+    await user.removeRole(guildcfg.mutedRole, `Unmuted by ${format.tag(msg.author)}`).catch(() => {
       msg.channel.createMessage(this.bot.embed("❌ Error", `Failed to remove the muted role from **${user.username}**.`));
     });
 

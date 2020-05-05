@@ -37,7 +37,7 @@ class urbanCommand extends Command {
       embed: {
         title: `📔 ${query}`,
         description: word.definition,
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         fields: fields,
       },
     });

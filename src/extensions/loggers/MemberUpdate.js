@@ -27,7 +27,7 @@ module.exports = (bot) => {
     }
   };
 
-  // Logs to the leavejoin channel when a member joins
+  // Logs to the leaveJoin channel when a member joins
   bot.on("guildMemberAdd", async function(guild, member) {
     // Invalid member
     if (!member.username || !member.user && !member.user.username) return;
@@ -37,22 +37,22 @@ module.exports = (bot) => {
     // Re-mutes muted members
     const muted = await bot.db.table("mutecache");
     const mute = muted.find(m => m.member === member.id && m.guild === guild.id);
-    if (mute && guildcfg.muted) await member.addRole(guildcfg.muted, "Rejoined after being muted").catch(() => {});
+    if (mute && guildcfg.mutedRole) await member.addRole(guildcfg.mutedRole, "Rejoined after being muted").catch(() => {});
     // If no config
-    if (!guildcfg || !guildcfg.leavejoin) return;
-    const leavejoin = guildcfg.leavejoin;
-    const leavejoinchannel = guild.channels.find(c => c.id === leavejoin);
+    if (!guildcfg || !guildcfg.leaveJoin) return;
+    const leaveJoin = guildcfg.leaveJoin;
+    const leavejoinchannel = guild.channels.find(c => c.id === leaveJoin);
     // Sends when a member joined
     leavejoinchannel.createMessage({
       embed: {
         title: "🎉 New Member",
         description: `Welcome to **${guild.name}**, **${member.username}**.`,
-        color: bot.embed.colour("success"),
+        color: bot.embed.color("success"),
       },
     }).catch(() => {});
   });
 
-  // Logs to the leavejoin channel when a member leaves
+  // Logs to the leaveJoin channel when a member leaves
   bot.on("guildMemberRemove", async function(guild, member) {
     // Invalid member
     if (!member.username || !member.user && !member.user.username) return;
@@ -60,22 +60,22 @@ module.exports = (bot) => {
     bot.emit("loggingMemberRemove", guild, member);
     const guildcfg = await bot.db.table("guildcfg").get(guild.id);
     // If no config
-    if (!guildcfg || !guildcfg.leavejoin) return;
-    const leavejoin = guildcfg.leavejoin;
-    const leavejoinchannel = guild.channels.find(c => c.id === leavejoin);
+    if (!guildcfg || !guildcfg.leaveJoin) return;
+    const leaveJoin = guildcfg.leaveJoin;
+    const leavejoinchannel = guild.channels.find(c => c.id === leaveJoin);
     // Sends when a member leaves
     leavejoinchannel.createMessage({
       embed: {
         title: "👋 Member Left",
         description: `We'll miss you, **${member.username}**.`,
-        color: bot.embed.colour("error"),
+        color: bot.embed.color("error"),
       },
     }).catch(() => {});
   });
 
   // Logs details about a new member
   bot.on("loggingMemberAdd", (guild, member) => trysend(guild, "loggingMemberAdd", {
-    color: bot.embed.colour("success"),
+    color: bot.embed.color("success"),
     timestamp: new Date(),
     author: {
       name: `${format.tag(member, false)} joined`,
@@ -102,7 +102,7 @@ module.exports = (bot) => {
 
   // Logs details about a member that left
   bot.on("loggingMemberRemove", (guild, member) => trysend(guild, "loggingMemberRemove", {
-    color: bot.embed.colour("error"),
+    color: bot.embed.color("error"),
     timestamp: new Date(),
     author: {
       name: `${format.tag(member, false)} left`,

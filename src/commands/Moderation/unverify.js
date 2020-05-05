@@ -16,21 +16,21 @@ class unverifyCommand extends Command {
   async run(msg, args, pargs) {
     const user = pargs[0].value;
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
-    const role = await msg.channel.guild.roles.find(r => r.id === guildcfg.verified);
+    const role = await msg.channel.guild.roles.find(r => r.id === guildcfg.verifiedRole);
 
     // If no role or cfg
-    if (!guildcfg || !guildcfg.verified || !role) {
+    if (!guildcfg || !guildcfg.verifiedRole || !role) {
       await this.bot.db.table("guildcfg").insert({ id: msg.channel.guild.id });
       return msg.channel.createMessage(this.bot.embed("❌ Error", "The verified role hasn't been configured yet.", "error"));
     }
 
     // If member doesn't have the verified role
-    if (!user.roles.includes(guildcfg.verified)) {
+    if (!user.roles.includes(guildcfg.verifiedRole)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** doesn't have the verified role.`, "error"));
     }
 
     // Removes the role
-    await user.removeRole(guildcfg.verified, `Unverified by ${format.tag(msg.author, true)}`).catch(() => {
+    await user.removeRole(guildcfg.verifiedRole, `Unverified by ${format.tag(msg.author, true)}`).catch(() => {
       msg.channel.createMessage(this.bot.embed("❌ Error", `Failed to unverify **${user.username}**.`));
     });
     this.bot.emit("memberUnverify", msg.channel.guild, msg.member, user);

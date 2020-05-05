@@ -29,7 +29,7 @@ module.exports = (bot) => {
 
   // Logs when a member is verified
   bot.on("memberVerify", (guild, giver, receiver) => trysend(guild, "memberVerify", {
-    color: bot.embed.colour("success"),
+    color: bot.embed.color("success"),
     author: {
       name: `${format.tag(giver, false)} verified ${format.tag(receiver)}.`,
       icon_url: receiver.avatarURL,
@@ -38,7 +38,7 @@ module.exports = (bot) => {
 
   // Logs when a member is unverified
   bot.on("memberUnverify", (guild, giver, receiver) => trysend(guild, "memberUnverify", {
-    color: bot.embed.colour("error"),
+    color: bot.embed.color("error"),
     author: {
       name: `${format.tag(giver, false)} unverified ${format.tag(receiver)}.`,
       icon_url: receiver.avatarURL,
@@ -47,7 +47,7 @@ module.exports = (bot) => {
 
   // Logs when a member assigns a role
   bot.on("roleAssign", (guild, member, role) => trysend(guild, "roleAssign", {
-    color: bot.embed.colour("general"),
+    color: bot.embed.color("general"),
     author: {
       name: `${format.tag(member)} self-assigned the ${role.name} role.`,
       icon_url: member.avatarURL,
@@ -56,7 +56,7 @@ module.exports = (bot) => {
 
   // Logs when a member unassigns a role
   bot.on("roleUnassign", (guild, member, role) => trysend(guild, "roleUnassign", {
-    color: bot.embed.colour("general"),
+    color: bot.embed.color("general"),
     author: {
       name: `${format.tag(member)} unassigned the ${role.name} role.`,
       icon_url: member.avatarURL,

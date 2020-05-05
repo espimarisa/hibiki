@@ -39,7 +39,7 @@ class ipinfoCommand extends Command {
     const construct = {
       title: `🌐 ${body.ip}`,
       description: "Information may be slightly innacurate.",
-      color: this.bot.embed.colour("general"),
+      color: this.bot.embed.color("general"),
       fields: fields,
     };
 

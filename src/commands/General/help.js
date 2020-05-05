@@ -40,7 +40,7 @@ class helpCommand extends Command {
           label = "⛔ **Owner**";
           break;
         default:
-          label = "🚫 **Uncategorised**";
+          label = "🚫 **Uncategorized**";
           break;
       }
       return label;
@@ -88,7 +88,7 @@ class helpCommand extends Command {
       if (args && args.join(" ").toLowerCase() === "here") {
         return msg.channel.createMessage({
           embed: {
-            color: this.bot.embed.colour("general"),
+            color: this.bot.embed.color("general"),
             fields: categories.map(category => ({
               name: sortedcategories[categories.indexOf(category)],
               // Hides disabled commands
@@ -106,7 +106,7 @@ class helpCommand extends Command {
       const DMChannel = await msg.author.getDMChannel();
       const dmson = await DMChannel.createMessage({
         embed: {
-          color: this.bot.embed.colour("general"),
+          color: this.bot.embed.color("general"),
           fields: categories.map(category => ({
             name: sortedcategories[categories.indexOf(category)],
             // Hides disabled commands
@@ -121,7 +121,7 @@ class helpCommand extends Command {
         // Sends in channel if failed
         return msg.channel.createMessage({
           embed: {
-            color: this.bot.embed.colour("general"),
+            color: this.bot.embed.color("general"),
             fields: categories.map(category => ({
               name: sortedcategories[categories.indexOf(category)],
               value: this.bot.commands.map(c => {
@@ -149,7 +149,7 @@ class helpCommand extends Command {
       msg.channel.createMessage({
         embed: {
           description: cmd.description,
-          color: this.bot.embed.colour("general"),
+          color: this.bot.embed.color("general"),
           fields: construct,
           author: {
             icon_url: this.bot.user.dynamicAvatarURL(),

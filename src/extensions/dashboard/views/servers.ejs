@@ -1,3 +1,7 @@
+  <%#
+    List of servers user can manage
+  %>
+
   <!DOCTYPE html>
   <html lang="en">
 
@@ -20,7 +24,7 @@
         </div>
         <div class="column is-narrow has-text-left">
           <p class="title has-text-white is-size-4" style="margin-bottom: 16px;">Welcome to the dashboard, <strong><%= user.username %></strong>.</p>
-          <p class="subtitle has-text-white is-size-5" style="margin-bottom: 0px;">Select the server you'd like to config.</p>
+          <p class="subtitle has-text-white is-size-5" style="margin-bottom: 0px;">Select the server you'd like to configure.</p>
           <p class="is-size-5 subtitle">
             <%# Buttons %>
             <a class="has-text-info modal-button" data-target="#modal" aria-haspopup="true"> <i class="fas fa-user"></i> Edit Bio </a> &nbsp; <a href="/login/" class="has-text-link"> <i class="fas fa-sync-alt"></i> Refresh </a> &nbsp; <a href="/logout/" class="has-text-danger"> <i class="fas fa-power-off"></i> Logout </a>

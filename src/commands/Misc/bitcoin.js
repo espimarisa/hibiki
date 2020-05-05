@@ -26,7 +26,7 @@ class bitcoinCommand extends Command {
         embed: {
           title: "💰 Bitcoin Rates",
           description: `Updated at ${body.time.updated}`,
-          color: this.bot.embed.colour("general"),
+          color: this.bot.embed.color("general"),
           fields: fields,
         },
       });
@@ -44,7 +44,7 @@ class bitcoinCommand extends Command {
       msg.channel.createMessage({
         embed: {
           title: `💰 ${body.address}`,
-          color: this.bot.embed.colour("general"),
+          color: this.bot.embed.color("general"),
           fields: fields,
         },
       });

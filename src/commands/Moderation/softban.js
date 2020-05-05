@@ -38,7 +38,7 @@ class softbanCommand extends Command {
         embed: {
           title: `🚪 Banned from ${msg.channel.guild.name}`,
           description: `You were banned for \`${reason}\`.`,
-          color: this.bot.embed.colour("general"),
+          color: this.bot.embed.color("general"),
         },
       }).catch(() => {});
       // Tries to ban the user; logs

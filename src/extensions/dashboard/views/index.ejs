@@ -22,35 +22,7 @@
   <%# Navbar %>
   <section class="hero gradient is-fullheight">
     <div class="hero-head">
-      <header class="navbar is-transparent">
-        <div class="container">
-          <span class="navbar-burger burger" data-target="navMenu">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-          <div class="navbar-menu" id="navMenu">
-            <div class="navbar-end">
-              <a href="/login/" class="navbar-item has-text-white">
-                <span class="icon"><i class="fas fa-cog"></i></span>
-                <span>Dashboard</span>
-              </a>
-              <a href="/repo/" class="navbar-item has-text-white">
-                <span class="icon"><i class="fas fa-code-branch"></i></span>
-                <span>Repository</span>
-              </a>
-              <a href="/support/" class="navbar-item has-text-white">
-                <span class="icon"><i class="fas fa-question-circle"></i></span>
-                <span>Support</span>
-              </a>
-              <a href="/twitter/" class="navbar-item has-text-white">
-                <span class="icon"><i class="fab fa-twitter"></i></span>
-                <span>Twitter</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </header>
+      <%- include("../partials/navbar.ejs") %>
     </div>
 
     <%# Hero body %>
@@ -58,7 +30,11 @@
       <div class="container has-text-centered">
         <img src="https://cdn.discordapp.com/avatars/<%= bot.user.id %>/<%= bot.user.avatar %>.png?size=512" class="logo">
         <p class="title has-text-white is-size-2"><%= bot.user.username %></p>
-        <p class="subtitle has-text-white is-size-4" style="padding-bottom: 5px">The ultimate all-in-one Discord bot.</p>
+        <% if (bot.user.id !== "493904957523623936") { %>
+        <p class="subtitle has-text-white is-size-5" style="padding-bottom: 5px">A Discord bot powered by <a href="https://hibiki.app" class="has-text-light">Hibiki</a>.</p>
+        <% } else { %>
+        <p class="subtitle has-text-white is-size-5" style="padding-bottom: 5px">The ultimate all-in-one Discord bot.</p>
+        <% } %>
         <p class="control has-text-centered">
           <a class="button is-large is-light" href="/invite/">
             <span class="icon is-small">
@@ -69,8 +45,19 @@
         </p>
       </div>
     </div>
-    <br>
-    <br>
+    <div class="hero-footer">
+      <div class="tabs is-centered is-fullwidth">
+        <div class="container">
+          <ul>
+            <li><a href="#stats">Stats</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#developers">Developers</a></li>
+            <li><a href="#contribute">Contribute</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </section>
 
   <% let useramnt = 0; bot.guilds.forEach(g => { useramnt += g.memberCount; }); %>
@@ -124,43 +111,32 @@
           </div>
         </nav>
       </div>
-    </div>
-    <div class="hero-body">
-      <div class="container">
-        <nav class="columns has-text-centered">
-          <div class="column">
-            <span class="icons is-large"><i class="fa fa-scroll fa-3x"></i></span>
-            <p class="subtitle is-size-4">Powerful Logging</p>
-            <p><%= bot.user.username %> can log nearly every server event.</p>
-          </div>
-          <div class="column">
-            <span class="icons is-large"><i class="fas fa-code-branch fa-3x"></i></span>
-            <p class="subtitle is-size-4">Free &amp; Open-Source</p>
-            <p><%= bot.user.username %> is completely free &amp; open-source.</p>
-          </div>
-          <div class="column">
-            <span class="icons is-large"><i class="fa fa-heart fa-3x"></i></span>
-            <p class="subtitle is-size-4">User Interaction</p>
-            <p>Have fun with roleplay &amp; interaction commands.</p>
-          </div>
-        </nav>
+      <div class="column">
+        <span class="icons is-large"><i class="fa fa-scroll fa-3x"></i></span>
+        <p class="subtitle is-size-4">Powerful Logging</p>
+        <p><%= bot.user.username %> can log nearly every server event.</p>
       </div>
-    </div>
-    <div class="hero-body">
-      <div class="container">
-        <nav class="columns has-text-centered">
-          <div class="column">
-            <span class="icons is-large"><i class="fa fa-universal-access fa-3x"></i></span>
-            <p class="subtitle is-size-4">Easy to Use</p>
-            <p><%= bot.user.username %> is designed to be powerful yet easy to use.</p>
-          </div>
-          <div class="column">
-            <span class="icons is-large"><i class="fa fa-cog fa-3x"></i></span>
-            <p class="subtitle is-size-4">Customisable & Modular</p>
-            <p>Features can be toggled &amp; tweaked for your needs.</p>
-          </div>
-        </nav>
+      <div class="column">
+        <span class="icons is-large"><i class="fas fa-code-branch fa-3x"></i></span>
+        <p class="subtitle is-size-4">Free &amp; Open-Source</p>
+        <p><%= bot.user.username %> is completely free &amp; open-source.</p>
       </div>
+      <div class="column">
+        <span class="icons is-large"><i class="fa fa-heart fa-3x"></i></span>
+        <p class="subtitle is-size-4">User Interaction</p>
+        <p>Have fun with roleplay &amp; interaction commands.</p>
+      </div>
+      </nav>
+    </div>
+    <div class="column">
+      <span class="icons is-large"><i class="fa fa-universal-access fa-3x"></i></span>
+      <p class="subtitle is-size-4">Easy to Use</p>
+      <p><%= bot.user.username %> is designed to be powerful yet easy to use.</p>
+    </div>
+    <div class="column">
+      <span class="icons is-large"><i class="fa fa-cog fa-3x"></i></span>
+      <p class="subtitle is-size-4">Customizable & Modular</p>
+      <p>Features can be toggled &amp; tweaked for your needs.</p>
     </div>
     <br>
   </section>
@@ -169,7 +145,7 @@
   <section class="hero is-light is-bold">
     <div class="hero-body">
       <div class="container about has-text-centered">
-        <p class="title is-size-3">Developers</p>
+        <p class="title is-size-3" id="developers">Developers</p>
         <p class="subtitle">These people develop <%= bot.user.username %> &amp; keep it running!</p>
         <br>
         <nav class="columns has-text-centered">

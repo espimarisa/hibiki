@@ -18,10 +18,10 @@ class agreeCommand extends Command {
     msgs = msgs.map(m => m.id);
     msgs.splice(msgs.length - 10, msgs.length);
     // Deletes the messages
-    msg.channel.deleteMessages(msgs).catch(() => {});
+    await msg.channel.deleteMessages(msgs).catch(() => {});
     const cleanmsg = await msg.channel.createMessage(this.bot.embed("💣 Clean", "Deleted the **last 10** messages from me."));
     // Deletes success message
-    setTimeout(() => { cleanmsg.delete().catch(() => {}); }, 2000);
+    await setTimeout(() => { cleanmsg.delete().catch(() => {}); }, 2000);
   }
 }
 
