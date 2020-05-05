@@ -49,11 +49,9 @@
       <div class="tabs is-centered is-fullwidth">
         <div class="container">
           <ul>
-            <li><a href="#stats">Stats</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#developers">Developers</a></li>
-            <li><a href="#contribute">Contribute</a></li>
+            <li><a href="#stats"><span class="icon is-small"><i class="fas fa-chart-bar"></i></span>Statistics</a></li>
+            <li><a href="#features"><span class="icon is-small"><i class="fas fa-magic"></i></span>Features</a></li>
+            <li><a href="#about"><span class="icon is-small"><i class="fas fa-info-circle"></i></span>About</a></li>
           </ul>
         </div>
       </div>
@@ -66,7 +64,7 @@
   <section class="hero is-dark is-bold" id="stats">
     <div class="hero-body">
       <div class="container">
-        <nav class="columns has-text-centered">
+        <div class="columns has-text-centered">
           <div class="column">
             <span class="icons is-large"><i class="fa fa-comment-alt fa-3x"></i></span>
             <p class="subtitle"><%= bot.guilds.size %> servers</p>
@@ -87,7 +85,7 @@
             <span class="icons is-large"><i class="fa fa-wifi fa-3x"></i></span>
             <p class="subtitle"><%= bot.shards.get(0).latency %> ms</p>
           </div>
-        </nav>
+        </div>
       </div>
     </div>
     </div>
@@ -97,46 +95,83 @@
   <section class="hero is-light">
     <div class="hero-body">
       <div class="container">
-        <p class="title has-text-centered is-size-2" id="features">Overview</p>
-        <nav class="columns has-text-centered">
+        <p class="title has-text-centered is-size-2" id="features">Feature Overview</p>
+        <div class="columns has-text-centered">
           <div class="column">
-            <span class="icons is-large"><i class="fa fa-hammer fa-3x"></i></span>
-            <p class="subtitle is-size-4">Useful Mod Tools</p>
-            <p>Many useful moderation commands are included.</p>
+            <span class="icons is-large"><i class="fas fa-hammer fa-3x"></i></span>
+            <p class="subtitle is-size-4">Moderation Suite</p>
+            <p>Powerful moderation commands &amp; logging.</p>
           </div>
           <div class="column">
-            <span class="icons is-large"><i class="fa fa-magic fa-3x"></i></span>
-            <p class="subtitle is-size-4">Feature-packed</p>
-            <p>Tons of features &amp; useful utilities are available.</p>
+            <span class="icons is-large"><i class="fas fa-scroll fa-3x"></i></span>
+            <p class="subtitle is-size-4">Powerful Logging</p>
+            <p>Keep track of your server with event &amp; message logging.</p>
           </div>
-        </nav>
+        </div>
+        <div class="columns has-text-centered">
+          <div class="column">
+            <span class="icons is-large"><i class="fas fa-heart fa-3x"></i></span>
+            <p class="subtitle is-size-4">Roleplay &amp; Interaction</p>
+            <p>Interact with other members with roleplay commands.</p>
+          </div>
+          <div class="column">
+            <span class="icons is-large"><i class="fas fa-code-branch fa-3x"></i></span>
+            <p class="subtitle is-size-4">Free &amp; Open-Source</p>
+            <p>All features will always be free &amp; open-source.</p>
+          </div>
+          <div class="column">
+            <span class="icons is-large"><i class="fas fa-image fa-3x"></i></span>
+            <p class="subtitle is-size-4">Image Searching</p>
+            <p>Look for pictures from various boorus with tag support.</p>
+          </div>
+        </div>
+        <div class="columns has-text-centered">
+          <div class="column">
+            <span class="icons is-large"><i class="fas fa-wrench fa-3x"></i></span>
+            <p class="subtitle is-size-4">Useful Utilities</p>
+            <p>Return info from many different endpoints.</p>
+          </div>
+          <div class="column">
+            <span class="icons is-large"><i class="fas fa-universal-access fa-3x"></i></span>
+            <p class="subtitle is-size-4">Easy-to-Use</p>
+            <p>Features are made with a KISS principle.</p>
+          </div>
+          <div class="column">
+            <span class="icons is-large"><i class="fas fa-exclamation-triangle fa-3x"></i></span>
+            <p class="subtitle is-size-4">Warning System</p>
+            <p>Keep members in check with a warning system.</p>
+          </div>
+        </div>
+        <div class="columns has-text-centered">
+          <div class="column">
+            <span class="icons is-large"><i class="fas fa-user-tag fa-3x"></i></span>
+            <p class="subtitle is-size-4">Assignable Roles</p>
+            <p>Members can self-assign roles set to be assignable.</p>
+          </div>
+          <div class="column">
+            <span class="icons is-large"><i class="fas fa-hand-holding-heart fa-3x"></i></span>
+            <p class="subtitle is-size-4">Consistently Updated</p>
+            <p><%= bot.user.username %> is consistently updated and maintained.</p>
+          </div>
+          <div class="column">
+            <span class="icons is-large"><i class="fas fa-tags fa-3x"></i></span>
+            <p class="subtitle is-size-4">Automatic Roles</p>
+            <p>Members can automatically be given roles on join.</p>
+          </div>
+        </div>
+        <div class="columns has-text-centered">
+          <div class="column">
+            <span class="icons is-large"><i class="fas fa-check fa-3x"></i></span>
+            <p class="subtitle is-size-4">Verification System</p>
+            <p>Members can be given verified roles with a command.</p>
+          </div>
+          <div class="column">
+            <span class="icons is-large"><i class="fas fa-cog fa-3x"></i></span>
+            <p class="subtitle is-size-4">Modular &amp; Customizable</p>
+            <p>Commands are able to be freely enabled/disabled.</p>
+          </div>
+        </div>
       </div>
-      <div class="column">
-        <span class="icons is-large"><i class="fa fa-scroll fa-3x"></i></span>
-        <p class="subtitle is-size-4">Powerful Logging</p>
-        <p><%= bot.user.username %> can log nearly every server event.</p>
-      </div>
-      <div class="column">
-        <span class="icons is-large"><i class="fas fa-code-branch fa-3x"></i></span>
-        <p class="subtitle is-size-4">Free &amp; Open-Source</p>
-        <p><%= bot.user.username %> is completely free &amp; open-source.</p>
-      </div>
-      <div class="column">
-        <span class="icons is-large"><i class="fa fa-heart fa-3x"></i></span>
-        <p class="subtitle is-size-4">User Interaction</p>
-        <p>Have fun with roleplay &amp; interaction commands.</p>
-      </div>
-      </nav>
-    </div>
-    <div class="column">
-      <span class="icons is-large"><i class="fa fa-universal-access fa-3x"></i></span>
-      <p class="subtitle is-size-4">Easy to Use</p>
-      <p><%= bot.user.username %> is designed to be powerful yet easy to use.</p>
-    </div>
-    <div class="column">
-      <span class="icons is-large"><i class="fa fa-cog fa-3x"></i></span>
-      <p class="subtitle is-size-4">Customizable & Modular</p>
-      <p>Features can be toggled &amp; tweaked for your needs.</p>
     </div>
     <br>
   </section>
@@ -145,49 +180,84 @@
   <section class="hero is-light is-bold">
     <div class="hero-body">
       <div class="container about has-text-centered">
-        <p class="title is-size-3" id="developers">Developers</p>
-        <p class="subtitle">These people develop <%= bot.user.username %> &amp; keep it running!</p>
+        <p class="title is-size-2" id="about">About</p>
+        <p class="subtitle">Quick Information &amp; history</p>
         <br>
-        <nav class="columns has-text-centered">
-          <div class="column">
-            <img src="../static/img/avatars/smolespi.png" class="avatar">
-            <p class="subtitle">smolespi</p>
-            <p>Owner &amp; Developer</p>
-            <a href="https://twitter.com/smolespi/" class="socials">
-              <span class="icon is-small"><i class="fab fa-twitter"></i></span>
-            </a>
-            <a href="https://github.com/smolespi/" class="socials">
-              <span class="icon is-small"><i class="fab fa-github"></i></span>
-            </a>
-            <a href="https://lesbian.codes/" class="socials">
-              <span class="icon is-small"><i class="fas fa-globe"></i></span>
-            </a>
+        <p class="is-size-5"><%= bot.user.username %> is a versatile <a href="https://discord.com"> Discord</a> bot written in <a href="https://nodejs.org">Node.js</a> and powered by <a href="https://abal.moe/Eris">Eris</a>.</p>
+        <p class="is-size-5">Features are written &amp; designed to be very easy but also powerful when needed.</p>
+        <p class="is-size-5">Fun &amp; easy-to-use, <%= bot.user.username %> is the last bot you need to enhance your server's chat experience.</p>
+        <p class="is-size-5">Created in September 2018, it quickly grew into a major undertaking and was rewritten in April 2020.</p>
+        <div class="spacing"></div>
+        <%# Developers %>
+        <div class="about has-text-centered">
+          <p class="title is-size-3" id="developers">Developers</p>
+          <p class="subtitle">These people actively develop &amp; maintain <%= bot.user.username %>.</p>
+          <br>
+          <div class="columns has-text-centered">
+            <div class="column">
+              <img src="../static/img/avatars/smolespi.png" class="avatar">
+              <p class="subtitle">smolespi</p>
+              <p>Owner &amp; Developer</p>
+              <a href="https://twitter.com/smolespi/" class="socials">
+                <span class="icon is-small"><i class="fab fa-twitter"></i></span>
+              </a>
+              <a href="https://github.com/smolespi/" class="socials">
+                <span class="icon is-small"><i class="fab fa-github"></i></span>
+              </a>
+              <a href="https://lesbian.codes/" class="socials">
+                <span class="icon is-small"><i class="fas fa-globe"></i></span>
+              </a>
+            </div>
+            <div class="column">
+              <img src="../static/img/avatars/resolved.png" class="avatar">
+              <p class="subtitle">resolved</p>
+              <p>Developer</p>
+              <a href="https://twitter.com/resolvedxd/" class="socials">
+                <span class="icon is-small"><i class="fab fa-twitter"></i></span>
+              </a>
+              <a href="https://github.com/resolvedxd/" class="socials">
+                <span class="icon is-small"><i class="fab fa-github"></i></span>
+              </a>
+            </div>
+            <div class="column">
+              <img src="../static/img/avatars/cth103.png" class="avatar">
+              <p class="subtitle">cth103</p>
+              <p>Contributor</p>
+              <a href="https://twitter.com/cth103/" class="socials">
+                <span class="icon is-small"><i class="fab fa-twitter"></i></span>
+              </a>
+              <a href="https://github.com/cthpw103/" class="socials">
+                <span class="icon is-small"><i class="fab fa-github"></i></span>
+              </a>
+            </div>
           </div>
-          <div class="column">
-            <img src="../static/img/avatars/resolved.png" class="avatar">
-            <p class="subtitle">resolved</p>
-            <p>Developer</p>
-            <a href="https://twitter.com/resolvedxd/" class="socials">
-              <span class="icon is-small"><i class="fab fa-twitter"></i></span>
-            </a>
-            <a href="https://github.com/resolvedxd/" class="socials">
-              <span class="icon is-small"><i class="fab fa-github"></i></span>
-            </a>
-          </div>
-          <div class="column">
-            <img src="../static/img/avatars/cth103.png" class="avatar">
-            <p class="subtitle">cth103</p>
-            <p>Contributor</p>
-            <a href="https://twitter.com/cth103/" class="socials">
-              <span class="icon is-small"><i class="fab fa-twitter"></i></span>
-            </a>
-            <a href="https://github.com/cthpw103/" class="socials">
-              <span class="icon is-small"><i class="fab fa-github"></i></span>
-            </a>
-          </div>
-        </nav>
+        </div>
+        <%# Contributing %>
+        <div class="spacing"></div>
+        <p class="title is-size-3" id="contributing">Want to contribute?</p>
+        <p class="subtitle"><%= bot.user.username %> &amp; it's underlying technology is open source.</p>
+        <p class="subtitle">Otherwise, voting for &amp; inviting the bot helps spread the word.</p>
+        <br>
+        <a class="button is-medium is-primary" href="/repo/">
+          <span class="icon is-small">
+            <i class="fab fa-github"></i>
+          </span>
+          <span>View on GitHub</span>
+        </a>
+        <a class="button is-medium is-primary" href="/invite/">
+          <span class="icon is-small">
+            <i class="fab fa-discord"></i>
+          </span>
+          <span>Add to Server</span>
+        </a>
+        <a class="button is-medium is-primary" href="/vote/">
+          <span class="icon is-small">
+            <i class="fas fa-vote-yea"></i>
+          </span>
+          <span>Vote on top.gg</span>
+        </a>
       </div>
-    </div>
+      <div class="spacing"></div>
   </section>
   <%- include("../partials/footer.ejs") %>
 </body>
