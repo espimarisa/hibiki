@@ -40,7 +40,7 @@ module.exports = bot => {
       else if (item.type === "number" && item.maximum && opt > item.maximum) cfg[c] = item.maximum;
       if (item.type === "number" && item.minimum && opt < item.minimum) cfg[c] = item.minimum;
       // Punishment types
-      if (item.type === "punishment") cfg[c] = opt.filter(p => ["Purge", "Strike", "Mute"].includes(p));
+      if (item.type === "punishment") cfg[c] = opt.filter(p => ["Purge", "Warn", "Mute"].includes(p));
       // If channel doesn't exist
       if (item.type === "channelID" && !bot.guilds.get(req.params.id).channels.find(channel => channel.id === opt)) cfg[c] = null;
       // Role cfgs
