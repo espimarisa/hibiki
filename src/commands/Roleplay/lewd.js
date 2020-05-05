@@ -24,7 +24,7 @@ class lewdCommand extends Command {
     msg.channel.createMessage({
       embed: {
         description: `🔞 **${pargs[0].value.username}** is being too lewd!`,
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         image: {
           url: image,
         },

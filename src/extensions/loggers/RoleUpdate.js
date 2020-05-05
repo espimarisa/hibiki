@@ -22,7 +22,7 @@ module.exports = (bot) => {
     const logchannel = await cansend(guild, "guildRoleCreate");
     if (!logchannel) return;
     const embed = {
-      color: bot.embed.colour("general"),
+      color: bot.embed.color("general"),
       description: `<@&${role.id}> (${role.id})`,
       author: {
         name: `@${role.name} created`,
@@ -49,7 +49,7 @@ module.exports = (bot) => {
     const logchannel = await cansend(guild, "guildRoleDelete");
     if (!logchannel) return;
     const embed = {
-      color: bot.embed.colour("error"),
+      color: bot.embed.color("error"),
       description: `**ID:** ${role.id}`,
       author: {
         name: `@${role.name} deleted`,
@@ -76,7 +76,7 @@ module.exports = (bot) => {
     const logchannel = await cansend(guild, "guildRoleUpdate");
     if (!logchannel) return;
     const embed = {
-      color: bot.embed.colour("general"),
+      color: bot.embed.color("general"),
       fields: [],
       author: {
         name: `@${oldrole.name} edited`,
@@ -91,10 +91,10 @@ module.exports = (bot) => {
       });
     }
 
-    // Colour difference
+    // Color difference
     if (role.color !== oldrole.color) {
       embed.fields.push({
-        name: "Colour",
+        name: "Color",
         value: `${oldrole.color ? `${parseInt(oldrole.color).toString(16)}` : "000000"} ➜ ${role.color ? `${parseInt(role.color).toString(16)}` : "000000"}`,
       });
       embed.color = role.color;

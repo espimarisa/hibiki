@@ -29,7 +29,7 @@ module.exports = (bot) => {
 
   // Logs when a role is set to be assignable
   bot.on("setAssignable", (guild, user, role) => trysend(guild, "setAssignable", {
-    color: bot.embed.colour("general"),
+    color: bot.embed.color("general"),
     author: {
       name: `${format.tag(user, false)} made ${role.name} assignable.`,
       icon_url: user.avatarURL,
@@ -38,7 +38,7 @@ module.exports = (bot) => {
 
   // Logs when a role is set to be assignable
   bot.on("removeAssignable", (guild, user, role) => trysend(guild, "removeAssignable", {
-    color: bot.embed.colour("general"),
+    color: bot.embed.color("general"),
     author: {
       name: `${format.tag(user, false)} made ${role.name} unassignable.`,
       icon_url: user.avatarURL,
@@ -47,7 +47,7 @@ module.exports = (bot) => {
 
   // Logs when prefix is changed
   bot.on("prefixUpdate", (guild, user, prefix) => trysend(guild, "prefixUpdate", {
-    color: bot.embed.colour("general"),
+    color: bot.embed.color("general"),
     author: {
       name: `Prefix changed to ${prefix} by ${format.tag(user)}.`,
       icon_url: user.avatarURL,
@@ -56,7 +56,7 @@ module.exports = (bot) => {
 
   // Logs when command disabled
   bot.on("commandDisable", (guild, user, command) => trysend(guild, "commandDisable", {
-    color: bot.embed.colour("error"),
+    color: bot.embed.color("error"),
     author: {
       name: `${format.tag(user)} disabled the ${command} command.`,
       icon_url: user.avatarURL,
@@ -65,7 +65,7 @@ module.exports = (bot) => {
 
   // Logs when command enabled
   bot.on("commandEnable", (guild, user, command) => trysend(guild, "commandEnable", {
-    color: bot.embed.colour("success"),
+    color: bot.embed.color("success"),
     author: {
       name: `${format.tag(user)} enabled the ${command} command.`,
       icon_url: user.avatarURL,
@@ -74,7 +74,7 @@ module.exports = (bot) => {
 
   // Logs when category disabled
   bot.on("categoryDisable", (guild, user, category) => trysend(guild, "categoryDisable", {
-    color: bot.embed.colour("error"),
+    color: bot.embed.color("error"),
     author: {
       name: `${format.tag(user)} disabled the ${category} category.`,
       icon_url: user.avatarURL,
@@ -83,7 +83,7 @@ module.exports = (bot) => {
 
   // Logs when category enabled
   bot.on("categoryEnable", (guild, user, category) => trysend(guild, "categoryEnable", {
-    color: bot.embed.colour("error"),
+    color: bot.embed.color("error"),
     author: {
       name: `${format.tag(user)} disabled the ${category} category.`,
       icon_url: user.avatarURL,

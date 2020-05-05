@@ -1,5 +1,4 @@
 /*
-  This is the main Dashboard file.
   Handles rendering, authentication, and redirection.
 */
 
@@ -11,11 +10,12 @@ const session = require("express-session");
 const strategy = require("passport-discord");
 const format = require("../lib/scripts/Format");
 const cfg = require("../cfg").dashboard;
+const version = require("../package");
 
 const scope = ["identify", "guilds"];
 const app = express();
 
-// Helmet & nginx proxy
+// Enables helmet & nginx
 app.use(require("helmet")());
 app.enable("trust proxy", 1);
 
@@ -54,6 +54,7 @@ module.exports = (bot) => {
     resave: false,
     saveUninitialized: false,
   }));
+
 
   // Sets headers
   app.use((_req, res, next) => {
@@ -99,17 +100,17 @@ module.exports = (bot) => {
     res.render("servers", { bot: bot, user: req.user });
   });
 
-  // Handles some redirects
+  // Handles redirects
   app.get("/invite/", (_req, res) => {
     res.redirect(`https://discordapp.com/oauth2/authorize?&client_id=${bot.user.id}&scope=bot&permissions=${bot.cfg.permissions}`);
   });
 
-  app.get("/support/", (_req, res) => {
-    res.redirect(`https://discord.gg/${bot.cfg.support}`);
-  });
-
   app.get("/repo/", (_req, res) => {
     res.redirect("https://github.com/smolespi/Hibiki");
+  });
+
+  app.get("/support/", (_req, res) => {
+    res.redirect(`https://discord.gg/${bot.cfg.support}`);
   });
 
   app.get("/twitter/", (_req, res) => {
@@ -118,19 +119,18 @@ module.exports = (bot) => {
 
   // Server manager
   app.get("/manage/:id", checkAuth, async (req, res) => {
-    // Sets the vaid items & props
+    // Sets vaild items
     const items = require("./dash/static/items");
-    // Displays if the user isn't authenticated
+    // If user isn't authenticated
     if (!req.isAuthenticated()) { res.status(401).render("401"); }
     // User & guild perms
     const user = getAuthUser(req.user);
     const managableguilds = user.guilds.filter(g => (g.permissions & 32) === 32 && bot.guilds.get(g.id));
     const guild = managableguilds.find(g => g.id === req.params.id);
-    // No perms to guild
-    if (!guild) return res.status(403).render("403");
     // Renders the dashboard
+    if (!guild) return res.status(403).render("403");
     const cfg = await bot.db.table("guildcfg").get(guild.id);
-    res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, items: items, user: user });
+    res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, items: items, user: user, version: version.version });
   });
 
   // Renders landing page
@@ -141,6 +141,7 @@ module.exports = (bot) => {
       avatar: bot.user.avatar ? `https://cdn.discordapp.com/avatars/${bot.user.id}/${bot.user.avatar}.png` : "https://cdn.discordapp.com/embed/avatars/0.png",
       authUser: req.isAuthenticated() ? getAuthUser(req.user) : null,
       format: format,
+      version: version.version,
     });
   });
 

@@ -27,8 +27,8 @@ class configCommand extends Command {
     msg.channel.createMessage({
       embed: {
         title: "🔧 Config",
-        description: `Editing the config has moved to the [web dashboard](${this.bot.cfg.homepage}).`,
-        color: this.bot.embed.colour("general"),
+        description: `Editing the config has moved to the [web dashboard](${this.bot.cfg.homepage}/login/).`,
+        color: this.bot.embed.color("general"),
         // Sends server config
         fields: settings.filter(f => f.id || guildcfg[f.id]).sort((a, b) => a.id > b.id ? 1 : -1).map(s => {
           let sid = guildcfg[s.id];

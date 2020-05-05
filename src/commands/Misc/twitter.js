@@ -23,7 +23,7 @@ class twitterCommand extends Command {
     // Errors
     if (!body) return msg.channel.createMessage("❌ Error", "Account not found.");
     if (body.errors) {
-      if (body.errors[0].code === 215) return msg.channel.createMessage(this.bot.embed("❌ Error", "Unauthorised to access the Twitter API.", "error"));
+      if (body.errors[0].code === 215) return msg.channel.createMessage(this.bot.embed("❌ Error", "Unauthorized to access the Twitter API.", "error"));
       if (body.errors[0].code === 403) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't return any info. Try again later.", "error"));
       if (body.errors[0].code === 50) return msg.channel.createMessage(this.bot.embed("❌ Error", "Account not found.", "error"));
       if (body.errors[0].code === 63) return msg.channel.createMessage(this.bot.embed("❌ Error", "This user has been suspended.", "error"));
@@ -45,7 +45,7 @@ class twitterCommand extends Command {
     // Sets the embed construct
     const construct = {
       title: `🐦 ${body.name || "Unknown"} (@${body.screen_name})`,
-      color: this.bot.embed.colour("general"),
+      color: this.bot.embed.color("general"),
       fields: fields,
       thumbnail: {
         url: `https://avatars.io/twitter/${body.screen_name || null}`,

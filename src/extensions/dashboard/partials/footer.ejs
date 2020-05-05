@@ -1,14 +1,12 @@
 <footer class="footer">
   <div class="content has-text-centered">
     <p class="has-text-white">
-      &copy; <%= new Date().getFullYear() %>
+      <%= bot.user.username %> v<%= version %>, by
       <a href="https://lesbian.codes" class="has-text-light">smolespi</a> &amp;
       <a href="https://github.com/resolvedxd/" class="has-text-light">resolved</a>.
       <br>
-      <%= bot.user.username %>, powered by <a href="https://nodejs.org" class="has-text-light">Node.js</a> and
-      <a href="https://github.com/abalabahaha/eris" class="has-text-light">Eris</a>.
-      <br>
-      Dash & WebUI built with <a href="https://bulma.io" class="has-text-light">Bulma</a> and <a href="https://expressjs.com/" class="has-text-light"> Express</a>.
+      <a href="/repo/" class="has-text-white">Source</a> licensed under the 
+      <a href="https://github.com/smolespi/Hibiki/LICENSE.md" class="has-text-light">GNU AGPLv3</a> or later.
     </p>
     <%# Required top.gg info (if featured) %>
     <% if (bot.user.id === "493904957523623936") { %>

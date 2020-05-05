@@ -30,7 +30,7 @@ module.exports = (bot) => {
   // Logs when a member is warned
   bot.on("memberWarn", (guild, giver, receiver, id, reason) => trysend(guild, "memberWarn", {
     description: `**Reason:** ${reason} \n **ID:** ${id}`,
-    color: bot.embed.colour("error"),
+    color: bot.embed.color("error"),
     author: {
       name: `${format.tag(giver, false)} warned ${format.tag(receiver)}.`,
       icon_url: receiver.avatarURL,
@@ -40,7 +40,7 @@ module.exports = (bot) => {
   // Logs when warnings are removed
   bot.on("warningRemove", (guild, user, ids) => trysend(guild, "warningRemove", {
     description: ids.join(" "),
-    color: bot.embed.colour("error"),
+    color: bot.embed.color("error"),
     author: {
       name: `${format.tag(user, false)} removed warnings.`,
       icon_url: user.avatarURL,
@@ -50,7 +50,7 @@ module.exports = (bot) => {
   // Logs when a member is muted
   bot.on("memberMute", (guild, giver, receiver, reason) => trysend(guild, "memberMute", {
     description: `**Reason:** ${reason}`,
-    color: bot.embed.colour("error"),
+    color: bot.embed.color("error"),
     author: {
       name: `${format.tag(giver, false)} muted ${format.tag(receiver)}.`,
       icon_url: receiver.avatarURL,
@@ -59,7 +59,7 @@ module.exports = (bot) => {
 
   // Logs when a member is unmuted
   bot.on("memberUnmute", (guild, giver, receiver) => trysend(guild, "memberUnmute", {
-    color: bot.embed.colour("success"),
+    color: bot.embed.color("success"),
     author: {
       name: `${format.tag(giver, false)} unmuted ${format.tag(receiver, false)}.`,
       icon_url: receiver.avatarURL,

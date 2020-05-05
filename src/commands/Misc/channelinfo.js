@@ -27,7 +27,7 @@ class channelinfoCommand extends Command {
     msg.channel.createMessage({
       embed: {
         description: desc.map(d => `${d.name} ${d.value}`).join("\n"),
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         author: {
           icon_url: msg.channel.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
           name: `#${channel.name} (${channel.type === 0 ? "text" : "voice"} channel)`,

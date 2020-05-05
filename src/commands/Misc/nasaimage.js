@@ -25,7 +25,7 @@ class nasaimageCommand extends Command {
       embed: {
         title: "☄ Nasa Image",
         description: data.data[0].description.length > 2000 ? `${data.data[0].description.substring(0, 2000)}...` : data.data[0].description,
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         image: {
           url: data.links[0].href,
         },

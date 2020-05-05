@@ -7,7 +7,7 @@ const router = express.Router();
 
 module.exports = (bot) => {
   router.get("/api/getitems", async (req, res) => {
-    // Sends if unauthorised
+    // Sends if unauthorized
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     // Sends loaded cmds
     if (req.query.commands) {

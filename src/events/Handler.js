@@ -26,7 +26,7 @@ class Handler extends Event {
       return this.bot.createMessage(this.bot.cfg.logchannel, {
         embed: {
           description: `${msg.content}`,
-          color: this.bot.embed.colour("general"),
+          color: this.bot.embed.color("general"),
           author: {
             icon_url: msg.author.dynamicAvatarURL(),
             name: `Sent a DM by ${format.tag(msg.author)}`,
@@ -93,12 +93,12 @@ class Handler extends Event {
     }
 
     // Required perms
-    if (cmd.requiredperms && (!msg.member.permission.has(cmd.requiredperms) || !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffrole)) {
+    if (cmd.requiredperms && (!msg.member.permission.has(cmd.requiredperms) || !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffRole)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `You need the **${cmd.requiredperms}** permission to run this.`, "error"));
     }
 
     // Staff cmds
-    if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg && guildcfg.staffrole && !msg.member.roles.includes(guildcfg.staffrole))) {
+    if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg && guildcfg.staffRole && !msg.member.roles.includes(guildcfg.staffRole))) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "That command is only for staff members.", "error"));
     }
 

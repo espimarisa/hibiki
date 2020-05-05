@@ -30,7 +30,7 @@ class npmCommand extends Command {
       embed: {
         title: `📦 ${pkg.name}`,
         description: pkg.description,
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         fields: fields,
       },
     });

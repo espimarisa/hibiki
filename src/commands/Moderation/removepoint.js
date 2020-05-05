@@ -44,7 +44,7 @@ class removepointCommand extends Command {
       embed: {
         title: `✨ Removed ${removed.length} point${removed.length === 1 ? "" : "s"}.`,
         description: `${removed.map(p => p.point).join(", ")}`,
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         fields: failed.length ? [{
           name: "Failed to remove some points.",
           value: `${failed.map(p => p.point).join(", ")}`,

@@ -8,7 +8,7 @@ const items = require("../static/items");
 
 module.exports = bot => {
   router.post("/api/updateconfig/:id", async (req, res) => {
-    // If user unauthorised
+    // If user unauthorized
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     // Looks for managable guilds
     const managableguilds = req.user.guilds.filter(g => (g.permissions & 32) === 32);

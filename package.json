@@ -1,6 +1,6 @@
 {
   "name": "hibiki",
-  "version": "3.0.0",
+  "version": "3.0.0-rc.1",
   "description": "A fun, useful, and easy-to-use Discord bot written in JavaScript.",
   "author": "smolespi (https://lesbian.codes)",
   "contributors": [
@@ -43,7 +43,6 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "ejs-lint": "^1.1.0",
     "eslint": "^6.8.0"
   }
 }

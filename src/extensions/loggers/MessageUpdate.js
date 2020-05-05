@@ -25,7 +25,7 @@ module.exports = (bot) => {
     if (msg.content.length > 1024) msg.content.slice(768);
     bot.createMessage(channel, {
       embed: {
-        color: bot.embed.colour("error"),
+        color: bot.embed.color("error"),
         author: {
           name: `${format.tag(msg.author, false)}'s message was deleted.`,
           icon_url: msg.author.avatarURL,
@@ -60,7 +60,7 @@ module.exports = (bot) => {
     if (oldmsg.content.length > 1024) oldmsg.content.slice(768);
     bot.createMessage(channel, {
       embed: {
-        color: bot.embed.colour("error"),
+        color: bot.embed.color("error"),
         author: {
           name: `${format.tag(msg.author, false)}'s message was updated.`,
           icon_url: msg.author.avatarURL,

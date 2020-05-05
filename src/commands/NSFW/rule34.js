@@ -26,7 +26,7 @@ class rule34Command extends Command {
     await msg.channel.createMessage({
       embed: {
         title: "🔞 Rule 34",
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         image: {
           url: body[random].sample_url,
         },

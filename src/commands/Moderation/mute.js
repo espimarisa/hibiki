@@ -22,10 +22,10 @@ class muteCommand extends Command {
 
     // Reads db; finds role
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
-    const mutedrole = await msg.channel.guild.roles.find(r => r.id === guildcfg.muted);
+    const mutedrole = await msg.channel.guild.roles.find(r => r.id === guildcfg.mutedRole);
 
     // If no role or cfg
-    if (!guildcfg || !guildcfg.muted || !mutedrole) {
+    if (!guildcfg || !guildcfg.mutedRole || !mutedrole) {
       await this.bot.db.table("guildcfg").insert({ id: msg.channel.guild.id });
       return msg.channel.createMessage(this.bot.embed("❌ Error", "The muted role hasn't been configured yet.", "error"));
     }
@@ -51,7 +51,7 @@ class muteCommand extends Command {
 
       // Mutes the user
       if (!user.roles.length) {
-        await user.addRole(guildcfg.muted, `Muted by ${format.tag(msg.author)} for ${reason}`).catch(() => {
+        await user.addRole(guildcfg.mutedRole, `Muted by ${format.tag(msg.author)} for ${reason}`).catch(() => {
           msg.channel.createMessage(this.bot.embed("❌ Error", `Failed to add the muted role to **${user.username}**.`));
         });
         this.bot.emit("memberMute", msg.channel.guild, msg.member, user, reason);
@@ -72,7 +72,7 @@ class muteCommand extends Command {
         });
 
         // Mutes the member
-        await user.addRole(guildcfg.muted, `Muted by ${format.tag(msg.author)} for ${reason}`).catch(() => {
+        await user.addRole(guildcfg.mutedRole, `Muted by ${format.tag(msg.author)} for ${reason}`).catch(() => {
           msg.channel.createMessage(this.bot.embed("❌ Error", `Failed to add the muted role to **${user.username}**.`));
         });
 

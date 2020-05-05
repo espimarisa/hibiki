@@ -37,7 +37,7 @@ class unbanCommand extends Command {
       embed: {
         title: `⚒ Unbanned ${unbanned.length} ID${unbanned.length > 1 ? "s" : ""}.`,
         description: `**${unbanned.map(m => m.user).join(", ")}**`,
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         fields: failed.length ? [{
           name: `${failed.length} ID${failed.length > 1 ? "s" : ""} failed to be unbanned.`,
           value: `${failed.map(m => m.user).join(", ")}`,

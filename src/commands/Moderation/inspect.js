@@ -31,7 +31,7 @@ class inspectCommand extends Command {
     // Sends the embed
     msg.channel.createMessage({
       embed: {
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         fields: fields,
         author: {
           icon_url: invinfo.guild.icon ? `https://cdn.discordapp.com/icons/${invinfo.guild.id}/${invinfo.guild.icon}.png` : "https://cdn.discordapp.com/embed/avatars/0.png",

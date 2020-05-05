@@ -36,8 +36,8 @@ class Verniy extends Client {
       this.log.success(`Startup took ${new Date(new Date() - starttime).getSeconds()}.${new Date(new Date() - starttime).getMilliseconds()} seconds`);
       this.editStatus("online", { name: `${this.guilds.size} servers`, type: 3 });
     });
-    // Initialises Sentry
-    try { sentry.init({ dsn: this.key.dsn }); } catch (err) { this.log.error(`Sentry failed to initialise: ${err}`); }
+    // Initializes Sentry
+    try { sentry.init({ dsn: this.key.dsn }); } catch (err) { this.log.error(`Sentry failed to Initialize: ${err}`); }
   }
 
 

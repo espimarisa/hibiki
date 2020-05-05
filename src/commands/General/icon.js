@@ -23,7 +23,7 @@ class iconCommand extends Command {
     // Sends the embed
     msg.channel.createMessage({
       embed: {
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         author: {
           icon_url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
           name: guild.name,

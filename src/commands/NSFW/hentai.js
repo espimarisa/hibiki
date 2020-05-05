@@ -20,7 +20,7 @@ class hentaiCommand extends Command {
     await msg.channel.createMessage({
       embed: {
         title: "🔞 Hentai",
-        color: this.bot.embed.colour("general"),
+        color: this.bot.embed.color("general"),
         image: {
           url: body.url,
         },

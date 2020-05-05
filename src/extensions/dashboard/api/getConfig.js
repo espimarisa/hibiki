@@ -7,7 +7,7 @@ const router = express.Router();
 
 module.exports = bot => {
   router.get("/api/getconfig/:id", async (req, res) => {
-    // Sends if unauthorised
+    // Sends if unauthorized
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     // Looks for managable guilds
     const managableguilds = req.user.guilds.filter(g => (g.permissions & 32) === 32);

@@ -7,7 +7,7 @@ const router = express.Router();
 
 module.exports = (bot) => {
   router.get("/api/updateBio", async (req, res) => {
-    // Sends if unauthorised
+    // Sends if unauthorized
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     // Reads the userconfig
     let cfg = await bot.db.table("usercfg").get(req.user.id);

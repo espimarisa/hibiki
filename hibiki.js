@@ -1,6 +1,6 @@
 /*
-  Hibiki © 2020 smolespi & resolved.
-  Code licensed under the GNU AGPL v3.
+  Hibiki © 2018-2020 smolespi & resolved.
+  Source licensed under the GNU AGPLv3 or later.
 */
 
 const { cfg, options, rethink } = require("./cfg");
