@@ -79,7 +79,7 @@ module.exports = (bot) => {
           inline: true,
         }, {
           name: "Message",
-          value: `[Jump](https://discordapp.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`,
+          value: `[Jump](https://discord.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`,
           inline: true,
         }],
         image: {

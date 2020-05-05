@@ -6,14 +6,15 @@
 <html lang="en">
 
 <head>
+  <%- include("../partials/meta.ejs") %>
   <meta content="The ultimate all-in-one Discord bot." name="description">
   <meta content="<%= bot.user.username %>" property="og:title">
   <meta content="https://hibiki.app" property="og:url">
   <meta content="The ultimate all-in-one Discord bot." property="og:description">
   <meta content="<%= bot.user.username %>" name="twitter:title">
   <meta content="The ultimate all-in-one Discord bot." name="twitter:description">
-  <%- include("../partials/meta.ejs") %>
   <link rel="stylesheet" href="../static/css/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
   <script src="../static/navbar.js"></script>
   <title><%= bot.user.username %></title>
 </head>
@@ -28,24 +29,28 @@
     <%# Hero body %>
     <div class="hero-body">
       <div class="container has-text-centered">
-        <img src="https://cdn.discordapp.com/avatars/<%= bot.user.id %>/<%= bot.user.avatar %>.png?size=512" class="logo">
-        <p class="title has-text-white is-size-2"><%= bot.user.username %></p>
-        <% if (bot.user.id !== "493904957523623936") { %>
-        <p class="subtitle has-text-white is-size-5" style="padding-bottom: 5px">A Discord bot powered by <a href="https://hibiki.app" class="has-text-light">Hibiki</a>.</p>
-        <% } else { %>
-        <p class="subtitle has-text-white is-size-5" style="padding-bottom: 5px">The ultimate all-in-one Discord bot.</p>
-        <% } %>
-        <p class="control has-text-centered">
-          <a class="button is-large is-light" href="/invite/">
-            <span class="icon is-small">
-              <i class="fas fa-plus"></i>
-            </span>
-            <span>Invite <%= bot.user.username %></span>
-          </a>
-        </p>
+        <div class="animated slideInDown faster">
+          <img src="https://cdn.discordapp.com/avatars/<%= bot.user.id %>/<%= bot.user.avatar %>.png?size=512" class="logo">
+        </div>
+        <div class="animated slideInUp faster">
+          <p class="title has-text-white is-size-2"><%= bot.user.username %></p>
+          <% if (bot.user.id !== "493904957523623936") { %>
+          <p class="subtitle has-text-white is-size-5" style="padding-bottom: 5px">A Discord bot powered by <a href="https://hibiki.app" class="has-text-light">Hibiki</a>.</p>
+          <% } else { %>
+          <p class="subtitle has-text-white is-size-5" style="padding-bottom: 5px">The ultimate all-in-one Discord bot.</p>
+          <% } %>
+          <p class="control has-text-centered">
+            <a class="button is-large is-light" href="/invite/">
+              <span class="icon is-small">
+                <i class="fas fa-plus"></i>
+              </span>
+              <span>Invite <%= bot.user.username %></span>
+            </a>
+          </p>
+        </div>
       </div>
     </div>
-    <div class="hero-footer">
+    <div class="hero-footer animated fadeInUp faster">
       <div class="tabs is-centered is-fullwidth">
         <div class="container">
           <ul>
@@ -94,9 +99,10 @@
   <%# Features %>
   <section class="hero is-light">
     <div class="hero-body">
-      <div class="container">
-        <p class="title has-text-centered is-size-2" id="features">Feature Overview</p>
-        <div class="columns has-text-centered">
+      <div class="container has-text-centered">
+        <p class="title has-text-centered is-size-2" id="features">Features</p>
+        <p class="subtitle is-size-5"><%= bot.user.username %> has over 100 fun and useful commands.</p>
+        <div class="columns">
           <div class="column">
             <span class="icons is-large"><i class="fas fa-hammer fa-3x"></i></span>
             <p class="subtitle is-size-4">Moderation Suite</p>
@@ -181,9 +187,10 @@
     <div class="hero-body">
       <div class="container about has-text-centered">
         <p class="title is-size-2" id="about">About</p>
-        <p class="subtitle">Quick Information &amp; history</p>
+        <p class="subtitle">Information &amp; history</p>
         <br>
-        <p class="is-size-5"><%= bot.user.username %> is a versatile <a href="https://discord.com"> Discord</a> bot written in <a href="https://nodejs.org">Node.js</a> and powered by <a href="https://abal.moe/Eris">Eris</a>.</p>
+        <p class="is-size-5"><%= bot.user.username %> is a versatile <a href="https://discord.com"> Discord</a> bot
+          written in <a href="https://nodejs.org">Node.js</a> and powered by <a href="https://abal.moe/Eris">Eris</a>.</p>
         <p class="is-size-5">Features are written &amp; designed to be very easy but also powerful when needed.</p>
         <p class="is-size-5">Fun &amp; easy-to-use, <%= bot.user.username %> is the last bot you need to enhance your server's chat experience.</p>
         <p class="is-size-5">Created in September 2018, it quickly grew into a major undertaking and was rewritten in April 2020.</p>
@@ -238,19 +245,19 @@
         <p class="subtitle"><%= bot.user.username %> &amp; it's underlying technology is open source.</p>
         <p class="subtitle">Otherwise, voting for &amp; inviting the bot helps spread the word.</p>
         <br>
-        <a class="button is-medium is-primary" href="/repo/">
+        <a class="button is-medium is-purple" href="/repo/">
           <span class="icon is-small">
             <i class="fab fa-github"></i>
           </span>
           <span>View on GitHub</span>
         </a>
-        <a class="button is-medium is-primary" href="/invite/">
+        <a class="button is-medium is-purple" href="/invite/">
           <span class="icon is-small">
             <i class="fab fa-discord"></i>
           </span>
           <span>Add to Server</span>
         </a>
-        <a class="button is-medium is-primary" href="/vote/">
+        <a class="button is-medium is-purple" href="/vote/">
           <span class="icon is-small">
             <i class="fas fa-vote-yea"></i>
           </span>

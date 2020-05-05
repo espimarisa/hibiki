@@ -1,5 +1,5 @@
 /*
-  Grabs the user's bio from the input.
+  Grabs a user's bio from input.
 */
 
 let lastInput = new Date().getTime();
