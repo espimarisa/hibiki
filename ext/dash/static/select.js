@@ -1,3 +1,7 @@
+/*
+  This updates the multiselect options.
+*/
+
 $(async () => {
   const res = await fetch(`../../api/getitems?commands=true`, {
     credentials: "include",

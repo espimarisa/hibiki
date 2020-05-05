@@ -17,12 +17,12 @@ html {
 /* Text Styling */
 
 a {
-  color: #886fb9;
+  color: #676cb8;
   transition: all .1s linear;
 }
 
 a:hover {
-  color: #886fb9;
+  color: #676cb8;
   opacity: 0.8;
 }
 
@@ -32,6 +32,11 @@ a.navbar-item,
 .navbar-menu.is-active,
 .navbar-menu.is-active:hover {
   background: transparent !important;
+}
+
+.is-purple {
+  background: #676cb8;
+  border: 0px;
 }
 
 .subtitle {
@@ -44,8 +49,8 @@ a.navbar-item,
   border: 3px #886fb9 solid;
   border-radius: 50%;
   transition: all .1s linear;
-  width: 135px;
-  height: 135px;
+  width: 175px;
+  height: 175px;
 }
 
 .avatar:hover {
@@ -57,7 +62,7 @@ a.navbar-item,
 }
 
 .icons:hover {
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .logo {
