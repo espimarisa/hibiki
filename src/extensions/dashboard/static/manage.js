@@ -89,7 +89,7 @@ window.addEventListener("load", async () => {
       cfg[p].forEach(punishment => {
         if (punishment === "Purge") document.getElementById(p).children[0].checked = true;
         if (punishment === "Mute") document.getElementById(p).children[2].checked = true;
-        if (punishment === "Strike") document.getElementById(p).children[4].checked = true;
+        if (punishment === "Warn") document.getElementById(p).children[4].checked = true;
       });
       // Channel/Role IDs
     } else if (type === "channelID" || type === "roleID") {
@@ -146,11 +146,11 @@ window.addEventListener("load", async () => {
       } else if (type === "punishment") {
         const Purge = document.getElementById(p).children[0].checked;
         const Mute = document.getElementById(p).children[2].checked;
-        const Strike = document.getElementById(p).children[4].checked;
+        const Warn = document.getElementById(p).children[4].checked;
         cfg[p] = [];
         if (Purge) cfg[p].push("Purge");
         if (Mute) cfg[p].push("Mute");
-        if (Strike) cfg[p].push("Strike");
+        if (Warn) cfg[p].push("Warn");
         // Channel/Role IDs
       } else if (type === "channelID" || type === "roleID") {
         const r = Array.from(element.children[0].children).find(a => a.innerText === element.children[0].value).id;
