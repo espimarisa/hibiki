@@ -65,4 +65,32 @@ module.exports = (bot) => {
       icon_url: receiver.avatarURL,
     },
   }));
+
+  // Logs when a member is muted due to automod
+  bot.on("automodMute", (guild, member, msgs) => trysend(guild, "automodMute", {
+    color: bot.embed.color("error"),
+    description: `Cause of mute:\n${msgs.map(m => `**${member.username}**: ${m.content.substring(0, 128)}`).join("\n")}`,
+    author: {
+      name: `${format.tag(member, false)} was automatically muted.`,
+      icon_url: member.avatarURL,
+    },
+  }));
+
+  // Logs automod invites
+  bot.on("automodantiInvite", (guild, member, content, warning) => trysend(guild, "automodantiInvite", {
+    color: bot.embed.color("error"),
+    author: {
+      name: `${format.tag(member, false)} tried to send an invite.`,
+      icon_url: member.avatarURL,
+    },
+    fields: [{
+      name: "Content",
+      value: (content.length > 100 ? `${content.substring(0, 100)}..` : content) || "No content",
+      inline: false,
+    }, {
+      name: "Warning ID",
+      value: warning ? warning : "No warning",
+      inline: false,
+    }],
+  }));
 };
