@@ -33,7 +33,7 @@ class forcebanCommand extends Command {
           // Bans the IDs
           await m.ban(0, `Forcebanned by ${format.tag(msg.author, true)}`);
           return { banned: true, user: user };
-        } catch (_) {
+        } catch (e) {
           return { banned: false, user: user };
         }
       }
@@ -42,7 +42,7 @@ class forcebanCommand extends Command {
         // Bans the IDs
         await msg.channel.guild.banMember(user, 0, `Forcebanned by ${format.tag(msg.author, true)}`);
         return { banned: true, user: user };
-      } catch (_) {
+      } catch (e) {
         return { banned: false, user: user };
       }
     }));

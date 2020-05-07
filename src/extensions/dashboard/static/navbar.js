@@ -1,16 +1,15 @@
 /*
-  This handles bulma's mobile navbar opening.
+  This handles bulma's navbar functionality.
 */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Get all "navbar-burger" elements
+  // Get elements
   const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll(".navbar-burger"), 0);
-  // Checks for any navbar burgers
   if ($navbarBurgers.length > 0) {
     // Add click event
     $navbarBurgers.forEach(el => {
       el.addEventListener("click", () => {
-        // Get the target
+        // Gets target
         const target = el.dataset.target;
         const $target = document.getElementById(target);
         // Toggle is-active
