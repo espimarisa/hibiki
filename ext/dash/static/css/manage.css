@@ -16,19 +16,15 @@ html {
 }
 
 .sticky-buttons {
+  background: #1f2424;
   position: sticky;
-  top: 0px;
   padding-top: 10px;
   padding-bottom: 10px;
+  top: 0px;
   z-index: 35;
-  background: #1f2424;
 }
 
 /* Image Styling */
-
-.avatar {
-  border-radius: 50%;
-}
 
 .guild-icon {
   width: 128px;
@@ -50,7 +46,6 @@ a.navbar-item,
 .select select,
 .textarea {
   max-width: 450px;
-  color: #000 !important;
 }
 
 /* Background Styling */
