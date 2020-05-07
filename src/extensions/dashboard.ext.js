@@ -10,7 +10,7 @@ const session = require("express-session");
 const strategy = require("passport-discord");
 const format = require("../lib/scripts/Format");
 const cfg = require("../cfg").dashboard;
-const version = require("../package");
+const { version } = require("../package");
 
 const scope = ["identify", "guilds"];
 const app = express();
@@ -145,7 +145,7 @@ module.exports = (bot) => {
       avatar: bot.user.avatar ? `https://cdn.discordapp.com/avatars/${bot.user.id}/${bot.user.avatar}.png` : "https://cdn.discordapp.com/embed/avatars/0.png",
       authUser: req.isAuthenticated() ? getAuthUser(req.user) : null,
       format: format,
-      version: version.version,
+      version: version,
     });
   });
 
