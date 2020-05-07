@@ -120,3 +120,12 @@ a.navbar-item,
   line-height: 2.5;
   outline: 0;
 }
+
+div.emoji-picker,
+div.emoji-picker__emoji {
+  z-index: 100;
+}
+
+select {
+  z-index: 0;
+}

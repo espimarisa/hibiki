@@ -12,26 +12,22 @@ class removeassignableCommand extends Command {
 
   async run(msg, args, pargs) {
     const role = pargs[0].value;
-    // Looks for the role
-    const assignable = await this.bot.db.table("rolecfg").filter({
-      guild: msg.channel.guild.id,
-      id: role.id,
-      assignable: true,
-    });
+    let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
+
+    // If guild has no cfg
+    if (!guildcfg) {
+      await this.bot.db.table("guildcfg").insert({ id: msg.channel.guild.id });
+      guildcfg = { id: msg.channel.guild.id };
+    }
 
     // If no role is found
-    if (!assignable.length) {
+    if (!guildcfg.assignableRoles.length || !guildcfg.assignableRoles.includes(role.id)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `**${role.name}** isn't set to be assignable.`, "error"));
     }
 
-    // Deletes the role
-    await this.bot.db.table("rolecfg").filter({
-      guild: msg.channel.guild.id,
-      id: role.id,
-      assignable: true,
-    }).delete();
-
-    // Sends the embed
+    // Updates the guildcfg
+    guildcfg.assignableRoles.splice(guildcfg.assignableRoles.indexOf(role.id), 1);
+    await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(guildcfg);
     this.bot.emit("removeAssignable", msg.channel.guild, msg.member, role);
     msg.channel.createMessage(this.bot.embed("✅ Success", `**${role.name}** is no longer assignable.`, "success"));
   }

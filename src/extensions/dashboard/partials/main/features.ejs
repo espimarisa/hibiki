@@ -1,5 +1,6 @@
 <h2 class="title is-3" id="features"><i class="fas fa-magic icons" style="padding-right: 5px;"></i>Features</h2>
 <p class="subtitle has-text-white">Enable, disable, &amp; control features.</p>
+<script src="/static/picker.js"></script>
 
 <%# Finds channels %>
 <% let channels = bot.guilds.get(guild.id).channels.map(c => ({name: c.name, id: c.id, type: c.type}));
@@ -35,6 +36,16 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
           <select multiple="multiple" class="multiple-select">
           </select>
         </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div>
+      <p class="title is-size-4">Pin Emoji</p>
+      <p class="subtitle is-size-6 has-text-white">Emoji used for pinboard reactions.</p>
+      <div id="twemoji-picker">
+        <button id="pinEmoji">📌</button>
       </div>
     </div>
   </div>
@@ -77,6 +88,21 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
             <option>10</option>
           </select>
         </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="field">
+      <p class="title is-size-4">Self-Pinning</p>
+      <p class="subtitle is-size-6 has-text-white">Controls if members can self-pin messages.</p>
+      <div id="pinSelfPinning" class="control">
+        <label class="radio">
+          <input type="radio" name="pinSelfPinning"> Enabled </input>
+        </label>
+        <label class="radio">
+          <input type="radio" name="pinSelfPinning"> Disabled </input>
+        </label>
       </div>
     </div>
   </div>

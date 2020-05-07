@@ -19,10 +19,14 @@ module.exports = [{
   id: "antiSpam",
   type: "bool",
 }, {
+  id: "assignableRoles",
+  label: "Assignable Roles",
+  type: "roleArray",
+}, {
   id: "autoRoles",
   label: "Automatic Roles",
   type: "roleArray",
-  maximum: 3,
+  maximum: 5,
 }, {
   label: "Disabled Categories",
   id: "disabledCategories",
@@ -79,6 +83,14 @@ module.exports = [{
   id: "pinChannel",
   label: "Pin Channel",
   type: "channelID",
+}, {
+  id: "pinEmoji",
+  label: "Pin Emoji",
+  type: "emoji",
+}, {
+  id: "pinSelfPinning",
+  label: "Self Pinning",
+  type: "bool",
 }, {
   label: "Prefix",
   id: "prefix",

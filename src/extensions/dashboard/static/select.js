@@ -6,6 +6,7 @@ $(async () => {
   const res = await fetch(`../../api/getitems?commands=true`, {
     credentials: "include",
   });
+
   const cmds = await res.json();
   const baseOptions = {
     selectAll: false,
@@ -21,6 +22,7 @@ $(async () => {
       document.getElementsByClassName("ms-choice")[0].style.boxShadow = "";
     },
   };
+
   // Disabled cmds
   $("#disabledCmds > select").multipleSelect({
     ...baseOptions,
@@ -32,23 +34,38 @@ $(async () => {
         if (c.children.length && c.children[0].classList[0] && c.children[0].children[0].checked)
           disabledcats.push(c.children[0].innerText.replace(/\s/g, ""));
       });
-      if (!disabledcats.length) return `${count} Commands`;
+      if (!disabledcats.length) return `${count} selected`;
       return disabledcats.join(", ");
     },
   });
+
   // Autoroles
   $("#autoRoles > select").multipleSelect({
     ...baseOptions,
     minimumCountSelected: 1,
     onClick: () => {
-      if ($("#autoRoles > select").val().length > 2) {
+      if ($("#autoRoles > select").val().length > 5) {
         const values = $("#autoRoles > select").val();
-        values.length = 2;
+        values.length = 5;
         $(document.getElementById("autoRoles").children[0]).multipleSelect("setSelects", values);
       }
     },
     formatCountSelected: (count) => {
-      return `${count} Roles selected`;
+      return `${count} selected`;
+    },
+  });
+
+  // Assignable roles
+  $("#assignableRoles > select").multipleSelect({
+    ...baseOptions,
+    minimumCountSelected: 1,
+    onClick: () => {
+      if ($("#assignableRoles > select").val()) {
+        $(document.getElementById("assignableRoles").children[0]).multipleSelect("setSelects", values);
+      }
+    },
+    formatCountSelected: (count) => {
+      return `${count} selected`;
     },
   });
 });
