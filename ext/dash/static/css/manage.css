@@ -116,11 +116,21 @@ a.navbar-item,
   outline: 0;
 }
 
-div.emoji-picker,
-div.emoji-picker__emoji {
-  z-index: 100;
+.select:after {
+  z-index: 0 !important;
 }
 
-select {
-  z-index: 0;
+/* Emoji Picker Styling */
+
+div.emoji-picker.dark {
+  width: 25em;
+}
+
+div.emoji-picker__emojis {
+  overflow-x: hidden
+}
+
+#pinEmoji {
+  width: 3em;
+  height: 3em;
 }
