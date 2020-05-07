@@ -12,24 +12,26 @@ class addassignableCommand extends Command {
 
   async run(msg, args, pargs) {
     const role = pargs[0].value;
-    const assignable = await this.bot.db.table("rolecfg").filter({
-      guild: msg.channel.guild.id,
-      id: role.id,
-    });
 
-    if (!assignable.length) {
-      // Adds role to cfg
-      await this.bot.db.table("rolecfg").insert({
-        guild: msg.channel.guild.id,
-        id: role.id,
-        assignable: true,
-      });
+    // If role is a bot role
+    if (role.managed) return msg.channel.createMessage(this.bot.embed("❌ Error", "That role isn't able to be assigned.", "error"));
+    let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
 
-      // Sends the embed
+    // If guild has no cfg
+    if (!guildcfg || !guildcfg.assignableRoles || !guildcfg.assignableRoles.length) {
+      await this.bot.db.table("guildcfg").insert({ id: msg.channel.guild.id, assignableRoles: [] });
+      guildcfg = { id: msg.channel.guild.id, assignableRoles: [] };
+    }
+
+    if (!guildcfg.assignableRoles.includes(role.id)) {
+      // Updates the guildcfg
+      guildcfg.assignableRoles.push(role.id);
+      await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(guildcfg);
       this.bot.emit("setAssignable", msg.channel.guild, msg.member, role);
       msg.channel.createMessage(this.bot.embed("✅ Success", `**${role.name}** can now be assigned using the assign command.`, "success"));
     } else {
-      msg.channel.createMessage(this.bot.embed("❌ Error", `**${role.name}** is already set to be assignable.`, "error"));
+      // If role is already set
+      return msg.channel.createMessage(this.bot.embed("❌ Error", `**${role.name}** is already assignable.`, "error"));
     }
   }
 }

@@ -68,6 +68,13 @@ window.addEventListener("load", async () => {
       if (e.id === "prefix" && e.value.length > 15) e.value = e.value.substring(0, 15);
       if (e.id === "joinMessage" && e.value.length > 100) e.value = e.value.substring(0, 100);
       if (e.id === "leaveMessage" && e.value.length > 100) e.value = e.value.substring(0, 100);
+      // todo: add pinEmoji functionality. it doesn't transmit any data. also set it to the cfg. default to 📌.
+      // todo: cleanup this shitty file holy fucking fuck
+      // if (e.id === "pinEmoji") {
+      //   let emoji = /\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/.exec(e.value);
+      //   if(!emoji) emoji = "";
+      //   e.value = emoji[0];
+      // }
     });
   });
 
@@ -113,8 +120,8 @@ window.addEventListener("load", async () => {
         const id = /.{1,32} \(([0-9]{16,19})\)/.exec(r)[1];
         if (cfg[p] && cfg[p].includes(id)) cc.push(r);
       });
-      // Autoroles
-      $(document.getElementById("autoRoles").children[0]).multipleSelect("setSelects", cc);
+      // AssignableRoles; AutoRoles
+      $(document.getElementById(p).children[0]).multipleSelect("setSelects", cc);
       // Disabled commands/categories
     } else if (p === "disabledCmds") {
       $("#disabledCmds > select").multipleSelect("setSelects", [...cfg[p], ...$("#disabledCmds > select").multipleSelect("getSelects")]);
@@ -125,6 +132,8 @@ window.addEventListener("load", async () => {
         cc = [...ccmds, ...cc];
       });
       $("#disabledCmds > select").multipleSelect("setSelects", cc);
+    } else if (type === "emoji") {
+      element.innerHTML = cfg[p];
     }
   });
 
@@ -165,6 +174,8 @@ window.addEventListener("load", async () => {
           ids.push(/.{1,32} \(([0-9]{16,19})\)/.exec(v)[1]);
         });
         cfg[p] = ids;
+      } else if (type === "emoji") {
+        cfg[p] = element.innerHTML;
       }
     });
     // Disabled commands/categories
