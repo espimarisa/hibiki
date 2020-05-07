@@ -22,7 +22,7 @@ class unbanCommand extends Command {
         // Unbans the IDs
         await msg.channel.guild.unbanMember(user, `Unbanned by ${format.tag(msg.author, true)}`);
         return { unbanned: true, user: user };
-      } catch (_) {
+      } catch (e) {
         return { unbanned: false, user: user };
       }
     }));

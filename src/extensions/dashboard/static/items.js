@@ -11,12 +11,12 @@ module.exports = [{
   label: "Agree Role",
   type: "roleID",
 }, {
-  label: "AntiInvite",
   id: "antiInvite",
+  label: "AntiInvite",
   type: "bool",
 }, {
-  label: "AntiSpam",
   id: "antiSpam",
+  label: "AntiSpam",
   type: "bool",
 }, {
   id: "assignableRoles",
@@ -28,16 +28,16 @@ module.exports = [{
   type: "roleArray",
   maximum: 5,
 }, {
-  label: "Disabled Categories",
   id: "disabledCategories",
+  label: "Disabled Categories",
   type: "array",
 }, {
-  label: "Disabled Commands",
   id: "disabledCmds",
+  label: "Disabled Commands",
   type: "array",
 }, {
-  label: "Invite Punishment",
   id: "invitePunishments",
+  label: "Invite Punishment",
   type: "punishment",
 }, {
   id: "leaveJoin",
@@ -47,10 +47,14 @@ module.exports = [{
   id: "joinMessage",
   label: "Join Message",
   type: "string",
+  minimum: 1,
+  maximum: 100,
 }, {
   id: "leaveMessage",
   label: "Leave Message",
   type: "string",
+  minimum: 1,
+  maximum: 100,
 }, {
   id: "eventLogging",
   label: "Event Logging Channel",
@@ -92,22 +96,22 @@ module.exports = [{
   label: "Self Pinning",
   type: "bool",
 }, {
-  label: "Prefix",
   id: "prefix",
+  label: "Prefix",
   type: "string",
   minimum: 1,
   maximum: 15,
 }, {
-  label: "Punishment Message",
   id: "msgOnPunishment",
+  label: "Punishment Message",
   type: "bool",
 }, {
-  label: "Spam Punishments",
   id: "spamPunishments",
+  label: "Spam Punishments",
   type: "punishment",
 }, {
-  label: "Spam Threshold",
   id: "spamThreshold",
+  label: "Spam Threshold",
   minimum: 5,
   maximum: 10,
 }, {

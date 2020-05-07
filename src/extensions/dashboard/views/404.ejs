@@ -1,27 +1,31 @@
-<%# 
-  This displays if something isn't found.
-%>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <link rel="stylesheet" href="https://unpkg.com/bulmaswatch/darkly/bulmaswatch.min.css">
-  <link rel="stylesheet" href="../static/css/errors.css">
   <script src="https://kit.fontawesome.com/cb507ce1e8.js" crossorigin="anonymous"></script>
   <title>Error</title>
 </head>
 
 <body>
-  <div class="spacer"></div>
-  <div class="has-text-centered">
-    <img class="errimg is-hidden-mobile" alt="404" src="../static/img/errors/404.png">
-    <div>
-      <h2 class="title">404 Not Found</h2>
-      <a class="button is-medium is-inverted is-light" href="/">
-        <i class="fas fa-home icons"></i> Take me home </a>
+  <section class="section hero is-black is-fullheight">
+    <div class="hero-body container">
+      <div class="columns is-desktop is-vcentered is-centered">
+        <div class="column is-narrow is-size-4 has-text-centered">
+          <i class="fas fa-exclamation-circle fa-4x"></i>
+          <p class="title">Not Found</p>
+          <p class="subtitle">Click <a onclick="back()" class="has-text-link">here</a> to go back.</p>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 </body>
 
 </html>
+
+<script>
+function back() {
+  window.history.back();
+}
+
+</script>
