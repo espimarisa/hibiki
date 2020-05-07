@@ -40,8 +40,8 @@ class Handler extends Event {
 
     // Blocks bots & blacklisted users
     if (msg.author.bot) return;
-    const [blacklist] = await this.bot.db.table("blacklist").filter({ user: msg.author.id });
-    if (blacklist) return;
+    const blacklist = await this.bot.db.table("blacklist");
+    if (blacklist.find(u => u.user === msg.author.id)) return;
     // Sets the prefix
     let prefix;
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
@@ -51,7 +51,7 @@ class Handler extends Event {
     else if (msg.content.startsWith(`<@!${this.bot.user.id}> `)) prefix = `<@!${this.bot.user.id}> `;
     if (!prefix) return;
     // Looks for the command ran
-    const [cmdName, ...args] = msg.content.trim().toLowerCase().slice(prefix.length).split(/ +/g);
+    const [cmdName, ...args] = msg.content.trim().slice(prefix.length).split(/ +/g);
     const cmd = this.bot.commands.find(c => c.id === cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
     if (!cmd) return;
 

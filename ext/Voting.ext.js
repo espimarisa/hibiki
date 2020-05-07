@@ -12,7 +12,7 @@ app.use(express.json());
 app.disable("x-powered-by");
 
 module.exports = (bot) => {
-  if (!voting.port) return;
+  if (!voting.port || !voting.auth) return;
   app.post("/voteReceive", async (req, res) => {
     // Sends if unauthorized
     if (req.headers.authorization !== voting.auth) {

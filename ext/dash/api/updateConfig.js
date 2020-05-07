@@ -29,30 +29,26 @@ module.exports = bot => {
 
     // Each cfg type/option
     Object.keys(cfg).forEach(c => {
+      // todo : cleanup
       if (c === "id") return;
       const opt = cfg[c];
       if (!opt) return;
       const item = items.find(i => i.id === c);
-      // Deletes if invalid
       if (!item) return delete cfg[c];
-      // Number types
       if (item.type === "number" && typeof opt !== "number") delete cfg[c];
       else if (item.type === "number" && item.maximum && opt > item.maximum) cfg[c] = item.maximum;
       if (item.type === "number" && item.minimum && opt < item.minimum) cfg[c] = item.minimum;
-      // Punishment types
       if (item.type === "punishment") cfg[c] = opt.filter(p => ["Purge", "Warn", "Mute"].includes(p));
-      // If channel doesn't exist
       if (item.type === "channelID" && !bot.guilds.get(req.params.id).channels.find(channel => channel.id === opt)) cfg[c] = null;
-      // Role cfgs
       if (item.type === "roleArray") cfg[c] = opt.filter(r => bot.guilds.get(req.params.id).roles.find(rol => rol.id === r));
       if (item.type === "roleArray" && item.maximum && cfg[c].length > item.maximum) cfg[c].length = item.maximum;
       if (item.type === "roleID" && !bot.guilds.get(req.params.id).roles.find(r => r.id === opt)) cfg[c] = null;
-      // Booleans & strings
       if (item.type === "bool" && typeof opt !== "boolean") cfg[c] = null;
       if (item.type === "string" && item.maximum) cfg[c] = opt.substring(0, 15);
       if (item.type === "string" && item.minimum && opt.length < item.minimum) cfg[c] = null;
-      // Disabled commands/categories
       if (item.type === "array" && !Array.isArray(cfg[c])) return cfg[c] = null;
+      if (item.type === "emoji") console.log(/\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/.test(cfg[c]));
+      if (item.type === "emoji" && !/\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/.test(cfg[c])) delete cfg[c];
       if (c === "disabledCategories") {
         const categories = [];
         bot.commands.forEach(c => {
