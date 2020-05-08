@@ -1,5 +1,5 @@
 /*
-  This logs when a guild is updated.
+  Logs when a guild is updated.
 */
 
 

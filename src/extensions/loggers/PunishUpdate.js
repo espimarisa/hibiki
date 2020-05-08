@@ -1,5 +1,5 @@
 /*
-  This logs when member's punishments are applied or removed.
+  Logs when member's punishments are applied or removed.
 */
 
 const Logging = require("../../lib/structures/Logging");

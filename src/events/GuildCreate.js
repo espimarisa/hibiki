@@ -13,13 +13,26 @@ class guildCreate extends Event {
   }
 
   async run(guild) {
+    // Checks blacklist
+    const blacklist = await this.bot.db.table("blacklist").filter({
+      guild: guild.id,
+    });
+
+    // If server is blacklisted
+    if (blacklist.find(g => g.guild === guild.id)) {
+      this.bot.log.warn(`Added to a blacklisted guild: ${guild.name}`),
+        await guild.leave();
+      return;
+    }
+
     this.bot.log.info(`Added to server: ${guild.name}`);
     // DMs the server owner
-    const oid = this.bot.users.get(guild.ownerID);
+    const oid = this.bot.users.get(guild.ownerID).catch(() => {});
     if (oid) {
-      const odm = await oid.getDMChannel();
+      const odm = await oid.getDMChannel().catch(() => {});
       if (odm) {
-        odm.createMessage(this.bot.embed(`✨ I was added to your server, ${oid.username}.`, `\n To get started, run \`${this.bot.cfg.prefix}help\`.`));
+        odm.createMessage(this.bot.embed(`✨ I was added to your server, ${oid.username}.`, `\n To get started, run \`${this.bot.cfg.prefix}help\`. 
+        You can configure me using the [web dashboard](${this.bot.cfg.homepage}/dashboard/).`)).catch(() => {});
       }
     }
 

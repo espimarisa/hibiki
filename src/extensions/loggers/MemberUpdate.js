@@ -1,5 +1,5 @@
 /*
-  This logs when a member joins or leaves.
+  Logs when a member joins or leaves.
 */
 
 const Logging = require("../../lib/structures/Logging");

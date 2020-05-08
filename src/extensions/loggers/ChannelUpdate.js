@@ -1,5 +1,5 @@
 /*
-  This logs when a channel is created, deleted, or edited.
+  Logs when a channel is created, deleted, or edited.
 */
 
 const Logging = require("../../lib/structures/Logging");

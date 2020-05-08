@@ -35,7 +35,7 @@ module.exports = bot => {
             // Edits the pinmsg
             if (pinmsg) {
               const embed = pinmsg.embeds[0];
-              embed.footer.text = `${pin}${msg.reactions[pin].count} pins | ${msg.id}`;
+              embed.footer.text = `${pin}${msg.reactions[pin].count} | ${msg.id}`;
               pin.edit({ embed: embed }).catch(() => {});
             }
           }
@@ -109,7 +109,7 @@ module.exports = bot => {
                 inline: true,
               }],
               footer: {
-                text: `${pin}${msg.reactions[pin].count} pins | ${msg.id}`,
+                text: `${pin}${msg.reactions[pin].count} | ${msg.id}`,
               },
             },
           };
