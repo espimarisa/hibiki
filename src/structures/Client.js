@@ -1,6 +1,5 @@
 /*
-  This is the core client for Hibiki.
-  It loads commands, events, and extensions.
+  Main client; loads commands, events, extensions.
 */
 
 const { Client, Collection } = require("eris");

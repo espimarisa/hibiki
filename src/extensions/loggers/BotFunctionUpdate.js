@@ -1,5 +1,5 @@
 /*
-  This logs when bot functionality is changed.
+  Logs when bot functionality is changed.
 */
 
 const Logging = require("../../lib/structures/Logging");

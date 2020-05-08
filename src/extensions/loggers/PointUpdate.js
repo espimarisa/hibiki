@@ -1,5 +1,5 @@
 /*
-  This logs when points are added or removed.
+  Logs when points are added or removed.
 */
 
 const Logging = require("../../lib/structures/Logging");

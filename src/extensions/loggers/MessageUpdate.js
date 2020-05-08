@@ -1,5 +1,5 @@
 /*
-  This logs when a message is deleted or updated.
+  Logs when a message is deleted or updated.
 */
 
 const Logging = require("../../lib/structures/Logging");

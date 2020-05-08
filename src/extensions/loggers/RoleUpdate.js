@@ -1,5 +1,5 @@
 /*
-  This logs when a role is created, deleted, or edited.
+  Logs when a role is created, deleted, or edited.
 */
 
 const Logging = require("../../lib/structures/Logging");
