@@ -32,8 +32,11 @@ class kickCommand extends Command {
       const kickmsg = await msg.channel.createMessage(this.bot.embed("🔨 Kick", `Are you sure you'd like to kick **${user.username}**?`));
       const response = await yn(this.bot, { author: msg.author, channel: msg.channel });
       if (!response) return kickmsg.edit(this.bot.embed("🔨 Kick", `Cancelled kicking **${user.username}**.`));
+      this.bot.emit("guildKick", msg.channel.guild, reason, msg.member, user);
+      await user.kick(`${reason} (by ${format.tag(msg.author, true)})`).catch(() => {});
+
       // Tries to DM kicked user
-      const dmchannel = await user.user.getDMChannel();
+      const dmchannel = await user.user.getDMChannel().catch(() => {});
       dmchannel.createMessage({
         embed: {
           title: `🚪 Kicked from ${msg.channel.guild.name}`,
@@ -41,9 +44,8 @@ class kickCommand extends Command {
           color: this.bot.embed.color("general"),
         },
       }).catch(() => {});
+
       // Tries to kick the user; logs
-      await user.kick(`${reason} (by ${format.tag(msg.author, true)})`).catch(() => {});
-      // Edits the kickmsg
       await kickmsg.edit(this.bot.embed("🔨 Kick", `**${user.username}** was kicked by **${msg.author.username}**.`));
     }
   }

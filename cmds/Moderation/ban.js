@@ -32,8 +32,11 @@ class banCommand extends Command {
       const banmsg = await msg.channel.createMessage(this.bot.embed("🔨 Ban", `Are you sure you'd like to ban **${user.username}**?`));
       const response = await yn(this.bot, { author: msg.author, channel: msg.channel });
       if (!response) return banmsg.edit(this.bot.embed("🔨 Ban", `Cancelled banning **${user.username}**.`));
+      // Tries to ban the user; logs
+      await user.ban(1, `${reason} (by ${format.tag(msg.author, true)})`).catch(() => {});
+
       // Tries to DM banned user
-      const dmchannel = await user.user.getDMChannel();
+      const dmchannel = await user.user.getDMChannel().catch(() => {});
       dmchannel.createMessage({
         embed: {
           title: `🚪 Banned from ${msg.channel.guild.name}`,
@@ -41,8 +44,7 @@ class banCommand extends Command {
           color: this.bot.embed.color("general"),
         },
       }).catch(() => {});
-      // Tries to ban the user; logs
-      await user.ban(1, `${reason} (by ${format.tag(msg.author, true)})`).catch(() => {});
+
       // Edits the banmsg
       await banmsg.edit(this.bot.embed("🔨 Ban", `**${user.username}** was banned by **${msg.author.username}**.`));
     }

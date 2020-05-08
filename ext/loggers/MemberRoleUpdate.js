@@ -1,5 +1,5 @@
 /*
-  This logs when a member's roles are changed.
+  Logs when a member's roles are updated.
 */
 
 const Logging = require("../../lib/structures/Logging");

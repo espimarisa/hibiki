@@ -1,5 +1,5 @@
 /*
-  Logs to the main loggingchannel when added/removed from a guild.
+  Logs when added/removed from a guild.
 */
 
 const format = require("../../lib/scripts/Format");
