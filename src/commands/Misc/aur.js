@@ -58,7 +58,12 @@ class aurCommand extends Command {
     if (pkg.Maintainer) fields.push({ name: "Maintainer", value: pkg.Maintainer, inline: true });
     if (pkg.FirstSubmitted) fields.push({ name: "Submitted", value: format.date(pkg.FirstSubmitted * 1000), inline: true });
     if (pkg.LastModified) fields.push({ name: "Updated", value: format.date(pkg.LastModified * 1000), inline: true });
-    if (pkginfo && (pkginfo.Depends || pkginfo.MakeDepends)) fields.push({ name: "Dependencies", value: [...pkginfo.Depends, ...pkginfo.MakeDepends].join(", ") || "None" });
+    let depends = [];
+    if (pkginfo) {
+      if (pkginfo.Depends) depends = [...depends, pkginfo.Depends];
+      if (pkginfo.MakeDepends) depends = [...depends, pkginfo.MakeDepends];
+    }
+    if (depends.length) fields.push({ name: "Dependencies", value: depends.join(", ") });
     // Sends the embed
     msg.channel.createMessage({
       embed: {

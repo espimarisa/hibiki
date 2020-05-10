@@ -141,10 +141,11 @@ class helpCommand extends Command {
       if (cmd.category === "Owner") return;
       if (cmd.aliases.length) construct.push({ name: "Aliases", value: `${cmd.aliases.map(alias => `\`${alias}\``).join(" ") || "No aliases"}`, inline: false });
       if (cmd.args) construct.push({ name: "Usage", value: cmdusage(cmd.args), inline: false });
-      if (cmd.category) construct.push({ name: "Category", value: cmd.category, inline: true });
       if (cmd.cooldown) construct.push({ name: "Cooldown", value: `${cmd.cooldown} seconds`, inline: true });
-      if (cmd.clientperms) construct.push({ name: "Bot Permissions", value: cmd.clientperms, inline: true });
+      if (cmd.clientperms && cmd.clientperms !== "embedLinks") construct.push({ name: "Bot Permissions", value: cmd.clientperms, inline: true });
       if (cmd.requiredperms) construct.push({ name: "User Permissions", value: cmd.requiredperms, inline: true });
+      if (cmd.allowdisable === false) construct.push({ name: "Allow Disable", value: cmd.allowdisable, inline: true });
+      if (cmd.staff === true) construct.push({ name: "Staff", value: cmd.staff, inline: true });
       // Sends info about cmd
       msg.channel.createMessage({
         embed: {

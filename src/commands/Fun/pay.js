@@ -53,7 +53,7 @@ class payCommand extends Command {
     await this.bot.db.table("economy").get(user.id).update(ucookies);
     await this.bot.db.table("economy").get(msg.author.id).update(acookies);
     // Sends the embed
-    msg.channel.createMessage(this.bot.embed("🍪 Pay", `You gave **${amount}** cookie${amount === 1 ? "" : "s"} to **${user.username}**.`, "general"));
+    msg.channel.createMessage(this.bot.embed("🍪 Pay", `You gave **${amount}** cookie${amount === 1 ? "" : "s"} to **${user.username}**.`));
   }
 }
 
