@@ -134,7 +134,7 @@ module.exports = (bot) => {
     // Renders the dashboard
     if (!guild) return res.status(403).render("403");
     const cfg = await bot.db.table("guildcfg").get(guild.id);
-    res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, items: items, user: user, version: version.version });
+    res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, items: items, user: user, version: version });
   });
 
   // Renders landing page

@@ -19,7 +19,7 @@ class divorceCommand extends Command {
     if (!response) return divorcemsg.edit(this.bot.embed("💔 Divorce", "Cancelled the divorce."));
     // Divorces the users
     await this.bot.db.table("marriages").get(state.id).delete();
-    divorcemsg.edit(this.bot.embed("💔 Divorce", "You're no longer married.", "general"));
+    divorcemsg.edit(this.bot.embed("💔 Divorce", "You're no longer married."));
   }
 }
 

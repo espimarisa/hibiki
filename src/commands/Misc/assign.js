@@ -25,7 +25,7 @@ class assignCommand extends Command {
       });
 
       assignableroles = assignableroles.filter(r => r !== undefined);
-      return msg.channel.createMessage(this.bot.embed("📃 Assignable Roles", assignableroles.join(", ") || "This server has no assignable roles.", "general"));
+      return msg.channel.createMessage(this.bot.embed("📃 Assignable Roles", assignableroles.join(", ") || "This server has no assignable roles."));
     }
 
     // Looks for the role

@@ -12,6 +12,7 @@ module.exports = bot => {
 
       // Gets guildcfg
       const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id);
+      if (!guildcfg) return;
       const pin = guildcfg.pinEmoji ? guildcfg.pinEmoji : "📌";
       // Checks for pin reaction
       if (msg.reactions[pin] && msg.reactions[pin].count) {
@@ -68,8 +69,8 @@ module.exports = bot => {
 
       if (!msg) return;
       if (msg.author.id === bot.user.id) return;
-
       const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id);
+      if (!guildcfg) return;
       const pin = guildcfg.pinEmoji ? guildcfg.pinEmoji : "📌";
       // Checks for the pin reaction
       if (msg.reactions[pin] && msg.reactions[pin].count) {

@@ -23,6 +23,7 @@ class channelinfoCommand extends Command {
     desc.push({ name: "🆔", value: channel.id });
     if (channel.type === 0) desc.push({ name: "📝", value: `Channel ${channel.nsfw ? "is" : "isn't"} NSFW; position ${channel.position}.` });
     if (channel.type === 2) desc.push({ name: "📝", value: `Bitrate: ${channel.bitrate}; limited to ${channel.userLimit} users` });
+
     // Sends the embed
     msg.channel.createMessage({
       embed: {
@@ -38,3 +39,4 @@ class channelinfoCommand extends Command {
 }
 
 module.exports = channelinfoCommand;
+
