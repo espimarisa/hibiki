@@ -31,7 +31,6 @@ module.exports = (bot) => {
   bot.on("guildMemberAdd", async function(guild, member) {
     // Invalid member
     if (!member.username || !member.user && !member.user.username) return;
-    else if (!member.username && member.user && member.user.username) member = member.user;
     bot.emit("loggingMemberAdd", guild, member);
     const guildcfg = await bot.db.table("guildcfg").get(guild.id);
     // Re-mutes muted members
@@ -65,7 +64,6 @@ module.exports = (bot) => {
   bot.on("guildMemberRemove", async function(guild, member) {
     // Invalid member
     if (!member.username || !member.user && !member.user.username) return;
-    else if (!member.username && member.user && member.user.username) member = member.user;
     bot.emit("loggingMemberRemove", guild, member);
     const guildcfg = await bot.db.table("guildcfg").get(guild.id);
     // If no config
@@ -74,7 +72,7 @@ module.exports = (bot) => {
     const leavejoinchannel = guild.channels.find(c => c.id === leaveJoin);
     if (!leavejoinchannel) return;
     // Handler for custom leave messages
-    let leaveMessage = `We'll miss you, **${member.username}.`;
+    let leaveMessage = `We'll miss you, ${member.username}.`;
     if (guildcfg.leaveMessage && guildcfg.leaveMessage.length < 2000) {
       leaveMessage = guildcfg.leaveMessage;
       leaveMessage = leaveMessage.replace("{member}", `**${member.username}**`);

@@ -1,23 +1,23 @@
 const OFF = 0,
-  WARN = 1
+  WARN = 1;
 
 module.exports = exports = {
-  "env": {
-    "es6": true,
-    "amd": true
+  env: {
+    es6: true,
+    amd: true,
   },
 
   // Ignores
-  "ignorePatterns": ["dist/", "rethinkdb_data/", "node_modules/"],
+  ignorePatterns: ["dist/", "rethinkdb_data/", "node_modules/"],
 
   // Parser options
   extends: "eslint:recommended",
   parser: "babel-eslint",
-  "parserOptions": {
-    "ecmaVersion": 6
+  parserOptions: {
+    ecmaVersion: 6,
   },
 
-  "rules": {
+  rules: {
     // Stylistic options
     "block-spacing": [WARN, "always"],
     "brace-style": [WARN, "1tbs", { allowSingleLine: true }],
@@ -32,7 +32,7 @@ module.exports = exports = {
     "jsx-quotes": [WARN, "prefer-double"],
     "lines-around-comment": [WARN, { beforeBlockComment: true }],
     "max-depth": [WARN, 8],
-    "max-len": [WARN, { "code": 165, "ignoreComments": true, "ignoreStrings": true, "tabWidth": 2, }],
+    "max-len": [WARN, { code: 165, ignoreComments: true, ignoreStrings: true, tabWidth: 2 }],
     "max-nested-callbacks": [WARN, 8],
     "max-params": [WARN, 8],
     "new-parens": WARN,
@@ -48,8 +48,8 @@ module.exports = exports = {
     "object-curly-spacing": [WARN, "always"],
     "operator-linebreak": [WARN, "after"],
     "padded-blocks": [WARN, "never"],
-    "prefer-const": ["error", { "destructuring": "any", "ignoreReadBeforeAssign": false }],
-    "quotes": [WARN, "double", { "avoidEscape": true, "allowTemplateLiterals": true }],
+    "prefer-const": ["error", { destructuring: "any", ignoreReadBeforeAssign: false }],
+    "quotes": [WARN, "double", { avoidEscape: true, allowTemplateLiterals: true }],
     "quote-props": [WARN, "consistent-as-needed"],
     "semi": [WARN, "always"],
     "semi-spacing": [WARN, { before: false, after: true }],
@@ -57,5 +57,5 @@ module.exports = exports = {
     "space-in-parens": [WARN, "never"],
     "space-infix-ops": [WARN, { int32Hint: true }],
     "spaced-comment": [WARN, "always"],
-  }
+  },
 };

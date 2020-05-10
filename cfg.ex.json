@@ -20,7 +20,7 @@
     "redirect_uri": ""
   },
   "options": {
-    "defaultImageFormat": "png", 
+    "defaultImageFormat": "png",
     "defaultImageSize": "512",
     "maxShards": "1"
   },
@@ -40,7 +40,7 @@
   "rethink": {
     "db": "hibiki",
     "marriages": true,
-    "tables": ["blacklist", "economy", "guildcfg", "marriages", "mutecache", "points", "usercfg", "warnings"]
+    "tables": ["blacklist", "economy", "guildcfg", "marriages", "mutecache", "points", "reminders", "usercfg", "warnings"]
   },
   "voting": {
     "auth": "",
