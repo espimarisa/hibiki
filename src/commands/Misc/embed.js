@@ -12,9 +12,8 @@ class embedCommand extends Command {
   }
 
   async run(msg, args) {
-    // Sets the emojis
-    const emojis = [];
     // Sets the emoji actions
+    const emojis = [];
     const emojiactions = {
       "🇦": "title",
       "🇧": "description",
