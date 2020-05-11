@@ -48,7 +48,7 @@ class twitterCommand extends Command {
       color: this.bot.embed.color("general"),
       fields: fields,
       thumbnail: {
-        url: `https://avatars.io/twitter/${body.screen_name || null}`,
+        url: `${body.profile_image_url_https   || null}`,
       },
     };
 
