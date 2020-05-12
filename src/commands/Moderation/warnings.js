@@ -27,7 +27,7 @@ class warningsCommand extends Command {
       const warnstring = `${warnings.map(m => `${m.id} (by ${format.tag(msg.channel.guild.members.get(m.giver) || { username: `Unknown User (${m.giverId})`, discriminator: "0000" })})\n${m.reason}`).join("\n\n")}`;
       const body = await fetch("https://hasteb.in/documents", { referrer: "https://hasteb.in/", body: warnstring, method: "POST", mode: "cors" })
         .then(async res => await res.json().catch(() => {}));
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** has more than 20 warnings. View them [here](https://hasteb.in/${bodykey}).`, "error"));
+      return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** has more than 20 warnings. View them [here](https://hasteb.in/${body.key}).`, "error"));
     }
 
     // Sends the embed
