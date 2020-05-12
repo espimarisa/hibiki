@@ -5,8 +5,8 @@ const hierarchy = require("../../lib/utils/Hierarchy");
 class muteCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<member:member> [reason:string]",
       aliases: ["m", "silence", "shutup"],
+      args: "<member:member> [reason:string]",
       description: "Mutes a member.",
       clientperms: "manageRoles",
       requiredperms: "manageMessages",

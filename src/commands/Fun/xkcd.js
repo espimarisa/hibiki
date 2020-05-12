@@ -5,6 +5,7 @@ class xkcdCommand extends Command {
   constructor(...args) {
     super(...args, {
       description: "Sends a random comic from XKCD.",
+      allowdms: true,
       cooldown: 3,
     });
   }

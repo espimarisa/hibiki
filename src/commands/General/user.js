@@ -4,9 +4,9 @@ const format = require("../../lib/scripts/Format");
 class userCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "[user:member&fallback]",
+      args: "[member:member&fallback]",
+      description: "Returns info about a member.",
       aliases: ["profile", "uinfo", "userinfo"],
-      cooldown: 2,
     });
   }
 
@@ -59,7 +59,7 @@ class userCommand extends Command {
     desc.push({ name: "🆔", value: user.id });
     if (user.roles.length) desc.push({ name: "🔢", value: `Top role is ${user.highestRole.name}` });
     if (user.game) desc.push({ name: `${user.game.emoji ? "" : "▶"}`, value: playing });
-    if (usercfg && usercfg.info) desc.push(Object.keys(usercfg.info).map(k => `**${k}**: ${usercfg.info[k]}`).join("\n"));
+    if (usercfg && usercfg.info) desc.push(Object.keys(usercfg.info).map(k => `**${k}:** ${usercfg.info[k]}`).join("\n"));
     if (spouse) desc.push({ name: "💝", value: `Married to ${spouseid ? this.bot.users.find(m => m.id === spouseid) ? this.bot.users.find(m => m.id === spouseid).username : `<@!${spouseid}>` : "Nobody"}` });
     if (cookies && cookies.amount > 0) desc.push({ name: "🍪", value: `${Math.floor(cookies.amount)} cookies` });
     if (pointcount) desc.push({ name: "🌟", value: `${pointcount} points` });

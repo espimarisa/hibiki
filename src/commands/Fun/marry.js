@@ -4,8 +4,8 @@ const yn = require("../../lib/utils/Ask.js").YesNo;
 class marryCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<member:member>",
       aliases: ["propose"],
+      args: "<member:member>",
       description: "Proposes to another member.",
     });
   }

@@ -5,6 +5,7 @@ class dailyCommand extends Command {
   constructor(...args) {
     super(...args, {
       description: "Gives you your daily cookies.",
+      allowdms: true,
     });
   }
 

@@ -4,8 +4,8 @@ const { Snowflake } = require("../../lib/utils/Snowflake");
 class warnCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:member&strict> [reason:string]",
       aliases: ["punish", "s", "strike", "w", "warn"],
+      args: "<member:member&strict> [reason:string]",
       description: "Gives a member a warning.",
       requiredperms: "manageMessages",
       staff: true,

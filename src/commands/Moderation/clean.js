@@ -6,7 +6,6 @@ class agreeCommand extends Command {
       description: "Deletes the last 10 messages from the bot.",
       clientperms: "manageMessages",
       requiredperms: "manageMessages",
-      cooldown: 2,
       staff: true,
     });
   }

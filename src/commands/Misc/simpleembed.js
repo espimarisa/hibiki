@@ -3,9 +3,8 @@ const Command = require("../../lib/structures/Command");
 class simpleembedCommand extends Command {
   constructor(...args) {
     super(...args, {
-      description: "Creates a simple embed.",
       args: "<text:string>",
-      cooldown: 2,
+      description: "Creates a simple embed.",
     });
   }
 
@@ -33,7 +32,6 @@ class simpleembedCommand extends Command {
         thumbnail: {
           url: imgurl ? imgurl : null,
         },
-
       },
     });
   }

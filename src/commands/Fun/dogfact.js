@@ -12,8 +12,7 @@ class dogfactCommand extends Command {
 
   async run(msg) {
     // Fetches the API
-    const res = await fetch("https://dog-api.kinduff.com/api/facts");
-    const body = await res.json();
+    const body = await fetch("https://dog-api.kinduff.com/api/facts").then(async res => await res.json().catch(() => {}));
     // Sends the embed
     msg.channel.createMessage(this.bot.embed("🐶 Dog Fact", body.facts[0]));
   }

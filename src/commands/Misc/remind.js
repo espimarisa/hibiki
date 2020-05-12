@@ -5,9 +5,9 @@ class remindCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["remindme", "reminder", "reminders"],
-      args: "<time:string> <reminder:string>",
+      args: "[time:string] [reminder:string]",
       description: "Sends a reminder to you later on.",
-      cooldown: 5,
+      cooldown: 3,
     });
     this.timeoutHandles = [];
   }

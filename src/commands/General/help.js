@@ -4,12 +4,11 @@ const Eris = require("eris");
 class helpCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "[command:string]",
       aliases: ["commands", "listcmds", "listcommands"],
+      args: "[command:string]",
       description: "Sends a list of commands or info about a specific command.",
       allowdisable: false,
       allowdms: true,
-      cooldown: 3,
     });
   }
 

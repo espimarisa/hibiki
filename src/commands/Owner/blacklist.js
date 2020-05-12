@@ -3,7 +3,7 @@ const Command = require("../../lib/structures/Command");
 class blacklistCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<item:string>",
+      args: "<id:string>",
       description: "Blacklists a member or server.",
       allowdisable: false,
       owner: true,

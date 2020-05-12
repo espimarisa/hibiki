@@ -6,9 +6,9 @@ const format = require("../../lib/scripts/Format");
 class aurCommand extends Command {
   constructor(...args) {
     super(...args, {
-      description: "Looks up packages on the AUR.",
       args: "<package:string>",
-      cooldown: 2,
+      description: "Looks up packages on the AUR.",
+      cooldown: 3,
     });
   }
 
@@ -24,7 +24,7 @@ class aurCommand extends Command {
       res.results = res.results.sort((a, b) => a.NumVotes - b.NumVotes);
       res.results.length = 15;
       // Sends original message
-      const aurmsg = await msg.channel.createMessage(this.bot.embed("📦 Multiple Results", res.results.map((r, i) => `**${i + 1}**: ${r.Name} (${r.Popularity.toFixed(2)}%)`).join("\n")));
+      const aurmsg = await msg.channel.createMessage(this.bot.embed("📦 Multiple Results", res.results.map((r, i) => `**${i + 1}:** ${r.Name} (${r.Popularity.toFixed(2)}%)`).join("\n")));
       // Wait event
       await Wait("messageCreate", 60000, async (m) => {
         if (m.author.id !== msg.author.id) return;

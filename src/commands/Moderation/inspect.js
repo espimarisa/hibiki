@@ -3,8 +3,8 @@ const Command = require("../../lib/structures/Command");
 class inspectCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<invite:string>",
       aliases: ["lookup", "lookupinvite", "inspectinvite", "inviteinspect", "invitelookup"],
+      args: "<invite:string>",
       description: "Returns info about a server invite.",
       requiredperms: "manageMessages",
       staff: true,

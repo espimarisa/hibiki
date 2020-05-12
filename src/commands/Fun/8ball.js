@@ -7,6 +7,7 @@ class eightBallCommand extends Command {
       aliases: ["ask", "askball", "ball"],
       args: "[question:string]",
       description: "Asks a Magic 8-Ball a question.",
+      allowdms: true,
     });
   }
 

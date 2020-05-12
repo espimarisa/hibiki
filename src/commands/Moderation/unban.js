@@ -4,8 +4,8 @@ const format = require("../../lib/scripts/Format");
 class unbanCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<userids:string>",
       aliases: ["idunban", "ub", "unbanid"],
+      args: "<userids:string>",
       description: "Unbans a member by their ID.",
       clientperms: "banMembers",
       requiredperms: "manageMessages",
