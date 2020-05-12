@@ -6,14 +6,14 @@ class catCommand extends Command {
     super(...args, {
       aliases: ["kitten", "kitty", "pussy", "randomcat"],
       description: "Sends a random cat picture.",
+      allowdms: true,
       cooldown: 3,
     });
   }
 
   async run(msg) {
     // Fetches the API
-    const res = await fetch("http://aws.random.cat/meow");
-    const body = await res.json();
+    const body = await fetch("http://aws.random.cat/meow").then(async res => await res.json().catch(() => {}));
     if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
 
     // Sends the embed
@@ -22,7 +22,7 @@ class catCommand extends Command {
         title: "🐱 Meow!",
         color: this.bot.embed.color("general"),
         image: {
-          url: `${body.file}`,
+          url: body.file,
         },
       },
     });

@@ -4,17 +4,16 @@ const fetch = require("node-fetch");
 class lewdnekoCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["lewdneko"],
-      description: "Sends a NSFW catgirl image.",
-      cooldown: 3,
+      aliases: ["lewdkitsune", "lewdneko"],
+      description: "Sends a lewd catgirl picture.",
       nsfw: true,
+      cooldown: 3,
     });
   }
 
   async run(msg) {
     // Fetches the API
-    const res = await fetch("https://nekos.life/api/lewd/neko");
-    const body = await res.json();
+    const body = await fetch("https://nekos.life/api/lewd/neko").then(async res => await res.json().catch(() => {}));
     if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
 
     // Sends the embed

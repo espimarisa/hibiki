@@ -7,8 +7,8 @@ class osuCommand extends Command {
       args: "<profile:string>",
       description: "Displays info about an osu! account.",
       requiredkeys: ["osu"],
-      cooldown: 3,
       allowdms: true,
+      cooldown: 3,
     });
   }
 
@@ -20,8 +20,8 @@ class osuCommand extends Command {
 
     // Finds the player
     const user = args.join(" ");
-    const res = await fetch(`https://osu.ppy.sh/api/get_user?k=${this.bot.key.osu}&u=${user}&type=string`);
-    const body = await res.json();
+    const body = await fetch(`https://osu.ppy.sh/api/get_user?k=${this.bot.key.osu}&u=${user}&type=string`)
+      .then(async res => await res.json().catch(() => {}));
     if (!body.length) return msg.channel.createMessage(this.bot.embed("❌ Error", "Profile not found.", "error"));
     const data = body[0];
     if (!data.pp_raw && !data.playcount && !data.level && !data.accuracy && !data.playcount) {

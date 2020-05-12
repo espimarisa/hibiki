@@ -4,12 +4,9 @@
 
 // Gets items
 $(async () => {
-  const res = await fetch(`../../api/getitems?commands=true`, {
+  const cmds = await fetch(`../../api/getitems?commands=true`, {
     credentials: "include",
-  });
-
-  const cmds = await res.json();
-
+  }).then(async res => await res.json().catch(() => {}));
 
   // Sets options
   const baseOptions = {
@@ -75,6 +72,23 @@ $(async () => {
     },
 
     // Shows how many selected
+    formatCountSelected: (count) => {
+      return `${count} selected`;
+    },
+  });
+
+  // snipingIgnore
+  $("#snipingIgnore > select").multipleSelect({
+    ...baseOptions,
+    minimumCountSelected: 1,
+    onClick: () => {
+      if ($("#snipingIgnore > select").val()) {
+        const values = $("#snipingIgnore > select").val();
+        $(document.getElementById("snipingIgnore").children[0]).multipleSelect("setSelects", values);
+      }
+    },
+
+    // Shows howe many selected
     formatCountSelected: (count) => {
       return `${count} selected`;
     },

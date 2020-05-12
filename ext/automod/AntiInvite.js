@@ -6,7 +6,7 @@ const punish = require("./Punishments");
 
 module.exports = async (msg, bot, cfg) => {
   // Discord invite regex
-  if (/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|list)|discordapp\.com\/invite)\/.+[a-z]/.test(msg.content)) {
+  if (/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|list)|discord(app)?\.com\/invite)\/.+[a-z]/.test(msg.content)) {
     let warning;
     // Looks for each type of punishment
     cfg.invitePunishments.forEach(async punishment => {

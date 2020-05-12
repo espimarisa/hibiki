@@ -6,8 +6,8 @@ const yn = require("../../lib/utils/Ask.js").YesNo;
 class softbanCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<member:member> [string:reason]",
       aliases: ["sb"],
+      args: "<member:member> [string:reason]",
       description: "Bans a member from the server without deleting any messages.",
       clientperms: "banMembers",
       requiredperms: "manageMessages",

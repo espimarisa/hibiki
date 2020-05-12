@@ -4,8 +4,8 @@ class bioCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["addbio", "custombio", "profilebio", "removebio", "rmbio", "userbio"],
+      args: "[bio:string] [clear:string]",
       description: "Sets a custom bio to display on your profile.",
-      cooldown: 2,
     });
   }
 
@@ -39,7 +39,7 @@ class bioCommand extends Command {
     // Sets bio
     cfg.bio = args.join(" ");
     // Blocks discord ads
-    if (/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|list)|discordapp\.com\/invite)\/.+[a-z]/.test(cfg.bio)) {
+    if (/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|list)|discord(app)?\.com\/invite)\/.+[a-z]/.test(cfg.bio)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "Your bio included an advertisement.", "error"));
     }
     // Updates usercfg

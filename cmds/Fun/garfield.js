@@ -3,8 +3,8 @@ const Command = require("../../lib/structures/Command");
 class garfieldCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["garf"],
       description: "Sends a random Garfield comic.",
+      allowdms: true,
       cooldown: 3,
     });
   }

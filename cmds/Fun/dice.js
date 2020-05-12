@@ -5,6 +5,7 @@ class diceCommand extends Command {
     super(...args, {
       aliases: ["die", "roll", "rolldie", "rolldice"],
       description: "Rolls a six-sided die.",
+      allowdms: true,
     });
   }
 

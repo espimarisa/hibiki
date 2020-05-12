@@ -44,6 +44,8 @@ module.exports = bot => {
       if (item.type === "number" && item.minimum && opt < item.minimum) cfg[c] = item.minimum;
       if (item.type === "punishment") cfg[c] = opt.filter(p => ["Purge", "Warn", "Mute"].includes(p));
       if (item.type === "channelID" && !bot.guilds.get(req.params.id).channels.find(channel => channel.id === opt)) cfg[c] = null;
+      // Channelarray
+      if (item.type === "channelArray") cfg[c] = opt.filter(c => bot.guilds.get(req.params.id).channels.find(channel => channel.id === c));
       // Rolearray; has no maximum
       if (item.type === "roleArray") cfg[c] = opt.filter(r => bot.guilds.get(req.params.id).roles.find(rol => rol.id === r));
       // Rolearray; has maximum

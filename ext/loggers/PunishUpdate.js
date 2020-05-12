@@ -69,7 +69,7 @@ module.exports = (bot) => {
   // Logs when a member is muted due to automod
   bot.on("automodMute", (guild, member, msgs) => trysend(guild, "automodMute", {
     color: bot.embed.color("error"),
-    description: `Cause of mute:\n${msgs.map(m => `**${member.username}**: ${m.content.substring(0, 128)}`).join("\n")}`,
+    description: `Cause of mute:\n${msgs.map(m => `**${member.username}:** ${m.content.substring(0, 128)}`).join("\n")}`,
     author: {
       name: `${format.tag(member, false)} was automatically muted.`,
       icon_url: member.avatarURL,

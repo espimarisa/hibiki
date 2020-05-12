@@ -4,8 +4,8 @@ const format = require("../../lib/scripts/Format");
 class unverifyCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<member:member>",
       aliases: ["ut", "untrust", "uv"],
+      args: "<member:member>",
       description: "Removes the verified role from a user.",
       clientperms: "manageRoles",
       requiredperms: "manageRoles",

@@ -6,10 +6,9 @@ let lastInput = new Date().getTime();
 let lastText = "";
 
 window.addEventListener("load", async () => {
-  // Sets bio txt
-  const res = await fetch("/api/getBio", { credentials: "include" });
-  const bio = await res.text();
-  if (bio && res.status === 200) {
+  const body = await fetch("/api/getBio", { credentials: "include" })
+    .then(async res => await res.text().catch(() => {}));
+  if (bio && body.status === 200) {
     lastText = bio;
     document.getElementById("bio").value = bio;
   }

@@ -4,6 +4,7 @@ class supportCommand extends Command {
   constructor(...args) {
     super(...args, {
       description: "Gives an invite to the support server.",
+      allowdms: true,
     });
   }
 

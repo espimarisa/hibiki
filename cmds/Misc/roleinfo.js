@@ -7,7 +7,6 @@ class roleinfoCommand extends Command {
       aliases: ["rinfo"],
       args: "<role:role>",
       description: "Returns information about a role.",
-      cooldown: 3,
     });
   }
 

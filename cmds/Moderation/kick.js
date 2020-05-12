@@ -6,8 +6,8 @@ const yn = require("../../lib/utils/Ask.js").YesNo;
 class kickCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:member&strict> [string:reason]",
       aliases: ["k"],
+      args: "<member:member&strict> [string:reason]",
       description: "Kicks a member from the server.",
       clientperms: "kickMembers",
       requiredperms: "manageMessages",

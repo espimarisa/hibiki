@@ -5,8 +5,7 @@ class cookiesCommand extends Command {
     super(...args, {
       aliases: ["balance"],
       args: "<member:member&fallback>",
-      description: "Shows how many cookies you or another user has.",
-      cooldown: 3,
+      description: "Shows how many cookies you or another member has.",
     });
   }
 

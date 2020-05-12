@@ -1,0 +1,33 @@
+const Event = require("../lib/structures/Event");
+
+class Snipe extends Event {
+  constructor(...args) {
+    super(...args, {
+      name: "messageDelete",
+    });
+  }
+
+  async run(msg) {
+    // Reads the DB
+    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
+    if (!guildcfg || !guildcfg.snipingEnable) return;
+    // If no message to snipe, has an invite, or is ignored
+    if ((!msg.attachments || msg.attachments[0] === undefined) && (!msg.content || !msg)) return;
+    if (!guildcfg.snipingInvites && /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|list)|discord(app)?\.com\/invite)\/.+[a-z]/.test(msg.content)) return;
+    let ignored;
+    guildcfg.snipingIgnore.forEach(c => { if (c && msg.channel.id === c && msg.channel.guild.channels.has(c)) ignored = true; });
+    if (ignored) return;
+
+    this.bot.snipeData[msg.channel.id] = {
+      id: msg.channel.id,
+      content: msg.content,
+      author: `${msg.author.username}#${msg.author.discriminator}`,
+      authorpfp: msg.author.dynamicAvatarURL(null, 1024),
+      timestamp: msg.timestamp,
+      msgid: msg.id,
+      attachment: msg.attachments[0] !== undefined && msg.attachments[0].proxy_url !== undefined ? msg.attachments[0].proxy_url : undefined,
+    };
+  }
+}
+
+module.exports = Snipe;

@@ -6,8 +6,8 @@ const yn = require("../../lib/utils/Ask.js").YesNo;
 class banCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<member:member> [reason:string]",
       aliases: ["b"],
+      args: "<member:member> [reason:string]",
       description: "Bans a member from the server.",
       clientperms: "banMembers",
       requiredperms: "manageMessages",
