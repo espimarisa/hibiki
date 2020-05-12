@@ -5,8 +5,8 @@ const fetch = require("node-fetch");
 class warningsCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:member&fallback>",
       aliases: ["punishments", "strikes", "warns", "warnings"],
+      args: "<member:member&fallback>",
       description: "Shows what warnings a member has.",
     });
   }
@@ -25,9 +25,9 @@ class warningsCommand extends Command {
     if (warnings.length > 20) {
       // Joins warnings
       const warnstring = `${warnings.map(m => `${m.id} (by ${format.tag(msg.channel.guild.members.get(m.giver) || { username: `Unknown User (${m.giverId})`, discriminator: "0000" })})\n${m.reason}`).join("\n\n")}`;
-      const res = await fetch("https://hasteb.in/documents", { referrer: "https://hasteb.in/", body: warnstring, method: "POST", mode: "cors" });
-      const { key } = await res.json();
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** has more than 20 warnings. You can view them [here](https://hasteb.in/${key}).`, "error"));
+      const body = await fetch("https://hasteb.in/documents", { referrer: "https://hasteb.in/", body: warnstring, method: "POST", mode: "cors" })
+        .then(async res => await res.json().catch(() => {}));
+      return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** has more than 20 warnings. View them [here](https://hasteb.in/${bodykey}).`, "error"));
     }
 
     // Sends the embed

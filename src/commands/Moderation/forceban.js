@@ -6,8 +6,8 @@ const yn = require("../../lib/utils/Ask.js").YesNo;
 class forcebanCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<userids:string>",
       aliases: ["banid", "fb", "hackban", "hb", "idban"],
+      args: "<userids:string>",
       description: "Bans a member that isn't in the server.",
       clientperms: "banMembers",
       requiredperms: "manageMessages",

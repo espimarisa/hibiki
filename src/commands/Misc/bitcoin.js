@@ -4,17 +4,17 @@ const fetch = require("node-fetch");
 class bitcoinCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "[wallet:string]",
       aliases: ["bitcoinavg", "btc", "btcrate"],
+      args: "[wallet:string]",
       description: "Checks the BTC rate or info about a BTC wallet.",
+      cooldown: 3,
     });
   }
 
   async run(msg, args) {
     // BTC rates
     if (!args.length) {
-      const res = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json");
-      const body = await res.json();
+      const body = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json").then(async res => await res.json().catch(() => {}));
       if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Unable to check the rates. Try again later.", "error"));
       // Sets the description
       const fields = [];
@@ -32,8 +32,7 @@ class bitcoinCommand extends Command {
       });
     } else {
       // Address API
-      const res = await fetch(`https://blockchain.info/rawaddr/${encodeURIComponent(args[0])}`);
-      const body = await res.json();
+      const body = await fetch(`https://blockchain.info/rawaddr/${encodeURIComponent(args[0])}`).then(async res => await res.json().catch(() => {}));
       if (!body) return msg.channel.createMessage("❌ Error", "Address not found.", "error");
       // Sets the description
       const fields = [];

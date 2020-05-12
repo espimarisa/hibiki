@@ -3,8 +3,8 @@ const Command = require("../../lib/structures/Command");
 class emojiCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<emoji:string>",
       aliases: ["emote", "enlarge"],
+      args: "<emoji:string>",
       description: "Enlarges an emoji.",
     });
   }

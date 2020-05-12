@@ -6,6 +6,7 @@ class voteCommand extends Command {
       aliases: ["dbl", "topgg"],
       description: "Gives a link to vote on top.gg.",
       requiredkeys: ["topgg"],
+      allowdms: true,
     });
   }
 

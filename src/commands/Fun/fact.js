@@ -6,14 +6,15 @@ class randomfactCommand extends Command {
     super(...args, {
       aliases: ["randomfact", "uselessfact"],
       description: "Sends a random fact.",
+      allowdms: true,
       cooldown: 3,
     });
   }
 
   async run(msg) {
     // Fetches the API
-    const res = await fetch("https://useless-facts.sameerkumar.website/api");
-    const body = await res.json();
+    const body = await fetch("https://useless-facts.sameerkumar.website/api").then(async res => await res.json().catch(() => {}));
+    if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the fact. Try again later.", "error"));
     // Sends the embed
     msg.channel.createMessage(this.bot.embed("🍀 Fact", body.data));
   }

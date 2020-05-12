@@ -18,10 +18,11 @@ class execCommand extends Command {
         // Sends if an error happened
         if (stderr) return msg.channel.createMessage(this.bot.embed("⚡ Exec", stderr));
         // Uploads if over embed limit
+        const dmchannel = await msg.author.getDMChannel();
         if (stdout.length > 2000) {
-          const res = await fetch("https://hasteb.in/documents", { referrer: "https://hasteb.in", body: stdout, method: "POST", mode: "cors" });
-          const { key } = await res.json();
-          msg.channel.createMessage(this.bot.embed("❌ Error", `Output longer than 2000. View the output [here](https://hasteb.in/${key})`, "error"));
+          const body = await fetch("https://hasteb.in/documents", { referrer: "https://hasteb.in", body: stdout, method: "POST", mode: "cors" })
+            .then(async res => await res.json().catch(() => {}));
+          await dmchannel.createMessage(this.bot.embed("❌ Error", `Output longer than 2000. View the output [here](https://hasteb.in/${body.key})`, "error"));
         } else {
           msg.channel.createMessage(this.bot.embed("⚡ Exec", `\`\`\`\n${stdout}\n\`\`\``));
         }

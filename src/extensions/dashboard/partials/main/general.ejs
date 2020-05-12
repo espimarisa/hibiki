@@ -1,12 +1,29 @@
-<h2 class="title is-3" id="general"><i class="fas fa-cog icons" style="padding-right: 5px;"></i>General</h2>
-<p class="subtitle has-text-white">Basic options for <%= bot.user.username %>.</p>
+<% const cmds = bot.commands.filter(c => c.category !== "Owner") %>
 
-<div class="field">
-  <p class="title is-size-4">Prefix</p>
-  <p class="subtitle is-size-6 has-text-white">The text put before any commands. Defaults to <%= bot.cfg.prefix %>.</p>
-  <div class="control">
-    <input id="prefix" class="input" type="text" placeholder="15 characters or less">
+<h2 class="title is-3" id="general"><i class="fas fa-cog icons" style="padding-right: 5px;"></i>General</h2>
+<p class="subtitle has-text-white">Basic options &amp; some feature.</p>
+
+<div class="columns">
+  <div class="column is-narrow">
+    <div class="field">
+      <p class="title is-size-4">Prefix</p>
+      <p class="subtitle is-size-6 has-text-white">Text put before commands. Defaults to <%= bot.cfg.prefix %>.</p>
+      <div class="control">
+        <input id="prefix" class="input" type="text" placeholder="15 characters or less">
+      </div>
+    </div>
+  </div>
+
+  <div class="column is-narrow">
+    <div class="field">
+      <p class="title is-size-4">Disabled Commands</p>
+      <p class="subtitle is-size-6 has-text-white">Commands/categories to prevent from running.</p>
+      <div class="control">
+        <div id="disabledCmds" class="select">
+          <select multiple="multiple" class="multiple-select">
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
-<br>

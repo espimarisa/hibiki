@@ -7,6 +7,7 @@ class aboutCommand extends Command {
     super(...args, {
       aliases: ["ab", "aboutbot", "info", "stats", "uptime"],
       description: "Returns info & stats about the bot.",
+      allowdms: true,
     });
   }
 

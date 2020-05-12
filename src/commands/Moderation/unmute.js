@@ -4,12 +4,11 @@ const format = require("../../lib/scripts/Format");
 class unmuteCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<member:member> [reason:string]",
       aliases: ["um", "unsilence"],
+      args: "<member:member> [reason:string]",
       description: "Unmutes a member.",
       clientperms: "manageRoles",
       requiredperms: "manageMessages",
-      cooldown: 2000,
       staff: true,
     });
   }

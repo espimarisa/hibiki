@@ -7,6 +7,7 @@ class urbanCommand extends Command {
       aliases: ["urbandic", "urbandictionary"],
       args: "<word:string>",
       description: "Returns a definition from the Urban Dictionary.",
+      allowdms: true,
       cooldown: 3,
     });
   }
@@ -14,9 +15,8 @@ class urbanCommand extends Command {
   async run(msg, args) {
     // Fetches the API
     const query = args.join("  ");
-    const res = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`);
-    const body = await res.json().catch(() => {});
-    if (!body || !res) return msg.channel.createMessage(this.bot.embed("❌ Error", "An error occurred. Try again later.", "error"));
+    const body = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`).then(async res => await res.json().catch(() => {}));
+    if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the definition. Try again later.", "error"));
     // Sorts by highest rated definition
     const topword = body.list.sort((a, b) => b.thumbs_up - a.thumbs_up);
     const word = topword[0];

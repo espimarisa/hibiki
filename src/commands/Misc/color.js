@@ -3,9 +3,10 @@ const Command = require("../../lib/structures/Command");
 class colorCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "[color:string]",
       aliases: ["colour", "hex", "hexcode", "hexcolor", "hexcolour"],
+      args: "[color:string]",
       description: "Previews a hex or generates a random color.",
+      allowdms: true,
     });
   }
 
@@ -34,7 +35,7 @@ class colorCommand extends Command {
     msg.channel.createMessage({
       embed: {
         title: `🎨 ${require("../../lib/utils/Colors").name(hex)[1]}`,
-        description: `**RGB**: ${color.r}, ${color.g}, ${color.b}\n**Hex**: #${hex.toUpperCase()}`,
+        description: `**RGB:** ${color.r}, ${color.g}, ${color.b}\n**Hex:** #${hex.toUpperCase()}`,
         color: parseInt(`0x${hex}`),
       },
     });

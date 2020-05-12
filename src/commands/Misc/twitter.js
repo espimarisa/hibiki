@@ -14,12 +14,11 @@ class twitterCommand extends Command {
 
   async run(msg, args) {
     // Fetches the API
-    const res = await fetch(`https://api.twitter.com/1.1/users/show.json?screen_name=${encodeURIComponent(args)}`, {
+    const body = await fetch(`https://api.twitter.com/1.1/users/show.json?screen_name=${encodeURIComponent(args)}`, {
       // Sets the required headers
       headers: { "Authorization": `Bearer ${this.bot.key.twitter}`, "User-Agent": "Hibiki" },
-    });
+    }).then(async res => await res.json().catch(() => {}));
 
-    const body = await res.json();
     // Errors
     if (!body) return msg.channel.createMessage("❌ Error", "Account not found.");
     if (body.errors) {
@@ -48,7 +47,7 @@ class twitterCommand extends Command {
       color: this.bot.embed.color("general"),
       fields: fields,
       thumbnail: {
-        url: `${body.profile_image_url_https   || null}`,
+        url: `${body.profile_image_url_https || null}`,
       },
     };
 

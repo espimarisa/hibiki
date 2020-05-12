@@ -16,7 +16,7 @@ class argParser {
         try {
           // Tries to load each argtype
           argtype = require(`${__dirname}/ArgTypes/${a}`);
-        } catch (err) {
+        } catch (e) {
           // Logs if an arg couldn't be loaded
           this.bot.log.error(`Error while loading ArgType ${a}: ${err}`);
         }

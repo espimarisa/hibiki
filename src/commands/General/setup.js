@@ -27,7 +27,7 @@ class configCommand extends Command {
     msg.channel.createMessage({
       embed: {
         title: "🔧 Config",
-        description: `Editing the config has moved to the [web dashboard](${this.bot.cfg.homepage}/login/).`,
+        description: `Editing the config has temporarily moved to the [web dashboard](${this.bot.cfg.homepage}/login/).`,
         color: this.bot.embed.color("general"),
         // Sends server config
         fields: settings.filter(f => f.id || guildcfg[f.id]).sort((a, b) => a.id > b.id ? 1 : -1).map(s => {
@@ -35,6 +35,7 @@ class configCommand extends Command {
           if (s.type === "channelID" && guildcfg[s.id]) sid = `<#${guildcfg[s.id]}>`;
           else if (s.type === "roleID" && guildcfg[s.id]) sid = `<@&${guildcfg[s.id]}>`;
           else if (s.type === "roleArray" && guildcfg[s.id]) sid = guildcfg[s.id].map(r => `<@&${r}>`).join(", ");
+          else if (s.type === "channelArray" && guildcfg[s.id]) sid = guildcfg[s.id].map(c => `<#${c}>`).join(", ");
           else if (s.type === "punishment") sid = guildcfg[s.id].join(", ");
           else if (s.type === "array" && guildcfg[s.id]) sid = guildcfg[s.id].map(c => `${c}`).join(", ");
           if (sid)

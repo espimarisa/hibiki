@@ -5,8 +5,8 @@ const format = require("../../lib/scripts/Format");
 class purgeCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<amount:string> [member:member]",
       aliases: ["clear", "delete", "nuke", "p"],
+      args: "<amount:string> [member:member]",
       description: "Mass deletes a certain amount of messages.",
       requiredperms: "manageMessages",
       staff: true,
@@ -22,6 +22,7 @@ class purgeCommand extends Command {
     return BigInt(num1) > BigInt(num2);
   }
 
+  // Figures out what messages to delete
   async deleteStrategy(msg, messages) {
     if (!messages.length) return;
     if (messages.length === 1) {
@@ -70,7 +71,7 @@ class purgeCommand extends Command {
         // Tries to delete the messages
         await this.deleteStrategy(msg, toDelete.filter(m => !this.compareSnowflake(m, this.getOldestPossibleSnowflake())));
       } catch (e) {
-        return msg.channel.createMessage(this.bot.embed("❌ Error", "One or more messages couldn't be deleted. If they're over 14 days old, they can't be purged.", "error"));
+        return msg.channel.createMessage(this.bot.embed("❌ Error", "Some messages couldn't be purged. If they're over 2 weeks old, you'll have to delete them manually.", "error"));
       }
       // Sends the embed; deletes after 4 seconds
       purgemsg.edit(this.bot.embed("💣 Purge", `**${msg.author.username}** deleted **${messages.length - 1}** messages.`)).catch(() => {});

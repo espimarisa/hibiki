@@ -6,7 +6,6 @@ class payCommand extends Command {
       aliases: ["give", "givecookie", "givecookies"],
       args: "<member:member> <amount:string>",
       description: "Gives a member some cookies.",
-      cooldown: 3,
     });
   }
 
@@ -15,7 +14,7 @@ class payCommand extends Command {
     const amount = parseInt(args[1]);
     // Blocks bots, selfpaying; non-integers
     if (user.bot) return msg.channel.createMessage(this.bot.embed("❌ Error", "You can't give cookies to a bot.", "error"));
-    if (user.id === msg.author.id) return msg.channel.createMessage(this.bot.embed("❌ Error", "You aren't allowed to commit fraud.", "error"));
+    if (user.id === msg.author.id) return msg.channel.createMessage(this.bot.embed("❌ Error", "Fraud is illegal.", "error"));
     if (!amount || isNaN(amount)) return msg.channel.createMessage(this.bot.embed("❌ Error", "You provided an invalid amount of cookies.", "error"));
 
     // Gets author & user's cookies

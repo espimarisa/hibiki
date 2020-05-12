@@ -4,8 +4,8 @@ const format = require("../../lib/scripts/Format");
 class verifyCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<member:member>",
       aliases: ["t", "trust", "v"],
+      args: "<member:member>",
       description: "Gives the verified role to a user.",
       clientperms: "manageRoles",
       requiredperms: "manageRoles",

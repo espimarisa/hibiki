@@ -24,6 +24,7 @@ class Verniy extends Client {
     this.events = new Collection(Event);
     this.extensions = [];
     this.antiSpam = [];
+    this.snipeData = {};
     // Logs when ready
     this.on("ready", () => {
       // Logs number of cmds, events, extensions
@@ -37,7 +38,7 @@ class Verniy extends Client {
       this.editStatus("online", { name: `${this.guilds.size} servers`, type: 3 });
     });
     // Initializes Sentry
-    try { sentry.init({ dsn: this.key.dsn }); } catch (err) { this.log.error(`Sentry failed to Initialize: ${err}`); }
+    try { sentry.init({ dsn: this.key.dsn }); } catch (e) { this.log.error(`Sentry failed to Initialize: ${err}`); }
   }
 
 
@@ -54,7 +55,7 @@ class Verniy extends Client {
             try {
               // Tries to load each command
               command = require(`${path}/${item.name}/${cmd}`);
-            } catch (err) {
+            } catch (e) {
               sentry.captureException(err);
               this.log.error(`Failed to load ${cmd}: ${err}`);
             }
@@ -79,7 +80,7 @@ class Verniy extends Client {
         try {
           // Tries to load each event
           event = require(`${path}/${item}`);
-        } catch (err) {
+        } catch (e) {
           sentry.captureException(err);
           this.log.error(`Failed to load ${item}: ${err}`);
         }
@@ -106,7 +107,7 @@ class Verniy extends Client {
         try {
           ext = require(`${path}/${extension.name}`);
           extensions.push(`${path}/${extension.name}`);
-        } catch (err) {
+        } catch (e) {
           sentry.captureException(err);
           this.log.error(`Failed to load ${extension.name}: ${err}`);
         }

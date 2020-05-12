@@ -6,15 +6,16 @@ class wikipediaCommand extends Command {
     super(...args, {
       aliases: ["wiki"],
       args: "<query:string>",
-      description: "Returns information from Wikipedia",
+      description: "Returns information from Wikipedia.",
+      allowdms: true,
       cooldown: 3,
     });
   }
 
   async run(msg, args) {
     // Fetches the API
-    const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(args.join(" ").toLowerCase())}`);
-    const body = await res.json();
+    const body = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(args.join(" ").toLowerCase())}`)
+      .then(async res => await res.json().catch(() => {}));
     if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Page not found.", "error"));
     // Handles error & disambiguation pages
     if (body.title === "Not found.") return msg.channel.createMessage(this.bot.embed("❌ Error", "Page not found.", "error"));

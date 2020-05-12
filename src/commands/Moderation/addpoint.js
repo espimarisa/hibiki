@@ -4,8 +4,8 @@ const { Snowflake } = require("../../lib/utils/Snowflake");
 class addpointCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:member&strict> [reason:string]",
       aliases: ["addreputation", "addmerit", "addrep", "merit"],
+      args: "<member:member&strict> [reason:string]",
       description: "Gives a member a reputation point.",
       requiredperms: "manageMessages",
       staff: true,

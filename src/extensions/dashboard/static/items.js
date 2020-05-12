@@ -72,9 +72,29 @@ module.exports = [{
   label: "Mod Logging Channel",
   type: "channelID",
 }, {
+  id: "msgOnPunishment",
+  label: "Punishment Message",
+  type: "bool",
+}, {
   id: "mutedRole",
   label: "Muted Role",
   type: "roleID",
+}, {
+  id: "snipingEnable",
+  label: "Message Sniping",
+  type: "bool",
+}, {
+  id: "snipingIgnore",
+  label: "Ignored Snipe Channels",
+  type: "channelArray",
+}, {
+  id: "snipingInvites",
+  label: "Invite Sniping",
+  type: "bool",
+}, {
+  id: "snipingPermission",
+  label: "Sniping Permission",
+  type: "bool",
 }, {
   id: "staffRole",
   label: "Staff Role",
@@ -101,10 +121,6 @@ module.exports = [{
   type: "string",
   minimum: 1,
   maximum: 15,
-}, {
-  id: "msgOnPunishment",
-  label: "Punishment Message",
-  type: "bool",
 }, {
   id: "spamPunishments",
   label: "Spam Punishments",

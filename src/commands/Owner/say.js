@@ -5,7 +5,6 @@ class sayCommand extends Command {
     super(...args, {
       args: "<text:string>",
       description: "Makes the bot say something.",
-      allowdisable: false,
       owner: true,
     });
   }
@@ -13,7 +12,6 @@ class sayCommand extends Command {
   run(msg, args) {
     // Sends message
     msg.channel.createMessage(args.join(" "));
-    // Deletes author's message
     msg.delete();
   }
 }

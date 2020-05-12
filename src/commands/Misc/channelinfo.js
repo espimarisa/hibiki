@@ -7,7 +7,6 @@ class channelinfoCommand extends Command {
       aliases: ["cinfo"],
       args: "<channel:channel>",
       description: "Returns information about a channel.",
-      cooldown: 3,
     });
   }
 
@@ -39,4 +38,3 @@ class channelinfoCommand extends Command {
 }
 
 module.exports = channelinfoCommand;
-

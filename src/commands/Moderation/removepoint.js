@@ -3,8 +3,8 @@ const Command = require("../../lib/structures/Command");
 class removepointCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<id:string>",
       aliases: ["removemerit", "removemerits", "removepoint", "removepoints", "rmmerits", "rmpoints"],
+      args: "<id:string>",
       description: "Removes a reputation point from a user.",
       requiredperms: "manageMessages",
       staff: true,

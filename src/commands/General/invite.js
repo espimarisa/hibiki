@@ -4,6 +4,7 @@ class inviteCommand extends Command {
   constructor(...args) {
     super(...args, {
       description: "Gives a link to invite the bot.",
+      allowdms: true,
     });
   }
 

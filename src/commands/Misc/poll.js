@@ -3,8 +3,8 @@ const Command = require("../../lib/structures/Command");
 class pointsCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<user:member&fallback>",
       aliases: ["createpoll", "startpoll"],
+      args: "<member:member&fallback>",
       description: "Creates a poll members can react to.",
     });
   }

@@ -4,7 +4,6 @@ class bannerCommand extends Command {
   constructor(...args) {
     super(...args, {
       description: "Sends the server's banner.",
-      cooldown: 3,
     });
   }
 

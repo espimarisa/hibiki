@@ -6,7 +6,8 @@ class autofillCommand extends Command {
     super(...args, {
       description: "Sends a list of Google Autofill results.",
       args: "<query:string>",
-      cooldown: 2,
+      allowdms: true,
+      cooldown: 3,
     });
   }
 

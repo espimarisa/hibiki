@@ -5,15 +5,14 @@ class feetCommand extends Command {
   constructor(...args) {
     super(...args, {
       description: "Sends a random ecchi/hentai feet picture.",
-      cooldown: 3,
       nsfw: true,
+      cooldown: 3,
     });
   }
 
   async run(msg) {
     // Fetches the API
-    const res = await fetch("https://nekos.life/api/v2/img/feet");
-    const body = await res.json();
+    const body = await fetch("https://nekos.life/api/v2/img/feet").then(async res => await res.json().catch(() => {}));
     if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
 
     // Sends the embed

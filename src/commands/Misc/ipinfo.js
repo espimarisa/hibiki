@@ -4,8 +4,8 @@ const fetch = require("node-fetch");
 class ipinfoCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "<ip:string>",
       aliases: ["aboutip", "geolocation", "ip", "ipinformation"],
+      args: "<ip:string>",
       description: "Returns info about an IP address.",
       requiredkeys: ["ipinfo"],
       cooldown: 3,
@@ -14,15 +14,14 @@ class ipinfoCommand extends Command {
 
   async run(msg, args) {
     // Fetches the API
-    const res = await fetch(`https://ipinfo.io/${encodeURIComponent(args.join(" "))}/json?token=${encodeURIComponent(this.bot.key.ipinfo)}`);
-    const body = await res.json();
+    const body = await fetch(`https://ipinfo.io/${encodeURIComponent(args.join(" "))}/json?token=${encodeURIComponent(this.bot.key.ipinfo)}`)
+      .then(async res => await res.json().catch(() => {}));
 
     // IPAbuseDB
-    const ipdb = await fetch(`https://api.abuseipdb.com/api/v2/check?ipAddress=${encodeURIComponent(args.join(" "))}`, {
+    const abuseinfo = await fetch(`https://api.abuseipdb.com/api/v2/check?ipAddress=${encodeURIComponent(args.join(" "))}`, {
       headers: { Key: this.bot.key.abuseipdb, Accept: "application/json" },
-    });
+    }).then(async res => await res.json().catch(() => {}));
 
-    const abuseinfo = await ipdb.json();
     if (body.error || !body.ip || !body.org) return msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid IP address.", "error"));
 
     // Sets the fields

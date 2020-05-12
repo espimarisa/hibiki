@@ -5,6 +5,7 @@ class topcookiesCommand extends Command {
     super(...args, {
       aliases: ["cookieleaderboard", "leaderboard"],
       description: "Shows the 10 members with the most cookies.",
+      allowdms: true,
     });
   }
 

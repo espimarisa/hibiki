@@ -4,8 +4,7 @@
 
 // Gets a server's config
 async function getConfig(id) {
-  const res = await fetch(`/api/getconfig/${id}`, { credentials: "include" });
-  const body = await res.json();
+  const body = await fetch(`/api/getconfig/${id}`, { credentials: "include" }).then(async res => await res.json().catch(() => {}));
   return body;
 }
 
@@ -132,6 +131,30 @@ window.addEventListener("load", async () => {
       $(document.getElementById(p).children[0]).multipleSelect("setSelects", cc);
     }
 
+
+    // Sets ChannelArray as content
+    if (type === "channelArray") {
+      if (typeof cfg[p] !== "object") cfg[p] = [cfg[p]];
+      const channels = [];
+      const cc = [];
+      const multiselect = Array.from(document.querySelector(`#${p} > div > div > ul`).children);
+
+      // Pushes the channels
+      multiselect.forEach(e => {
+        if (!e.children[0]) return;
+        channels.push(e.children[0].children[0].value);
+      });
+
+      // Channel IDs
+      channels.forEach(c => {
+        const id = /.{1,32} \(([0-9]{16,19})\)/.exec(c)[1];
+        if (cfg[p] && cfg[p].includes(id)) cc.push(c);
+      });
+
+      // Sets the selected items
+      $(document.getElementById(p).children[0]).multipleSelect("setSelects", cc);
+    }
+
     // Disabled command selector
     if (p === "disabledCmds") {
       $("#disabledCmds > select").multipleSelect("setSelects", [...cfg[p], ...$("#disabledCmds > select").multipleSelect("getSelects")]);
@@ -190,6 +213,16 @@ window.addEventListener("load", async () => {
 
       // Sets roles in cfg
       if (type === "roleArray") {
+        const values = $(document.getElementById(p).children[0]).val();
+        const ids = [];
+        values.forEach(v => {
+          ids.push(/.{1,32} \(([0-9]{16,19})\)/.exec(v)[1]);
+        });
+        cfg[p] = ids;
+      }
+
+      // Sets channels in cfg
+      if (type === "channelArray") {
         const values = $(document.getElementById(p).children[0]).val();
         const ids = [];
         values.forEach(v => {

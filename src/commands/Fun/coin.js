@@ -5,6 +5,7 @@ class coinCommand extends Command {
     super(...args, {
       aliases: ["coinflip", "flip", "flipcoin"],
       description: "Flips a coin.",
+      allowdms: true,
     });
   }
 

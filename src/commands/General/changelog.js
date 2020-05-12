@@ -5,7 +5,7 @@ class changelogCommand extends Command {
     super(...args, {
       aliases: ["cl", "clog", "updates", "whatsnew"],
       description: "Sends the latest version's changelog.",
-      cooldown: 3,
+      allowdms: true,
     });
   }
 
