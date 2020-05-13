@@ -13,7 +13,7 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
       <p class="subtitle is-size-6 has-text-white">Enables deleted message viewing with the snipe command.</p>
       <div id="snipingEnable" class="control">
         <label class="radio">
-          <input type="radio" name="snipingEnable"> Enabled </input>
+          <input type="radio" name="snipingEnable" checked> Enabled </input>
         </label>
         <label class="radio">
           <input type="radio" name="snipingEnable"> Disabled </input>
@@ -64,7 +64,7 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
             <input type="radio" name="snipingInvites"> Public </input>
           </label>
           <label class="radio">
-            <input type="radio" name="snipingInvites"> Staff Only </input>
+            <input type="radio" name="snipingInvites" checked> Staff Only </input>
           </label>
         </div>
       </div>
