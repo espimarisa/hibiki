@@ -38,7 +38,7 @@ class Verniy extends Client {
       this.editStatus("online", { name: `${this.guilds.size} servers`, type: 3 });
     });
     // Initializes Sentry
-    try { sentry.init({ dsn: this.key.dsn }); } catch (e) { this.log.error(`Sentry failed to Initialize: ${err}`); }
+    try { sentry.init({ dsn: this.key.dsn }); } catch (e) { this.log.error(`Sentry failed to Initialize: ${e}`); }
   }
 
 
@@ -46,18 +46,18 @@ class Verniy extends Client {
   loadCommands(path) {
     path = `${process.cwd()}/${path}`;
     // Looks for all commands
-    readdir(path, { withFileTypes: true }, (_err, items) => {
+    readdir(path, { withFileTypes: true }, (_e, items) => {
       items.forEach(item => {
         if (!item.isDirectory()) return;
-        readdir(`${path}/${item.name}`, {}, (_err, cmds) => {
+        readdir(`${path}/${item.name}`, {}, (_e, cmds) => {
           cmds.forEach(cmd => {
             let command;
             try {
               // Tries to load each command
               command = require(`${path}/${item.name}/${cmd}`);
             } catch (e) {
-              sentry.captureException(err);
-              this.log.error(`Failed to load ${cmd}: ${err}`);
+              sentry.captureException(e);
+              this.log.error(`Failed to load ${cmd}: ${e}`);
             }
             if (!command) return;
             // Loads the commands; ignores commands with missing requiredkeys
@@ -74,15 +74,15 @@ class Verniy extends Client {
   loadEvents(path) {
     path = `${process.cwd()}/${path}`;
     // Looks for all events
-    readdir(path, (_err, events) => {
+    readdir(path, (_e, events) => {
       events.forEach(item => {
         let event;
         try {
           // Tries to load each event
           event = require(`${path}/${item}`);
         } catch (e) {
-          sentry.captureException(err);
-          this.log.error(`Failed to load ${item}: ${err}`);
+          sentry.captureException(e);
+          this.log.error(`Failed to load ${item}: ${e}`);
         }
         if (!event) return;
         // Loads the events
@@ -98,7 +98,7 @@ class Verniy extends Client {
   // Extension loader
   loadExtensions(path) {
     if (!path.startsWith(process.cwd())) path = `${process.cwd()}/${path}`;
-    readdir(path, { withFileTypes: true }, (_err, extensions) => {
+    readdir(path, { withFileTypes: true }, (_e, extensions) => {
       extensions.forEach(extension => {
         if (extension.isDirectory()) return this.loadExtensions(`${path}/${extension.name}`);
         // Extensions should end with .ext.js
@@ -108,8 +108,8 @@ class Verniy extends Client {
           ext = require(`${path}/${extension.name}`);
           extensions.push(`${path}/${extension.name}`);
         } catch (e) {
-          sentry.captureException(err);
-          this.log.error(`Failed to load ${extension.name}: ${err}`);
+          sentry.captureException(e);
+          this.log.error(`Failed to load ${extension.name}: ${e}`);
         }
         if (!ext) return;
         // Loads the extension

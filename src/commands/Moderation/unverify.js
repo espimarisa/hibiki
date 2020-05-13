@@ -6,7 +6,7 @@ class unverifyCommand extends Command {
     super(...args, {
       aliases: ["ut", "untrust", "uv"],
       args: "<member:member>",
-      description: "Removes the verified role from a user.",
+      description: "Removes the verified role from A member.",
       clientperms: "manageRoles",
       requiredperms: "manageRoles",
       staff: true,

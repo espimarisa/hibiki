@@ -1,9 +1,9 @@
 # Hibiki
 
 <!-- change these to the hibiki repo once its open !!!-->
-[![Build](https://img.shields.io/github/workflow/status/microsoft/typescript/CI)](https://github.com/smolespi/Hibiki-v3/actions?query=workflow%3AHibiki)
+[![Build](https://img.shields.io/github/workflow/status/microsoft/typescript/CI)](https://github.com/smolespi/Hibiki/actions?query=workflow%3AHibiki)
 [![License](https://img.shields.io/badge/license-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![Version](https://img.shields.io/github/package-json/v/jiktim/firebot?color=blue)](https://github.com/smolespi/Hibiki)
+[![Version](https://img.shields.io/github/package-json/v/smolespi/hibiki?color=blue)](https://github.com/smolespi/Hibiki)
 
 [Hibiki][1] is a fun, useful, and easy-to-use Discord bot powered by [Node.js][2] and [Eris][3]. It's written to be simple without sacrificing any powerful features. 
 
@@ -11,7 +11,7 @@ You can invite the main application [here][4]. Any other instances of Hibiki are
 
 
 ## Features
-  - 🔨 Moderation suite
+  - 🔨 Automod system
   - ⚠ User warning system
   - 🔧 Info &amp; utility commands
   - ✨ Reputation point system

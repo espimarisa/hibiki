@@ -1,5 +1,5 @@
 /*
-  Updates a user's bio.
+  Updates A member's bio.
 */
 
 const express = require("express");
