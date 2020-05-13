@@ -28,7 +28,7 @@ class evalCommand extends Command {
       }
     } catch (e) {
       // Sends if an error returned
-      msg.channel.createMessage(this.bot.embed("❌ Error", `\`\`\`js\n${err.stack}\n\`\`\``, "error"));
+      msg.channel.createMessage(this.bot.embed("❌ Error", `\`\`\`js\n${e.stack}\n\`\`\``, "error"));
     }
   }
 }

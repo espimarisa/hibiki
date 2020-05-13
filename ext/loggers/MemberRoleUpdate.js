@@ -31,7 +31,7 @@ module.exports = (bot) => {
   bot.on("memberVerify", (guild, giver, receiver) => trysend(guild, "memberVerify", {
     color: bot.embed.color("success"),
     author: {
-      name: `${format.tag(giver, false)} verified ${format.tag(receiver)}.`,
+      name: `${format.tag(giver, true)} verified ${format.tag(receiver)}.`,
       icon_url: receiver.avatarURL,
     },
   }));
@@ -40,7 +40,7 @@ module.exports = (bot) => {
   bot.on("memberUnverify", (guild, giver, receiver) => trysend(guild, "memberUnverify", {
     color: bot.embed.color("error"),
     author: {
-      name: `${format.tag(giver, false)} unverified ${format.tag(receiver)}.`,
+      name: `${format.tag(giver, true)} unverified ${format.tag(receiver)}.`,
       icon_url: receiver.avatarURL,
     },
   }));
