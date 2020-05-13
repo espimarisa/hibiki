@@ -5,7 +5,7 @@ class removepointCommand extends Command {
     super(...args, {
       aliases: ["removemerit", "removemerits", "removepoint", "removepoints", "rmmerits", "rmpoints"],
       args: "<id:string>",
-      description: "Removes a reputation point from a user.",
+      description: "Removes a reputation point from A member.",
       requiredperms: "manageMessages",
       staff: true,
     });

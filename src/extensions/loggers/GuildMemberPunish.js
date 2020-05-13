@@ -27,7 +27,7 @@ module.exports = (bot) => {
     }
   };
 
-  // Logs when a user is banned
+  // Logs when a member is banned
   bot.on("guildBanAdd", async (guild, user) => {
     const channel = await cansend(guild, "guildBanAdd");
     if (!channel) return;
@@ -40,7 +40,7 @@ module.exports = (bot) => {
       color: bot.embed.color("error"),
       description: `**ID:** ${user.id}`,
       author: {
-        name: `${format.tag(user, false)} was banned by ${format.tag(banner, false)}.`,
+        name: `${format.tag(user, true)} was banned by ${format.tag(banner, true)}.`,
         icon_url: user.avatarURL,
       },
     };
@@ -48,7 +48,7 @@ module.exports = (bot) => {
     bot.createMessage(channel, { embed: embed });
   });
 
-  // Logs when a user is unbanned
+  // Logs when a member is unbanned
   bot.on("guildBanRemove", async (guild, user) => {
     const channel = await cansend(guild, "guildBanRemove");
     if (!channel) return;
@@ -61,7 +61,7 @@ module.exports = (bot) => {
       description: `**ID:** ${user.id}`,
       color: bot.embed.color("success"),
       author: {
-        name: `${format.tag(user, false)} was unbanned by ${format.tag(banner, false)}.`,
+        name: `${format.tag(user, true)} was unbanned by ${format.tag(banner, true)}.`,
         icon_url: user.avatarURL,
       },
     };
@@ -69,12 +69,12 @@ module.exports = (bot) => {
     bot.createMessage(channel, { embed: embed });
   });
 
-  // Logs when a user is kicked
+  // Logs when a member is kicked
   bot.on("guildKick", (guild, reason, user, member) => trysend(guild, "guildKick", {
     description: `**Reason:** ${reason} \n **ID:** ${user.id}`,
     color: bot.embed.color("error"),
     author: {
-      name: `${format.tag(user, false)} kicked ${format.tag(member, false)}.`,
+      name: `${format.tag(user, true)} kicked ${format.tag(member, true)}.`,
       icon_url: user.avatarURL,
     },
   }));

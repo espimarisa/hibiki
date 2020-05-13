@@ -27,7 +27,7 @@ module.exports = (bot) => {
       embed: {
         color: bot.embed.color("error"),
         author: {
-          name: `${format.tag(msg.author, false)}'s message was deleted.`,
+          name: `${format.tag(msg.author, true)}'s message was deleted.`,
           icon_url: msg.author.avatarURL,
         },
         fields: [{
@@ -62,7 +62,7 @@ module.exports = (bot) => {
       embed: {
         color: bot.embed.color("error"),
         author: {
-          name: `${format.tag(msg.author, false)}'s message was updated.`,
+          name: `${format.tag(msg.author, true)}'s message was updated.`,
           icon_url: msg.author.avatarURL,
         },
         fields: [{

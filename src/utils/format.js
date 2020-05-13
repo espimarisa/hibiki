@@ -124,6 +124,8 @@ module.exports = {
         return ":flag_sg: Singapore";
       case "southafrica":
         return ":flag_za: South Africa";
+      case "south-korea":
+        return ":flag_kr: South Korea";
       case "sydney":
         return ":flag_au: Sydney";
       case "us-central":

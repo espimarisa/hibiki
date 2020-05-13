@@ -42,7 +42,7 @@ class Command {
       } catch (e) {
         command = e;
         sentry.captureException(e);
-        this.bot.log.error(`${this.id} was unable to be reloaded: ${err}`);
+        this.bot.log.error(`${this.id} was unable to be reloaded: ${e}`);
       }
       if (!command || command instanceof Error) return Error(command instanceof Error ? command : `${this.id} was unable to be reloaded`);
       // Unloads & loads

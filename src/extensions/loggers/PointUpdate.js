@@ -32,7 +32,7 @@ module.exports = (bot) => {
     description: `**Reason:** ${reason} \n **ID:** ${id}`,
     color: bot.embed.color("success"),
     author: {
-      name: `${format.tag(giver, false)} gave ${format.tag(receiver)} a point.`,
+      name: `${format.tag(giver, true)} gave ${format.tag(receiver)} a point.`,
       icon_url: receiver.avatarURL,
     },
   }));
@@ -42,7 +42,7 @@ module.exports = (bot) => {
     description: ids.join(" "),
     color: bot.embed.color("error"),
     author: {
-      name: `${format.tag(user, false)} removed points.`,
+      name: `${format.tag(user, true)} removed points.`,
       icon_url: user.avatarURL,
     },
   }));
