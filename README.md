@@ -1,7 +1,7 @@
 # Hibiki
 
 <!-- change these to the hibiki repo once its open !!!-->
-[![Build](https://img.shields.io/github/workflow/status/microsoft/typescript/CI)](https://github.com/smolespi/Hibiki/actions?query=workflow%3AHibiki)
+[![Build](https://img.shields.io/github/workflow/status/smolespi/Hibiki/Hibiki)](https://github.com/smolespi/Hibiki/actions?query=workflow%3AHibiki)
 [![License](https://img.shields.io/badge/license-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Version](https://img.shields.io/github/package-json/v/smolespi/hibiki?color=blue)](https://github.com/smolespi/Hibiki)
 
