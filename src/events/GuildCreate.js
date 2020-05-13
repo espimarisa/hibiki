@@ -27,7 +27,7 @@ class guildCreate extends Event {
 
     this.bot.log.info(`Added to server: ${guild.name}`);
     // DMs the server owner
-    const oid = await this.bot.users.get(guild.ownerID).catch(() => {});
+    const oid = await this.bot.users.get(guild.ownerID);
     if (oid) {
       const odm = await oid.getDMChannel().catch(() => {});
       if (odm) {
