@@ -18,10 +18,11 @@ class danbooruCommand extends Command {
     const body = await fetch(`https://danbooru.donmai.us/posts.json?&tags=${encodeURIComponent(args.join(" "))}`)
       .then(async res => await res.json().catch(() => {}));
     if (!body || !body[0] || !body[0].file_url) return msg.channel.createMessage(this.bot.embed("❌ Error", "No posts were found.", "error"));
-    if (body[0].file_url.endsWith(".webm") || body[0].file_url.endsWith(".mp4")) {
+    const random = Math.floor(Math.random() * body.length);
+    if (body[random].file_url.endsWith(".webm") || body[random].file_url.endsWith(".mp4")) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body[0].file_url}).`, "error"));
     }
-    const random = Math.floor(Math.random() * body.length);
+
     // Sends the embed
     await msg.channel.createMessage({
       embed: {

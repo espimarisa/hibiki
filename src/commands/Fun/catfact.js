@@ -14,7 +14,7 @@ class catfactCommand extends Command {
   async run(msg) {
     // Fetches the API
     const body = await fetch("https://catfact.ninja/fact").then(async res => await res.json().catch(() => {}));
-    if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the fact. Try again later.", "error"));
+    if (!body || !body.fact) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the fact. Try again later.", "error"));
     // Sends the embed
     msg.channel.createMessage(this.bot.embed("🐱 Cat Fact", body.fact));
   }

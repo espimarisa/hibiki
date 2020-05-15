@@ -19,8 +19,8 @@ class Handler extends Event {
     // DM handler
     if (msg.channel instanceof eris.PrivateChannel) {
       if (msg.author.id === this.bot.user.id) return;
-      const cmd = this.bot.commands.find(c => msg.content.toLowerCase().startsWith(`${this.bot.cfg.prefix}${c.id}`) || msg.content.toLowerCase().startsWith(c.id));
-      if (cmd && cmd.allowdms) cmd.run(msg, msg.content.substring(this.bot.cfg.prefix.length + cmd.id.length + 1).split(" "));
+      const cmd = this.bot.commands.find(c => msg.content.toLowerCase().startsWith(`${this.bot.cfg.prefixes[0]}${c.id}`) || msg.content.toLowerCase().startsWith(c.id));
+      if (cmd && cmd.allowdms) cmd.run(msg, msg.content.substring(this.bot.cfg.prefixes[0].length + cmd.id.length + 1).split(" "));
       else if (cmd && !cmd.allowdms) msg.channel.createMessage(this.bot.embed("❌ Error", "This command can't be used in DMs.", "error"));
       // Sends the embed
       return this.bot.createMessage(this.bot.cfg.logchannel, {
@@ -42,18 +42,25 @@ class Handler extends Event {
     if (msg.author.bot) return;
     const blacklist = await this.bot.db.table("blacklist");
     if (blacklist.find(u => u.user === msg.author.id)) return;
-    // Sets the prefix
     let prefix;
+    // Sets the prefixes
+    const prefixes = this.bot.cfg.prefixes.map(p => msg.content.startsWith(p)).indexOf(true);
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
     if (guildcfg && guildcfg.prefix && msg.content.startsWith(guildcfg.prefix)) prefix = guildcfg.prefix;
-    else if ((!guildcfg || !guildcfg.prefix) && msg.content.startsWith(this.bot.cfg.prefix)) prefix = this.bot.cfg.prefix;
-    else if (msg.content.startsWith(`<@${this.bot.user.id}> `)) prefix = `<@${this.bot.user.id}> `;
+    else if ((!guildcfg || !guildcfg.prefix) && (this.bot.cfg.prefixes && prefixes !== -1)) prefix = this.bot.cfg.prefixes[prefixes];
+    // Support for mentioning the bot
     else if (msg.content.startsWith(`<@!${this.bot.user.id}> `)) prefix = `<@!${this.bot.user.id}> `;
+    else if (msg.content.startsWith(`<@${this.bot.user.id}> `)) prefix = `<@${this.bot.user.id}> `;
+    else if (msg.content.startsWith(`<@${this.bot.user.id}>`)) prefix = `<@${this.bot.user.id}>`;
+    else if (msg.content.startsWith(`<@!${this.bot.user.id}>`)) prefix = `<@!${this.bot.user.id}>`;
     if (!prefix) return;
     // Looks for the command ran
     const [cmdName, ...args] = msg.content.trim().slice(prefix.length).split(/ +/g);
     const cmd = this.bot.commands.find(c => c.id === cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
-    if (!cmd) return;
+    // If bot mentioned with no content, show prefixes
+    if (!cmdName.length && (prefix.startsWith(`<@${this.bot.user.id}>`) || prefix.startsWith(`<@!${this.bot.user.id}>`))) {
+      return msg.channel.createMessage(this.bot.embed("🤖 Prefix", `My prefix in this server is \`${guildcfg.prefix || this.bot.cfg.prefixes[0]}\`.`));
+    } else if (!cmd) return;
 
     // No send message perms
     if (!msg.channel.memberHasPermission(this.bot.user.id, "sendMessages")) {
@@ -133,6 +140,7 @@ class Handler extends Event {
       await cmd.run(msg, args, parsedArgs);
     } catch (e) {
       // Sentry info
+      if (e === "timeout") return;
       sentry.configureScope(scope => {
         scope.setUser({ id: msg.author.id, username: format.tag(msg.author) });
         scope.setExtra("guild", msg.channel.guild.name);

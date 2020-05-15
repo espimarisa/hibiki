@@ -28,7 +28,7 @@ module.exports = (bot) => {
     }
 
     // Sends configurable items
-    res.status(200).send(require("../static/items"));
+    res.status(200).send(require("../../../lib/utils/ValidItems"));
   });
   return router;
 };

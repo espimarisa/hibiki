@@ -1,5 +1,5 @@
 const Command = require("../../lib/structures/Command");
-const Wait = require("../../lib/utils/Wait");
+const WaitFor = require("../../lib/utils/WaitFor");
 
 class embedCommand extends Command {
   constructor(...args) {
@@ -86,7 +86,7 @@ class embedCommand extends Command {
 
     // Sets a timeout for the reaction menu
     emojis.forEach(e => embedmsg.addReaction(e).catch(() => {}));
-    await Wait("messageReactionAdd", 120000, async (m, emoji, user) => {
+    await WaitFor("messageReactionAdd", 120000, async (m, emoji, user) => {
       // Returns if needed
       if (m.id !== embedmsg.id) return false;
       if (user !== msg.author.id) return false;
@@ -107,7 +107,7 @@ class embedCommand extends Command {
       // Sends a prompt to the author
       embedmsg.edit(this.bot.embed("🖊 Embed", `Reply with the desired **${emojilabels[typeof e == "string" ? e : e.join(".")] ?
       `${emojilabels[typeof e == "string" ? e : e.join(".")][0].toLowerCase()}${emojilabels[typeof e == "string" ? e : e.join(".")].substring(1)}` : e[1]}**.`, "general"));
-      const [resp] = await Wait("messageCreate", 30000, async (message) => {
+      const [resp] = await WaitFor("messageCreate", 30000, async (message) => {
         if (message.author.id !== msg.author.id) return false;
         if (message.channel.id !== msg.channel.id) return false;
         message.delete().catch(() => {});

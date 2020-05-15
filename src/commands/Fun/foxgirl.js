@@ -1,25 +1,25 @@
 const Command = require("../../lib/structures/Command");
 const fetch = require("node-fetch");
 
-class lewdfemboyCommand extends Command {
+class catgirlCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["lewdtrap"],
-      description: "Sends a NSFW femboy image.",
-      nsfw: true,
+      aliases: ["kitsune"],
+      description: "Sends a picture of a foxgirl.",
+      allowdms: true,
       cooldown: 3,
     });
   }
 
   async run(msg) {
     // Fetches the API
-    const body = await fetch("https://nekos.life/api/v2/img/trap").then(async res => await res.json().catch(() => {}));
+    const body = await fetch("https://nekos.life/api/v2/img/fox_girl").then(async res => await res.json().catch(() => {}));
     if (!body || !body.url) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
 
     // Sends the embed
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
-        title: "🔞 Lewd Femboy",
+        title: "🦊 Foxgirl",
         color: this.bot.embed.color("general"),
         image: {
           url: body.url,
@@ -29,4 +29,4 @@ class lewdfemboyCommand extends Command {
   }
 }
 
-module.exports = lewdfemboyCommand;
+module.exports = catgirlCommand;
