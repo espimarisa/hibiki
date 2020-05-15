@@ -24,7 +24,7 @@ class slotsCommand extends Command {
     }
 
     // Prevents mass gambling
-    // if (args[0] > 100) return msg.channel.createMessage(this.bot.embed("❌ Error", "You can't bet more than **100** cookies at a time.", "error"));
+    if (args[0] > 100) return msg.channel.createMessage(this.bot.embed("❌ Error", "You can't bet more than **100** cookies at a time.", "error"));
 
     // Gets the emotes
     for (let i = 0; i < 3; i++) {
