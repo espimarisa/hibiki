@@ -18,10 +18,11 @@ class e621Command extends Command {
       headers: { "User-Agent": `${this.bot.user.username}` },
     }).then(async res => await res.json().catch(() => {}));
     if (!body || !body.posts[0] || !body.posts[0].file.url) return msg.channel.createMessage(this.bot.embed("❌ Error", "No images were found.", "error"));
-    const random = Math.floor(Math.random() * body.posts.length);
-    if (body.posts[random].file.url.endsWith(".webm") || body.posts[random].file.url.endsWith(".mp4")) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body.posts[random].file.url}).`, "error"));
+    const random = Math.floor(Math.random() * body.length);
+    if (body[random].file_url.endsWith(".webm") || body[random].file_url.endsWith(".mp4")) {
+      return msg.channel.createMessage(this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body[0].file_url}).`, "error"));
     }
+
 
     // Sends the embed
     await msg.channel.createMessage({

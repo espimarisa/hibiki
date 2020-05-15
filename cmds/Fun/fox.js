@@ -14,7 +14,7 @@ class foxCommand extends Command {
   async run(msg) {
     // Fetches the API
     const body = await fetch("https://randomfox.ca/floof/").then(async res => await res.json().catch(() => {}));
-    if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later."));
+    if (!body || !body.image) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later."));
 
     // Sends the embed
     await msg.channel.createMessage({
