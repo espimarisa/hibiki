@@ -32,7 +32,7 @@ module.exports = exports = {
     "jsx-quotes": [WARN, "prefer-double"],
     "lines-around-comment": [WARN, { beforeBlockComment: true }],
     "max-depth": [WARN, 8],
-    "max-len": [WARN, { code: 165, ignoreComments: true, ignoreStrings: true, tabWidth: 2 }],
+    "max-len": [WARN, { code: 180, ignoreComments: true, ignoreStrings: true, tabWidth: 2 }],
     "max-nested-callbacks": [WARN, 8],
     "max-params": [WARN, 8],
     "new-parens": WARN,

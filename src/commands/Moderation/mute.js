@@ -22,10 +22,9 @@ class muteCommand extends Command {
 
     // Reads db; finds role
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
-    const mutedrole = await msg.channel.guild.roles.find(r => r.id === guildcfg.mutedRole);
 
     // If no role or cfg
-    if (!guildcfg || !guildcfg.mutedRole || !mutedrole) {
+    if (!guildcfg || !guildcfg.mutedRole) {
       await this.bot.db.table("guildcfg").insert({ id: msg.channel.guild.id });
       return msg.channel.createMessage(this.bot.embed("❌ Error", "The muted role hasn't been configured yet.", "error"));
     }
@@ -36,7 +35,7 @@ class muteCommand extends Command {
     }
 
     // If member is already muted
-    if (user.roles.includes(mutedrole.id)) {
+    if (user.roles.includes(guildcfg.mutedRole)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** already has the muted role.`, "error"));
     }
 

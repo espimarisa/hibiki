@@ -8,7 +8,7 @@ module.exports = bot => {
       }
 
       if (!msg) return;
-      if (msg.author.id === bot.user.id) return;
+      if (msg.author.bot) return;
 
       // Gets guildcfg
       const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id);
@@ -19,7 +19,7 @@ module.exports = bot => {
         if (guildcfg.pinSelfPinning && msg.author.id === uid) return;
         if (!guildcfg) {
           return await bot.db.table("guildcfg").insert({
-            id: msg.guild.id,
+            id: msg.channel.guild.id,
           });
         }
 
@@ -37,16 +37,16 @@ module.exports = bot => {
             if (pinmsg) {
               const embed = pinmsg.embeds[0];
               embed.footer.text = `${pin}${msg.reactions[pin].count} | ${msg.id}`;
-              pin.edit({ embed: embed }).catch(() => {});
+              pin.edit({ embed: embed });
             }
           }
         }
       } else {
         // Gets guildcfg
-        const guildcfg = await bot.db.table("guildcfg").get(msg.guild.id);
+        const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id);
         if (!guildcfg) {
           return await bot.db.table("guildcfg").insert({
-            id: msg.guild.id,
+            id: msg.channel.guild.id,
           });
         }
 
@@ -68,7 +68,7 @@ module.exports = bot => {
       }
 
       if (!msg) return;
-      if (msg.author.id === bot.user.id) return;
+      if (msg.author.bot) return;
       const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id);
       if (!guildcfg) return;
       const pin = guildcfg.pinEmoji ? guildcfg.pinEmoji : "📌";
@@ -89,7 +89,7 @@ module.exports = bot => {
           if (pinmsg) {
             const embed = pinmsg.embeds[0];
             embed.footer.text = `${pin}${msg.reactions[pin].count} | ${msg.id}`;
-            return pin.edit({ embed: embed }).catch(() => {});
+            return pin.edit({ embed: embed });
           }
 
           // Sets the embed
@@ -97,7 +97,7 @@ module.exports = bot => {
             embed: {
               color: bot.embed.color("pinboard"),
               author: {
-                name: format.tag(msg.author, true),
+                name: format.tag(msg.author, false),
                 icon_url: msg.author.avatarURL,
               },
               fields: [{
@@ -106,7 +106,7 @@ module.exports = bot => {
                 inline: true,
               }, {
                 name: "Message",
-                value: `[Jump](https://discordapp.com/channels/${msg.guild.id}/${msg.channel.id}/${msg.id})`,
+                value: `[Jump](https://discordapp.com/channels/${msg.channel.guild.id}/${msg.channel.id}/${msg.id})`,
                 inline: true,
               }],
               footer: {

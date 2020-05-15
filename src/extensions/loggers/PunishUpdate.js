@@ -32,7 +32,7 @@ module.exports = (bot) => {
     description: `**Reason:** ${reason} \n **ID:** ${id}`,
     color: bot.embed.color("error"),
     author: {
-      name: `${format.tag(giver, true)} warned ${format.tag(receiver)}.`,
+      name: `${format.tag(giver, false)} warned ${format.tag(receiver)}.`,
       icon_url: receiver.avatarURL,
     },
   }));
@@ -42,7 +42,7 @@ module.exports = (bot) => {
     description: ids.join(" "),
     color: bot.embed.color("error"),
     author: {
-      name: `${format.tag(user, true)} removed warnings.`,
+      name: `${format.tag(user, false)} removed warnings.`,
       icon_url: user.avatarURL,
     },
   }));
@@ -52,7 +52,7 @@ module.exports = (bot) => {
     description: `**Reason:** ${reason}`,
     color: bot.embed.color("error"),
     author: {
-      name: `${format.tag(giver, true)} muted ${format.tag(receiver)}.`,
+      name: `${format.tag(giver, false)} muted ${format.tag(receiver)}.`,
       icon_url: receiver.avatarURL,
     },
   }));
@@ -61,7 +61,7 @@ module.exports = (bot) => {
   bot.on("memberUnmute", (guild, giver, receiver) => trysend(guild, "memberUnmute", {
     color: bot.embed.color("success"),
     author: {
-      name: `${format.tag(giver, true)} unmuted ${format.tag(receiver, true)}.`,
+      name: `${format.tag(giver, false)} unmuted ${format.tag(receiver, false)}.`,
       icon_url: receiver.avatarURL,
     },
   }));
@@ -71,7 +71,7 @@ module.exports = (bot) => {
     color: bot.embed.color("error"),
     description: `Cause of mute:\n${msgs.map(m => `**${member.username}:** ${m.content.substring(0, 128)}`).join("\n")}`,
     author: {
-      name: `${format.tag(member, true)} was automatically muted.`,
+      name: `${format.tag(member, false)} was automatically muted.`,
       icon_url: member.avatarURL,
     },
   }));
@@ -80,7 +80,7 @@ module.exports = (bot) => {
   bot.on("automodantiInvite", (guild, member, content, warning) => trysend(guild, "automodantiInvite", {
     color: bot.embed.color("error"),
     author: {
-      name: `${format.tag(member, true)} tried to send an invite.`,
+      name: `${format.tag(member, false)} tried to send an invite.`,
       icon_url: member.avatarURL,
     },
     fields: [{

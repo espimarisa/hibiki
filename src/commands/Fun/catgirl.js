@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class catgirlCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["kitsune", "neko"],
+      aliases: ["neko"],
       description: "Sends a picture of a catgirl.",
       allowdms: true,
       cooldown: 3,
@@ -14,7 +14,7 @@ class catgirlCommand extends Command {
   async run(msg) {
     // Fetches the API
     const body = await fetch("https://nekos.life/api/v2/img/neko").then(async res => await res.json().catch(() => {}));
-    if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
+    if (!body || !body.url) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
 
     // Sends the embed
     msg.channel.createMessage({
