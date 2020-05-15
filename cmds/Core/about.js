@@ -36,7 +36,7 @@ class aboutCommand extends Command {
     desc.push({ name: "📔", value: `${this.bot.commands.size} commands` });
     desc.push({ name: "📕", value: `Node ${process.version}` });
     desc.push({ name: "📚", value: `Eris v${require("eris").VERSION}` });
-    desc.push({ name: "🤖", value: `Hibiki v${require("../../package").version}` });
+    desc.push({ name: "🤖", value: `Hibiki v${this.bot.version}}` });
     desc.push({ name: "🕒", value: `${format.uptime(process.uptime())}` });
     desc.push({ name: "🧮", value: `${Math.round(process.memoryUsage().rss / (1024 * 1024))}mb used ` });
     desc.push({ name: "🖥", value: `${formatOS(os.platform(), os.release())}` });

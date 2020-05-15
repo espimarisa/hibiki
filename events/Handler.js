@@ -29,7 +29,7 @@ class Handler extends Event {
           color: this.bot.embed.color("general"),
           author: {
             icon_url: msg.author.dynamicAvatarURL(),
-            name: `Sent a DM by ${format.tag(msg.author)}`,
+            name: `Sent a DM by ${format.tag(msg.author, false)}`,
           },
           image: {
             url: msg.attachments.length !== 0 ? msg.attachments[0].url : "",
@@ -59,7 +59,7 @@ class Handler extends Event {
     const cmd = this.bot.commands.find(c => c.id === cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
     // If bot mentioned with no content, show prefixes
     if (!cmdName.length && (prefix.startsWith(`<@${this.bot.user.id}>`) || prefix.startsWith(`<@!${this.bot.user.id}>`))) {
-      return msg.channel.createMessage(this.bot.embed("🤖 Prefix", `My prefix in this server is \`${guildcfg.prefix || this.bot.cfg.prefixes[0]}\`.`));
+      return msg.channel.createMessage(this.bot.embed("🤖 Prefix", `My prefix in this server is \`${guildcfg && guildcfg.prefix ? guildcfg.prefix : this.bot.cfg.prefixes[0]}\``));
     } else if (!cmd) return;
 
     // No send message perms

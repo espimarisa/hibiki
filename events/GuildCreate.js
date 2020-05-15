@@ -1,5 +1,5 @@
 /*
-  This updates the bot stats on top.gg added to a server.
+  This updates bot stats when added to a server.
 */
 
 const Event = require("../lib/structures/Event");
@@ -36,15 +36,24 @@ class guildCreate extends Event {
       }
     }
 
+    // Updates top.gg stats
     if (this.bot.key.topgg) {
-      // Updates top.gg stats
       const body = await fetch(`https://top.gg/api/bots/${this.bot.key.topgg}/stats`, {
         method: "POST",
         body: JSON.stringify({ server_count: this.bot.guilds.size, shard_count: this.bot.shards.size }),
-        headers: { "cache-control": "no-cache", "Content-Type": "application/json", "Authorization": this.bot.key.topgg },
+        headers: { "cache-control": "no-cache", "Content-Type": "application/json", "Authorization": this.bot.key.topgg, "User-Agent": `${this.bot.user.username}/${this.bot.version}` },
       }).then(async res => await res.json().catch(() => {}));
-      if (!body) return this.bot.log.error("An error occurred while trying to update the top.gg stats: 404");
-      if (body.error) this.bot.log.error(`An error occurred while trying to update the top.gg stats: ${body.error}`);
+      if (!body || body.error) this.bot.log.error("An error occured while updating the top.gg stats.");
+    }
+
+    // Updates dbots stats
+    if (this.bot.key.dbots) {
+      const body = await fetch(`https://discord.bots.gg/api/v1/bots/${this.bot.user.id}/stats`, {
+        body: JSON.stringify({ guildCount: this.bot.guilds.size, shardCount: this.bot.shards.size, shardId: 0 }),
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": this.bot.key.dbots, "User-Agent": `${this.bot.user.username}/${this.bot.version}` },
+      }).then(async res => await res.json().catch(() => {}));
+      if (!body || body.message) this.bot.log.error("An error occured while updating the dbots stats.");
     }
   }
 }
