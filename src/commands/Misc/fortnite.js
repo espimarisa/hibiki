@@ -28,6 +28,7 @@ class fortniteCommand extends Command {
     const body = await fetch(`https://api.fortnitetracker.com/v1/profile/${platform !== undefined ? encodeURIComponent(platform) : "pc"}/${encodeURIComponent(username)}`, {
       headers: {
         "TRN-Api-Key": this.bot.key.gametracker,
+        "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
       },
     }).then(async res => await res.json().catch(() => {}));
 

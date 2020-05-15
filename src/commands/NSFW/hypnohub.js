@@ -16,7 +16,7 @@ class hypnohubCommand extends Command {
     // Fetches the API
     const body = await fetch(`https://hypnohub.net/post.json?api_version=2&tags=${encodeURIComponent(args.join(" "))}`)
       .then(async res => await res.json().catch(() => {}));
-    if (!body || !body.length) return msg.channel.createMessage(this.bot.embed("❌ Error", "No images were found.", "error"));
+    if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "No images were found.", "error"));
     const random = Math.floor(Math.random() * body.posts.length);
 
     // Sends the embed

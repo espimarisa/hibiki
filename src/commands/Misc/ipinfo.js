@@ -19,7 +19,7 @@ class ipinfoCommand extends Command {
 
     // IPAbuseDB
     const abuseinfo = await fetch(`https://api.abuseipdb.com/api/v2/check?ipAddress=${encodeURIComponent(args.join(" "))}`, {
-      headers: { Key: this.bot.key.abuseipdb, Accept: "application/json" },
+      headers: { "Key": this.bot.key.abuseipdb, "Accept": "application/json", "User-Agent": `${this.bot.user.username}/${this.bot.version}` },
     }).then(async res => await res.json().catch(() => {}));
 
     if (body.error || !body.ip || !body.org) return msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid IP address.", "error"));
