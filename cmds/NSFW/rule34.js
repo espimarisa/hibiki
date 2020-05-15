@@ -21,6 +21,7 @@ class rule34Command extends Command {
     if (body[random].sample_url.endsWith(".webm") || body[random].sample_url.endsWith(".mp4")) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body[0].sample_url}).`, "error"));
     }
+
     // Sends the embed
     await msg.channel.createMessage({
       embed: {

@@ -6,7 +6,7 @@ class translateCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["translatetext"],
-      args: "<language:string> <text:string>",
+      args: "[language:string] [text:string]",
       description: "Translates text between languages.",
       cooldown: 3,
     });
@@ -40,7 +40,7 @@ class translateCommand extends Command {
     }
 
     // Sends the embed
-    msg.channel.createMessage(this.bot.embed("🌍 Translate", `Possibly innacurate due to language barriers. \n ${body[0][0][1]} **(${body[2].toUpperCase()})** => ${body[0][0][0]} **(${locale.toUpperCase()})**`)).catch(() => {});
+    msg.channel.createMessage(this.bot.embed("🌍 Translate", `Translations may not be 100% correct. \n ${body[0][0][1]} **(${body[2].toUpperCase()})** => ${body[0][0][0]} **(${locale.toUpperCase()})**`)).catch(() => {});
   }
 }
 

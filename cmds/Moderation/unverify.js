@@ -16,10 +16,9 @@ class unverifyCommand extends Command {
   async run(msg, args, pargs) {
     const user = pargs[0].value;
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
-    const role = await msg.channel.guild.roles.find(r => r.id === guildcfg.verifiedRole);
 
     // If no role or cfg
-    if (!guildcfg || !guildcfg.verifiedRole || !role) {
+    if (!guildcfg || !guildcfg.verifiedRole) {
       await this.bot.db.table("guildcfg").insert({ id: msg.channel.guild.id });
       return msg.channel.createMessage(this.bot.embed("❌ Error", "The verified role hasn't been configured yet.", "error"));
     }

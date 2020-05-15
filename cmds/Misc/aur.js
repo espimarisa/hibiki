@@ -1,5 +1,5 @@
 const Command = require("../../lib/structures/Command");
-const Wait = require("../../lib/utils/Wait");
+const WaitFor = require("../../lib/utils/WaitFor");
 const fetch = require("node-fetch");
 const format = require("../../lib/scripts/Format");
 
@@ -25,8 +25,8 @@ class aurCommand extends Command {
       res.results.length = 15;
       // Sends original message
       const aurmsg = await msg.channel.createMessage(this.bot.embed("📦 Multiple Results", res.results.map((r, i) => `**${i + 1}:** ${r.Name} (${r.Popularity.toFixed(2)}%)`).join("\n")));
-      // Wait event
-      await Wait("messageCreate", 60000, async (m) => {
+      // WaitFor event
+      await WaitFor("messageCreate", 60000, async (m) => {
         if (m.author.id !== msg.author.id) return;
         if (m.channel.id !== msg.channel.id) return;
         if (!m.content) return;
