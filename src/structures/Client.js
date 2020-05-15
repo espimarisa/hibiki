@@ -4,6 +4,7 @@
 
 const { Client, Collection } = require("eris");
 const { readdir } = require("fs");
+const { version } = require("../package");
 const argParser = require("../lib/utils/Args.js");
 const Command = require("./structures/Command");
 const Event = require("./structures/Event");
@@ -14,6 +15,7 @@ class Verniy extends Client {
   // Client constructor
   constructor(token, erisOptions, db) {
     super(token, erisOptions);
+    this.version = version;
     this.cfg = require("../cfg").cfg;
     this.key = require("../cfg").keys;
     this.embed = require("./Embed");
@@ -26,12 +28,14 @@ class Verniy extends Client {
     this.antiSpam = [];
     this.snipeData = {};
     // Logs when ready
-    this.on("ready", () => {
+    this.once("ready", () => {
       // Logs number of cmds, events, extensions
       this.log.success(`${this.commands.size} commands loaded`);
       this.log.success(`${this.events.size} events loaded`);
-      this.extensions.forEach(e => e(this));
-      this.log.success(`${this.extensions.length} extensions loaded`);
+      if (process.uptime() < 10) {
+        this.extensions.forEach(e => e(this));
+        this.log.success(`${this.extensions.length} extensions loaded`);
+      }
       // Logs user/startup; sets status
       this.log.success(`Logged in as ${this.user.username}#${this.user.discriminator} on ${this.guilds.size} servers`);
       this.log.success(`Startup took ${new Date(new Date() - starttime).getSeconds()}.${new Date(new Date() - starttime).getMilliseconds()} seconds`);

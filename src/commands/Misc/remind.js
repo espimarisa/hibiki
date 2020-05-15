@@ -54,30 +54,36 @@ class remindCommand extends Command {
     args = args.join(" ").replace(/\d{1,2}( )?(w(eek(s)?)?)?(d(ay(s)?)?)?(h(our(s)?)?(r(s)?)?)?(m(inute(s)?)?(in(s)?)?)?(s(econd(s)?)?(ec(s)?)?)?( and( )?)?([, ]{1,2})?/i, "").split(" ");
     // Gets the time args
     const timeArg = fargs.join(" ").substring(0, fargs.join(" ").indexOf(args.join(" ")));
+    const validtime = [];
     timeArg.split("").forEach((char, i) => {
       if (isNaN(parseInt(char))) return;
       if (i === timeArg.length - 1) return;
       let v = timeArg[i + 1].toLowerCase();
       if (!isNaN(parseInt(timeArg[i + 1])) && !isNaN(parseInt(char))) return;
       if (!isNaN(parseInt(char)) && !isNaN(parseInt(timeArg[i - 1]))) char = `${timeArg[i - 1]}${char}`;
-      if ((v === " " || v === ",") && /[wdhms]/.exec(timeArg[i + 2].toLowerCase())) v = timeArg[i + 2];
+      if (timeArg[i + 2] && (v === " " || v === ",") && /[wdhms]/.exec(timeArg[i + 2].toLowerCase())) v = timeArg[i + 2];
       // Time switcher
       if (isNaN(parseInt(v))) {
         switch (v) {
           case "w":
             val += char * 604800000;
+            validtime.push(`${char} week${char > 1 ? "s" : ""}`);
             break;
           case "d":
             val += char * 86400000;
+            validtime.push(`${char} day${char > 1 ? "s" : ""}`);
             break;
           case "h":
             val += char * 3600000;
+            validtime.push(`${char} hour${char > 1 ? "s" : ""}`);
             break;
           case "m":
             val += char * 60000;
+            validtime.push(`${char} minute${char > 1 ? "s" : ""}`);
             break;
           case "s":
             val += char * 1000;
+            validtime.push(`${char} second${char > 1 ? "s" : ""}`);
             break;
         }
       }
@@ -125,7 +131,7 @@ class remindCommand extends Command {
       msg.channel.createMessage({
         embed: {
           title: "⏰ Reminder",
-          description: `I'll remind you to ${args.join(" ")} in ${timeArg}.`,
+          description: `I'll remind you to ${args.join(" ")} in ${validtime.join(" ")}.`,
           color: this.bot.embed.color("general"),
           fields: [{
             name: "ID:",

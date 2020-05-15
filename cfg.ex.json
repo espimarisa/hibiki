@@ -8,8 +8,9 @@
     "token": ""
   },
   "colors": {
-    "general": "#FFA8FB",
+    "general": "#9194ff",
     "error": "#FF0048",
+    "pinboard": "#3498DB",
     "success": "#41FF70"
   },
   "dashboard": {
@@ -27,7 +28,9 @@
   "keys": {
     "abuseipdb": "",
     "dictionary": "",
+    "dbots": "",
     "dsn": "",
+    "github": "",
     "ipinfo": "",
     "maps": "",
     "osu": "",

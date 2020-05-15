@@ -11,7 +11,7 @@ class bangheadCommand extends Command {
 
   async run(msg) {
     // Sets weebsh auth & image type
-    const body = await fetch("https://api.weeb.sh/images/random?type=banghead", { headers: { Authorization: `Wolke ${this.bot.key.weebsh}` } })
+    const body = await fetch("https://api.weeb.sh/images/random?type=banghead", { headers: { "Authorization": `Wolke ${this.bot.key.weebsh}`, "User-Agent": `${this.bot.user.username}/${this.bot.version}` } })
       .then(async res => await res.json().catch(() => {}));
     let image;
 

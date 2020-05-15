@@ -10,7 +10,6 @@ const session = require("express-session");
 const strategy = require("passport-discord");
 const format = require("../lib/scripts/Format");
 const cfg = require("../cfg").dashboard;
-const { version } = require("../package");
 
 const scope = ["identify", "guilds"];
 const app = express();
@@ -46,125 +45,121 @@ app.set("partials", `${__dirname}/dash/partials`);
 app.use("/static", express.static(`${__dirname}/dash/static`, { dotfiles: "allow" }));
 app.set("view engine", "ejs");
 
-// Prevents restarting if pm2 did
-if (process.uptime() < 20) {
-  // Loads auth system
-  module.exports = (bot) => {
-    if (!cfg || !cfg.port || !cfg.cookiesecret) return;
-    app.use(session({
-      secret: `${cfg.cookiesecret}`,
-      resave: false,
-      saveUninitialized: false,
+// Loads auth system
+module.exports = (bot) => {
+  if (!cfg || !cfg.port || !cfg.cookiesecret) return;
+  app.use(session({
+    secret: `${cfg.cookiesecret}`,
+    resave: false,
+    saveUninitialized: false,
+  }));
+
+  // Sets headers
+  app.use((_req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+
+  // Body parsing & passport serialisation
+  app.use(bodyparser.urlencoded({ extended: true, parameterLimit: 10000, limit: "5mb" }));
+  app.use(bodyparser.json({ parameterLimit: 10000, limit: "5mb" }));
+  passport.serializeUser((user, done) => { done(null, user); });
+  passport.deserializeUser((obj, done) => { done(null, obj); });
+
+  // Creates Discord passport
+  passport.use(new strategy({ clientID: cfg.id, clientSecret: cfg.secret, callbackURL: cfg.redirect_uri, scope: scope },
+    (_accessToken, _refreshToken, profile, done) => {
+      process.nextTick(() => {
+        return done(null, profile);
+      });
     }));
 
-    // Sets headers
-    app.use((_req, res, next) => {
-      res.header("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Credentials", true);
-      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      next();
+  // Cookie parser & passport
+  app.use(cookieparser());
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  // Authentication
+  app.get("/login/", passport.authenticate("discord", { scope: scope }));
+  app.get("/login/callback/", passport.authenticate("discord", { failureRedirect: "/login/fail/" }), (_req, res) => {
+    res.redirect("/servers/");
+  });
+
+  // Logout functionality
+  app.get("/logout/", checkAuth, (req, res) => {
+    req.logout();
+    res.redirect("/");
+  });
+
+  // Renders list of servers
+  app.get("/servers/", checkAuth, (req, res) => {
+    res.render("servers", { bot: bot, user: req.user });
+  });
+
+  // Handles redirects
+  app.get("/invite/", (_req, res) => {
+    res.redirect(`https://discordapp.com/oauth2/authorize?&client_id=${bot.user.id}&scope=bot&permissions=${bot.cfg.permissions}`);
+  });
+
+  app.get("/repo/", (_req, res) => {
+    res.redirect("https://github.com/smolespi/Hibiki");
+  });
+
+  app.get("/support/", (_req, res) => {
+    res.redirect(`https://discord.gg/${bot.cfg.support}`);
+  });
+
+  app.get("/twitter/", (_req, res) => {
+    res.redirect("https://twitter.com/HibikiApp");
+  });
+
+  app.get("/vote/", (_req, res) => {
+    res.redirect("https://top.gg/bot/493904957523623936/vote");
+  });
+
+  // Server manager
+  app.get("/manage/:id", checkAuth, async (req, res) => {
+    // Sets vaild items
+    const items = require("../lib/utils/ValidItems");
+    // If user isn't authenticated
+    if (!req.isAuthenticated()) { res.status(401).render("401"); }
+    // User & guild perms
+    const user = getAuthUser(req.user);
+    const managableguilds = user.guilds.filter(g => (g.permissions & 32) === 32 && bot.guilds.get(g.id));
+    const guild = managableguilds.find(g => g.id === req.params.id);
+    // Renders the dashboard
+    if (!guild) return res.status(403).render("403");
+    const cfg = await bot.db.table("guildcfg").get(guild.id);
+    res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, items: items, user: user });
+  });
+
+  // Renders landing page
+  app.get("/", (req, res) => {
+    res.render("index", {
+      checkAuth: checkAuth,
+      bot: bot,
+      avatar: bot.user.avatar ? `https://cdn.discordapp.com/avatars/${bot.user.id}/${bot.user.avatar}.png` : "https://cdn.discordapp.com/embed/avatars/0.png",
+      authUser: req.isAuthenticated() ? getAuthUser(req.user) : null,
+      format: format,
     });
+  });
 
-    // Body parsing & passport serialisation
-    app.use(bodyparser.urlencoded({ extended: true, parameterLimit: 10000, limit: "5mb" }));
-    app.use(bodyparser.json({ parameterLimit: 10000, limit: "5mb" }));
-    passport.serializeUser((user, done) => { done(null, user); });
-    passport.deserializeUser((obj, done) => { done(null, obj); });
+  // API
+  app.use(require("./dash/api/getItems")(bot));
+  app.use(require("./dash/api/getConfig")(bot));
+  app.use(require("./dash/api/updateConfig")(bot));
+  app.use(require("./dash/api/getBio")(bot));
+  app.use(require("./dash/api/updateBio")(bot));
 
-    // Creates Discord passport
-    passport.use(new strategy({ clientID: cfg.id, clientSecret: cfg.secret, callbackURL: cfg.redirect_uri, scope: scope },
-      (_accessToken, _refreshToken, profile, done) => {
-        process.nextTick(() => {
-          return done(null, profile);
-        });
-      }));
+  // 404 handler
+  app.use((req, res) => {
+    if (req.accepts("html")) return res.render("404", { url: req.url });
+    if (req.accepts("json")) return res.send({ error: "404" });
+    res.type("txt").send("404");
+  });
 
-    // Cookie parser & passport
-    app.use(cookieparser());
-    app.use(passport.initialize());
-    app.use(passport.session());
-
-    // Authentication
-    app.get("/login/", passport.authenticate("discord", { scope: scope }));
-    app.get("/login/callback/", passport.authenticate("discord", { failureRedirect: "/login/fail/" }), (_req, res) => {
-      res.redirect("/servers/");
-    });
-
-    // Logout functionality
-    app.get("/logout/", checkAuth, (req, res) => {
-      req.logout();
-      res.redirect("/");
-    });
-
-    // Renders list of servers
-    app.get("/servers/", checkAuth, (req, res) => {
-      res.render("servers", { bot: bot, user: req.user });
-    });
-
-    // Handles redirects
-    app.get("/invite/", (_req, res) => {
-      res.redirect(`https://discordapp.com/oauth2/authorize?&client_id=${bot.user.id}&scope=bot&permissions=${bot.cfg.permissions}`);
-    });
-
-    app.get("/repo/", (_req, res) => {
-      res.redirect("https://github.com/smolespi/Hibiki");
-    });
-
-    app.get("/support/", (_req, res) => {
-      res.redirect(`https://discord.gg/${bot.cfg.support}`);
-    });
-
-    app.get("/twitter/", (_req, res) => {
-      res.redirect("https://twitter.com/HibikiApp");
-    });
-
-    app.get("/vote/", (_req, res) => {
-      res.redirect("https://top.gg/bot/493904957523623936/vote");
-    });
-
-    // Server manager
-    app.get("/manage/:id", checkAuth, async (req, res) => {
-      // Sets vaild items
-      const items = require("../lib/utils/ValidItems");
-      // If user isn't authenticated
-      if (!req.isAuthenticated()) { res.status(401).render("401"); }
-      // User & guild perms
-      const user = getAuthUser(req.user);
-      const managableguilds = user.guilds.filter(g => (g.permissions & 32) === 32 && bot.guilds.get(g.id));
-      const guild = managableguilds.find(g => g.id === req.params.id);
-      // Renders the dashboard
-      if (!guild) return res.status(403).render("403");
-      const cfg = await bot.db.table("guildcfg").get(guild.id);
-      res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, items: items, user: user, version: version });
-    });
-
-    // Renders landing page
-    app.get("/", (req, res) => {
-      res.render("index", {
-        checkAuth: checkAuth,
-        bot: bot,
-        avatar: bot.user.avatar ? `https://cdn.discordapp.com/avatars/${bot.user.id}/${bot.user.avatar}.png` : "https://cdn.discordapp.com/embed/avatars/0.png",
-        authUser: req.isAuthenticated() ? getAuthUser(req.user) : null,
-        format: format,
-        version: version,
-      });
-    });
-
-    // API
-    app.use(require("./dash/api/getItems")(bot));
-    app.use(require("./dash/api/getConfig")(bot));
-    app.use(require("./dash/api/updateConfig")(bot));
-    app.use(require("./dash/api/getBio")(bot));
-    app.use(require("./dash/api/updateBio")(bot));
-
-    // 404 handler
-    app.use((req, res) => {
-      if (req.accepts("html")) return res.render("404", { url: req.url });
-      if (req.accepts("json")) return res.send({ error: "404" });
-      res.type("txt").send("404");
-    });
-
-    // Listens on port
-    app.listen(cfg.port);
-  };
-}
+  // Listens on port
+  app.listen(cfg.port);
+};

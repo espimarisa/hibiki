@@ -6,7 +6,7 @@ class slotsCommand extends Command {
       aliases: ["bet", "gamble", "slot", "slotmachine", "sm"],
       args: "[amount:string]",
       description: "Bets cookies to play the slot machine.",
-      cooldown: 5,
+      cooldown: 3,
     });
   }
 
@@ -24,7 +24,7 @@ class slotsCommand extends Command {
     }
 
     // Prevents mass gambling
-    if (args[0] > 100) return msg.channel.createMessage(this.bot.embed("❌ Error", "You can't bet more than **100** cookies at a time.", "error"));
+    // if (args[0] > 100) return msg.channel.createMessage(this.bot.embed("❌ Error", "You can't bet more than **100** cookies at a time.", "error"));
 
     // Gets the emotes
     for (let i = 0; i < 3; i++) {
@@ -68,7 +68,7 @@ class slotsCommand extends Command {
 
     // Updates DB
     await this.bot.db.table("economy").get(msg.author.id).update(economydb);
-    msg.channel.createMessage(this.bot.embed("🎰 Slots", `${profit ? "You won!" : "Sorry, you lost."} \n ${emojistring}`));
+    msg.channel.createMessage(this.bot.embed("🎰 Slots", `${profit ? `You won **${profit}** cookies!` : "Sorry, you lost."} \n ${emojistring}`));
   }
 }
 

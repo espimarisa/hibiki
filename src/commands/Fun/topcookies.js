@@ -27,6 +27,7 @@ class topcookiesCommand extends Command {
     leaderboardcookies.forEach(leaderboard => {
       // Finds top 10 users
       if (place > 10) return;
+      if (leaderboard[0] === 0) return;
       const user = this.bot.users.find(o => o.id === leaderboard[1]);
       if (!user) return;
       // Sets the message content
@@ -37,7 +38,7 @@ class topcookiesCommand extends Command {
     // Sends the embed
     msg.channel.createMessage({
       embed: {
-        title: "🍪 Top Cookies",
+        title: "🍪 Cookie Leaderboard",
         description: content,
         color: this.bot.embed.color("general"),
       },
