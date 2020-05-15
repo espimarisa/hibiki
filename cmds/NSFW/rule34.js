@@ -17,11 +17,10 @@ class rule34Command extends Command {
     const body = await fetch(`https://r34-json-api.herokuapp.com/posts?tags=${encodeURIComponent(args.join(" "))}`)
       .then(async res => await res.json().catch(() => {}));
     if (!body || !body[0]) return msg.channel.createMessage(this.bot.embed("❌ Error", "No images were found.", "error"));
-    if (body[0].sample_url.endsWith(".webm") || body[0].sample_url.endsWith(".mp4")) {
+    const random = Math.floor(Math.random() * body.length);
+    if (body[random].sample_url.endsWith(".webm") || body[random].sample_url.endsWith(".mp4")) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body[0].sample_url}).`, "error"));
     }
-    const random = Math.floor(Math.random() * body.length);
-
     // Sends the embed
     await msg.channel.createMessage({
       embed: {
