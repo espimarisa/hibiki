@@ -38,7 +38,7 @@ class guildCreate extends Event {
 
     // Updates top.gg stats
     if (this.bot.key.topgg) {
-      const body = await fetch(`https://top.gg/api/bots/${this.bot.key.topgg}/stats`, {
+      const body = await fetch(`https://top.gg/api/bots/${this.bot.user.id}/stats`, {
         method: "POST",
         body: JSON.stringify({ server_count: this.bot.guilds.size, shard_count: this.bot.shards.size }),
         headers: { "cache-control": "no-cache", "Content-Type": "application/json", "Authorization": this.bot.key.topgg, "User-Agent": `${this.bot.user.username}/${this.bot.version}` },
