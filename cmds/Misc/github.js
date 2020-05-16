@@ -46,6 +46,9 @@ class githubCommand extends Command {
           name: `${body.name} (${body.id})`,
           url: body.html_url,
         },
+        thumbnail: {
+          url: body.owner.avatar_url,
+        },
       };
 
       // Sends the embed
@@ -67,6 +70,7 @@ class githubCommand extends Command {
       const fields = [];
       if (body.created_at) fields.push({ name: "Created", value: format.date(body.created_at) });
       if (body.public_repos > 0) fields.push({ name: "Repos", value: body.public_repos, inline: true });
+      if (body.public_gists > 0) fields.push({ name: "Gists", value: body.public_gists, inline: true });
       if (body.followers > 0) fields.push({ name: "Followers", value: body.followers, inline: true });
       if (body.following > 0) fields.push({ name: "Following", value: body.following, inline: true });
       if (body.location) fields.push({ name: "Location", value: `${body.location}`, inline: true });
