@@ -32,7 +32,7 @@ class Verniy extends Client {
       // Logs number of cmds, events, extensions
       this.log.success(`${this.commands.size} commands loaded`);
       this.log.success(`${this.events.size} events loaded`);
-      if (process.uptime() < 10) {
+      if (process.uptime() < 20) {
         this.extensions.forEach(e => e(this));
         this.log.success(`${this.extensions.length} extensions loaded`);
       }
