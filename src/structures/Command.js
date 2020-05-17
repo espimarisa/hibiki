@@ -1,7 +1,3 @@
-/*
-  Parameter, unloading & reloading functionality.
-*/
-
 const sentry = require("@sentry/node");
 
 class Command {

@@ -8,11 +8,9 @@ class Snipe extends Event {
   }
 
   async run(msg) {
-    // Reads the DB
     if (!msg || !msg.channel || !msg.channel.guild) return;
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
     if (!guildcfg || !guildcfg.snipingEnable) return;
-    // If no message to snipe, has an invite, or is ignored
     if ((!msg.attachments || msg.attachments[0] === undefined) && (!msg.content || !msg)) return;
     if (!guildcfg.snipingInvites && /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|list)|discord(app)?\.com\/invite)\/.+[a-z]/.test(msg.content)) return;
     let ignored;
