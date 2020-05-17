@@ -1,7 +1,3 @@
-/*
-  This updates bot stats when removed from a server.
-*/
-
 const Event = require("../lib/structures/Event");
 const fetch = require("node-fetch");
 

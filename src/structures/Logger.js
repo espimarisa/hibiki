@@ -1,7 +1,3 @@
-/*
-  This handles getting logging databases and types.
-*/
-
 class Logging {
   constructor(db) {
     this.db = db;

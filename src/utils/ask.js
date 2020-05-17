@@ -1,7 +1,3 @@
-/*
-  This handles asking for things.
-*/
-
 const WaitFor = require("../utils/WaitFor");
 
 module.exports = {

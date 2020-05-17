@@ -5,7 +5,7 @@
 
 const { cfg, options, rethink } = require("./cfg");
 const db = require("rethinkdbdash")(rethink);
-const Verniy = require("./lib/Verniy");
+const Verniy = require("./lib/Client");
 
 // Sets Eris options & creates an instance
 const bot = new Verniy(cfg.token, options, db);

@@ -1,8 +1,3 @@
-/*
-  Formats various things.
-  Only modules used a lot should be here.
-*/
-
 module.exports = {
   // Tags a member by user#disc; replaces emojis if needed
   tag: (user, emojifilter = true) => {
@@ -76,21 +71,6 @@ module.exports = {
       if (!options.autohide) finalstring += `${year.toFixed(0)} years`;
     }
     return finalstring;
-  },
-
-  // Formats time left in a day
-  day: (ms) => {
-    let d, h, m, s;
-    s = Math.floor(ms / 1000);
-    m = Math.floor(s / 60);
-    s %= 60;
-    h = Math.floor(m / 60);
-    m %= 60;
-    // eslint-disable-next-line prefer-const
-    d = Math.floor(h / 24);
-    h %= 24;
-    h += d * 24;
-    return `${h} hours and ${m} minutes`;
   },
 
   // Formats server regions

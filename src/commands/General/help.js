@@ -39,7 +39,7 @@ class helpCommand extends Command {
           label = "⛔ **Owner**";
           break;
         default:
-          label = "🚫 **Uncategorized**";
+          label = "❓ **Uncategorized**";
           break;
       }
       return label;

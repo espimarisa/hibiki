@@ -1,7 +1,3 @@
-/*
-  This loads ArgTypes and parses args.
-*/
-
 class argParser {
   constructor(bot) {
     this.bot = bot;

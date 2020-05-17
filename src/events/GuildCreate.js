@@ -1,7 +1,3 @@
-/*
-  This updates bot stats when added to a server.
-*/
-
 const Event = require("../lib/structures/Event");
 const fetch = require("node-fetch");
 
@@ -25,8 +21,8 @@ class guildCreate extends Event {
       return;
     }
 
-    this.bot.log.info(`Added to server: ${guild.name}`);
     // DMs the server owner
+    this.bot.log.info(`Added to server: ${guild.name}`);
     const oid = await this.bot.users.get(guild.ownerID);
     if (oid) {
       const odm = await oid.getDMChannel().catch(() => {});

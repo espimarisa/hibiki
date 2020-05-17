@@ -1,10 +1,6 @@
-/*
-  This handles all commands & parameter functions.
-*/
-
 const Event = require("../lib/structures/Event");
 const format = require("../lib/scripts/Format");
-const eris = require("eris-additions")(require("eris"));
+const Eris = require("eris-additions")(require("eris"));
 const sentry = require("@sentry/node");
 
 class Handler extends Event {
@@ -17,7 +13,7 @@ class Handler extends Event {
 
   async run(msg) {
     // DM handler
-    if (msg.channel instanceof eris.PrivateChannel) {
+    if (msg.channel instanceof Eris.PrivateChannel) {
       if (msg.author.id === this.bot.user.id) return;
       const cmd = this.bot.commands.find(c => msg.content.toLowerCase().startsWith(`${this.bot.cfg.prefixes[0]}${c.id}`) || msg.content.toLowerCase().startsWith(c.id));
       if (cmd && cmd.allowdms) cmd.run(msg, msg.content.substring(this.bot.cfg.prefixes[0].length + cmd.id.length + 1).split(" "));
@@ -35,7 +31,7 @@ class Handler extends Event {
             url: msg.attachments.length !== 0 ? msg.attachments[0].url : "",
           },
         },
-      });
+      }).catch(() => {});
     }
 
     // Blocks bots & blacklisted users
@@ -59,7 +55,7 @@ class Handler extends Event {
     const cmd = this.bot.commands.find(c => c.id === cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
     // If bot mentioned with no content, show prefixes
     if (!cmdName.length && (prefix.startsWith(`<@${this.bot.user.id}>`) || prefix.startsWith(`<@!${this.bot.user.id}>`))) {
-      return msg.channel.createMessage(this.bot.embed("🤖 Prefix", `My prefix in this server is \`${guildcfg && guildcfg.prefix ? guildcfg.prefix : this.bot.cfg.prefixes[0]}\``));
+      return msg.channel.createMessage(this.bot.embed("🤖 Prefix", `The prefix in this server is \`${guildcfg && guildcfg.prefix ? guildcfg.prefix : this.bot.cfg.prefixes[0]}\`.`));
     } else if (!cmd) return;
 
     // No send message perms

@@ -1,8 +1,3 @@
-/*
-  This configures RethinkDB for use.
-  Creates indexes if set to true in cfg.
-*/
-
 const { rethink } = require("../../cfg");
 const log = require("../Log");
 let db;
