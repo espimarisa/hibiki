@@ -19,7 +19,6 @@ class agreeCommand extends Command {
     // Deletes the messages
     await msg.channel.deleteMessages(msgs).catch(() => {});
     const cleanmsg = await msg.channel.createMessage(this.bot.embed("💣 Clean", "Deleted the **last 10** messages from me."));
-    // Deletes success message
     await setTimeout(() => { cleanmsg.delete().catch(() => {}); }, 2000);
   }
 }

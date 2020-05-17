@@ -33,9 +33,9 @@ module.exports = (bot) => {
       await bot.db.table("economy").insert(cookies);
     }
 
-    // Sets amount; if weekend give 200
+    // Sets amount; if weekend give 300
     let amnt = cookies.amount + 150;
-    if (req.body.isWeekend) amnt += 50;
+    if (req.body.isWeekend) amnt += 150;
     cookies = { id: req.body.user, amount: amnt, lastclaim: cookies.lastclaim };
 
     // Updates db
@@ -47,7 +47,7 @@ module.exports = (bot) => {
       DMChannel.createMessage({
         embed: {
           title: "✨ Thanks for voting!",
-          description: `**${req.body.isWeekend ? "200" : "150"} cookies** have been added to your account.`,
+          description: `**${req.body.isWeekend ? "300" : "150"} cookies** have been added to your account.`,
           color: bot.embed.color("general"),
         },
       }).catch(() => {});

@@ -1,5 +1,4 @@
 const Command = require("../../lib/structures/Command");
-const format = require("../../lib/scripts/Format");
 
 class dailyCommand extends Command {
   constructor(...args) {
@@ -10,9 +9,22 @@ class dailyCommand extends Command {
   }
 
   async run(msg) {
+    // Formats time left in a day
+    function formatDay(ms) {
+      let h, m, s;
+      s = Math.floor(ms / 1000);
+      m = Math.floor(s / 60);
+      s %= 60;
+      h = Math.floor(m / 60);
+      m %= 60;
+      d = Math.floor(h / 24);
+      h %= 24;
+      h += d * 24;
+      return `**${h} hours** and **${m} minutes**`;
+    }
+
     // Gets user's economy info
     let cookies = await this.bot.db.table("economy").get(msg.author.id);
-    // If user has no cookies
     if (!cookies) {
       cookies = {
         id: msg.author.id,
@@ -22,6 +34,7 @@ class dailyCommand extends Command {
       // Updates DB
       await this.bot.db.table("economy").insert(cookies);
     }
+
     // If lastclaim expired
     if (new Date() - new Date(cookies.lastclaim) > 86400000) {
       const amount = cookies.amount + 100;
@@ -30,15 +43,16 @@ class dailyCommand extends Command {
         amount: amount,
         lastclaim: new Date(),
       };
+
       // Updates DB
       await this.bot.db.table("economy").get(msg.author.id).update(cookies);
-      msg.channel.createMessage(this.bot.embed("🍪 Daily Cookies", "You have claimed your daily **100** cookies."));
-    } else {
-      // If user is on cooldown
-      const lastclaim = new Date(cookies.lastclaim);
-      const time = 86400000 - (new Date().getTime() - lastclaim.getTime());
-      msg.channel.createMessage(this.bot.embed("🍪 Daily Cookies", `You can claim your daily cookies again in **${format.day(time)}**.`));
+      return msg.channel.createMessage(this.bot.embed("🍪 Daily Cookies", "You have claimed your daily **100** cookies."));
     }
+
+    // If user is on cooldown
+    const lastclaim = new Date(cookies.lastclaim);
+    const time = 86400000 - (new Date().getTime() - lastclaim.getTime());
+    msg.channel.createMessage(this.bot.embed("🍪 Daily Cookies", `You can claim your daily cookies again in ${formatDay(time)}.`));
   }
 }
 
