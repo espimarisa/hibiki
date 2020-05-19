@@ -17,7 +17,7 @@ class dailyCommand extends Command {
       s %= 60;
       h = Math.floor(m / 60);
       m %= 60;
-      d = Math.floor(h / 24);
+      const d = Math.floor(h / 24);
       h %= 24;
       h += d * 24;
       return `**${h} hours** and **${m} minutes**`;
