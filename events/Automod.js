@@ -1,7 +1,3 @@
-/*
-  This loads/handles each type of automod.
-*/
-
 const Eris = require("eris");
 const Event = require("../lib/structures/Event");
 
@@ -17,7 +13,6 @@ class automod extends Event {
     if (msg.channel instanceof Eris.PrivateChannel) return;
     if (!msg.member) return;
     if (msg.bot) return;
-    // Gets cfg
     const cfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
     if (!cfg) return;
     // Don't automod staff

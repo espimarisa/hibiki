@@ -11,7 +11,7 @@ class voteCommand extends Command {
   }
 
   run(msg) {
-    msg.channel.createMessage(this.bot.embed("🗳 Vote", `You can vote for **${this.bot.user.username}** on top.gg [here](https://top.gg/bot/${this.bot.user.id}/vote). Each vote gives **150** cookies.`));
+    msg.channel.createMessage(this.bot.embed("🗳 Vote", `You can vote for **${this.bot.user.username}** on top.gg [here](https://top.gg/bot/${this.bot.user.id}/vote). Each vote gives you cookies.`));
   }
 }
 
