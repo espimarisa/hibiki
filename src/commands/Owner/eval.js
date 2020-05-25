@@ -24,10 +24,9 @@ class evalCommand extends Command {
           .then(async res => await res.json().catch(() => {}));
         await dmchannel.createMessage(this.bot.embed("❌ Error", `Output longer than 2000. View the output [here](https://hasteb.in/${body.key}).`, "error"));
       } else {
-        msg.channel.createMessage(this.bot.embed("✅ Success", `\`\`\`js\n${evalstring.replace(this.bot.cfg.token, "Bot token hidden.")}\n\`\`\``, "success"));
+        msg.channel.createMessage(this.bot.embed("✅ Success", `\`\`\`js\n${evalstring.replace(this.bot.config.token, "Bot token hidden.")}\n\`\`\``, "success"));
       }
     } catch (e) {
-      // Sends if an error returned
       msg.channel.createMessage(this.bot.embed("❌ Error", `\`\`\`js\n${e.stack}\n\`\`\``, "error"));
     }
   }

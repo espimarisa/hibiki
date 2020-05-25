@@ -4,7 +4,7 @@
 */
 
 const express = require("express");
-const voting = require("../cfg").voting;
+const voting = require("../config").voting;
 
 // Sets up express
 const app = express();
@@ -22,12 +22,10 @@ module.exports = (bot) => {
       }
     }
 
-    // Gets the user from the request
+    // Gets info from the request
     const user = bot.users.get(req.body.user);
-    // Gets the user from the cookies DB
     let cookies = await bot.db.table("economy").get(req.body.user);
 
-    // Inserts 0 if user doesn't exist
     if (!cookies) {
       cookies = { id: req.body.user, amount: 0, lastclaim: 9999 };
       await bot.db.table("economy").insert(cookies);
@@ -40,7 +38,8 @@ module.exports = (bot) => {
 
     // Updates db
     await bot.db.table("economy").get(req.body.user).update(cookies);
-    // Gets DM channel
+
+    // DMs the voter
     if (user) {
       const DMChannel = await user.getDMChannel();
       if (!DMChannel) return;
@@ -53,15 +52,15 @@ module.exports = (bot) => {
       }).catch(() => {});
     }
 
-    // Sends msg of who voted to logchannel
-    bot.createMessage(bot.cfg.logchannel, {
+    // Sends msg of who voted
+    bot.createMessage(bot.config.logchannel, {
       embed: {
         title: "🗳 User Voted",
         description: `**${user ? user.username : req.body.user}** has voted.`,
         color: bot.embed.color("general"),
       },
     });
-    // Logs when a member voted
+
     bot.log.info(`${user ? user.username : req.body.user} has voted (requested from: ${req.connection.remoteAddress})`);
     res.sendStatus(200);
   });

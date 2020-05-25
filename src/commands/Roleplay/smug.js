@@ -11,7 +11,6 @@ class smugCommand extends Command {
   }
 
   async run(msg, args, pargs) {
-    // Sets weebsh auth & image type
     const body = await fetch("https://api.weeb.sh/images/random?type=smug", { headers: { "Authorization": `Wolke ${this.bot.key.weebsh}`, "User-Agent": `${this.bot.user.username}/${this.bot.version}` } })
       .then(async res => await res.json().catch(() => {}));
     let image;
@@ -20,7 +19,6 @@ class smugCommand extends Command {
     if (body.status !== 200) image = "https://cdn.weeb.sh/images/H1xgWUktPW.gif";
     else if (body.status === 200) image = body.url;
 
-    // Sends the embed
     msg.channel.createMessage({
       embed: {
         description: `💢 **${msg.author.username}** is being smug towards **${pargs[0].value.username}**!`,

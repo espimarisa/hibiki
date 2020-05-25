@@ -14,7 +14,6 @@ class steamCommand extends Command {
   }
 
   async run(msg, args) {
-    // Sets static Steam things
     let steamid;
     let id;
     let profile;
@@ -22,11 +21,11 @@ class steamCommand extends Command {
     let games;
     let steamlvl;
     let description;
-    // Vanity URL
+
+    // Vanity URL checker
     if (/^\d+$/.test(args[0])) steamid = args[0];
     else if (args.join(" ").startsWith("https://steamcommunity.com/id/")) args[0] = args.join(" ").substring(`https://steamcommunity.com/id/`.length, args.join(" ").length);
     if (!steamid) {
-      // Fetches the API
       id = await fetch(`http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${this.bot.key.steam}&vanityurl=${encodeURIComponent(args[0])}`)
         .then(async res => await res.json().catch(() => {}));
       if (!id || id.response.success !== 1) {
@@ -36,7 +35,7 @@ class steamCommand extends Command {
     }
 
     // Gets summary info
-    const steamsg = await msg.channel.createMessage(this.bot.embed("🎮 Steam", "Waiting for a response from Steam...", "general"));
+    const steamsg = await msg.channel.createMessage(this.bot.embed("🎮 Steam", "Waiting for a response from Steam..."));
     profile = await fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${this.bot.key.steam}&steamids=${steamid}`)
       .then(async res => await res.json().catch(() => {}));
     profile = profile.response.players[0];
@@ -61,12 +60,11 @@ class steamCommand extends Command {
     if (!description || description === "No information given.") description = null;
     if (description && description.length > 256) description = `${description.substring(0, 256)}...`;
 
-    // Handler for if the API returns garbage/invalid stuff
     if (!profile || !bans || !games) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "Account not found.", "error"));
     }
 
-    // Makes the user statuses look better
+    // Formats statuses
     if (profile.personastate === 0) profile.personastate = "Offline/Invisible";
     if (profile.personastate === 1) profile.personastate = "Online";
     if (profile.personastate === 2) profile.personastate = "Busy";
@@ -75,7 +73,6 @@ class steamCommand extends Command {
     if (profile.personastate === 5) profile.personastate = "Looking to trade";
     if (profile.personastate === 6) profile.personastate = "Looking to play";
 
-    // Fields construct
     const fieldsConstruct = [{
       name: "ID",
       value: profile.steamid,
@@ -110,7 +107,6 @@ class steamCommand extends Command {
       inline: true,
     }];
 
-    // Country
     if (profile.loccountrycode) {
       fieldsConstruct.push({
         name: "Country",
@@ -119,7 +115,6 @@ class steamCommand extends Command {
       });
     }
 
-    // Real name
     if (profile.realname) {
       fieldsConstruct.push({
         name: "Real Name",
@@ -128,7 +123,6 @@ class steamCommand extends Command {
       });
     }
 
-    // Construct for ban fields
     let banstring = "";
     if (bans.NumberOfVACBans > 0 || bans.NumberOfGameBans > 0 || bans.EconomyBan !== "none") {
       if (bans.NumberOfVACBans > 0) banstring += `✅ ${bans.NumberOfVACBans} VAC Ban${bans.NumberOfVACBans > 1 ? "s" : ""}\n`;
@@ -139,18 +133,16 @@ class steamCommand extends Command {
       else banstring += "❌ Not trade banned\n";
     }
 
-    // Pushes the ban string
     if (banstring.length) fieldsConstruct.push({
       name: "Ban Status",
       value: banstring,
       inline: false,
     });
 
-    // Sends the embed
     steamsg.edit({
       embed: {
         description: description,
-        color: this.bot.embed.color("general"),
+        color: 0x66C0F4,
         fields: fieldsConstruct,
         author: {
           name: profile.personaname,

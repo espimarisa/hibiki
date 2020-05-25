@@ -16,7 +16,7 @@ class slotsCommand extends Command {
     if (user.id === "569490086547292160") inches = 1;
     if (user.bot) return msg.channel.createMessage(this.bot.embed("❌ Error", `I don't think **${user.username}** has a dick.`, "error"));
 
-    // Adds a suffix to inches
+    // Adds a suffix
     const suffix = a => {
       return a > 1 || a < 0 || a === 0 ? "es" : "";
     };

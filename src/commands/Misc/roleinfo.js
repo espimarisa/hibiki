@@ -12,13 +12,11 @@ class roleinfoCommand extends Command {
 
   run(msg, args, pargs) {
     const role = pargs[0].value;
-    // Member role amount
     let mems = 0;
     msg.channel.guild.members.forEach(m => {
       if (m.roles.includes(role.id)) mems++;
     });
 
-    // Sets the description
     const desc = [];
     const settings = [];
     if (role.mentionable) settings.push("Mentionable");
@@ -30,14 +28,13 @@ class roleinfoCommand extends Command {
     desc.push({ name: "📝", value: `${mems} members have this role, and it's in position ${role.position}` });
     desc.push({ name: "🆔", value: role.id });
 
-    // Sends the embed
     msg.channel.createMessage({
       embed: {
         description: desc.map(d => `${d.name} ${d.value}`).join("\n"),
         color: role.color === 0 ? this.bot.embed.color("general") : role.color,
         author: {
           icon_url: msg.channel.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
-          name: `Info for the ${role.name} role`,
+          name: `@${role.name}`,
         },
       },
     });

@@ -15,7 +15,6 @@ class execCommand extends Command {
     try {
       // Tries to execute
       child.exec(args.join(" "), async (stdout, stderr) => {
-        // Sends if an error happened
         if (stderr) return msg.channel.createMessage(this.bot.embed("⚡ Exec", stderr));
         // Uploads if over embed limit
         const dmchannel = await msg.author.getDMChannel();
@@ -28,7 +27,6 @@ class execCommand extends Command {
         }
       });
     } catch (e) {
-      // Sends the error embed
       msg.channel.createMessage(this.bot.embed("⚡ Exec", e));
     }
   }

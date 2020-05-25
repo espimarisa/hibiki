@@ -6,7 +6,6 @@ const punish = require("./Punishments");
 
 module.exports = async (msg, bot, cfg) => {
   const spam = bot.antiSpam.filter(s => s.guild === msg.channel.guild.id && s.id === msg.author.id && new Date().getTime() - s.date < 2500);
-  // If the spam spam threshold isnt set default to 6
   if (!cfg.spamThreshold) cfg.spamThreshold = 7;
 
   // If the spam threshold is met
@@ -22,16 +21,13 @@ module.exports = async (msg, bot, cfg) => {
       }
     });
 
-    // Antispam
     bot.antiSpam.forEach(a => {
-      // Returns if authors or guilds aren't the same
       if (a.id !== msg.author.id) return;
       if (a.guild !== msg.channel.guild.id) return;
       bot.antiSpam.splice(bot.antiSpam.indexOf(a), 1);
     });
   }
 
-  // Pushes the antispam
   bot.antiSpam.push({
     date: new Date().getTime(),
     id: msg.author.id,

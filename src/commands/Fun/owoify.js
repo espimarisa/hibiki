@@ -33,7 +33,7 @@ class owoifyCommand extends Command {
       return owo;
     }
     // Sends the embed
-    msg.channel.createMessage(this.bot.embed(`${faces[Math.floor(Math.random() * faces.length)]}`, owoify(args.join(" ").slice(0, 1024)), "general"));
+    msg.channel.createMessage(this.bot.embed(`${faces[Math.floor(Math.random() * faces.length)]}`, owoify(args.join(" ").slice(0, 1024))));
   }
 }
 

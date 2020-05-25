@@ -12,7 +12,6 @@ module.exports = bot => {
     // Looks for managable guilds
     const managableguilds = req.user.guilds.filter(g => (g.permissions & 32) === 32);
     if (!managableguilds.find(g => g.id === req.params.id)) return res.status(403).send({ error: "No access to guild" });
-    // Gets guildcfg
     let cfg = await bot.db.table("guildcfg").get(req.params.id);
 
     // Inserts cfg
@@ -21,14 +20,12 @@ module.exports = bot => {
       await bot.db.table("guildcfg").insert(cfg);
     }
 
-    // If no cfg
     if (!req.body) return res.status(400).send({ error: "No config" });
     cfg = req.body;
 
     // Each cfg type/option
     Object.keys(cfg).forEach(c => {
       if (c === "id") return;
-      // Each type of option
       const opt = cfg[c];
       if (!opt) return;
 
@@ -86,5 +83,6 @@ module.exports = bot => {
     await bot.db.table("guildcfg").get(req.params.id).update(cfg);
     res.sendStatus(200);
   });
+
   return router;
 };

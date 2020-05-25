@@ -10,10 +10,8 @@ class topcookiesCommand extends Command {
   }
 
   async run(msg) {
-    // Reads the DB
     const cookies = await this.bot.db.table("economy");
     const leaderboardcookies = [];
-    // Sorts the cookie amount/userID
     Object.values(cookies).forEach(cookie => {
       leaderboardcookies.push([cookie.amount, cookie.id]);
     });

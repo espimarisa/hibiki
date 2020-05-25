@@ -24,29 +24,23 @@ class steammonitorCommand extends Command {
     let ban;
     if (/^\d+$/.test(args[0])) steamid = args[0];
 
-    // Looks for vanity url
     if (!steamid) {
-      // Fetches the API
       id = await fetch(`http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${this.bot.key.steam}&vanityurl=${encodeURIComponent(args[0])}`)
         .then(async res => await res.json().catch(() => {}));
-      // Sends if the user couldn't be found
       if (!id || id.response.success !== 1) {
         return msg.channel.createMessage(this.bot.embed("❌ Error", "Account not found.", "error"));
       }
       steamid = id.response.steamid;
     }
 
-    // Fetches the API
     profile = await fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${this.bot.key.steam}&steamids=${steamid}`)
       .then(async res => await res.json().catch(() => {}));
     profile = profile.response.players[0];
 
-    // Handler for if user isn't found
     if (!profile || profile.personaname === "undefined") {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "Account not found.", "error"));
     }
 
-    // DB construct
     const construct = {
       id: steamid,
       uid: msg.author.id,
@@ -55,11 +49,11 @@ class steammonitorCommand extends Command {
       date: new Date(),
     };
 
-    // Inserts the construct into the DB
+    // Inserts the info
     const db = await this.bot.db.table("steammonitor");
     let acccount = 0;
 
-    // looks for id
+    // Updates db
     db.forEach(d => {
       if (d.uid === msg.author.id) acccount++;
     });
@@ -67,7 +61,6 @@ class steammonitorCommand extends Command {
     // Only 3 accounts can be monitored at a time
     if (acccount >= 3) return msg.channel.createMessage(this.bot.embed("❌ Error", "You can only monitor 3 accounts at a time.", "error"));
     if (!db.find(d => d.id === steamid)) {
-      // Fetches the API
       ban = await fetch(`http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=${this.bot.key.steam}&steamids=${steamid}`)
         .then(async res => await res.json().catch(() => {}));
       ban = ban.players[0];
@@ -77,11 +70,11 @@ class steammonitorCommand extends Command {
         return msg.channel.createMessage(this.bot.embed("❌ Error", `**${profile.personaname}** has already been **${ban.VACBanned ? "VAC" : "game"} banned**.`, "error"));
       }
 
-      // Inserts the construct into the DB
+      // Updates db
       await this.bot.db.table("steammonitor").insert(construct);
       msg.channel.createMessage(this.bot.embed("🎮 Steam Monitor", `Monitoring **${profile.personaname}** for the next 3 days (checking every hour).`));
     } else {
-      // Sends embed if already monitored
+      // Sends if already monitored
       msg.channel.createMessage(this.bot.embed("❌ Error", `**${profile.personaname}** is already being monitored.`, "error"));
     }
   }

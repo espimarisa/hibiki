@@ -19,7 +19,7 @@ class whitelistCommand extends Command {
       await this.bot.db.table("blacklist").filter({ guild: args[1] }).delete();
       msg.channel.createMessage(this.bot.embed("✅ Success", `Whitelisted **${args[1]}**.`, "success"));
     } else {
-      // Blacklists user
+      // Whitelists user
       await this.bot.db.table("blacklist").filter({ user: args[0] }).delete();
       msg.channel.createMessage(this.bot.embed("✅ Success", `Whitelisted **${args[0]}**.`, "success"));
     }

@@ -10,7 +10,6 @@ class bangheadCommand extends Command {
   }
 
   async run(msg) {
-    // Sets weebsh auth & image type
     const body = await fetch("https://api.weeb.sh/images/random?type=banghead", { headers: { "Authorization": `Wolke ${this.bot.key.weebsh}`, "User-Agent": `${this.bot.user.username}/${this.bot.version}` } })
       .then(async res => await res.json().catch(() => {}));
     let image;
@@ -19,7 +18,6 @@ class bangheadCommand extends Command {
     if (body.status !== 200) image = "https://cdn.weeb.sh/images/rJRepkXoW.gif";
     else if (body.status === 200) image = body.url;
 
-    // Sends the embed
     msg.channel.createMessage({
       embed: {
         description: `💢 **${msg.author.username}** is banging their head!`,

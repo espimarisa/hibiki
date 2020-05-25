@@ -13,7 +13,6 @@ class aurCommand extends Command {
   }
 
   async run(msg, args) {
-    // Fetches the API
     let res = await fetch(`https://aur.archlinux.org/rpc/?v=5&type=search&arg=${args.join(" ")}`);
     res = await res.json();
     let pkg;
@@ -25,13 +24,12 @@ class aurCommand extends Command {
       res.results.length = 15;
       // Sends original message
       const aurmsg = await msg.channel.createMessage(this.bot.embed("📦 Multiple Results", res.results.map((r, i) => `**${i + 1}:** ${r.Name} (${r.Popularity.toFixed(2)}%)`).join("\n")));
-      // WaitFor event
       await WaitFor("messageCreate", 60000, async (m) => {
         if (m.author.id !== msg.author.id) return;
         if (m.channel.id !== msg.channel.id) return;
         if (!m.content) return;
         const foundpkg = isNaN(m.content) ? res.results.find(r => r.Name.toLowerCase() === m.content.toLowerCase()) : res.results[parseInt(m.content) - 1];
-        // Invalid package
+        // If no package is found
         if (!foundpkg) {
           const message = await msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid package", "error"));
           setTimeout(() => {
@@ -41,17 +39,15 @@ class aurCommand extends Command {
         }
         pkg = foundpkg;
         return true;
-        // Timeout
-      }, this.bot).catch(err => err.message === "timeout" && aurmsg.edit(this.bot.embed("❌ Error", "The **1 minute timeout** has been reached.", "error")));
+      }, this.bot).catch(err => err.message === "timeout" && aurmsg.edit(this.bot.embed("❌ Error", "Timeout reached.", "error")));
     }
 
-    // No package found
+    // If no package was found
     if (!pkg) return msg.channel.createMessage(this.bot.embed("❌ Error", "No packages found.", "error"));
     let pkginfo = await fetch(`https://aur.archlinux.org/rpc/?v=5&type=info&arg=${pkg.Name}`);
     pkginfo = await pkginfo.json();
     pkginfo = pkginfo.results.find(p => p.Name === pkg.Name);
 
-    // Sets the fields
     const fields = [];
     if (pkg.numvotes) fields.push({ name: "Votes", value: pkg.NumVotes, inline: true });
     if (pkg.Popularity) fields.push({ name: "Popularity", value: pkg.Popularity.toFixed(2), inline: true });

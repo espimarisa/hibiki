@@ -5,13 +5,13 @@ module.exports = {
     try {
       // Sets the response message, timeout is 15 seconds
       const [resp] = await WaitFor("messageCreate", 15000, m => {
-        // Returns if author/channel is invalid
         if (m.author.id !== msg.author.id) return false;
         if (m.channel.id !== msg.channel.id) return false;
         // Checks for y/n
         if (m.content.toLowerCase() !== "y" && m.content.toLowerCase() !== "yes" && m.content.toLowerCase() !== "n" && m.content.toLowerCase() !== "no") return false;
         return true;
       }, bot);
+
       // Checks for yes
       if (resp.content.toLowerCase() === "y" || resp.content.toLowerCase() === "yes") {
         return retMsg ? {
@@ -19,7 +19,7 @@ module.exports = {
           msg: resp,
         } : true;
       }
-      // Returns false
+
       return retMsg ? {
         response: false,
         msg: resp,
@@ -37,7 +37,7 @@ module.exports = {
     if (!arg) return "No arg";
     if (!guild) return "No guild";
     const clear = arg.toLowerCase() === "clear" || arg.toLowerCase() === "off" || arg.toLowerCase() === "null";
-    // Searches for a valid roleID
+
     if (type === "roleID") {
       if (clear) return "clear";
       const role = guild.roles.find(r => r.name.toLowerCase().startsWith(arg.toLowerCase()) || r.id === arg || arg === `<@&${r.id}>`);
@@ -45,7 +45,6 @@ module.exports = {
       return role.id;
     }
 
-    // Searches for a valid channelID
     if (type === "channelID") {
       if (clear) return "clear";
       const channel = guild.channels.find(r => (r.name.toLowerCase().startsWith(arg.toLowerCase()) || r.id === arg || arg === `<#${r.id}>`) && r.type === 0);
@@ -53,21 +52,18 @@ module.exports = {
       return channel.id;
     }
 
-    // Searches for a valid integer
     if (type === "number") {
       if (clear) return "clear";
       if (isNaN(arg)) return "No number";
       return arg;
     }
 
-    // Searches for a valid string
     if (type === "string") {
       if (clear) return "clear";
       if (!arg) return "No string";
       return arg;
     }
 
-    // Searches for a valid bool
     if (type === "bool") {
       if (arg.toLowerCase() === "true" ||
         arg.toLowerCase() === "yes" ||
@@ -81,7 +77,6 @@ module.exports = {
       return "No bool found";
     }
 
-    // Looks for a valid rolearray
     if (type === "roleArray") {
       if (clear) return "clear";
       arg = arg.split(",");
@@ -95,7 +90,6 @@ module.exports = {
       return pArgs;
     }
 
-    // Looks for a valid chanmelArray
     if (type === "channelArray") {
       if (clear) return "clear";
       arg = arg.split(",");

@@ -24,7 +24,6 @@ class forcebanCommand extends Command {
 
     // Attempts to ban the IDs
     const bans = await Promise.all(args.map(async user => {
-      // If user is in server
       const m = msg.channel.guild.members.find(mem => mem.id === user);
       if (m) {
         // Checks role hiearchy
@@ -52,7 +51,6 @@ class forcebanCommand extends Command {
     const failed = bans.filter(b => !b.banned);
     if (!banned.length) return await forcebanmsg.edit(this.bot.embed("❌ Error", "Failed to ban all of the IDs given.", "error"));
 
-    // Edits the forcebanmsg
     await forcebanmsg.edit({
       embed: {
         title: `⚒ Forcebanned ${banned.length} ID${banned.length > 1 ? "s" : ""}.`,

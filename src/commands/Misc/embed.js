@@ -12,7 +12,6 @@ class embedCommand extends Command {
   }
 
   async run(msg, args) {
-    // Sets the emoji actions
     const emojis = [];
     const emojiactions = {
       "🇦": "title",
@@ -29,7 +28,6 @@ class embedCommand extends Command {
       "❌": "hibiki:cancel",
     };
 
-    // Sets the emoji labels
     const emojilabels = {
       "title": "Title",
       "description": "Description",
@@ -45,7 +43,6 @@ class embedCommand extends Command {
       "hibiki:cancel": "Cancel",
     };
 
-    // Sets the emoji descriptions
     const emojidescriptions = {
       "title": "Title of the embed.",
       "description": "Main text of the embed.",
@@ -61,7 +58,6 @@ class embedCommand extends Command {
       "hibiki:cancel": "Closes this menu.",
     };
 
-    // Prepares the embed
     let embed = {};
     Object.entries(emojiactions).forEach(e => emojis.push(e[0]));
 
@@ -73,7 +69,6 @@ class embedCommand extends Command {
         thumbnail: {
           url: "https://i.imgur.com/2LN0ni5.png",
         },
-        // Emoji actions fields
         fields: Object.entries(emojiactions).map(e => {
           return {
             name: `${e[0]} ${emojilabels[e[1]] ? emojilabels[e[1]] : e[1]}`,
@@ -106,7 +101,7 @@ class embedCommand extends Command {
 
       // Sends a prompt to the author
       embedmsg.edit(this.bot.embed("🖊 Embed", `Reply with the desired **${emojilabels[typeof e == "string" ? e : e.join(".")] ?
-      `${emojilabels[typeof e == "string" ? e : e.join(".")][0].toLowerCase()}${emojilabels[typeof e == "string" ? e : e.join(".")].substring(1)}` : e[1]}**.`, "general"));
+      `${emojilabels[typeof e == "string" ? e : e.join(".")][0].toLowerCase()}${emojilabels[typeof e == "string" ? e : e.join(".")].substring(1)}` : e[1]}**.`));
       const [resp] = await WaitFor("messageCreate", 30000, async (message) => {
         if (message.author.id !== msg.author.id) return false;
         if (message.channel.id !== msg.channel.id) return false;
@@ -122,7 +117,6 @@ class embedCommand extends Command {
           thumbnail: {
             url: "https://i.imgur.com/2LN0ni5.png",
           },
-          // Sets the fields as the options
           fields: Object.entries(emojiactions).map(em => {
             return {
               name: `${em[0]} ${emojilabels[em[1]] ? emojilabels[em[1]] : em[1]}`,
@@ -159,7 +153,6 @@ class embedCommand extends Command {
     }, this.bot).catch(() => {});
 
     if (!Object.keys(embed).length || Object.keys(embed).includes("error")) {
-      // Deletes the embed message
       embedmsg.delete().catch(() => {});
       return msg.channel.createMessage(this.bot.embed("❌ Error", embed.error ? embed.error : "Invalid embed.", "error"));
     }

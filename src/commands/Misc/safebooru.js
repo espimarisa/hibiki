@@ -12,7 +12,6 @@ class safebooruCommand extends Command {
   }
 
   async run(msg, args) {
-    // Fetches the API
     const body = await fetch(`https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1&tags=${encodeURIComponent(args.join(" "))}`)
       .then(async res => await res.json().catch(() => {}));
     if (!body || !body[0].image || !body[0].directory) return msg.channel.createMessage(this.bot.embed("❌ Error", "No images were found.", "error"));
@@ -21,11 +20,10 @@ class safebooruCommand extends Command {
     }
     const random = Math.floor(Math.random() * body.length);
 
-    // Sends the embed
     await msg.channel.createMessage({
       embed: {
         title: "🖼 Safebooru",
-        color: this.bot.embed.color("general"),
+        color: 0xBDE6E8,
         image: {
           url: `https://safebooru.org/images/${body[random].directory}/${body[random].image}`,
         },

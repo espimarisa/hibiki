@@ -33,12 +33,10 @@ class removepointCommand extends Command {
     const removed = points.filter(p => p.removed);
     const failed = points.filter(p => !p.removed);
 
-    // If none could be removed
     if (!removed.length) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "No reputation points given could be removed.", "error"));
     }
 
-    // Sends the embed
     this.bot.emit("pointRemove", msg.channel.guild, msg.member, removed.map(p => `\`${p.point}\``));
     await msg.channel.createMessage({
       embed: {

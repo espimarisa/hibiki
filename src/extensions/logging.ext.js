@@ -12,7 +12,6 @@ module.exports = (bot, db) => {
         logger = require(`${__dirname}/loggers/${l}`);
         logger(bot, db);
       } catch (e) {
-        // Logs if a logger couldn't be loaded
         bot.log.error(`Error while loading logger ${l}: ${e}`);
       }
       if (!logger) return;

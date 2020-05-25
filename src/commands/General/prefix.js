@@ -17,9 +17,9 @@ class prefixCommand extends Command {
     if (!args.length && (!guildcfg || !guildcfg.prefix)) {
       await this.bot.db.table("guildcfg").insert({
         id: msg.channel.guild.id,
-        prefix: this.bot.cfg.prefixes[0],
+        prefix: this.bot.config.prefixes[0],
       });
-      return msg.channel.createMessage(this.bot.embed("🤖 Prefix", `The prefix in this server is \`${this.bot.cfg.prefixes[0]}\`.`));
+      return msg.channel.createMessage(this.bot.embed("🤖 Prefix", `The prefix in this server is \`${this.bot.config.prefixes[0]}\`.`));
     }
 
     // If there's a prefix & no args
@@ -29,13 +29,11 @@ class prefixCommand extends Command {
     if (!guildcfg || !guildcfg.prefix) {
       await this.bot.db.table("guildcfg").insert({
         id: msg.channel.guild.id,
-        prefix: this.bot.cfg.prefixes[0],
+        prefix: this.bot.config.prefixes[0],
       });
     }
 
-    // Prefix over 15 chars
     if (prefix.length > 15) return msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid prefix. The max length is 15.", "error"));
-
     // Lets members without permission check but not set
     if (!msg.member.permission.has("manageGuild")) return msg.channel.createMessage(this.bot.embed("❌ Error", "You don't have permission to set the prefix.", "error"));
 
@@ -45,7 +43,6 @@ class prefixCommand extends Command {
       prefix: prefix,
     });
 
-    // Sends embed
     this.bot.emit("prefixUpdate", msg.channel.guild, msg.member, prefix);
     msg.channel.createMessage(this.bot.embed("✅ Success", `The prefix was set to \`${prefix}\`.`, "success"));
   }

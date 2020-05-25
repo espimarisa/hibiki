@@ -3,13 +3,14 @@ const Command = require("../../lib/structures/Command");
 class inviteCommand extends Command {
   constructor(...args) {
     super(...args, {
-      description: "Gives a link to invite the bot.",
+      aliases: ["support"],
+      description: "Gives links to invite the bot and for support.",
       allowdms: true,
     });
   }
 
   run(msg) {
-    msg.channel.createMessage(this.bot.embed("📌 Invite", `You can invite ${this.bot.user.username} using [this link](https://discordapp.com/oauth2/authorize?&client_id=${this.bot.user.id}&scope=bot&permissions=506850534).`));
+    msg.channel.createMessage(this.bot.embed("📌 Invite", `[Bot Invite](https://discordapp.com/oauth2/authorize?&client_id=${this.bot.user.id}&scope=bot&permissions=506850534) • [Support Server](https://discord.gg/${this.bot.config.support})`));
   }
 }
 

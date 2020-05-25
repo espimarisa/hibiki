@@ -45,7 +45,6 @@ class kickCommand extends Command {
         },
       }).catch(() => {});
 
-      // Tries to kick the user; logs
       await kickmsg.edit(this.bot.embed("🔨 Kick", `**${user.username}** was kicked by **${msg.author.username}**.`));
     }
   }

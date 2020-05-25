@@ -2,10 +2,17 @@
 cfg.json
 config.json
 configuration.json
+cfg.js
+config.js
+configuration.js
 
 # Binaries
 ffmpeg
 ffmpeg.exe
+ffplay
+ffplay.exe
+ffprobe
+ffprobe.exe
 rethinkdb
 rethinkdb.exe
 

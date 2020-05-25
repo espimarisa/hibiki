@@ -1,3 +1,4 @@
+// todo: readd hsl so resolv shuts up
 const Command = require("../../lib/structures/Command");
 
 class colorCommand extends Command {
@@ -12,11 +13,10 @@ class colorCommand extends Command {
 
   run(msg, args) {
     args = args.join();
-    // Sets the color
     let color;
+    // Sets the color
     const hexcheck = /[#]?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/.exec(args);
     const rgbcheck = /([0-9]{1,3})[, ]{1,2}([0-9]{1,3})[, ]{1,2}([0-9]{1,3})/.exec(args);
-    // Checks for the color's name
     const namecheck = require("../../lib/utils/Colors").names.find(name => name[1].toLowerCase().startsWith(args.toLowerCase()));
     if (hexcheck && !rgbcheck) color = this.hexToRGB(hexcheck[0]);
     else if (rgbcheck) color = {
@@ -25,13 +25,12 @@ class colorCommand extends Command {
       b: parseInt(rgbcheck[3]),
     };
 
-    // Randomly sets a color if no args are given
+    // Randomly sets a color
     else if (!args) color = this.hexToRGB(Math.floor(Math.random() * 16777215).toString(16));
     else if (namecheck) color = this.hexToRGB(namecheck[0]);
     if (!color) return msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid hex or color.", "error"));
     const hex = this.rgbToHex(color.r, color.g, color.b);
 
-    // Sends the embed
     msg.channel.createMessage({
       embed: {
         title: `🎨 ${require("../../lib/utils/Colors").name(hex)[1]}`,
@@ -54,7 +53,6 @@ class colorCommand extends Command {
       return r + r + g + g + b + b;
     });
 
-    // Sets the result
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {
       r: parseInt(result[1], 16),

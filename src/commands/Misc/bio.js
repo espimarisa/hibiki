@@ -15,7 +15,6 @@ class bioCommand extends Command {
     if (user) {
       const cfg = await this.bot.db.table("usercfg").get(user.id);
       return cfg && cfg.bio ?
-        // Sends the bio
         msg.channel.createMessage(this.bot.embed("👤 Bio", `**${user.username}**'s bio is currently \`${cfg.bio}\`.`)) :
         msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** doesn't have a bio.`, "error"));
     }
@@ -25,7 +24,6 @@ class bioCommand extends Command {
     if (!args.length && (!cfg || !cfg.bio)) return msg.channel.createMessage(this.bot.embed("❌ Error", "You didn't provide a bio.", "error"));
     // Shows the bio if it exists & no args given
     else if (!args.length && cfg && cfg.bio) return msg.channel.createMessage(this.bot.embed("👤 Bio", `Your bio is currently \`${cfg.bio}\`.`));
-    // Inserts blank usercfg
     if (!cfg) { cfg = { id: msg.author.id, bio: null }; }
     await this.bot.db.table("usercfg").insert(cfg);
 
@@ -36,12 +34,12 @@ class bioCommand extends Command {
       return msg.channel.createMessage(this.bot.embed("👤 Bio", "Your bio has been cleared."));
     }
 
-    // Sets bio
+    // Sets bio; blocks ads
     cfg.bio = args.join(" ");
-    // Blocks discord ads
     if (/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|list)|discord(app)?\.com\/invite)\/.+[a-z]/.test(cfg.bio)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "Your bio included an advertisement.", "error"));
     }
+
     // Updates usercfg
     await this.bot.db.table("usercfg").get(msg.author.id).update(cfg);
     msg.channel.createMessage(this.bot.embed("👤 Bio", `Bio set to \`${cfg.bio}\``));

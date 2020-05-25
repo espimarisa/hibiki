@@ -25,7 +25,6 @@ class githubCommand extends Command {
       }).then(async res => await res.json().catch(() => {}));
       if (!body || !body.id || body.message) return msg.channel.createMessage(this.bot.embed("❌ Error", "No information found.", "error"));
 
-      // Sets the fields
       const fields = [];
       if (body.owner && body.owner.login && !body.source) fields.push({ name: "Owner", value: body.owner.login, inline: true });
       if (body.fork) fields.push({ name: "Owner", value: `Forked from ${body.source.full_name}`, inline: true });
@@ -39,7 +38,7 @@ class githubCommand extends Command {
 
       // Embed construct
       const embed = {
-        color: this.bot.embed.color("general"),
+        color: 0x7DBBE6,
         fields: fields,
         author: {
           icon_url: body.owner.avatar_url,
@@ -51,7 +50,6 @@ class githubCommand extends Command {
         },
       };
 
-      // Sends the embed
       if (body.description) embed.description = body.description;
       msg.channel.createMessage({
         embed: embed,
@@ -66,7 +64,6 @@ class githubCommand extends Command {
       }).then(async res => await res.json().catch(() => {}));
       if (!body || !body.id || body.message) return msg.channel.createMessage(this.bot.embed("❌ Error", "No information found.", "error"));
 
-      // Sets the fields
       const fields = [];
       if (body.created_at) fields.push({ name: "Created", value: format.date(body.created_at) });
       if (body.public_repos > 0) fields.push({ name: "Repos", value: body.public_repos, inline: true });
@@ -77,9 +74,8 @@ class githubCommand extends Command {
       if (body.blog) fields.push({ name: "Website", value: `${body.blog}`, inline: true });
       if (body.email) fields.push({ name: "Email", value: `${body.email}`, inline: true });
 
-      // Embed construct
       const embed = {
-        color: this.bot.embed.color("general"),
+        color: 0x7DBBE6,
         fields: fields,
         author: {
           name: `${body.login} (${body.id})`,
@@ -91,7 +87,6 @@ class githubCommand extends Command {
         },
       };
 
-      // Sends the embed
       if (body.bio) embed.description = body.bio;
       msg.channel.createMessage({
         embed: embed,

@@ -12,9 +12,8 @@ class channelinfoCommand extends Command {
 
   run(msg, args, pargs) {
     const channel = pargs[0].value;
-    // Categories
     if (channel.type === 4) return msg.channel.createMessage(this.bot.embed("❌ Error", "A category was provided, not a channel.", "error"));
-    // Sets the description
+
     const desc = [];
     if (channel.topic) desc.push({ name: "", value: `${channel.topic}` });
     if (channel.parentID) desc.push({ name: "📰", value: `${msg.channel.guild.channels.get(channel.parentID).name} category` });
@@ -23,7 +22,6 @@ class channelinfoCommand extends Command {
     if (channel.type === 0) desc.push({ name: "📝", value: `Channel ${channel.nsfw ? "is" : "isn't"} NSFW; position ${channel.position}.` });
     if (channel.type === 2) desc.push({ name: "📝", value: `Bitrate: ${channel.bitrate}; limited to ${channel.userLimit} users` });
 
-    // Sends the embed
     msg.channel.createMessage({
       embed: {
         description: desc.map(d => `${d.name} ${d.value}`).join("\n"),

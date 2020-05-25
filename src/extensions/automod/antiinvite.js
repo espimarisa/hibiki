@@ -10,7 +10,6 @@ module.exports = async (msg, bot, cfg) => {
     let warning;
     // Looks for each type of punishment
     cfg.invitePunishments.forEach(async punishment => {
-      // Applies the punishment
       if (punishment === "Warn") warning = await punish.warn(msg, bot, "Sent an invite (Automod)");
       if (punishment === "Purge") msg.delete();
       if (punishment === "Mute") punish.mute(msg, bot, cfg);
@@ -22,7 +21,6 @@ module.exports = async (msg, bot, cfg) => {
       setTimeout(() => pmsg.delete("AutoMod message deletion").catch(() => {}), 4000);
     }
 
-    // Sends to the logchannel & adds the role
     bot.emit("automodantiInvite", msg.channel.guild, msg.member, msg.content, warning);
     await msg.member.addRole(cfg.mutedRole, "AutoMod").catch(() => {});
   }

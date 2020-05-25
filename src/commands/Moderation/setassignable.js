@@ -12,12 +12,9 @@ class addassignableCommand extends Command {
 
   async run(msg, args, pargs) {
     const role = pargs[0].value;
-
-    // If role is a bot role
     if (role.managed) return msg.channel.createMessage(this.bot.embed("❌ Error", "That role isn't able to be assigned.", "error"));
     let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
 
-    // If guild has no cfg
     if (!guildcfg || !guildcfg.assignableRoles || !guildcfg.assignableRoles.length) {
       await this.bot.db.table("guildcfg").insert({ id: msg.channel.guild.id, assignableRoles: [] });
       guildcfg = { id: msg.channel.guild.id, assignableRoles: [] };

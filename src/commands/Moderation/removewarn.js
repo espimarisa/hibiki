@@ -33,12 +33,10 @@ class removewarnCommand extends Command {
     const removed = warnings.filter(w => w.removed);
     const failed = warnings.filter(w => !w.removed);
 
-    // If none could be removed
     if (!removed.length) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "No warnings given could be removed.", "error"));
     }
 
-    // Sends the embed
     this.bot.emit("warningRemove", msg.channel.guild, msg.member, removed.map(w => `\`${w.warning}\``));
     await msg.channel.createMessage({
       embed: {

@@ -2,7 +2,6 @@ const Command = require("../../lib/structures/Command");
 const cows = {
   default: "        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||\n",
   tux: "   \\\n    \\\n        .--.\n       |o_o |\n       |:_/ |\n      //   \\ \\\n     (|     | )\n    /'\\_   _/`\\\n    \\___)=(___/",
-  elephant_in_snake: "   \\\n    \\              ....       \n           ........    .      \n          .            .      \n         .             .      \n.........              .......\n..............................\n\nElephant inside ASCII snake",
   bunny: "  \\\n   \\   \\\n        \\ /\\\n        ( )\n      .( o ).",
   moose: "  \\\n   \\   \\_\\_    _/_/\n    \\      \\__/\n           (oo)\\_______\n           (__)\\       )\\/\\\n               ||----w |\n               ||     ||\n",
   sheep: "  \\\n   \\\n       __     \n      UooU\\.'@@@@@@`.\n      \\__/(@@@@@@@@@@)\n           (@@@@@@@@)\n           `YY~~~~YY'\n            ||    ||",
@@ -17,7 +16,7 @@ class cowsayCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["cow"],
-      args: "[text:string]",
+      args: "[text:string] [type:string]",
       description: "Makes a cow say something.",
       allowdms: true,
     });
@@ -64,15 +63,14 @@ class cowsayCommand extends Command {
         return a.length;
       }));
 
-      // Sets the cow
+      // Sets the cow text
       if (length > 41) length = 41;
       dashes = "-".repeat(length + 2);
       dashes = ` ${dashes}`;
       return `\n${dashes.replace(/-/g, "_")}\n${fixLineBreak(t.match(/.{1,41}/g), length).join("\n")}\n${dashes}\n${cow}`;
     };
 
-    // Sends the embed
-    msg.channel.createMessage(this.bot.embed("🐮 Cowsay", `\`\`\`\n ${cowsay(args.join(" "))}\n\`\`\``, "general"));
+    msg.channel.createMessage(this.bot.embed("🐮 Cowsay", `\`\`\`\n ${cowsay(args.join(" "))}\n\`\`\``));
   }
 }
 

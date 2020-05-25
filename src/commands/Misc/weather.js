@@ -14,11 +14,9 @@ class weatherCommand extends Command {
   }
 
   async run(msg, args) {
-    // Gets the location
     const location = await fetch(`https://nominatim.openstreetmap.org/search/${encodeURIComponent(args.join(" "))}/?format=geocodejson`)
       .then(async res => await res.json().catch(() => {}));
 
-    // If no location
     if (!location || !location.features[0] || !location.features[0].geometry.coordinates) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "Location not found.", "error"));
     }
@@ -30,11 +28,10 @@ class weatherCommand extends Command {
     let name = loc.properties.geocoding.name.replace(/[\u0250-\ue007]/g, "");
     if (!name || !name.length) name = `${args}`;
 
-    // Gets the weather info
+    // Weather info
     const body = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&units=metric&appid=${this.bot.key.weather}`)
       .then(async res => await res.json().catch(() => {}));
 
-    // Sets the fields
     const fields = [];
     if (body.current.temp) fields.push({ name: "🌡 Temperature", value: `${body.current.temp.toFixed(0)}°c`, inline: true });
     if (body.current.feels_like) fields.push({ name: "🔆 Feels Like", value: `${body.current.feels_like.toFixed(0)}°c`, inline: true });
@@ -43,7 +40,6 @@ class weatherCommand extends Command {
     if (body.daily[0].temp.min) fields.push({ name: "🌙 Low", value: `${body.daily[0].temp.min.toFixed(0)}°c`, inline: true });
     if (body.current.wind_speed) fields.push({ name: "💨 Wind Speed", value: `${body.current.wind_speed.toFixed(1)}km/h`, inline: true });
 
-    // Sends the embed
     msg.channel.createMessage({
       embed: {
         title: `☁ Weather for ${name}`,

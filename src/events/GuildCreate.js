@@ -9,7 +9,6 @@ class guildCreate extends Event {
   }
 
   async run(guild) {
-    // Checks blacklist
     const blacklist = await this.bot.db.table("blacklist").filter({
       guild: guild.id,
     });
@@ -27,8 +26,8 @@ class guildCreate extends Event {
     if (oid) {
       const odm = await oid.getDMChannel().catch(() => {});
       if (odm) {
-        odm.createMessage(this.bot.embed(`✨ I was added to your server, ${oid.username}.`, `\n To get started, run \`${this.bot.cfg.prefixes[0]}help\`. 
-        You can configure me using the [web dashboard](${this.bot.cfg.homepage}/dashboard/).`)).catch(() => {});
+        odm.createMessage(this.bot.embed(`✨ I was added to your server, ${oid.username}.`, `\n To get started, run \`${this.bot.config.prefixes[0]}help\`. 
+        You can configure me using the [web dashboard](${this.bot.config.homepage}/dashboard/).`)).catch(() => {});
       }
     }
 

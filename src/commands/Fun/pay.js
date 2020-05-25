@@ -28,7 +28,6 @@ class payCommand extends Command {
         amount: 0,
         lastclaim: 9999,
       });
-      // Gets user cookies
       return ucookies = await this.bot.db.table("economy").get(user.id);
     }
 
@@ -39,19 +38,16 @@ class payCommand extends Command {
         amount: 0,
         lastclaim: 9999,
       });
-      // Gets user cookies
       return acookies = await this.bot.db.table("economy").get(msg.author.id);
     }
 
     // Compares cookie amounts
     if (amount > acookies.amount || acookies.amount <= 0) return msg.channel.createMessage(this.bot.embed("❌ Error", "You don't have enough cookies.", "error"));
-    // Sets cookie amount
     acookies.amount -= amount;
     ucookies.amount += amount;
     // Updates cookie amounts
     await this.bot.db.table("economy").get(user.id).update(ucookies);
     await this.bot.db.table("economy").get(msg.author.id).update(acookies);
-    // Sends the embed
     msg.channel.createMessage(this.bot.embed("🍪 Pay", `You gave **${amount}** cookie${amount === 1 ? "" : "s"} to **${user.username}**.`));
   }
 }

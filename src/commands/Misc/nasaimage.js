@@ -20,12 +20,11 @@ class nasaimageCommand extends Command {
     const data = images[Math.floor(Math.random() * images.length)];
     if (!data) return nasamsg.edit(this.bot.embed("❌ Error", "No images found.", "error"));
 
-    // Edits the message
     nasamsg.edit({
       embed: {
         title: "☄ Nasa Image",
         description: data.data[0].description.length > 2000 ? `${data.data[0].description.substring(0, 2000)}...` : data.data[0].description,
-        color: this.bot.embed.color("general"),
+        color: 0x0B3D91,
         image: {
           url: data.links[0].href,
         },
