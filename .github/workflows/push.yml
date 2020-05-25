@@ -17,7 +17,7 @@ jobs:
     - name: Dependabot
       uses: ridedott/merge-me-action@master
       with:
-        GITHUB-TOKEN: "${{ secrets.GITHUB_TOKEN }}" 
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" 
     - name: Testing
       run: |
         npm install
