@@ -14,7 +14,6 @@ class defineCommand extends Command {
   }
 
   async run(msg, args) {
-    // Fetches the API
     const body = await fetch(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${encodeURIComponent(args.join(" "))}?key=${this.bot.key.dictionary}`)
       .then(async res => await res.json().catch(() => {}));
 
@@ -22,7 +21,6 @@ class defineCommand extends Command {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "No definition found.", "error"));
     }
 
-    // Sends the embed
     msg.channel.createMessage({
       embed: {
         title: `📕 Definition for ${args.join(" ")}`,

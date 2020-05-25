@@ -20,6 +20,7 @@ class nicknameCommand extends Command {
       await msg.channel.guild.members.get(user).edit({ nick: null }, `Changed by ${format.tag(msg.author, true)}`);
       return msg.channel.createMessage(this.bot.embed("✅ Success", "Nickname was cleared.", "success"));
     } else if (nickname.length > 32) return msg.channel.createMessage(this.bot.embed("❌ Error", "Nickname must be 32 characters or less.", "error"));
+
     // Changes the member's nickname
     await msg.channel.guild.members.get(user).edit({ nick: nickname }, `Changed by ${format.tag(msg.author, true)}`).catch(() => {});
     msg.channel.createMessage(this.bot.embed("✅ Success", `Nickname was ${!nickname.length ? "re" : ""}set.`, "success"));

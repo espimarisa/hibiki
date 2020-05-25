@@ -7,22 +7,21 @@ const { Snowflake } = require("../../lib/utils/Snowflake");
 module.exports.mute = async (msg, bot, cfg, reason) => {
   const member = msg.member;
   const guild = msg.channel.guild;
-  // Returns if the user is already muted
   if (member.roles && member.roles.includes(cfg.mutedRole)) return;
-  // Inserts the user's info into the mutecache
   await bot.db.table("mutecache").insert({
     role: "",
     member: member.id,
     guild: guild.id,
   });
 
-  // Insert's the user's roles into the mutecache
+  // Insert's the member's roles into the mutecache
   await member.roles.forEach(async role => {
     await bot.db.table("mutecache").insert({
       role: role,
       member: member.id,
       guild: guild.id,
     });
+
     // Tries to remove their previous roles
     await guild.removeMemberRole(member.id, role, "AutoMod").catch(() => {});
   });
@@ -32,13 +31,13 @@ module.exports.mute = async (msg, bot, cfg, reason) => {
   if (reason) bot.emit("automodMute", guild, member, reason);
 };
 
-// Purge
+// Purge function
 module.exports.purge = async (m, msgs) => {
   if (Array.isArray(msgs)) m.channel.deleteMessages(msgs).catch(() => {});
   else m.channel.deleteMessage(msgs).catch(() => {});
 };
 
-// Warning
+// Warning function
 module.exports.warn = async (msg, bot, reason) => {
   const id = Snowflake();
   await bot.db.table("warnings").insert({

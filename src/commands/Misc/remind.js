@@ -13,14 +13,12 @@ class remindCommand extends Command {
   }
 
   async run(msg, args) {
-    // List user's reminders
+    // List member's reminders
     if (args[0] === undefined || args[0].toLowerCase() === "list") {
       let db = await this.bot.db.table("reminders");
       db = db.filter(d => d.user === msg.author.id);
-      // If the user has no reminders
-      if (!db.length) return msg.channel.createMessage(this.bot.embed("⏰ Reminders", "You don't have any reminders.", "general"));
+      if (!db.length) return msg.channel.createMessage(this.bot.embed("⏰ Reminders", "You don't have any reminders."));
 
-      // Sends the embed
       return msg.channel.createMessage({
         embed: {
           title: "⏰ Reminders",
@@ -33,26 +31,23 @@ class remindCommand extends Command {
       });
     }
 
-    // If the args start with remove, remove reminders
+    // Removing reminders
     if (args[0] !== undefined && (args[0].toLowerCase() === "remove" || args[0].toLowerCase() === "delete")) {
       if (!args[1] || !args[1].length) return msg.channel.createMessage(this.bot.embed("❌ Error", "You provided an invalid ID.", "error"));
       const db = await this.bot.db.table("reminders").get(args[1]);
       if (db.user !== msg.author.id) return msg.channel.createMessage(this.bot.embed("❌ Error", "You didn't create that reminder.", "error"));
-      // Reads the DB & deletes the reminder from it
       const reminder = await this.bot.db.table("reminders").get(args[1]).delete();
       if (reminder.skipped || reminder.errors) return msg.channel.createMessage(this.bot.embed("❌ Error", "Reminder not found.", "error"));
       // Clears the timeout
       const handle = this.timeoutHandles.find(h => h.id === args[1]);
       if (handle) clearTimeout(handle);
-      // Sends the embed
-      return msg.channel.createMessage(this.bot.embed("⏰ Reminder", `Reminder removed.`, "general"));
+      return msg.channel.createMessage(this.bot.embed("⏰ Reminder", `Reminder removed.`));
     }
 
     let val = 0;
     const fargs = [...args];
-    // Stupidly ugly time regex
+    // Time regex
     args = args.join(" ").replace(/\d{1,2}( )?(w(eek(s)?)?)?(d(ay(s)?)?)?(h(our(s)?)?(r(s)?)?)?(m(inute(s)?)?(in(s)?)?)?(s(econd(s)?)?(ec(s)?)?)?( and( )?)?([, ]{1,2})?/i, "").split(" ");
-    // Gets the time args
     const timeArg = fargs.join(" ").substring(0, fargs.join(" ").indexOf(args.join(" ")));
     const validtime = [];
     timeArg.split("").forEach((char, i) => {
@@ -92,9 +87,9 @@ class remindCommand extends Command {
     // Invalid time
     if (val < 1000) return msg.channel.createMessage(this.bot.embed("❌ Error", "You provided an invalid amount of time.", "error"));
     const finaldate = new Date().getTime() + val;
-    // Returns if too big (fuck setTimeout)
     if (finaldate > new Date().getTime() + 2142720000) return msg.channel.createMessage(this.bot.embed("❌ Error", "The time amout must be under 25 days.", "error"));
-    // Sets the reminder
+
+    // Creates the reminder
     const id = Snowflake();
     const reminder = {
       id: id,
@@ -103,10 +98,9 @@ class remindCommand extends Command {
       message: args.join(" "),
     };
 
-    // Pushes the reminder to the DB
+    // Sets timeout to send reminder
     const rdb = await this.bot.db.table("reminders").insert(reminder);
     if (!rdb.errors) {
-      // Sets timeout to send reminder
       const handle = setTimeout(async (r) => {
         const db = await this.bot.db.table("reminders").get(r.id);
         if (!db) return;
@@ -123,11 +117,9 @@ class remindCommand extends Command {
           },
         }).catch(() => {});
         this.timeoutHandles.push({ id: id, handle: handle });
-        // Remove the reminder from the DB
         await this.bot.db.table("reminders").get(r.id).delete();
       }, reminder.date - new Date().getTime(), reminder);
 
-      // Sends the embed
       msg.channel.createMessage({
         embed: {
           title: "⏰ Reminder",

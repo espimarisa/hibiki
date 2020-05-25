@@ -29,14 +29,17 @@ class helpCommand extends Command {
         case "Moderation":
           label = "🔨 **Moderation**";
           break;
+        case "Music":
+          label = "🎵 **Music**";
+          break;
         case "NSFW":
           label = "🔞 **NSFW**";
           break;
-        case "Roleplay":
-          label = "️️️❤️ **Roleplay**";
-          break;
         case "Owner":
           label = "⛔ **Owner**";
+          break;
+        case "Roleplay":
+          label = "️️️❤️ **Roleplay**";
           break;
         default:
           label = "❓ **Uncategorized**";
@@ -48,7 +51,6 @@ class helpCommand extends Command {
     // Formats cmd usage
     function cmdusage(argString, delimiter) {
       const argObj = [];
-      // Sets each arg
       argString.split(delimiter).forEach(arg => {
         const r = /(<|\[)(\w{1,}):(\w{1,})&?([\w=*]{1,})?(>|\])/.exec(arg);
         if (!r) return;
@@ -56,7 +58,6 @@ class helpCommand extends Command {
           name: r[2],
           type: r[3],
           flag: r[4],
-          // Optional args are in []
           optional: r[1] === "[",
         });
       });
@@ -81,9 +82,8 @@ class helpCommand extends Command {
         return 0;
       });
 
-      // Category labels
-      categories.forEach(e => { sortedcategories[categories.indexOf(e)] = categoryEmoji(e); });
       // Current channel help
+      categories.forEach(e => { sortedcategories[categories.indexOf(e)] = categoryEmoji(e); });
       if (args && args.join(" ").toLowerCase() === "here") {
         return msg.channel.createMessage({
           embed: {
@@ -108,7 +108,6 @@ class helpCommand extends Command {
           color: this.bot.embed.color("general"),
           fields: categories.map(category => ({
             name: sortedcategories[categories.indexOf(category)],
-            // Hides disabled commands
             value: this.bot.commands.map(c => {
               if (db && db.disabledCmds && db.disabledCmds.includes(c.id)) return;
               if (c.category !== category) return;
@@ -131,12 +130,10 @@ class helpCommand extends Command {
           },
         });
       });
-      // Adds reaction
       if (msg.channel instanceof Eris.PrivateChannel) return;
       if (dmson) return msg.addReaction("📬");
     } else {
       const construct = [];
-      // Sets the fields
       if (cmd.category === "Owner") return;
       if (cmd.aliases.length) construct.push({ name: "Aliases", value: `${cmd.aliases.map(alias => `\`${alias}\``).join(" ") || "No aliases"}`, inline: false });
       if (cmd.args) construct.push({ name: "Usage", value: cmdusage(cmd.args, " "), inline: false });
@@ -145,7 +142,7 @@ class helpCommand extends Command {
       if (cmd.requiredperms) construct.push({ name: "User Permissions", value: cmd.requiredperms, inline: true });
       if (cmd.allowdisable === false) construct.push({ name: "Allow Disable", value: cmd.allowdisable, inline: true });
       if (cmd.staff === true) construct.push({ name: "Staff", value: cmd.staff, inline: true });
-      // Sends info about cmd
+
       msg.channel.createMessage({
         embed: {
           description: cmd.description,

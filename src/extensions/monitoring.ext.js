@@ -1,6 +1,5 @@
 const fetch = require("node-fetch");
 
-// Checks every hour
 module.exports = async (bot) => {
   if (!bot.key.steam) return;
   setInterval(async () => {
@@ -17,7 +16,6 @@ module.exports = async (bot) => {
     });
 
     if (ids.length > 0) {
-      // Fetches the API
       body = await fetch(`http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=${bot.key.steam}&steamids=${ids.join(",")}`)
         .then(async res => await res.json().catch(() => {}));
       if (bans) bans = bans.players;
@@ -28,7 +26,7 @@ module.exports = async (bot) => {
     // Gets # of bans; types
     bans.forEach(async b => {
       if (b.VACBanned || b.NumberOfGameBans > 0) {
-        // Finds the user who was banned
+        // Finds who was banned
         const user = await monitoring.find(d => d.id === b.SteamID);
         await bot.db.table("monitoring").get(b.SteamID).delete();
         // Tries to DM the monitorer

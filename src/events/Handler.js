@@ -12,14 +12,13 @@ class Handler extends Event {
   }
 
   async run(msg) {
-    // DM handler
+    // Logs DMs
     if (msg.channel instanceof Eris.PrivateChannel) {
       if (msg.author.id === this.bot.user.id) return;
-      const cmd = this.bot.commands.find(c => msg.content.toLowerCase().startsWith(`${this.bot.cfg.prefixes[0]}${c.id}`) || msg.content.toLowerCase().startsWith(c.id));
-      if (cmd && cmd.allowdms) cmd.run(msg, msg.content.substring(this.bot.cfg.prefixes[0].length + cmd.id.length + 1).split(" "));
+      const cmd = this.bot.commands.find(c => msg.content.toLowerCase().startsWith(`${this.bot.config.prefixes[0]}${c.id}`) || msg.content.toLowerCase().startsWith(c.id));
+      if (cmd && cmd.allowdms) cmd.run(msg, msg.content.substring(this.bot.config.prefixes[0].length + cmd.id.length + 1).split(" "));
       else if (cmd && !cmd.allowdms) msg.channel.createMessage(this.bot.embed("❌ Error", "This command can't be used in DMs.", "error"));
-      // Sends the embed
-      return this.bot.createMessage(this.bot.cfg.logchannel, {
+      return this.bot.createMessage(this.bot.config.logchannel, {
         embed: {
           description: `${msg.content}`,
           color: this.bot.embed.color("general"),
@@ -34,17 +33,15 @@ class Handler extends Event {
       }).catch(() => {});
     }
 
-    // Blocks bots & blacklisted users
     if (msg.author.bot) return;
     const blacklist = await this.bot.db.table("blacklist");
     if (blacklist.find(u => u.user === msg.author.id)) return;
     let prefix;
     // Sets the prefixes
-    const prefixes = this.bot.cfg.prefixes.map(p => msg.content.startsWith(p)).indexOf(true);
+    const prefixes = this.bot.config.prefixes.map(p => msg.content.startsWith(p)).indexOf(true);
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
     if (guildcfg && guildcfg.prefix && msg.content.startsWith(guildcfg.prefix)) prefix = guildcfg.prefix;
-    else if ((!guildcfg || !guildcfg.prefix) && (this.bot.cfg.prefixes && prefixes !== -1)) prefix = this.bot.cfg.prefixes[prefixes];
-    // Support for mentioning the bot
+    else if ((!guildcfg || !guildcfg.prefix) && (this.bot.config.prefixes && prefixes !== -1)) prefix = this.bot.config.prefixes[prefixes];
     else if (msg.content.startsWith(`<@!${this.bot.user.id}> `)) prefix = `<@!${this.bot.user.id}> `;
     else if (msg.content.startsWith(`<@${this.bot.user.id}> `)) prefix = `<@${this.bot.user.id}> `;
     else if (msg.content.startsWith(`<@${this.bot.user.id}>`)) prefix = `<@${this.bot.user.id}>`;
@@ -55,33 +52,27 @@ class Handler extends Event {
     const cmd = this.bot.commands.find(c => c.id === cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
     // If bot mentioned with no content, show prefixes
     if (!cmdName.length && (prefix.startsWith(`<@${this.bot.user.id}>`) || prefix.startsWith(`<@!${this.bot.user.id}>`))) {
-      return msg.channel.createMessage(this.bot.embed("🤖 Prefix", `The prefix in this server is \`${guildcfg && guildcfg.prefix ? guildcfg.prefix : this.bot.cfg.prefixes[0]}\`.`));
+      return msg.channel.createMessage(this.bot.embed("🤖 Prefix", `The prefix in this server is \`${guildcfg && guildcfg.prefix ? guildcfg.prefix : this.bot.config.prefixes[0]}\`.`));
     } else if (!cmd) return;
 
-    // No send message perms
     if (!msg.channel.memberHasPermission(this.bot.user.id, "sendMessages")) {
       return msg.member.createMessage(`I don't have permission to send messages in <#${msg.channel.id}>.`);
     }
 
-    // No embed perms
     if (!msg.channel.memberHasPermission(this.bot.user.id, "embedLinks")) {
       return msg.channel.createMessage("In order to function properly, I need permission to **embed links**.");
     }
 
-    // Owner cmds
-    if (cmd.owner && !this.bot.cfg.owners.includes(msg.author.id)) return;
+    if (cmd.owner && !this.bot.config.owners.includes(msg.author.id)) return;
 
-    // Disabled categories
     if (guildcfg && (guildcfg.disabledCategories || []).includes(cmd.category) && cmd.allowdisable) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "The category that command is in is disabled in this server.", "error"));
     }
 
-    // Disabled cmds
     if (guildcfg && (guildcfg.disabledCmds || []).includes(cmd.id) && cmd.allowdisable) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "That command is disabled in this server.", "error"));
     }
 
-    // Client perms
     if (cmd.clientperms) {
       const botperms = msg.channel.guild.members.get(this.bot.user.id).permission;
       if (!botperms.has("embedLinks")) return msg.channel.createMessage(`❌ Error - I need permission to **embed links** to work properly.`);
@@ -90,24 +81,20 @@ class Handler extends Event {
       }
     }
 
-    // NSFW-only cmds
     if (cmd.nsfw && !msg.channel.nsfw) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "That command can only be ran in NSFW channels.", "error"));
     }
 
-    // Required perms
     if (cmd.requiredperms && (!msg.member.permission.has(cmd.requiredperms) || !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffRole)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `You need the **${cmd.requiredperms}** permission to run this.`, "error"));
     }
 
-    // Staff cmds
     if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg && guildcfg.staffRole && !msg.member.roles.includes(guildcfg.staffRole))) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "That command is only for staff members.", "error"));
     }
 
     // Cooldown handler
-    if (cmd.cooldown && !this.bot.cfg.owners.includes(msg.author.id)) {
-      // Adds cooldown reaction
+    if (cmd.cooldown && !this.bot.config.owners.includes(msg.author.id)) {
       if (this.cooldowns.includes(`${cmd.id}:${msg.author.id}`)) return msg.addReaction("⌛");
       else {
         this.cooldowns.push(`${cmd.id}:${msg.author.id}`);
@@ -120,7 +107,6 @@ class Handler extends Event {
     // Command args
     let parsedArgs;
     if (cmd.args) {
-      // Missing args; sends missing
       parsedArgs = this.bot.argParser.parse(cmd.args, args.join(" "), cmd.argsDelimiter, msg);
       const missingargs = parsedArgs.filter(a => typeof a.value == "undefined" && !a.optional);
       if (missingargs.length) {
@@ -129,10 +115,9 @@ class Handler extends Event {
     }
 
     try {
-      // Logs when cmds ran
+      // Tries to run the command
       if (args.length) this.bot.log(`${format.tag(msg.author)} ran ${cmd.id} in ${msg.channel.guild.name}: ${args}`);
       else { this.bot.log(`${format.tag(msg.author)} ran ${cmd.id} in ${msg.channel.guild.name}`); }
-      // Tries to run the command
       await cmd.run(msg, args, parsedArgs);
     } catch (e) {
       // Sentry info
@@ -141,10 +126,10 @@ class Handler extends Event {
         scope.setUser({ id: msg.author.id, username: format.tag(msg.author) });
         scope.setExtra("guild", msg.channel.guild.name);
       });
-      // Logs error
+
       sentry.captureException(e);
       console.log(e);
-      msg.channel.createMessage(this.bot.embed("❌ Error", `An error occurred, and it has been logged. \n \`\`\`js\n${e}\n\`\`\``, "error"));
+      msg.channel.createMessage(this.bot.embed("❌ Error", `An error occurred, and has been logged. \n \`\`\`js\n${e}\n\`\`\``, "error"));
     }
   }
 }

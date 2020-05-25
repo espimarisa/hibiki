@@ -12,7 +12,6 @@ class avatarCommand extends Command {
 
   run(msg, args, pargs) {
     const user = pargs[0].value;
-    // Sends the avatar
     msg.channel.createMessage({
       embed: {
         color: this.bot.embed.color("general"),

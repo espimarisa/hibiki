@@ -28,7 +28,6 @@ class osuCommand extends Command {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "The user you searched for has no data.", "error"));
     }
 
-    // Sets the fields
     const fields = [];
     fields.push({ name: "User ID", value: data.user_id, inline: true });
     if (data.pp_raw > 0) fields.push({ name: "PP", value: data.pp_raw, inline: true });
@@ -40,10 +39,9 @@ class osuCommand extends Command {
     if (data.total_score > 0) fields.push({ name: "Total Score", value: data.total_score, inline: true });
     if (data.join_date) fields.push({ name: "Join Date", value: data.join_date, inline: true });
 
-    // Sends the embed
     msg.channel.createMessage({
       embed: {
-        color: this.bot.embed.color("general"),
+        color: 0xE6649E,
         fields: fields,
         author: {
           name: data.username,

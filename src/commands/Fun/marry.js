@@ -12,7 +12,6 @@ class marryCommand extends Command {
 
   async run(msg, args, pargs) {
     const user = pargs[0].value;
-    // Gets marriage states
     const state = await this.bot.db.table("marriages").getAll(msg.author.id, user.id, { index: "marriages" });
 
     // If author is married
@@ -25,15 +24,14 @@ class marryCommand extends Command {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** is already married.`, "error"));
     }
 
-    // Sends original message
+    // Asks for a response
     const marrymsg = await msg.channel.createMessage(this.bot.embed("💝 Marry", `**${user.username}**, do you wish to marry **${msg.author.username}**?`));
-    // Waits for response
     const response = await yn(this.bot, { author: user, channel: msg.channel });
     if (response) {
       await this.bot.db.table("marriages").insert({ id: msg.author.id, spouse: user.id });
       marrymsg.edit(this.bot.embed("💝 Marry", `**${msg.author.username}** and **${user.username}** are now married.`));
     } else {
-      marrymsg.edit(this.bot.embed("💝 Marry", "Marriage cancelled.", "error"));
+      marrymsg.edit(this.bot.embed("💝 Marry", "Marriage cancelled. Maybe next time?"));
     }
   }
 }

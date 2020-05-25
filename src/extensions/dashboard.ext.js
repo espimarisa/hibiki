@@ -9,7 +9,7 @@ const passport = require("passport");
 const session = require("express-session");
 const strategy = require("passport-discord");
 const format = require("../lib/scripts/Format");
-const cfg = require("../cfg").dashboard;
+const config = require("../config").dashboard;
 
 const scope = ["identify", "guilds"];
 const app = express();
@@ -47,9 +47,9 @@ app.set("view engine", "ejs");
 
 // Loads auth system
 module.exports = (bot) => {
-  if (!cfg || !cfg.port || !cfg.cookiesecret) return;
+  if (!config || !config.port || !config.cookiesecret) return;
   app.use(session({
-    secret: `${cfg.cookiesecret}`,
+    secret: `${config.cookiesecret}`,
     resave: false,
     saveUninitialized: false,
   }));
@@ -69,7 +69,7 @@ module.exports = (bot) => {
   passport.deserializeUser((obj, done) => { done(null, obj); });
 
   // Creates Discord passport
-  passport.use(new strategy({ clientID: cfg.id, clientSecret: cfg.secret, callbackURL: cfg.redirect_uri, scope: scope },
+  passport.use(new strategy({ clientID: config.id, clientSecret: config.secret, callbackURL: config.redirect_uri, scope: scope },
     (_accessToken, _refreshToken, profile, done) => {
       process.nextTick(() => {
         return done(null, profile);
@@ -100,7 +100,7 @@ module.exports = (bot) => {
 
   // Handles redirects
   app.get("/invite/", (_req, res) => {
-    res.redirect(`https://discordapp.com/oauth2/authorize?&client_id=${bot.user.id}&scope=bot&permissions=${bot.cfg.permissions}`);
+    res.redirect(`https://discordapp.com/oauth2/authorize?&client_id=${bot.user.id}&scope=bot&permissions=506850534`);
   });
 
   app.get("/repo/", (_req, res) => {
@@ -108,7 +108,7 @@ module.exports = (bot) => {
   });
 
   app.get("/support/", (_req, res) => {
-    res.redirect(`https://discord.gg/${bot.cfg.support}`);
+    res.redirect(`https://discord.gg/${bot.config.support}`);
   });
 
   app.get("/twitter/", (_req, res) => {
@@ -161,5 +161,5 @@ module.exports = (bot) => {
   });
 
   // Listens on port
-  app.listen(cfg.port);
+  app.listen(config.port);
 };

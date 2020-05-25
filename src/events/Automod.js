@@ -9,7 +9,6 @@ class automod extends Event {
   }
 
   async run(msg) {
-    // Returns if invalid
     if (msg.channel instanceof Eris.PrivateChannel) return;
     if (!msg.member) return;
     if (msg.bot) return;

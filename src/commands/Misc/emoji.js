@@ -10,16 +10,14 @@ class emojiCommand extends Command {
   }
 
   run(msg, args) {
-    // Gets the emoji
     const emojiid = args.join("").split(/<:[a-zA-Z]{1,128}:([0-9]{17,18})>/).join("");
     if (!emojiid || isNaN(emojiid)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "Either that's a default emoji or it wasn't found.", "error"));
     }
 
-    // Sends the embed
     msg.channel.createMessage({
       embed: {
-        title: "😄 Enlarged Emoji",
+        title: "😄 Emoji",
         color: this.bot.embed.color("general"),
         image: {
           url: `https://cdn.discordapp.com/emojis/${emojiid}.png`,

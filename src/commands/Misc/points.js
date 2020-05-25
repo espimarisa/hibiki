@@ -13,13 +13,11 @@ class pointsCommand extends Command {
 
   async run(msg, args, pargs) {
     const user = pargs[0].value;
-    // Looks for points
     const points = await this.bot.db.table("points").filter({
       receiver: user.id,
       guild: msg.channel.guild.id,
     });
 
-    // If user has no points
     if (!points.length) return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** has no reputation points.`, "error"));
     // Uploads to hasteb.in if over 20
     if (points.length > 20) {
@@ -30,7 +28,6 @@ class pointsCommand extends Command {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** has more than 20 points. View them [here](https://hasteb.in/${body.key}).`, "error"));
     }
 
-    // Sends the embed
     await msg.channel.createMessage({
       embed: {
         title: `✨ ${user.username} has ${points.length} point${points.length === 1 ? "" : "s"}.`,

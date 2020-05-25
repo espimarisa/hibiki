@@ -30,16 +30,13 @@ class translateCommand extends Command {
       locale = args.shift().toLowerCase();
     }
 
-    // Fetches the API
     const body = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${locale}&dt=t&q=${encodeURIComponent(args.join(" "))}`)
       .then(async res => await res.json().catch(() => {}));
 
-    // If no body or info
     if (!body || !body[0] || !body[0][0] || !body[0][0][1] || !body[2]) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "No translation found.", "errro"));
     }
 
-    // Sends the embed
     msg.channel.createMessage(this.bot.embed("🌍 Translate", `Translations may not be 100% correct. \n ${body[0][0][1]} **(${body[2].toUpperCase()})** => ${body[0][0][0]} **(${locale.toUpperCase()})**`)).catch(() => {});
   }
 }

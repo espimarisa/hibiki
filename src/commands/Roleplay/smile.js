@@ -11,7 +11,6 @@ class smileCommand extends Command {
   }
 
   async run(msg, args, pargs) {
-    // Sets weebsh auth & image type
     const body = await fetch("https://api.weeb.sh/images/random?type=smile", { headers: { "Authorization": `Wolke ${this.bot.key.weebsh}`, "User-Agent": `${this.bot.user.username}/${this.bot.version}` } })
       .then(async res => await res.json().catch(() => {}));
     let image;
@@ -20,7 +19,6 @@ class smileCommand extends Command {
     if (body.status !== 200) image = "https://cdn.weeb.sh/images/BkVH4kKPb.gif";
     else if (body.status === 200) image = body.url;
 
-    // Sends the embed
     msg.channel.createMessage({
       embed: {
         description: `😊 **${msg.author.username}** is smiling at **${pargs[0].value.username}**!`,

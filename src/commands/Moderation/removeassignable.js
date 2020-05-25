@@ -14,13 +14,11 @@ class removeassignableCommand extends Command {
     const role = pargs[0].value;
     let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
 
-    // If guild has no cfg
     if (!guildcfg) {
       await this.bot.db.table("guildcfg").insert({ id: msg.channel.guild.id });
       guildcfg = { id: msg.channel.guild.id };
     }
 
-    // If no role is found
     if (!guildcfg.assignableRoles.length || !guildcfg.assignableRoles.includes(role.id)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `**${role.name}** isn't set to be assignable.`, "error"));
     }

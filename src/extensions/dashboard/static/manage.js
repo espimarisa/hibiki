@@ -30,7 +30,7 @@ window.addEventListener("load", async () => {
   const id = /manage\/([\d]{17,19})/.exec(document.URL)[1];
   let res = await fetch(`/api/getitems`, { credentials: "include" });
   const dbitems = await res.json();
-  res = await fetch(`/api/getitems?commands=true`, { credentials: "include" });
+  res = await fetch("/api/getitems?commands=true", { credentials: "include" });
   const cmds = await res.json();
   const items = dbitems.map(p => p.id);
   if (!id) return;

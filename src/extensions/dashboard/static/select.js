@@ -24,7 +24,6 @@ $(async () => {
     },
   };
 
-  // Disabled cmds
   $("#disabledCmds > select").multipleSelect({
     ...baseOptions,
     data: cmds,
@@ -43,7 +42,6 @@ $(async () => {
     },
   });
 
-  // Autoroles
   $("#autoRoles > select").multipleSelect({
     ...baseOptions,
     minimumCountSelected: 1,
@@ -55,13 +53,11 @@ $(async () => {
       }
     },
 
-    // Shows howe many selected
     formatCountSelected: (count) => {
       return `${count} selected`;
     },
   });
 
-  // Assignable roles
   $("#assignableRoles > select").multipleSelect({
     ...baseOptions,
     minimumCountSelected: 1,
@@ -71,13 +67,11 @@ $(async () => {
       }
     },
 
-    // Shows how many selected
     formatCountSelected: (count) => {
       return `${count} selected`;
     },
   });
 
-  // snipingIgnore
   $("#snipingIgnore > select").multipleSelect({
     ...baseOptions,
     minimumCountSelected: 1,
@@ -88,7 +82,6 @@ $(async () => {
       }
     },
 
-    // Shows howe many selected
     formatCountSelected: (count) => {
       return `${count} selected`;
     },

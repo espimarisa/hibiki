@@ -17,10 +17,8 @@ class stealembedCommand extends Command {
     const richembed = m.embeds.find(e => e.type === "rich");
     if (!richembed) return msg.channel.createMessage(this.bot.embed("❌ Error", "There's not an embed in that message.", "error"));
     if (richembed.type) delete richembed.type;
-    // Fetches API
     const body = await fetch("https://hasteb.in/documents", { referrer: "https://hasteb.in/", body: inspect(richembed), method: "POST", mode: "cors" })
       .then(async res => await res.json().catch(() => {}));
-    // Sends the embed
     msg.channel.createMessage(this.bot.embed("🔗 Steal Embed", `The embed object can be viewed [here](https://hasteb.in/${body.key}.js).`));
   }
 }

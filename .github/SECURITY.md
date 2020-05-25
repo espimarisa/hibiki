@@ -1,17 +1,26 @@
 # Security Policy
 
 ## Supported Versions
+Only the latest release of Hibiki is supported. This is whatever version the main production instance is running, or the [latest GitHub Release][1] that isn't a pre-release.
 
-Currently, the latest version of Hibiki is only officially supported.
+**No official support** is given for self-hosted instances. It is not the responsibility of the Hibiki Development Team to ensure that self-hosted instances are secured properly or running the latest version.
 
-Additionaly, if you have found a vulnerability with a production build of 3.x.x older than the current master branch, test it in the latest version.
-If the vulnerability still exists in the latest production version, then contact us.
+## Testing
+If you believe you have found a vulnerability, be sure you test it in:
+  - The latest stable version or release
+  - The latest [development commit][2]
 
-Legacy closed-source versions 1 & 2 are no longer supported.
-If you are running a legacy version for whatever reason, no support will be given.
+If the issue persists between development builds or is in production, then you should contact us. Otherwise, we may have patched it out or updated code.
 
-## Reporting a Vulnerability
+## Reporting
+If you believe you have discovered a vulnerability or exploit and have followed the testing guide above, it's best to directly contact the owner using a link below, instead of creating an issue that others can possibly exploit on production.
 
-If you believe you have discovered a vulnerability, it's best to directly contact one of us.
+[Discord][3] - [Telegram][4] - [Email][5]
 
-You can most easily do so thru [Telegram](https://t.me/@smolespi). Alternatively, you can [email](mailto:espi@lesbian.codes) a dev.
+If you are unable to make contact thru any of these methods whatsoever, you can go ahead and make an issue and we'll immediately look into it. However, it's best to do this as a last resort to prevent any possible damages.
+
+[1]: https://github.com/smolespi/Hibiki/releases/latest "Releases"
+[2]: https://github.com/smolespi/Hibiki/tree/development "Development"
+[3]: https://discord.gg/gZEj4sM "Discord"
+[4]: https://t.me/smolespi "Telegram"
+[5]: mailto:espi@lesbian.codes "Email"

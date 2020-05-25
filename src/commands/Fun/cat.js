@@ -12,11 +12,9 @@ class catCommand extends Command {
   }
 
   async run(msg) {
-    // Fetches the API
     const body = await fetch("http://aws.random.cat/meow").then(async res => await res.json().catch(() => {}));
     if (!body || !body.file) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
 
-    // Sends the embed
     msg.channel.createMessage({
       embed: {
         title: "🐱 Meow!",

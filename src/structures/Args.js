@@ -1,10 +1,10 @@
 class argParser {
   constructor(bot) {
     this.bot = bot;
-    // Types of args
     this.argTypes = {
       string: (a) => { return a; },
     };
+
     // Looks for argtypes
     require("fs").readdir(`${__dirname}/ArgTypes`, (_e, files) => {
       files.forEach(a => {
@@ -46,6 +46,7 @@ class argParser {
       if (argg.flag && argg.flag.startsWith("ignore=") && arg === argg.flag.split("ignore=")[1]) return argObj.splice(i, 1);
       if (!this.argTypes[argg.type]) return;
       const value = this.argTypes[argg.type](arg.toLowerCase(), msg, argg.flag, this.bot);
+      console.log(value);
       if (typeof value == "undefined") return;
       argg.value = value;
       argObj[i] = argg;

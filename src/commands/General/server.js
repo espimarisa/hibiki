@@ -10,13 +10,13 @@ class serverCommand extends Command {
   }
 
   run(msg, args) {
-    let guild = msg.channel.guild;
     // Lets owners show other server info
-    if (args[0] && this.bot.cfg.owners.includes(msg.author.id)) {
+    let guild = msg.channel.guild;
+    if (args[0] && this.bot.config.owners.includes(msg.author.id)) {
       guild = this.bot.guilds.find(g => g.name.toLowerCase().startsWith(args.join(" ")) || g.id === args.join(" "));
     } else guild = msg.channel.guild;
     if (!guild) return msg.channel.guild;
-    // Seperates bots & members
+
     let bots = 0;
     let users = 0;
     guild.members.forEach(mem => {
@@ -24,7 +24,6 @@ class serverCommand extends Command {
       else users++;
     });
 
-    // Sets the description
     const desc = [];
     desc.push({ name: "👑", value: `Owned by ${format.tag(guild.members.find(mem => mem.id === guild.ownerID))}` });
     desc.push({ name: "🆔", value: `${guild.id}` });
@@ -38,7 +37,7 @@ class serverCommand extends Command {
     if (guild.verificationLevel > 0) desc.push({ name: "🔐", value: `Verification level ${guild.verificationLevel}` });
     if (guild.mfaLevel === 1) desc.push({ name: "🔐", value: "2FA Enabled" });
     if (guild.defaultNotifications === 0) desc.push({ name: "🔔", value: "All messages notify" });
-    if (guild.premiumSubscriptionCount > 0) desc.push({ name: "👤", value: `${guild.premiumSubscriptionCount} members boosting` });
+    if (guild.premiumSubscriptionCount > 0) desc.push({ name: "👤", value: `${guild.premiumSubscriptionCount} boosting` });
     if (guild.premiumTier > 0) desc.push({ name: "⭐", value: `Boost level ${guild.premiumTier}` });
 
     // Sends the embed

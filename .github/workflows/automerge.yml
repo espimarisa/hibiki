@@ -1,4 +1,4 @@
-name: Automatically merge Dependabot updates
+name: Dependabot Merges
 
 on:
   check_suite:

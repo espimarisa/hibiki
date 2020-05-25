@@ -12,7 +12,6 @@ class holdhandsCommand extends Command {
   }
 
   async run(msg, args, pargs) {
-    // Sets weebsh auth & image type
     const body = await fetch("https://api.weeb.sh/images/random?type=handholding", { headers: { "Authorization": `Wolke ${this.bot.key.weebsh}`, "User-Agent": `${this.bot.user.username}/${this.bot.version}` } })
       .then(async res => await res.json().catch(() => {}));
     let image;
@@ -21,7 +20,6 @@ class holdhandsCommand extends Command {
     if (body.status !== 200) image = "https://cdn.weeb.sh/images/Sky0l65WM.gif";
     else if (body.status === 200) image = body.url;
 
-    // Sends the embed
     msg.channel.createMessage({
       embed: {
         description: `👀 **${msg.author.username}** is holding hands with **${pargs[0].value.username}**!`,

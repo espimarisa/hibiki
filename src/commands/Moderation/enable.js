@@ -17,7 +17,6 @@ class enableCommand extends Command {
     this.bot.commands.forEach(c => categories.includes(c.category) && c.category !== "Owner" ? "" : categories.push(c.category));
 
     if (!guildcfg) {
-      // Inserts blank cfg
       await this.bot.db.table("guildcfg").insert({ id: msg.channel.guild.id, disabledCmds: [], disabledCategories: [] });
       guildcfg = { id: msg.channel.guild.id, disabledCmds: [], disabledCategories: [] };
     }
@@ -35,13 +34,12 @@ class enableCommand extends Command {
       return msg.channel.createMessage(this.bot.embed("✅ Success", `The **${category}** category has been enabled.`, "success"));
     }
 
-    // If cmd not found; already disabled
+    // If cmd not found or is already disabled
     if (!cmd) return msg.channel.createMessage(this.bot.embed("❌ Error", "That command doesn't exist.", "error"));
     if (!guildcfg.disabledCmds) guildcfg.disabledCmds = [];
     if (guildcfg.disabledCmds && !guildcfg.disabledCmds.includes(cmd.id)) return msg.channel.createMessage(this.bot.embed("❌ Error", `That command isn't disabled.`, "error"));
 
     if (cmd) {
-      // Updates DB
       guildcfg.disabledCmds.splice(guildcfg.disabledCmds.indexOf(cmd.id), 1);
       await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(guildcfg);
       this.bot.emit("commandEnable", msg.channel.guild, msg.member, command);

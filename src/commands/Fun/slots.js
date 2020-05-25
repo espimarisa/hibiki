@@ -5,7 +5,7 @@ class slotsCommand extends Command {
     super(...args, {
       aliases: ["bet", "gamble", "slot", "slotmachine", "sm"],
       args: "[amount:string]",
-      description: "Bets cookies to play the slot machine.",
+      description: "Bets cookies to use on a slot machine.",
       cooldown: 3,
     });
   }
@@ -64,9 +64,8 @@ class slotsCommand extends Command {
       economydb.amount -= args[0];
     }
 
-    economydb.amount = Math.floor(economydb.amount);
-
     // Updates DB
+    economydb.amount = Math.floor(economydb.amount);
     await this.bot.db.table("economy").get(msg.author.id).update(economydb);
     msg.channel.createMessage(this.bot.embed("🎰 Slots", `${profit ? `You won **${profit}** cookies!` : "Sorry, you lost."} \n ${emojistring}`));
   }

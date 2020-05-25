@@ -33,9 +33,8 @@ class assignCommand extends Command {
     if (!role) return msg.channel.createMessage(this.bot.embed("❌ Error", "No **role** was provided.", "error"));
     const assignable = guildcfg.assignableRoles.includes(role.id);
 
-    // Sends the embed
+    // Adds the role
     if (assignable) {
-      // Adds the role
       await msg.member.addRole(role.id, "Self-assignable role").catch(() => {
         msg.channel.createMessage(this.bot.embed("❌ Error", "Failed to give you the role."));
       });

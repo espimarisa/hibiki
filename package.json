@@ -1,6 +1,6 @@
 {
   "name": "hibiki",
-  "version": "3.1.2",
+  "version": "3.2.0-alpha.1",
   "description": "A versatile and feature-packed Discord bot written in JavaScript.",
   "author": "smolespi (https://lesbian.codes)",
   "contributors": [
@@ -8,7 +8,7 @@
   ],
   "license": "AGPL-3.0",
   "homepage": "https://hibiki.app",
-  "main": "hibiki.js",
+  "main": "index.js",
   "bugs": {
     "url": "https://github.com/smolespi/Hibiki/issues"
   },
@@ -21,7 +21,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "bot": "node hibiki.js",
+    "bot": "node index.js",
     "lint": "npx eslint --fix .",
     "setup": "node lib/scripts/Setup.js",
     "test": "npx eslint ."
@@ -31,19 +31,22 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "ejs": "^3.1.3",
-    "eris": "^0.13.0",
+    "eris": "^0.13.1",
     "eris-additions": "^1.4.1",
+    "erlpack": "^0.1.3",
     "eventemitter3": "^4.0.4",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "helmet": "^3.22.0",
     "node-fetch": "^2.6.0",
+    "node-opus": "^0.3.3",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.3",
-    "rethinkdbdash": "^2.3.31"
+    "rethinkdbdash": "^2.3.31",
+    "ytdl-core": "^2.1.4"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.0.0"
+    "eslint": "^7.1.0"
   }
 }

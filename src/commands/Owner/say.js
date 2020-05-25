@@ -10,7 +10,6 @@ class sayCommand extends Command {
   }
 
   run(msg, args) {
-    // Sends message
     msg.channel.createMessage(args.join(" "));
     msg.delete();
   }

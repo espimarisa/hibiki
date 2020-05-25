@@ -37,16 +37,15 @@ module.exports = {
         cl = i;
       }
     }
+
     // Fallback color
     return cl < 0 ? ["#000000", `Invalid Color: ${ color}`, false] : [`#${ this.names[cl][0]}`, this.names[cl][1], false];
   },
 
-  // Parses
   rgb: function(color) {
     return [parseInt(`0x${ color.substring(1, 3)}`), parseInt(`0x${ color.substring(3, 5)}`), parseInt(`0x${ color.substring(5, 7)}`)];
   },
 
-  // List of colors
   names: [
     ["000000", "Black"],
     ["000080", "Navy Blue"],

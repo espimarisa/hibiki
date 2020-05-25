@@ -19,7 +19,7 @@ class warnCommand extends Command {
     let reason = args.slice(1).join(" ");
     if (reason.length > 512) reason = reason.slice(0, 512);
 
-    // Inserts info into the DB
+    // Inserts info
     await this.bot.db.table("warnings").insert({
       giver: msg.author.id,
       receiver: user.id,
@@ -28,7 +28,6 @@ class warnCommand extends Command {
       reason: reason || "No reason given.",
     });
 
-    // Sends the embed
     this.bot.emit("memberWarn", msg.channel.guild, msg.member, user, id, reason || "No reason given.");
     msg.channel.createMessage(this.bot.embed("⚠ Warn", `**${user.username}** was given a warning.`));
   }

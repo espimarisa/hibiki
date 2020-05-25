@@ -1,29 +1,28 @@
 const { Client, Collection } = require("eris");
 const { readdir } = require("fs");
-const { version } = require("../package");
 const argParser = require("../lib/utils/Args.js");
 const Command = require("./structures/Command");
 const Event = require("./structures/Event");
+const Music = require("./structures/Music");
 const sentry = require("@sentry/node");
 const starttime = new Date();
 
 class Verniy extends Client {
-  // Client constructor
   constructor(token, erisOptions, db) {
     super(token, erisOptions);
-    this.version = version;
-    this.cfg = require("../cfg").cfg;
-    this.key = require("../cfg").keys;
-    this.embed = require("./Embed");
-    this.log = require("./Log");
     this.db = db;
+    this.antiSpam = [];
+    this.extensions = [];
+    this.snipeData = {};
+    this.config = require("../config").cfg;
+    this.embed = require("./Embed");
+    this.key = require("../config").keys;
+    this.log = require("./Log");
+    this.version = require("../package").version;
     this.argParser = new argParser(this);
     this.commands = new Collection(Command);
     this.events = new Collection(Event);
-    this.extensions = [];
-    this.antiSpam = [];
-    this.snipeData = {};
-    // Logs when ready
+    this.music = new Music(this);
     this.once("ready", () => {
       // Logs number of cmds, events, extensions
       this.log.success(`${this.commands.size} commands loaded`);
@@ -32,15 +31,24 @@ class Verniy extends Client {
         this.extensions.forEach(e => e(this));
         this.log.success(`${this.extensions.length} extensions loaded`);
       }
-      // Logs user/startup; sets status
+      // Logs user/startup time
       this.log.success(`Logged in as ${this.user.username}#${this.user.discriminator} on ${this.guilds.size} servers`);
       this.log.success(`Startup took ${new Date(new Date() - starttime).getSeconds()}.${new Date(new Date() - starttime).getMilliseconds()} seconds`);
-      this.editStatus("online", { name: `${this.guilds.size} servers`, type: 3 });
+      // Sets the bot's statuses
+      const statuses = this.config.statuses.map(s => {
+        if (s === "totalusers") s = `${this.users.size} users`;
+        if (s === "totalguilds") s = `${this.guilds.size} servers`;
+        if (s === "version") s = `v${this.version} | hibiki.app`;
+        return s;
+      });
+      this.editStatus("online", { name: statuses[Math.floor(statuses.length * Math.random())], type: this.config.statustype });
+      setInterval(() => {
+        this.editStatus("online", { name: statuses[Math.floor(statuses.length * Math.random())], type: this.config.statustype });
+      }, 50000);
+      // Initializes Sentry
+      try { sentry.init({ dsn: this.key.dsn }); } catch (e) { this.log.error(`Sentry failed to Initialize: ${e}`); }
     });
-    // Initializes Sentry
-    try { sentry.init({ dsn: this.key.dsn }); } catch (e) { this.log.error(`Sentry failed to Initialize: ${e}`); }
   }
-
 
   // Command loader
   loadCommands(path) {

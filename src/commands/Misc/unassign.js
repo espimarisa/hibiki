@@ -14,15 +14,12 @@ class unassignCommand extends Command {
     const role = pargs[0].value;
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
 
-    // If guild has no cfg
     if (!guildcfg || !guildcfg.assignableRoles || !guildcfg.assignableRoles.length) {
       await this.bot.dsb.table("guildcfg").insert({ id: msg.channel.guild.id, assignableRoles: [] });
     }
 
-    // Gets the role
     const assignable = guildcfg.assignableRoles.includes(role.id);
 
-    // Sends the embed
     if (assignable) {
       // Adds the role
       await msg.member.removeRole(role.id, "Self-assignable role").catch(() => {

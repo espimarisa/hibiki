@@ -8,10 +8,9 @@ const router = express.Router();
 module.exports = (bot) => {
   router.get("/api/updateBio", async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
-    // Gets userconfig
+    // Gets bio
     let cfg = await bot.db.table("usercfg").get(req.user.id);
     if (!req.query || typeof req.query.bio === "undefined") return res.status(400).send({ error: "Missing required params" });
-    // Sets bio
     let bio = req.query.bio;
     if (req.query.bio.length === 0 && typeof req.query.bio === "string") bio = null;
     else bio = bio.substring(0, 100);

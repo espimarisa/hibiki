@@ -19,7 +19,6 @@ class unbanCommand extends Command {
     // Attempts to unban the IDs
     const unbans = await Promise.all(args.map(async user => {
       try {
-        // Unbans the IDs
         await msg.channel.guild.unbanMember(user, `Unbanned by ${format.tag(msg.author, true)}`);
         return { unbanned: true, user: user };
       } catch (e) {
@@ -32,7 +31,6 @@ class unbanCommand extends Command {
     const failed = unbans.filter(b => !b.unbanned);
     if (!unbanned.length) return msg.channel.createMessage(this.bot.embed("❌ Error", "Failed to unban all of the IDs given.", "error"));
 
-    // Edits the forcebanmsg
     await msg.channel.createMessage({
       embed: {
         title: `⚒ Unbanned ${unbanned.length} ID${unbanned.length > 1 ? "s" : ""}.`,

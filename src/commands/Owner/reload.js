@@ -19,12 +19,11 @@ class reloadCommand extends Command {
         const r = cmd.reload();
         if (r !== "reloaded") errors.push({ id: cmd.id, error: r });
       });
-      // Sends any errors
       return msg.channel.createMessage(this.bot.embed("🔄 Reload", errors.length ? errors.map(e => `**${e.id}:** \`\`\`js\n${e.error}\`\`\``).join("\n") : "Reloaded all commands."));
     }
+
     // Reloads
     const r = pargs[0].value.reload();
-    // Sends when reloaded
     if (r === "reloaded") msg.channel.createMessage(this.bot.embed("🔄 Reload", `**${pargs[0].value.id}** was reloaded.`, "success"));
     else msg.channel.createMessage(this.bot.embed("🔄 Reload", `Error while reloading: ${r}`, "error"));
   }

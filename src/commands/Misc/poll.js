@@ -15,13 +15,11 @@ class pointsCommand extends Command {
     args = args.join(" ");
     const urlcheck = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/.exec(args);
     if (urlcheck) args = args.slice(0, urlcheck.index) + args.slice(urlcheck.index + urlcheck[0].length, args.length);
-    // Sets the image
     if (urlcheck) imgurl = urlcheck[0];
     if (!imgurl && msg.attachments && msg.attachments[0]) imgurl = msg.attachments[0].proxy_url;
     if (!imgurl) imgurl = null;
     if (!args[0]) return msg.channel.createMessage(this.bot.embed("❌ Error", "You didn't provide anything to put in the poll.", "error"));
 
-    // Sends the embed
     const pollmsg = await msg.channel.createMessage({
       embed: {
         description: args,
@@ -36,7 +34,6 @@ class pointsCommand extends Command {
       },
     });
 
-    // Adds the reactions
     await pollmsg.addReaction("👍").catch(() => {});
     await pollmsg.addReaction("👎").catch(() => {});
   }

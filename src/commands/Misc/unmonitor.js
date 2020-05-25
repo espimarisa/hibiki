@@ -22,7 +22,7 @@ class unmonitorCommand extends Command {
         return msg.channel.createMessage(this.bot.embed("❌ Error", "You aren't monitoring anyone.", "error"));
       } else {
         // Sends a list of currently monitored accounts
-        msg.channel.createMessage(this.bot.embed("🎮 Steam Monitor", `You are currently monitoring: ${monitors.length > 0 ? monitors.map(m => `\`${m.uname}\``).join(",") : "Nobody"}`, "general"));
+        msg.channel.createMessage(this.bot.embed("🎮 Steam Monitor", `You are currently monitoring: ${monitors.length > 0 ? monitors.map(m => `\`${m.uname}\``).join(",") : "Nobody"}`));
       }
       return;
     }
@@ -51,7 +51,7 @@ class unmonitorCommand extends Command {
     if (user) {
       // Deletes data from the DB
       await this.bot.db.table("steammonitor").get(user.id).delete();
-      msg.channel.createMessage(this.bot.embed("🎮 Steam Monitor", `Removed **${user.uname}** from the monitoring list.`, "general"));
+      msg.channel.createMessage(this.bot.embed("🎮 Steam Monitor", `Removed **${user.uname}** from the monitoring list.`));
     } else {
       msg.channel.createMessage(this.bot.embed("❌ Error", "That account isn't being monitored by you.", "error"));
     }

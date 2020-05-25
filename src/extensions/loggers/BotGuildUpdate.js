@@ -6,13 +6,13 @@ const format = require("../../lib/scripts/Format");
 
 module.exports = (bot) => {
   // Logs when added to a server
-  if (!bot.cfg.logchannel) return;
+  if (!bot.config.logchannel) return;
   bot.on("guildCreate", async guild => {
     // Uncached guilds
-    if (typeof guild != "object" || !guild || !guild.name) return;
+    if (typeof guild !== "object" || !guild || !guild.name) return;
     const bots = guild.members.filter(m => m.bot).length;
     const owner = guild.members.get(guild.ownerID);
-    bot.createMessage(bot.cfg.logchannel, {
+    bot.createMessage(bot.config.logchannel, {
       embed: {
         color: bot.embed.color("success"),
         author: {
@@ -46,12 +46,12 @@ module.exports = (bot) => {
 
   // Logs when removed from a server
   bot.on("guildDelete", async guild => {
-    if (!bot.cfg.logchannel) return;
+    if (!bot.config.logchannel) return;
     // Uncached guilds
-    if (typeof guild != "object" || !guild || !guild.name) return;
+    if (typeof guild !== "object" || !guild || !guild.name) return;
     const bots = guild.members.filter(m => m.bot).length;
     const owner = guild.members.get(guild.ownerID);
-    bot.createMessage(bot.cfg.logchannel, {
+    bot.createMessage(bot.config.logchannel, {
       embed: {
         color: bot.embed.color("error"),
         author: {

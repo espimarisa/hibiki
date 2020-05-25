@@ -17,7 +17,6 @@ class unmuteCommand extends Command {
     const user = pargs[0].value;
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
 
-    // If no role or cfg
     if (!guildcfg || !guildcfg.mutedRole) {
       await this.bot.db.table("guildcfg").insert({ id: msg.channel.guild.id });
       return msg.channel.createMessage(this.bot.embed("❌ Error", "The muted role hasn't been configured yet.", "error"));

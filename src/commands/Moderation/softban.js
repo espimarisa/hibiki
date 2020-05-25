@@ -32,7 +32,6 @@ class softbanCommand extends Command {
       const softbanmsg = await msg.channel.createMessage(this.bot.embed("🔨 Softban", `Are you sure you'd like to softban **${user.username}**?`));
       const response = await yn(this.bot, { author: msg.author, channel: msg.channel });
       if (!response) return softbanmsg.edit(this.bot.embed("🔨 Softban", `Cancelled softbanning **${user.username}**.`));
-      // Tries to ban the user; logs
       await user.ban(0, `${reason} (by ${format.tag(msg.author, true)})`).catch(() => {});
 
 
@@ -45,7 +44,7 @@ class softbanCommand extends Command {
           color: this.bot.embed.color("general"),
         },
       }).catch(() => {});
-      // Edits the softbanmsg
+
       await softbanmsg.edit(this.bot.embed("🔨 Softban", `**${user.username}** was banned by **${msg.author.username}**.`));
     }
   }

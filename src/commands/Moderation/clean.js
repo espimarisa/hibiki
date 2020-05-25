@@ -11,12 +11,10 @@ class agreeCommand extends Command {
   }
 
   async run(msg) {
-    // Gets the messages
     let msgs = await msg.channel.getMessages(100);
     msgs = msgs.filter(m => m.author.id === this.bot.user.id);
     msgs = msgs.map(m => m.id);
     msgs.splice(msgs.length - 10, msgs.length);
-    // Deletes the messages
     await msg.channel.deleteMessages(msgs).catch(() => {});
     const cleanmsg = await msg.channel.createMessage(this.bot.embed("💣 Clean", "Deleted the **last 10** messages from me."));
     await setTimeout(() => { cleanmsg.delete().catch(() => {}); }, 2000);

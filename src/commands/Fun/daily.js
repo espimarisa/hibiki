@@ -23,7 +23,7 @@ class dailyCommand extends Command {
       return `**${h} hours** and **${m} minutes**`;
     }
 
-    // Gets user's economy info
+    // Gets member's economy info
     let cookies = await this.bot.db.table("economy").get(msg.author.id);
     if (!cookies) {
       cookies = {
@@ -31,7 +31,6 @@ class dailyCommand extends Command {
         amount: 0,
         lastclaim: 9999,
       };
-      // Updates DB
       await this.bot.db.table("economy").insert(cookies);
     }
 
