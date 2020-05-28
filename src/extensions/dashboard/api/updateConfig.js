@@ -50,7 +50,7 @@ module.exports = bot => {
       if (item.type === "roleID" && !bot.guilds.get(req.params.id).roles.find(r => r.id === opt)) cfg[c] = null;
       if (item.type === "bool" && typeof opt !== "boolean") cfg[c] = null;
       // String; has maximum
-      if (item.type === "string" && item.maximum) cfg[c] = opt.substring(0, 15);
+      if ((item.type === "string" || item.type === "emoji") && item.maximum) cfg[c] = opt.substring(0, item.maximum);
       // String; has minimum
       if (item.type === "string" && item.minimum && opt.length < item.minimum) cfg[c] = null;
       if (item.type === "array" && !Array.isArray(cfg[c])) return cfg[c] = null;
