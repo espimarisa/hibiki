@@ -1,5 +1,9 @@
+/**
+ * @fileoverview Wait utility
+ * @description Waits for an event/timeout
+ */
+
 module.exports = (event, timeout, check, bot) => {
-  if (!bot) throw new Error("No bot. Idiot.");
   let t;
   if (!check || typeof check !== "function") check = () => true;
   return new Promise((rs, rj) => {
@@ -10,16 +14,21 @@ module.exports = (event, timeout, check, bot) => {
         rs([...args]);
       }
     };
+
+    // Removes listeners
     const dispose = () => {
       bot.removeListener(event, listener);
       if (t) clearTimeout(t);
     };
+
+    // Timeouts
     if (timeout) {
       t = setTimeout(() => {
         dispose();
         rj("timeout");
       }, timeout);
     }
+
     bot.on(event, listener);
   });
 };

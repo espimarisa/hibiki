@@ -1,4 +1,4 @@
-const Command = require("../../lib/structures/Command");
+const Command = require("structures/Command");
 
 class npCommand extends Command {
   constructor(...args) {
@@ -13,7 +13,7 @@ class npCommand extends Command {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "No song is playing.", "error"));
     }
 
-    const song = this.bot.music.queues[msg.channel.guild.id].queue[0].snippet;
+    const song = this.bot.music.queues[msg.channel.guild.id].currentSong.snippet;
 
      msg.channel.createMessage({
       embed: {

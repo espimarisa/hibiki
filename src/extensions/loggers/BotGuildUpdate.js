@@ -2,7 +2,7 @@
   Logs when added/removed from a guild.
 */
 
-const format = require("../../lib/scripts/Format");
+const format = require("utils/format");
 
 module.exports = (bot) => {
   // Logs when added to a server

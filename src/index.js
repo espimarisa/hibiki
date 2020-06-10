@@ -1,19 +1,12 @@
-/*
-  Hibiki © 2018-2020 smolespi & resolved.
-  Source licensed under the GNU AGPLv3 or later.
-*/
+/**
+ * @fileoverview Main Hibiki file
+ * @description Creates a bot instance
+ * @author smolespi <espi@lesbian.codes>
+ * @author resolved <resolvedxd@gmail.com>
+ * @license AGPL-3.0-or-later
+ */
 
-const { cfg, options, rethink } = require("./config");
-const db = require("rethinkdbdash")(rethink);
-const Verniy = require("./lib/Verniy");
+const Verniy = require("structures/Client");
+const config = require("root/config");
 
-// Sets Eris options & creates an instance
-const bot = new Verniy(cfg.token, options, db);
-
-// Loads any modules
-bot.loadCommands("cmds");
-bot.loadEvents("events");
-bot.loadExtensions("ext");
-
-// Logs into Discord
-bot.connect();
+new Verniy(config.bot.token, config.options);

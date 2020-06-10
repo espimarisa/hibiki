@@ -8,7 +8,7 @@ const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
 const strategy = require("passport-discord");
-const format = require("../lib/scripts/Format");
+const format = require("utils/format");
 const config = require("../config").dashboard;
 
 const scope = ["identify", "guilds"];
@@ -122,7 +122,7 @@ module.exports = (bot) => {
   // Server manager
   app.get("/manage/:id", checkAuth, async (req, res) => {
     // Sets vaild items
-    const items = require("../lib/utils/ValidItems");
+    const items = require("utils/items");
     // If user isn't authenticated
     if (!req.isAuthenticated()) { res.status(401).render("401"); }
     // User & guild perms

@@ -1,4 +1,4 @@
-const Command = require("../../lib/structures/Command");
+const Command = require("structures/Command");
 
 class skipCommand extends Command {
   constructor(...args) {
@@ -10,12 +10,12 @@ class skipCommand extends Command {
   }
 
   async run(msg) {
-    if (!this.bot.music.queues[msg.channel.guild.id] || !this.bot.music.queues[msg.channel.guild.id].queue[0]) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "No song is playing.", "error"));
-    }
+    // if (!this.bot.music.queues[msg.channel.guild.id] || !this.bot.music.queues[msg.channel.guild.id].queue[0]) {
+    //   return msg.channel.createMessage(this.bot.embed("❌ Error", "No song is playing.", "error"));
+    // }
 
     this.bot.music.queues[msg.channel.guild.id].connection.stopPlaying();
-    this.bot.music.queues[msg.channel.guild.id].queue.shift();
+    // this.bot.music.queues[msg.channel.guild.id].connection.emit("end");
     msg.channel.createMessage(this.bot.embed("🎶 Skip", `Song skipped by **${msg.author.username}**.`));
   }
 }

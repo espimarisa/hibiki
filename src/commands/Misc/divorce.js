@@ -1,5 +1,5 @@
-const Command = require("../../lib/structures/Command");
-const yn = require("../../lib/utils/Ask.js").YesNo;
+const Command = require("structures/Command");
+const yn = require("utils/Ask.js").YesNo;
 
 class divorceCommand extends Command {
   constructor(...args) {

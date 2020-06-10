@@ -1,6 +1,6 @@
-const Command = require("../../lib/structures/Command");
-const format = require("../../lib/scripts/Format");
-const hierarchy = require("../../lib/utils/Hierarchy");
+const Command = require("structures/Command");
+const format = require("utils/format");
+const hierarchy = require("utils/Hierarchy");
 
 class muteCommand extends Command {
   constructor(...args) {

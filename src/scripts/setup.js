@@ -1,46 +1,46 @@
-const { rethink } = require("../../config");
-const log = require("../Log");
-let db;
+/**
+ * @fileoverview RethinkDB Setup
+ * @description Creates the required database and tables
+ */
 
-process.on("unhandledRejection", () => {
-  log.error("RethinkDB isn't configured or running properly.");
-  process.exit();
-});
-
-// Ends the script if an error happened
-try { db = require("rethinkdbdash")(rethink); } catch (e) {
-  log.error("Either modules aren't installed or RethinkDB isn't configured properly.");
-  process.exit();
-}
-
-const requiredTables = rethink.tables;
+const { r } = require("rethinkdb-ts");
+const config = require("root/config");
+const log = require("scripts/log");
+const start = require("scripts/database").start;
+const requiredtables = config.rethink.tables;
 
 (async () => {
-  // Creates the database if it doesn't exist
-  const dbList = await db.dbList();
-  if (!dbList.includes(rethink.db)) {
-    await db.dbCreate(rethink.db);
-    log.success(`Created the ${rethink.db} database`);
+  await start().catch(err => {
+    log.error(`Error while starting RethinkDB (Is it running; are you authed right?): ${err}`);
+    process.exit();
+  });
+
+  // Creates database
+  const db = r.db(config.rethink.db);
+  const dbList = await r.dbList().run();
+  if (!dbList.includes(config.rethink.db)) {
+    await r.dbCreate(config.rethink.db).run();
+    log.success(`Created the ${config.rethink.db} database`);
   }
 
-  // Creates the tables that don't exist
-  const tables = await db.tableList();
-  await Promise.all(requiredTables.map(async t => {
+  // Creates tables
+  const tables = await db.tableList().run();
+  await Promise.all(requiredtables.map(async t => {
     if (!tables.includes(t)) {
-      await db.tableCreate(t);
+      await db.tableCreate(t).run();
       log.success(`Created the ${t} table`);
     }
   }));
 
-  // Creates the marriage index
-  if (rethink.marriages) {
-    const index = await db.table("marriages").indexList();
+  // Creates marriage index
+  if (config.rethink.marriages) {
+    const index = await db.table("marriages").indexList().run();
     if (!index.includes("marriages")) {
-      await db.table("marriages").indexCreate("marriages", [db.row("id"), db.row("spouse")], { multi: true });
-      log.success(`Created the marriages index in the marriage table`);
+      await db.table("marriages").indexCreate("marriages", [r.row("id"), r.row("spouse")], { multi: true }).run();
+      log.success("Created the marriage index");
     }
   }
 
-  log.success("RethinkDB is configured properly.");
+  log.success("RethinkDB has been setup properly.");
   process.exit(0);
 })();

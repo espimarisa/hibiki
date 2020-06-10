@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Hierarchy
+ * @description Compares role hierarchy between two members
+ */
+
 module.exports = (member1, member2) => {
   if (member1.guild !== member2.guild) return;
   if (member1.guild.ownerID === member1.id) return true;

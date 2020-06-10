@@ -1,5 +1,5 @@
-const Command = require("../../lib/structures/Command");
-const Wait = require("../../lib/utils/WaitFor");
+const Command = require("structures/Command");
+const Wait = require("utils/WaitFor");
 
 class playCommand extends Command {
   constructor(...args) {
@@ -55,9 +55,12 @@ class playCommand extends Command {
 
     // Adds the song to the queue
     this.bot.music.addtoqueue(`https://www.youtube.com/watch?v=${vid.id.videoId}`, msg.channel.guild.channels.get(msg.member.voiceState.channelID),
-      msg.channel, msg.channel.guild.id, vid.snippet);
-    this.bot.music.play(msg.channel.guild.id);
-
+      msg.channel, msg.channel.guild.id, vid.snippet, msg.author);
+    if (!this.bot.music.queues[msg.channel.guild.id] || !this.bot.music.queues[msg.channel.guild.id].connection) {
+      console.log("i like cats");
+      this.bot.music.play(msg.channel.guild.id);
+      console.log(this.bot.music.queues[msg.channel.guild.id].connection);
+    }
     await omsg.edit({
       embed: {
         title: `🎶 Selected ${vid.snippet.title}`,

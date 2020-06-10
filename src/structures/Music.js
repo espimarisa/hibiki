@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Music class
+ * @description Functionality for music commands
+ */
+
 const fetch = require("node-fetch");
 const ytdl = require("ytdl-core");
 

@@ -1,5 +1,5 @@
 // todo: readd hsl so resolv shuts up
-const Command = require("../../lib/structures/Command");
+const Command = require("structures/Command");
 
 class colorCommand extends Command {
   constructor(...args) {
@@ -17,7 +17,7 @@ class colorCommand extends Command {
     // Sets the color
     const hexcheck = /[#]?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/.exec(args);
     const rgbcheck = /([0-9]{1,3})[, ]{1,2}([0-9]{1,3})[, ]{1,2}([0-9]{1,3})/.exec(args);
-    const namecheck = require("../../lib/utils/Colors").names.find(name => name[1].toLowerCase().startsWith(args.toLowerCase()));
+    const namecheck = require("utils/Colors").names.find(name => name[1].toLowerCase().startsWith(args.toLowerCase()));
     if (hexcheck && !rgbcheck) color = this.hexToRGB(hexcheck[0]);
     else if (rgbcheck) color = {
       r: parseInt(rgbcheck[1]),
@@ -33,7 +33,7 @@ class colorCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        title: `🎨 ${require("../../lib/utils/Colors").name(hex)[1]}`,
+        title: `🎨 ${require("utils/Colors").name(hex)[1]}`,
         description: `**RGB:** ${color.r}, ${color.g}, ${color.b}\n**Hex:** #${hex.toUpperCase()}`,
         color: parseInt(`0x${hex}`),
       },

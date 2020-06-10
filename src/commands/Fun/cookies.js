@@ -1,4 +1,4 @@
-const Command = require("../../lib/structures/Command");
+const Command = require("structures/Command");
 
 class cookiesCommand extends Command {
   constructor(...args) {
@@ -12,7 +12,7 @@ class cookiesCommand extends Command {
   async run(msg, args, pargs) {
     const user = pargs[0].value;
     let cookies = 0;
-    const economydb = await this.bot.db.table("economy").get(user.id);
+    const economydb = await this.bot.db.table("economy").get(user.id).run();
     if (!economydb) cookies = 0;
     else cookies = economydb.amount;
     msg.channel.createMessage(this.bot.embed("🍪 Cookies", `**${user.username}** has **${cookies}** cookies.`));

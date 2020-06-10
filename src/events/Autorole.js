@@ -1,4 +1,4 @@
-const Event = require("../lib/structures/Event");
+const Event = require("structures/Event");
 
 class Autorole extends Event {
   constructor(...args) {

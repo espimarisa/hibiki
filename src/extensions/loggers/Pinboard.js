@@ -1,4 +1,4 @@
-const format = require("../../lib/scripts/Format");
+const format = require("utils/format");
 
 module.exports = bot => {
   // When a pin is removed

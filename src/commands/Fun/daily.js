@@ -1,4 +1,4 @@
-const Command = require("../../lib/structures/Command");
+const Command = require("structures/Command");
 
 class dailyCommand extends Command {
   constructor(...args) {
@@ -24,14 +24,14 @@ class dailyCommand extends Command {
     }
 
     // Gets member's economy info
-    let cookies = await this.bot.db.table("economy").get(msg.author.id);
+    let cookies = await this.bot.db.table("economy").get(msg.author.id).run();
     if (!cookies) {
       cookies = {
         id: msg.author.id,
         amount: 0,
         lastclaim: 9999,
       };
-      await this.bot.db.table("economy").insert(cookies);
+      await this.bot.db.table("economy").insert(cookies).run();
     }
 
     // If lastclaim expired
@@ -44,7 +44,7 @@ class dailyCommand extends Command {
       };
 
       // Updates DB
-      await this.bot.db.table("economy").get(msg.author.id).update(cookies);
+      await this.bot.db.table("economy").get(msg.author.id).update(cookies).run();
       return msg.channel.createMessage(this.bot.embed("🍪 Daily Cookies", "You have claimed your daily **100** cookies."));
     }
 

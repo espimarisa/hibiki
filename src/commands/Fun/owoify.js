@@ -1,4 +1,4 @@
-const Command = require("../../lib/structures/Command");
+const Command = require("structures/Command");
 const faces = ["(・`ω´・)", ";;w;;", "owo", "OwO", "OvO", "UvU", "ouo", "UwU", "uwu", ">w<", "^w^", "OvO"];
 
 class owoifyCommand extends Command {

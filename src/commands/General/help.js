@@ -1,4 +1,4 @@
-const Command = require("../../lib/structures/Command");
+const Command = require("structures/Command");
 const Eris = require("eris");
 
 class helpCommand extends Command {

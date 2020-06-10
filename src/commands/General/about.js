@@ -1,18 +1,17 @@
-const Command = require("../../lib/structures/Command");
+const Command = require("structures/Command");
+const format = require("utils/format");
 const os = require("os");
-const format = require("../../lib/scripts/Format");
 
 class aboutCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["ab", "aboutbot", "info", "stats", "uptime"],
+      aliases: ["aboutbot", "info", "stats", "uptime"],
       description: "Returns info & stats about the bot.",
       allowdms: true,
     });
   }
 
-  run(msg) {
-    // Formats OS platform
+   run(msg) {
     function formatOS(platform, release) {
       switch (platform) {
         case "darwin":
@@ -25,38 +24,6 @@ class aboutCommand extends Command {
           return platform;
       }
     }
-
-    const desc = [];
-    desc.push({ name: "\n", value: "The ultimate all-in-one Discord bot." });
-    desc.push({ name: "", value: "Built with 💖 by [smolespi](https://lesbian.codes) & [resolved](https://github.com/resolvedxd)." });
-    desc.push({ name: "\n", value: "**Bot Stats**" });
-    desc.push({ name: "👥", value: `${this.bot.users.size} users` });
-    desc.push({ name: "💬", value: `${this.bot.guilds.size} servers` });
-    desc.push({ name: "📔", value: `${this.bot.commands.size} commands` });
-    desc.push({ name: "📕", value: `Node ${process.version}` });
-    desc.push({ name: "📚", value: `Eris v${require("eris").VERSION}` });
-    desc.push({ name: "🤖", value: `Hibiki v${this.bot.version}` });
-    desc.push({ name: "🕒", value: `${format.uptime(process.uptime())}` });
-    desc.push({ name: "🧮", value: `${Math.round(process.memoryUsage().rss / (1024 * 1024))}mb used ` });
-    desc.push({ name: "🖥", value: `${formatOS(os.platform(), os.release())}` });
-    desc.push({ name: "\n", value: "**About**" });
-    desc.push({ name: "", value: `${this.bot.user.username} is a fun, useful, and easy-to-use bot.` });
-    desc.push({ name: "", value: `Want to learn more? View the [GitHub](https://github.com/smolespi/Hibiki) repository.` });
-    desc.push({ name: "", value: `[Invite](${this.bot.config.homepage}/invite/) • [Support](https://discord.gg/${this.bot.config.support}) • [Vote](https://top.gg/bot/${this.bot.user.id}/vote) • [Website](${this.bot.config.homepage})` });
-
-    msg.channel.createMessage({
-      embed: {
-        description: desc.map(d => `${d.name} ${d.value}`).join("\n"),
-        color: this.bot.embed.color("general"),
-        author: {
-          icon_url: this.bot.user.dynamicAvatarURL(),
-          name: `About ${this.bot.user.username}`,
-        },
-        thumbnail: {
-          url: this.bot.user.dynamicAvatarURL(),
-        },
-      },
-    });
   }
 }
 

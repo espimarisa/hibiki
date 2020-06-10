@@ -1,5 +1,5 @@
-const Command = require("../../lib/structures/Command");
-const format = require("../../lib/scripts/Format");
+const Command = require("structures/Command");
+const format = require("utils/format");
 
 class avatarCommand extends Command {
   constructor(...args) {
