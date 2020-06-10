@@ -1,7 +1,7 @@
-const Command = require("../../lib/structures/Command");
-const format = require("../../lib/scripts/Format");
-const hierarchy = require("../../lib/utils/Hierarchy");
-const yn = require("../../lib/utils/Ask.js").YesNo;
+const Command = require("structures/Command");
+const format = require("utils/format");
+const hierarchy = require("utils/Hierarchy");
+const yn = require("utils/Ask.js").YesNo;
 
 class kickCommand extends Command {
   constructor(...args) {

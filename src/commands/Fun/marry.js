@@ -1,5 +1,5 @@
-const Command = require("../../lib/structures/Command");
-const yn = require("../../lib/utils/Ask.js").YesNo;
+const Command = require("structures/Command");
+const yn = require("utils/Ask.js").YesNo;
 
 class marryCommand extends Command {
   constructor(...args) {
@@ -12,7 +12,7 @@ class marryCommand extends Command {
 
   async run(msg, args, pargs) {
     const user = pargs[0].value;
-    const state = await this.bot.db.table("marriages").getAll(msg.author.id, user.id, { index: "marriages" });
+    const state = await this.bot.db.table("marriages").getAll(msg.author.id, user.id, { index: "marriages" }).run();
 
     // If author is married
     if (state.find(m => m.id === msg.author.id || m.marriedTo === msg.author.id)) {
@@ -28,10 +28,10 @@ class marryCommand extends Command {
     const marrymsg = await msg.channel.createMessage(this.bot.embed("💝 Marry", `**${user.username}**, do you wish to marry **${msg.author.username}**?`));
     const response = await yn(this.bot, { author: user, channel: msg.channel });
     if (response) {
-      await this.bot.db.table("marriages").insert({ id: msg.author.id, spouse: user.id });
+      await this.bot.db.table("marriages").insert({ id: msg.author.id, spouse: user.id }).run();
       marrymsg.edit(this.bot.embed("💝 Marry", `**${msg.author.username}** and **${user.username}** are now married.`));
     } else {
-      marrymsg.edit(this.bot.embed("💝 Marry", "Marriage cancelled. Maybe next time?"));
+      marrymsg.edit(this.bot.embed("💝 Marry", "Marriage cancelled."));
     }
   }
 }

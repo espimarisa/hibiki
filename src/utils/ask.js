@@ -1,4 +1,9 @@
-const WaitFor = require("../utils/WaitFor");
+/**
+ * @fileoverview Ask
+ * @description Asks for yes/no or for certain responses
+ */
+
+const WaitFor = require("utils/waitfor");
 
 module.exports = {
   YesNo: async (bot, msg, retMsg = false) => {

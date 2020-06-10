@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Logger class
+ * @description Functionality for loggers
+ */
+
 class Logging {
   constructor(db) {
     this.db = db;

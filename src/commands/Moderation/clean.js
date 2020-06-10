@@ -1,4 +1,4 @@
-const Command = require("../../lib/structures/Command");
+const Command = require("structures/Command");
 
 class agreeCommand extends Command {
   constructor(...args) {

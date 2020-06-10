@@ -1,10 +1,10 @@
-const Command = require("../../lib/structures/Command");
+const Command = require("structures/Command");
 
 class pingCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["pig", "pingpong", "pog", "pong"],
-      description: "Checks the bot's ping.",
+      aliases: ["pong"],
+      description: "Returns the bot's latency.",
       allowdisable: false,
     });
   }

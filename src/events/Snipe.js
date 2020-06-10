@@ -1,4 +1,4 @@
-const Event = require("../lib/structures/Event");
+const Event = require("structures/Event");
 
 class Snipe extends Event {
   constructor(...args) {
@@ -13,7 +13,9 @@ class Snipe extends Event {
     if (guildcfg) {
       if (!guildcfg.snipingEnable) return;
       if ((!msg.attachments || msg.attachments[0] === undefined) && (!msg.content || !msg)) return;
-      if (!guildcfg.snipingInvites && /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|list)|discord(app)?\.com\/invite)\/.+[a-z]/.test(msg.content)) return;
+      if (!guildcfg.snipingInvites && /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|list)|discord(app)?\.com\/invite)\/.+[a-z]/.test(msg.content)) {
+        return;
+      }
       let ignored;
       guildcfg.snipingIgnore.forEach(c => { if (c && msg.channel.id === c && msg.channel.guild.channels.has(c)) ignored = true; });
       if (ignored) return;

@@ -2,7 +2,7 @@
   This handles each type of automod punishment.
 */
 
-const { Snowflake } = require("../../lib/utils/Snowflake");
+const { Snowflake } = require("utils/snowflake");
 
 module.exports.mute = async (msg, bot, cfg, reason) => {
   const member = msg.member;

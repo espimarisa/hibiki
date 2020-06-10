@@ -1,15 +1,20 @@
+/**
+ * @fileoverview Formatter
+ * @description Formats & beautifies various things
+ */
+
 module.exports = {
-  // Tags a member by user#disc; replaces emojis if needed
+  // if user, true; filter emojis
   tag: (user, emojifilter = true) => {
     if (user && emojifilter) {
-      return `${/[,.\-_a-zA-Z0-9]{1,32}/.exec(user.username) !== null ? /[,.\-_a-zA-Z0-9]{1,32}/.exec(user.username)[0] : user.id}#${user.discriminator}`;
+      return `${/[,.\-_a-zA-Z0-9]{1,32}/.exec(user.username) !== null ?
+      /[,.\-_a-zA-Z0-9]{1,32}/.exec(user.username)[0] : user.id}#${user.discriminator}`;
     } else if (user && !emojifilter) {
       return `${user.username}#${user.discriminator}`;
     }
     return;
   },
 
-  // Makes dates look nicer
   date: (EpochDate, syear = true) => {
     const date = new Date(EpochDate);
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -24,7 +29,6 @@ module.exports = {
     return `${month} ${day}${syear ? ` ${year} ` : " "}${time}`;
   },
 
-  // Formats dates
   dateParse: (time, options = {
     hours: true,
     days: true,
@@ -66,7 +70,6 @@ module.exports = {
     return finalstring;
   },
 
-  // Formats server regions
   region(region) {
     switch (region) {
       case "amsterdam":
@@ -114,7 +117,6 @@ module.exports = {
     }
   },
 
-  // Formats uptime
   uptime: () => {
     const uptime = process.uptime();
     const date = new Date(uptime * 1000);

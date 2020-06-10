@@ -1,4 +1,4 @@
-const Event = require("../lib/structures/Event");
+const Event = require("structures/Event");
 const fetch = require("node-fetch");
 
 class guildCreate extends Event {
@@ -26,7 +26,7 @@ class guildCreate extends Event {
     if (oid) {
       const odm = await oid.getDMChannel().catch(() => {});
       if (odm) {
-        odm.createMessage(this.bot.embed(`✨ I was added to your server, ${oid.username}.`, `\n To get started, run \`${this.bot.config.prefixes[0]}help\`. 
+        odm.createMessage(this.bot.embed(`✨ I was added to your server, ${oid.username}.`, `\n To get started, run \`${this.bot.config.prefixes[0]}help\`.
         You can configure me using the [web dashboard](${this.bot.config.homepage}/dashboard/).`)).catch(() => {});
       }
     }

@@ -1,5 +1,9 @@
-// Sets console colors
-const Colors = {
+/**
+ * @fileoverview Logger
+ * @description Pretty console logging
+ */
+
+const colors = {
   NC: "\x1b[0m",
   Blue: "\x1b[34m",
   Cyan: "\x1b[36m",
@@ -9,8 +13,7 @@ const Colors = {
   Yellow: "\x1b[33m",
 };
 
-// Logging colors
-const ConfigColors = {
+const config = {
   date: "Blue",
   error: "Red",
   info: "Cyan",
@@ -19,7 +22,7 @@ const ConfigColors = {
   warn: "Yellow",
 };
 
-// Date formatter
+// Formats date
 function date(syear = true) {
   const date = new Date();
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -31,26 +34,25 @@ function date(syear = true) {
   else day = `${date.getDate()}th`;
   const year = date.getFullYear();
   const time = `${(date.getHours() < 10 ? "0" : "") + date.getHours()}:${(date.getMinutes() < 10 ? "0" : "") + date.getMinutes()}`;
-  return `${Colors[ConfigColors.date]}[${month} ${day}${syear ? ` ${year} ` : " "}${time}]${Colors.NC}`;
+  return `${colors[config.date]}[${month} ${day}${syear ? ` ${year} ` : " "}${time}]${colors.NC}`;
 }
 
-// Exports logging options
 module.exports = (args) => {
-  console.log(`${date(false)} ${Colors[ConfigColors.general]}${args} ${Colors.NC}`);
+  console.log(`${date(false)} ${colors[config.general]}${args} ${colors.NC}`);
 };
 
 module.exports.error = (args) => {
-  console.log(`${date(false)} ${Colors[ConfigColors.error]}${args} ${Colors.NC}`);
+  console.log(`${date(false)} ${colors[config.error]}${args} ${colors.NC}`);
 };
 
 module.exports.info = (args) => {
-  console.log(`${date(false)} ${Colors[ConfigColors.info]}${args} ${Colors.NC}`);
+  console.log(`${date(false)} ${colors[config.info]}${args} ${colors.NC}`);
 };
 
 module.exports.success = (args) => {
-  console.log(`${date(false)} ${Colors[ConfigColors.success]}${args} ${Colors.NC}`);
+  console.log(`${date(false)} ${colors[config.success]}${args} ${colors.NC}`);
 };
 
 module.exports.warn = (args) => {
-  console.log(`${date(false)} ${Colors[ConfigColors.warn]}${args} ${Colors.NC}`);
+  console.log(`${date(false)} ${colors[config.warn]}${args} ${colors.NC}`);
 };

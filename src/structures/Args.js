@@ -1,31 +1,38 @@
-class argParser {
+/**
+ * @fileoverview Arg class & handler
+ * @description Loads argtypes & handles them
+ */
+
+const { readdir } = require("fs");
+const path = require("path");
+const argtypes_directory = path.join(__dirname, "../utils/argtypes");
+
+class Args {
   constructor(bot) {
     this.bot = bot;
-    this.argTypes = {
+    this.argtypes = {
       string: (a) => { return a; },
     };
 
-    // Looks for argtypes
-    require("fs").readdir(`${__dirname}/ArgTypes`, (_e, files) => {
-      files.forEach(a => {
+    // Loads args
+    readdir(argtypes_directory, (_err, files) => {
+      files.forEach(arg => {
         let argtype;
         try {
-          // Tries to load each argtype
-          argtype = require(`${__dirname}/ArgTypes/${a}`);
-        } catch (e) {
-          // Logs if an arg couldn't be loaded
-          this.bot.log.error(`Error while loading ArgType ${a}: ${e}`);
+          argtype = require(`${argtypes_directory}/${arg}`);
+        } catch (err) {
+          bot.log.error(`Error loading argument ${arg}: ${err}`);
         }
+
         if (!argtype) return;
-        argtype.forEach((atype) => this.argTypes[atype.name] = atype);
+        argtype.forEach((atype) => this.argtypes[atype.name] = atype);
       });
     });
   }
 
-  // Parses each type of arg
+  // Parses args
   parse(argString, args, delimiter, msg) {
     const argObj = [];
-    // Sets each arg
     argString.split(delimiter).forEach(arg => {
       const r = /(<|\[)(\w{1,}):(\w{1,})&?([\w=*]{1,})?(>|\])/.exec(arg);
       if (!r) return;
@@ -33,26 +40,24 @@ class argParser {
         name: r[2],
         type: r[3],
         flag: r[4],
-        // Optional args are in []
         optional: r[1] === "[",
       });
     });
 
-    // Splits each arg
+    // Splits args
     args.split(delimiter).forEach((arg, i) => {
       const argg = argObj[i];
       if (!argg || (!arg && argg.flag !== "fallback")) return;
-      // Ignore flag
       if (argg.flag && argg.flag.startsWith("ignore=") && arg === argg.flag.split("ignore=")[1]) return argObj.splice(i, 1);
-      if (!this.argTypes[argg.type]) return;
-      const value = this.argTypes[argg.type](arg.toLowerCase(), msg, argg.flag, this.bot);
-      console.log(value);
+      if (!this.argtypes[argg.type]) return;
+      const value = this.argtypes[argg.type](arg.toLowerCase(), msg, argg.flag, this.bot);
       if (typeof value == "undefined") return;
       argg.value = value;
       argObj[i] = argg;
     });
+
     return argObj;
   }
 }
 
-module.exports = argParser;
+module.exports = Args;

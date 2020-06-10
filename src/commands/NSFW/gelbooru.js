@@ -1,4 +1,4 @@
-const Command = require("../../lib/structures/Command");
+const Command = require("structures/Command");
 const fetch = require("node-fetch");
 
 class gelbooruCommand extends Command {
@@ -7,6 +7,7 @@ class gelbooruCommand extends Command {
       aliases: ["gb", "gel"],
       args: "[tags:string]",
       description: "Sends an image from Gelbooru.",
+      nsfw: true,
       cooldown: 3,
     });
   }

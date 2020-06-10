@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Event class
+ * @description Sets Event paramaters
+ */
+
 class Event {
   constructor(bot, id, params) {
     this.bot = bot;

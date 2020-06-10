@@ -1,4 +1,4 @@
-const Command = require("../../lib/structures/Command");
+const Command = require("structures/Command");
 const cows = {
   default: "        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||\n",
   tux: "   \\\n    \\\n        .--.\n       |o_o |\n       |:_/ |\n      //   \\ \\\n     (|     | )\n    /'\\_   _/`\\\n    \\___)=(___/",

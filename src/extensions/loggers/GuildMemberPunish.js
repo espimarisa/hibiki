@@ -2,8 +2,8 @@
   Logs when a member is kicked, banned, or unbanned.
 */
 
-const Logging = require("../../lib/structures/Logging");
-const format = require("../../lib/scripts/Format");
+const Logging = require("structures/Logger");
+const format = require("utils/format");
 
 module.exports = (bot) => {
   // Logging database
