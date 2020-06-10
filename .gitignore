@@ -18,6 +18,7 @@ rethinkdb.exe
 
 # Modules
 dist/
+docs/
 node_modules/
 out/
 rethinkdb_data/

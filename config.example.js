@@ -1,11 +1,13 @@
 module.exports = {
-  config: {
+  bot: {
     logchannel: "",
     homepage: "https://hibiki.app",
     owners: [""],
     prefixes: [""],
-    statuses: ["totalusers", "totalguilds", "version"],
+    status: "online",
+    statuses: ["help", "guilds", "users", "version"],
     statustype: 3,
+    statusurl: "",
     support: "gZEj4sM",
     token: "",
   },
@@ -35,12 +37,12 @@ module.exports = {
     abuseipdb: "",
     dictionary: "",
     dbots: "",
-    dsn: "",
-    gametracker: "",
+    fortnite: "",
     github: "",
     ipinfo: "",
     maps: "",
     osu: "",
+    sentry: "",
     steam: "",
     topgg: "",
     twitter: "",
@@ -51,8 +53,12 @@ module.exports = {
 
   rethink: {
     db: "hibiki",
+    host: "",
+    password: "",
+    port: "",
+    user: "",
     marriages: true,
-    tables: ["blacklist", "economy", "guildcfg", "marriages", "mutecache", "points", "reminders", "steammonitor", "usercfg", "warnings"],
+    tables: ["blacklist", "economy", "guildcfg", "marriages", "monitoring", "mutecache", "points", "reminders", "steammonitor", "usercfg", "warnings"],
   },
 
   voting: {

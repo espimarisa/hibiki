@@ -1,11 +1,10 @@
 # Hibiki
 
-<!-- change these to the hibiki repo once its open !!!-->
 [![Build](https://img.shields.io/github/workflow/status/smolespi/Hibiki/Hibiki)](https://github.com/smolespi/Hibiki/actions?query=workflow%3AHibiki)
 [![License](https://img.shields.io/badge/license-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Version](https://img.shields.io/github/package-json/v/smolespi/hibiki?color=blue)](https://github.com/smolespi/Hibiki)
 
-[Hibiki][1] is a fun, useful, and easy-to-use Discord bot powered by [Node.js][2] and [Eris][3]. It's written to be simple without sacrificing any powerful features. 
+[Hibiki][1] is a fun, useful, and easy-to-use Discord bot powered by [Node.js][2] and [Eris][3]. It's written to be simple without sacrificing any powerful features.
 
 You can invite the main application [here][4]. Any other instances of Hibiki are **not official** and could possibly carry privacy/security risks. The only official bot is `Hibiki#1448 (493904957523623936)`.
 
@@ -21,7 +20,7 @@ You can invite the main application [here][4]. Any other instances of Hibiki are
   - 👤 Assignable &amp; automatic roles
   - 🌐 Fully-featured web dashboard
   - 📌 Tweakable pinboard / starboard
-  
+
    ... and many more!
 
 ## Hosting & Setup
@@ -29,7 +28,7 @@ Refer to the [wiki][5] for a self-hosting guide &amp; other important informatio
 
 ## License
 &copy; 2018 - 2020 [smolespi][6] &amp; [resolved][7].
-<br> 
+<br>
 Licensed under the [GNU AGPL-v3][8] or later.
 
 [1]: https://hibiki.app "Hibiki"

@@ -8,7 +8,7 @@ module.exports = exports = {
   extends: "eslint:recommended",
   parser: "babel-eslint",
   parserOptions: {
-    ecmaVersion: 6,
+    ecmaVersion: 2020,
   },
 
   rules: {
@@ -25,7 +25,7 @@ module.exports = exports = {
     "jsx-quotes": [1, "prefer-double"],
     "lines-around-comment": [1, { beforeBlockComment: true }],
     "max-depth": [1, 8],
-    "max-len": [1, { code: 180, ignoreComments: true, ignoreStrings: true, tabWidth: 2 }],
+    "max-len": [1, { code: 150, ignoreComments: true, ignoreStrings: true, tabWidth: 2 }],
     "max-nested-callbacks": [1, 8],
     "max-params": [1, 8],
     "new-parens": 1,

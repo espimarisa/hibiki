@@ -3,7 +3,7 @@
     "scope": "javascript",
     "prefix": ["hibiki-command"],
     "body": [
-      "const Command = require(\"../lib/structures/Command\");\n",
+      "const Command = require(\"structures/Command\");\n",
       "class $1Command extends Command {",
       "  constructor(...args) {",
       "    super(...args, {",
@@ -16,14 +16,14 @@
       "}",
       "\nmodule.exports = $1Command;\n"
     ],
-    "description": "Creates a Hibiki command template."
+    "description": "Creates a Hibiki command."
   },
 
   "Event": {
     "scope": "javascript",
     "prefix": ["hibiki-event"],
     "body": [
-      "const Event = require(\"../lib/structures/Event\");\n",
+      "const Event = require(\"structures/Event\");\n",
       "class $1 extends Event {",
       "  constructor(...args) {",
       "    super(...args, {",
@@ -36,6 +36,6 @@
       "}",
       "\nmodule.exports = $1;\n"
     ],
-    "description": "Creates a Hibiki event template."
+    "description": "Creates a Hibiki event."
   }
 }

@@ -1,14 +1,14 @@
 {
   "name": "hibiki",
-  "version": "3.2.0-alpha.1",
+  "version": "3.2.1-alpha",
   "description": "A versatile and feature-packed Discord bot written in JavaScript.",
-  "author": "smolespi (https://lesbian.codes)",
+  "author": "smolespi <espi@lesbian.codes> (https://lesbian.codes)",
   "contributors": [
-    "resolved (https://github.com/resolvedxd)"
+    "resolved <resolvedxd@gmail.com> (https://github.com/resolvedxd)"
   ],
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-or-later",
   "homepage": "https://hibiki.app",
-  "main": "index.js",
+  "main": "src/index.js",
   "bugs": {
     "url": "https://github.com/smolespi/Hibiki/issues"
   },
@@ -18,35 +18,52 @@
   },
   "engines": {
     "npm": ">=6.9.0",
-    "node": ">=10.0.0"
+    "node": ">=12.0.0"
   },
   "scripts": {
-    "bot": "node index.js",
-    "lint": "npx eslint --fix .",
-    "setup": "node lib/scripts/Setup.js",
-    "test": "npx eslint ."
+    "dev": "nodemon",
+    "docs": "jsdoc -c .jsdoc.json",
+    "lint": "eslint --fix .",
+    "postinstall": "npx link-module-alias",
+    "start": "cross-env NODE_ENV=production node src/index.js",
+    "setup": "node src/scripts/setup.js",
+    "test": "eslint ."
+  },
+  "_moduleAliases": {
+    "commands": "src/commands",
+    "dashboard": "src/extensions/dashboard",
+    "events": "src/events",
+    "extensions": "src/extensions",
+    "root": ".",
+    "scripts": "src/scripts",
+    "structures": "src/structures",
+    "utils": "src/utils"
   },
   "dependencies": {
-    "@sentry/node": "^5.15.5",
+    "@sentry/node": "^5.16.1",
     "body-parser": "^1.19.0",
-    "cookie-parser": "^1.4.5",
     "ejs": "^3.1.3",
     "eris": "^0.13.1",
     "eris-additions": "^1.4.1",
-    "erlpack": "^0.1.3",
-    "eventemitter3": "^4.0.4",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "helmet": "^3.22.0",
     "node-fetch": "^2.6.0",
-    "node-opus": "^0.3.3",
     "passport": "^0.4.1",
-    "passport-discord": "^0.1.3",
-    "rethinkdbdash": "^2.3.31",
-    "ytdl-core": "^2.1.4"
+    "passport-discord": "^0.1.4",
+    "rethinkdb-ts": "^2.4.2",
+    "ytdl-core": "^3.1.1"
+  },
+  "optionalDependencies": {
+    "@discordjs/opus": "^0.3.2",
+    "erlpack": "^0.1.3",
+    "eventemitter3": "^4.0.4"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.1.0"
+    "cross-env": "^7.0.2",
+    "eslint": "^7.2.0",
+    "jsdoc": "^3.6.4",
+    "link-module-alias": "^1.2.0",
+    "nodemon": "^2.0.4"
   }
 }
