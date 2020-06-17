@@ -1,6 +1,17 @@
 /**
  * @fileoverview Hierarchy
  * @description Compares role hierarchy between two members
+ * @module hierarchy
+ */
+
+/**
+ * Compares role hierarchy
+ * @example
+ * const hierarchy = require("utils/hierarchy");
+ * hierarchy(msg.member, user);
+ *
+ * @param {Object} member1 The user object to check for being above
+ * @param {Object} member2 The user object to check for being below
  */
 
 module.exports = (member1, member2) => {

@@ -13,8 +13,12 @@ class catfactCommand extends Command {
 
   async run(msg) {
     const body = await fetch("https://catfact.ninja/fact").then(async res => await res.json().catch(() => {}));
-    if (!body || !body.fact) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the fact. Try again later.", "error"));
-    msg.channel.createMessage(this.bot.embed("🐱 Cat Fact", body.fact));
+
+    if (!body || !body.fact) {
+      return this.bot.embed("❌ Error", "Couldn't send the fact. Try again later.", "error", msg);
+    }
+
+    this.bot.embed("🐱 Cat Fact", body.fact, msg);
   }
 }
 

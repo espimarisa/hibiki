@@ -1,8 +1,3 @@
-/**
- * @fileoverview Ask
- * @description Asks for yes/no or for certain responses
- */
-
 const WaitFor = require("utils/waitfor");
 
 module.exports = {
@@ -13,7 +8,8 @@ module.exports = {
         if (m.author.id !== msg.author.id) return false;
         if (m.channel.id !== msg.channel.id) return false;
         // Checks for y/n
-        if (m.content.toLowerCase() !== "y" && m.content.toLowerCase() !== "yes" && m.content.toLowerCase() !== "n" && m.content.toLowerCase() !== "no") return false;
+        if (m.content.toLowerCase() !== "y" && m.content.toLowerCase() !== "yes" && m.content.toLowerCase() !==
+         "n" && m.content.toLowerCase() !== "no") return false;
         return true;
       }, bot);
 
@@ -52,7 +48,8 @@ module.exports = {
 
     if (type === "channelID") {
       if (clear) return "clear";
-      const channel = guild.channels.find(r => (r.name.toLowerCase().startsWith(arg.toLowerCase()) || r.id === arg || arg === `<#${r.id}>`) && r.type === 0);
+      const channel = guild.channels.find(r => (r.name.toLowerCase().startsWith(arg.toLowerCase()) ||
+      r.id === arg || arg === `<#${r.id}>`) && r.type === 0);
       if (!channel) return;
       return channel.id;
     }

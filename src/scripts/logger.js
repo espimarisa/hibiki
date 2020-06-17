@@ -1,6 +1,10 @@
 /**
  * @fileoverview Logger
- * @description Pretty console logging
+ * @description Overrides console.log(); for formatted logging
+ * @module logger
+ *
+ * @example
+ * this.bot.log.general("content");
  */
 
 const colors = {
@@ -22,7 +26,6 @@ const config = {
   warn: "Yellow",
 };
 
-// Formats date
 function date(syear = true) {
   const date = new Date();
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

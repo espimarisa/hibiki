@@ -1,5 +1,5 @@
-const Command = require("structures/Command");
-const format = require("utils/format");
+const Command = require("../../structures/Command");
+const format = require("../../utils/format");
 const os = require("os");
 
 class aboutCommand extends Command {

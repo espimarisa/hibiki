@@ -13,14 +13,21 @@ class catCommand extends Command {
 
   async run(msg) {
     const body = await fetch("http://aws.random.cat/meow").then(async res => await res.json().catch(() => {}));
-    if (!body || !body.file) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
+
+    if (!body || !body.file) {
+      return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", msg.author, "error");
+    }
 
     msg.channel.createMessage({
       embed: {
-        title: "🐱 Meow!",
+        title: "🐱 Cat",
         color: this.bot.embed.color("general"),
         image: {
           url: body.file,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });

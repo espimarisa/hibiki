@@ -1,9 +1,17 @@
 /**
  * @fileoverview Command class
- * @description Sets command paramaters
+ * @description Manages commands and their paramaters
  */
 
 class Command {
+  /**
+   * Creates a command
+   * @param {object} bot Main bot object
+   * @param {string} category The command's category, inherited from it's folder
+   * @param {string} id The command's name, inherited from it's filename
+   * @param {object} params The command's paramaters
+   */
+
   constructor(bot, category, id, params) {
     this.bot = bot;
     this.category = category;

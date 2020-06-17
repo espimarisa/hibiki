@@ -3,7 +3,7 @@ const Command = require("structures/Command");
 class dailyCommand extends Command {
   constructor(...args) {
     super(...args, {
-      description: "Gives you your daily cookies.",
+      description: "Gives your daily cookies.",
       allowdms: true,
     });
   }
@@ -31,6 +31,7 @@ class dailyCommand extends Command {
         amount: 0,
         lastclaim: 9999,
       };
+
       await this.bot.db.table("economy").insert(cookies).run();
     }
 
@@ -45,13 +46,13 @@ class dailyCommand extends Command {
 
       // Updates DB
       await this.bot.db.table("economy").get(msg.author.id).update(cookies).run();
-      return msg.channel.createMessage(this.bot.embed("🍪 Daily Cookies", "You have claimed your daily **100** cookies."));
+      return this.bot.embed("🍪 Daily", "You've claimed your daily **100** cookies.", msg);
     }
 
     // If user is on cooldown
     const lastclaim = new Date(cookies.lastclaim);
     const time = 86400000 - (new Date().getTime() - lastclaim.getTime());
-    msg.channel.createMessage(this.bot.embed("🍪 Daily Cookies", `You can claim your daily cookies again in ${formatDay(time)}.`));
+    this.bot.embed("🍪 Daily", `You can claim your daily cookies again in ${formatDay(time)}.`, msg);
   }
 }
 

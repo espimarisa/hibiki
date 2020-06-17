@@ -1,5 +1,5 @@
 const Command = require("structures/Command");
-const yn = require("utils/Ask.js").YesNo;
+const yn = require("utils/ask").YesNo;
 
 class marryCommand extends Command {
   constructor(...args) {

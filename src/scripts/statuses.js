@@ -1,9 +1,16 @@
 /**
- * @fileoverview Status switcher
- * @description Formats & switches playing statuses
+ * @fileoverview Statuses
+ * @description Switches between and formats statuses
+ * @module statuses
+ */
+
+/**
+ * Switches between statuses
+ * @param {object} bot Main bot object
  */
 
 module.exports.switch = (bot) => {
+  // Formats statuses
   const statuses = bot.config.statuses.map(s => {
     if (s === "help") s = `${bot.config.prefixes[0]}help | hibiki.app`;
     if (s === "guilds") s = `${bot.guilds.size} servers`;
@@ -12,14 +19,14 @@ module.exports.switch = (bot) => {
     return s;
   });
 
-  // Sets initial status
+  // Sets the initial status
   bot.editStatus(bot.config.status, {
     name: statuses[Math.floor(statuses.length * Math.random())],
     type: bot.config.statustype,
     url: bot.config.statusurl,
   });
 
-  // Switches between statuses
+  // Timeout for switching
   setInterval(() => {
     bot.editStatus(bot.config.status, {
       name: statuses[Math.floor(statuses.length * Math.random())],

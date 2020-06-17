@@ -1,11 +1,3 @@
-/**
- * @fileoverview Member argtype
- * @description Looks for a valid member
- * @param {Object} member A valid Discord member or user ID
- * @param {string} [member.strict] Requires an exact ID or mention
- * @param {string} [member.fallback] Falls back to the author if no member was found
- */
-
 module.exports = [function member(a, msg, flag) {
   const member = msg.channel.guild.members.find(m => flag !== "strict" ?
     m.username.toLowerCase() === a || m.id === a || a.startsWith(`<@!${m.id}>`) || a.startsWith(`<@${m.id}>`) :

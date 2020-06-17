@@ -23,7 +23,7 @@ module.exports = exports = {
     "eqeqeq": [1, "smart"],
     "no-inline-comments": 1,
     "jsx-quotes": [1, "prefer-double"],
-    "lines-around-comment": [1, { beforeBlockComment: true }],
+    "lines-around-comment": [1, { beforeBlockComment: false }],
     "max-depth": [1, 8],
     "max-len": [1, { code: 150, ignoreComments: true, ignoreStrings: true, tabWidth: 2 }],
     "max-nested-callbacks": [1, 8],
