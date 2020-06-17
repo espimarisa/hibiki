@@ -13,7 +13,7 @@ class dogCommand extends Command {
 
   async run(msg) {
     const body = await fetch("https://random.dog/woof.json").then(async res => await res.json().catch(() => {}));
-    if (!body || !body.url) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
+    if (!body || !body.url) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error", msg);
 
     await msg.channel.createMessage({
       embed: {
@@ -21,6 +21,10 @@ class dogCommand extends Command {
         color: this.bot.embed.color("general"),
         image: {
           url: body.url,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });

@@ -13,8 +13,8 @@ class dogfactCommand extends Command {
 
   async run(msg) {
     const body = await fetch("https://dog-api.kinduff.com/api/facts").then(async res => await res.json().catch(() => {}));
-    if (!body || !body.success) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the fact. Try again later."));
-    msg.channel.createMessage(this.bot.embed("🐶 Dog Fact", body.facts[0]));
+    if (!body || !body.success) return this.bot.embed("❌ Error", "Couldn't send the fact. Try again later.", "error", msg);
+    this.bot.embed("🐶 Dog Fact", body.facts[0], msg);
   }
 }
 

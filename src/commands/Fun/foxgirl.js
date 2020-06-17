@@ -1,7 +1,7 @@
 const Command = require("structures/Command");
 const fetch = require("node-fetch");
 
-class catgirlCommand extends Command {
+class foxgirlCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["kitsune"],
@@ -13,7 +13,7 @@ class catgirlCommand extends Command {
 
   async run(msg) {
     const body = await fetch("https://nekos.life/api/v2/img/fox_girl").then(async res => await res.json().catch(() => {}));
-    if (!body || !body.url) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
+    if (!body || !body.url) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error", msg);
 
     msg.channel.createMessage({
       embed: {
@@ -22,9 +22,13 @@ class catgirlCommand extends Command {
         image: {
           url: body.url,
         },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
       },
     });
   }
 }
 
-module.exports = catgirlCommand;
+module.exports = foxgirlCommand;

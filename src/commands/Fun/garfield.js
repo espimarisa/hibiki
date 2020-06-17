@@ -23,15 +23,19 @@ class garfieldCommand extends Command {
     }
 
     const garfield = GarfieldRandom();
-    if (!garfield[0]) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the comic. Try again later.", "error"));
+    if (!garfield[0]) return this.bot.embed("❌ Error", "Couldn't send the comic. Try again later.", "error", msg);
 
     msg.channel.createMessage({
       embed: {
         title: `💭 Published on ${garfield[1]}-${garfield[2]}-${garfield[3]}`,
+        color: this.bot.embed.color("general"),
         image: {
           url: garfield[0],
         },
-        color: this.bot.embed.color("general"),
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
       },
     });
   }

@@ -15,7 +15,7 @@ class slotsCommand extends Command {
     if (member.id === "647269760782041133") inches = 0;
 
     if (member.bot) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `I don't think **${member.username}** has a dick.`, "error", msg.author));
+      return this.bot.embed("❌ Error", `I don't think **${member.username}** has a dick.`, "error", msg);
     }
 
     const suffix = a => {
@@ -23,11 +23,7 @@ class slotsCommand extends Command {
     };
 
     const thedick = `8${"=".repeat(Math.round(inches.toFixed(2) / 2))}D`;
-    msg.channel.createMessage(this.bot.embed(
-      "🍆 Dicksize",
-      `**${member.username}**'s dicksize is **${inches.toFixed(1)} inch${suffix(inches)}**.\n ${thedick}`,
-      msg.author,
-    ));
+    this.bot.embed("🍆 Dicksize", `**${member.username}**'s dicksize is **${inches.toFixed(1)} inch${suffix(inches)}**.\n ${thedick}`, msg);
   }
 }
 
