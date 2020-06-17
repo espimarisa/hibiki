@@ -13,14 +13,21 @@ class catgirlCommand extends Command {
 
   async run(msg) {
     const body = await fetch("https://nekos.life/api/v2/img/neko").then(async res => await res.json().catch(() => {}));
-    if (!body || !body.url) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
+
+    if (!body || !body.url) {
+      return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error", msg);
+    }
 
     msg.channel.createMessage({
       embed: {
-        title: "🐾 Mew!",
+        title: "🐾 Catgirl",
         color: this.bot.embed.color("general"),
         image: {
           url: body.url,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });

@@ -11,7 +11,7 @@ class diceCommand extends Command {
 
   run(msg) {
     const num = Math.floor(Math.random() * 6) + 1;
-    msg.channel.createMessage(this.bot.embed("🎲 Dice", `You rolled a **${num}**.`));
+    msg.channel.createMessage(this.bot.embed("🎲 Dice", `You rolled a **${num}**.`, msg.author));
   }
 }
 

@@ -9,7 +9,7 @@ const passport = require("passport");
 const session = require("express-session");
 const strategy = require("passport-discord");
 const format = require("utils/format");
-const config = require("../config").dashboard;
+const config = require("root/config").dashboard;
 
 const scope = ["identify", "guilds"];
 const app = express();

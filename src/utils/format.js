@@ -1,10 +1,19 @@
 /**
- * @fileoverview Formatter
- * @description Formats & beautifies various things
+ * @fileoverview Format
+ * @description Formats & beautifies items
+ * @module format
  */
 
 module.exports = {
-  // if user, true; filter emojis
+
+  /**
+   * Tags a user by user#discrim
+   * @example format.tag(msg.author);
+   *
+   * @param {object} user Discord user object
+   * @param {boolean} [emojifilter] Removes emojis from the tag
+   */
+
   tag: (user, emojifilter = true) => {
     if (user && emojifilter) {
       return `${/[,.\-_a-zA-Z0-9]{1,32}/.exec(user.username) !== null ?
@@ -14,6 +23,14 @@ module.exports = {
     }
     return;
   },
+
+  /**
+   * Formats dates to be prettier
+   * @example format.date(new Date());
+   *
+   * @param {number} EpochDate Date, in Epoch format
+   * @param {boolean} [syear] Whether or not to output the year
+   */
 
   date: (EpochDate, syear = true) => {
     const date = new Date(EpochDate);
@@ -28,6 +45,14 @@ module.exports = {
     const time = `${(date.getHours() < 10 ? "0" : "") + date.getHours()}:${(date.getMinutes() < 10 ? "0" : "") + date.getMinutes()}`;
     return `${month} ${day}${syear ? ` ${year} ` : " "}${time}`;
   },
+
+  /**
+   * Formats how long ago a date was
+   * @example format.dateParse(new Date() / 1000 - timestamp / 1000);
+   *
+   * @param {Number} time The timestamp to format
+   * @param {Boolean} [options] Toggle what to format
+   */
 
   dateParse: (time, options = {
     hours: true,
@@ -69,6 +94,13 @@ module.exports = {
 
     return finalstring;
   },
+
+  /**
+   * Formats voice regions with their respective flags
+   * @example format.region(guild.region);
+   *
+   * @param {string} region The server region to format
+   */
 
   region(region) {
     switch (region) {
@@ -116,6 +148,11 @@ module.exports = {
         return region;
     }
   },
+
+  /**
+   * Formats process uptime
+   * @example format.uptime(process.uptime());
+   */
 
   uptime: () => {
     const uptime = process.uptime();

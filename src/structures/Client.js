@@ -1,6 +1,6 @@
 /**
- * @fileoverview Client
- * @description Connects to Discord & sets globals
+ * @fileoverview Client constructor
+ * @description Connects to Discord and handles global bot functions
  */
 
 const { Client } = require("eris");
@@ -11,16 +11,22 @@ const database = require("scripts/database");
 const sentry = require("@sentry/node");
 const startup = new Date();
 
-/**
- * Main bot constructor
- * @param {String} token Bot token
- * @param {Object} options List of Eris options
- */
-
 class Verniy extends Client {
+  /**
+   * Creates a bot instance
+   *
+   * @example
+   * const Verniy = require("structures/Client");
+   * const config = require("root/config");
+   * new Verniy(token, options);
+   *
+   * @param {string} token Discord bot token from the config file
+   * @param {object} [options] Object of Eris options from the config file
+   */
+
   constructor(token, options) {
     super(token, options);
-    database.start();
+    database.start(this);
 
     this.config = config.bot;
     this.key = config.keys;
@@ -30,6 +36,7 @@ class Verniy extends Client {
     this.embed = require("utils/embed");
     this.load = require("scripts/loader");
     this.log = require("scripts/logger");
+    this.tag = require("utils/format").tag;
     this.version = require("root/package").version;
     this.statuses = require("scripts/statuses");
 
@@ -43,6 +50,7 @@ class Verniy extends Client {
     this.once("ready", () => this.readyListener());
   }
 
+  /** Runs when the bot is ready */
   readyListener() {
     try { sentry.init({ dsn: this.key.sentry }); } catch (err) { this.log.error(`Sentry failed to start: ${err}`); }
     this.statuses.switch(this);

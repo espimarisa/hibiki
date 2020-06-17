@@ -1,6 +1,7 @@
 /**
- * @fileoverview Module loader
+ * @fileoverview Loader
  * @description Loads, unloads, and reloads modules
+ * @module loader
  */
 
 const { readdirSync, statSync } = require("fs");
@@ -10,7 +11,15 @@ const command_directory = path.join(__dirname, "../commands");
 const event_directory = path.join(__dirname, "../events");
 const extension_directory = path.join(__dirname, "../extensions");
 
-// Command loader
+/**
+ * Loads any commands
+ * @param {object} bot Main bot object
+ *
+ * @example
+ * const load = require("scripts/loader");
+ * load.commands(this.bot);
+ */
+
 module.exports.commands = async function loadCommands(bot) {
   const files = readdirSync(command_directory);
   files.forEach(subfolder => {
@@ -38,7 +47,15 @@ module.exports.commands = async function loadCommands(bot) {
   bot.log.info(`${bot.commands.length} commands loaded`);
 };
 
-// Event loader
+/**
+ * Loads any events
+ * @param {object} bot Main bot object
+ *
+ * @example
+ * const load = require("scripts/loader");
+ * load.events(this.bot);
+ */
+
 module.exports.events = async function loadEvents(bot) {
   const files = readdirSync(event_directory);
   files.forEach(evnt => {
@@ -60,7 +77,15 @@ module.exports.events = async function loadEvents(bot) {
   bot.log.info(`${bot.events.length} events loaded`);
 };
 
-// Extension loader
+/**
+ * Loads any extensions on first start
+ * @param {object} bot Main bot object
+ *
+ * @example
+ * const load = require("scripts/loader");
+ * load.extensions(this.bot);
+ */
+
 module.exports.extensions = async function loadExtensions(bot) {
   const files = readdirSync(extension_directory);
   files.forEach(ext => {
@@ -84,9 +109,17 @@ module.exports.extensions = async function loadExtensions(bot) {
   }
 };
 
-// Loads all modules
+/**
+ * Loads all modules
+ * @param {object} bot Main bot object
+ *
+ * @example
+ * const load = require("scripts/loader");
+ * load.all(this.bot);
+ */
+
 module.exports.all = async function loadAll(bot) {
   this.commands(bot);
   this.events(bot);
-  this.extensions(bot);
+  // this.extensions(bot);
 };

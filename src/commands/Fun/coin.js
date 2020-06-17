@@ -11,7 +11,7 @@ class coinCommand extends Command {
 
   run(msg) {
     const coin = ["heads", "tails"][Math.round(Math.random())];
-    msg.channel.createMessage(this.bot.embed("💰 Coin", `The coin landed on **${coin}**.`));
+    this.bot.embed("💰 Coin", `The coin landed on **${coin}**.`, msg);
   }
 }
 

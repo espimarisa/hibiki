@@ -1,6 +1,6 @@
 /**
- * @fileoverview Arg class & handler
- * @description Loads argtypes & handles them
+ * @fileoverview Args
+ * @description Loads and parses args and their types
  */
 
 const { readdir } = require("fs");
@@ -8,13 +8,18 @@ const path = require("path");
 const argtypes_directory = path.join(__dirname, "../utils/argtypes");
 
 class Args {
+  /**
+   * Creates an arg parser
+   * @param {object} bot Main bot object
+   */
+
   constructor(bot) {
     this.bot = bot;
     this.argtypes = {
       string: (a) => { return a; },
     };
 
-    // Loads args
+    // Loads argtypes
     readdir(argtypes_directory, (_err, files) => {
       files.forEach(arg => {
         let argtype;
@@ -30,7 +35,14 @@ class Args {
     });
   }
 
-  // Parses args
+  /**
+   * Parses any args given
+   * @param {string} argString The string to look for args
+   * @param {string} args The args to parse
+   * @param {string} delimiter The text between arg label and type
+   * @param {object} msg The message object
+   */
+
   parse(argString, args, delimiter, msg) {
     const argObj = [];
     argString.split(delimiter).forEach(arg => {
@@ -44,7 +56,7 @@ class Args {
       });
     });
 
-    // Splits args
+    // Splits args from the delimiter
     args.split(delimiter).forEach((arg, i) => {
       const argg = argObj[i];
       if (!argg || (!arg && argg.flag !== "fallback")) return;

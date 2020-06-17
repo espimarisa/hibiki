@@ -1,12 +1,18 @@
 /**
- * @fileoverview Command handler
- * @description Runs commands & handles their parameters
+ * @fileoverview Handler
+ * @description Handles commands and their paramaters
+ * @todo Stop using eris-additions and make our own global perm handler
  */
 
 const Event = require("structures/Event");
 const eris = require("eris-additions")(require("eris"));
 const sentry = require("@sentry/node");
-const format = require("utils/format");
+
+/**
+ * Listens for messages to check for commands
+ * @param {Event} Handler
+ * @listens messageCreate
+ */
 
 class Handler extends Event {
   constructor(...args) {
@@ -15,6 +21,13 @@ class Handler extends Event {
     });
     this.cooldowns = [];
   }
+
+  /**
+   * Runs a command
+   * @param {object} msg The message object
+   * @param {string} [args] Raw args to use
+   * @param {string} [pargs] Parsed args to use
+   */
 
   async run(msg) {
     if (!msg || !msg.author || msg.author.bot) return;
@@ -37,7 +50,7 @@ class Handler extends Event {
           color: this.bot.embed.color("general"),
           author: {
             icon_url: msg.author.dynamicAvatarURL(),
-            name: `Messaged by ${format.tag(msg.author)}`,
+            name: `Messaged by ${this.bot.tag(msg.author)}`,
           },
           image: {
             url: msg.attachments.length !== 0 ? msg.attachments[0].url : "",
@@ -87,7 +100,10 @@ class Handler extends Event {
     // Client perms
     if (cmd.clientperms) {
       const botperms = msg.channel.guild.members.get(this.bot.user.id).permission;
-      if (!botperms.has("embedLinks")) return msg.channel.createMessage(`❌ Error - I need permission to **embed links** to work properly.`);
+      if (!botperms.has("embedLinks")) {
+        return msg.channel.createMessage("In order to function properly, I need permission to **embed links**.");
+      }
+
       if (!botperms.has(cmd.clientperms)) {
         return msg.channel.createMessage(this.bot.embed("❌ Error", `I need the **${cmd.clientperms}** permission to run that command.`, "error"));
       }
@@ -99,12 +115,14 @@ class Handler extends Event {
     }
 
     // Required perms
-    if (cmd.requiredperms && (!msg.member.permission.has(cmd.requiredperms) || !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffRole)) {
+    if (cmd.requiredperms && (!msg.member.permission.has(cmd.requiredperms) ||
+        !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffRole)) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", `You need the **${cmd.requiredperms}** permission to run this.`, "error"));
     }
 
     // Staff commands
-    if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg && guildcfg.staffRole && !msg.member.roles.includes(guildcfg.staffRole))) {
+    if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg && guildcfg.staffRole &&
+        !msg.member.roles.includes(guildcfg.staffRole))) {
       return msg.channel.createMessage(this.bot.embed("❌ Error", "That command is only for staff members.", "error"));
     }
 
@@ -131,13 +149,13 @@ class Handler extends Event {
 
     try {
       // Runs the command
-      if (args.length) this.bot.log(`${format.tag(msg.author)} ran ${cmd.id} in ${msg.channel.guild.name}: ${args}`);
-      else { this.bot.log(`${format.tag(msg.author)} ran ${cmd.id} in ${msg.channel.guild.name}`); }
+      if (args.length) this.bot.log(`${this.bot.tag(msg.author)} ran ${cmd.id} in ${msg.channel.guild.name}: ${args}`);
+      else { this.bot.log(`${this.bot.tag(msg.author)} ran ${cmd.id} in ${msg.channel.guild.name}`); }
       await cmd.run(msg, args, parsedArgs);
     } catch (err) {
       if (err === "timeout") return;
       sentry.configureScope(scope => {
-        scope.setUser({ id: msg.author.id, username: format.tag(msg.author) });
+        scope.setUser({ id: msg.author.id, username: this.bot.tag(msg.author) });
         scope.setExtra("guild", msg.channel.guild.name);
       });
 

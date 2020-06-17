@@ -1,21 +1,20 @@
 /**
- * @fileoverview RethinkDB Setup
- * @description Creates the required database and tables
+ * @fileoverview Setup
+ * @description Creates required RethinkDB tables and indexes
  */
 
 const { r } = require("rethinkdb-ts");
 const config = require("root/config");
-const log = require("scripts/log");
+const log = require("scripts/logger");
 const start = require("scripts/database").start;
 const requiredtables = config.rethink.tables;
 
 (async () => {
   await start().catch(err => {
-    log.error(`Error while starting RethinkDB (Is it running; are you authed right?): ${err}`);
+    log.error(`Error while starting RethinkDB (Is it running; are you authorized?): ${err}`);
     process.exit();
   });
 
-  // Creates database
   const db = r.db(config.rethink.db);
   const dbList = await r.dbList().run();
   if (!dbList.includes(config.rethink.db)) {
@@ -23,7 +22,7 @@ const requiredtables = config.rethink.tables;
     log.success(`Created the ${config.rethink.db} database`);
   }
 
-  // Creates tables
+  // Creates missing tables
   const tables = await db.tableList().run();
   await Promise.all(requiredtables.map(async t => {
     if (!tables.includes(t)) {
