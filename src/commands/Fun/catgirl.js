@@ -13,10 +13,7 @@ class catgirlCommand extends Command {
 
   async run(msg) {
     const body = await fetch("https://nekos.life/api/v2/img/neko").then(async res => await res.json().catch(() => {}));
-
-    if (!body || !body.url) {
-      return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error", msg);
-    }
+    if (!body || !body.url) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error", msg);
 
     msg.channel.createMessage({
       embed: {

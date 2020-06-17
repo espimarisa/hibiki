@@ -16,22 +16,22 @@ class marryCommand extends Command {
 
     // If author is married
     if (state.find(m => m.id === msg.author.id || m.marriedTo === msg.author.id)) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "You're already married.", "error"));
+      return this.bot.embed("❌ Error", "You're already married.", "error", msg);
     }
 
     // If mentioned user is married
     if (state.find(m => m.id === user.id || m.marriedTo === user.id)) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** is already married.`, "error"));
+      return this.bot.embed("❌ Error", `**${user.username}** is already married.`, "error", msg);
     }
 
-    // Asks for a response
-    const marrymsg = await msg.channel.createMessage(this.bot.embed("💝 Marry", `**${user.username}**, do you wish to marry **${msg.author.username}**?`));
+    // Waits for a response
+    const marrymsg = await this.bot.embed("💝 Marry", `**${user.username}**, do you wish to marry **${msg.author.username}**?`, msg);
     const response = await yn(this.bot, { author: user, channel: msg.channel });
     if (response) {
       await this.bot.db.table("marriages").insert({ id: msg.author.id, spouse: user.id }).run();
-      marrymsg.edit(this.bot.embed("💝 Marry", `**${msg.author.username}** and **${user.username}** are now married.`));
+      this.bot.embed.edit("💝 Marry", `**${msg.author.username}** and **${user.username}** are now married.`, marrymsg);
     } else {
-      marrymsg.edit(this.bot.embed("💝 Marry", "Marriage cancelled."));
+      marrymsg.edit(this.bot.embed("💝 Marry", "Marriage cancelled.", msg));
     }
   }
 }
