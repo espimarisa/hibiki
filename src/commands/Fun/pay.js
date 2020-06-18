@@ -12,43 +12,44 @@ class payCommand extends Command {
   async run(msg, args, pargs) {
     const user = pargs[0].value;
     const amount = parseInt(args[1]);
-    // Blocks bots, selfpaying; non-integers
-    if (user.bot) return msg.channel.createMessage(this.bot.embed("❌ Error", "You can't give cookies to a bot.", "error"));
-    if (user.id === msg.author.id) return msg.channel.createMessage(this.bot.embed("❌ Error", "Fraud is illegal.", "error"));
-    if (!amount || isNaN(amount)) return msg.channel.createMessage(this.bot.embed("❌ Error", "You provided an invalid amount of cookies.", "error"));
+    // Blocks bots, selfpaying, and non-integers
+    if (user.bot) return this.bot.embed("❌ Error", "You can't give cookies to a bot.", msg, "error");
+    if (user.id === msg.author.id) return this.bot.embed("❌ Error", "Fraud is illegal.", msg, "error");
+    if (!amount || isNaN(amount)) return this.bot.embed("❌ Error", "You provided an invalid amount of cookies.", msg, "error");
 
     // Gets author & user's cookies
-    let ucookies = await this.bot.db.table("economy").get(user.id);
-    let acookies = await this.bot.db.table("economy").get(msg.author.id);
+    let ucookies = await this.bot.db.table("economy").get(user.id).run();
+    let acookies = await this.bot.db.table("economy").get(msg.author.id).run();
 
-    // If no cookies
     if (!ucookies) {
       await this.bot.db.table("economy").insert({
         id: user.id,
         amount: 0,
         lastclaim: 9999,
-      });
-      return ucookies = await this.bot.db.table("economy").get(user.id);
+      }).run();
+
+      return ucookies = await this.bot.db.table("economy").get(user.id).run();
     }
 
-    // If no cookies
     if (!acookies) {
       await this.bot.db.table("economy").insert({
         id: user.id,
         amount: 0,
         lastclaim: 9999,
-      });
-      return acookies = await this.bot.db.table("economy").get(msg.author.id);
+      }).run();
+
+      return acookies = await this.bot.db.table("economy").get(msg.author.id).run();
     }
 
     // Compares cookie amounts
-    if (amount > acookies.amount || acookies.amount <= 0) return msg.channel.createMessage(this.bot.embed("❌ Error", "You don't have enough cookies.", "error"));
+    if (amount > acookies.amount || acookies.amount <= 0) return this.bot.embed("❌ Error", "You don't have enough cookies.", msg, "error");
     acookies.amount -= amount;
     ucookies.amount += amount;
+
     // Updates cookie amounts
-    await this.bot.db.table("economy").get(user.id).update(ucookies);
-    await this.bot.db.table("economy").get(msg.author.id).update(acookies);
-    msg.channel.createMessage(this.bot.embed("🍪 Pay", `You gave **${amount}** cookie${amount === 1 ? "" : "s"} to **${user.username}**.`));
+    await this.bot.db.table("economy").get(user.id).update(ucookies).run();
+    await this.bot.db.table("economy").get(msg.author.id).update(acookies).run();
+    this.bot.embed("🍪 Pay", `You gave **${amount}** cookie${amount === 1 ? "" : "s"} to **${user.username}**.`, msg);
   }
 }
 

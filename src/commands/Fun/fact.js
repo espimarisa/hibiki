@@ -5,7 +5,7 @@ class factCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["catfact", "dogfact", "randomfact", "uselessfact"],
-      args: "[type:string] [number:string]",
+      args: "[type:string]",
       description: "Posts a cat, dog, or random fact.",
       allowdms: true,
       cooldown: 3,
@@ -31,12 +31,11 @@ class factCommand extends Command {
 
     // Sends the fact
     const body = await fetch(api).then(async res => await res.json().catch(() => {}));
-    const factmsg = await this.bot.embed(apilabels[index], "Fetching a fact...", msg);
     if (!body) return this.bot.embed.edit("❌ Error", "Couldn't send the fact. Try again later.", factmsg, "error");
     if (apiname === "cat") fact = body.fact;
     else if (apiname === "dog") fact = body.facts[0];
     else if (apiname === "useless") fact = body.data;
-    this.bot.embed.edit(apilabel, fact, factmsg);
+    this.bot.embed(apilabel, fact, msg);
   }
 }
 

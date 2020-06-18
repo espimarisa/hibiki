@@ -1,7 +1,7 @@
 const WaitFor = require("utils/waitfor");
 
 module.exports = {
-  YesNo: async (bot, msg, retMsg = false) => {
+  yesNo: async (bot, msg, retMsg = false) => {
     try {
       // Sets the response message, timeout is 15 seconds
       const [resp] = await WaitFor("messageCreate", 15000, m => {
@@ -33,7 +33,7 @@ module.exports = {
     }
   },
 
-  For: (type, arg, guild) => {
+  for: (type, arg, guild) => {
     if (!type) return "No type";
     if (!arg) return "No arg";
     if (!guild) return "No guild";

@@ -10,9 +10,9 @@ class coolCommand extends Command {
   }
 
   run(msg, args, pargs) {
-    const member = pargs[0].value;
+    const user = pargs[0].value;
     const random = Math.floor(Math.random() * 99) + 1;
-    this.bot.embed("😎 Cool", `**${member.username}** is **${random}%** cool.`, msg);
+    this.bot.embed("😎 Cool", `**${user.username}** is **${random}%** cool.`, msg);
   }
 }
 

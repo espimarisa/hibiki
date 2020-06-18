@@ -35,14 +35,14 @@ class Handler extends Event {
     if (blacklist.find(u => u.user === msg.author.id)) return;
 
     // DM handling & logger
-    if (msg.channel instanceof eris.PrivateChannel) {
+    if (msg.channel instanceof eris.PrivateChannel && this.bot.config.logchannel) {
       const cmd = this.bot.commands.find(
         c => msg.content.toLowerCase().startsWith(`${this.bot.config.prefixes[0]}${c.id}`) || msg.content.toLowerCase().startsWith(c.id),
       );
 
       // Commands in dms
       if (cmd && cmd.allowdms) cmd.run(msg, msg.content.substring(this.bot.config.prefixes[0].length + cmd.id.length + 1).split(" "));
-      else if (cmd && !cmd.allowdms) msg.channel.createMessage(this.bot.embed("❌ Error", "That command can only be used in a server.", "error"));
+      else if (cmd && !cmd.allowdms) this.bot.embed("❌ Error", "That command can only be used in a server.", msg, "error");
 
       return this.bot.createMessage(this.bot.config.logchannel, {
         embed: {
@@ -89,12 +89,12 @@ class Handler extends Event {
 
     // Disabled categories
     if (guildcfg && (guildcfg.disabledCategories || []).includes(cmd.category) && cmd.allowdisable) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "The category that command is in is disabled in this server.", "error"));
+      return this.bot.embed("❌ Error", "The category that command is in is disabled in this server.", msg, "error");
     }
 
     // Disabled commands
     if (guildcfg && (guildcfg.disabledCmds || []).includes(cmd.id) && cmd.allowdisable) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "That command is disabled in this server.", "error"));
+      return this.bot.embed("❌ Error", "That command is disabled in this server.", msg, "error");
     }
 
     // Client perms
@@ -105,25 +105,25 @@ class Handler extends Event {
       }
 
       if (!botperms.has(cmd.clientperms)) {
-        return msg.channel.createMessage(this.bot.embed("❌ Error", `I need the **${cmd.clientperms}** permission to run that command.`, "error"));
+        return this.bot.embed("❌ Error", `I need the **${cmd.clientperms}** permission to run that command.`, msg, "error");
       }
     }
 
     // NSFW commands
     if (cmd.nsfw && !msg.channel.nsfw) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "That command can only be ran in NSFW channels.", "error"));
+      return this.bot.embed("❌ Error", "That command can only be ran in a NSFW channel.", msg, "error");
     }
 
     // Required perms
     if (cmd.requiredperms && (!msg.member.permission.has(cmd.requiredperms) ||
         !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffRole)) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `You need the **${cmd.requiredperms}** permission to run this.`, "error"));
+      return this.bot.embed("❌ Error", `You need the **${cmd.requiredperms}** permission to run this.`, msg, "error");
     }
 
     // Staff commands
     if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg && guildcfg.staffRole &&
         !msg.member.roles.includes(guildcfg.staffRole))) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "That command is only for staff members.", "error"));
+      return this.bot.embed("❌ Error", "That command is only for staff members.", msg, "error");
     }
 
     // Cooldowns
@@ -143,7 +143,7 @@ class Handler extends Event {
       parsedArgs = this.bot.args.parse(cmd.args, args.join(" "), cmd.argsDelimiter, msg);
       const missingargs = parsedArgs.filter(a => typeof a.value == "undefined" && !a.optional);
       if (missingargs.length) {
-        return msg.channel.createMessage(this.bot.embed("❌ Error", `No **${missingargs.map(a => a.name).join(" or ")}** was provided.`, "error"));
+        return this.bot.embed("❌ Error", `No **${missingargs.map(a => a.name).join(" or ")}** was provided.`, msg, "error");
       }
     }
 
@@ -162,7 +162,7 @@ class Handler extends Event {
       // Logs the error
       sentry.captureException(err);
       console.error(err);
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `An error occurred and has been logged. \n \`\`\`js\n${err}\n\`\`\``, "error"));
+      return this.bot.embed("❌ Error", `An error occurred and has been logged. \n \`\`\`js\n${err}\n\`\`\``, msg, "error");
     }
   }
 }

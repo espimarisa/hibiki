@@ -1,5 +1,5 @@
 const Command = require("structures/Command");
-const yn = require("utils/ask").YesNo;
+const yn = require("utils/ask").yesNo;
 
 class marryCommand extends Command {
   constructor(...args) {
@@ -16,12 +16,12 @@ class marryCommand extends Command {
 
     // If author is married
     if (state.find(m => m.id === msg.author.id || m.marriedTo === msg.author.id)) {
-      return this.bot.embed("❌ Error", "You're already married.", "error", msg);
+      return this.bot.embed("❌ Error", "You're already married.", msg, "error");
     }
 
     // If mentioned user is married
     if (state.find(m => m.id === user.id || m.marriedTo === user.id)) {
-      return this.bot.embed("❌ Error", `**${user.username}** is already married.`, "error", msg);
+      return this.bot.embed("❌ Error", `**${user.username}** is already married.`, msg, "error");
     }
 
     // Waits for a response
@@ -32,7 +32,7 @@ class marryCommand extends Command {
       await this.bot.db.table("marriages").insert({ id: msg.author.id, spouse: user.id }).run();
       this.bot.embed.edit("💝 Marry", `**${msg.author.username}** and **${user.username}** are now married.`, marrymsg);
     } else {
-      marrymsg.edit(this.bot.embed("💝 Marry", "Marriage cancelled.", msg));
+      this.bot.embed.edit("💝 Marry", "Marriage cancelled.", marrymsg);
     }
   }
 }
