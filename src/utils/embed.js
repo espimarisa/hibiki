@@ -47,7 +47,6 @@ module.exports = (title, description, msg, colortype) => {
 
   construct.embed.color = color;
   if (msg) return msg.channel.createMessage(construct);
-  else return construct;
 };
 
 /**
@@ -55,11 +54,12 @@ module.exports = (title, description, msg, colortype) => {
  * @param {string} title The title of the embed
  * @param {string} description The description of the embed, set to null to clear
  * @param {object} msg The message object to update
- * @param {*} colortype Type of color (set in the config file)
+ * @param {string} colortype Type of color (set in the config file)
  *
  * @example
  * // The first message must be asynchronous to work properly
  * const message = await this.bot.embed("Title", "Description", msg);
+ * // Be sure you use the message object of the one you want to edit
  * this.bot.embed.edit("Edited Title", "Edited Description", message);
  */
 

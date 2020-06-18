@@ -1,2 +1,9 @@
-* text=auto
-*.* text eol = lf
+* text eol=lf
+
+*.bmp binary
+*.gif binary
+*.jpeg binary
+*.jpg binary
+*.png binary
+*.tar.gz binary
+*.zip binary
