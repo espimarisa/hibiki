@@ -1,6 +1,6 @@
 /**
  * @fileoverview Loader
- * @description Loads, unloads, and reloads modules
+ * @description Loads commands, events, and extensions
  * @module loader
  */
 
@@ -38,7 +38,7 @@ module.exports.commands = async function loadCommands(bot) {
 
       // Adds commands
       if (!command) return;
-      const _command = new command(bot, command.name, /(.{1,})\.js/.exec(cmd)[1]);
+      const _command = new command(bot, subfolder, /(.{1,})\.js/.exec(cmd)[1]);
       if (!_command.requiredkeys.every(k => Object.keys(bot.key).includes(k) && bot.key[k])) return;
       bot.commands.push(_command);
     });

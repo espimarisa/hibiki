@@ -4,17 +4,20 @@ class unloadCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["ul"],
-      args: "<item:module>",
+      args: "<command:string>",
       description: "Unloads a module.",
       allowdisable: false,
       owner: true,
     });
   }
 
-  run(msg, args, pargs) {
-    const r = pargs[0].value.unload();
-    if (r === "unloaded") msg.channel.createMessage(this.bot.embed("🔄 Unload", `**${pargs[0].value.id}** was unloaded.`, "success"));
-    else msg.channel.createMessage(this.bot.embed("🔄 Unload", `Error while unloading: ${r}`, "error"));
+  run(msg, args) {
+    const cmd = this.bot.commands.find(c => c.id === args.join(" ").toLowerCase() || c.aliases.includes(args.join(" ").toLowerCase()));
+    if (!cmd) return this.bot.embed("❌ Error", "No **command** was provided.", msg, "error");
+    delete require.cache[require.resolve(`../${cmd.category}/${cmd.id}`)];
+    const index = this.bot.commands.indexOf(cmd);
+    if (index !== -1) this.bot.commands.splice(index, 1);
+    this.bot.embed("✅ Success", `**${cmd.id}** was unloaded.`, msg, "success");
   }
 }
 
