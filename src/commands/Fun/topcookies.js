@@ -10,7 +10,7 @@ class topcookiesCommand extends Command {
   }
 
   async run(msg) {
-    const cookies = await this.bot.db.table("economy");
+    const cookies = await this.bot.db.table("economy").run();
     const leaderboardcookies = [];
     Object.values(cookies).forEach(cookie => {
       leaderboardcookies.push([cookie.amount, cookie.id]);
@@ -39,6 +39,10 @@ class topcookiesCommand extends Command {
         title: "🍪 Cookie Leaderboard",
         description: content,
         color: this.bot.embed.color("general"),
+      },
+      footer: {
+        text: `Ran by ${this.bot.tag(msg.author)}`,
+        icon_url: msg.author.dynamicAvatarURL(),
       },
     });
   }

@@ -1,5 +1,5 @@
 const Command = require("structures/Command");
-const faces = ["(・`ω´・)", ";;w;;", "owo", "OwO", "OvO", "UvU", "ouo", "UwU", "uwu", ">w<", "^w^", "OvO"];
+const faces = ["(・`ω´・)", "OwO", "ouo", "UwU", "uwu", ">w<", "^w^"];
 
 class owoifyCommand extends Command {
   constructor(...args) {
@@ -12,7 +12,6 @@ class owoifyCommand extends Command {
   }
 
   run(msg, args) {
-    // Replaces the text
     function owoify(owo) {
       // Replaces codeblocks
       if (owo.startsWith("```") && owo.endsWith("```")) {
@@ -32,8 +31,8 @@ class owoifyCommand extends Command {
       owo = owo.replace(/!+/g, `! ${faces[Math.floor(Math.random() * faces.length)]} `);
       return owo;
     }
-    // Sends the embed
-    msg.channel.createMessage(this.bot.embed(`${faces[Math.floor(Math.random() * faces.length)]}`, owoify(args.join(" ").slice(0, 1024))));
+
+    this.bot.embed(`${faces[Math.floor(Math.random() * faces.length)]}`, owoify(args.join(" ").slice(0, 1024)), msg);
   }
 }
 

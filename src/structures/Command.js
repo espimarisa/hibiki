@@ -20,6 +20,7 @@ class Command {
     if (params) {
       this.aliases = params.aliases ? params.aliases : [];
       this.args = params.args;
+      this.argsDelimiter = params.argsDelimiter || " ";
       this.allowdisable = params.allowdisable ? params.allowdisable : true;
       this.allowdms = params.allowdms ? params.allowdms : false;
       this.clientperms = params.clientperms;

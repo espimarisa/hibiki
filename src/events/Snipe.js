@@ -9,7 +9,7 @@ class Snipe extends Event {
 
   async run(msg) {
     if (!msg || !msg.channel || !msg.channel.guild) return;
-    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
+    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
     if (guildcfg) {
       if (!guildcfg.snipingEnable) return;
       if ((!msg.attachments || msg.attachments[0] === undefined) && (!msg.content || !msg)) return;

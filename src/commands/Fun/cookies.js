@@ -11,11 +11,11 @@ class cookiesCommand extends Command {
 
   async run(msg, args, pargs) {
     let cookies;
-    const member = pargs[0].value;
+    const user = pargs[0].value;
     const economydb = await this.bot.db.table("economy").get(user.id).run();
     if (!economydb) cookies = 0;
     else cookies = economydb.amount;
-    this.bot.embed("🍪 Cookies", `**${member.username}** has **${cookies}** total cookies.`, msg);
+    this.bot.embed("🍪 Cookies", `**${user.username}** has **${cookies}** total cookies.`, msg);
   }
 }
 
