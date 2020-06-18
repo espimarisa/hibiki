@@ -8,7 +8,8 @@ class bannerCommand extends Command {
   }
 
   run(msg) {
-    if (!msg.channel.guild.banner) return msg.channel.createMessage(this.bot.embed("❌ Error", "This server doesn't have a banner.", "error"));
+    if (!msg.channel.guild.banner) return this.bot.embed("❌ Error", "This server doesn't have a banner.", msg, "error");
+
     msg.channel.createMessage({
       embed: {
         color: this.bot.embed.color("general"),
@@ -18,6 +19,10 @@ class bannerCommand extends Command {
         },
         image: {
           url: msg.channel.guild.dynamicBannerURL(),
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });
