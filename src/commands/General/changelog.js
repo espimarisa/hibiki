@@ -10,7 +10,7 @@ class changelogCommand extends Command {
   }
 
   run(msg) {
-    msg.channel.createMessage(this.bot.embed("📚 Changelog", "The latest changes can be viewed on [GitHub](https://github.com/smolespi/Hibiki/releases/latest)."));
+    this.bot.embed("📚 Changelog", "You can view the latest changes [here](https://github.com/smolespi/Hibiki/releases/latest).", msg);
   }
 }
 

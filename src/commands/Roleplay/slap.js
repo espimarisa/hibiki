@@ -12,11 +12,14 @@ class slapCommand extends Command {
   }
 
   async run(msg, args, pargs) {
-    const body = await fetch("https://api.weeb.sh/images/random?type=slap", { headers: { "Authorization": `Wolke ${this.bot.key.weebsh}`, "User-Agent": `${this.bot.user.username}/${this.bot.version}` } })
-      .then(async res => await res.json().catch(() => {}));
-    let image;
+    const body = await fetch("https://api.weeb.sh/images/random?type=slap", {
+      headers: {
+        "Authorization": `Wolke ${this.bot.key.weebsh}`,
+        "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
+      },
+    }).then(async res => await res.json().catch(() => {}));
 
-    // Fallback image
+    let image;
     if (body.status !== 200) image = "https://cdn.weeb.sh/images/HkJ6-e91z.gif";
     else if (body.status === 200) image = body.url;
 
@@ -28,8 +31,8 @@ class slapCommand extends Command {
           url: image,
         },
         footer: {
-          icon_url: this.bot.user.dynamicAvatarURL(),
-          text: "Powered by weeb.sh",
+          text: `Ran by ${this.bot.tag(msg.author)} | Powered by weeb.sh`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });

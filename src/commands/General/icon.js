@@ -9,7 +9,8 @@ class iconCommand extends Command {
   }
 
   run(msg) {
-    if (!msg.channel.guild.iconURL) return msg.channel.createMessage(this.bot.embed("❌ Error", "This server doesn't have an icon set.", "error"));
+    if (!msg.channel.guild.iconURL) this.bot.embed("❌ Error", "This server doesn't have an icon set.", msg, "error");
+
     msg.channel.createMessage({
       embed: {
         color: this.bot.embed.color("general"),
