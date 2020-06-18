@@ -13,7 +13,7 @@ class foxCommand extends Command {
 
   async run(msg) {
     const body = await fetch("https://randomfox.ca/floof/").then(async res => await res.json().catch(() => {}));
-    if (!body || !body.image) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error", msg);
+    if (!body || !body.image) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", msg, "error");
 
     await msg.channel.createMessage({
       embed: {

@@ -33,13 +33,13 @@ module.exports.commands = async function loadCommands(bot) {
       try {
         command = require(`${command_directory}/${subfolder}/${cmd}`);
       } catch (err) {
-        bot.log(`${command} failed to load: ${err}`);
+        bot.log(`${cmd} failed to load: ${err}`);
       }
 
       // Adds commands
       if (!command) return;
       const _command = new command(bot, command.name, /(.{1,})\.js/.exec(cmd)[1]);
-      if (!_command.keys.every(k => Object.keys(bot.key).includes(k) && bot.key[k])) return;
+      if (!_command.requiredkeys.every(k => Object.keys(bot.key).includes(k) && bot.key[k])) return;
       bot.commands.push(_command);
     });
   });
@@ -63,7 +63,7 @@ module.exports.events = async function loadEvents(bot) {
     try {
       event = require(`${event_directory}/${evnt}`);
     } catch (err) {
-      bot.log(`${event} failed to load: ${err}`);
+      bot.log(`${evnt} failed to load: ${err}`);
     }
 
     // Adds events; runs them
@@ -95,7 +95,7 @@ module.exports.extensions = async function loadExtensions(bot) {
     try {
       extension = require(`${extension_directory}/${ext}`);
     } catch (err) {
-      bot.log(`${extension} failed to load: ${err}`);
+      bot.log(`${ext} failed to load: ${err}`);
     }
 
     if (!extension) return;

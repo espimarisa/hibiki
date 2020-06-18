@@ -11,11 +11,10 @@ class slotsCommand extends Command {
 
   async run(msg, args, pargs) {
     const member = pargs[0].value;
-    let inches = member.id % 7.1;
-    if (member.id === "647269760782041133") inches = 0;
+    const inches = member.id % 7.1;
 
     if (member.bot) {
-      return this.bot.embed("❌ Error", `I don't think **${member.username}** has a dick.`, "error", msg);
+      return this.bot.embed("❌ Error", `I don't think **${member.username}** has a dick.`, msg, "error");
     }
 
     const suffix = a => {
