@@ -1,10 +1,10 @@
-module.exports = exports = {
+module.exports = {
   env: {
     es6: true,
     amd: true,
   },
 
-  ignorePatterns: ["dist/", "rethinkdb_data/", "node_modules/"],
+  ignorePatterns: ["docs/", "dist/", "out/", "rethinkdb_data/", "node_modules/"],
   extends: "eslint:recommended",
   parser: "babel-eslint",
   parserOptions: {
