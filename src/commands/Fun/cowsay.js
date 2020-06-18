@@ -26,7 +26,7 @@ class cowsayCommand extends Command {
     // Sets the cow
     if (!args.length || args.join(" ") === "list") {
       return this.bot.embed("🐮 Cowsay",
-        `Usage: cowsay <text> cow=type \n Types: ${Object.keys(cows).map(c => `\`${c}\``).join(", ")}`, msg.author);
+        `Usage: cowsay <text> cow=type \n Types: ${Object.keys(cows).map(c => `\`${c}\``).join(", ")}`, msg);
     }
 
     let cow = Object.keys(cows).find(c => args.indexOf(`cow=${c}`) !== -1);
@@ -74,7 +74,7 @@ class cowsayCommand extends Command {
       return `\n${dashes.replace(/-/g, "_")}\n${fixLineBreak(t.match(/.{1,41}/g), length).join("\n")}\n${dashes}\n${cow}`;
     };
 
-    this.bot.embed("🐮 Cowsay", `\`\`\`\n ${cowsay(args.join(" "))}\n\`\`\``);
+    this.bot.embed("🐮 Cowsay", `\`\`\`\n ${cowsay(args.join(" "))}\n\`\`\``, msg);
   }
 }
 

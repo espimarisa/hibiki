@@ -12,9 +12,11 @@ class garfieldCommand extends Command {
   run(msg) {
     // Gets a random comic
     const today = new Date();
+
     function GarfieldRandom() {
       const start = new Date("1978/06/19").getTime();
       const date = new Date(start + Math.random() * (today.getTime() - start));
+
       function pad(n) { return n < 10 ? `0${n}` : n; }
       const archive = "https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/";
       const url = `${archive + date.getFullYear()}/${date.getFullYear()}-${pad(date.getMonth())}-${pad(date.getDate())}.gif`;
@@ -23,7 +25,7 @@ class garfieldCommand extends Command {
     }
 
     const garfield = GarfieldRandom();
-    if (!garfield[0]) return this.bot.embed("❌ Error", "Couldn't send the comic. Try again later.", "error", msg);
+    if (!garfield[0]) return this.bot.embed("❌ Error", "Couldn't send the comic. Try again later.", msg, "error");
 
     msg.channel.createMessage({
       embed: {

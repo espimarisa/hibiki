@@ -25,9 +25,9 @@ class Command {
       this.clientperms = params.clientperms;
       this.cooldown = params.cooldown;
       this.description = params.description;
-      this.keys = params.keys ? params.keys : [];
       this.nsfw = params.nsfw ? params.nsfw : false;
       this.owner = params.owner ? params.owner : false;
+      this.requiredkeys = params.keys ? params.keys : [];
       this.requiredperms = params.requiredperms;
       this.staff = params.staff ? params.staff : false;
     }

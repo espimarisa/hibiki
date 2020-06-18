@@ -37,7 +37,7 @@ module.exports = (title, description, msg, colortype) => {
   }
 
   // Embed color
-  if (colortype || !colortype && msg.author === "general" || msg.author === "error" || msg.author === "success") {
+  if (colortype) {
     if (!colortype && author) color = parseInt(colors[msg.author].replace(/#/g, "0x"));
     else if (colors[colortype]) color = parseInt(colors[colortype].replace(/#/g, "0x"));
     else throw Error("Invalid color - check the embed construct.");
@@ -75,8 +75,13 @@ module.exports.edit = (title, description, msg, colortype) => {
   if (title) construct.embed.title = title;
   if (description) construct.embed.description = description;
 
+  // Keeps the footer
+  if (msg.embeds[0].footer) {
+    construct.embed.footer = msg.embeds[0].footer;
+  }
+
   // Embed color
-  if (colortype || !colortype && msg.author === "general" || msg.author === "error" || msg.author === "success") {
+  if (colortype) {
     if (!colortype && msg) color = parseInt(colors[msg.author].replace(/#/g, "0x"));
     else if (colors[colortype]) color = parseInt(colors[colortype].replace(/#/g, "0x"));
     else throw Error("Invalid color - check the embed construct.");
