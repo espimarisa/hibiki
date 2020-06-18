@@ -4,28 +4,52 @@ class reloadCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["rl"],
-      args: "<command:module&ignore=*>",
+      args: "<command:string&ignore=*>",
       description: "Reloads one or more commands.",
       allowdisable: false,
       owner: true,
     });
   }
 
-  run(msg, args, pargs) {
-    // Reload all functionality
-    if (args[0] === "*") {
-      const errors = [];
-      this.bot.commands.map(c => ({ id: c.id, reload: c.reload })).forEach(cmd => {
-        const r = cmd.reload();
-        if (r !== "reloaded") errors.push({ id: cmd.id, error: r });
-      });
-      return msg.channel.createMessage(this.bot.embed("🔄 Reload", errors.length ? errors.map(e => `**${e.id}:** \`\`\`js\n${e.error}\`\`\``).join("\n") : "Reloaded all commands."));
-    }
+  run(msg, args) {
+    // Looks for the command; reloads all if "all" is given
+    if (args.join(" ").toLowerCase() === "*") args = this.bot.commands.map(c => c.id);
+    const success = [];
+    const fail = [];
 
     // Reloads
-    const r = pargs[0].value.reload();
-    if (r === "reloaded") msg.channel.createMessage(this.bot.embed("🔄 Reload", `**${pargs[0].value.id}** was reloaded.`, "success"));
-    else msg.channel.createMessage(this.bot.embed("🔄 Reload", `Error while reloading: ${r}`, "error"));
+    args.forEach(arg => {
+      let command;
+      const cmd = this.bot.commands.find(c => c.id === arg.toLowerCase() || c.aliases.includes(arg.toLowerCase()));
+      if (!cmd) return fail.push({ id: arg.toLowerCase(), error: "Command not found." });
+      const oldmodule = require(`../${cmd.category}/${cmd.id}`);
+      delete require.cache[require.resolve(`../${cmd.category}/${cmd.id}`)];
+      try {
+        command = require(`../${cmd.category}/${cmd.id}`);
+      } catch (err) {
+        fail.push({ id: cmd.id, error: err });
+        this.bot.commands.push(new oldmodule(this.bot, cmd.category, cmd.id));
+      }
+
+      if (command) {
+        const index = this.bot.commands.indexOf(cmd);
+        if (index !== -1) this.bot.commands.splice(index, 1);
+        this.bot.commands.push(new command(this.bot, cmd.category, cmd.id));
+        success.push(cmd.id);
+      }
+    });
+
+    return msg.channel.createMessage({
+      embed: {
+        title: `🔄 Reloaded ${success.length === 1 ? success[0] : `${success.length} commands`}.`,
+        description: fail.length > 0 ? fail.map(failedcmd => `**${failedcmd.id}**: \`\`\`js\n${failedcmd.error}\`\`\``).join("\n") : null,
+        color: fail.length > 0 ? this.bot.embed.color("error") : this.bot.embed.color("success"),
+      },
+      footer: {
+        text: `Ran by ${this.bot.tag(msg.author)}`,
+        icon_url: msg.author.dynamicAvatarURL(),
+      },
+    });
   }
 }
 

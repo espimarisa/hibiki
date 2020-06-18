@@ -12,23 +12,24 @@ class execCommand extends Command {
   }
 
   run(msg, args) {
-    try {
-      // Tries to execute
-      child.exec(args.join(" "), async (stdout, stderr) => {
-        if (stderr) return msg.channel.createMessage(this.bot.embed("⚡ Exec", stderr));
-        // Uploads if over embed limit
-        const dmchannel = await msg.author.getDMChannel();
-        if (stdout.length > 2000) {
-          const body = await fetch("https://hasteb.in/documents", { referrer: "https://hasteb.in", body: stdout, method: "POST", mode: "cors" })
-            .then(async res => await res.json().catch(() => {}));
-          await dmchannel.createMessage(this.bot.embed("❌ Error", `Output longer than 2000. View the output [here](https://hasteb.in/${body.key})`, "error"));
-        } else {
-          msg.channel.createMessage(this.bot.embed("⚡ Exec", `\`\`\`\n${stdout}\n\`\`\``));
-        }
-      });
-    } catch (e) {
-      msg.channel.createMessage(this.bot.embed("⚡ Exec", e));
-    }
+    child.exec(args.join(" "), async (stdout, stderr) => {
+      if (stderr) return this.bot.embed("✅ Success", stderr, msg, "success");
+
+      // Uploads if over embed limit; DMs author
+      const dmchannel = await msg.author.getDMChannel();
+      if (stderr.length > 2000) {
+        const body = await fetch("https://hasteb.in/documents", {
+          referrer: "https://hasteb.in/",
+          body: evalstring,
+          method: "POST",
+          mode: "cors",
+        }).then(async res => await res.json().catch(() => {}));
+
+        await dmchannel.createMessage(`https://hasteb.in/${body.key}`);
+      } else {
+        this.bot.embed("❌ Error", `\`\`\`\n${stdout}\n\`\`\``, msg, "error");
+      }
+    });
   }
 }
 

@@ -11,7 +11,7 @@ class sayCommand extends Command {
 
   run(msg, args) {
     msg.channel.createMessage(args.join(" "));
-    msg.delete();
+    msg.delete().catch(() => {});
   }
 }
 
