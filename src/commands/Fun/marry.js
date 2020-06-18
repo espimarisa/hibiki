@@ -27,6 +27,7 @@ class marryCommand extends Command {
     // Waits for a response
     const marrymsg = await this.bot.embed("💝 Marry", `**${user.username}**, do you wish to marry **${msg.author.username}**?`, msg);
     const response = await yn(this.bot, { author: user, channel: msg.channel });
+
     if (response) {
       await this.bot.db.table("marriages").insert({ id: msg.author.id, spouse: user.id }).run();
       this.bot.embed.edit("💝 Marry", `**${msg.author.username}** and **${user.username}** are now married.`, marrymsg);

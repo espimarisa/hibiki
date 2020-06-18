@@ -13,7 +13,7 @@ class catCommand extends Command {
 
   async run(msg) {
     const body = await fetch("http://aws.random.cat/meow").then(async res => await res.json().catch(() => {}));
-    if (!body || !body.file) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error", msg);
+    if (!body || !body.file) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", msg, "error");
 
     msg.channel.createMessage({
       embed: {
