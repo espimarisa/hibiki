@@ -15,11 +15,11 @@ class rule34Command extends Command {
   async run(msg, args) {
     const body = await fetch(`https://r34-json-api.herokuapp.com/posts?tags=${encodeURIComponent(args.join(" "))}`)
       .then(async res => await res.json().catch(() => {}));
-    if (!body || !body[0]) return msg.channel.createMessage(this.bot.embed("❌ Error", "No images were found.", "error"));
+    if (!body || !body[0]) return this.bot.embed("❌ Error", "No images were found.", msg, "error");
     const random = Math.floor(Math.random() * body.length);
 
     if (body[random].sample_url.endsWith(".webm") || body[random].sample_url.endsWith(".mp4")) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body[0].sample_url}).`, "error"));
+      return this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body[0].sample_url}).`, msg, "error");
     }
 
     await msg.channel.createMessage({
@@ -28,6 +28,10 @@ class rule34Command extends Command {
         color: 0xA8E5A2,
         image: {
           url: body[random].sample_url,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });

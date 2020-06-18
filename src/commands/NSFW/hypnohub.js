@@ -15,7 +15,7 @@ class hypnohubCommand extends Command {
   async run(msg, args) {
     const body = await fetch(`https://hypnohub.net/post.json?api_version=2&tags=${encodeURIComponent(args.join(" "))}`)
       .then(async res => await res.json().catch(() => {}));
-    if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "No images were found.", "error"));
+    if (!body) return this.bot.embed("❌ Error", "No images were found.", msg, "error");
     const random = Math.floor(Math.random() * body.posts.length);
 
     await msg.channel.createMessage({
@@ -24,6 +24,10 @@ class hypnohubCommand extends Command {
         color: 0xFDEA73,
         image: {
           url: body.posts[random].sample_url,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });

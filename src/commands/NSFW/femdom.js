@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class femdomCommand extends Command {
   constructor(...args) {
     super(...args, {
-      description: "Sends a NSFW femdom image.",
+      description: "Sends a femdom ecchi/hentai image.",
       nsfw: true,
       cooldown: 3,
     });
@@ -12,7 +12,7 @@ class femdomCommand extends Command {
 
   async run(msg) {
     const body = await fetch("https://nekos.life/api/v2/img/femdom").then(async res => await res.json().catch(() => {}));
-    if (!body || !body.url) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error"));
+    if (!body || !body.url) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error");
 
     await msg.channel.createMessage({
       embed: {
@@ -20,6 +20,10 @@ class femdomCommand extends Command {
         color: this.bot.embed.color("general"),
         image: {
           url: body.url,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)} | Powered by nekos.life`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });
