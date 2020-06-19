@@ -41,8 +41,11 @@ class Handler extends Event {
       );
 
       // Commands in dms
-      if (cmd && cmd.allowdms) cmd.run(msg, msg.content.substring(this.bot.config.prefixes[0].length + cmd.id.length + 1).split(" "));
-      else if (cmd && !cmd.allowdms) this.bot.embed("❌ Error", "That command can only be used in a server.", msg, "error");
+      if (cmd && cmd.allowdms) {
+        cmd.run(msg, msg.content.substring(this.bot.config.prefixes[0].length + cmd.id.length + 1).split(" "));
+      } else if (cmd && !cmd.allowdms) {
+        this.bot.embed("❌ Error", "That command can only be used in a server.", msg, "error");
+      }
 
       return this.bot.createMessage(this.bot.config.logchannel, {
         embed: {
