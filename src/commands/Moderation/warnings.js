@@ -45,7 +45,7 @@ class warningsCommand extends Command {
         color: this.bot.embed.color("general"),
         fields: warnings.map(m => ({
           name: `${m.id} - from **${msg.channel.guild.members.get(m.giver) ? msg.channel.guild.members.get(m.giver).username : m.giver}**`,
-          value: `${m.reason.slice(0, 150) || "No reason given."}`,
+          value: `${m.reason.slice(0, 150) || "No reason provided."}`,
         })),
         footer: {
           text: `Ran by ${this.bot.tag(msg.author)}`,

@@ -25,7 +25,7 @@ class warnCommand extends Command {
       receiver: user.id,
       guild: msg.channel.guild.id,
       id: id,
-      reason: reason || "No reason given.",
+      reason: reason || "No reason provided.",
     }).run();
 
     // Tries to DM user about their warning
@@ -42,7 +42,7 @@ class warnCommand extends Command {
       },
     }).catch(() => {});
 
-    this.bot.emit("memberWarn", msg.channel.guild, msg.member, user, id, reason || "No reason given.");
+    this.bot.emit("memberWarn", msg.channel.guild, msg.member, user, id, reason || "No reason provided.");
     this.bot.embed("✅ Success", `**${user.username}** was given a warning${reason.length ? ` for \`${reason}\`.` : "."}`, msg, "success");
   }
 }
