@@ -25,7 +25,7 @@ module.exports = {
         response: false,
         msg: resp,
       } : false;
-    } catch (e) {
+    } catch (err) {
       return retMsg ? {
         response: false,
         msg: null,

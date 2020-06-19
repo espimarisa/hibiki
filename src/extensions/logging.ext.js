@@ -4,15 +4,15 @@
 
 module.exports = (bot, db) => {
   // Looks for loggers
-  require("fs").readdir(`${__dirname}/loggers`, (_e, files) => {
+  require("fs").readdir(`${__dirname}/loggers`, (err, files) => {
     files.forEach(l => {
       let logger;
       try {
         // Tries to load each logger
         logger = require(`${__dirname}/loggers/${l}`);
         logger(bot, db);
-      } catch (e) {
-        bot.log.error(`Error while loading logger ${l}: ${e}`);
+      } catch (err) {
+        bot.log.error(`Error while loading logger ${l}: ${err}`);
       }
       if (!logger) return;
     });
