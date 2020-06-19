@@ -45,7 +45,7 @@ class pointsCommand extends Command {
         color: this.bot.embed.color("general"),
         fields: points.map(p => ({
           name: `${p.id} (from **${msg.channel.guild.members.get(p.giver) ? msg.channel.guild.members.get(p.giver).username : p.giver}**)`,
-          value: `${p.reason.slice(0, 150) || "No reason given."}`,
+          value: `${p.reason.slice(0, 150) || "No reason provided."}`,
         })),
         footer: {
           text: `Ran by ${this.bot.tag(msg.author)}`,
