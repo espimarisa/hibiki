@@ -16,8 +16,12 @@ class Snipe extends Event {
       if (!guildcfg.snipingInvites && /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|list)|discord(app)?\.com\/invite)\/.+[a-z]/.test(msg.content)) {
         return;
       }
+
       let ignored;
-      guildcfg.snipingIgnore.forEach(c => { if (c && msg.channel.id === c && msg.channel.guild.channels.has(c)) ignored = true; });
+      guildcfg.snipingIgnore.forEach(c => {
+        if (c && msg.channel.id === c && msg.channel.guild.channels.has(c)) ignored = true;
+      });
+
       if (ignored) return;
     }
 

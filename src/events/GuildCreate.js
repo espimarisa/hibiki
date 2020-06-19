@@ -11,12 +11,11 @@ class guildCreate extends Event {
   async run(guild) {
     const blacklist = await this.bot.db.table("blacklist").filter({
       guild: guild.id,
-    });
+    }).run();
 
     // If server is blacklisted
     if (blacklist.find(g => g.guild === guild.id)) {
-      this.bot.log.warn(`Added to a blacklisted guild: ${guild.name}`),
-        await guild.leave();
+      this.bot.log.warn(`Added to a blacklisted guild: ${guild.name}`), await guild.leave();
       return;
     }
 
@@ -26,8 +25,14 @@ class guildCreate extends Event {
     if (oid) {
       const odm = await oid.getDMChannel().catch(() => {});
       if (odm) {
-        odm.createMessage(this.bot.embed(`✨ I was added to your server, ${oid.username}.`, `\n To get started, run \`${this.bot.config.prefixes[0]}help\`.
-        You can configure me using the [web dashboard](${this.bot.config.homepage}/dashboard/).`)).catch(() => {});
+        odm.createMessage({
+          embed: {
+            title: `✨ I was added to your server, ${oid.username}.`,
+            description: `\n To get a list of commands, run \`${this.bot.config.prefixes[0]}help\` in your server. \n` +
+              `You can also configure my options using the [web dashboard](${this.bot.config.homepage}/dashboard/).`,
+            color: this.bot.embed.color("general"),
+          },
+        }).catch(() => {});
       }
     }
 
@@ -36,7 +41,12 @@ class guildCreate extends Event {
       const body = await fetch(`https://top.gg/api/bots/${this.bot.user.id}/stats`, {
         method: "POST",
         body: JSON.stringify({ server_count: this.bot.guilds.size, shard_count: this.bot.shards.size }),
-        headers: { "cache-control": "no-cache", "Content-Type": "application/json", "Authorization": this.bot.key.topgg, "User-Agent": `${this.bot.user.username}/${this.bot.version}` },
+        headers: {
+          "cache-control": "no-cache",
+          "Content-Type": "application/json",
+          "Authorization": this.bot.key.topgg,
+          "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
+        },
       }).then(async res => await res.json().catch(() => {}));
       if (!body || body.error) this.bot.log.error("An error occured while updating the top.gg stats.");
     }
@@ -46,7 +56,11 @@ class guildCreate extends Event {
       const body = await fetch(`https://discord.bots.gg/api/v1/bots/${this.bot.user.id}/stats`, {
         body: JSON.stringify({ guildCount: this.bot.guilds.size, shardCount: this.bot.shards.size, shardId: 0 }),
         method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": this.bot.key.dbots, "User-Agent": `${this.bot.user.username}/${this.bot.version}` },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.bot.key.dbots,
+          "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
+        },
       }).then(async res => await res.json().catch(() => {}));
       if (!body || body.message) this.bot.log.error("An error occured while updating the dbots stats.");
     }
