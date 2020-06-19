@@ -31,8 +31,8 @@ class evalCommand extends Command {
       } else {
         this.bot.embed("✅ Success", `\`\`\`js\n${evalstring.replace(this.bot.config.token, "Bot token hidden.")}\n\`\`\``, msg, "success");
       }
-    } catch (e) {
-      this.bot.embed("❌ Error", `\`\`\`js\n${e.stack}\n\`\`\``, msg, "error");
+    } catch (err) {
+      this.bot.embed("❌ Error", `\`\`\`js\n${err.stack}\n\`\`\``, msg, "error");
     }
   }
 }
