@@ -1,11 +1,10 @@
 const Command = require("structures/Command");
-const format = require("utils/format");
 
 class nicknameCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["nick", "set-nick", "set-nickname"],
-      args: "<member:string> [nickname:string]",
+      args: "<member:member> [nickname:string]",
       description: "Changes a user's nickname.",
       clientperms: "manageNicknames",
       requiredperms: "manageNicknames",
@@ -16,14 +15,42 @@ class nicknameCommand extends Command {
   async run(msg, args, pargs) {
     const user = pargs[0].value;
     const nickname = args[1];
-    if (!nickname || !nickname.length) {
-      await msg.channel.guild.members.get(user).edit({ nick: null }, `Changed by ${format.tag(msg.author, true)}`);
-      return msg.channel.createMessage(this.bot.embed("✅ Success", "Nickname was cleared.", "success"));
-    } else if (nickname.length > 32) return msg.channel.createMessage(this.bot.embed("❌ Error", "Nickname must be 32 characters or less.", "error"));
 
-    // Changes the member's nickname
-    await msg.channel.guild.members.get(user).edit({ nick: nickname }, `Changed by ${format.tag(msg.author, true)}`).catch(() => {});
-    msg.channel.createMessage(this.bot.embed("✅ Success", `Nickname was ${!nickname.length ? "re" : ""}set.`, "success"));
+    // Clears nicknames
+    if (nickname === "clear") {
+      try {
+        await msg.channel.guild.members.get(user.id).edit({ nick: null }, `Changed by ${this.bot.tag(msg.author, true)}`);
+      } catch (err) {
+        return this.bot.embed("❌ Error", `Failed to clear **${user.username}**'s nickname.`, msg, "error");
+      }
+
+      return this.bot.embed("✅ Success", "Nickname was cleared.", msg, "success");
+    }
+
+    // Shows user's nickname
+    if (!nickname && user.nick) {
+      return this.bot.embed("📛 Nickname", `**${user.username}**'s nickname is \`${user.nick}\`.`, msg);
+    }
+
+    // If user has no nickname
+    if (!nickname && !user.nick) {
+      return this.bot.embed("❌ Error", `**${user.username}** doesn't have a nickname set.`, msg, "error");
+    }
+
+    // If nickname is too long
+    if (nickname.length > 32) {
+      return this.bot.embed("❌ Error", "Nickname must be 32 characters or less.", msg, "error");
+    }
+
+    // Updates the nickname
+    try {
+      await msg.channel.guild.members.get(user.id).edit({ nick: nickname }, `Changed by ${this.bot.tag(msg.author, true)}`);
+    } catch (err) {
+      console.error(err);
+      return this.bot.embed("❌ Error", `Failed to change **${user.username}**'s nickname.`, msg, "error");
+    }
+
+    this.bot.embed("✅ Success", `**${user.username}**'s nickname was ${!nickname.length ? "re" : ""}set.`, msg, "success");
   }
 }
 
