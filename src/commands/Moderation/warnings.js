@@ -1,5 +1,4 @@
 const Command = require("structures/Command");
-const format = require("utils/format");
 const fetch = require("node-fetch");
 
 class warningsCommand extends Command {
@@ -16,15 +15,28 @@ class warningsCommand extends Command {
     const warnings = await this.bot.db.table("warnings").filter({
       receiver: user.id,
       guild: msg.channel.guild.id,
-    });
+    }).run();
 
-    if (!warnings.length) return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** has no warnings.`, "error"));
+    if (!warnings.length) return this.bot.embed("❌ Error", `**${user.username}** has no warnings.`, msg, "error");
+
     // Uploads to hasteb.in if over 20
     if (warnings.length > 20) {
-      const warnstring = `${warnings.map(m => `${m.id} (by ${format.tag(msg.channel.guild.members.get(m.giver) || { username: `Unknown User (${m.giverId})`, discriminator: "0000" })})\n${m.reason}`).join("\n\n")}`;
-      const body = await fetch("https://hasteb.in/documents", { referrer: "https://hasteb.in/", body: warnstring, method: "POST", mode: "cors" })
-        .then(async res => await res.json().catch(() => {}));
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** has more than 20 warnings. View them [here](https://hasteb.in/${body.key}).`, "error"));
+      const warnstring = `${warnings.map(w => `${w.id} (by ${this.bot.tag(msg.channel.guild.members.get(w.giver) ||
+          { username: `Unknown User (${w.giverId})`, discriminator: "0000" })})\n${w.reason}`).join("\n\n")}`;
+
+      const body = await fetch("https://hasteb.in/documents", {
+        referrer: "https://hasteb.in/",
+        body: warnstring,
+        method: "POST",
+        mode: "cors",
+      }).then(async res => await res.json().catch(() => {}));
+
+      return this.bot.embed(
+        "❌ Error",
+        `**${user.username}** has more than 20 warnings. View them [here](https://hasteb.in/${body.key}).`,
+        msg,
+        "error",
+      );
     }
 
     await msg.channel.createMessage({
@@ -35,6 +47,10 @@ class warningsCommand extends Command {
           name: `${m.id} - from **${msg.channel.guild.members.get(m.giver) ? msg.channel.guild.members.get(m.giver).username : m.giver}**`,
           value: `${m.reason.slice(0, 150) || "No reason given."}`,
         })),
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
       },
     });
   }

@@ -1,5 +1,4 @@
 const Command = require("structures/Command");
-const format = require("utils/format");
 
 class verifyCommand extends Command {
   constructor(...args) {
@@ -32,9 +31,9 @@ class verifyCommand extends Command {
     }
 
     try {
-      await user.addRole(guildcfg.verifiedRole, `Verified by ${format.tag(msg.author, true)}`);
+      await user.addRole(guildcfg.verifiedRole, `Verified by ${this.bot.tag(msg.author, true)}`);
     } catch (err) {
-      return this.bot.embed("❌ Error", `Failed to verify **${format.tag(user.username)}**.`, msg, "error");
+      return this.bot.embed("❌ Error", `Failed to verify **${this.bot.tag(user.username)}**.`, msg, "error");
     }
 
     this.bot.emit("memberVerify", msg.channel.guild, msg.member, user);

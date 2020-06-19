@@ -5,27 +5,26 @@ class removepointCommand extends Command {
     super(...args, {
       aliases: ["removemerit", "removemerits", "removepoint", "removepoints", "rmmerits", "rmpoints"],
       args: "<id:string>",
-      description: "Removes a reputation point from A member.",
+      description: "Removes one or more reputation points from a member.",
       requiredperms: "manageMessages",
       staff: true,
     });
   }
 
   async run(msg, args) {
-    // Maps the IDs
     const points = await Promise.all(args.map(async id => {
       if (!id) {
         return { removed: false, point: id };
       }
 
       // Gets the points
-      const point = await this.bot.db.table("points").get(id);
+      const point = await this.bot.db.table("points").get(id).run();
       if (!point || point.guild !== msg.channel.guild.id) {
         return { removed: false, point: id };
       }
 
-      // Deletes the IDs
-      await this.bot.db.table("points").get(id).delete();
+      // Deletes the points
+      await this.bot.db.table("points").get(id).delete().run();
       return { removed: true, point: id };
     }));
 
@@ -34,7 +33,7 @@ class removepointCommand extends Command {
     const failed = points.filter(p => !p.removed);
 
     if (!removed.length) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "No reputation points given could be removed.", "error"));
+      return this.bot.embed("❌ Error", "No reputation points given could be removed.", msg, "error");
     }
 
     this.bot.emit("pointRemove", msg.channel.guild, msg.member, removed.map(p => `\`${p.point}\``));
@@ -47,6 +46,10 @@ class removepointCommand extends Command {
           name: "Failed to remove some points.",
           value: `${failed.map(p => p.point).join(", ")}`,
         }] : [],
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
       },
     });
   }

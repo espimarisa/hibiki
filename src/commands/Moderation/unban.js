@@ -1,5 +1,4 @@
 const Command = require("structures/Command");
-const format = require("utils/format");
 
 class unbanCommand extends Command {
   constructor(...args) {
@@ -14,14 +13,14 @@ class unbanCommand extends Command {
   }
 
   async run(msg, args) {
-    // Asks for confirmation
-    if (args.length > 10) return msg.channel.createMessage(this.bot.embed("❌ Error", "Only 10 IDs can be unbanned at a time.", "error"));
-    // Attempts to unban the IDs
+    if (args.length > 10) return this.bot.embed("❌ Error", "Only 10 IDs can be unbanned at a time.", msg, "error");
+
+    // Attempts to unban
     const unbans = await Promise.all(args.map(async user => {
       try {
-        await msg.channel.guild.unbanMember(user, `Unbanned by ${format.tag(msg.author, true)}`);
+        await msg.channel.guild.unbanMember(user, `Unbanned by ${this.bot.tag(msg.author, true)}`);
         return { unbanned: true, user: user };
-      } catch (e) {
+      } catch (err) {
         return { unbanned: false, user: user };
       }
     }));
@@ -29,7 +28,7 @@ class unbanCommand extends Command {
     // Sets amount of IDs unbanned / failed
     const unbanned = unbans.filter(b => b.unbanned);
     const failed = unbans.filter(b => !b.unbanned);
-    if (!unbanned.length) return msg.channel.createMessage(this.bot.embed("❌ Error", "Failed to unban all of the IDs given.", "error"));
+    if (!unbanned.length) return this.bot.embed("❌ Error", "Failed to unban all of the IDs given.", msg, "error");
 
     await msg.channel.createMessage({
       embed: {
@@ -40,6 +39,10 @@ class unbanCommand extends Command {
           name: `${failed.length} ID${failed.length > 1 ? "s" : ""} failed to be unbanned.`,
           value: `${failed.map(m => m.user).join(", ")}`,
         }] : [],
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
       },
     });
   }

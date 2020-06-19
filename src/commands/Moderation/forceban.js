@@ -1,7 +1,6 @@
 const Command = require("structures/Command");
-const format = require("utils/format");
 const hierarchy = require("utils/hierarchy");
-const yn = require("utils/ask").YesNo;
+const yn = require("utils/ask").yesNo;
 
 class forcebanCommand extends Command {
   constructor(...args) {
@@ -30,7 +29,7 @@ class forcebanCommand extends Command {
         if (!hierarchy(msg.member, m)) { return { banned: false, user: user }; }
         try {
           // Bans the IDs
-          await m.ban(0, `Forcebanned by ${format.tag(msg.author, true)}`);
+          await m.ban(0, `Forcebanned by ${this.bot.tag(msg.author, true)}`);
           return { banned: true, user: user };
         } catch (err) {
           return { banned: false, user: user };
@@ -39,7 +38,7 @@ class forcebanCommand extends Command {
 
       try {
         // Bans the IDs
-        await msg.channel.guild.banMember(user, 0, `Forcebanned by ${format.tag(msg.author, true)}`);
+        await msg.channel.guild.banMember(user, 0, `Forcebanned by ${this.bot.tag(msg.author, true)}`);
         return { banned: true, user: user };
       } catch (err) {
         return { banned: false, user: user };

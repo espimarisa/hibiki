@@ -34,7 +34,7 @@ class removewarnCommand extends Command {
     const failed = warnings.filter(w => !w.removed);
 
     if (!removed.length) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "No warnings given could be removed.", "error"));
+      return this.bot.embed("❌ Error", "No warnings given could be removed.", msg, "error");
     }
 
     this.bot.emit("warningRemove", msg.channel.guild, msg.member, removed.map(w => `\`${w.warning}\``));
@@ -47,6 +47,10 @@ class removewarnCommand extends Command {
           name: "Failed to remove some warnings.",
           value: `${failed.map(w => w.warning).join(", ")}`,
         }] : [],
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
       },
     });
   }

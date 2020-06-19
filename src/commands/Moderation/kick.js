@@ -1,7 +1,6 @@
 const Command = require("structures/Command");
-const format = require("utils/format");
 const hierarchy = require("utils/hierarchy");
-const yn = require("utils/ask").YesNo;
+const yn = require("utils/ask").yesNo;
 
 class kickCommand extends Command {
   constructor(...args) {
@@ -23,17 +22,21 @@ class kickCommand extends Command {
 
     // If bot doesn't have high enough role
     if (!hierarchy(msg.channel.guild.members.get(this.bot.user.id), user)) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `I don't have a high enough role to kick **${user.username}**.`, "error"));
+      return this.bot.embed("❌ Error", `I don't have a high enough role to kick **${user.username}**.`, msg, "error");
     }
 
     // If author passes hierarchy
     if (hierarchy(msg.member, user)) {
       // Asks for confirmation
-      const kickmsg = await msg.channel.createMessage(this.bot.embed("🔨 Kick", `Are you sure you'd like to kick **${user.username}**?`));
+      const kickmsg = await this.bot.embed("🔨 Kick", `Are you sure you'd like to kick **${user.username}**?`, msg);
       const response = await yn(this.bot, { author: msg.author, channel: msg.channel });
-      if (!response) return kickmsg.edit(this.bot.embed("🔨 Kick", `Cancelled kicking **${user.username}**.`));
-      this.bot.emit("guildKick", msg.channel.guild, reason, msg.member, user);
-      await user.kick(`${reason} (by ${format.tag(msg.author, true)})`).catch(() => {});
+      if (!response) return this.bot.embed.edit("🔨 Kick", `Cancelled kicking **${user.username}**.`, kickmsg);
+
+      try {
+        await user.kick(`${reason} (by ${this.bot.tag(msg.author, true)})`);
+      } catch (err) {
+        return this.bot.embed.edit("❌ Error", `Failed to kick **${user.username}**.`, kickmsg, "error");
+      }
 
       // Tries to DM kicked user
       const dmchannel = await user.user.getDMChannel().catch(() => {});
@@ -45,6 +48,7 @@ class kickCommand extends Command {
         },
       }).catch(() => {});
 
+      this.bot.emit("guildKick", msg.channel.guild, reason, msg.member, user);
       await kickmsg.edit(this.bot.embed("🔨 Kick", `**${user.username}** was kicked by **${msg.author.username}**.`));
     }
   }
