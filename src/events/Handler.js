@@ -76,7 +76,15 @@ class Handler extends Event {
     // Looks for the command ran
     const [cmdName, ...args] = msg.content.trim().slice(prefix.length).split(/ +/g);
     const cmd = this.bot.commands.find(c => c.id === cmdName.toLowerCase() || c.aliases.includes(cmdName.toLowerCase()));
-    if (!cmd) return;
+
+    // Sends the prefix if mentioned with no content
+    if (!cmdName.length && (prefix.startsWith(`<@${this.bot.user.id}>`) || prefix.startsWith(`<@!${this.bot.user.id}>`))) {
+      return this.bot.embed(
+        "🤖 Prefix",
+        `The prefix in this server is \`${guildcfg && guildcfg.prefix ? guildcfg.prefix : this.bot.cfg.prefixes[0]}\`.`,
+        msg,
+      );
+    } else if (!cmd) return;
 
     // Permission checking
     if (!msg.channel.memberHasPermission(this.bot.user.id, "sendMessages")) {
@@ -87,10 +95,8 @@ class Handler extends Event {
       return msg.channel.createMessage("In order to function properly, I need permission to **embed links**.");
     }
 
-    // Owner commands
+    // Owner commands; disabled categories
     if (cmd.owner && !this.bot.config.owners.includes(msg.author.id)) return;
-
-    // Disabled categories
     if (guildcfg && (guildcfg.disabledCategories || []).includes(cmd.category) && cmd.allowdisable) {
       return this.bot.embed("❌ Error", "The category that command is in is disabled in this server.", msg, "error");
     }
