@@ -1,5 +1,4 @@
 const Command = require("structures/Command");
-const format = require("utils/format");
 const hierarchy = require("utils/hierarchy");
 
 class muteCommand extends Command {
@@ -49,10 +48,10 @@ class muteCommand extends Command {
         guild: msg.channel.guild.id,
       }).run();
 
-      // Mutes the member
+      // Mutes if no roles
       if (!user.roles.length) {
         try {
-          await user.addRole(guildcfg.mutedRole, `Muted by ${format.tag(msg.author)} for ${reason}`);
+          await user.addRole(guildcfg.mutedRole, `Muted by ${this.bot.tag(msg.author)} for ${reason}`);
         } catch (err) {
           return this.bot.embed("❌ Error", `Failed to add the muted role to **${user.username}**.`, msg, "error");
         }
@@ -82,10 +81,24 @@ class muteCommand extends Command {
 
       // Mutes the member
       try {
-        await user.addRole(guildcfg.mutedRole, `Muted by ${format.tag(msg.author)} for ${reason}`);
+        await user.addRole(guildcfg.mutedRole, `Muted by ${this.bot.tag(msg.author)} for ${reason}`);
       } catch (err) {
         return this.bot.embed("❌ Error", `Failed to add the muted role to **${user.username}**.`, msg, "error");
       }
+
+      // Tries to DM user about their mute
+      const dmchannel = await user.user.getDMChannel().catch(() => {});
+      dmchannel.createMessage({
+        embed: {
+          title: `🔇 Muted in ${msg.channel.guild.name}`,
+          description: `You were muted for ${reason ? `\`${reason}\`` : "no reason provided."}`,
+          color: this.bot.embed.color("error"),
+          footer: {
+            text: `Muted by ${this.bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
+        },
+      }).catch(() => {});
 
       this.bot.emit("memberMute", msg.channel.guild, msg.member, user, reason);
       this.bot.embed("✅ Success", `**${user.username}** was muted.`, msg, "success");
