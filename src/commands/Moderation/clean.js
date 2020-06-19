@@ -1,6 +1,6 @@
 const Command = require("structures/Command");
 
-class agreeCommand extends Command {
+class cleanCommand extends Command {
   constructor(...args) {
     super(...args, {
       description: "Deletes the last 10 messages from the bot.",
@@ -16,9 +16,9 @@ class agreeCommand extends Command {
     msgs = msgs.map(m => m.id);
     msgs.splice(msgs.length - 10, msgs.length);
     await msg.channel.deleteMessages(msgs).catch(() => {});
-    const cleanmsg = await msg.channel.createMessage(this.bot.embed("💣 Clean", "Deleted the **last 10** messages from me."));
+    const cleanmsg = await this.bot.embed("💣 Clean", "Deleted the **last 10** messages from me.", msg);
     await setTimeout(() => { cleanmsg.delete().catch(() => {}); }, 2000);
   }
 }
 
-module.exports = agreeCommand;
+module.exports = cleanCommand;

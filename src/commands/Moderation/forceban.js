@@ -1,6 +1,6 @@
 const Command = require("structures/Command");
 const format = require("utils/format");
-const hierarchy = require("utils/Hierarchy");
+const hierarchy = require("utils/hierarchy");
 const yn = require("utils/ask").YesNo;
 
 class forcebanCommand extends Command {
@@ -17,12 +17,12 @@ class forcebanCommand extends Command {
 
   async run(msg, args) {
     // Asks for confirmation
-    if (args.length > 10) return msg.channel.createMessage(this.bot.embed("❌ Error", "Only 10 IDs can be forcebanned at a time.", "error"));
-    const forcebanmsg = await msg.channel.createMessage(this.bot.embed("⚒ Forceban", `Are you sure you'd like to forceban **${args.join(", ")}**?`));
+    if (args.length > 10) return this.bot.embed("❌ Error", "Only 10 IDs can be forcebanned at a time.", msg, "error");
+    const forcebanmsg = await this.bot.embed("⚒ Forceban", `Are you sure you'd like to forceban **${args.join(", ")}**?`, msg);
     const response = await yn(this.bot, { author: msg.author, channel: msg.channel });
-    if (!response) return forcebanmsg.edit(this.bot.embed("⚒ Forceban", `Cancelled forcebanning **${args.join(", ")}**.`));
+    if (!response) return this.bot.embed.edit("⚒ Forceban", `Cancelled forcebanning **${args.join(", ")}**.`, forcebanmsg);
 
-    // Attempts to ban the IDs
+    // Tries to ban the IDs
     const bans = await Promise.all(args.map(async user => {
       const m = msg.channel.guild.members.find(mem => mem.id === user);
       if (m) {
@@ -32,7 +32,7 @@ class forcebanCommand extends Command {
           // Bans the IDs
           await m.ban(0, `Forcebanned by ${format.tag(msg.author, true)}`);
           return { banned: true, user: user };
-        } catch (e) {
+        } catch (err) {
           return { banned: false, user: user };
         }
       }
@@ -41,7 +41,7 @@ class forcebanCommand extends Command {
         // Bans the IDs
         await msg.channel.guild.banMember(user, 0, `Forcebanned by ${format.tag(msg.author, true)}`);
         return { banned: true, user: user };
-      } catch (e) {
+      } catch (err) {
         return { banned: false, user: user };
       }
     }));
@@ -49,7 +49,7 @@ class forcebanCommand extends Command {
     // Sets amount of IDs banned / failed
     const banned = bans.filter(b => b.banned);
     const failed = bans.filter(b => !b.banned);
-    if (!banned.length) return await forcebanmsg.edit(this.bot.embed("❌ Error", "Failed to ban all of the IDs given.", "error"));
+    if (!banned.length) return this.bot.embed.edit("❌ Error", "Failed to ban all of the IDs given.", forcebanmsg, "error");
 
     await forcebanmsg.edit({
       embed: {
@@ -60,6 +60,10 @@ class forcebanCommand extends Command {
           name: `${failed.length} ID${failed.length > 1 ? "s" : ""} failed to be banned.`,
           value: `${failed.map(m => m.user).join(", ")}`,
         }] : [],
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
       },
     });
   }

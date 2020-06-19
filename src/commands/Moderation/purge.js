@@ -1,5 +1,5 @@
 const Command = require("structures/Command");
-const yn = require("utils/Ask").YesNo;
+const yn = require("utils/ask").YesNo;
 const format = require("utils/format");
 
 class purgeCommand extends Command {
