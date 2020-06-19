@@ -1,6 +1,6 @@
 const Command = require("structures/Command");
 const waitFor = require("utils/waitFor");
-const askFor = require("utils/ask").For;
+const askFor = require("utils/ask").for;
 
 const categoryemojis = {
   Features: "✨",

@@ -25,7 +25,7 @@ class serverCommand extends Command {
     });
 
     const desc = [];
-    desc.push({ name: "👑", value: `Owned by ${format.tag(guild.members.find(mem => mem.id === guild.ownerID))}` });
+    desc.push({ name: "👑", value: `Owned by ${this.bot.tag(guild.members.find(mem => mem.id === guild.ownerID))}` });
     desc.push({ name: "🆔", value: `${guild.id}` });
     desc.push({ name: "📅", value: `Created ${format.date(guild.createdAt)}` });
     desc.push({ name: "", value: `${format.region(guild.region)} region` });

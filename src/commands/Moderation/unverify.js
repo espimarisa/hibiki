@@ -1,5 +1,4 @@
 const Command = require("structures/Command");
-const format = require("utils/format");
 
 class unverifyCommand extends Command {
   constructor(...args) {
@@ -31,9 +30,8 @@ class unverifyCommand extends Command {
       return this.bot.embed("❌ Error", `**${user.username}** doesn't have the verified role.`, msg, "error");
     }
 
-    // Removes the role
     try {
-      await user.removeRole(guildcfg.verifiedRole, `Unverified by ${format.tag(msg.author, true)}`);
+      await user.removeRole(guildcfg.verifiedRole, `Unverified by ${this.bot.tag(msg.author, true)}`);
     } catch (err) {
       return this.bot.embed("❌ Error", `Failed to unverify **${user.username}**.`, msg, "error");
     }

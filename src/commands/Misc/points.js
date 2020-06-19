@@ -21,8 +21,7 @@ class pointsCommand extends Command {
 
     // Uploads to hasteb.in if over 20
     if (points.length > 20) {
-      const pointstring =
-        `${points.map(p => `${p.id} (by ${this.bot.tag(msg.channel.guild.members.get(p.giver) ||
+      const pointstring = `${points.map(p => `${p.id} (by ${this.bot.tag(msg.channel.guild.members.get(p.giver) ||
           { username: `Unknown User (${p.giverId})`, discriminator: "0000" })})\n${p.reason}`).join("\n\n")}`;
 
       const body = await fetch("https://hasteb.in/documents", {

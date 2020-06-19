@@ -24,7 +24,7 @@ class ipinfoCommand extends Command {
       },
     }).then(async res => await res.json().catch(() => {}));
 
-    if (body.error || !body.ip || !body.org) return msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid IP address.", "error"));
+    if (body.error || !body.ip || !body.org) return this.bot.embed("❌ Error", "Invalid IP address.", msg, "error");
 
     const fields = [];
     if (body.hostname) fields.push({ name: "Hostname", value: body.hostname, inline: true });

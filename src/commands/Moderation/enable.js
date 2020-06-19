@@ -46,7 +46,7 @@ class enableCommand extends Command {
     if (!cmd) return this.bot.embed("❌ Error", "That command doesn't exist.", msg, "error");
     if (!guildcfg.disabledCmds) guildcfg.disabledCmds = [];
     if (guildcfg.disabledCmds && !guildcfg.disabledCmds.includes(cmd.id)) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "That command isn't disabled.", msg, "error"));
+      return this.bot.embed("❌ Error", "That command isn't disabled.", msg, "error");
     }
 
     if (cmd) {

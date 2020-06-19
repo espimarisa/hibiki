@@ -40,7 +40,7 @@ class steamCommand extends Command {
     }
 
     // Gets summary info
-    const steamsg = await msg.channel.createMessage(this.bot.embed("🎮 Steam", "Waiting for a response from Steam..."));
+    const steamsg = await this.bot.embed("🎮 Steam", "Waiting for a response from Steam...", msg);
     profile = await fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${this.bot.key.steam}&steamids=${steamid}`)
       .then(async res => await res.json().catch(() => {}));
     profile = profile.response.players[0];

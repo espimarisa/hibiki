@@ -1,7 +1,6 @@
 const Command = require("structures/Command");
-const format = require("utils/format");
 const hierarchy = require("utils/hierarchy");
-const yn = require("utils/ask").YesNo;
+const yn = require("utils/ask").yesNo;
 
 class banCommand extends Command {
   constructor(...args) {
@@ -33,9 +32,9 @@ class banCommand extends Command {
       if (!response) return this.bot.embed.edit("🔨 Ban", `Cancelled banning **${user.username}**.`, banmsg);
 
       try {
-        await user.ban(1, `${reason} (by ${format.tag(msg.author, true)})`);
+        await user.ban(1, `${reason} (by ${this.bot.tag(msg.author, true)})`);
       } catch (err) {
-        return this.bot.embed.edit("❌ Error", `Failed to ban **${user.username}**.`, banmsg);
+        return this.bot.embed.edit("❌ Error", `Failed to ban **${user.username}**.`, banmsg, "error");
       }
 
       // Tries to DM banned user

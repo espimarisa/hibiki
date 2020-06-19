@@ -67,7 +67,7 @@ class userCommand extends Command {
         color: this.bot.embed.color("general"),
         author: {
           icon_url: user.user.dynamicAvatarURL(null),
-          name: format.tag(user.user),
+          name: this.bot.tag(user.user),
         },
         thumbnail: {
           url: user.user.dynamicAvatarURL(null),

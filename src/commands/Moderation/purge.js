@@ -1,6 +1,5 @@
 const Command = require("structures/Command");
-const yn = require("utils/ask").YesNo;
-const format = require("utils/format");
+const yn = require("utils/ask").yesNo;
 
 class purgeCommand extends Command {
   constructor(...args) {
@@ -47,20 +46,27 @@ class purgeCommand extends Command {
 
   async run(msg, [messageCount, userToDelete, invert]) {
     // Looks for a valid member
-    if (isNaN(messageCount)) return msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid number of messages was given.", "error"));
-    const member = await msg.channel.guild.members.find(m => m.id === userToDelete || `<@${m.id}>` === userToDelete || `<@!${m.id}>` === userToDelete);
+    if (isNaN(messageCount)) return this.bot.embed("❌ Error", "Invalid number of messages was given.", MSG, "error");
+    const member = await msg.channel.guild.members.find(m => m.id === userToDelete ||
+      `<@${m.id}>` === userToDelete || `<@!${m.id}>` === userToDelete);
+
     // Checks message count
-    if (messageCount <= 0) return msg.channel.createMessage(this.bot.embed("❌ Error", "You can't purge less than one message.", "error"));
-    if (messageCount > 200) return msg.channel.createMessage(this.bot.embed("❌ Error", `You can't purge more than 200 messages at a time.`, "error"));
+    if (messageCount <= 0) return this.bot.embed("❌ Error", "You can't purge less than one message.", msg, "error");
+    if (messageCount > 200) return this.bot.embed("❌ Error", `You can't purge more than 200 messages at a time.`, msg, "error");
     if (invert && invert.toLowerCase() !== "--invert") invert = undefined;
+
     // Grabs messages; asks for response
     const messages = await msg.channel.getMessages(parseInt(messageCount) + 1);
-    const purgemsg = await msg.channel.createMessage(this.bot.embed("💣 Purge", `Are you sure you want to purge **${messageCount}** messages? ${invert !== undefined ? "(Inverted)" : ""}`));
+    const purgemsg = await this.bot.embed(
+      "💣 Purge",
+      `Are you sure you want to purge **${messageCount}** messages? ${invert !== undefined ? "(Inverted)" : ""}`,
+      msg,
+    );
+
     const resp = await yn(this.bot, { author: msg.author, channel: msg.channel }, true);
     if (resp && resp.response === true) {
-      // Deletes the answer
       if (resp.msg) resp.msg.delete();
-      await msg.delete(`Purged by ${format.tag(msg.author)}`);
+      await msg.delete(`Purged by ${this.bot.tag(msg.author)}`);
       const toDelete = messages.filter(m => {
         if (!member) return true;
         if (invert && m.author.id === member.id) return false;
@@ -70,14 +76,18 @@ class purgeCommand extends Command {
       try {
         // Tries to delete the messages
         await this.deleteStrategy(msg, toDelete.filter(m => !this.compareSnowflake(m, this.getOldestPossibleSnowflake())));
-      } catch (e) {
-        return msg.channel.createMessage(this.bot.embed("❌ Error", "Some messages couldn't be purged. If they're over 2 weeks old, you'll have to delete them manually.", "error"));
+      } catch (err) {
+        return this.bot.embed(
+          "❌ Error",
+          "Some messages couldn't be purged. If they're over 14 days old, you'll have to delete them manually.",
+          msg,
+          "error",
+        );
       }
-      // Sends the embed; deletes after 4 seconds
-      purgemsg.edit(this.bot.embed("💣 Purge", `**${msg.author.username}** deleted **${messages.length - 1}** messages.`)).catch(() => {});
+
+      this.bot.embed("💣 Purge", `**${msg.author.username}** deleted **${messages.length - 1}** messages.`, purgemsg).catch(() => {});
       setTimeout(() => { purgemsg.delete().catch(() => {}); }, 4000);
-      // Sends cancel embed
-    } else purgemsg.edit(this.bot.embed("💣 Purge", "Cancelled purging.")).catch(() => {});
+    } else this.bot.embed.edit("💣 Purge", "Cancelled purging.", purgemsg).catch(() => {});
   }
 }
 

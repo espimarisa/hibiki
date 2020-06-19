@@ -1,5 +1,4 @@
 const Command = require("structures/Command");
-const format = require("utils/format");
 
 class unmuteCommand extends Command {
   constructor(...args) {
@@ -36,9 +35,8 @@ class unmuteCommand extends Command {
       guild: msg.channel.guild.id,
     }).run();
 
-    // Removes the mutedrole
     try {
-      await user.removeRole(guildcfg.mutedRole, `Unmuted by ${format.tag(msg.author)}`);
+      await user.removeRole(guildcfg.mutedRole, `Unmuted by ${this.bot.tag(msg.author)}`);
     } catch (err) {
       return this.bot.embed("❌ Error", `Failed to remove the muted role from **${user.username}**.`, msg, "error");
     }
