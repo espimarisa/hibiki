@@ -14,8 +14,9 @@ class bitcoinCommand extends Command {
   async run(msg, args) {
     // BTC rates
     if (!args.length) {
-      const body = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json").then(async res => await res.json().catch(() => {}));
-      if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Unable to check the rates. Try again later.", "error"));
+      const body = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json")
+        .then(async res => await res.json().catch(() => {}));
+      if (!body) return this.bot.embed("❌ Error", "Unable to check the rates. Try again later.", msg, "error");
 
       const fields = [];
       fields.push({ name: "USD", value: `$${body.bpi.USD.rate}`, inline: true });
@@ -28,12 +29,17 @@ class bitcoinCommand extends Command {
           description: `Updated at ${body.time.updated}`,
           color: 0xF89E32,
           fields: fields,
+          footer: {
+            text: `Ran by ${this.bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
         },
       });
     } else {
       // Bitcoin addresses
-      const body = await fetch(`https://blockchain.info/rawaddr/${encodeURIComponent(args[0])}`).then(async res => await res.json().catch(() => {}));
-      if (!body) return msg.channel.createMessage("❌ Error", "Address not found.", "error");
+      const body = await fetch(`https://blockchain.info/rawaddr/${encodeURIComponent(args[0])}`)
+        .then(async res => await res.json().catch(() => {}));
+      if (!body) return this.bot.embed("❌ Error", "Address not found.", msg, "error");
 
       const fields = [];
       fields.push({ name: "Balance", value: `${body.final_balance || 0} BTC`, inline: true });
@@ -45,6 +51,10 @@ class bitcoinCommand extends Command {
           title: `💰 ${body.address}`,
           color: 0xF89E32,
           fields: fields,
+          footer: {
+            text: `Ran by ${this.bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
         },
       });
     }

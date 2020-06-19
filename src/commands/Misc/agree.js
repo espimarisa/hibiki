@@ -8,7 +8,7 @@ class agreeCommand extends Command {
   }
 
   async run(msg) {
-    let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
+    let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
     if (!guildcfg) guildcfg = { id: msg.channel.guild.id };
     if (!guildcfg.agreeChannel) return;
     const agreeChannel = await msg.channel.guild.channels.find(c => c.id === guildcfg.agreeChannel);

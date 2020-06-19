@@ -11,15 +11,22 @@ class stealembedCommand extends Command {
 
   async run(msg, args) {
     // Looks for the message
-    const m = await msg.channel.getMessage(args.join("")).catch(() => {});
-    if (!m) return msg.channel.createMessage(this.bot.embed("❌ Error", "Message not found."));
+    const message = await msg.channel.getMessage(args.join("")).catch(() => {});
+    if (!message) return this.bot.embed("❌ Error", "Message not found.", msg, "error");
+
     // Gets the richembed
-    const richembed = m.embeds.find(e => e.type === "rich");
-    if (!richembed) return msg.channel.createMessage(this.bot.embed("❌ Error", "There's not an embed in that message.", "error"));
+    const richembed = message.embeds.find(e => e.type === "rich");
+    if (!richembed) return this.bot.embed("❌ Error", "There's not an embed in that message.", msg, "error");
     if (richembed.type) delete richembed.type;
-    const body = await fetch("https://hasteb.in/documents", { referrer: "https://hasteb.in/", body: inspect(richembed), method: "POST", mode: "cors" })
-      .then(async res => await res.json().catch(() => {}));
-    this.bot.embed("🔗 Steal Embed", `The embed object can be viewed [here](https://hasteb.in/${body.key}.js).`, msg);
+
+    const body = await fetch("https://hasteb.in/documents", {
+      referrer: "https://hasteb.in/",
+      body: inspect(richembed),
+      method: "POST",
+      mode: "cors",
+    }).then(async res => await res.json().catch(() => {}));
+
+    this.bot.embed("🔗 Embed Object", `You can view the embed object [here](https://hasteb.in/${body.key}.js).`, msg);
   }
 }
 

@@ -26,8 +26,12 @@ class simpleembedCommand extends Command {
           icon_url: msg.author.dynamicAvatarURL(),
           name: `${msg.member.nick || msg.author.username} says...`,
         },
-        thumbnail: {
+        image: {
           url: imgurl ? imgurl : null,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });

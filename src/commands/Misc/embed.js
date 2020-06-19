@@ -1,5 +1,5 @@
 const Command = require("structures/Command");
-const WaitFor = require("utils/WaitFor");
+const waitFor = require("utils/waitFor");
 
 class embedCommand extends Command {
   constructor(...args) {
@@ -76,12 +76,16 @@ class embedCommand extends Command {
             inline: true,
           };
         }),
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
       },
     });
 
     // Sets a timeout for the reaction menu
     emojis.forEach(e => embedmsg.addReaction(e).catch(() => {}));
-    await WaitFor("messageReactionAdd", 120000, async (m, emoji, user) => {
+    await waitFor("messageReactionAdd", 120000, async (m, emoji, user) => {
       // Returns if needed
       if (m.id !== embedmsg.id) return false;
       if (user !== msg.author.id) return false;
@@ -100,9 +104,13 @@ class embedCommand extends Command {
       if (e.includes(".")) e = e.split(".");
 
       // Sends a prompt to the author
-      embedmsg.edit(this.bot.embed("🖊 Embed", `Reply with the desired **${emojilabels[typeof e == "string" ? e : e.join(".")] ?
-      `${emojilabels[typeof e == "string" ? e : e.join(".")][0].toLowerCase()}${emojilabels[typeof e == "string" ? e : e.join(".")].substring(1)}` : e[1]}**.`));
-      const [resp] = await WaitFor("messageCreate", 30000, async (message) => {
+      this.bot.embed.edit("🖊 Embed",
+        `Reply with the desired **${emojilabels[typeof e == "string" ? e : e.join(".")] ? `${emojilabels[typeof e == "string" ?
+        e : e.join(".")][0].toLowerCase()}${emojilabels[typeof e == "string" ? e : e.join(".")].substring(1)}` : e[1]}**.`,
+        embedmsg,
+      );
+
+      const [resp] = await waitFor("messageCreate", 30000, async (message) => {
         if (message.author.id !== msg.author.id) return false;
         if (message.channel.id !== msg.channel.id) return false;
         message.delete().catch(() => {});
@@ -124,6 +132,10 @@ class embedCommand extends Command {
               inline: true,
             };
           }),
+          footer: {
+            text: `Ran by ${this.bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
         },
       }).catch(() => {});
 
@@ -154,7 +166,7 @@ class embedCommand extends Command {
 
     if (!Object.keys(embed).length || Object.keys(embed).includes("error")) {
       embedmsg.delete().catch(() => {});
-      return msg.channel.createMessage(this.bot.embed("❌ Error", embed.error ? embed.error : "Invalid embed.", "error"));
+      return this.bot.embed("❌ Error", embed.error ? embed.error : "Invalid embed.", msg, "error");
     }
 
     // Sends the final embed

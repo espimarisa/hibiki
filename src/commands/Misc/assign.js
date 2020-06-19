@@ -11,11 +11,12 @@ class assignCommand extends Command {
   }
 
   async run(msg, args, pargs) {
-    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
-
-    // If guild has no cfg
+    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
     if (!guildcfg || !guildcfg.assignableRoles || !guildcfg.assignableRoles.length) {
-      await this.bot.db.table("guildcfg").insert({ id: msg.channel.guild.id, assignableRoles: [] });
+      await this.bot.db.table("guildcfg").insert({
+        id: msg.channel.guild.id,
+        assignableRoles: [],
+      }).run();
     }
 
     if (!args.length) {
@@ -25,22 +26,25 @@ class assignCommand extends Command {
       });
 
       assignableroles = assignableroles.filter(r => r !== undefined);
-      return msg.channel.createMessage(this.bot.embed("📃 Assignable Roles", assignableroles.join(", ") || "This server has no assignable roles."));
+      return this.bot.embed("📃 Assignable Roles", assignableroles.join(", ") || "This server has no assignable roles.", msg);
     }
 
     // Looks for the role
     const role = pargs[0].value;
-    if (!role) return msg.channel.createMessage(this.bot.embed("❌ Error", "No **role** was provided.", "error"));
+    if (!role) return this.bot.embed("❌ Error", "No **role** was provided.", msg, "error");
     const assignable = guildcfg.assignableRoles.includes(role.id);
 
-    // Adds the role
+    // Assigns the role
     if (assignable) {
-      await msg.member.addRole(role.id, "Self-assignable role").catch(() => {
-        msg.channel.createMessage(this.bot.embed("❌ Error", "Failed to give you the role."));
-      });
+      try {
+        await msg.member.removeRole(role.id, "Self-assignable role");
+      } catch (err) {
+        return this.bot.embed("❌ Error", "Failed to give you the role.", msg, "error");
+      }
+
       this.bot.emit("roleAssign", msg.channel.guild, msg.member, role);
-      msg.channel.createMessage(this.bot.embed("✅ Success", `You now have the **${role.name}** role.`, "success"));
-    } else if (!assignable) return msg.channel.createMessage(this.bot.embed("❌ Error", "That isn't an assignable role.", "error"));
+      this.bot.embed("✅ Success", `You now have the **${role.name}** role.`, msg, "success");
+    } else if (!assignable) return this.bot.embed("❌ Error", "That isn't an assignable role.", msg, "error");
   }
 }
 
