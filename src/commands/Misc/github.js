@@ -23,7 +23,7 @@ class githubCommand extends Command {
           "Authorization": `Token ${this.bot.key.github}`,
         },
       }).then(async res => await res.json().catch(() => {}));
-      if (!body || !body.id || body.message) return msg.channel.createMessage(this.bot.embed("❌ Error", "No information found.", "error"));
+      if (!body || !body.id || body.message) return this.bot.embed("❌ Error", "No information found.", msg, "error");
 
       const fields = [];
       if (body.owner && body.owner.login && !body.source) fields.push({ name: "Owner", value: body.owner.login, inline: true });
@@ -48,6 +48,10 @@ class githubCommand extends Command {
         thumbnail: {
           url: body.owner.avatar_url,
         },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
       };
 
       if (body.description) embed.description = body.description;
@@ -62,7 +66,7 @@ class githubCommand extends Command {
           "Authorization": `Token ${this.bot.key.github}`,
         },
       }).then(async res => await res.json().catch(() => {}));
-      if (!body || !body.id || body.message) return msg.channel.createMessage(this.bot.embed("❌ Error", "No information found.", "error"));
+      if (!body || !body.id || body.message) return this.bot.embed("❌ Error", "No information found.", msg, "error");
 
       const fields = [];
       if (body.created_at) fields.push({ name: "Created", value: format.date(body.created_at) });
@@ -84,6 +88,10 @@ class githubCommand extends Command {
         },
         thumbnail: {
           url: body.avatar_url,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       };
 

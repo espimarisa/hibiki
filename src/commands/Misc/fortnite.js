@@ -15,21 +15,21 @@ class fortniteCommand extends Command {
 
   async run(msg, [username, platform]) {
     if (!username) return;
-    // Check if the platform is valid
     if (!["psn", "xbox", "pc"].includes(platform) && platform !== undefined) {
-      return msg.channel.createMessage(this.bot.embed("🤙 Fortnite", "Valid platforms are `pc`, `psn`, and `xbox`."));
+      return this.bot.embed("🤙 Fortnite", "Valid platforms are `pc`, `psn`, and `xbox`.", msg);
     }
 
     // Sends the first embed
-    const statmsg = await msg.channel.createMessage(this.bot.embed("🤙 Fortnite", "Waiting for a response from the Fortnite API..."));
-    const body = await fetch(`https://api.fortnitetracker.com/v1/profile/${platform !== undefined ? encodeURIComponent(platform) : "pc"}/${encodeURIComponent(username)}`, {
-      headers: {
-        "TRN-Api-Key": this.bot.key.gametracker,
-        "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
-      },
-    }).then(async res => await res.json().catch(() => {}));
+    const fortnitemsg = await this.bot.embed("🤙 Fortnite", "Getting info...", msg);
+    const body = await fetch(
+      `https://api.fortnitetracker.com/v1/profile/${platform !== undefined ? encodeURIComponent(platform) : "pc"}/${encodeURIComponent(username)}`, {
+        headers: {
+          "TRN-Api-Key": this.bot.key.gametracker,
+          "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
+        },
+      }).then(async res => await res.json().catch(() => {}));
 
-    if (!body || body.error || !body.lifeTimeStats) return await statmsg.edit(this.bot.embed("❌ Error", "No information found.", "error"));
+    if (!body || body.error || !body.lifeTimeStats) return this.bot.embed.edit("❌ Error", "No information found.", fortnitemsg, "error");
 
     const fields = [];
     if (body.lifeTimeStats[8].value) fields.push({ name: "Wins", value: body.lifeTimeStats[8].value, inline: true });
@@ -39,11 +39,15 @@ class fortniteCommand extends Command {
     if (body.lifeTimeStats[11].value) fields.push({ name: "K/D Ratio", value: body.lifeTimeStats[11].value, inline: true });
     if (body.lifeTimeStats[9].value) fields.push({ name: "Win Percent", value: body.lifeTimeStats[9].value, inline: true });
 
-    statmsg.edit({
+    fortnitemsg.edit({
       embed: {
         title: `🤙 Fortnite stats for **${body.epicUserHandle}** on **${body.platformNameLong}**`,
         color: 0x6FC8F0,
         fields: fields,
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
       },
     });
   }

@@ -11,7 +11,7 @@ class listeningtoCommand extends Command {
   async run(msg, args, pargs) {
     const user = pargs[0].value;
     const song = user.activities.find(s => s.id === "spotify:1");
-    if (!song) return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** isn't listening to Spotify.`, "error"));
+    if (!song) return this.bot.embed("❌ Error", `**${user.username}** isn't listening to Spotify.`, msg, "error");
 
     const fields = [];
     if (song.details) fields.push({ name: "Track", value: song.details });
@@ -20,7 +20,7 @@ class listeningtoCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        color: 0x1DB954,
+        color: 0x1ED760,
         fields: fields,
         author: {
           icon_url: user.user.dynamicAvatarURL(null),
@@ -29,6 +29,10 @@ class listeningtoCommand extends Command {
         },
         thumbnail: {
           url: `https://i.scdn.co/image/${song.assets.large_image.replace("spotify:", "")}`,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });

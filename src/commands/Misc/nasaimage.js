@@ -13,20 +13,24 @@ class nasaimageCommand extends Command {
 
   async run(msg, args) {
     // Fetches the API
-    const nasamsg = await msg.channel.createMessage(this.bot.embed("☄ NASA Image", "Searching NASA's archive..."));
+    const nasamsg = await this.bot.embed("☄ NASA Image", "Searching NASA's archive...", msg);
     const body = await fetch(`https://images-api.nasa.gov/search?media_type=image&q=${encodeURIComponent(args.join(" "))}`)
       .then(async res => await res.json().catch(() => {}));
     const images = body.collection.items;
     const data = images[Math.floor(Math.random() * images.length)];
-    if (!data) return nasamsg.edit(this.bot.embed("❌ Error", "No images found.", "error"));
+    if (!data) return this.bot.embed.edit("❌ Error", "No images found.", nasamsg, "error");
 
     nasamsg.edit({
       embed: {
-        title: "☄ Nasa Image",
+        title: "☄ NASA Image",
         description: data.data[0].description.length > 2000 ? `${data.data[0].description.substring(0, 2000)}...` : data.data[0].description,
         color: 0x0B3D91,
         image: {
           url: data.links[0].href,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });

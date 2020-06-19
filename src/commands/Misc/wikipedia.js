@@ -5,7 +5,7 @@ class wikipediaCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["wiki"],
-      args: "<query:string>",
+      args: "<page:string>",
       description: "Returns information from Wikipedia.",
       allowdms: true,
       cooldown: 3,
@@ -15,14 +15,14 @@ class wikipediaCommand extends Command {
   async run(msg, args) {
     const body = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(args.join(" ").toLowerCase())}`)
       .then(async res => await res.json().catch(() => {}));
-    if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Page not found.", "error"));
-    if (body.title === "Not found.") return msg.channel.createMessage(this.bot.embed("❌ Error", "Page not found.", "error"));
+    if (!body) return this.bot.embed("❌ Error", "Page not found.", msg, "error");
+    if (body.title && body.title === "Not found.") return this.bot.embed("❌ Error", "Page not found.", msg, "error");
 
     if (body.type === "disambiguation") {
-      return msg.channel.createMessage(this.bot.embed("🌐 Wikipedia", `[Page](${body.content_urls.desktop.page}) is a disambiguation.`));
+      return this.bot.embed("🌐 Wikipedia", `[Page](${body.content_urls.desktop.page}) is a disambiguation.`, msg);
     }
 
-    msg.channel.createMessage(this.bot.embed(`🌐 ${body.title}`, body.extract));
+    this.bot.embed(`🌐 ${body.title}`, body.extract, msg);
   }
 }
 

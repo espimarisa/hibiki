@@ -18,7 +18,7 @@ class pointsCommand extends Command {
     if (urlcheck) imgurl = urlcheck[0];
     if (!imgurl && msg.attachments && msg.attachments[0]) imgurl = msg.attachments[0].proxy_url;
     if (!imgurl) imgurl = null;
-    if (!args[0]) return msg.channel.createMessage(this.bot.embed("❌ Error", "You didn't provide anything to put in the poll.", "error"));
+    if (!args[0]) return this.bot.embed("❌ Error", "You didn't provide anything to put in the poll.", msg, "error");
 
     const pollmsg = await msg.channel.createMessage({
       embed: {
@@ -30,6 +30,10 @@ class pointsCommand extends Command {
         },
         thumbnail: {
           url: imgurl ? imgurl : null,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });

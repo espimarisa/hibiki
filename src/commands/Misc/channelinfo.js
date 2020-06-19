@@ -12,7 +12,7 @@ class channelinfoCommand extends Command {
 
   run(msg, args, pargs) {
     const channel = pargs[0].value;
-    if (channel.type === 4) return msg.channel.createMessage(this.bot.embed("❌ Error", "A category was provided, not a channel.", "error"));
+    if (channel.type === 4) return this.bot.embed("❌ Error", "No **channel** was provided.", msg, "error");
 
     const desc = [];
     if (channel.topic) desc.push({ name: "", value: `${channel.topic}` });
@@ -29,6 +29,10 @@ class channelinfoCommand extends Command {
         author: {
           icon_url: msg.channel.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
           name: `#${channel.name} (${channel.type === 0 ? "text" : "voice"} channel)`,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });

@@ -27,8 +27,8 @@ class xkcdCommand extends Command {
             url: body.img,
           },
           footer: {
-            icon_url: this.bot.user.dynamicAvatarURL(),
-            text: `Ran by ${this.bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+            text: `Ran by ${this.bot.tag(msg.author)} | Published on ${body.day}/${body.month}/${body.year}`,
           },
         },
       });
@@ -48,8 +48,8 @@ class xkcdCommand extends Command {
             url: body.img,
           },
           footer: {
-            icon_url: this.bot.user.dynamicAvatarURL(),
-            text: `Ran by ${this.bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+            text: `Ran by ${this.bot.tag(msg.author)} | Published on ${body.day}/${body.month}/${body.year}`,
           },
         },
       });
@@ -70,8 +70,8 @@ class xkcdCommand extends Command {
           url: body.img,
         },
         footer: {
-          icon_url: this.bot.user.dynamicAvatarURL(),
-          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+          text: `Ran by ${this.bot.tag(msg.author)} | Published on ${body.day}/${body.month}/${body.year}`,
         },
       },
     });

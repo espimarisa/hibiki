@@ -14,12 +14,14 @@ class urbanCommand extends Command {
 
   async run(msg, args) {
     const query = args.join("  ");
-    const body = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`).then(async res => await res.json().catch(() => {}));
-    if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Couldn't send the definition. Try again later.", "error"));
+    const body = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`)
+      .then(async res => await res.json().catch(() => {}));
+    if (!body) return this.bot.embed("❌ Error", "Couldn't send the definition. Try again later.", msg, "error");
+
     // Sorts by highest rated definition
     const topword = body.list.sort((a, b) => b.thumbs_up - a.thumbs_up);
     const word = topword[0];
-    if (!topword || !word || !word.definition) return msg.channel.createMessage(this.bot.embed("❌ Error", "No definition found.", "error"));
+    if (!topword || !word || !word.definition) return this.bot.embed("❌ Error", "No definition found.", msg, "error");
     // Cleans up definitions & examples
     word.definition = topword[0].definition.replace(/[[\]]/g, "");
     word.example = topword[0].example.replace(/[[\]]/g, "");
@@ -36,6 +38,10 @@ class urbanCommand extends Command {
         description: word.definition,
         color: this.bot.embed.color("general"),
         fields: fields,
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
       },
     });
   }

@@ -12,22 +12,28 @@ class unassignCommand extends Command {
 
   async run(msg, args, pargs) {
     const role = pargs[0].value;
-    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
+    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
 
     if (!guildcfg || !guildcfg.assignableRoles || !guildcfg.assignableRoles.length) {
-      await this.bot.dsb.table("guildcfg").insert({ id: msg.channel.guild.id, assignableRoles: [] });
+      await this.bot.db.table("guildcfg").insert({
+        id: msg.channel.guild.id,
+        assignableRoles: [],
+      }).run();
     }
 
     const assignable = guildcfg.assignableRoles.includes(role.id);
 
+    // Removes the role
     if (assignable) {
-      // Adds the role
-      await msg.member.removeRole(role.id, "Self-assignable role").catch(() => {
-        msg.channel.createMessage(this.bot.embed("❌ Error", "Failed to remove the role from you."));
-      });
+      try {
+        await msg.member.removeRole(role.id, "Self-assignable role");
+      } catch (err) {
+        return this.bot.embed("❌ Error", "Failed to remove the role from you.", msg, "error");
+      }
+
       this.bot.emit("roleUnassign", msg.channel.guild, msg.member, role);
-      msg.channel.createMessage(this.bot.embed("✅ Success", `The **${role.name}** role was removed from you.`, "success"));
-    } else if (!assignable) return msg.channel.createMessage(this.bot.embed("❌ Error", "That isn't an assignable role.", "error"));
+      this.bot.embed("✅ Success", `The **${role.name}** role was removed from you.`, msg, "success");
+    } else if (!assignable) return this.bot.embed("❌ Error", "That isn't an assignable role.", msg, "error");
   }
 }
 

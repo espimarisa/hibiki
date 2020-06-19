@@ -12,14 +12,11 @@ class autofillCommand extends Command {
   }
 
   async run(msg, args) {
-    const body = await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(args.join(" "))}`, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36",
-      },
-    }).then(async res => await res.json().catch(() => {}));
+    const body = await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(args.join(" "))}`)
+      .then(async res => await res.json().catch(() => {}));
 
-    if (!body || !body[1].length) return msg.channel.createMessage(this.bot.embed("❌ Error", "No results found.", "error"));
-    msg.channel.createMessage(this.bot.embed("✏ Autofill", body[1].join("\n")));
+    if (!body || !body[1].length) return this.bot.embed("❌ Error", "No results found.", msg, "error");
+    this.bot.embed("✏ Autofill", body[1].join("\n"), msg);
   }
 }
 

@@ -17,25 +17,26 @@ class currencyCommand extends Command {
       from = amount;
     }
 
-    if (!from) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "No amount to **convert from** was provided.", "error"));
-    }
+    if (!from) return this.bot.embed("❌ Error", "No amount to **convert from** was provided.", msg, "error");
+    if (!to) return this.bot.embed("❌ Error", "No amount to **convert to** was provided.", msg, "error");
 
-    if (!to) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "No amount to **convert to** was provided.", "error"));
-    }
+    const body = await fetch(
+      `https://api.exchangeratesapi.io/latest?base=${encodeURIComponent(from.toUpperCase())}&symbols=${encodeURIComponent(to.toUpperCase())}`,
+    ).then(async res => await res.json().catch(() => {}));
 
-    const body = await fetch(`https://api.exchangeratesapi.io/latest?base=${encodeURIComponent(from.toUpperCase())}&symbols=${encodeURIComponent(to.toUpperCase())}`)
-      .then(async res => await res.json().catch(() => {}));
-    if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "Failed to send the rates. Try again later.", "error"));
-    if (body.error !== undefined) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "No information found.", "error"));
-    }
+    if (!body) return this.bot.embed("❌ Error", "Failed to send the rates. Try again later.", msg, "error");
+    if (body.error && body.error !== undefined) return this.bot.embed("❌ Error", "No conversion rates found.", msg, "error");
 
     if (isNaN(amount)) {
-      msg.channel.createMessage(this.bot.embed(`💱 ${body.base} to ${to.toUpperCase()}`, `${Object.keys(body.rates).map(k => `**${k}**: ${body.rates[k].toFixed(2)}`).join("\n")}`));
+      this.bot.embed(
+        `💱 ${body.base} to ${to.toUpperCase()}`,
+        `${Object.keys(body.rates).map(k => `**${k}**: ${body.rates[k].toFixed(2)}`).join("\n")}`,
+        msg);
     } else {
-      msg.channel.createMessage(this.bot.embed("💱 Currency", `**${amount}** ${body.base} ~ **${amount * body.rates[to.toUpperCase()].toFixed(2)}** ${to.toUpperCase()}`));
+      this.bot.embed(
+        "💱 Currency",
+        `**${amount}** ${body.base} ~ **${amount * body.rates[to.toUpperCase()].toFixed(2)}** ${to.toUpperCase()}`,
+        msg);
     }
   }
 }

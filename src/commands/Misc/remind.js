@@ -14,10 +14,10 @@ class remindCommand extends Command {
 
   async run(msg, args) {
     // List member's reminders
-    if (args[0] === undefined || args[0].toLowerCase() === "list") {
-      let db = await this.bot.db.table("reminders");
+    if (!args[0] || args[0].toLowerCase() === "list") {
+      let db = await this.bot.db.table("reminders").run();
       db = db.filter(d => d.user === msg.author.id);
-      if (!db.length) return msg.channel.createMessage(this.bot.embed("⏰ Reminders", "You don't have any reminders."));
+      if (!db.length) return this.bot.embed("⏰ Reminders", "You don't have any reminders.", msg);
 
       return msg.channel.createMessage({
         embed: {
@@ -27,27 +27,37 @@ class remindCommand extends Command {
             name: `${r.id}`,
             value: `${r.message}`,
           })),
+          footer: {
+            text: `Ran by ${this.bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
         },
       });
     }
 
-    // Removing reminders
-    if (args[0] !== undefined && (args[0].toLowerCase() === "remove" || args[0].toLowerCase() === "delete")) {
-      if (!args[1] || !args[1].length) return msg.channel.createMessage(this.bot.embed("❌ Error", "You provided an invalid ID.", "error"));
-      const db = await this.bot.db.table("reminders").get(args[1]);
-      if (db.user !== msg.author.id) return msg.channel.createMessage(this.bot.embed("❌ Error", "You didn't create that reminder.", "error"));
-      const reminder = await this.bot.db.table("reminders").get(args[1]).delete();
-      if (reminder.skipped || reminder.errors) return msg.channel.createMessage(this.bot.embed("❌ Error", "Reminder not found.", "error"));
+    // Reminder removal
+    if (args[0] && (args[0].toLowerCase() === "remove" || args[0].toLowerCase() === "delete")) {
+      if (!args[1] || !args[1].length) return this.bot.embed("❌ Error", "You provided an invalid ID.", msg, "error");
+      const db = await this.bot.db.table("reminders").get(args[1]).run();
+      if (db.user !== msg.author.id) return this.bot.embed("❌ Error", "You didn't create that reminder.", msg, "error");
+      const reminder = await this.bot.db.table("reminders").get(args[1]).delete().run();
+      if (reminder.skipped || reminder.errors) return this.bot.embed("❌ Error", "Reminder not found.", msg, "error");
+
       // Clears the timeout
       const handle = this.timeoutHandles.find(h => h.id === args[1]);
       if (handle) clearTimeout(handle);
-      return msg.channel.createMessage(this.bot.embed("⏰ Reminder", `Reminder removed.`));
+      return this.bot.embed("⏰ Reminder", `Reminder removed.`, msg);
     }
 
+    // Time regex
     let val = 0;
     const fargs = [...args];
-    // Time regex
-    args = args.join(" ").replace(/\d{1,2}( )?(w(eek(s)?)?)?(d(ay(s)?)?)?(h(our(s)?)?(r(s)?)?)?(m(inute(s)?)?(in(s)?)?)?(s(econd(s)?)?(ec(s)?)?)?( and( )?)?([, ]{1,2})?/i, "").split(" ");
+    args = args.join(" ").replace(
+      /\d{1,2}( )?(w(eek(s)?)?)?(d(ay(s)?)?)?(h(our(s)?)?(r(s)?)?)?(m(inute(s)?)?(in(s)?)?)?(s(econd(s)?)?(ec(s)?)?)?( and( )?)?([, ]{1,2})?/i,
+      "",
+    ).split(" ");
+
+    // Parses the time given
     const timeArg = fargs.join(" ").substring(0, fargs.join(" ").indexOf(args.join(" ")));
     const validtime = [];
     timeArg.split("").forEach((char, i) => {
@@ -57,7 +67,8 @@ class remindCommand extends Command {
       if (!isNaN(parseInt(timeArg[i + 1])) && !isNaN(parseInt(char))) return;
       if (!isNaN(parseInt(char)) && !isNaN(parseInt(timeArg[i - 1]))) char = `${timeArg[i - 1]}${char}`;
       if (timeArg[i + 2] && (v === " " || v === ",") && /[wdhms]/.exec(timeArg[i + 2].toLowerCase())) v = timeArg[i + 2];
-      // Time switcher
+
+      // Formats time given
       if (isNaN(parseInt(v))) {
         switch (v) {
           case "w":
@@ -84,10 +95,10 @@ class remindCommand extends Command {
       }
     });
 
-    // Invalid time
-    if (val < 1000) return msg.channel.createMessage(this.bot.embed("❌ Error", "You provided an invalid amount of time.", "error"));
+    // Checks for valid time
+    if (val < 1000) return this.bot.embed("❌ Error", "You provided an invalid amount of time.", msg, "error");
     const finaldate = new Date().getTime() + val;
-    if (finaldate > new Date().getTime() + 2142720000) return msg.channel.createMessage(this.bot.embed("❌ Error", "The time amout must be under 25 days.", "error"));
+    if (finaldate > new Date().getTime() + 2142720000) return this.bot.embed("❌ Error", "The time amout must be under 25 days.", msg, "error");
 
     // Creates the reminder
     const id = Snowflake();
@@ -99,16 +110,17 @@ class remindCommand extends Command {
     };
 
     // Sets timeout to send reminder
-    const rdb = await this.bot.db.table("reminders").insert(reminder);
+    const rdb = await this.bot.db.table("reminders").insert(reminder).run();
     if (!rdb.errors) {
       const handle = setTimeout(async (r) => {
-        const db = await this.bot.db.table("reminders").get(r.id);
+        const db = await this.bot.db.table("reminders").get(r.id).run();
         if (!db) return;
         const user = this.bot.users.get(r.user);
         if (!user) return;
         const dm = await user.getDMChannel();
         if (!dm) return;
-        // Sends the reminder message in DMs
+
+        // Sends the reminder
         await dm.createMessage({
           embed: {
             title: "⏰ Reminder",
@@ -116,8 +128,9 @@ class remindCommand extends Command {
             color: this.bot.embed.color("general"),
           },
         }).catch(() => {});
+
         this.timeoutHandles.push({ id: id, handle: handle });
-        await this.bot.db.table("reminders").get(r.id).delete();
+        await this.bot.db.table("reminders").get(r.id).delete().run();
       }, reminder.date - new Date().getTime(), reminder);
 
       msg.channel.createMessage({
@@ -129,6 +142,10 @@ class remindCommand extends Command {
             name: "ID:",
             value: reminder.id,
           }],
+          footer: {
+            text: `Ran by ${this.bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
         },
       });
     }

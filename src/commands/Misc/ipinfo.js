@@ -16,9 +16,12 @@ class ipinfoCommand extends Command {
     const body = await fetch(`https://ipinfo.io/${encodeURIComponent(args.join(" "))}/json?token=${encodeURIComponent(this.bot.key.ipinfo)}`)
       .then(async res => await res.json().catch(() => {}));
 
-    // IPAbuseDB
     const abuseinfo = await fetch(`https://api.abuseipdb.com/api/v2/check?ipAddress=${encodeURIComponent(args.join(" "))}`, {
-      headers: { "Key": this.bot.key.abuseipdb, "Accept": "application/json", "User-Agent": `${this.bot.user.username}/${this.bot.version}` },
+      headers: {
+        "Key": this.bot.key.abuseipdb,
+        "Accept": "application/json",
+        "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
+      },
     }).then(async res => await res.json().catch(() => {}));
 
     if (body.error || !body.ip || !body.org) return msg.channel.createMessage(this.bot.embed("❌ Error", "Invalid IP address.", "error"));
@@ -30,17 +33,29 @@ class ipinfoCommand extends Command {
     if (body.country) fields.push({ name: "Country", value: body.country, inline: true });
     if (body.city) fields.push({ name: "City", value: body.city, inline: true });
     if (body.region) fields.push({ name: "Region", value: body.region, inline: true });
-    if (!abuseinfo.errors) fields.push({ name: "Abuse Info", value: `${abuseinfo.data.totalReports} reports; ${abuseinfo.data.abuseConfidenceScore}%` });
+
+    if (!abuseinfo.errors) {
+      fields.push({
+        name: "Abuse Info",
+        value: `${abuseinfo.data.totalReports} reports; ${abuseinfo.data.abuseConfidenceScore}%`,
+      });
+    }
 
     const construct = {
       title: `🌐 ${body.ip}`,
       description: "Information may be slightly innacurate.",
       color: this.bot.embed.color("general"),
       fields: fields,
+      footer: {
+        text: `Ran by ${this.bot.tag(msg.author)}`,
+        icon_url: msg.author.dynamicAvatarURL(),
+      },
     };
 
     if (body.loc && this.bot.key.maps) {
-      construct.image = { url: `https://maps.googleapis.com/maps/api/staticmap?center=${body.loc}&zoom=10&size=250x150&sensor=false&key=${this.bot.key.maps}` };
+      construct.image = {
+        url: `https://maps.googleapis.com/maps/api/staticmap?center=${body.loc}&zoom=10&size=250x150&sensor=false&key=${this.bot.key.maps}`,
+      };
     }
 
     await msg.channel.createMessage({

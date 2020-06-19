@@ -18,7 +18,7 @@ class weatherCommand extends Command {
       .then(async res => await res.json().catch(() => {}));
 
     if (!location || !location.features[0] || !location.features[0].geometry.coordinates) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "Location not found.", "error"));
+      return this.bot.embed("❌ Error", "Location not found.", msg, "error");
     }
 
     // Gets coordinates & name
@@ -29,8 +29,9 @@ class weatherCommand extends Command {
     if (!name || !name.length) name = `${args}`;
 
     // Weather info
-    const body = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&units=metric&appid=${this.bot.key.weather}`)
-      .then(async res => await res.json().catch(() => {}));
+    const body = await fetch(
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&units=metric&appid=${this.bot.key.weather}`,
+    ).then(async res => await res.json().catch(() => {}));
 
     const fields = [];
     if (body.current.temp) fields.push({ name: "🌡 Temperature", value: `${body.current.temp.toFixed(0)}°c`, inline: true });
@@ -48,6 +49,10 @@ class weatherCommand extends Command {
         fields: fields,
         thumbnail: {
           url: `http://openweathermap.org/img/wn/${body.current.weather[0].icon}@2x.png`,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });
