@@ -26,10 +26,10 @@ class addpointCommand extends Command {
       guild: msg.channel.guild.id,
       id: id,
       reason: reason || "No reason given.",
-    });
+    }).run();
 
     this.bot.emit("pointAdd", msg.channel.guild, msg.member, user, id, reason || "No reason given.");
-    msg.channel.createMessage(this.bot.embed("✨ Point", `**${user.username}** was given a reputation point.`));
+    this.bot.embed("✨ Point", `**${user.username}** was given a reputation point.`, msg);
   }
 }
 
