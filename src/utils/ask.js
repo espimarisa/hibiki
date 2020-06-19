@@ -1,10 +1,10 @@
-const WaitFor = require("utils/waitfor");
+const waitFor = require("utils/waitFor");
 
 module.exports = {
   yesNo: async (bot, msg, retMsg = false) => {
     try {
       // Sets the response message, timeout is 15 seconds
-      const [resp] = await WaitFor("messageCreate", 15000, m => {
+      const [resp] = await waitFor("messageCreate", 15000, m => {
         if (m.author.id !== msg.author.id) return false;
         if (m.channel.id !== msg.channel.id) return false;
         // Checks for y/n

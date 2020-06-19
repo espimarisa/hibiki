@@ -36,7 +36,8 @@ class currencyCommand extends Command {
       this.bot.embed(
         "💱 Currency",
         `**${amount}** ${body.base} ~ **${amount * body.rates[to.toUpperCase()].toFixed(2)}** ${to.toUpperCase()}`,
-        msg);
+        msg,
+      );
     }
   }
 }

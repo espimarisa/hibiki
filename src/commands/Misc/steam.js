@@ -24,13 +24,18 @@ class steamCommand extends Command {
 
     // Vanity URL checker
     if (/^\d+$/.test(args[0])) steamid = args[0];
-    else if (args.join(" ").startsWith("https://steamcommunity.com/id/")) args[0] = args.join(" ").substring(`https://steamcommunity.com/id/`.length, args.join(" ").length);
+    else if (args.join(" ").startsWith("https://steamcommunity.com/id/")) args[0] = args.join(" ")
+      .substring(`https://steamcommunity.com/id/`.length, args.join(" ").length);
+
     if (!steamid) {
-      id = await fetch(`http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${this.bot.key.steam}&vanityurl=${encodeURIComponent(args[0])}`)
-        .then(async res => await res.json().catch(() => {}));
+      id = await fetch(
+        `http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${this.bot.key.steam}&vanityurl=${encodeURIComponent(args[0])}`,
+      ).then(async res => await res.json().catch(() => {}));
+
       if (!id || id.response.success !== 1) {
-        return msg.channel.createMessage(this.bot.embed("❌ Error", "Account not found.", "error"));
+        return this.bot.embed("❌ Error", "Account not found.", msg, "error");
       }
+
       steamid = id.response.steamid;
     }
 
@@ -39,30 +44,32 @@ class steamCommand extends Command {
     profile = await fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${this.bot.key.steam}&steamids=${steamid}`)
       .then(async res => await res.json().catch(() => {}));
     profile = profile.response.players[0];
+
     // Gets ban info
     bans = await fetch(`http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=${this.bot.key.steam}&steamids=${steamid}`)
       .then(async res => await res.json().catch(() => {}));
     bans = bans.players[0];
-    // Gets their owned games
+
+    // Gets owned games
     games = await fetch(`https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?steamid=${steamid}
       &include_appinfo=1&include_played_free_games=1&key=${this.bot.key.steam}`)
       .then(async res => await res.json().catch(() => {}));
     games = games.response;
-    // Gets their steam level
+
+    // Gets steam level
     steamlvl = await fetch(`https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?steamid=${steamid}&key=${this.bot.key.steam}`)
       .then(async res => await res.json().catch(() => {}));
     steamlvl = steamlvl.response.player_level;
-    // Gets the profile's description in a hacky way
+
+    // Gets bio
     description = await fetch(`http://steamcommunity.com/profiles/${steamid}`)
       .then(async res => await res.text().catch(() => {}));
     description = /<div class="profile_summary">[\s\n]{0,}([\w\d\s;_\-,.]{0,512})<\/div>/.exec(description);
     if (description) description = description[1];
     if (!description || description === "No information given.") description = null;
     if (description && description.length > 256) description = `${description.substring(0, 256)}...`;
+    if (!profile || !bans || !games) return this.bot.embed("❌ Error", "Account not found.", msg, "error");
 
-    if (!profile || !bans || !games) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "Account not found.", "error"));
-    }
 
     // Formats statuses
     if (profile.personastate === 0) profile.personastate = "Offline/Invisible";
@@ -151,6 +158,10 @@ class steamCommand extends Command {
         },
         thumbnail: {
           url: profile.avatarfull,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });

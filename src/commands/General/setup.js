@@ -1,5 +1,5 @@
 const Command = require("structures/Command");
-const WaitFor = require("utils/waitfor");
+const waitFor = require("utils/waitFor");
 const askFor = require("utils/ask").For;
 
 const categoryemojis = {
@@ -123,7 +123,7 @@ class setupCommand extends Command {
       categories.map(cat => cat.emoji).forEach(catEmoji => m.addReaction(catEmoji));
       let category;
       let stop = false;
-      await WaitFor("messageReactionAdd", 60000, async (message, emoji, uid) => {
+      await waitFor("messageReactionAdd", 60000, async (message, emoji, uid) => {
         if (message.id !== m.id) return;
         if (uid !== msg.author.id) return;
         if (!emoji.name) return;
@@ -168,7 +168,7 @@ class setupCommand extends Command {
     await omsg.removeReactions();
     await category.items.map(async cat => omsg.addReaction(settings.find(s => s.id === cat).emoji));
     omsg.addReaction(back);
-    await WaitFor("messageReactionAdd", 60000, async (message, emoji, uid) => {
+    await waitFor("messageReactionAdd", 60000, async (message, emoji, uid) => {
       if (uid !== msg.author.id) return;
       if (message.id !== omsg.id) return;
       if (!emoji.name) return;
@@ -191,7 +191,7 @@ class setupCommand extends Command {
         omsg.edit(this.bot.embed(`🔨 Punishments for ${setting.label}`, validpunishments.map(p => `${punishments[p]} ${p}${punishmentDescription[p] ? punishmentDescription[p] : ""}: **${cfg[setting.id].includes(p) ? "enabled" : "disabled"}**`).join("\n")));
         validpunishments.forEach(p => omsg.addReaction(punishments[p]).catch(() => {}));
         omsg.addReaction(submit);
-        await WaitFor("messageReactionAdd", 60000, async (m, emojii, user) => {
+        await waitFor("messageReactionAdd", 60000, async (m, emojii, user) => {
           if (m.id !== omsg.id) return;
           if (user !== msg.author.id) return;
           if (!emojii.name) return;
@@ -224,7 +224,7 @@ class setupCommand extends Command {
       } else {
         // Asks for a response
         omsg.edit(this.bot.embed("✨ Config", `Respond with the desired **${setting.type || setting.type}**.`));
-        await WaitFor("messageCreate", 90000, async (m) => {
+        await waitFor("messageCreate", 90000, async (m) => {
           if (m.author.id !== msg.author.id) return;
           if (m.channel.id !== msg.channel.id) return;
           if (!msg.content) return;
