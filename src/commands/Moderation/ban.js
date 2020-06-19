@@ -1,6 +1,6 @@
 const Command = require("structures/Command");
 const format = require("utils/format");
-const hierarchy = require("utils/Hierarchy");
+const hierarchy = require("utils/hierarchy");
 const yn = require("utils/ask").YesNo;
 
 class banCommand extends Command {
@@ -23,16 +23,20 @@ class banCommand extends Command {
 
     // If bot doesn't have high enough role
     if (!hierarchy(msg.channel.guild.members.get(this.bot.user.id), user)) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `I don't have a high enough role to ban **${user.username}**.`, "error"));
+      return this.bot.embed("❌ Error", `I don't have a high enough role to ban **${user.username}**.`, msg, "error");
     }
 
-    // If author passes hierarchy
+    // Asks for confirmation
     if (hierarchy(msg.member, user)) {
-      // Asks for confirmation
-      const banmsg = await msg.channel.createMessage(this.bot.embed("🔨 Ban", `Are you sure you'd like to ban **${user.username}**?`));
+      const banmsg = await this.bot.embed("🔨 Ban", `Are you sure you'd like to ban **${user.username}**?`, msg);
       const response = await yn(this.bot, { author: msg.author, channel: msg.channel });
-      if (!response) return banmsg.edit(this.bot.embed("🔨 Ban", `Cancelled banning **${user.username}**.`));
-      await user.ban(1, `${reason} (by ${format.tag(msg.author, true)})`).catch(() => {});
+      if (!response) return this.bot.embed.edit("🔨 Ban", `Cancelled banning **${user.username}**.`, banmsg);
+
+      try {
+        await user.ban(1, `${reason} (by ${format.tag(msg.author, true)})`);
+      } catch (err) {
+        return this.bot.embed.edit("❌ Error", `Failed to ban **${user.username}**.`, banmsg);
+      }
 
       // Tries to DM banned user
       const dmchannel = await user.user.getDMChannel().catch(() => {});
@@ -44,7 +48,7 @@ class banCommand extends Command {
         },
       }).catch(() => {});
 
-      await banmsg.edit(this.bot.embed("🔨 Ban", `**${user.username}** was banned by **${msg.author.username}**.`));
+      this.bot.embed.edit("🔨 Ban", `**${user.username}** was banned by **${msg.author.username}**.`, banmsg);
     }
   }
 }

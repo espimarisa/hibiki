@@ -1,6 +1,6 @@
 const Command = require("structures/Command");
 const format = require("utils/format");
-const hierarchy = require("utils/Hierarchy");
+const hierarchy = require("utils/hierarchy");
 const yn = require("utils/ask").YesNo;
 
 class softbanCommand extends Command {
