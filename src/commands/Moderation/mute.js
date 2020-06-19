@@ -21,21 +21,24 @@ class muteCommand extends Command {
     if (reason.length > 512) reason = reason.slice(0, 512);
 
     // Reads db; finds role
-    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
+    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
 
     if (!guildcfg || !guildcfg.mutedRole) {
-      await this.bot.db.table("guildcfg").insert({ id: msg.channel.guild.id });
-      return msg.channel.createMessage(this.bot.embed("❌ Error", "The muted role hasn't been configured yet.", "error"));
+      await this.bot.db.table("guildcfg").insert({
+        id: msg.channel.guild.id,
+      }).run();
+
+      return this.bot.embed("❌ Error", "The muted role hasn't been configured yet.", msg, "error");
     }
 
     // If bot doesn't have high enough role
     if (!hierarchy(msg.channel.guild.members.get(this.bot.user.id), user)) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `I don't have a high enough role to mute **${user.username}**.`, "error"));
+      return this.bot.embed("❌ Error", `I don't have a high enough role to mute **${user.username}**.`, msg, "error");
     }
 
     // If member is already muted
     if (user.roles.includes(guildcfg.mutedRole)) {
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `**${user.username}** already has the muted role.`, "error"));
+      return this.bot.embed("❌ Error", `**${user.username}** already has the muted role.`, msg, "error");
     }
 
     // If author is above member
@@ -44,15 +47,18 @@ class muteCommand extends Command {
         role: "",
         member: user.id,
         guild: msg.channel.guild.id,
-      });
+      }).run();
 
       // Mutes the member
       if (!user.roles.length) {
-        await user.addRole(guildcfg.mutedRole, `Muted by ${format.tag(msg.author)} for ${reason}`).catch(() => {
-          msg.channel.createMessage(this.bot.embed("❌ Error", `Failed to add the muted role to **${user.username}**.`));
-        });
+        try {
+          await user.addRole(guildcfg.mutedRole, `Muted by ${format.tag(msg.author)} for ${reason}`);
+        } catch (err) {
+          return this.bot.embed("❌ Error", `Failed to add the muted role to **${user.username}**.`, msg, "error");
+        }
+
         this.bot.emit("memberMute", msg.channel.guild, msg.member, user, reason);
-        return msg.channel.createMessage(this.bot.embed("✅ Success", `**${user.username}** was muted.`, "success"));
+        return this.bot.embed("✅ Success", `**${user.username}** was muted.`, msg, "success");
       }
 
       // If member has roles
@@ -64,21 +70,27 @@ class muteCommand extends Command {
         });
 
         // Removes other roles
-        await msg.channel.guild.removeMemberRole(user.id, roles).catch(() => {
-          msg.channel.createMessage(this.bot.embed("❌ Error", `Failed to remove **${user.username}**'s other roles.`, "error"));
-        });
-
-        // Mutes the member
-        await user.addRole(guildcfg.mutedRole, `Muted by ${format.tag(msg.author)} for ${reason}`).catch(() => {
-          msg.channel.createMessage(this.bot.embed("❌ Error", `Failed to add the muted role to **${user.username}**.`));
-        });
+        try {
+          await msg.channel.guild.removeMemberRole(user.id, roles);
+        } catch (err) {
+          return this.bot.embed("❌ Error", `Failed to remove **${user.username}**'s other roles.`, msg, "error");
+        }
 
         this.bot.emit("memberMute", msg.channel.guild, msg.member, user, reason);
-        msg.channel.createMessage(this.bot.embed("✅ Success", `**${user.username}** was muted.`, "success"));
+        return this.bot.embed("✅ Success", `**${user.username}** was muted.`, msg, "success");
       });
+
+      // Mutes the member
+      try {
+        await user.addRole(guildcfg.mutedRole, `Muted by ${format.tag(msg.author)} for ${reason}`);
+      } catch (err) {
+        return this.bot.embed("❌ Error", `Failed to add the muted role to **${user.username}**.`, msg, "error");
+      }
+
+      this.bot.emit("memberMute", msg.channel.guild, msg.member, user, reason);
+      this.bot.embed("✅ Success", `**${user.username}** was muted.`, msg, "success");
     } else {
-      // If member doesn't pass hiearchy
-      return msg.channel.createMessage(this.bot.embed("❌ Error", `You don't have a high enough role to mute **${user.username}**.`));
+      return this.bot.embed("❌ Error", `You don't have a high enough role to mute **${user.username}**.`, msg, "error");
     }
   }
 }
