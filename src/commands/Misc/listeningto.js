@@ -3,13 +3,14 @@ const Command = require("structures/Command");
 class listeningtoCommand extends Command {
   constructor(...args) {
     super(...args, {
-      args: "[member:member&fallback]",
+      args: "<member:member&fallback>",
       description: "Sends what a member's listening to on Spotify.",
     });
   }
 
   async run(msg, args, pargs) {
     const user = pargs[0].value;
+    if (!user.activities) return this.bot.embed("❌ Error", `**${user.username}** isn't listening to spotify.`, msg, "error");
     const song = user.activities.find(s => s.id === "spotify:1");
     if (!song) return this.bot.embed("❌ Error", `**${user.username}** isn't listening to Spotify.`, msg, "error");
 
