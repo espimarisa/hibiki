@@ -4,7 +4,7 @@ class reloadCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["rl"],
-      args: "<command:string&ignore=*>",
+      args: "<command:string>",
       description: "Reloads one or more commands.",
       allowdisable: false,
       owner: true,
@@ -13,7 +13,7 @@ class reloadCommand extends Command {
 
   run(msg, args) {
     // Looks for the command; reloads all if "all" is given
-    if (args.join(" ").toLowerCase() === "*") args = this.bot.commands.map(c => c.id);
+    if (args.join(" ").toLowerCase() === "*" || (args.join(" ").toLowerCase() === "all")) args = this.bot.commands.map(c => c.id);
     const success = [];
     const fail = [];
 
