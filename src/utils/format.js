@@ -152,10 +152,11 @@ module.exports = {
   /**
    * Formats process uptime
    * @example format.uptime(process.uptime());
+   *
+   * @param {number} uptime Uptime timestamp, in seconds
    */
 
-  uptime: () => {
-    const uptime = process.uptime();
+  uptime: (uptime) => {
     const date = new Date(uptime * 1000);
     const days = date.getUTCDate() - 1,
       hours = date.getUTCHours(),
