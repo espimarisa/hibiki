@@ -12,11 +12,14 @@ module.exports = async (msg, bot, cfg) => {
   if (spam.length >= cfg.spamThreshold) {
     cfg.spamPunishments.forEach(async punishment => {
       if (punishment === "Mute") punish.mute(msg, bot, cfg, spam);
-      if (punishment === "Purge") punish.purge(msg, bot.antiSpam.filter(s => s.guild === msg.channel.guild.id && s.id === msg.author.id && new Date().getTime() - s.date < 10000).map(s => s.msgid)).catch(() => {});
+      if (punishment === "Purge") punish.purge(msg, bot.antiSpam.filter(s => s.guild === msg.channel.guild.id && s.id === msg.author.id &&
+        new Date().getTime() - s.date < 10000).map(s => s.msgid)).catch(() => {});
       if (punishment === "Warn") punish.warn(msg, bot, "Spam (Automod)");
       // Sends a message if msgOnPunishment is enabled
       if (cfg.msgOnPunishment) {
-        const pmsg = await msg.channel.createMessage(bot.embed(`🔨 ${msg.author.username} has been ${cfg.spamPunishments.map(p => `${p.toLowerCase()}ed`).filter(p => p !== "purged").join(" and ")} for spamming.`, null, "error"));
+        const pmsg = await msg.channel.createMessage(bot.embed(
+          `🔨 ${msg.author.username} has been ${cfg.spamPunishments.map(p => `${p.toLowerCase()}ed`).filter(p => p !== "purged").join(" and ")} for spamming.`,
+          null, "error"));
         setTimeout(() => pmsg.delete("AutoMod message deletion").catch(() => {}), 3000);
       }
     });

@@ -58,7 +58,10 @@ module.exports = {
     port: "",
     user: "",
     marriages: true,
-    tables: ["blacklist", "economy", "guildcfg", "marriages", "monitoring", "mutecache", "points", "reminders", "steammonitor", "usercfg", "warnings"],
+    tables: [
+      "blacklist", "economy", "guildcfg", "marriages", "monitoring",
+      "mutecache", "points", "reminders", "steammonitor", "usercfg", "warnings",
+    ],
   },
 
   voting: {

@@ -9,7 +9,7 @@ module.exports = {
         if (m.channel.id !== msg.channel.id) return false;
         // Checks for y/n
         if (m.content.toLowerCase() !== "y" && m.content.toLowerCase() !== "yes" && m.content.toLowerCase() !==
-         "n" && m.content.toLowerCase() !== "no") return false;
+          "n" && m.content.toLowerCase() !== "no") return false;
         return true;
       }, bot);
 
@@ -49,7 +49,7 @@ module.exports = {
     if (type === "channelID") {
       if (clear) return "clear";
       const channel = guild.channels.find(r => (r.name.toLowerCase().startsWith(arg.toLowerCase()) ||
-      r.id === arg || arg === `<#${r.id}>`) && r.type === 0);
+        r.id === arg || arg === `<#${r.id}>`) && r.type === 0);
       if (!channel) return;
       return channel.id;
     }

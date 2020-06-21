@@ -42,7 +42,8 @@ module.exports = bot => {
       if (item.type === "punishment") cfg[c] = opt.filter(p => ["Purge", "Warn", "Mute"].includes(p));
       if (item.type === "channelID" && !bot.guilds.get(req.params.id).channels.find(channel => channel.id === opt)) cfg[c] = null;
       // Channelarray
-      if (item.type === "channelArray") cfg[c] = opt.filter(c => bot.guilds.get(req.params.id).channels.find(channel => channel.id === c));
+      if (item.type === "channelArray") cfg[c] = opt.filter(c => bot.guilds.get(req.params.id).channels.find(channel => channel.id ===
+      c));
       // Rolearray; has no maximum
       if (item.type === "roleArray") cfg[c] = opt.filter(r => bot.guilds.get(req.params.id).roles.find(rol => rol.id === r));
       // Rolearray; has maximum
@@ -55,7 +56,8 @@ module.exports = bot => {
       if (item.type === "string" && item.minimum && opt.length < item.minimum) cfg[c] = null;
       if (item.type === "array" && !Array.isArray(cfg[c])) return cfg[c] = null;
       // Valid emoji regex
-      if (item.type === "emoji" && !/\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/.test(cfg[c])) delete cfg[c];
+      if (item.type === "emoji" && !/\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/
+        .test(cfg[c])) delete cfg[c];
 
       // Disabled categories
       if (c === "disabledCategories") {

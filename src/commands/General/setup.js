@@ -188,7 +188,9 @@ class setupCommand extends Command {
         const punishmentDescription = { Mute: null, Purge: null, Warn: null };
         const validpunishments = Object.getOwnPropertyNames(punishments);
         await omsg.removeReactions();
-        omsg.edit(this.bot.embed(`🔨 Punishments for ${setting.label}`, validpunishments.map(p => `${punishments[p]} ${p}${punishmentDescription[p] ? punishmentDescription[p] : ""}: **${cfg[setting.id].includes(p) ? "enabled" : "disabled"}**`).join("\n")));
+        omsg.edit(this.bot.embed(`🔨 Punishments for ${setting.label}`, validpunishments.map(p =>
+          `${punishments[p]} ${p}${punishmentDescription[p] ? punishmentDescription[p] : ""}: **${cfg[setting.id].includes(p) ? "enabled" : "disabled"}**`,
+        ).join("\n")));
         validpunishments.forEach(p => omsg.addReaction(punishments[p]).catch(() => {}));
         omsg.addReaction(submit);
         await waitFor("messageReactionAdd", 60000, async (m, emojii, user) => {
@@ -211,7 +213,8 @@ class setupCommand extends Command {
           const punishment = validpunishments.find(p => punishments[p] === emojii.name);
           if (cfg[setting.id].includes(punishment)) cfg[setting.id].splice(cfg[setting.id].indexOf(punishment), 1);
           else cfg[setting.id].push(punishment);
-          omsg.edit(this.bot.embed(`🔨 Punishments for ${setting.pickerLabel}`, validpunishments.map(p => `${punishments[p]} ${p}${punishmentDescription[p] ?
+          omsg.edit(this.bot.embed(
+            `🔨 Punishments for ${setting.pickerLabel}`, validpunishments.map(p => `${punishments[p]} ${p}${punishmentDescription[p] ?
                punishmentDescription[p] : ""}: **${cfg[setting.id].includes(p) ? "enabled" : "disabled"}**`).join("\n")));
         }, this.bot).catch(async e => {
           if (e === "timeout") {
@@ -231,7 +234,9 @@ class setupCommand extends Command {
           let result = askFor(setting.type, m.content, msg.guild);
           // Sends an error message and quickly deletes it
           if (setting.type !== "bool" && !result || typeof result === "string" && result.startsWith("No")) {
-            const errormsg = await msg.channel.createMessage(this.bot.embed("❌ Error", `Invalid ${setting.type}${Math.abs(cooldown - 2) === 0 ? "" : `; **${Math.abs(cooldown - 2)}** attempts left before exiting.`}`, "error"));
+            const errormsg = await msg.channel.createMessage(this.bot.embed("❌ Error",
+              `Invalid ${setting.type}${Math.abs(cooldown - 2) === 0 ? "" : `; **${Math.abs(cooldown - 2)}** attempts left before exiting.`}`,
+              "error"));
             cooldown++;
             setTimeout(() => {
               errormsg.delete();
@@ -249,9 +254,11 @@ class setupCommand extends Command {
           if (setting.type === "roleArray" && setting.maximum && result.length > setting.maximum)
             return msg.channel.createMessage(this.bot.embed("❌ Error", `You can't set more than ${setting.maximum} roles.`, "error"));
           if (setting.type === "channelArray" && setting.maximum && result.length > setting.maximum)
-            return msg.channel.createMessage(this.bot.embed("❌ Error", `You can't set more than ${setting.maximum} channels.`, "error"));
+            return msg.channel.createMessage(this.bot.embed("❌ Error", `You can't set more than ${setting.maximum} channels.`,
+              "error"));
           if (setting.type === "number" && setting.maximum && setting.maximum && (setting.minimum > result || setting.maximum < result))
-            return msg.channel.createMessage(this.bot.embed("❌ Error", `The number needs to be under ${setting.maximum} and under ${setting.minimum}.`, "error"));
+            return msg.channel.createMessage(this.bot.embed("❌ Error",
+              `The number needs to be under ${setting.maximum} and under ${setting.minimum}.`, "error"));
 
           // Clear handler
           if (result === "clear") result = null;
@@ -259,7 +266,8 @@ class setupCommand extends Command {
           await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(cfg);
           m.delete();
           // Deletes the message after 2 seconds
-          const setmsg = await msg.channel.createMessage(this.bot.embed("✨ Config", `**${setting.id}** has been set to **${result}**.`, "success"));
+          const setmsg = await msg.channel.createMessage(this.bot.embed("✨ Config", `**${setting.id}** has been set to **${result}**.`,
+            "success"));
           setTimeout(() => {
             setmsg.delete().catch(() => {});
           }, 2000);

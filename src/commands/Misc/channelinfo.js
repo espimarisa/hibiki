@@ -50,7 +50,7 @@ class channelinfoCommand extends Command {
       fields.push({
         name: "Info",
         value: `The channel's bitrate is ${channel.bitrate / 1000}kbps and it's` +
-        ` limited to ${channel.userLimit > 0 ? `${channel.userLimit}` : "infinite"} users.`,
+          ` limited to ${channel.userLimit > 0 ? `${channel.userLimit}` : "infinite"} users.`,
       });
     }
 

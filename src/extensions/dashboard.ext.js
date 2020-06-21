@@ -140,7 +140,8 @@ module.exports = (bot) => {
     res.render("index", {
       checkAuth: checkAuth,
       bot: bot,
-      avatar: bot.user.avatar ? `https://cdn.discordapp.com/avatars/${bot.user.id}/${bot.user.avatar}.png` : "https://cdn.discordapp.com/embed/avatars/0.png",
+      avatar: bot.user.avatar ? `https://cdn.discordapp.com/avatars/${bot.user.id}/${bot.user.avatar}.png` :
+        "https://cdn.discordapp.com/embed/avatars/0.png",
       authUser: req.isAuthenticated() ? getAuthUser(req.user) : null,
       format: format,
     });
