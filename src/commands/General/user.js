@@ -56,7 +56,8 @@ class userCommand extends Command {
     desc.push({ name: "🆔", value: user.id });
     if (user.roles.length) desc.push({ name: "🔢", value: `Top role is ${user.highestRole.name}` });
     if (user.game) desc.push({ name: `${user.game.emoji ? "" : "▶"}`, value: playing });
-    if (spouse) desc.push({ name: "💝", value: `Married to ${spouseid ? this.bot.users.find(m => m.id === spouseid) ? this.bot.users.find(m => m.id === spouseid).username : `<@!${spouseid}>` : "Nobody"}` });
+    if (spouse) desc.push({ name: "💝",
+      value: `Married to ${spouseid ? this.bot.users.find(m => m.id === spouseid) ? this.bot.users.find(m => m.id === spouseid).username : `<@!${spouseid}>` : "Nobody"}` });
     if (cookies && cookies.amount > 0) desc.push({ name: "🍪", value: `${Math.floor(cookies.amount)} cookies` });
     if (pointcount) desc.push({ name: "🌟", value: `${pointcount} points` });
     if (warningcount) desc.push({ name: "🛠", value: `${warningcount} warnings` });

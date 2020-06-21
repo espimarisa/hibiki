@@ -30,7 +30,8 @@ module.exports = bot => {
           const getmsgs = await pinChannel.getMessages(50).catch(() => {});
           if (!getmsgs) return;
           // Finds pin msgs
-          const pinmsg = getmsgs.find(m => m.embeds[0] && m.embeds[0].footer && m.embeds[0].footer.text.startsWith(pin) && m.embeds[0].footer.text.endsWith(msg.id));
+          const pinmsg = getmsgs.find(m => m.embeds[0] && m.embeds[0].footer && m.embeds[0].footer.text.startsWith(pin) && m.embeds[0].footer
+            .text.endsWith(msg.id));
           if (msg.reactions[pin].count === 0) pin.delete().catch(() => {});
           if (parseInt(guildcfg.pinAmount) <= msg.reactions[pin].count) {
             // Edits the pinmsg
@@ -54,7 +55,8 @@ module.exports = bot => {
         const pinChannel = await msg.channel.guild.channels.get(guildcfg.pinChannel);
         if (!pinChannel) return;
         const getmsgs = await pinChannel.getMessages(50);
-        const pinmsg = getmsgs.find(m => m.embeds[0] && m.embeds[0].footer && m.embeds[0].footer.text.startsWith(pin) && m.embeds[0].footer.text.endsWith(msg.id));
+        const pinmsg = getmsgs.find(m => m.embeds[0] && m.embeds[0].footer && m.embeds[0].footer.text.startsWith(pin) && m.embeds[0].footer.text
+          .endsWith(msg.id));
         if (!pinmsg) return;
         pinmsg.delete().catch(() => {});
       }
@@ -83,7 +85,8 @@ module.exports = bot => {
           const getmsgs = await pinChannel.getMessages(50).catch(() => {});
           if (!getmsgs) return;
           // Finds pin msgs
-          const pinmsg = getmsgs.find(m => m.embeds[0] && m.embeds[0].footer && m.embeds[0].footer.text.startsWith(pin) && m.embeds[0].footer.text.endsWith(msg.id));
+          const pinmsg = getmsgs.find(m => m.embeds[0] && m.embeds[0].footer && m.embeds[0].footer.text.startsWith(pin) && m.embeds[0].footer
+            .text.endsWith(msg.id));
           if (msg.reactions[pin].count === 0) pin.delete().catch(() => {});
           // Edits the pinmsg
           if (pinmsg) {
@@ -117,7 +120,8 @@ module.exports = bot => {
 
           // Attempts to remove image URLs from the embed
           if (msg.content) embedconstruct.embed.description = msg.content || "No content";
-          const urlcheck = msg.content.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/);
+          const urlcheck = msg.content.match(
+            /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/);
           if (urlcheck || msg.attachments[0]) {
             let img;
             if (urlcheck && (urlcheck[0].endsWith(".jpg") || urlcheck[0].endsWith(".png") || urlcheck[0].endsWith(".gif"))) img = urlcheck[0];

@@ -40,4 +40,3 @@ class factCommand extends Command {
 }
 
 module.exports = factCommand;
-

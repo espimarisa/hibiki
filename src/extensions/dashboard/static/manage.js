@@ -85,7 +85,8 @@ window.addEventListener("load", async () => {
 
     // Checks number content
     if (type === "number") {
-      document.getElementById(p).children[0].value = Array.from(document.getElementById(p).children[0].children).find(n => n.innerText.split(" ")[0] === `${cfg[p]}`).innerText;
+      document.getElementById(p).children[0].value = Array.from(document.getElementById(p).children[0].children).find(n => n.innerText
+        .split(" ")[0] === `${cfg[p]}`).innerText;
     }
 
     // Checks for ticked punishments
