@@ -11,10 +11,10 @@ module.exports = {
    * @example format.tag(msg.author);
    *
    * @param {object} user Discord user object
-   * @param {boolean} [emojifilter] Removes emojis from the tag
+   * @param {boolean} [emojifilter] Removes emojis and spaces from the tag, disabled by default
    */
 
-  tag: (user, emojifilter = true) => {
+  tag: (user, emojifilter = false) => {
     if (user && emojifilter) {
       return `${/[,.\-_a-zA-Z0-9]{1,32}/.exec(user.username) !== null ?
       /[,.\-_a-zA-Z0-9]{1,32}/.exec(user.username)[0] : user.id}#${user.discriminator}`;
