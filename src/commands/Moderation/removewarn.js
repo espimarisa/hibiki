@@ -19,13 +19,13 @@ class removewarnCommand extends Command {
       }
 
       // Gets the warnings
-      const warning = await this.bot.db.table("warnings").get(id);
+      const warning = await this.bot.db.table("warnings").get(id).run();
       if (!warning || warning.guild !== msg.channel.guild.id) {
         return { removed: false, warning: id };
       }
 
       // Deletes the IDs
-      await this.bot.db.table("warnings").get(id).delete();
+      await this.bot.db.table("warnings").get(id).delete().run();
       return { removed: true, warning: id };
     }));
 
