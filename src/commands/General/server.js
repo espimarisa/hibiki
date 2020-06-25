@@ -18,39 +18,139 @@ class serverCommand extends Command {
     if (!guild) return msg.channel.guild;
 
     let bots = 0;
-    let users = 0;
+    let members = 0;
+    let voice = 0;
+    let text = 0;
+
+    // Seperates bots & humans
     guild.members.forEach(mem => {
       if (mem.bot) bots++;
-      else users++;
+      else members++;
     });
 
-    const desc = [];
-    desc.push({ name: "👑", value: `Owned by ${this.bot.tag(guild.members.find(mem => mem.id === guild.ownerID))}` });
-    desc.push({ name: "🆔", value: `${guild.id}` });
-    desc.push({ name: "📅", value: `Created ${format.date(guild.createdAt)}` });
-    desc.push({ name: "", value: `${format.region(guild.region)} region` });
-    desc.push({ name: "👥", value: `${users} members, ${bots} bots` });
-    desc.push({ name: "📚", value: `${guild.roles.size} roles` });
-    desc.push({ name: "💬", value: `${guild.channels.size} channels` });
-    if (guild.emojis.length) desc.push({ name: "😃", value: `${guild.emojis.length} emojis` });
-    if (guild.explicitContentFilter > 0) desc.push({ name: "🗑", value: `Filter level ${guild.explicitContentFilter}` });
-    if (guild.verificationLevel > 0) desc.push({ name: "🔐", value: `Verification level ${guild.verificationLevel}` });
-    if (guild.mfaLevel === 1) desc.push({ name: "🔐", value: "2FA Enabled" });
-    if (guild.defaultNotifications === 0) desc.push({ name: "🔔", value: "All messages notify" });
-    if (guild.premiumSubscriptionCount > 0) desc.push({ name: "👤", value: `${guild.premiumSubscriptionCount} boosting` });
-    if (guild.premiumTier > 0) desc.push({ name: "⭐", value: `Boost level ${guild.premiumTier}` });
+    // Seperates voice & text
+    guild.channels.forEach(chan => {
+      if (chan.type === 0) text++;
+      if (chan.type === 2) voice++;
+    });
 
-    // Sends the embed
+    // Embed construct
+    const fields = [];
+    fields.push({
+      name: "ID",
+      value: guild.id,
+    });
+
+    fields.push({
+      name: "Created",
+      value: format.date(guild.createdAt),
+    });
+
+    fields.push({
+      name: "Owner",
+      value: `${this.bot.tag(guild.members.find(mem => mem.id === guild.ownerID))}`,
+      inline: true,
+    });
+
+    fields.push({
+      name: "Region",
+      value: `${format.region(guild.region)}`,
+      inline: true,
+    });
+
+    fields.push({
+      name: "Members",
+      value: `${members} ${members === 1 ? "member" : "members"}${bots > 0 ? `, ${bots} bot${bots === 1 ? "" : "s"}` : ""}`,
+      inline: true,
+    });
+
+    fields.push({
+      name: "Channels",
+      value: `${text} text${voice > 0 ? `, ${voice} voice` : ""}`,
+      inline: true,
+    });
+
+    fields.push({
+      name: "Roles",
+      value: guild.roles.size,
+      inline: true,
+    });
+
+    if (guild.emojis.length) {
+      fields.push({
+        name: "Emojis",
+        value: guild.emojis.length,
+        inline: true,
+      });
+    }
+
+    if (guild.explicitContentFilter > 0) {
+      fields.push({
+        name: "Message Filter",
+        value: `Level ${guild.explicitContentFilter}`,
+        inline: true,
+      });
+    }
+
+    if (guild.verificationLevel > 0) {
+      fields.push({
+        name: "Verification",
+        value: `Level ${guild.verificationLevel}`,
+        inline: true,
+      });
+    }
+
+    if (guild.mfaLevel === 1) {
+      fields.push({
+        name: "2FA",
+        value: "Enabled",
+        inline: true,
+      });
+    }
+
+    if (guild.defaultNotifications === 0) {
+      fields.push({
+        name: "Notifications",
+        value: "All messages",
+        inline: true,
+      });
+    }
+
+    if (guild.premiumSubscriptionCount > 0) {
+      fields.push({
+        name: "Boosters",
+        value: guild.premiumSubscriptionCount,
+        inline: true,
+      });
+    }
+
+    if (guild.premiumTier > 0) {
+      fields.push({
+        name: "Boost Level",
+        value: guild.premiumTier,
+        inline: true,
+      });
+    }
+
+    if (guild.features.length) {
+      fields.push({
+        name: "Boost Features",
+        value: format.features(guild.features).join(", "),
+        inline: false,
+      });
+    }
+
     msg.channel.createMessage({
       embed: {
-        description: desc.map(d => `${d.name} ${d.value}`).join("\n"),
+        title: `${guild.name}`,
         color: this.bot.embed.color("general"),
-        author: {
-          icon_url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
-          name: guild.name,
-        },
+        fields: fields,
         thumbnail: {
           url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });
