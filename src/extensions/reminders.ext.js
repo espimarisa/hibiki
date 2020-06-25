@@ -4,11 +4,11 @@
 
 module.exports = async (bot) => {
   // Loads all reminders
-  const reminderdb = await bot.db.table("reminders");
+  const reminderdb = await bot.db.table("reminders").run();
   reminderdb.forEach(rd => {
     // Sets a timeout
     setTimeout(async (r) => {
-      const db = await bot.db.table("reminders").get(r.id);
+      const db = await bot.db.table("reminders").get(r.id).run();
       if (!db) return;
       const user = bot.users.get(r.user);
       if (!user) return;
@@ -16,7 +16,7 @@ module.exports = async (bot) => {
       if (!dm) return;
       // Removes the reminder
       await dm.createMessage(bot.embed("⏰ Reminder", `${r.message}`)).catch(() => {});
-      await bot.db.table("reminders").get(r.id).delete();
+      await bot.db.table("reminders").get(r.id).delete().run();
     }, rd.date - new Date(), rd);
   });
 };

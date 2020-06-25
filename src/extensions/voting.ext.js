@@ -24,11 +24,11 @@ module.exports = (bot) => {
 
     // Gets info from the request
     const user = bot.users.get(req.body.user);
-    let cookies = await bot.db.table("economy").get(req.body.user);
+    let cookies = await bot.db.table("economy").get(req.body.user).run();
 
     if (!cookies) {
       cookies = { id: req.body.user, amount: 0, lastclaim: 9999 };
-      await bot.db.table("economy").insert(cookies);
+      await bot.db.table("economy").insert(cookies).run();
     }
 
     // Sets amount; if weekend give 300
@@ -37,7 +37,7 @@ module.exports = (bot) => {
     cookies = { id: req.body.user, amount: amnt, lastclaim: cookies.lastclaim };
 
     // Updates db
-    await bot.db.table("economy").get(req.body.user).update(cookies);
+    await bot.db.table("economy").get(req.body.user).update(cookies).run();
 
     // DMs the voter
     if (user) {

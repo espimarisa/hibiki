@@ -9,7 +9,7 @@ module.exports = (bot) => {
   router.get("/api/updateBio", async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     // Gets bio
-    let cfg = await bot.db.table("usercfg").get(req.user.id);
+    let cfg = await bot.db.table("usercfg").get(req.user.id).run();
     if (!req.query || typeof req.query.bio === "undefined") return res.status(400).send({ error: "Missing required params" });
     let bio = req.query.bio;
     if (req.query.bio.length === 0 && typeof req.query.bio === "string") bio = null;
@@ -18,13 +18,13 @@ module.exports = (bot) => {
     // Inserts cfg
     if (!cfg) {
       cfg = { id: req.user.id, bio: bio };
-      await bot.db.table("usercfg").insert(cfg);
+      await bot.db.table("usercfg").insert(cfg).run();
       return res.sendStatus(200);
     }
 
     // Updates cfg
     cfg.bio = bio;
-    await bot.db.table("usercfg").get(req.user.id).update(cfg);
+    await bot.db.table("usercfg").get(req.user.id).update(cfg).run();
     res.sendStatus(200);
   });
   return router;

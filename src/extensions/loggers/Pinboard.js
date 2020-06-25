@@ -11,7 +11,7 @@ module.exports = bot => {
       if (msg.author.bot) return;
 
       // Gets guildcfg
-      const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id);
+      const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id).run();
       if (!guildcfg) return;
       const pin = guildcfg.pinEmoji ? guildcfg.pinEmoji : "📌";
       // Checks for pin reaction
@@ -20,7 +20,7 @@ module.exports = bot => {
         if (!guildcfg) {
           return await bot.db.table("guildcfg").insert({
             id: msg.channel.guild.id,
-          });
+          }).run();
         }
 
         if (guildcfg && guildcfg.pinChannel && guildcfg.pinAmount) {
@@ -44,11 +44,11 @@ module.exports = bot => {
         }
       } else {
         // Gets guildcfg
-        const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id);
+        const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id).run();
         if (!guildcfg) {
           return await bot.db.table("guildcfg").insert({
             id: msg.channel.guild.id,
-          });
+          }).run();
         }
 
         // Gets the pinChannel
@@ -71,7 +71,7 @@ module.exports = bot => {
 
       if (!msg) return;
       if (msg.author.bot) return;
-      const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id);
+      const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id).run();
       if (!guildcfg) return;
       const pin = guildcfg.pinEmoji ? guildcfg.pinEmoji : "📌";
       // Checks for the pin reaction

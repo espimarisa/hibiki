@@ -25,7 +25,7 @@ class Logging {
   async guildLogging(guild, type) {
     if (type !== "eventLogging" && type !== "memberLogging" && type !== "messageLogging") type = "modLogging";
     if (!guild) return;
-    const l = await this.db.table("guildcfg").get(guild.id ? guild.id : guild);
+    const l = await this.db.table("guildcfg").get(guild.id ? guild.id : guild).run();
     return l ? l[type] ? l[type] : l.loggingChannel : null;
   }
 

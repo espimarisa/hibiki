@@ -9,7 +9,7 @@ class snipeCommand extends Command {
   }
 
   async run(msg) {
-    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
+    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
 
     if (guildcfg && !guildcfg.snipingEnable) {
       return this.bot.embed(
@@ -25,7 +25,7 @@ class snipeCommand extends Command {
       return this.bot.embed("❌ Error", "You don't have the required role to view sniped messages.", msg, "error");
     }
 
-    const snipeMsg = this.bot.snipeData[msg.channel.id];
+    const snipeMsg = this.bot.sniped[msg.channel.id];
     if (!snipeMsg) return this.bot.embed("❌ Error", "No message to snipe.", "error");
 
     msg.channel.createMessage({

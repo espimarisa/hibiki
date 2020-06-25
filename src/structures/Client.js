@@ -43,6 +43,7 @@ class Verniy extends Client {
     this.commands = [];
     this.events = [];
     this.extensions = [];
+    this.sniped = {};
     this.load.all(this);
 
     this.connect();

@@ -35,11 +35,12 @@ class setupCommand extends Command {
   async run(msg, args) {
     // Gets the config
     const settings = require("utils/items");
-    let cfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
+    let cfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
     if (!cfg) {
       await this.bot.db.table("guildcfg").insert({
         id: msg.channel.guild.id,
-      });
+      }).run();
+
       cfg = { id: msg.channel.guild.id };
     }
 
@@ -180,7 +181,7 @@ class setupCommand extends Command {
       if (setting.type === "bool") {
         if (cfg[setting.id]) cfg[setting.id] = !cfg[setting.id];
         else cfg[setting.id] = true;
-        await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(cfg);
+        await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(cfg).run();
         omsg.edit(this.bot.embed(setting.label, `${setting.id} has been **${cfg[setting.id] ? "enabled" : "disabled"}**.`, "success"));
         setTimeout(() => omsg.edit(itemsEmbed(category)), 1500);
       } else if (setting.type === "punishment") {
@@ -201,7 +202,7 @@ class setupCommand extends Command {
           // Submit emoji
           if (emojii.name === submit) {
             await omsg.removeReactions();
-            await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(cfg);
+            await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(cfg).run();
             omsg.edit(itemsEmbed(category));
             category.items.map(cat => omsg.addReaction(settings.find(s => s.id === cat).emoji));
             omsg.addReaction(back);
@@ -263,7 +264,7 @@ class setupCommand extends Command {
           // Clear handler
           if (result === "clear") result = null;
           cfg[setting.id] = result;
-          await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(cfg);
+          await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(cfg).run();
           m.delete();
           // Deletes the message after 2 seconds
           const setmsg = await msg.channel.createMessage(this.bot.embed("✨ Config", `**${setting.id}** has been set to **${result}**.`,

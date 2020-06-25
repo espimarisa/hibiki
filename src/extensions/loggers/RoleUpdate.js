@@ -13,7 +13,7 @@ module.exports = (bot) => {
     const canlog = await loggingdb.canLog(guild);
     if (!canlog) return;
     // Sets type
-    const channel = await loggingdb.guildlogging(guild, "eventLogging");
+    const channel = await loggingdb.guildLogging(guild, "eventLogging");
     if (guild.channels.has(channel)) return channel;
   };
 
