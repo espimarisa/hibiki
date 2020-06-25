@@ -5,13 +5,14 @@ module.exports = async (bot) => {
   setInterval(async () => {
     let bans = [];
     const ids = [];
-    const monitoring = await bot.db.table("steammonitor");
+    const monitoring = await bot.db.table("steammonitor").run();
 
     // If it's more than 3 days old
     monitoring.forEach(async m => {
       if (new Date() - new Date(m.date) > 259200000) {
-        return await bot.db.table("monitoring").get(m.id).delete();
+        return await bot.db.table("monitoring").get(m.id).delete().run();
       }
+
       ids.push(m.id);
     });
 
@@ -28,7 +29,7 @@ module.exports = async (bot) => {
       if (b.VACBanned || b.NumberOfGameBans > 0) {
         // Finds who was banned
         const user = await monitoring.find(d => d.id === b.SteamID);
-        await bot.db.table("monitoring").get(b.SteamID).delete();
+        await bot.db.table("monitoring").get(b.SteamID).delete().run();
         // Tries to DM the monitorer
         bot.users.find(u => user.uid === u.id).getDMChannel()
           .then(async dm => {

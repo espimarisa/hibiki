@@ -66,7 +66,7 @@ class muteCommand extends Command {
           role: roles,
           member: user.id,
           guild: msg.channel.guild.id,
-        });
+        }).run();
 
         // Removes other roles
         try {

@@ -43,7 +43,7 @@ class unmonitorCommand extends Command {
       steamid = id.response.steamid;
     }
 
-    const db = await this.bot.db().table("steammonitor").run();
+    const db = await this.bot.db.table("steammonitor").run();
     let user = db.find(d => d.id === steamid && d.uid === msg.author.id);
     if (!user) user = db.find(d => d.uname.toLowerCase() === args[0].toLowerCase() && d.uid === msg.author.id);
     if (user) {

@@ -14,11 +14,8 @@ class avatarCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
+        title: `${this.bot.tag(user)}'s avatar`,
         color: this.bot.embed.color("general"),
-        author: {
-          icon_url: user.user.dynamicAvatarURL(null),
-          name: `${this.bot.tag(user.user)}'s avatar`,
-        },
         image: {
           url: user.user.dynamicAvatarURL(null),
         },

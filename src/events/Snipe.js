@@ -25,7 +25,7 @@ class Snipe extends Event {
       if (ignored) return;
     }
 
-    this.bot.snipeData[msg.channel.id] = {
+    this.bot.sniped[msg.channel.id] = {
       id: msg.channel.id,
       content: msg.content,
       author: `${msg.author.username}#${msg.author.discriminator}`,

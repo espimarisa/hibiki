@@ -13,7 +13,7 @@ module.exports = (bot) => {
     const canlog = await loggingdb.canLog(guild);
     if (!canlog) return;
     // Sets type
-    const channel = await loggingdb.guildlogging(guild, "memberLogging");
+    const channel = await loggingdb.guildLogging(guild, "memberLogging");
     if (guild.channels.has(channel)) return channel;
   };
 
@@ -32,9 +32,9 @@ module.exports = (bot) => {
     // Invalid member
     if (!member.username || !member.user && !member.user.username) return;
     bot.emit("loggingMemberAdd", guild, member);
-    const guildcfg = await bot.db.table("guildcfg").get(guild.id);
+    const guildcfg = await bot.db.table("guildcfg").get(guild.id).run();
     // Re-mutes muted members
-    const muted = await bot.db.table("mutecache");
+    const muted = await bot.db.table("mutecache").run();
     const mute = muted.find(m => m.member === member.id && m.guild === guild.id);
     if (mute && guildcfg.mutedRole) await member.addRole(guildcfg.mutedRole, "Rejoined after being muted").catch(() => {});
     // If no config
@@ -65,7 +65,7 @@ module.exports = (bot) => {
     // Invalid member
     if (!member.username || !member.user && !member.user.username) return;
     bot.emit("loggingMemberRemove", guild, member);
-    const guildcfg = await bot.db.table("guildcfg").get(guild.id);
+    const guildcfg = await bot.db.table("guildcfg").get(guild.id).run();
     // If no config
     if (!guildcfg || !guildcfg.leaveJoin) return;
     const leaveJoin = guildcfg.leaveJoin;

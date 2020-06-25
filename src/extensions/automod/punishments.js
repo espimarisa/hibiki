@@ -12,7 +12,7 @@ module.exports.mute = async (msg, bot, cfg, reason) => {
     role: "",
     member: member.id,
     guild: guild.id,
-  });
+  }).run();
 
   // Insert's the member's roles into the mutecache
   await member.roles.forEach(async role => {
@@ -20,7 +20,7 @@ module.exports.mute = async (msg, bot, cfg, reason) => {
       role: role,
       member: member.id,
       guild: guild.id,
-    });
+    }).run();
 
     // Tries to remove their previous roles
     await guild.removeMemberRole(member.id, role, "AutoMod").catch(() => {});
@@ -46,7 +46,7 @@ module.exports.warn = async (msg, bot, reason) => {
     guild: msg.channel.guild.id,
     id: id,
     reason: reason || "Automod",
-  });
+  }).run();
 
   return id;
 };

@@ -12,12 +12,12 @@ module.exports = bot => {
     // Looks for managable guilds
     const managableguilds = req.user.guilds.filter(g => (g.permissions & 32) === 32);
     if (!managableguilds.find(g => g.id === req.params.id)) return res.status(403).send({ error: "No access to guild" });
-    let cfg = await bot.db.table("guildcfg").get(req.params.id);
+    let cfg = await bot.db.table("guildcfg").get(req.params.id).run();
 
     // Inserts cfg
     if (!cfg) {
       cfg = { id: req.params.id };
-      await bot.db.table("guildcfg").insert(cfg);
+      await bot.db.table("guildcfg").insert(cfg).run();
     }
 
     if (!req.body) return res.status(400).send({ error: "No config" });
@@ -82,7 +82,7 @@ module.exports = bot => {
 
     // Updates the config
     cfg.id = req.params.id;
-    await bot.db.table("guildcfg").get(req.params.id).update(cfg);
+    await bot.db.table("guildcfg").get(req.params.id).update(cfg).run();
     res.sendStatus(200);
   });
 

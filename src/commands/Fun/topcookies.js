@@ -33,7 +33,6 @@ class topcookiesCommand extends Command {
       place += 1;
     });
 
-    // Sends the embed
     msg.channel.createMessage({
       embed: {
         title: "🍪 Cookie Leaderboard",
