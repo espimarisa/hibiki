@@ -104,7 +104,7 @@ module.exports.extensions = async function loadExtensions(bot) {
 
   // Loads extensions; runs
   if (process.uptime() < 20) {
-    bot.extensions.forEach(e => e(this));
+    bot.extensions.forEach(e => e(bot));
     bot.log.info(`${bot.extensions.length} extensions loaded`);
   }
 };
@@ -121,5 +121,5 @@ module.exports.extensions = async function loadExtensions(bot) {
 module.exports.all = async function loadAll(bot) {
   this.commands(bot);
   this.events(bot);
-  // this.extensions(bot);
+  this.extensions(bot);
 };

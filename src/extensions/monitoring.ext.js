@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Monitoring extension
+ * @description Watches steam accounts for bans
+ */
+
 const fetch = require("node-fetch");
 
 module.exports = async (bot) => {

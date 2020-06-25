@@ -1,10 +1,10 @@
-/*
-  This listens for proper requests from top.gg.
-  It also adds cookies to the user's account who voted.
-*/
+/**
+ * @fileoverview Voting webserver
+ * @description Listens for votes on top.gg and gives voters cookies
+ */
 
 const express = require("express");
-const voting = require("../config").voting;
+const voting = require("root/config").voting;
 
 // Sets up express
 const app = express();
@@ -66,5 +66,5 @@ module.exports = (bot) => {
   });
 
   // Listens on port
-  const listener = app.listen(voting.port, "0.0.0.0", () => bot.log.success(`Voting handler loaded on port ${listener.address().port}`));
+  const listener = app.listen(voting.port, "0.0.0.0", () => bot.log.info(`Voting handler loaded on port ${listener.address().port}`));
 };

@@ -1,5 +1,6 @@
-/*
-  This loads any loggers.
+/**
+ * @fileoverview Logging extension
+ * @description Loads any loggers
 */
 
 module.exports = (bot, db) => {
