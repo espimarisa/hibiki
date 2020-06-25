@@ -96,6 +96,49 @@ module.exports = {
   },
 
   /**
+   * Formats Nitro Boost guild features
+   * @example format.features(guild.features).join(", ")
+   *
+   * @param {object} features Guild features object
+   */
+
+  features: (features) => {
+    if (!features) return undefined;
+    return features.map(feature => {
+      switch (feature) {
+        case "INVITE_SPLASH":
+          return "Invite Splash";
+        case "VANITY_URL":
+          return "Vanity URL";
+        case "ANIMATED_ICON":
+          return "Animated Icon";
+        case "PARTNERED":
+          return "Partnered";
+        case "VERIFIED":
+          return "Verified";
+        case "VIP_REGIONS":
+          return "High Bitrate Voice Channel";
+        case "PUBLIC":
+          return "Public";
+        case "LURKABLE":
+          return "Lurkable";
+        case "COMMERCE":
+          return "Commerce Features";
+        case "NEWS":
+          return "News Channel";
+        case "DISCOVERABLE":
+          return "Searchable";
+        case "FEATURABLE":
+          return "Featured";
+        case "BANNER":
+          return "Banner";
+        default:
+          return feature;
+      }
+    });
+  },
+
+  /**
    * Formats voice regions with their respective flags
    * @example format.region(guild.region);
    *
@@ -105,45 +148,45 @@ module.exports = {
   region(region) {
     switch (region) {
       case "amsterdam":
-        return ":flag_nl: Amsterdam";
+        return "Amsterdam";
       case "brazil":
-        return ":flag_br: Brazil";
+        return "Brazil";
       case "eu-central":
-        return ":flag_eu: Central Europe";
+        return "Central Europe";
       case "eu-west":
-        return ":flag_eu: Western Europe";
+        return "Western Europe";
       case "europe":
-        return ":flag_eu: Europe";
+        return "Europe";
       case "dubai":
-        return ":flag_ae: Dubai";
+        return "Dubai";
       case "frankfurt":
-        return ":flag_de: Frankfurt";
+        return "Frankfurt";
       case "hongkong":
-        return ":flag_hk: Hong Kong";
+        return "Hong Kong";
       case "london":
-        return ":flag_gb: London";
+        return "London";
       case "japan":
-        return ":flag_jp: Japan";
+        return "Japan";
       case "india":
-        return ":flag_in: India";
+        return "India";
       case "russia":
-        return ":flag_ru: Russia";
+        return "Russia";
       case "singapore":
-        return ":flag_sg: Singapore";
+        return "Singapore";
       case "southafrica":
-        return ":flag_za: South Africa";
+        return "South Africa";
       case "south-korea":
-        return ":flag_kr: South Korea";
+        return "South Korea";
       case "sydney":
-        return ":flag_au: Sydney";
+        return "Sydney";
       case "us-central":
-        return ":flag_us: US Central";
+        return "US Central";
       case "us-east":
-        return ":flag_us: US East";
+        return "US East";
       case "us-south":
-        return ":flag_us: US South";
+        return "US South";
       case "us-west":
-        return ":flag_us: US West";
+        return "US West";
       default:
         return region;
     }

@@ -12,7 +12,6 @@ class userCommand extends Command {
 
   async run(msg, args, pargs) {
     const user = pargs[0].value;
-    const fields = [];
     let pointcount = 0;
     let warningcount = 0;
     let spouseid;
@@ -83,6 +82,8 @@ class userCommand extends Command {
     points.forEach(p => { if (p.guild === msg.channel.guild.id && p.receiver === user.id) pointcount++; });
     warnings.forEach(w => { if (w.guild === msg.channel.guild.id && w.receiver === user.id) warningcount++; });
 
+    // Embed constructor
+    const fields = [];
     fields.push({
       name: "ID",
       value: user.id,
@@ -168,7 +169,7 @@ class userCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        title: `👤 ${this.bot.tag(user.user)}`,
+        title: `${this.bot.tag(user.user)}`,
         description: usercfg && usercfg.bio ? usercfg.bio : null,
         color: this.bot.embed.color("general"),
         fields: fields,
