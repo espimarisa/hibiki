@@ -44,7 +44,6 @@ class Verniy extends Client {
     this.events = [];
     this.extensions = [];
     this.sniped = {};
-    this.load.all(this);
 
     this.connect();
     this.editStatus("idle");
@@ -53,6 +52,7 @@ class Verniy extends Client {
 
   /** Runs when the bot is ready */
   readyListener() {
+    this.load.all(this);
     try { sentry.init({ dsn: this.key.sentry }); } catch (err) { this.log.error(`Sentry failed to start: ${err}`); }
     this.statuses.switch(this);
     this.log.info(`Logged in as ${this.user.username}#${this.user.discriminator} on ${this.guilds.size} servers`);

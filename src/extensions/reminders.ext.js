@@ -1,6 +1,7 @@
-/*
-  Sends reminders if the bot was restarted.
-*/
+/**
+ * @fileoverview Reminders extension
+ * @description Handles reminders if the bot goes offline
+ */
 
 module.exports = async (bot) => {
   // Loads all reminders

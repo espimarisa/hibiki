@@ -1,9 +1,9 @@
-/*
-  Handles rendering, authentication, and redirection.
-*/
+/**
+ * @fileoverview Dashboard webserver
+ * @description Main dashboard server
+ */
 
 const bodyparser = require("body-parser");
-const cookieparser = require("cookie-parser");
 const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
@@ -14,20 +14,18 @@ const config = require("root/config").dashboard;
 const scope = ["identify", "guilds"];
 const app = express();
 
-// Enables helmet & nginx
-app.use(require("helmet")());
 app.enable("trust proxy", 1);
 
 // Checks authentication data
 const checkAuth = (req, res, next) => {
   if (req.isAuthenticated()) return next();
-  return res.redirect("/login/");
+  return res.redirect(301, "/login/");
 };
 
 // Login fail handler
 app.get("/login/fail/", (req, res) => {
   req.logout();
-  res.redirect("/");
+  res.redirect(301, "/");
 });
 
 // Gets authed user's data
@@ -40,9 +38,9 @@ const getAuthUser = user => ({
 });
 
 // Directories & viewengine
-app.set("views", `${__dirname}/dash/views`);
-app.set("partials", `${__dirname}/dash/partials`);
-app.use("/static", express.static(`${__dirname}/dash/static`, { dotfiles: "allow" }));
+app.set("views", `${__dirname}/dashboard/views`);
+app.set("partials", `${__dirname}/dashboard/partials`);
+app.use("/static", express.static(`${__dirname}/dashboard/static`, { dotfiles: "allow" }));
 app.set("view engine", "ejs");
 
 // Loads auth system
@@ -77,7 +75,6 @@ module.exports = (bot) => {
     }));
 
   // Cookie parser & passport
-  app.use(cookieparser());
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -131,7 +128,7 @@ module.exports = (bot) => {
     const guild = managableguilds.find(g => g.id === req.params.id);
     // Renders the dashboard
     if (!guild) return res.status(403).render("403");
-    const cfg = await bot.db.table("guildcfg").get(guild.id);
+    const cfg = await bot.db.table("guildcfg").get(guild.id).run();
     res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, items: items, user: user });
   });
 
@@ -148,11 +145,11 @@ module.exports = (bot) => {
   });
 
   // API
-  app.use(require("./dash/api/getItems")(bot));
-  app.use(require("./dash/api/getConfig")(bot));
-  app.use(require("./dash/api/updateConfig")(bot));
-  app.use(require("./dash/api/getBio")(bot));
-  app.use(require("./dash/api/updateBio")(bot));
+  app.use(require("dashboard/api/getItems")(bot));
+  app.use(require("dashboard/api/getConfig")(bot));
+  app.use(require("dashboard/api/updateConfig")(bot));
+  app.use(require("dashboard/api/getBio")(bot));
+  app.use(require("dashboard/api/updateBio")(bot));
 
   // 404 handler
   app.use((req, res) => {
@@ -163,4 +160,5 @@ module.exports = (bot) => {
 
   // Listens on port
   app.listen(config.port);
+  bot.log.info(`Dashboard loaded on port ${config.port}`);
 };
