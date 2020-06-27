@@ -744,6 +744,7 @@ module.exports = {
     ["907B71", "Almond Frost"],
     ["908D39", "Sycamore"],
     ["92000A", "Sangria"],
+    ["D177B8", "resolved"],
     ["924321", "Cumin"],
     ["926F5B", "Beaver"],
     ["928573", "Stonewall"],
