@@ -11,16 +11,19 @@ class garfieldCommand extends Command {
 
   run(msg) {
     // Gets a random comic
-    const today = new Date();
-
     function GarfieldRandom() {
-      const start = new Date("1978/06/19").getTime();
-      const date = new Date(start + Math.random() * (today.getTime() - start));
+      const days = 24 * 60 * 60 * 1000;
+      const today = new Date();
+      const start = new Date("1978/06/19");
+      const date = new Date(start.getTime() + Math.random() * (today.getTime() - start));
+
+      // Gets total amount of comics
+      const total = Math.round(Math.abs((start.getTime() - today.getTime()) / (days)));
 
       function pad(n) { return n < 10 ? `0${n}` : n; }
       const archive = "https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/";
       const url = `${archive + date.getFullYear()}/${date.getFullYear()}-${pad(date.getMonth())}-${pad(date.getDate())}.gif`;
-      const garfield = [url, date.getFullYear(), pad(date.getMonth()), pad(date.getDate())];
+      const garfield = [url, date.getFullYear(), pad(date.getMonth()), pad(date.getDate()), total];
       return garfield;
     }
 
@@ -35,7 +38,7 @@ class garfieldCommand extends Command {
           url: garfield[0],
         },
         footer: {
-          text: `Ran by ${this.bot.tag(msg.author)}`,
+          text: `Ran by ${this.bot.tag(msg.author)} | ${garfield[4]} total comics`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
