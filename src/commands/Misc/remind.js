@@ -1,5 +1,6 @@
 const Command = require("structures/Command");
 const { Snowflake } = require("utils/Snowflake");
+const format = require("utils/format");
 
 class remindCommand extends Command {
   constructor(...args) {
@@ -17,7 +18,7 @@ class remindCommand extends Command {
     if (!args[0] || args[0].toLowerCase() === "list") {
       let db = await this.bot.db.table("reminders").run();
       db = db.filter(d => d.user === msg.author.id);
-      if (!db.length) return this.bot.embed("⏰ Reminders", "You don't have any reminders.", msg);
+      if (!db.length) return this.bot.embed("⏰ Reminders", "You don't have any reminders. Set one using remind <time> <reminder></reminder>", msg);
 
       return msg.channel.createMessage({
         embed: {
@@ -59,7 +60,6 @@ class remindCommand extends Command {
 
     // Parses the time given
     const timeArg = fargs.join(" ").substring(0, fargs.join(" ").indexOf(args.join(" ")));
-    const validtime = [];
     timeArg.split("").forEach((char, i) => {
       if (isNaN(parseInt(char))) return;
       if (i === timeArg.length - 1) return;
@@ -68,28 +68,23 @@ class remindCommand extends Command {
       if (!isNaN(parseInt(char)) && !isNaN(parseInt(timeArg[i - 1]))) char = `${timeArg[i - 1]}${char}`;
       if (timeArg[i + 2] && (v === " " || v === ",") && /[wdhms]/.exec(timeArg[i + 2].toLowerCase())) v = timeArg[i + 2];
 
-      // Formats time given
+      // Gets exact time given
       if (isNaN(parseInt(v))) {
         switch (v) {
           case "w":
             val += char * 604800000;
-            validtime.push(`${char} week${char > 1 ? "s" : ""}`);
             break;
           case "d":
             val += char * 86400000;
-            validtime.push(`${char} day${char > 1 ? "s" : ""}`);
             break;
           case "h":
             val += char * 3600000;
-            validtime.push(`${char} hour${char > 1 ? "s" : ""}`);
             break;
           case "m":
             val += char * 60000;
-            validtime.push(`${char} minute${char > 1 ? "s" : ""}`);
             break;
           case "s":
             val += char * 1000;
-            validtime.push(`${char} second${char > 1 ? "s" : ""}`);
             break;
         }
       }
@@ -98,7 +93,7 @@ class remindCommand extends Command {
     // Checks for valid time
     if (val < 1000) return this.bot.embed("❌ Error", "You provided an invalid amount of time.", msg, "error");
     const finaldate = new Date().getTime() + val;
-    if (finaldate > new Date().getTime() + 2142720000) return this.bot.embed("❌ Error", "The time amout must be under 25 days.", msg, "error");
+    if (finaldate > new Date().getTime() + 2142720000) return this.bot.embed("❌ Error", "The time amount must be under 25 days.", msg, "error");
 
     // Creates the reminder
     const id = Snowflake();
@@ -107,6 +102,7 @@ class remindCommand extends Command {
       date: finaldate,
       user: msg.author.id,
       message: args.join(" "),
+      set: new Date(),
     };
 
     // Sets timeout to send reminder
@@ -126,6 +122,10 @@ class remindCommand extends Command {
             title: "⏰ Reminder",
             description: r.message,
             color: this.bot.embed.color("general"),
+            footer: {
+              text: `Set on ${format.date(r.set, false)}`,
+              icon_url: this.bot.user.dynamicAvatarURL(),
+            },
           },
         }).catch(() => {});
 
@@ -136,10 +136,11 @@ class remindCommand extends Command {
       msg.channel.createMessage({
         embed: {
           title: "⏰ Reminder",
-          description: `I'll remind you to ${args.join(" ")} in ${validtime.join(" ")}.`,
+          description: `I'll remind you to ${args.join(" ")} in ` +
+            `${timeArg.split(" ").filter((a, i) => !(a.length === 0 || (a === " " && i === args.length))).join(" ")}.`,
           color: this.bot.embed.color("general"),
           fields: [{
-            name: "ID:",
+            name: "ID",
             value: reminder.id,
           }],
           footer: {
