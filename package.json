@@ -22,7 +22,6 @@
   },
   "scripts": {
     "dev": "nodemon",
-    "docs": "jsdoc -c .jsdoc.json",
     "lint": "eslint --fix .",
     "postinstall": "npx link-module-alias",
     "start": "cross-env NODE_ENV=production node src/index.js",
@@ -60,9 +59,7 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.2",
-    "docdash": "^1.2.0",
     "eslint": "^7.3.1",
-    "jsdoc": "^3.6.4",
     "link-module-alias": "^1.2.0",
     "nodemon": "^2.0.4"
   }
