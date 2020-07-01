@@ -39,7 +39,7 @@ class aboutCommand extends Command {
       embed: {
         title: `🤖 About ${this.bot.user.username}`,
         description: `**${this.bot.user.username}**, a project by` +
-          " [smolespi](https://lesbian.codes) and [contributors](https://github.com/smolespi/Hibiki/graphs/contributors). 💖",
+          " [smolespi](https://lesbian.codes) and [resolved](https://github.com/resolvedxd/). 💖",
         color: this.bot.embed.color("general"),
         fields: [{
           name: "Analytics",
