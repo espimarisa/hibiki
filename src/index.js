@@ -6,7 +6,7 @@
  * @license AGPL-3.0-or-later
  */
 
-const Verniy = require("structures/Client");
+const Hibiki = require("structures/Client");
 const config = require("root/config");
 
-new Verniy(config.bot.token, config.options);
+new Hibiki(config.bot.token, config.options);
