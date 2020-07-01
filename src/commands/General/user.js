@@ -5,7 +5,7 @@ class userCommand extends Command {
   constructor(...args) {
     super(...args, {
       args: "[member:member&fallback]",
-      description: "Returns info about a member.",
+      description: "Returns info about you or another member.",
       aliases: ["profile", "uinfo", "userinfo"],
     });
   }
@@ -23,10 +23,12 @@ class userCommand extends Command {
       else playing = user.game.state;
     }
 
-    // Spotify song details
-    if (user.game && user.game.type === 2 && user.activities) {
+    // Spotify & playing
+    if (user.activities) {
       const song = user.activities.find(s => s.id === "spotify:1");
-      if (song) playing = `${song.details} \n` + `by ${song.state} \n` + `on ${song.assets.large_text}`;
+      const game = user.activities.find(s => s.id !== "spotify:1" && s.id !== "custom");
+      if (song && !game) playing = `${song.details} \n` + `by ${song.state} \n` + `on ${song.assets.large_text}`;
+      else if (game) playing = `${game.name}`;
     }
 
     // Formats statustypes
@@ -46,13 +48,16 @@ class userCommand extends Command {
           playingname = "Watching";
           break;
         case 4:
-          playingname = "Custom Status";
+          playingname = `${user.activities.find(s => s.id === "spotify:1") ? "Listening to" : "Custom Status"}`;
           break;
         default:
           playingname = "Unknown";
           break;
       }
+
+      if (user.activities.find(s => s.id !== "spotify:1" && s.id !== "custom")) playingname = "Playing";
     } else playingname = "Playing";
+
 
     // Formats statuses
     function formatStatus(status) {
@@ -102,6 +107,8 @@ class userCommand extends Command {
         inline: false,
       });
     }
+
+    // console.log(user.activities);
 
     if (user.nick) {
       fields.push({
@@ -169,10 +176,13 @@ class userCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        title: `${this.bot.tag(user.user)}`,
         description: usercfg && usercfg.bio ? usercfg.bio : null,
         color: this.bot.embed.color("general"),
         fields: fields,
+        author: {
+          icon_url: user.user.dynamicAvatarURL(null),
+          name: this.bot.tag(user.user),
+        },
         thumbnail: {
           url: user.user.dynamicAvatarURL(null),
         },
