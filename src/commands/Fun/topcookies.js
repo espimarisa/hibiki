@@ -33,6 +33,8 @@ class topcookiesCommand extends Command {
       place += 1;
     });
 
+    if (!content) return this.bot.embed("❌ Error", "No members currently have cookies.", msg, "error");
+
     msg.channel.createMessage({
       embed: {
         title: "🍪 Cookie Leaderboard",
