@@ -12,9 +12,8 @@ class serverCommand extends Command {
   run(msg, args) {
     // Lets owners show other server info
     let guild = msg.channel.guild;
-    if (args[0] && this.bot.config.owners.includes(msg.author.id)) {
-      guild = this.bot.guilds.find(g => g.name.toLowerCase().startsWith(args.join(" ")) || g.id === args.join(" "));
-    } else guild = msg.channel.guild;
+    (args[0] && this.bot.config.owners.includes(msg.author.id)) ?
+    guild = this.bot.guilds.find(g => g.name.toLowerCase().startsWith(args.join(" ")) || g.id === args.join(" ")) : guild = msg.channel.guild;
     if (!guild) return msg.channel.guild;
 
     let bots = 0;
@@ -142,9 +141,12 @@ class serverCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        title: `${guild.name}`,
         color: this.bot.embed.color("general"),
         fields: fields,
+        author: {
+          icon_url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
+          name: guild.name,
+        },
         thumbnail: {
           url: guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
         },

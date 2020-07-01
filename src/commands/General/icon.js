@@ -13,13 +13,14 @@ class iconCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
+        title: `🖼 ${msg.channel.guild.name}`,
         color: this.bot.embed.color("general"),
-        author: {
-          icon_url: msg.channel.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
-          name: msg.channel.guild.name,
-        },
         image: {
           url: msg.channel.guild.iconURL,
+        },
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });
