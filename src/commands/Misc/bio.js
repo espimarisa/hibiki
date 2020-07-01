@@ -3,8 +3,8 @@ const Command = require("structures/Command");
 class bioCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["addbio", "custombio", "profilebio", "removebio", "rmbio", "userbio"],
-      args: "[bio:string] [clear:string]",
+      aliases: ["addbio", "clearbio", "removebio", "rmbio", "userbio"],
+      args: "[bio:string] [clear:string] [member:member]",
       description: "Sets a custom bio to display on your profile.",
     });
   }

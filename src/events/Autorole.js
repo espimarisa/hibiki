@@ -14,6 +14,7 @@ class Autorole extends Event {
     let mute = await this.bot.db.table("mutecache").run();
     mute = mute.find(m => m.member === member.id && m.guild === guild.id);
     if (mute && guildcfg.mutedRole) return;
+
     // Adds roles
     guildcfg.autoRoles.forEach(role => {
       member.addRole(role, "Role automatically given on join").catch(() => {});

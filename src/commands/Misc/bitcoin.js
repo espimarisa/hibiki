@@ -14,16 +14,30 @@ class bitcoinCommand extends Command {
   async run(msg, args) {
     // BTC rates
     if (!args.length) {
-      const body = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json")
-        .then(async res => await res.json().catch(() => {}));
+      const body = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json").then(async res => await res.json().catch(() => {}));
       if (!body) return this.bot.embed("❌ Error", "Unable to check the rates. Try again later.", msg, "error");
 
+      // Embed fields
       const fields = [];
-      fields.push({ name: "USD", value: `$${body.bpi.USD.rate}`, inline: true });
-      fields.push({ name: "EUR", value: `€${body.bpi.EUR.rate}`, inline: true });
-      fields.push({ name: "GBP", value: `£${body.bpi.GBP.rate}`, inline: true });
+      fields.push({
+        name: "USD",
+        value: `$${body.bpi.USD.rate}`,
+        inline: true,
+      });
 
-      msg.channel.createMessage({
+      fields.push({
+        name: "EUR",
+        value: `€${body.bpi.EUR.rate}`,
+        inline: true,
+      });
+
+      fields.push({
+        name: "GBP",
+        value: `£${body.bpi.GBP.rate}`,
+        inline: true,
+      });
+
+      return msg.channel.createMessage({
         embed: {
           title: "💰 Bitcoin Rates",
           description: `Updated at ${body.time.updated}`,
@@ -35,29 +49,44 @@ class bitcoinCommand extends Command {
           },
         },
       });
-    } else {
-      // Bitcoin addresses
-      const body = await fetch(`https://blockchain.info/rawaddr/${encodeURIComponent(args[0])}`)
-        .then(async res => await res.json().catch(() => {}));
-      if (!body) return this.bot.embed("❌ Error", "Address not found.", msg, "error");
-
-      const fields = [];
-      fields.push({ name: "Balance", value: `${body.final_balance || 0} BTC`, inline: true });
-      fields.push({ name: "Sent", value: `${body.total_sent || 0} BTC`, inline: true });
-      fields.push({ name: "Received", value: `${Object.values(body)[3] || 0} BTC`, inline: true });
-
-      msg.channel.createMessage({
-        embed: {
-          title: `💰 ${body.address}`,
-          color: 0xF89E32,
-          fields: fields,
-          footer: {
-            text: `Ran by ${this.bot.tag(msg.author)}`,
-            icon_url: msg.author.dynamicAvatarURL(),
-          },
-        },
-      });
     }
+
+    // Bitcoin addresses
+    const body = await fetch(`https://blockchain.info/rawaddr/${encodeURIComponent(args[0])}`)
+      .then(async res => await res.json().catch(() => {}));
+    if (!body) return this.bot.embed("❌ Error", "Address not found.", msg, "error");
+
+    // Embed fields
+    const fields = [];
+    fields.push({
+      name: "Balance",
+      value: `${body.final_balance || 0} BTC`,
+      inline: true,
+    });
+
+    fields.push({
+      name: "Sent",
+      value: `${body.total_sent || 0} BTC`,
+      inline: true,
+    });
+
+    fields.push({
+      name: "Received",
+      value: `${Object.values(body)[3] || 0} BTC`,
+      inline: true,
+    });
+
+    msg.channel.createMessage({
+      embed: {
+        title: `💰 ${body.address}`,
+        color: 0xF89E32,
+        fields: fields,
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
+      },
+    });
   }
 }
 
