@@ -7,7 +7,6 @@ const format = require("utils/format");
 
 module.exports = async (bot) => {
   // Loads all reminders
-  setTimeout(() => {}, 10000);
   const reminderdb = await bot.db.table("reminders").run();
   reminderdb.forEach(rd => {
     // Sets a timeout

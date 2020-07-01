@@ -11,14 +11,14 @@ const database = require("scripts/database");
 const sentry = require("@sentry/node");
 const startup = new Date();
 
-class Verniy extends Client {
+class Hibiki extends Client {
   /**
    * Creates a bot instance
    *
    * @example
-   * const Verniy = require("structures/Client");
+   * const Hibiki = require("structures/Client");
    * const config = require("root/config");
-   * new Verniy(token, options);
+   * new Hibiki(token, options);
    *
    * @param {string} token Discord bot token from the config file
    * @param {object} [options] Object of Eris options from the config file
@@ -60,4 +60,4 @@ class Verniy extends Client {
   }
 }
 
-module.exports = Verniy;
+module.exports = Hibiki;
