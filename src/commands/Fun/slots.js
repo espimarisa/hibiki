@@ -19,7 +19,11 @@ class slotsCommand extends Command {
 
     // Sends modifiers
     if (!args[0] || isNaN(args[0])) {
-      return this.bot.embed("🎰 Slots", `${emotes.map(e => `${e} ${modifiers[emotes.indexOf(e)]} cookies`).join("\n") }`, msg);
+      return this.bot.embed(
+        "🎰 Slots",
+        `Play using slots <amount>. \n` + `${emotes.map(e => `${e} are worth ${modifiers[emotes.indexOf(e)]}.`).join("\n") }`,
+        msg,
+      );
     }
 
     // Prevents mass gambling
@@ -56,16 +60,16 @@ class slotsCommand extends Command {
     if (amount > ucookies.amount || amount < 0) return this.bot.embed("❌ Error", "You don't have enough cookies to bet that.", msg, "error");
 
     // Profit calculator
-    if (profit > 0) {
-      economydb.amount += profit;
-    } else {
-      economydb.amount -= args[0];
-    }
+    profit > 0 ? economydb.amount += profit : economydb.amount -= args[0];
 
     // Updates DB
     economydb.amount = Math.floor(economydb.amount);
     await this.bot.db.table("economy").get(msg.author.id).update(economydb).run();
-    this.bot.embed("🎰 Slots", `${profit ? `You won **${profit}** cookies!` : "Sorry, you lost."} \n ${emojistring}`, msg);
+    this.bot.embed(
+      "🎰 Slots",
+      `${profit ? `You won **${profit}** cookie${profit === 1 ? "" : "s"}.` : "You lost! Better luck next time."} \n` + `${emojistring}`,
+      msg,
+    );
   }
 }
 
