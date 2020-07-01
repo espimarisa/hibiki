@@ -1,11 +1,10 @@
 const Command = require("structures/Command");
 
-class slotsCommand extends Command {
+class dicksizeCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["dick", "penissize"],
       args: "<member:member&fallback>",
-      description: "Returns a member's dick size.",
+      description: "Returns you or another member's dicksize.",
     });
   }
 
@@ -19,8 +18,8 @@ class slotsCommand extends Command {
     };
 
     const thedick = `8${"=".repeat(Math.round(inches.toFixed(2) / 2))}D`;
-    this.bot.embed("🍆 Dicksize", `**${user.username}**'s dicksize is **${inches.toFixed(1)} inch${suffix(inches)}**.\n ${thedick}`, msg);
+    this.bot.embed("🍆 Dicksize", `**${user.username}**'s dicksize is **${inches.toFixed(1)} inch${suffix(inches)}**.\n` + `${thedick}`, msg);
   }
 }
 
-module.exports = slotsCommand;
+module.exports = dicksizeCommand;

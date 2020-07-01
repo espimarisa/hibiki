@@ -5,7 +5,7 @@ class cookiesCommand extends Command {
     super(...args, {
       aliases: ["balance"],
       args: "<member:member&fallback>",
-      description: "Shows how many cookies a member has.",
+      description: "Shows how many cookies you or another member has.",
     });
   }
 
@@ -15,7 +15,11 @@ class cookiesCommand extends Command {
     const economydb = await this.bot.db.table("economy").get(user.id).run();
     if (!economydb) cookies = 0;
     else cookies = economydb.amount;
-    this.bot.embed("🍪 Cookies", `**${user.username}** has **${cookies}** total cookies.`, msg);
+    this.bot.embed(
+      "🍪 Cookies",
+      `${user.id === msg.author.id ? `You have` : `**${user.username}** has`} **${cookies}** cookie${cookies === 1 ? "" : "s"}.`,
+      msg,
+    );
   }
 }
 
