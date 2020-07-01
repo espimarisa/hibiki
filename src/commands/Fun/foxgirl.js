@@ -23,7 +23,7 @@ class foxgirlCommand extends Command {
           url: body.url,
         },
         footer: {
-          text: `Ran by ${this.bot.tag(msg.author)}`,
+          text: `Ran by ${this.bot.tag(msg.author)} | Powered by nekos.life`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

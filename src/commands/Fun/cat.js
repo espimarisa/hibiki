@@ -23,7 +23,7 @@ class catCommand extends Command {
           url: body.file,
         },
         footer: {
-          text: `Ran by ${this.bot.tag(msg.author)}`,
+          text: `Ran by ${this.bot.tag(msg.author)} | Powered by random.cat`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

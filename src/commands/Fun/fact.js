@@ -13,7 +13,8 @@ class factCommand extends Command {
   }
 
   async run(msg, args) {
-    const apis = ["https://catfact.ninja/fact",
+    const apis = [
+      "https://catfact.ninja/fact",
       "https://dog-api.kinduff.com/api/facts",
       "https://useless-facts.sameerkumar.website/api",
     ];
@@ -22,8 +23,11 @@ class factCommand extends Command {
     const apinames = ["cat", "dog", "useless"];
     const apilabels = ["🐱 Cat Fact", "🐶 Dog Fact", "🍀 Useless Fact"];
     let index = Math.floor(Math.random() * apis.length);
-    if (args.length > 0 && apinames.filter(api => api.includes(args.join(" "))).length)
+
+    if (args.length > 0 && apinames.filter(api => api.includes(args.join(" "))).length) {
       index = apinames.indexOf(apinames.filter(api => api.includes(args.join(" ")))[0]);
+    }
+
     const api = apis[index];
     const apiname = apinames[index];
     const apilabel = apilabels[index];

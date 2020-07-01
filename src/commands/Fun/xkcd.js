@@ -14,7 +14,7 @@ class xkcdCommand extends Command {
   async run(msg, args) {
     // Gets the day's comic
     const comic = args.join("");
-    if (comic === "today") {
+    if (comic === "today" || comic === "daily") {
       const body = await fetch("https://xkcd.com/info.0.json").then(async res => res.json());
       if (!body || !body.num) return this.bot.embed("❌ Error", "Couldn't send the comic. Try again later.", msg, "error");
 

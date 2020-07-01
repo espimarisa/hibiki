@@ -23,7 +23,7 @@ class dogCommand extends Command {
           url: body.url,
         },
         footer: {
-          text: `Ran by ${this.bot.tag(msg.author)}`,
+          text: `Ran by ${this.bot.tag(msg.author)} | Powered by random.dog`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

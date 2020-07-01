@@ -1,4 +1,5 @@
 const Command = require("structures/Command");
+
 const cows = {
   default: "        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||\n",
   tux: "   \\\n    \\\n        .--.\n       |o_o |\n       |:_/ |\n      //   \\ \\\n     (|     | )\n    /'\\_   _/`\\\n    \\___)=(___/",
@@ -25,8 +26,11 @@ class cowsayCommand extends Command {
   async run(msg, args) {
     // Sets the cow
     if (!args.length || args.join(" ") === "list") {
-      return this.bot.embed("🐮 Cowsay",
-        `Usage: cowsay <text> cow=type \n Types: ${Object.keys(cows).map(c => `\`${c}\``).join(", ")}`, msg);
+      return this.bot.embed(
+        "🐮 Cowsay",
+        `Usage: cowsay <text> cow=type \n Types: ${Object.keys(cows).map(c => `\`${c}\``).join(", ")}`,
+        msg,
+      );
     }
 
     let cow = Object.keys(cows).find(c => args.indexOf(`cow=${c}`) !== -1);

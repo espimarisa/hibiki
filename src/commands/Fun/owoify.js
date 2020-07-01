@@ -24,6 +24,7 @@ class owoifyCommand extends Command {
         owo = owo.replace(/(?:r|l)/g, "w");
         owo = owo.replace(/(?:R|L)/g, "W");
       }
+
       owo = owo.replace(/n([aeiou])/g, "ny");
       owo = owo.replace(/N([aeiou])/g, "Ny");
       owo = owo.replace(/N([AEIOU])/g, "NY");

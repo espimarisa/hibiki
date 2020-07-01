@@ -17,7 +17,7 @@ class memeCommand extends Command {
 
     await msg.channel.createMessage({
       embed: {
-        title: "🤣 Random Meme",
+        title: "🤣 Meme",
         color: this.bot.embed.color("general"),
         image: {
           url: body.url,

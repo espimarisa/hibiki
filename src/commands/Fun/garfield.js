@@ -20,6 +20,7 @@ class garfieldCommand extends Command {
       // Gets total amount of comics
       const total = Math.round(Math.abs((start.getTime() - today.getTime()) / (days)));
 
+      // Gets image URL
       function pad(n) { return n < 10 ? `0${n}` : n; }
       const archive = "https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/";
       const url = `${archive + date.getFullYear()}/${date.getFullYear()}-${pad(date.getMonth())}-${pad(date.getDate())}.gif`;
