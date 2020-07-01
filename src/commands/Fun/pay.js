@@ -12,6 +12,7 @@ class payCommand extends Command {
   async run(msg, args, pargs) {
     const user = pargs[0].value;
     const amount = parseInt(args[1]);
+
     // Blocks bots, selfpaying, and non-integers
     if (user.bot) return this.bot.embed("❌ Error", "You can't give cookies to a bot.", msg, "error");
     if (user.id === msg.author.id) return this.bot.embed("❌ Error", "Fraud is illegal.", msg, "error");
@@ -28,7 +29,7 @@ class payCommand extends Command {
         lastclaim: 9999,
       }).run();
 
-      return ucookies = await this.bot.db.table("economy").get(user.id).run();
+      ucookies = await this.bot.db.table("economy").get(user.id).run();
     }
 
     if (!acookies) {
@@ -38,11 +39,14 @@ class payCommand extends Command {
         lastclaim: 9999,
       }).run();
 
-      return acookies = await this.bot.db.table("economy").get(msg.author.id).run();
+      acookies = await this.bot.db.table("economy").get(msg.author.id).run();
     }
 
     // Compares cookie amounts
-    if (amount > acookies.amount || acookies.amount <= 0) return this.bot.embed("❌ Error", "You don't have enough cookies.", msg, "error");
+    if (!acookies || amount > acookies.amount || acookies && acookies.amount <= 0) {
+      return this.bot.embed("❌ Error", "You don't have enough cookies.", msg, "error");
+    }
+
     acookies.amount -= amount;
     ucookies.amount += amount;
 
