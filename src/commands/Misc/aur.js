@@ -7,7 +7,7 @@ class aurCommand extends Command {
   constructor(...args) {
     super(...args, {
       args: "<package:string>",
-      description: "Looks up packages on the AUR.",
+      description: "Returns info about a package on the AUR.",
       cooldown: 3,
     });
   }
@@ -23,54 +23,79 @@ class aurCommand extends Command {
       res.results = res.results.sort((a, b) => a.NumVotes - b.NumVotes);
       res.results.length = 15;
 
+      // Sends multiple results message
       const aurmsg = await this.bot.embed(
         "📦 Multiple Results",
-        res.results.map((r, i) => `**${i + 1}:** ${r.Name} (${r.Popularity.toFixed(2)}%)`).join("\n"),
+        res.results.map((r, i) => `**${i + 1}:** ${r.Name}`).join("\n"),
         msg,
       );
 
-      await waitFor("messageCreate", 60000, async (m) => {
+      // Waits for a response
+      await waitFor("messageCreate", 15000, async (m) => {
         if (m.author.id !== msg.author.id) return;
         if (m.channel.id !== msg.channel.id) return;
         if (!m.content) return;
         const foundpkg = isNaN(m.content) ? res.results.find(r => r.Name.toLowerCase() === m.content.toLowerCase()) :
           res.results[parseInt(m.content) - 1];
 
-        if (!foundpkg) {
-          const message = await this.bot.embed("❌ Error", "Invalid package", msg, "error");
-          setTimeout(() => {
-            message.delete();
-          }, 2000);
-          return;
-        }
-
         pkg = foundpkg;
         return true;
-      }, this.bot).catch(err => err.message === "timeout" &&
-        this.bot.embed.edit("❌ Error", "Timeout reached.", aurmsg, "error"));
+      }, this.bot).catch(err => err.message === "timeout" && this.bot.embed.edit("❌ Error", "Timeout reached.", aurmsg, "error"));
+      if (!pkg && aurmsg) return this.bot.embed.edit("❌ Error", "Invalid package, exiting.", aurmsg, "error");
     }
 
     // If no package was found
-    if (!pkg) return this.bot.embed("❌ Error", "No packages found.", msg, "error");
+    if (!pkg) return this.bot.embed("❌ Error", "No packages were found.", msg, "error");
     let pkginfo = await fetch(`https://aur.archlinux.org/rpc/?v=5&type=info&arg=${pkg.Name}`);
     pkginfo = await pkginfo.json();
     pkginfo = pkginfo.results.find(p => p.Name === pkg.Name);
 
+    // Embed construct
     const fields = [];
     let depends = [];
-    if (pkg.numvotes) fields.push({ name: "Votes", value: pkg.NumVotes, inline: true });
-    if (pkg.Popularity) fields.push({ name: "Popularity", value: pkg.Popularity.toFixed(2), inline: true });
-    if (pkg.Maintainer) fields.push({ name: "Maintainer", value: pkg.Maintainer, inline: true });
-    if (pkg.FirstSubmitted) fields.push({ name: "Submitted", value: format.date(pkg.FirstSubmitted * 1000), inline: true });
-    if (pkg.LastModified) fields.push({ name: "Updated", value: format.date(pkg.LastModified * 1000), inline: true });
+    if (pkg.numvotes) {
+      fields.push({
+        name: "Votes",
+        value: pkg.NumVotes,
+        inline: true,
+      });
+    }
+
+    if (pkg.Maintainer) {
+      fields.push({
+        name: "Maintainer",
+        value: pkg.Maintainer,
+        inline: true,
+      });
+    }
+
+    if (pkg.FirstSubmitted) {
+      fields.push({
+        name: "Submitted",
+        value: format.date(pkg.FirstSubmitted * 1000),
+        inline: true,
+      });
+    }
+
+    if (pkg.LastModified) {
+      fields.push({
+        name: "Updated",
+        value: format.date(pkg.LastModified * 1000),
+        inline: true,
+      });
+    }
 
     if (pkginfo) {
       if (pkginfo.Depends) depends = [...depends, pkginfo.Depends];
       if (pkginfo.MakeDepends) depends = [...depends, pkginfo.MakeDepends];
     }
 
-    if (depends.length) fields.push({ name: "Dependencies", value: depends.join(", ") });
-
+    if (depends.length) {
+      fields.push({
+        name: "Dependencies",
+        value: depends.join(", "),
+      });
+    }
 
     msg.channel.createMessage({
       embed: {
