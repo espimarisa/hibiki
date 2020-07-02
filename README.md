@@ -34,7 +34,7 @@ Refer to the [wiki][5] for a self-hosting guide &amp; other important informatio
 ## License
 &copy; 2018 - 2020 [smolespi][6], [resolved][7], and [cth103][8].
 <br>
-This source is licensed under the [GNU AGPL-v3][8] or later.
+This source is licensed under the [GNU AGPL-v3][9] or later.
 
 [1]: https://hibiki.app "Hibiki"
 [2]: https://nodejs.org "Node.js"
@@ -44,4 +44,4 @@ This source is licensed under the [GNU AGPL-v3][8] or later.
 [6]: https://lesbian.codes "smolespi"
 [7]: https://github.com/resolvedxd "resolved"
 [8]: https://github.com/cthpw103 "cth103"
-[9]: LICENSE.md "LICENSE"
+[9]: LICENSE "LICENSE"
