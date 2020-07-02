@@ -108,8 +108,6 @@ class userCommand extends Command {
       });
     }
 
-    // console.log(user.activities);
-
     if (user.nick) {
       fields.push({
         name: "Nickname",

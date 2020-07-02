@@ -32,7 +32,6 @@ npm-error.log
 report.*
 yarn-debug.log
 yarn-error.log
-package-lock.json
 yarn.lock*
 
 # Windows

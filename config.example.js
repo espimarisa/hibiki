@@ -48,7 +48,6 @@ module.exports = {
     twitter: "",
     weather: "",
     weebsh: "",
-    youtube: "",
   },
 
   rethink: {
