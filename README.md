@@ -13,8 +13,8 @@ You can invite the main application [here][4]. Any other instances of Hibiki are
 
 ## Feature Overview
   - ⏰ Reminders
-  - ⚠ Warning system
   - 🔗 Invite inspector
+  - ⚠ Warning system
   - 🔍 API lookup utilities
   - 👥 User info commands
   - 🔧 Server info commands
