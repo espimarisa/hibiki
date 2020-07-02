@@ -1,10 +1,11 @@
 {
   "name": "hibiki",
   "version": "3.2.0-alpha",
-  "description": "A versatile and feature-packed Discord bot written in JavaScript.",
+  "description": "An easy, customizable, and powerful Discord bot that can do anything that your server needs.",
   "author": "smolespi <espi@lesbian.codes> (https://lesbian.codes)",
   "contributors": [
-    "resolved <resolvedxd@gmail.com> (https://github.com/resolvedxd)"
+    "resolved (https://github.com/resolvedxd)",
+    "cth103 (https://github.com/cthpw103)"
   ],
   "license": "AGPL-3.0-or-later",
   "homepage": "https://hibiki.app",
@@ -39,22 +40,17 @@
     "utils": "src/utils"
   },
   "dependencies": {
-    "@sentry/node": "^5.18.1",
+    "@sentry/node": "^5.19.0",
     "body-parser": "^1.19.0",
     "ejs": "^3.1.3",
     "eris": "^0.13.3",
     "eris-additions": "^1.4.1",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "node-fetch": "^3.0.0-beta.7",
+    "node-fetch": "^2.6.0",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "rethinkdb-ts": "^2.4.2"
-  },
-  "optionalDependencies": {
-    "@discordjs/opus": "^0.3.2",
-    "erlpack": "^0.1.3",
-    "eventemitter3": "^4.0.4"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

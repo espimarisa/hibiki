@@ -37,9 +37,9 @@ class aboutCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        title: `🤖 About ${this.bot.user.username}`,
-        description: `**${this.bot.user.username}**, a project by` +
-          " [smolespi](https://lesbian.codes) and [resolved](https://github.com/resolvedxd/). 💖",
+        title: "🤖 About",
+        description: `**${this.bot.user.username}**, by` +
+          " [smolespi](https://lesbian.codes), [resolved](https://github.com/resolvedxd/), and [cth103](https://github.com/cthpw103). 💖",
         color: this.bot.embed.color("general"),
         fields: [{
           name: "Analytics",
