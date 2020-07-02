@@ -66,9 +66,6 @@ class embedCommand extends Command {
       embed: {
         title: "🖊 Embed",
         color: this.bot.embed.color("general"),
-        thumbnail: {
-          url: "https://i.imgur.com/2LN0ni5.png",
-        },
         fields: Object.entries(emojiactions).map(e => {
           return {
             name: `${e[0]} ${emojilabels[e[1]] ? emojilabels[e[1]] : e[1]}`,
@@ -122,9 +119,6 @@ class embedCommand extends Command {
         embed: {
           title: "🖊 Embed",
           color: this.bot.embed.color("general"),
-          thumbnail: {
-            url: "https://i.imgur.com/2LN0ni5.png",
-          },
           fields: Object.entries(emojiactions).map(em => {
             return {
               name: `${em[0]} ${emojilabels[em[1]] ? emojilabels[em[1]] : em[1]}`,
@@ -155,8 +149,8 @@ class embedCommand extends Command {
         embed[e] = finalhex;
       } else {
         // Image checker
-        if ((e[0] === "image" || e[0] === "thumbnail" || e[0] === "author" || e[0] === "footer") && (e[1] === "url" || e[1] === "icon_url") &&
-          resp.attachments && resp.attachments[0]) resp.content = resp.attachments[0].proxy_url;
+        if ((e[0] === "image" || e[0] === "thumbnail" || e[0] === "author" || e[0] === "footer") &&
+          (e[1] === "url" || e[1] === "icon_url") && resp.attachments && resp.attachments[0]) resp.content = resp.attachments[0].proxy_url;
         let obj = {};
         if (embed[e[0]]) obj = embed[e[0]];
         obj[e[1]] = resp.content;
