@@ -7,7 +7,7 @@
 /**
  * Compares role hierarchy
  * @example
- * const hierarchy = require("utils/hierarchy");
+ * const hierarchy = require("../../utils/hierarchy");
  * hierarchy(msg.member, user);
  *
  * @param {Object} member1 The user object to check for being above

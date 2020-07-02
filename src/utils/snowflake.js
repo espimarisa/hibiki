@@ -9,7 +9,7 @@ module.exports = {
    * Creates a random ID
    *
    * @example
-   * const { Snowflake } = require("utils/snowflake");
+   * const { Snowflake } = require("../../utils/snowflake");
    * const id = Snowflake();
    */
 

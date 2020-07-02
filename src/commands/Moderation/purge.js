@@ -1,5 +1,5 @@
-const Command = require("structures/Command");
-const yn = require("utils/ask").yesNo;
+const Command = require("../../structures/Command");
+const yn = require("../../utils/ask").yesNo;
 
 class purgeCommand extends Command {
   constructor(...args) {

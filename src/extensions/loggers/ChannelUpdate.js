@@ -2,8 +2,8 @@
   Logs when a channel is created, deleted, or edited.
 */
 
-const Logging = require("structures/Logger");
-const format = require("utils/format");
+const Logging = require("../../structures/Logger");
+const format = require("../../utils/format");
 
 module.exports = (bot) => {
   // Logging database

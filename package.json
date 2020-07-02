@@ -24,20 +24,9 @@
   "scripts": {
     "dev": "nodemon",
     "lint": "eslint --fix .",
-    "postinstall": "npx link-module-alias",
     "start": "pm2 start pm2.config.json",
     "setup": "node src/scripts/setup.js",
     "test": "eslint ."
-  },
-  "_moduleAliases": {
-    "commands": "src/commands",
-    "dashboard": "src/extensions/dashboard",
-    "events": "src/events",
-    "extensions": "src/extensions",
-    "root": ".",
-    "scripts": "src/scripts",
-    "structures": "src/structures",
-    "utils": "src/utils"
   },
   "dependencies": {
     "@sentry/node": "^5.19.0",
@@ -55,7 +44,6 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "eslint": "^7.3.1",
-    "link-module-alias": "^1.2.0",
     "nodemon": "^2.0.4",
     "pm2": "^4.4.0"
   }

@@ -3,7 +3,7 @@
  * @description Handles reminders if the bot goes offline
  */
 
-const format = require("utils/format");
+const format = require("../utils/format");
 
 module.exports = async (bot) => {
   // Loads all reminders

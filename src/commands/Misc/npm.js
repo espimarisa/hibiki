@@ -1,6 +1,6 @@
-const Command = require("structures/Command");
+const Command = require("../../structures/Command");
 const fetch = require("node-fetch");
-const format = require("utils/format");
+const format = require("../../utils/format");
 
 class npmCommand extends Command {
   constructor(...args) {

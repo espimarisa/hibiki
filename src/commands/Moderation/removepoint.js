@@ -1,4 +1,4 @@
-const Command = require("structures/Command");
+const Command = require("../../structures/Command");
 
 class removepointCommand extends Command {
   constructor(...args) {

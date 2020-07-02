@@ -1,4 +1,4 @@
-const Event = require("structures/Event");
+const Event = require("../structures/Event");
 
 class Snipe extends Event {
   constructor(...args) {

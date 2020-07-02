@@ -1,4 +1,4 @@
-const Command = require("structures/Command");
+const Command = require("../../structures/Command");
 const fetch = require("node-fetch");
 const ISOcodes = ["auto", "af", "sq", "am", "ar", "hy", "az", "eu", "be", "bn", "bs", "bg", "ca", "ceb", "ny", "zh-cn", "zh-tw", "co", "hr", "cs",
   "da", "nl", "en", "eo", "et", "tl", "fi", "fr", "fy", "gl", "ka", "de", "el", "gu", "ht", "ha", "haw", "iw", "hi", "hmn", "hu", "is", "ig", "id",

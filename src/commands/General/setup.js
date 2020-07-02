@@ -1,6 +1,6 @@
-const Command = require("structures/Command");
-const waitFor = require("utils/waitFor");
-const askFor = require("utils/ask").for;
+const Command = require("../../structures/Command");
+const waitFor = require("../../utils/waitFor");
+const askFor = require("../../utils/ask").for;
 
 const categoryemojis = {
   Features: "✨",
@@ -34,7 +34,7 @@ class setupCommand extends Command {
 
   async run(msg, args) {
     // Gets the config
-    const settings = require("utils/items");
+    const settings = require("../../utils/items");
     let cfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
     if (!cfg) {
       await this.bot.db.table("guildcfg").insert({

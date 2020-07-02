@@ -1,5 +1,5 @@
-const Command = require("structures/Command");
-const waitFor = require("utils/waitFor");
+const Command = require("../../structures/Command");
+const waitFor = require("../../utils/waitFor");
 
 class embedCommand extends Command {
   constructor(...args) {

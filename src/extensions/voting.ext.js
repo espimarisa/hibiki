@@ -4,7 +4,7 @@
  */
 
 const express = require("express");
-const voting = require("root/config").voting;
+const voting = require("../../config").voting;
 
 // Sets up express
 const app = express();
