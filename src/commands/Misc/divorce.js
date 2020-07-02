@@ -1,5 +1,5 @@
-const Command = require("structures/Command");
-const yn = require("utils/ask").yesNo;
+const Command = require("../../structures/Command");
+const yn = require("../../utils/ask").yesNo;
 
 class divorceCommand extends Command {
   constructor(...args) {

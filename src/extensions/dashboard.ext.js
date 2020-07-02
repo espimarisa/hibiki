@@ -8,8 +8,8 @@ const express = require("express");
 const passport = require("passport");
 const session = require("express-session");
 const strategy = require("passport-discord");
-const format = require("utils/format");
-const config = require("root/config").dashboard;
+const format = require("../utils/format");
+const config = require("../../config").dashboard;
 
 const scope = ["identify", "guilds"];
 const app = express();
@@ -119,7 +119,7 @@ module.exports = (bot) => {
   // Server manager
   app.get("/manage/:id", checkAuth, async (req, res) => {
     // Sets vaild items
-    const items = require("utils/items");
+    const items = require("../utils/items");
     // If user isn't authenticated
     if (!req.isAuthenticated()) { res.status(401).render("401"); }
     // User & guild perms
@@ -145,11 +145,11 @@ module.exports = (bot) => {
   });
 
   // API
-  app.use(require("dashboard/api/getItems")(bot));
-  app.use(require("dashboard/api/getConfig")(bot));
-  app.use(require("dashboard/api/updateConfig")(bot));
-  app.use(require("dashboard/api/getBio")(bot));
-  app.use(require("dashboard/api/updateBio")(bot));
+  app.use(require("./dashboard/api/getItems")(bot));
+  app.use(require("./dashboard/api/getConfig")(bot));
+  app.use(require("./dashboard/api/updateConfig")(bot));
+  app.use(require("./dashboard/api/getBio")(bot));
+  app.use(require("./dashboard/api/updateBio")(bot));
 
   // 404 handler
   app.use((req, res) => {

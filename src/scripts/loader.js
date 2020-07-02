@@ -16,7 +16,7 @@ const extension_directory = path.join(__dirname, "../extensions");
  * @param {object} bot Main bot object
  *
  * @example
- * const load = require("scripts/loader");
+ * const load = require("../scripts/loader");
  * load.commands(this.bot);
  */
 
@@ -52,7 +52,7 @@ module.exports.commands = async function loadCommands(bot) {
  * @param {object} bot Main bot object
  *
  * @example
- * const load = require("scripts/loader");
+ * const load = require("../scripts/loader");
  * load.events(this.bot);
  */
 
@@ -82,7 +82,7 @@ module.exports.events = async function loadEvents(bot) {
  * @param {object} bot Main bot object
  *
  * @example
- * const load = require("scripts/loader");
+ * const load = require("../scripts/loader");
  * load.extensions(this.bot);
  */
 
@@ -114,7 +114,7 @@ module.exports.extensions = async function loadExtensions(bot) {
  * @param {object} bot Main bot object
  *
  * @example
- * const load = require("scripts/loader");
+ * const load = require("../scripts/loader");
  * load.all(this.bot);
  */
 

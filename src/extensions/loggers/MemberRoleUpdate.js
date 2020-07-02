@@ -2,8 +2,8 @@
   Logs when a member's roles are updated.
 */
 
-const Logging = require("structures/Logger");
-const format = require("utils/format");
+const Logging = require("../../structures/Logger");
+const format = require("../../utils/format");
 
 module.exports = (bot) => {
   // Logging database

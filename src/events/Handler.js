@@ -4,7 +4,7 @@
  * @todo Stop using eris-additions and make our own global perm handler
  */
 
-const Event = require("structures/Event");
+const Event = require("../structures/Event");
 const eris = require("eris-additions")(require("eris"));
 const sentry = require("@sentry/node");
 

@@ -5,15 +5,15 @@
  */
 
 const { r } = require("rethinkdb-ts");
-const config = require("root/config");
-const log = require("scripts/logger");
+const config = require("../../config");
+const log = require("./logger");
 
 /**
  * Starts RethinkDB with configured options
  * @await
  *
  * @example
- * const start = require("scripts/database").start;
+ * const start = require("../scripts/database").start;
  * await start();
  */
 

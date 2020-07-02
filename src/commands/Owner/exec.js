@@ -1,4 +1,4 @@
-const Command = require("structures/Command");
+const Command = require("../../structures/Command");
 const child = require("child_process");
 const fetch = require("node-fetch");
 

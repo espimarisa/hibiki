@@ -1,4 +1,4 @@
-const Command = require("structures/Command");
+const Command = require("../../structures/Command");
 
 class enableCommand extends Command {
   constructor(...args) {

@@ -1,6 +1,6 @@
-const Command = require("structures/Command");
+const Command = require("../../structures/Command");
 const Eris = require("eris");
-const waitFor = require("utils/waitFor");
+const waitFor = require("../../utils/waitFor");
 
 const backEmoji = "⬅️";
 const categoryEmojis = {

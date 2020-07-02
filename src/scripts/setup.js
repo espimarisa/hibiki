@@ -4,9 +4,9 @@
  */
 
 const { r } = require("rethinkdb-ts");
-const config = require("root/config");
-const log = require("scripts/logger");
-const start = require("scripts/database").start;
+const config = require("../../config");
+const log = require("./logger");
+const start = require("./database").start;
 const requiredtables = config.rethink.tables;
 
 (async () => {

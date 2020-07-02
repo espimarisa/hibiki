@@ -13,7 +13,7 @@
  *
  * @async
  * @example
- * const waitFor = require("utils/waitFor");
+ * const waitFor = require("../../utils/waitFor");
  * await waitFor("messageCreate", 1000, async (msg) => {
  *   console.log(msg.content);
  * }, this.bot)

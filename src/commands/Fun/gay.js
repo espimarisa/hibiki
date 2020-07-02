@@ -1,4 +1,4 @@
-const Command = require("structures/Command");
+const Command = require("../../structures/Command");
 
 class gayCommand extends Command {
   constructor(...args) {

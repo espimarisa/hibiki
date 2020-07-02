@@ -1,4 +1,4 @@
-const Event = require("structures/Event");
+const Event = require("../structures/Event");
 const fetch = require("node-fetch");
 
 class guildCreate extends Event {

@@ -1,4 +1,4 @@
-const waitFor = require("utils/waitFor");
+const waitFor = require("./waitFor");
 
 module.exports = {
   yesNo: async (bot, msg, retMsg = false) => {

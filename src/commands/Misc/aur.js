@@ -1,7 +1,7 @@
-const Command = require("structures/Command");
+const Command = require("../../structures/Command");
 const fetch = require("node-fetch");
-const format = require("utils/format");
-const waitFor = require("utils/waitFor");
+const format = require("../../utils/format");
+const waitFor = require("../../utils/waitFor");
 
 class aurCommand extends Command {
   constructor(...args) {

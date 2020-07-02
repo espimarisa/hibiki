@@ -3,7 +3,7 @@
     "scope": "javascript",
     "prefix": ["hibiki-command"],
     "body": [
-      "const Command = require(\"structures/Command\");\n",
+      "const Command = require(\"../../structures/Command\");\n",
       "class $1Command extends Command {",
       "  constructor(...args) {",
       "    super(...args, {",
@@ -23,7 +23,7 @@
     "scope": "javascript",
     "prefix": ["hibiki-event"],
     "body": [
-      "const Event = require(\"structures/Event\");\n",
+      "const Event = require(\"../../structures/Event\");\n",
       "class $1 extends Event {",
       "  constructor(...args) {",
       "    super(...args, {",

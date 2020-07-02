@@ -4,8 +4,8 @@
  * @module embed
  */
 
-const { colors } = require("root/config");
-const format = require("utils/format");
+const { colors } = require("../../config");
+const format = require("./format");
 
 /**
  * Creates an embed

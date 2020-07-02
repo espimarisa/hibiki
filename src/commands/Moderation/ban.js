@@ -1,6 +1,6 @@
-const Command = require("structures/Command");
-const hierarchy = require("utils/hierarchy");
-const yn = require("utils/ask").yesNo;
+const Command = require("../../structures/Command");
+const hierarchy = require("../../utils/hierarchy");
+const yn = require("../../utils/ask").yesNo;
 
 class banCommand extends Command {
   constructor(...args) {

@@ -3,7 +3,7 @@
 */
 
 const express = require("express");
-const items = require("utils/items");
+const items = require("../../../utils/items");
 const router = express.Router();
 
 module.exports = bot => {
