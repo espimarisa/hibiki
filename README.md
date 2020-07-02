@@ -34,17 +34,17 @@ You can invite the main application [here][4]. Any other instances of Hibiki are
 Refer to the [wiki][5] for a self-hosting guide &amp; other important information.
 
 ## License
-&copy; 2018 - 2020 [smolespi][6], [resolved][7], and [cth103][8] [(jiktim)][9].
+This source is licensed under the [GNU AGPL-v3][6] or later.
 <br>
-This source is licensed under the [GNU AGPL-v3][10] or later.
+&copy; 2018 - 2020 [smolespi][7], [resolved][8], and [cth103][9] (a [jiktim][10] project).
 
 [1]: https://hibiki.app "Hibiki"
 [2]: https://nodejs.org "Node.js"
 [3]: http://github.com/abalabahaha/Eris "Eris"
 [4]: https://discordapp.com/oauth2/authorize?&client_id=493904957523623936&scope=bot&permissions=506850534 "Invite"
 [5]: https://github.com/smolespi/Hibiki/wiki "Wiki"
-[6]: https://lesbian.codes "smolespi"
-[7]: https://github.com/resolvedxd "resolved"
-[8]: https://github.com/cthpw103 "cth103"
-[9]: https://jikt.im "jiktim"
-[10]: LICENSE "LICENSE"
+[6]: LICENSE "LICENSE"
+[7]: https://lesbian.codes "smolespi"
+[8]: https://github.com/resolvedxd "resolved"
+[9]: https://github.com/cthpw103 "cth103"
+[10]: https://jikt.im "jiktim"
