@@ -10,6 +10,7 @@ class emojiCommand extends Command {
   }
 
   run(msg, args) {
+    // Finds the emoji and if it's animated or not
     const emoji = args.join("").match(/(?<=<a?:.*:)\d*(?=>)/);
     const animated = /<[a]:/g.test(args.join(""));
 
@@ -33,7 +34,7 @@ class emojiCommand extends Command {
       return characters.join("-");
     }
 
-    // Default Discord emojis
+    // Default unicode emojis
     if (!emoji || isNaN(emoji)) {
       if (/\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/.test(args[0])) {
         return msg.channel.createMessage({
