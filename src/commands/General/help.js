@@ -57,6 +57,7 @@ class helpCommand extends Command {
           label = "Uncategorized commands";
           break;
       }
+
       return label;
     }
 
@@ -102,7 +103,11 @@ class helpCommand extends Command {
         return 0;
       });
 
-      categories.forEach(e => { sortedcategories[categories.indexOf(e)] = categoryEmoji(e); });
+      categories.forEach(e => {
+        sortedcategories[categories.indexOf(e)] = categoryEmoji(e);
+        sortedcategories.push("📚 All commands");
+      });
+
       const categoryembed = {
         embed: {
           title: "📚 React with the category you'd like to view.",
@@ -134,6 +139,7 @@ class helpCommand extends Command {
 
         // Gets commands in each category
         const category = Object.entries(categoryEmojis).find(e => e[1] === emoji.name);
+
         if (!category) return;
         let categorycmds = this.bot.commands.filter(c => c.category === category[0]);
         if (db && db.disabledCommands) categorycmds = categorycmds.filter(c => !db.disabledCommands.includes(c));
@@ -144,18 +150,43 @@ class helpCommand extends Command {
           return `\`${c.id}\``;
         });
 
-        omsg.edit({
-          embed: {
-            title: `${categoryEmojis[category[0]]} Run ${db && db.prefix ? db.prefix : this.bot.config.prefixes[0]}` +
-              `help <command> to get help for a specific command.`,
-            color: this.bot.embed.color("general"),
-            description: `${finalCommands.join(", ")}`,
-            footer: {
-              text: `Ran by ${this.bot.tag(msg.author)} | ${categorycmds.length} ${category[0].toLowerCase()} commands`,
-              icon_url: msg.author.dynamicAvatarURL(),
+
+        // Shows all commands
+        if (category[0] === "All") {
+          omsg.edit({
+            embed: {
+              title: `${categoryEmojis[category[0]]} Run ${db && db.prefix ? db.prefix : this.bot.config.prefixes[0]}` +
+                `help <command> for info about a command.`,
+              color: this.bot.embed.color("general"),
+              fields: categories.map(category => ({
+                name: sortedcategories[categories.indexOf(category)],
+                // Hides disabled commands
+                value: this.bot.commands.map(c => {
+                  if (db && db.disabledCmds && db.disabledCmds.includes(c.id)) return;
+                  if (c.category !== category) return;
+                  return `\`${c.id}\``;
+                }).join(" "),
+              })),
+              footer: {
+                text: `Ran by ${this.bot.tag(msg.author)} | ${this.bot.commands.length} commands`,
+                icon_url: msg.author.dynamicAvatarURL(),
+              },
             },
-          },
-        });
+          });
+        } else {
+          omsg.edit({
+            embed: {
+              title: `${categoryEmojis[category[0]]} Run ${db && db.prefix ? db.prefix : this.bot.config.prefixes[0]}` +
+                `help <command> for info about a command.`,
+              color: this.bot.embed.color("general"),
+              description: `${finalCommands.join(", ")}`,
+              footer: {
+                text: `Ran by ${this.bot.tag(msg.author)} | ${categorycmds.length} ${category[0].toLowerCase()} commands`,
+                icon_url: msg.author.dynamicAvatarURL(),
+              },
+            },
+          });
+        }
 
         // Functionality in DMs
         if (msg.channel instanceof Eris.PrivateChannel) {
@@ -188,7 +219,7 @@ class helpCommand extends Command {
       if (cmd.aliases.length) {
         construct.push({
           name: "Aliases",
-          value: `${cmd.aliases.map(alias => `\`${alias}\``).join(" ") || "No aliases"}`,
+          value: `${cmd.aliases.map(alias => `\`${alias}\``).join(" ")}`,
           inline: false,
         });
       }
@@ -243,7 +274,7 @@ class helpCommand extends Command {
 
       msg.channel.createMessage({
         embed: {
-          description: cmd.description,
+          description: cmd.description || "No description given.",
           color: this.bot.embed.color("general"),
           fields: construct,
           author: {
