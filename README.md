@@ -5,7 +5,7 @@
 [![Stable](https://img.shields.io/github/v/release/smolespi/hibiki?label=stable)](https://github.com/smolespi/Hibiki/releases)
 [![Latest](https://img.shields.io/github/package-json/v/smolespi/hibiki/main?color=red&label=latest)](https://github.com/smolespi/Hibiki/releases/latest)
 [![Support](https://img.shields.io/discord/620287077778587651?color=purple&label=support)](https://discord.gg/gZEj4sM)
-[![Website](https://img.shields.io/website?down_color=critical&down_message=offline&up_color=blueviolet&up_message=online&url=https%3A%2F%2Fhibiki.app)](https://hibiki.app)
+[![Website](https://img.shields.io/website?down_color=critical&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fhibiki.app)](https://hibiki.app)
 
 [Hibiki][1] is an easy, customizable, and powerful Discord bot that can do anything that your server needs. Powered by [Node.js][2] and [Eris][3], it's written to be simple and easy to understand, but without sacrificing any powerful features.
 
