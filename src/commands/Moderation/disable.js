@@ -37,7 +37,7 @@ class disableCommand extends Command {
       }
 
       if (guildcfg.disabledCategories && guildcfg.disabledCategories.includes(category)) {
-        return this.bot.embed("❌ Error", "That's already disabled.", "error");
+        return this.bot.embed("❌ Error", "That's already disabled.", msg, "error");
       }
 
       // Updates db
