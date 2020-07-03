@@ -1,17 +1,17 @@
 # Hibiki
 
 [![Build](https://img.shields.io/github/workflow/status/smolespi/Hibiki/Hibiki)](https://github.com/smolespi/Hibiki/actions?query=workflow%3AHibiki)
-[![License](https://img.shields.io/badge/license-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![Version](https://img.shields.io/github/package-json/v/smolespi/hibiki/main?color=orange&label=version)](https://github.com/smolespi/Hibiki)
+[![License](https://img.shields.io/badge/license-AGPL%20v3-orange.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![Stable](https://img.shields.io/github/v/release/smolespi/hibiki?label=stable)](https://github.com/smolespi/Hibiki/releases)
+[![Latest](https://img.shields.io/github/package-json/v/smolespi/hibiki/main?color=red&label=latest)](https://github.com/smolespi/Hibiki/releases/latest)
 [![Support](https://img.shields.io/discord/620287077778587651?color=purple&label=support)](https://discord.gg/gZEj4sM)
-[![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=blue&up_message=online&url=https%3A%2F%2Fhibiki.app)](https://hibiki.app)
+[![Website](https://img.shields.io/website?down_color=critical&down_message=offline&up_color=blueviolet&up_message=online&url=https%3A%2F%2Fhibiki.app)](https://hibiki.app)
 
 [Hibiki][1] is an easy, customizable, and powerful Discord bot that can do anything that your server needs. Powered by [Node.js][2] and [Eris][3], it's written to be simple and easy to understand, but without sacrificing any powerful features.
 
 You can invite the main application [here][4]. Any other instances of Hibiki are **not official** and could possibly carry privacy/security risks. The only official bot is `Hibiki#1448 (493904957523623936)`.
 
-
-## Feature Overview
+## Features
   - ⏰ Reminders
   - 🔗 Invite inspector
   - ⚠ Warning system
