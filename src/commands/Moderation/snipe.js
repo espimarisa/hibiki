@@ -11,7 +11,7 @@ class snipeCommand extends Command {
   async run(msg) {
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
 
-    if (guildcfg && !guildcfg.snipingEnable) {
+    if (guildcfg && guildcfg.snipingEnable === false) {
       return this.bot.embed(
         "❌ Error",
         `Message sniping hasn't been enabled. You can configure it using the [web dashboard](${this.bot.config.homepage}/dashboard/.)`,

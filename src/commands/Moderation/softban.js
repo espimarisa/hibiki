@@ -35,7 +35,7 @@ class softbanCommand extends Command {
       try {
         await user.ban(0, `${reason} (by ${this.bot.tag(msg.author, true)})`).catch(() => {});
       } catch (err) {
-        return this.bot.embed.edit("❌ Error", `Failed to softban **${user.username}**.`, softbanmsg);
+        return this.bot.embed.edit("❌ Error", `Failed to softban **${user.username}**.`, softbanmsg, "error");
       }
 
       // Tries to DM banned user
