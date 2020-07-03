@@ -1,16 +1,14 @@
-version: 1
-update_configs:
-  # Update your Gemfile (& lockfiles) as soon as
-  # new versions are published to the RubyGems registry
-  - package_manager: "javascript"
-    directory: "/"
-    update_schedule: "weekly"
-
-    # Apply default reviewer and label to created
-    # pull requests
-    default_reviewers:
-      - "smolespi"
-    default_labels:
-      - "dependabot"
-    commit_message:
-      prefix: "chore:"
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+    day: friday
+    time: "18:00"
+  open-pull-requests-limit: 10
+  versioning-strategy: increase
+  commit-message:
+    prefix: "chore: "
+  labels:
+    - "dependabot"
