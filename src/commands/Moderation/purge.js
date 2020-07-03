@@ -21,7 +21,7 @@ class purgeCommand extends Command {
     // Checks purge amount and member to purge
     if (isNaN(amount)) return this.bot.embed("❌ Error", "No **valid amount** was provided.", msg, "error");
     if (amount <= 0) return this.bot.embed("❌ Error", "You can't purge less than one message.", msg, "error");
-    if (amount > 200) return this.bot.embed("❌ Error", "You can only purge up to 200 messages at a time.", msg, "error");
+    if (amount > 100) return this.bot.embed("❌ Error", "You can only purge up to 100 messages at a time.", msg, "error");
 
     // Waits for a response
     const purgemsg = await this.bot.embed("💣 Purge", `Are you sure you want to purge **${amount}** messages?`, msg);
