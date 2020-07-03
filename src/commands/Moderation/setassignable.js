@@ -3,7 +3,7 @@ const Command = require("../../structures/Command");
 class setassignableCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["addassign", "addassignable", "addassignablerole", "assignablerole", "makeassign", "makeassignable", "makeassignablerole"],
+      aliases: ["addassign", "addassignable", "addassignablerole", "assignablerole", "makeassign", "makeassignable"],
       args: "<role:role>",
       description: "Sets a role to be assignable.",
       staff: true,

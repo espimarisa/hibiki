@@ -3,7 +3,7 @@ const Command = require("../../structures/Command");
 class removeassignableCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["removeassign", "removeassignablerole", "rmassign", "rmassignable", "unassignable", "unassignablerole"],
+      aliases: ["removeassign", "removeassignablerole", "rmassign", "rmassignable", "unassignable"],
       args: "<role:role>",
       description: "Makes an assignable role unassignable.",
       staff: true,
