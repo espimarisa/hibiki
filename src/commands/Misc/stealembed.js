@@ -5,7 +5,7 @@ const { inspect } = require("util");
 class stealembedCommand extends Command {
   constructor(...args) {
     super(...args, {
-      description: "Grabs an embed object from a message.",
+      description: "Sends the richembed data from a message.",
     });
   }
 

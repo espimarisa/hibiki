@@ -48,13 +48,57 @@ class twitterCommand extends Command {
       inline: true,
     });
 
-    if (body.friends_count) fields.push({ name: "Following", value: `${body.friends_count === 0 ? "Nobody" : body.friends_count}`, inline: true });
-    if (body.location) fields.push({ name: "Location", value: `${body.location || "No location"}`, inline: true });
-    if (body.url) fields.push({ name: "Website", value: `[Website](${body.url})`, inline: true });
-    if (body.protected && body.verified) fields.push({ name: "Notes", value: "This account is private and verified." });
-    if (body.verified && !body.protected) fields.push({ name: "Notes", value: "This account is verified." });
-    if (body.protected && !body.verified) fields.push({ name: "Notes", value: "This account is private." });
-    if (body.status) fields.push({ name: "Latest Tweet", value: body.status.text });
+    if (body.friends_count) {
+      fields.push({
+        name: "Following",
+        value: `${body.friends_count === 0 ? "Nobody" : body.friends_count}`,
+        inline: true,
+      });
+    }
+
+    if (body.location) {
+      fields.push({
+        name: "Location",
+        value: `${body.location}`,
+        inline: true,
+      });
+    }
+
+    if (body.url) {
+      fields.push({
+        name: "Website",
+        value: `[Website](${body.url})`,
+        inline: true,
+      });
+    }
+
+    if (body.protected && body.verified) {
+      fields.push({
+        name: "Notes",
+        value: "This account is private and verified.",
+      });
+    }
+
+    if (body.verified && !body.protected) {
+      fields.push({
+        name: "Notes",
+        value: "This account is verified.",
+      });
+    }
+
+    if (body.protected && !body.verified) {
+      fields.push({
+        name: "Notes",
+        value: "This account is private.",
+      });
+    }
+
+    if (body.status) {
+      fields.push({
+        name: "Latest Tweet",
+        value: body.status.text,
+      });
+    }
 
     const construct = {
       color: 0x00ACED,
