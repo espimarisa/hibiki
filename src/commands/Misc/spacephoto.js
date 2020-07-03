@@ -1,19 +1,19 @@
 const Command = require("../../structures/Command");
 const fetch = require("node-fetch");
 
-class nasaimageCommand extends Command {
+class spacephotoCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["nasa", "nasaimg", "space", "spaceimage", "spaceimg", "spacephoto"],
+      aliases: ["nasa", "nasaimg", "space", "spaceimage", "spaceimg"],
       args: "<query:string>",
-      description: "Sends an image from NASAs archive.",
+      description: "Sends a space photo from NASAs archive.",
       cooldown: 3,
     });
   }
 
   async run(msg, args) {
     // Fetches the API
-    const nasamsg = await this.bot.embed("☄ NASA Image", "Searching NASA's archive...", msg);
+    const nasamsg = await this.bot.embed("☄ Space Image", "Searching NASA's archive...", msg);
     const body = await fetch(`https://images-api.nasa.gov/search?media_type=image&q=${encodeURIComponent(args.join(" "))}`)
       .then(async res => await res.json().catch(() => {}));
     const images = body.collection.items;
@@ -22,7 +22,7 @@ class nasaimageCommand extends Command {
 
     nasamsg.edit({
       embed: {
-        title: "☄ NASA Image",
+        title: "☄ Space Image",
         description: data.data[0].description.length > 2000 ? `${data.data[0].description.substring(0, 2000)}...` : data.data[0].description,
         color: 0x0B3D91,
         image: {
@@ -37,4 +37,4 @@ class nasaimageCommand extends Command {
   }
 }
 
-module.exports = nasaimageCommand;
+module.exports = spacephotoCommand;

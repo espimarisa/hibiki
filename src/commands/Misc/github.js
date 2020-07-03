@@ -29,7 +29,15 @@ class githubCommand extends Command {
       if (body.owner && body.owner.login && !body.source) fields.push({ name: "Owner", value: body.owner.login, inline: true });
       if (body.fork) fields.push({ name: "Owner", value: `Forked from ${body.source.full_name}`, inline: true });
       if (body.language) fields.push({ name: "Main Language", value: `${body.language}`, inline: true });
-      if (body.license && body.license.spdx_id !== "NOASSERTION") fields.push({ name: "License", value: `${body.license.spdx_id}`, inline: true });
+
+      if (body.license && body.license.spdx_id !== "NOASSERTION") {
+        fields.push({
+          name: "License",
+          value: `${body.license.spdx_id}`,
+          inline: true,
+        });
+      }
+
       if (body.stargazers_count > 0) fields.push({ name: "Stars", value: body.stargazers_count, inline: true });
       if (body.subscribers_count > 0) fields.push({ name: "Watching", value: body.subscribers_count, inline: true });
       if (body.open_issues > 0) fields.push({ name: "Open Issues", value: body.open_issues, inline: true });
@@ -58,48 +66,48 @@ class githubCommand extends Command {
       msg.channel.createMessage({
         embed: embed,
       });
-    } else {
-      // Looks for a user
-      const body = await fetch(`https://api.github.com/users/${encodeURIComponent(args.join(""))}`, {
-        headers: {
-          "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
-          "Authorization": `Token ${this.bot.key.github}`,
-        },
-      }).then(async res => await res.json().catch(() => {}));
-      if (!body || !body.id || body.message) return this.bot.embed("❌ Error", "No information found.", msg, "error");
-
-      const fields = [];
-      if (body.created_at) fields.push({ name: "Created", value: format.date(body.created_at) });
-      if (body.public_repos > 0) fields.push({ name: "Repos", value: body.public_repos, inline: true });
-      if (body.public_gists > 0) fields.push({ name: "Gists", value: body.public_gists, inline: true });
-      if (body.followers > 0) fields.push({ name: "Followers", value: body.followers, inline: true });
-      if (body.following > 0) fields.push({ name: "Following", value: body.following, inline: true });
-      if (body.location) fields.push({ name: "Location", value: `${body.location}`, inline: true });
-      if (body.blog) fields.push({ name: "Website", value: `${body.blog}`, inline: true });
-      if (body.email) fields.push({ name: "Email", value: `${body.email}`, inline: true });
-
-      const embed = {
-        color: 0x7DBBE6,
-        fields: fields,
-        author: {
-          name: `${body.login} (${body.id})`,
-          icon_url: body.avatar_url,
-          url: body.html_url,
-        },
-        thumbnail: {
-          url: body.avatar_url,
-        },
-        footer: {
-          text: `Ran by ${this.bot.tag(msg.author)}`,
-          icon_url: msg.author.dynamicAvatarURL(),
-        },
-      };
-
-      if (body.bio) embed.description = body.bio;
-      msg.channel.createMessage({
-        embed: embed,
-      });
     }
+
+    // Looks for a user
+    const body = await fetch(`https://api.github.com/users/${encodeURIComponent(args.join(""))}`, {
+      headers: {
+        "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
+        "Authorization": `Token ${this.bot.key.github}`,
+      },
+    }).then(async res => await res.json().catch(() => {}));
+    if (!body || !body.id || body.message) return this.bot.embed("❌ Error", "No information found.", msg, "error");
+
+    const fields = [];
+    if (body.created_at) fields.push({ name: "Created", value: format.date(body.created_at) });
+    if (body.public_repos > 0) fields.push({ name: "Repos", value: body.public_repos, inline: true });
+    if (body.public_gists > 0) fields.push({ name: "Gists", value: body.public_gists, inline: true });
+    if (body.followers > 0) fields.push({ name: "Followers", value: body.followers, inline: true });
+    if (body.following > 0) fields.push({ name: "Following", value: body.following, inline: true });
+    if (body.location) fields.push({ name: "Location", value: `${body.location}`, inline: true });
+    if (body.blog) fields.push({ name: "Website", value: `${body.blog}`, inline: true });
+    if (body.email) fields.push({ name: "Email", value: `${body.email}`, inline: true });
+
+    const embed = {
+      color: 0x7DBBE6,
+      fields: fields,
+      author: {
+        name: `${body.login} (${body.id})`,
+        icon_url: body.avatar_url,
+        url: body.html_url,
+      },
+      thumbnail: {
+        url: body.avatar_url,
+      },
+      footer: {
+        text: `Ran by ${this.bot.tag(msg.author)}`,
+        icon_url: msg.author.dynamicAvatarURL(),
+      },
+    };
+
+    if (body.bio) embed.description = body.bio;
+    msg.channel.createMessage({
+      embed: embed,
+    });
   }
 }
 

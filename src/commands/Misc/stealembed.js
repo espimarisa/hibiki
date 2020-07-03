@@ -26,6 +26,7 @@ class stealembedCommand extends Command {
       mode: "cors",
     }).then(async res => await res.json().catch(() => {}));
 
+    if (!body || !body.key) return this.bot.embed("❌ Error", "Failed to upload the embed info. Try again later.", msg, "error");
     this.bot.embed("🔗 Embed Object", `You can view the embed object [here](https://hasteb.in/${body.key}.js).`, msg);
   }
 }
