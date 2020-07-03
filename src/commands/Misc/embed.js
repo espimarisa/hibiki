@@ -149,8 +149,8 @@ class embedCommand extends Command {
         embed[e] = finalhex;
       } else {
         // Image checker
-        if ((e[0] === "image" || e[0] === "thumbnail" || e[0] === "author" || e[0] === "footer") &&
-          (e[1] === "url" || e[1] === "icon_url") && resp.attachments && resp.attachments[0]) resp.content = resp.attachments[0].proxy_url;
+        if ((e[0] === "image" || e[0] === "thumbnail" || e[0] === "author" || e[0] === "footer") && (e[1] === "url" || e[1] === "icon_url") &&
+          resp.attachments && resp.attachments[0]) resp.content = resp.attachments[0].proxy_url;
         let obj = {};
         if (embed[e[0]]) obj = embed[e[0]];
         obj[e[1]] = resp.content;

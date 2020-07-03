@@ -4,7 +4,6 @@ const fetch = require("node-fetch");
 class fortniteCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["fortnitestats"],
       args: "<username:string> [platform:string]",
       description: "Returns Fortnite account stats.",
       requiredkeys: ["gametracker"],
@@ -13,14 +12,17 @@ class fortniteCommand extends Command {
     });
   }
 
-  async run(msg, [username, platform]) {
+  async run(msg, args) {
+    const username = args[0];
+    const platform = args[1];
+
     if (!username) return;
     if (!["psn", "xbox", "pc"].includes(platform) && platform !== undefined) {
-      return this.bot.embed("🤙 Fortnite", "Valid platforms are `pc`, `psn`, and `xbox`.", msg);
+      return this.bot.embed("🎮 Fortnite", "Valid platforms are `pc`, `psn`, and `xbox`.", msg);
     }
 
     // Sends the first embed
-    const fortnitemsg = await this.bot.embed("🤙 Fortnite", "Getting info...", msg);
+    const fortnitemsg = await this.bot.embed("🎮 Fortnite", "Getting info...", msg);
     const body = await fetch(
       `https://api.fortnitetracker.com/v1/profile/${platform !== undefined ? encodeURIComponent(platform) : "pc"}/${encodeURIComponent(username)}`, {
         headers: {
@@ -31,13 +33,55 @@ class fortniteCommand extends Command {
 
     if (!body || body.error || !body.lifeTimeStats) return this.bot.embed.edit("❌ Error", "No information found.", fortnitemsg, "error");
 
+    // Embed fields
     const fields = [];
-    if (body.lifeTimeStats[8].value) fields.push({ name: "Wins", value: body.lifeTimeStats[8].value, inline: true });
-    if (body.lifeTimeStats[7].value) fields.push({ name: "Matches", value: body.lifeTimeStats[7].value, inline: true });
-    if (body.lifeTimeStats[10].value) fields.push({ name: "Kills", value: body.lifeTimeStats[10].value, inline: true });
-    if (body.lifeTimeStats[6].value) fields.push({ name: "Score", value: body.lifeTimeStats[6].value, inline: true });
-    if (body.lifeTimeStats[11].value) fields.push({ name: "K/D Ratio", value: body.lifeTimeStats[11].value, inline: true });
-    if (body.lifeTimeStats[9].value) fields.push({ name: "Win Percent", value: body.lifeTimeStats[9].value, inline: true });
+    if (body.lifeTimeStats[8].value) {
+      fields.push({
+        name: "Wins",
+        value: body.lifeTimeStats[8].value,
+        inline: true,
+      });
+    }
+
+    if (body.lifeTimeStats[7].value) {
+      fields.push({
+        name: "Matches",
+        value: body.lifeTimeStats[7].value,
+        inline: true,
+      });
+    }
+
+    if (body.lifeTimeStats[10].value) {
+      fields.push({
+        name: "Kills",
+        value: body.lifeTimeStats[10].value,
+        inline: true,
+      });
+    }
+
+    if (body.lifeTimeStats[6].value) {
+      fields.push({
+        name: "Score",
+        value: body.lifeTimeStats[6].value,
+        inline: true,
+      });
+    }
+
+    if (body.lifeTimeStats[11].value) {
+      fields.push({
+        name: "K/D Ratio",
+        value: body.lifeTimeStats[11].value,
+        inline: true,
+      });
+    }
+
+    if (body.lifeTimeStats[9].value) {
+      fields.push({
+        name: "Win Percent",
+        value: body.lifeTimeStats[9].value,
+        inline: true,
+      });
+    }
 
     fortnitemsg.edit({
       embed: {
