@@ -13,6 +13,8 @@
 *.sh text eol=lf
 *.ts text eol=lf
 *.tsx text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
 
 *.bmp binary
 *.gif binary
