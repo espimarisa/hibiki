@@ -93,7 +93,10 @@ class remindCommand extends Command {
     // Checks for valid time
     if (val < 1000) return this.bot.embed("❌ Error", "You provided an invalid amount of time.", msg, "error");
     const finaldate = new Date().getTime() + val;
-    if (finaldate > new Date().getTime() + 2142720000) return this.bot.embed("❌ Error", "The time amount must be under 25 days.", msg, "error");
+
+    if (finaldate > new Date().getTime() + 2142720000) {
+      return this.bot.embed("❌ Error", "The time amount must be under 25 days.", msg, "error");
+    }
 
     // Creates the reminder
     const id = Snowflake();

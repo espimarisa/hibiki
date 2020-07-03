@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Colors
+ * @description Functions for converting colors and their names
+ * @module colors
+ */
+
 module.exports = {
   init: function() {
     let color, rgb;

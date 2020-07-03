@@ -24,6 +24,7 @@ class osuCommand extends Command {
       .then(async res => await res.json().catch(() => {}));
     if (!body.length) return this.bot.embed("❌ Error", "Account not found.", msg, "error");
     const data = body[0];
+
     if (!data.pp_raw && !data.playcount && !data.level && !data.accuracy && !data.playcount) {
       return this.bot.embed("❌ Error", "The account provided has no data.", msg, "error");
     }

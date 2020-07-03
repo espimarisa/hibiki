@@ -29,7 +29,8 @@ class steamCommand extends Command {
 
     if (!steamid) {
       id = await fetch(
-        `http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${this.bot.key.steam}&vanityurl=${encodeURIComponent(args[0])}`,
+        "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/" +
+        `?key=${this.bot.key.steam}&vanityurl=${encodeURIComponent(args[0])}`,
       ).then(async res => await res.json().catch(() => {}));
 
       if (!id || id.response.success !== 1) {
@@ -41,29 +42,36 @@ class steamCommand extends Command {
 
     // Gets summary info
     const steamsg = await this.bot.embed("🎮 Steam", "Waiting for a response from Steam...", msg);
-    profile = await fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${this.bot.key.steam}&steamids=${steamid}`)
-      .then(async res => await res.json().catch(() => {}));
+    profile = await fetch(
+      "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/" +
+      `?key=${this.bot.key.steam}&steamids=${steamid}`,
+    ).then(async res => await res.json().catch(() => {}));
     profile = profile.response.players[0];
 
     // Gets ban info
-    bans = await fetch(`http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=${this.bot.key.steam}&steamids=${steamid}`)
-      .then(async res => await res.json().catch(() => {}));
+    bans = await fetch(
+      "http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/" +
+      `?key=${this.bot.key.steam}&steamids=${steamid}`,
+    ).then(async res => await res.json().catch(() => {}));
     bans = bans.players[0];
 
     // Gets owned games
-    games = await fetch(`https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?steamid=${steamid}
-      &include_appinfo=1&include_played_free_games=1&key=${this.bot.key.steam}`)
-      .then(async res => await res.json().catch(() => {}));
+    games = await fetch(
+      "https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/" +
+      `?steamid=${steamid}&include_appinfo=1&include_played_free_games=1&key=${this.bot.key.steam}`,
+    ).then(async res => await res.json().catch(() => {}));
     games = games.response;
 
     // Gets steam level
-    steamlvl = await fetch(`https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?steamid=${steamid}&key=${this.bot.key.steam}`)
-      .then(async res => await res.json().catch(() => {}));
+    steamlvl = await fetch(
+      "https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/" +
+      `?steamid=${steamid}&key=${this.bot.key.steam}`,
+    ).then(async res => await res.json().catch(() => {}));
     steamlvl = steamlvl.response.player_level;
 
-    // Gets bio
-    description = await fetch(`http://steamcommunity.com/profiles/${steamid}`)
-      .then(async res => await res.text().catch(() => {}));
+    // Gets bio (might break in the future)
+    description = await fetch(`http://steamcommunity.com/profiles/${steamid}`).then(async res => await res.text().catch(() => {}));
+
     description = /<div class="profile_summary">[\s\n]{0,}([\w\d\s;_\-,.]{0,512})<\/div>/.exec(description);
     if (description) description = description[1];
     if (!description || description === "No information given.") description = null;
