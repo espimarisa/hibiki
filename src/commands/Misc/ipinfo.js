@@ -13,8 +13,9 @@ class ipinfoCommand extends Command {
   }
 
   async run(msg, args) {
-    const body = await fetch(`https://ipinfo.io/${encodeURIComponent(args.join(" "))}/json?token=${encodeURIComponent(this.bot.key.ipinfo)}`)
-      .then(async res => await res.json().catch(() => {}));
+    const body = await fetch(
+      `https://ipinfo.io/${encodeURIComponent(args.join(" "))}/json?token=${encodeURIComponent(this.bot.key.ipinfo)}`,
+    ).then(async res => await res.json().catch(() => {}));
 
     const abuseinfo = await fetch(`https://api.abuseipdb.com/api/v2/check?ipAddress=${encodeURIComponent(args.join(" "))}`, {
       headers: {
