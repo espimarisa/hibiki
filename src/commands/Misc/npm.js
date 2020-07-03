@@ -18,8 +18,14 @@ class npmCommand extends Command {
     if (body.error || !body["dist-tags"]) return this.bot.embed("❌ Error", "Package not found.", msg, "error");
     const pkg = body.versions[body["dist-tags"].latest];
 
+    // Embed fields
     const fields = [];
-    if (pkg.keywords && pkg.keywords.length > 0) fields.push({ name: "Keywords", value: `${pkg.keywords.map(k => `\`${k}\``).join(", ")}` });
+    if (pkg.keywords && pkg.keywords.length > 0) {
+      fields.push({
+        name: "Keywords",
+        value: `${pkg.keywords.map(k => `\`${k}\``).join(", ")}`,
+      });
+    }
 
     fields.push({
       name: "Link",
@@ -34,7 +40,14 @@ class npmCommand extends Command {
 
     if (body.license && !body.license.type) fields.push({ name: "License", value: `${body.license}`, inline: true });
     if (body.license.type) fields.push({ name: "License", value: `${body.license.type}`, inline: true });
-    if (pkg.maintainers.length) fields.push({ name: "Maintainers", value: pkg.maintainers.map(m => `\`${m.name}\``).join(", "), inline: true });
+
+    if (pkg.maintainers.length) {
+      fields.push({
+        name: "Maintainers",
+        value: pkg.maintainers.map(m => `\`${m.name}\``).join(", "),
+        inline: true,
+      });
+    }
 
     if (body.time.created) {
       fields.push({
