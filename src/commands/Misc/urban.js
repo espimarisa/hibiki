@@ -22,6 +22,7 @@ class urbanCommand extends Command {
     const topword = body.list.sort((a, b) => b.thumbs_up - a.thumbs_up);
     const word = topword[0];
     if (!topword || !word || !word.definition) return this.bot.embed("❌ Error", "No definition found.", msg, "error");
+
     // Cleans up definitions & examples
     word.definition = topword[0].definition.replace(/[[\]]/g, "");
     word.example = topword[0].example.replace(/[[\]]/g, "");
