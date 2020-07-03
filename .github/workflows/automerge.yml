@@ -1,4 +1,4 @@
-name: Dependabot Merges
+name: Dependabot Auto-Merge
 
 on:
   check_suite:
@@ -17,6 +17,7 @@ on:
 
 jobs:
   auto-merge:
+    name: "Automatically merges Dependabot PRs"
     runs-on: ubuntu-latest
     steps:
       - name: auto-merge
