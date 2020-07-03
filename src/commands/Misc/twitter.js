@@ -23,10 +23,10 @@ class twitterCommand extends Command {
     if (!body) return this.bot.embed("❌ Error", "Account not found.", msg, "error");
 
     if (body.errors) {
-      if (body.errors[0].code === 215) return this.bot.embed("❌ Error", "Unauthorized to access the Twitter API.", msg, "error");
-      if (body.errors[0].code === 403) return this.bot.embed("❌ Error", "Couldn't return any info. Try again later.", msg, "error");
+      if (body.errors[0].code === 215) return this.bot.embed("❌ Error", "Unauthorized. Try again later.", msg, "error");
+      if (body.errors[0].code === 403) return this.bot.embed("❌ Error", "Couldn't find any info. Try again later.", msg, "error");
       if (body.errors[0].code === 50) return this.bot.embed("❌ Error", "Account not found.", msg, "error");
-      if (body.errors[0].code === 63) return this.bot.embed("❌ Error", "This user has been suspended.", msg, "error");
+      if (body.errors[0].code === 63) return this.bot.embed("❌ Error", "Account has been suspended.", msg, "error");
     }
 
     const fields = [];
