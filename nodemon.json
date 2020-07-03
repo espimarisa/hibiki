@@ -1,6 +1,6 @@
 {
   "delay": "4000",
-  "exec": "cross-env NODE_ENV=development node ./src/index.js",
+  "exec": "node ./src/index.js",
   "ext": "js",
   "ignore": ["node_modules", "rethinkdb_data"],
   "watch": ["src"]
