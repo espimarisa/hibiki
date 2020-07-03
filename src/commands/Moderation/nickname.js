@@ -46,7 +46,6 @@ class nicknameCommand extends Command {
     try {
       await msg.channel.guild.members.get(user.id).edit({ nick: nickname }, `Changed by ${this.bot.tag(msg.author, true)}`);
     } catch (err) {
-      console.error(err);
       return this.bot.embed("❌ Error", `Failed to change **${user.username}**'s nickname.`, msg, "error");
     }
 

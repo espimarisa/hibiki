@@ -40,7 +40,7 @@ class purgeCommand extends Command {
       }).map(m => m.id);
 
       // Deletes the messages
-      this.bot.deleteMessages(msg.channel.id, toPurge, `Purged by ${this.bot.tag(msg.author, true)}`).catch(err => (console.error(err)));
+      this.bot.deleteMessages(msg.channel.id, toPurge, `Purged by ${this.bot.tag(msg.author, true)}`).catch(() => {});
 
       // TODO: add amnt that failed
       const finalmsg = await this.bot.embed("💣 Purge", `**${amount}** messages were purged by **${msg.author.username}**.`, msg);
