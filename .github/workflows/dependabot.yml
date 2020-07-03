@@ -1,10 +1,10 @@
-name: Dependabot PRs
+name: Dependabot Auto-Approval
 on: pull_request
 
 jobs:
   approve:
     name: Automatically approve Dependabot PRs
-    if: github.actor == "dependabot[bot]" || github.actor == "dependabot-preview[bot]""
+    if: github.actor == "dependabot[bot]" || github.actor == "dependabot-preview[bot]"
     runs-on: ubuntu-latest
     steps:
     - uses: hmarr/auto-approve-action@v2.0.0
