@@ -19,6 +19,7 @@ class prefixCommand extends Command {
         id: msg.channel.guild.id,
         prefix: this.bot.config.prefixes[0],
       }).run();
+
       return this.bot.embed("🤖 Prefix", `The prefix in this server is \`${this.bot.config.prefixes[0]}\`.`, msg);
     }
 

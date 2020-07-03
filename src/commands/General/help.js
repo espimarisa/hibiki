@@ -6,11 +6,11 @@ const backEmoji = "⬅️";
 const categoryEmojis = {
   Fun: "🎉",
   General: "🤖",
-  Miscellaneous: "✨",
+  Misc: "✨",
   Moderation: "🔨",
-  Music: "🎵",
   NSFW: "🔞",
   Roleplay: "❤️",
+  All: "📚",
 };
 
 class helpCommand extends Command {
@@ -36,13 +36,10 @@ class helpCommand extends Command {
           label = `${categoryEmojis.General} General commands`;
           break;
         case "Misc":
-          label = `${categoryEmojis.Miscellaneous} Miscellaneous commands`;
+          label = `${categoryEmojis.Misc} Misc commands`;
           break;
         case "Moderation":
           label = `${categoryEmojis.Moderation} Moderation commands`;
-          break;
-        case "Music":
-          label = `${categoryEmojis.Music} Music commands`;
           break;
         case "NSFW":
           label = `${categoryEmojis.NSFW} NSFW commands`;
@@ -53,6 +50,9 @@ class helpCommand extends Command {
         case "Roleplay":
           label = `${categoryEmojis.Roleplay} Roleplay commands`;
           break;
+        case "All":
+          label = `${categoryEmojis.All} All commands`;
+          break;
         default:
           label = "Uncategorized commands";
           break;
@@ -61,7 +61,7 @@ class helpCommand extends Command {
     }
 
     // Formats cmd usage
-    function cmdusage(argString, delimiter) {
+    function commandUsage(argString, delimiter) {
       const argObj = [];
       argString.split(delimiter).forEach(arg => {
         const r = /(<|\[)(\w{1,}):(\w{1,})&?([\w=*]{1,})?(>|\])/.exec(arg);
@@ -146,9 +146,10 @@ class helpCommand extends Command {
 
         omsg.edit({
           embed: {
-            title: `📚 Run ${db && db.prefix ? db.prefix : this.bot.config.prefixes[0]}help <command> to get help for a specific command.`,
+            title: `${categoryEmojis[category[0]]} Run ${db && db.prefix ? db.prefix : this.bot.config.prefixes[0]}` +
+              `help <command> to get help for a specific command.`,
             color: this.bot.embed.color("general"),
-            description: `${categoryEmoji(category[0])} \n ${finalCommands.join(", ")}`,
+            description: `${finalCommands.join(", ")}`,
             footer: {
               text: `Ran by ${this.bot.tag(msg.author)} | ${categorycmds.length} ${category[0].toLowerCase()} commands`,
               icon_url: msg.author.dynamicAvatarURL(),
@@ -195,7 +196,7 @@ class helpCommand extends Command {
       if (cmd.args) {
         construct.push({
           name: "Usage",
-          value: cmdusage(cmd.args, " "),
+          value: commandUsage(cmd.args, " "),
           inline: false,
         });
       }

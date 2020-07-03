@@ -138,7 +138,7 @@ class userCommand extends Command {
       });
     }
 
-    if (usercfg && usercfg.country) {
+    /* if (usercfg && usercfg.country) {
       fields.push({
         name: "Country",
         value: usercfg.country,
@@ -160,7 +160,7 @@ class userCommand extends Command {
         value: usercfg.pronouns,
         inline: true,
       });
-    }
+    } */
 
     if (cookies && cookies.amount > 0 || pointcount || warningcount) {
       fields.push({
