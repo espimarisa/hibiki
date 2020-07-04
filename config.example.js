@@ -21,7 +21,6 @@ module.exports = {
 
   dashboard: {
     cookiesecret: "",
-    id: "",
     secret: "",
     port: "",
     redirect_uri: "http://localhost:port/login/callback",
