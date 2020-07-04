@@ -30,8 +30,8 @@ You can invite the main application [here][4]. Any other instances of Hibiki are
 
    ... and many more!
 
-## Hosting & Setup
-Refer to the [wiki][5] for a self-hosting guide &amp; other important information.
+## Hosting
+Refer to the [wiki][5] for a self-hosting guide.
 
 ## License
 This source is licensed under the [GNU AGPL-v3][6] or later.

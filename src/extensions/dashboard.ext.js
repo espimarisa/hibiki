@@ -67,7 +67,7 @@ module.exports = (bot) => {
   passport.deserializeUser((obj, done) => { done(null, obj); });
 
   // Creates Discord passport
-  passport.use(new strategy({ clientID: config.id, clientSecret: config.secret, callbackURL: config.redirect_uri, scope: scope },
+  passport.use(new strategy({ clientID: bot.user.id, clientSecret: config.secret, callbackURL: config.redirect_uri, scope: scope },
     (_accessToken, _refreshToken, profile, done) => {
       process.nextTick(() => {
         return done(null, profile);
