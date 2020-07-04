@@ -63,7 +63,7 @@ class githubCommand extends Command {
       };
 
       if (body.description) embed.description = body.description;
-      msg.channel.createMessage({
+      return msg.channel.createMessage({
         embed: embed,
       });
     }
