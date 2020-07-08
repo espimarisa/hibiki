@@ -18,20 +18,22 @@ class nhentaiCommand extends Command {
     let book;
     // Looks for a valid ID
     if (args.length && /\d{1,6}/.test(args.join(" "))) {
-      const body = await fetch(`https://nhentai.net/api/gallery/${args.join(" ")}`).then(async res => await res.json().catch(() => {}));
+      const body = await fetch(`https://nhentai.net/api/gallery/${encodeURIComponent(args.join(" "))}`)
+        .then(async res => await res.json().catch(() => {}));
       book = body;
     } else if (args.length) {
       // Searches
-      const id = await fetch(`https://nhentai.net/api/galleries/search?query=${encodeURIComponent(args.join(" "))}`).then(async res => await res
-        .json().catch(() => {}));
-      if (!id.result || !id.result.length) return msg.channel.createMessage(this.bot.embed("❌ Error", "Doujin not found.", "error"));
-      const body = await fetch(`https://nhentai.net/api/gallery/${id.result[0].id}`).then(async res => await res.json().catch(() => {}));
-      if (!body) return msg.channel.createMessage(this.bot.embed("❌ Error", "No doujin found. Try again later.", "error"));
+      const id = await fetch(`https://nhentai.net/api/galleries/search?query=${encodeURIComponent(args.join(" "))}`)
+        .then(async res => await res.json().catch(() => {}));
+      if (!id.result || !id.result.length) return this.bot.embed("❌ Error", "Doujin not found.", msg, "error");
+      const body = await fetch(`https://nhentai.net/api/gallery/${id.result[0].id}`)
+        .then(async res => await res.json().catch(() => {}));
+      if (!body) return this.bot.embed("❌ Error", "No doujin found. Try again later.", msg, "error");
       book = body;
     } else {
       // Gets a random book
-      const body = await fetch(`https://nhentai.net/api/gallery/${Math.floor(Math.random() * 310000)}`).then(async res => await res.json().catch(
-      () => {}));
+      const body = await fetch(`https://nhentai.net/api/gallery/${Math.floor(Math.random() * 310000)}`)
+        .then(async res => await res.json().catch(() => {}));
       book = body;
     }
 
