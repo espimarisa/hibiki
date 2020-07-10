@@ -24,18 +24,20 @@
   "scripts": {
     "dev": "nodemon",
     "lint": "eslint --fix .",
-    "start": "pm2 start pm2.config.json",
     "setup": "node src/scripts/setup.js",
+    "start": "pm2 start pm2.config.json && pm2 logs",
     "test": "eslint ."
   },
   "dependencies": {
     "@sentry/node": "^5.19.0",
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cookie-session": "^1.4.0",
     "ejs": "^3.1.3",
     "eris": "^0.13.3",
     "eris-additions": "^1.4.1",
     "express": "^4.17.1",
-    "express-session": "^1.17.1",
+    "helmet": "^3.23.3",
     "node-fetch": "^2.6.0",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
