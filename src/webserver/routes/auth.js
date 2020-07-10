@@ -7,21 +7,12 @@ const router = express.Router();
 const scope = ["identify", "guilds"];
 
 module.exports = (bot) => {
-  // Gets authed user's data
-  const getAuthedUser = user => ({
-    username: user.username,
-    discriminator: user.discriminator,
-    guilds: user.guilds,
-    id: user.id,
-    avatar: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : "https://cdn.discordapp.com/embed/avatars/0.png",
-  });
-
   // Passport strategy
   passport.use(new discordStrategy({
     clientID: bot.user.id,
     clientSecret: config.secret,
     callbackURL: config.redirect_uri,
-    scope: ["identify, guilds"],
+    scope: scope,
   }, (accessToken, refreshToken, profile, done) => {
     process.nextTick(() => {
       return done(null, profile);
