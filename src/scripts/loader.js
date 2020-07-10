@@ -107,6 +107,8 @@ module.exports.extensions = async function loadExtensions(bot) {
     bot.extensions.forEach(e => e(bot));
     bot.log.info(`${bot.extensions.length} extensions loaded`);
   }
+
+  require("../webserver/app")(bot);
 };
 
 /**
