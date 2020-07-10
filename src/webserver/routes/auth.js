@@ -1,12 +1,11 @@
 const discordStrategy = require("passport-discord").Strategy;
 const express = require("express");
-const passport = require("passport");
 const config = require("../../../config").dashboard;
 
 const router = express.Router();
 const scope = ["identify", "guilds"];
 
-module.exports = (bot) => {
+module.exports = (bot, passport) => {
   // Passport strategy
   passport.use(new discordStrategy({
     clientID: bot.user.id,

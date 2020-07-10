@@ -43,10 +43,15 @@ module.exports = (bot) => {
   app.use("/public/", express.static(`${__dirname}/public`, { dotfiles: "allow" }));
   app.set("view engine", "ejs");
 
+  app.use((rq, rs, nx) => {
+      console.log(rq.isAuthenticated(), rq.user);
+      nx();
+  });
+
   // Routes
   app.use("/", require("./routes/index")(bot));
-  app.use("/auth/", require("./routes/auth")(bot));
-  app.use("/manage/", require("./routes/manage")(bot));
+  app.use("/auth/", require("./routes/auth")(bot, passport));
+  app.use("/manage/", require("./routes/manage")(bot, passport));
   // app.use("/api/", require("./routes/api")(bot));
 
   // 404 handler
