@@ -7,7 +7,7 @@ module.exports = {
     status: "online",
     statuses: ["help", "guilds", "users", "version"],
     statustype: 3,
-    statusurl: "",
+    statusurl: "https://twitch.tv/.",
     support: "gZEj4sM",
     token: "",
   },
