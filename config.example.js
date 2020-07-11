@@ -23,7 +23,7 @@ module.exports = {
     cookiesecret: "",
     secret: "",
     port: "",
-    redirect_uri: "http://localhost:port/login/callback",
+    redirect_uri: "http://localhost:port/auth/callback",
   },
 
   options: {
