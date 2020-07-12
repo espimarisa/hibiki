@@ -6,8 +6,6 @@ module.exports = (bot) => {
   // Checks if user is authenticated
   const checkAuth = (req, res, next) => {
     if (req.isAuthenticated()) return next();
-    // return true, you fucker!
-    // console.log(req.isAuthenticated());
     return res.redirect("../../auth/");
   };
 
