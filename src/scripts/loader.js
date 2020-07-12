@@ -9,8 +9,9 @@ const path = require("path");
 
 const command_directory = path.join(__dirname, "../commands");
 const event_directory = path.join(__dirname, "../events");
-const extension_directory = path.join(__dirname, "../extensions");
 const logger_directory = path.join(__dirname, "../loggers");
+const script_directory = path.join(__dirname, "../scripts");
+const webserver_directory = path.join(__dirname, "../webserver");
 
 /**
  * Loads any commands
@@ -78,39 +79,6 @@ module.exports.events = async function loadEvents(bot) {
   bot.log.info(`${bot.events.length} events loaded`);
 };
 
-/**
- * Loads any extensions on first start
- * @param {object} bot Main bot object
- *
- * @example
- * const load = require("../scripts/loader");
- * load.extensions(this.bot);
- */
-
-module.exports.extensions = async function loadExtensions(bot) {
-  const files = readdirSync(extension_directory);
-  files.forEach(ext => {
-    let extension;
-    if (ext.isDirectory) return;
-    if (!ext.endsWith(".ext.js")) return;
-    try {
-      extension = require(`${extension_directory}/${ext}`);
-    } catch (err) {
-      bot.log(`${ext} failed to load: ${err}`);
-    }
-
-    if (!extension) return;
-    if (typeof extension === "function") bot.extensions.push(extension);
-  });
-
-  // Loads extensions; runs
-  if (process.uptime() < 20) {
-    require("../webserver/app")(bot);
-    require("../webserver/voting")(bot);
-    bot.extensions.forEach(e => e(bot));
-    bot.log.info(`${bot.extensions.length} extensions loaded`);
-  }
-};
 
 /**
  * Loads any loggers
@@ -140,6 +108,57 @@ module.exports.loggers = async function loadLoggers(bot) {
 };
 
 /**
+ * Loads any bot scripts
+ * @param {object} bot Main bot object
+ *
+ * @example
+ * const load = require("../scripts/loader");
+ * load.scripts(this.bot);
+ */
+
+module.exports.scripts = async function loadScripts(bot) {
+  const files = readdirSync(script_directory);
+  files.forEach(s => {
+    let script;
+    if (s.isDirectory) return;
+    if (!s.endsWith(".s.js")) return;
+    try {
+      script = require(`${script_directory}/${s}`)(bot);
+    } catch (err) {
+      bot.log(`${s} failed to load: ${err}`);
+    }
+
+    if (!script) return;
+  });
+};
+
+/**
+ * Loads any webservers on first start
+ * @param {object} bot Main bot object
+ *
+ * @example
+ * const load = require("../scripts/loader");
+ * load.webservers(this.bot);
+ */
+
+module.exports.webservers = async function loadWeb(bot) {
+  // Loads web if first boot
+  if (process.uptime() < 20) {
+    const files = readdirSync(webserver_directory);
+    files.forEach(w => {
+      if (w.isDirectory || !w.endsWith(".js")) return;
+      let server;
+      try {
+        server = require(`${webserver_directory}/${w}`);
+        server(bot);
+      } catch (err) {
+        bot.log(`Webserver ${w} failed to load: ${err}`);
+      }
+    });
+  }
+};
+
+/**
  * Loads all items
  * @param {object} bot Main bot object
  *
@@ -152,5 +171,6 @@ module.exports.all = async function loadAll(bot) {
   this.commands(bot);
   this.events(bot);
   this.loggers(bot);
-  this.extensions(bot);
+  this.scripts(bot);
+  this.webservers(bot);
 };

@@ -1,5 +1,5 @@
 /**
- * @fileoverview Monitoring extension
+ * @fileoverview Monitoring script
  * @description Watches steam accounts for bans
  */
 
