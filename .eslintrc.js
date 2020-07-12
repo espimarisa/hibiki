@@ -36,7 +36,7 @@ module.exports = {
     "no-new-object": 1,
     "no-spaced-func": 1,
     "no-trailing-spaces": 1,
-    "no-return-await": 2,
+    "no-return-await": 1,
     "no-undef": 0,
     "no-unneeded-ternary": 1,
     "object-curly-spacing": [1, "always"],
