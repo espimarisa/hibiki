@@ -22,7 +22,7 @@ class githubCommand extends Command {
           "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
           "Authorization": `Token ${this.bot.key.github}`,
         },
-      }).then(async res => await res.json().catch(() => {}));
+      }).then(res => res.json().catch(() => {}));
       if (!body || !body.id || body.message) return this.bot.embed("❌ Error", "No information found.", msg, "error");
 
       const fields = [];
@@ -74,7 +74,7 @@ class githubCommand extends Command {
         "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
         "Authorization": `Token ${this.bot.key.github}`,
       },
-    }).then(async res => await res.json().catch(() => {}));
+    }).then(res => res.json().catch(() => {}));
     if (!body || !body.id || body.message) return this.bot.embed("❌ Error", "No information found.", msg, "error");
 
     const fields = [];

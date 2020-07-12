@@ -29,7 +29,7 @@ class fortniteCommand extends Command {
           "TRN-Api-Key": this.bot.key.gametracker,
           "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
         },
-      }).then(async res => await res.json().catch(() => {}));
+      }).then(res => res.json().catch(() => {}));
 
     if (!body || body.error || !body.lifeTimeStats) return this.bot.embed.edit("❌ Error", "No information found.", fortnitemsg, "error");
 
