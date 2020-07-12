@@ -10,8 +10,9 @@ class Logging {
    * @param {Function} db Main database function
    */
 
-  constructor(db) {
+  constructor(db, id) {
     this.db = db;
+    this.id = id;
   }
 
   /**

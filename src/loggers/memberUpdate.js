@@ -1,25 +1,27 @@
-/*
-  Logs when a member joins or leaves.
-*/
+/**
+ * @fileoverview Member update logger
+ * @description Logs when a member joins or leaves
+ * @module logger/memberUpdate
+ */
 
-const Logging = require("../../structures/Logger");
-const format = require("../../utils/format");
+const Logger = require("../structures/Logger");
+const format = require("../utils/format");
 
 module.exports = (bot) => {
   // Logging database
-  const loggingdb = new Logging(bot.db);
-  const cansend = async (guild) => {
+  const loggingdb = new Logger(bot.db);
+  const canSend = async (guild) => {
     if (!guild || !guild.channels) return;
-    const canlog = await loggingdb.canLog(guild);
-    if (!canlog) return;
+    const canLog = await loggingdb.canLog(guild);
+    if (!canLog) return;
     // Sets type
     const channel = await loggingdb.guildLogging(guild, "memberLogging");
     if (guild.channels.has(channel)) return channel;
   };
 
   // Tries to log
-  const trysend = async (guild, event, embed) => {
-    const channel = await cansend(guild, event);
+  const trySend = async (guild, event, embed) => {
+    const channel = await canSend(guild, event);
     if (channel) {
       bot.createMessage(channel, {
         embed: embed,
@@ -90,11 +92,11 @@ module.exports = (bot) => {
   });
 
   // Logs details about a new member
-  bot.on("loggingMemberAdd", (guild, member) => trysend(guild, "loggingMemberAdd", {
+  bot.on("loggingMemberAdd", (guild, member) => trySend(guild, "loggingMemberAdd", {
     color: bot.embed.color("success"),
     timestamp: new Date(),
     author: {
-      name: `${format.tag(member, true)} joined`,
+      name: `${bot.tag(member, true)} joined`,
       icon_url: member.avatarURL,
     },
     thumbnail: {
@@ -117,11 +119,11 @@ module.exports = (bot) => {
   }));
 
   // Logs details about a member that left
-  bot.on("loggingMemberRemove", (guild, member) => trysend(guild, "loggingMemberRemove", {
+  bot.on("loggingMemberRemove", (guild, member) => trySend(guild, "loggingMemberRemove", {
     color: bot.embed.color("error"),
     timestamp: new Date(),
     author: {
-      name: `${format.tag(member, true)} left`,
+      name: `${bot.tag(member, true)} left`,
       icon_url: member.avatarURL,
     },
     thumbnail: {

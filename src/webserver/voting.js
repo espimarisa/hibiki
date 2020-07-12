@@ -67,5 +67,5 @@ module.exports = (bot) => {
   });
 
   // Listens on port
-  const listener = app.listen(config.port, "0.0.0.0", () => bot.log.info(`Voting handler loaded on port ${listener.address().port}`));
+  const listener = app.listen(config.port, "0.0.0.0", () => bot.log.info(`Voting handler listening on port ${listener.address().port}`));
 };

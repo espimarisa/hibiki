@@ -43,7 +43,8 @@ class Hibiki extends Client {
     this.commands = [];
     this.events = [];
     this.extensions = [];
-    this.sniped = {};
+    this.loggers = [];
+    this.snipeData = {};
 
     this.connect();
     this.editStatus("idle");
