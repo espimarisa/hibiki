@@ -104,15 +104,15 @@ module.exports.extensions = async function loadExtensions(bot) {
 
   // Loads extensions; runs
   if (process.uptime() < 20) {
+    require("../webserver/app")(bot);
+    require("../webserver/voting")(bot);
     bot.extensions.forEach(e => e(bot));
     bot.log.info(`${bot.extensions.length} extensions loaded`);
   }
-
-  require("../webserver/app")(bot);
 };
 
 /**
- * Loads all modules
+ * Loads all items
  * @param {object} bot Main bot object
  *
  * @example
