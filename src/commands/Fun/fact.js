@@ -34,7 +34,7 @@ class factCommand extends Command {
     let fact;
 
     // Sends the fact
-    const body = await fetch(api).then(async res => await res.json().catch(() => {}));
+    const body = await fetch(api).then(res => res.json().catch(() => {}));
     if (!body) return this.bot.embed.edit("❌ Error", "Couldn't send the fact. Try again later.", factmsg, "error");
     if (apiname === "cat") fact = body.fact;
     else if (apiname === "dog") fact = body.facts[0];

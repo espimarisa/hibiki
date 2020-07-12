@@ -15,7 +15,7 @@ class danbooruCommand extends Command {
   async run(msg, args) {
     if (args.length > 2) return this.bot.embed("❌ Error", "You can only search for 2 tags at a time.", msg, "error");
     const body = await fetch(`https://danbooru.donmai.us/posts.json?&tags=${encodeURIComponent(args.join(" "))}`)
-      .then(async res => await res.json().catch(() => {}));
+      .then(res => res.json().catch(() => {}));
 
     if (!body || !body[0] || !body[0].file_url || !body.length) {
       return this.bot.embed("❌ Error", "No posts were found.", msg, "error");

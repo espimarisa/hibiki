@@ -45,7 +45,7 @@ class translateCommand extends Command {
     const body = await fetch(
       "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto" +
       `&tl=${locale}&dt=t&q=${encodeURIComponent(args.join(" "))}`,
-    ).then(async res => await res.json().catch(() => {}));
+    ).then(res => res.json().catch(() => {}));
 
     if (!body || !body[0] || !body[0][0] || !body[0][0][1] || !body[2]) {
       return this.bot.embed("❌ Error", "No translation found.", msg, "error");

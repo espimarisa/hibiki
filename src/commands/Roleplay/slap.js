@@ -17,7 +17,7 @@ class slapCommand extends Command {
         "Authorization": `Wolke ${this.bot.key.weebsh}`,
         "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
       },
-    }).then(async res => await res.json().catch(() => {}));
+    }).then(res => res.json().catch(() => {}));
 
     let image;
     if (body.status !== 200) image = "https://cdn.weeb.sh/images/HkJ6-e91z.gif";
