@@ -1,3 +1,4 @@
+// TODO: figure out what the fuck is going on with auth system
 const discordStrategy = require("passport-discord").Strategy;
 const express = require("express");
 const config = require("../../../config").dashboard;
@@ -21,7 +22,8 @@ module.exports = (bot, passport) => {
   // Auth routes
   router.get("/", passport.authenticate("discord", { scope: scope }));
   router.get("/callback/", passport.authenticate("discord", { failureRedirect: "/auth/fail/" }), (req, res) => {
-    console.log(req.user);
+    // this works !!!! but anywhere else? req.isAuthenticated() returns false, passport is null. the hell is this shit?
+    // console.log(req.user);
     res.redirect("../manage/servers/");
   });
 
@@ -52,7 +54,8 @@ module.exports = (bot, passport) => {
     res.render("429");
   });
 
-  // bodyParser & passport serialization
+  // Passport serialization
+  // This doesn't matter where it is, it did fuckall in app and fuckall here !
   passport.serializeUser((user, done) => done(null, user));
   passport.deserializeUser((user, done) => done(null, user));
 

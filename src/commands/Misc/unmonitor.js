@@ -38,7 +38,7 @@ class unmonitorCommand extends Command {
       id = await fetch(
         "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/" +
         `?key=${this.bot.key.steam}&vanityurl=${encodeURIComponent(args[0])}`,
-      ).then(async res => await res.json().catch(() => {}));
+      ).then(res => res.json().catch(() => {}));
 
       if (!id || id.response.success !== 1) return this.bot.embed("❌ Error", "Account not found.", msg, "error");
       steamid = id.response.steamid;

@@ -2,7 +2,7 @@
   Attempts to detect message spam and punishes spammy members.
 */
 
-const punish = require("./Punishments");
+const punish = require("./punishments");
 
 module.exports = async (msg, bot, cfg) => {
   const spam = bot.antiSpam.filter(s => s.guild === msg.channel.guild.id && s.id === msg.author.id && new Date().getTime() - s.date < 2500);

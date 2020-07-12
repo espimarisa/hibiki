@@ -47,7 +47,7 @@ class guildCreate extends Event {
           "Authorization": this.bot.key.topgg,
           "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
         },
-      }).then(async res => await res.json().catch(() => {}));
+      }).then(res => res.json().catch(() => {}));
       if (!body || body.error) this.bot.log.error("An error occured while updating the top.gg stats.");
     }
 
@@ -61,7 +61,7 @@ class guildCreate extends Event {
           "Authorization": this.bot.key.dbots,
           "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
         },
-      }).then(async res => await res.json().catch(() => {}));
+      }).then(res => res.json().catch(() => {}));
       if (!body || body.message) this.bot.log.error("An error occured while updating the dbots stats.");
     }
   }

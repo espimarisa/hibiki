@@ -15,7 +15,7 @@ class xkcdCommand extends Command {
     // Gets the day's comic
     const comic = args.join("");
     if (comic === "today" || comic === "daily") {
-      const body = await fetch("https://xkcd.com/info.0.json").then(async res => res.json());
+      const body = await fetch("https://xkcd.com/info.0.json").then(res => res.json().catch(() => {}));
       if (!body || !body.num) return this.bot.embed("❌ Error", "Couldn't send the comic. Try again later.", msg, "error");
 
       return msg.channel.createMessage({
@@ -36,7 +36,7 @@ class xkcdCommand extends Command {
 
     // Gets specified comic
     if (args.length) {
-      const body = await fetch(`https://xkcd.com/${comic}/info.0.json`).then(async res => await res.json().catch(() => {}));
+      const body = await fetch(`https://xkcd.com/${comic}/info.0.json`).then(res => res.json().catch(() => {}));
       if (!body || !body.num) return this.bot.embed("❌ Error", "Comic not found.", msg, "error");
 
       return msg.channel.createMessage({

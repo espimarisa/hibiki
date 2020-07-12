@@ -3,16 +3,19 @@
     "source.fixAll.eslint": true
   },
   "vsicons.associations.folders": [{
-      "icon": "template",
-      "extensions": [
-        "structures"
-      ],
-    },
-    {
-      "icon": "db",
-      "extensions": [
-        "rethinkdb_data"
-      ],
-    }
-  ],
+    "icon": "template",
+    "extensions": ["structures"],
+  }, {
+    "icon": "db",
+    "extensions": ["rethinkdb_data"],
+  }, {
+    "icon": "log",
+    "extensions": ["loggers"],
+  }, {
+    "icon": "client",
+    "extensions": ["partials"],
+  }, {
+    "icon": "server",
+    "extensions": ["webserver"],
+  }],
 }

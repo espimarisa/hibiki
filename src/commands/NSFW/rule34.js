@@ -14,7 +14,7 @@ class rule34Command extends Command {
 
   async run(msg, args) {
     const body = await fetch(`https://r34-json-api.herokuapp.com/posts?tags=${encodeURIComponent(args.join(" "))}`)
-      .then(async res => await res.json().catch(() => {}));
+      .then(res => res.json().catch(() => {}));
     if (!body || !body[0]) return this.bot.embed("❌ Error", "No images were found.", msg, "error");
     const random = Math.floor(Math.random() * body.length);
 

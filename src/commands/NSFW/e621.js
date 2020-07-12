@@ -17,7 +17,7 @@ class e621Command extends Command {
       headers: {
         "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
       },
-    }).then(async res => await res.json().catch(() => {}));
+    }).then(res => res.json().catch(() => {}));
 
     if (!body || !body.posts[0] || !body.posts[0].file || !body.posts[0].file.url || !body.posts.length) {
       return this.bot.embed("❌ Error", "No images were found.", msg, "error");

@@ -1,8 +1,10 @@
-/*
-  Logs when added/removed from a guild.
-*/
+/**
+ * @fileoverview Bot guild update logger
+ * @description Logs when the bot is added or removed from a guild
+ * @module logger/botGuildUpdate
+ */
 
-const format = require("../../utils/format");
+const format = require("../utils/format");
 
 module.exports = (bot) => {
   // Logs when added to a server
@@ -30,7 +32,7 @@ module.exports = (bot) => {
           value: format.date(guild.createdAt),
         }, {
           name: "Owner",
-          value: `${format.tag(owner, true)} (${owner.id})`,
+          value: `${bot.tag(owner)} (${owner.id})`,
         }, {
           name: "Members",
           value: `${guild.memberCount - bots} members, ${bots} bots`,
@@ -69,7 +71,7 @@ module.exports = (bot) => {
           value: format.date(guild.createdAt),
         }, {
           name: "Owner",
-          value: `${format.tag(owner, true)} (${owner.id})`,
+          value: `${bot.tag(owner)} (${owner.id})`,
         }, {
           name: "Members",
           value: `${guild.memberCount - bots} members, ${bots} bots`,

@@ -13,7 +13,7 @@ class safebooruCommand extends Command {
 
   async run(msg, args) {
     const body = await fetch(`https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1&tags=${encodeURIComponent(args.join(" "))}`)
-      .then(async res => await res.json().catch(() => {}));
+      .then(res => res.json().catch(() => {}));
 
     if (!body || !body[0].image || !body[0].directory) {
       return this.bot.embed("❌ Error", "No images were found.", msg, "error");

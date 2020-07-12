@@ -17,7 +17,7 @@ class weatherCommand extends Command {
     const location = await fetch(
       "https://nominatim.openstreetmap.org/search/" +
       `${encodeURIComponent(args.join(" "))}/?format=geocodejson`,
-    ).then(async res => await res.json().catch(() => {}));
+    ).then(res => res.json().catch(() => {}));
 
     if (!location || !location.features[0] || !location.features[0].geometry.coordinates) {
       return this.bot.embed("❌ Error", "Location not found.", msg, "error");
@@ -35,7 +35,7 @@ class weatherCommand extends Command {
     const body = await fetch(
       "https://api.openweathermap.org/data/2.5/onecall?" +
       `lat=${latitude}&lon=${longitude}&units=metric&appid=${this.bot.key.weather}`,
-    ).then(async res => await res.json().catch(() => {}));
+    ).then(res => res.json().catch(() => {}));
 
     // Embed fields
     const fields = [];
