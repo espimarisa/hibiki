@@ -1,6 +1,6 @@
 /**
  * @fileoverview Loader
- * @description Loads commands, events, and extensions
+ * @description Loads commands, events, loggers, scripts, and webservers.
  * @module loader
  */
 
