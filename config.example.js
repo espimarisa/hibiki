@@ -59,6 +59,7 @@ module.exports = {
     tables: [
       "blacklist", "economy", "guildcfg", "marriages", "monitoring",
       "mutecache", "points", "reminders", "steammonitor", "usercfg", "warnings",
+      "session",
     ],
   },
 

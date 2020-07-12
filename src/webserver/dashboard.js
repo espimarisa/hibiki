@@ -9,10 +9,11 @@
 
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const cookieSession = require("cookie-session");
+const eSession = require("express-session");
+const session = require("express-session-rethinkdb")(eSession);
 const express = require("express");
 const passport = require("passport");
-const config = require("../../config").dashboard;
+const { dashboard: config, rethink: dbConfig } = require("../../config");
 const app = express();
 
 app.enable("trust proxy", 1);
@@ -20,20 +21,22 @@ app.enable("trust proxy", 1);
 // removing helmet didn't change shit!
 app.use(require("helmet")());
 
-module.exports = (bot) => {
+// Configures session store
+const sessionStore = new session({
+    connectOptions: {
+      host: dbConfig.host,
+      port: dbConfig.port,
+      db: dbConfig.db,
+      user: dbConfig.user || "admin",
+      password: dbConfig.password,
+    },
+});
+module.exports = async (bot) => {
   if (!config || !config.cookiesecret || !config.port || !config.redirect_uri || !config.secret) return;
 
   // Configures bodyParser
   app.use(bodyParser.urlencoded({ extended: true, parameterLimit: 10000, limit: "5mb" }));
   app.use(bodyParser.json({ parameterLimit: 10000, limit: "5mb" }));
-
-  // Configures cookieSession
-  app.use(cookieSession({
-    name: bot.user.username,
-    keys: [config.cookiesecret, config.secret],
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-    signed: true,
-  }));
 
   // Sets headers
   // I was told this would help, we did this in v2 aswell. Made fuckall difference !!
@@ -46,6 +49,15 @@ module.exports = (bot) => {
 
   // Configures cookieParser & starts passport
   app.use(cookieParser(config.cookiesecret));
+  app.use(eSession({
+      secret: config.cookiesecret,
+      store: sessionStore,
+      cookie: {
+          maxAge: 8064e5 * 2,
+      },
+      resave: false,
+      saveUninitialized: false,
+  }));
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -57,8 +69,8 @@ module.exports = (bot) => {
 
   // Routes
   app.use("/", require("./routes/index")(bot));
-  app.use("/auth/", require("./routes/auth")(bot));
-  app.use("/manage/", require("./routes/manage")(bot));
+  app.use("/auth/", require("./routes/auth")(bot, passport));
+  app.use("/manage/", require("./routes/manage")(bot, passport));
   // app.use("/api/", require("./routes/api")(bot));
 
   // 404 handler
