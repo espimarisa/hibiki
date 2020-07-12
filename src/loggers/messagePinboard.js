@@ -22,7 +22,7 @@ module.exports = (bot) => {
       if (msg.reactions[pin] && msg.reactions[pin].count) {
         if (guildcfg.pinSelfPinning && msg.author.id === uid) return;
         if (!guildcfg) {
-          return await bot.db.table("guildcfg").insert({
+          return bot.db.table("guildcfg").insert({
             id: msg.channel.guild.id,
           }).run();
         }
@@ -50,7 +50,7 @@ module.exports = (bot) => {
         // Gets guildcfg
         const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id).run();
         if (!guildcfg) {
-          return await bot.db.table("guildcfg").insert({
+          return bot.db.table("guildcfg").insert({
             id: msg.channel.guild.id,
           }).run();
         }

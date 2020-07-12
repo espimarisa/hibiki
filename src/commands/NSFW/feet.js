@@ -11,7 +11,7 @@ class feetCommand extends Command {
   }
 
   async run(msg) {
-    const body = await fetch("https://nekos.life/api/v2/img/feet").then(async res => await res.json().catch(() => {}));
+    const body = await fetch("https://nekos.life/api/v2/img/feet").then(res => res.json().catch(() => {}));
     if (!body || !body.url) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", msg, "error");
 
     await msg.channel.createMessage({

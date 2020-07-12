@@ -29,7 +29,7 @@ class pointsCommand extends Command {
         body: pointstring,
         method: "POST",
         mode: "cors",
-      }).then(async res => await res.json().catch(() => {}));
+      }).then(res => res.json().catch(() => {}));
 
       return this.bot.embed(
         "❌ Error",

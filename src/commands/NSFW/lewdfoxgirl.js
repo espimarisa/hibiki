@@ -12,7 +12,7 @@ class lewdfoxgirlCommand extends Command {
   }
 
   async run(msg) {
-    const body = await fetch("https://nekos.life/api/v2/img/lewdk").then(async res => await res.json().catch(() => {}));
+    const body = await fetch("https://nekos.life/api/v2/img/lewdk").then(res => res.json().catch(() => {}));
     if (!body || !body.url) return msg.this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", msg, "error");
 
     await msg.channel.createMessage({

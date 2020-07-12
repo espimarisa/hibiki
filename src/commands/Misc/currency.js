@@ -22,7 +22,7 @@ class currencyCommand extends Command {
 
     const body = await fetch(
       `https://api.exchangeratesapi.io/latest?base=${encodeURIComponent(base.toUpperCase())}&symbols=${encodeURIComponent(to.toUpperCase())}`,
-    ).then(async res => await res.json().catch(() => {}));
+    ).then(res => res.json().catch(() => {}));
 
     if (!body) return this.bot.embed("❌ Error", "Failed to send the rates. Try again later.", msg, "error");
     if (body && body.error && body.error !== undefined) return this.bot.embed("❌ Error", "No conversion rates found.", msg, "error");

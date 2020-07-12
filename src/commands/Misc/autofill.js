@@ -13,7 +13,7 @@ class autofillCommand extends Command {
 
   async run(msg, args) {
     const body = await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(args.join(" "))}`)
-      .then(async res => await res.json().catch(() => {}));
+      .then(res => res.json().catch(() => {}));
 
     if (!body || !body[1].length) return this.bot.embed("❌ Error", "No results found.", msg, "error");
     this.bot.embed("✏ Autofill", body[1].join("\n"), msg);

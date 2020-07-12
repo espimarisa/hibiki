@@ -15,7 +15,7 @@ class ipinfoCommand extends Command {
   async run(msg, args) {
     const body = await fetch(
       `https://ipinfo.io/${encodeURIComponent(args.join(" "))}/json?token=${encodeURIComponent(this.bot.key.ipinfo)}`,
-    ).then(async res => await res.json().catch(() => {}));
+    ).then(res => res.json().catch(() => {}));
 
     const abuseinfo = await fetch(`https://api.abuseipdb.com/api/v2/check?ipAddress=${encodeURIComponent(args.join(" "))}`, {
       headers: {
@@ -23,7 +23,7 @@ class ipinfoCommand extends Command {
         "Accept": "application/json",
         "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
       },
-    }).then(async res => await res.json().catch(() => {}));
+    }).then(res => res.json().catch(() => {}));
 
     if (body.error || !body.ip || !body.org) return this.bot.embed("❌ Error", "Invalid IP address.", msg, "error");
 
