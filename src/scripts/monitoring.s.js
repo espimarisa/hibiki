@@ -1,5 +1,5 @@
 /**
- * @fileoverview Monitoring extension
+ * @fileoverview Monitoring script
  * @description Watches steam accounts for bans
  */
 
@@ -7,6 +7,7 @@ const fetch = require("node-fetch");
 
 module.exports = async (bot) => {
   if (!bot.key.steam) return;
+  await new Promise(resolve => setTimeout(resolve, 30000));
   setInterval(async () => {
     let bans = [];
     const ids = [];
@@ -15,7 +16,7 @@ module.exports = async (bot) => {
     // If it's more than 3 days old
     monitoring.forEach(async m => {
       if (new Date() - new Date(m.date) > 259200000) {
-        return await bot.db.table("monitoring").get(m.id).delete().run();
+        return bot.db.table("monitoring").get(m.id).delete().run();
       }
 
       ids.push(m.id);
@@ -23,7 +24,7 @@ module.exports = async (bot) => {
 
     if (ids.length > 0) {
       body = await fetch(`http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=${bot.key.steam}&steamids=${ids.join(",")}`)
-        .then(async res => await res.json().catch(() => {}));
+        .then(res => res.json().catch(() => {}));
       if (bans) bans = bans.players;
     } else return;
 

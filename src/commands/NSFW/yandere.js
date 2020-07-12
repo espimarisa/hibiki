@@ -14,7 +14,7 @@ class yandereCommand extends Command {
 
   async run(msg, args) {
     const body = await fetch(`https://yande.re/post.json?api_version=2&tags=${encodeURIComponent(args.join(" "))}`)
-      .then(async res => await res.json().catch(() => {}));
+      .then(res => res.json().catch(() => {}));
     if (!body || !body.posts.length) return this.bot.embed("❌ Error", "No images were found.", msg, "error");
     const random = Math.floor(Math.random() * body.posts.length);
 

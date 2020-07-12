@@ -18,7 +18,7 @@ class twitterCommand extends Command {
         "Authorization": `Bearer ${this.bot.key.twitter}`,
         "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
       },
-    }).then(async res => await res.json().catch(() => {}));
+    }).then(res => res.json().catch(() => {}));
 
     if (!body) return this.bot.embed("❌ Error", "Account not found.", msg, "error");
 

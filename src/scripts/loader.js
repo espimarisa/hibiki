@@ -1,6 +1,6 @@
 /**
  * @fileoverview Loader
- * @description Loads commands, events, and extensions
+ * @description Loads commands, events, loggers, scripts, and webservers.
  * @module loader
  */
 
@@ -9,7 +9,9 @@ const path = require("path");
 
 const command_directory = path.join(__dirname, "../commands");
 const event_directory = path.join(__dirname, "../events");
-const extension_directory = path.join(__dirname, "../extensions");
+const logger_directory = path.join(__dirname, "../loggers");
+const script_directory = path.join(__dirname, "../scripts");
+const webserver_directory = path.join(__dirname, "../webserver");
 
 /**
  * Loads any commands
@@ -77,42 +79,87 @@ module.exports.events = async function loadEvents(bot) {
   bot.log.info(`${bot.events.length} events loaded`);
 };
 
+
 /**
- * Loads any extensions on first start
+ * Loads any loggers
  * @param {object} bot Main bot object
  *
  * @example
  * const load = require("../scripts/loader");
- * load.extensions(this.bot);
+ * load.loggers(this.bot);
  */
 
-module.exports.extensions = async function loadExtensions(bot) {
-  const files = readdirSync(extension_directory);
-  files.forEach(ext => {
-    let extension;
-    if (ext.isDirectory) return;
-    if (!ext.endsWith(".ext.js")) return;
+module.exports.loggers = async function loadLoggers(bot) {
+  const files = readdirSync(logger_directory);
+  files.forEach(l => {
+    let logger;
     try {
-      extension = require(`${extension_directory}/${ext}`);
+      logger = require(`${logger_directory}/${l}`);
+      logger(bot, bot.db, /(.{1,})\.js/.exec(logger));
     } catch (err) {
-      bot.log(`${ext} failed to load: ${err}`);
+      bot.log(`Logger ${l} failed to load: ${err}`);
     }
 
-    if (!extension) return;
-    if (typeof extension === "function") bot.extensions.push(extension);
+    bot.loggers.push(logger);
+    if (!logger) return;
   });
 
-  // Loads extensions; runs
-  if (process.uptime() < 20) {
-    bot.extensions.forEach(e => e(bot));
-    bot.log.info(`${bot.extensions.length} extensions loaded`);
-  }
-
-  require("../webserver/app")(bot);
+  bot.log.info(`${bot.loggers.length} loggers loaded`);
 };
 
 /**
- * Loads all modules
+ * Loads any bot scripts
+ * @param {object} bot Main bot object
+ *
+ * @example
+ * const load = require("../scripts/loader");
+ * load.scripts(this.bot);
+ */
+
+module.exports.scripts = async function loadScripts(bot) {
+  const files = readdirSync(script_directory);
+  files.forEach(s => {
+    let script;
+    if (s.isDirectory) return;
+    if (!s.endsWith(".s.js")) return;
+    try {
+      script = require(`${script_directory}/${s}`)(bot);
+    } catch (err) {
+      bot.log(`${s} failed to load: ${err}`);
+    }
+
+    if (!script) return;
+  });
+};
+
+/**
+ * Loads any webservers on first start
+ * @param {object} bot Main bot object
+ *
+ * @example
+ * const load = require("../scripts/loader");
+ * load.webservers(this.bot);
+ */
+
+module.exports.webservers = async function loadWeb(bot) {
+  // Loads web if first boot
+  if (process.uptime() < 20) {
+    const files = readdirSync(webserver_directory);
+    files.forEach(w => {
+      if (w.isDirectory || !w.endsWith(".js")) return;
+      let server;
+      try {
+        server = require(`${webserver_directory}/${w}`);
+        server(bot);
+      } catch (err) {
+        bot.log(`Webserver ${w} failed to load: ${err}`);
+      }
+    });
+  }
+};
+
+/**
+ * Loads all items
  * @param {object} bot Main bot object
  *
  * @example
@@ -123,5 +170,7 @@ module.exports.extensions = async function loadExtensions(bot) {
 module.exports.all = async function loadAll(bot) {
   this.commands(bot);
   this.events(bot);
-  this.extensions(bot);
+  this.loggers(bot);
+  this.scripts(bot);
+  this.webservers(bot);
 };
