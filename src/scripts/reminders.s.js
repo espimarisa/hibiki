@@ -1,5 +1,5 @@
 /**
- * @fileoverview Reminders extension
+ * @fileoverview Reminders script
  * @description Handles reminders if the bot goes offline
  */
 

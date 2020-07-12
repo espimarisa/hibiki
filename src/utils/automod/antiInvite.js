@@ -1,8 +1,10 @@
-/*
-  Looks for Discord invites and applies a punishment.
-*/
+/**
+ * @fileoverview Automod antiInvite module
+ * @description Looks for discord invites and applies a punishment if set
+ * @module automod/antiInvite.js
+ */
 
-const punish = require("./Punishments");
+const punish = require("./punishments");
 
 module.exports = async (msg, bot, cfg) => {
   // Discord invite regex
