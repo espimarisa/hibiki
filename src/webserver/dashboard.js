@@ -28,8 +28,8 @@ const sessionStore = new session({
       port: dbConfig.port,
       db: dbConfig.db,
       user: dbConfig.user || "admin",
-      password: dbConfig.password
-    }
+      password: dbConfig.password,
+    },
 });
 module.exports = async (bot) => {
   if (!config || !config.cookiesecret || !config.port || !config.redirect_uri || !config.secret) return;
@@ -53,7 +53,7 @@ module.exports = async (bot) => {
       secret: config.cookiesecret,
       store: sessionStore,
       cookie: {
-          maxAge: 8064e5 * 2
+          maxAge: 8064e5 * 2,
       },
       resave: false,
       saveUninitialized: false,
