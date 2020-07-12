@@ -21,7 +21,7 @@ class osuCommand extends Command {
     // Finds the player
     const user = args.join(" ");
     const body = await fetch(`https://osu.ppy.sh/api/get_user?k=${this.bot.key.osu}&u=${user}&type=string`)
-      .then(async res => await res.json().catch(() => {}));
+      .then(res => res.json().catch(() => {}));
     if (!body.length) return this.bot.embed("❌ Error", "Account not found.", msg, "error");
     const data = body[0];
 

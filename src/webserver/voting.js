@@ -4,18 +4,18 @@
  */
 
 const express = require("express");
-const voting = require("../../config").voting;
+const config = require("../../config").voting;
 
 // Sets up express
 const app = express();
 app.use(express.json());
-app.disable("x-powered-by");
+app.use(require("helmet")());
 
 module.exports = (bot) => {
-  if (!voting.port || !voting.auth) return;
+  if (!config || !config.port || !config.auth) return;
   app.post("/voteReceive", async (req, res) => {
     // Sends if unauthorized
-    if (req.headers.authorization !== voting.auth) {
+    if (req.headers.authorization !== config.auth) {
       if (req.headers.authorization && req.headers.authorization.length || !req.headers.authorization) {
         bot.log.warn(`${req.connection.remoteAddress} tried to make a request with the wrong auth key.`);
         return res.sendStatus(403);
@@ -61,10 +61,12 @@ module.exports = (bot) => {
       },
     });
 
+    // Logs when a user votes
     bot.log.info(`${user ? user.username : req.body.user} has voted (requested from: ${req.connection.remoteAddress})`);
     res.sendStatus(200);
   });
 
   // Listens on port
-  const listener = app.listen(voting.port, "0.0.0.0", () => bot.log.info(`Voting handler loaded on port ${listener.address().port}`));
+  app.listen(config.port, "0.0.0.0");
+  bot.log.info(`Voting handler listening on port ${config.port}`);
 };

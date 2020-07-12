@@ -14,7 +14,7 @@ class npmCommand extends Command {
 
   async run(msg, args) {
     const body = await fetch(`https://registry.npmjs.com/${encodeURIComponent(args.join(" ").toLowerCase())}`)
-      .then(async res => await res.json().catch(() => {}));
+      .then(res => res.json().catch(() => {}));
     if (body.error || !body["dist-tags"]) return this.bot.embed("❌ Error", "Package not found.", msg, "error");
     const pkg = body.versions[body["dist-tags"].latest];
 

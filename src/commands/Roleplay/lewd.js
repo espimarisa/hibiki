@@ -16,7 +16,7 @@ class lewdCommand extends Command {
         "Authorization": `Wolke ${this.bot.key.weebsh}`,
         "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
       },
-    }).then(async res => await res.json().catch(() => {}));
+    }).then(res => res.json().catch(() => {}));
 
     let image;
     if (body.status !== 200) image = "https://cdn.weeb.sh/images/H1Fv6p_DW.gif";

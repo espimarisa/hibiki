@@ -14,7 +14,7 @@ class bitcoinCommand extends Command {
   async run(msg, args) {
     // BTC rates
     if (!args.length) {
-      const body = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json").then(async res => await res.json().catch(() => {}));
+      const body = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json").then(res => res.json().catch(() => {}));
       if (!body) return this.bot.embed("❌ Error", "Unable to check the rates. Try again later.", msg, "error");
 
       // Embed fields
@@ -53,7 +53,7 @@ class bitcoinCommand extends Command {
 
     // Bitcoin addresses
     const body = await fetch(`https://blockchain.info/rawaddr/${encodeURIComponent(args[0])}`)
-      .then(async res => await res.json().catch(() => {}));
+      .then(res => res.json().catch(() => {}));
     if (!body) return this.bot.embed("❌ Error", "Address not found.", msg, "error");
 
     // Embed fields

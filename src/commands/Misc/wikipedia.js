@@ -15,7 +15,7 @@ class wikipediaCommand extends Command {
   async run(msg, args) {
     const body = await fetch(
       `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(args.join(" "))}`,
-    ).then(async res => await res.json().catch(() => {}));
+    ).then(res => res.json().catch(() => {}));
 
     if (!body) return this.bot.embed("❌ Error", "Page not found. It may be case sensitive!", msg, "error");
     if (body.title && body.title === "Not found.") return this.bot.embed("❌ Error", "Page not found.", msg, "error");

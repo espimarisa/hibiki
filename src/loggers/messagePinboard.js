@@ -1,6 +1,10 @@
-const format = require("../../utils/format");
+/**
+ * @fileoverview Message pinboard
+ * @description Posts messages reacted with the proper emoji to the pinboard
+ * @module logger/messagePinboard
+ */
 
-module.exports = bot => {
+module.exports = (bot) => {
   // When a pin is removed
   bot.on("messageReactionRemove", async (msg, emoji, uid) => {
       if (!msg.content) {
@@ -18,7 +22,7 @@ module.exports = bot => {
       if (msg.reactions[pin] && msg.reactions[pin].count) {
         if (guildcfg.pinSelfPinning && msg.author.id === uid) return;
         if (!guildcfg) {
-          return await bot.db.table("guildcfg").insert({
+          return bot.db.table("guildcfg").insert({
             id: msg.channel.guild.id,
           }).run();
         }
@@ -46,7 +50,7 @@ module.exports = bot => {
         // Gets guildcfg
         const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id).run();
         if (!guildcfg) {
-          return await bot.db.table("guildcfg").insert({
+          return bot.db.table("guildcfg").insert({
             id: msg.channel.guild.id,
           }).run();
         }
@@ -100,7 +104,7 @@ module.exports = bot => {
             embed: {
               color: bot.embed.color("pinboard"),
               author: {
-                name: format.tag(msg.author, true),
+                name: bot.tag(msg.author, true),
                 icon_url: msg.author.avatarURL,
               },
               fields: [{

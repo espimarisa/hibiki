@@ -25,7 +25,7 @@ class evalCommand extends Command {
           body: evalstring,
           method: "POST",
           mode: "cors",
-        }).then(async res => await res.json().catch(() => {}));
+        }).then(res => res.json().catch(() => {}));
 
         await dmchannel.createMessage(`https://hasteb.in/${body.key}`);
       } else {
