@@ -10,6 +10,7 @@ const path = require("path");
 const command_directory = path.join(__dirname, "../commands");
 const event_directory = path.join(__dirname, "../events");
 const extension_directory = path.join(__dirname, "../extensions");
+const logger_directory = path.join(__dirname, "../loggers");
 
 /**
  * Loads any commands
@@ -112,6 +113,33 @@ module.exports.extensions = async function loadExtensions(bot) {
 };
 
 /**
+ * Loads any loggers
+ * @param {object} bot Main bot object
+ *
+ * @example
+ * const load = require("../scripts/loader");
+ * load.loggers(this.bot);
+ */
+
+module.exports.loggers = async function loadLoggers(bot) {
+  const files = readdirSync(logger_directory);
+  files.forEach(l => {
+    let logger;
+    try {
+      logger = require(`${logger_directory}/${l}`);
+      logger(bot, bot.db, /(.{1,})\.js/.exec(logger));
+    } catch (err) {
+      bot.log(`Logger ${l} failed to load: ${err}`);
+    }
+
+    bot.loggers.push(logger);
+    if (!logger) return;
+  });
+
+  bot.log.info(`${bot.loggers.length} loggers loaded`);
+};
+
+/**
  * Loads all items
  * @param {object} bot Main bot object
  *
@@ -123,5 +151,6 @@ module.exports.extensions = async function loadExtensions(bot) {
 module.exports.all = async function loadAll(bot) {
   this.commands(bot);
   this.events(bot);
+  this.loggers(bot);
   this.extensions(bot);
 };

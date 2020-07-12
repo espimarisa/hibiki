@@ -1,17 +1,18 @@
-/*
-  Logs when a message is deleted or updated.
-*/
+/**
+ * @fileoverview Message update logger
+ * @description Logs when a message is deleted or modified
+ * @module logger/messageUpdate
+ */
 
-const Logging = require("../../structures/Logger");
-const format = require("../../utils/format");
+const Logger = require("../structures/Logger");
 
 module.exports = (bot) => {
   // Logging database
-  const loggingdb = new Logging(bot.db);
-  const cansend = async (guild) => {
+  const loggingdb = new Logger(bot.db);
+  const canSend = async (guild) => {
     if (!guild || !guild.channels) return;
-    const canlog = await loggingdb.canLog(guild);
-    if (!canlog) return;
+    const canLog = await loggingdb.canLog(guild);
+    if (!canLog) return;
     // Sets type
     const channel = await loggingdb.guildLogging(guild, "messageLogging");
     if (guild.channels.has(channel)) return channel;
@@ -20,14 +21,14 @@ module.exports = (bot) => {
   // Logs when a message is deleted
   bot.on("messageDelete", async msg => {
     // Finds channel; returns if it shouldn't log
-    const channel = await cansend(msg.channel.guild, "messageDelete");
+    const channel = await canSend(msg.channel.guild, "messageDelete");
     if (!channel || !msg || !msg.author || msg.author.id === bot.user.id) return;
     if (msg.content.length > 1024) msg.content.slice(768);
     bot.createMessage(channel, {
       embed: {
         color: bot.embed.color("error"),
         author: {
-          name: `${format.tag(msg.author, true)}'s message was deleted.`,
+          name: `${bot.tag(msg.author, true)}'s message was deleted.`,
           icon_url: msg.author.avatarURL,
         },
         fields: [{
@@ -53,7 +54,7 @@ module.exports = (bot) => {
   // Logs when a message is updated
   bot.on("messageUpdate", async (msg, oldmsg) => {
     // Finds channel; returns if it shouldn't log
-    const channel = await cansend(msg.channel.guild, "messageUpdate");
+    const channel = await canSend(msg.channel.guild, "messageUpdate");
     if (!channel || !oldmsg || !msg.author || msg.author.id === bot.user.id) return;
     if (msg.content === oldmsg.content) return;
     if (msg.content.length > 1024) msg.content.slice(768);
@@ -62,7 +63,7 @@ module.exports = (bot) => {
       embed: {
         color: bot.embed.color("error"),
         author: {
-          name: `${format.tag(msg.author, true)}'s message was updated.`,
+          name: `${bot.tag(msg.author, true)}'s message was updated.`,
           icon_url: msg.author.avatarURL,
         },
         fields: [{
