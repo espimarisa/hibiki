@@ -1,18 +1,19 @@
-/*
-  Logs when a guild is updated.
-*/
+/**
+ * @fileoverview Guild update logger
+ * @description Logs when a guild is modified
+ * @module logger/guildUpdate
+ */
 
-
-const Logging = require("../../structures/Logger");
-const format = require("../../utils/format");
+const Logger = require("../structures/Logger");
+const format = require("../utils/format");
 
 module.exports = (bot) => {
   // Logging database
-  const loggingdb = new Logging(bot.db);
-  const cansend = async (guild) => {
+  const loggingdb = new Logger(bot.db);
+  const canSend = async (guild) => {
     if (!guild || !guild.channels) return;
-    const canlog = await loggingdb.canLog(guild);
-    if (!canlog) return;
+    const canLog = await loggingdb.canLog(guild);
+    if (!canLog) return;
     // Sets type
     const channel = await loggingdb.guildLogging(guild, "eventLogging");
     if (guild.channels.has(channel)) return channel;
@@ -21,7 +22,7 @@ module.exports = (bot) => {
   // Logs when guild is updated
   bot.on("guildUpdate", async (guild, oldguild) => {
     // Finds channel; returns if it shouldn't log
-    const logchannel = await cansend(guild, "guildUpdate");
+    const logchannel = await canSend(guild, "guildUpdate");
     if (!logchannel) return;
     const embed = {
       color: bot.embed.color("general"),
@@ -51,7 +52,7 @@ module.exports = (bot) => {
     if (guild.ownerID !== oldguild.ownerID) {
       embed.fields.push({
         name: "Owner",
-        value: `${format.tag(guild.members.find(m => m.id === oldguild.ownerID))} ➜ ${format.tag(guild.members.find(m => m.id === guild.ownerID))}`,
+        value: `${bot.tag(guild.members.find(m => m.id === oldguild.ownerID))} ➜ ${bot.tag(guild.members.find(m => m.id === guild.ownerID))}`,
       });
     }
 
@@ -71,7 +72,7 @@ module.exports = (bot) => {
       const log = logs.entries[0];
       const user = logs.users[0];
       if (log && new Date().getTime() - new Date(log.id / 4194304 + 1420070400000).getTime() < 3000) {
-        embed.author.name = `${format.tag(user)} updated ${oldguild.name}.`;
+        embed.author.name = `${bot.tag(user)} updated ${oldguild.name}.`;
         embed.author.icon_url = user.avatarURL;
       }
     }

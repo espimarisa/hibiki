@@ -1,6 +1,10 @@
-const format = require("../../utils/format");
+/**
+ * @fileoverview Message pinboard
+ * @description Posts messages reacted with the proper emoji to the pinboard
+ * @module logger/messagePinboard
+ */
 
-module.exports = bot => {
+module.exports = (bot) => {
   // When a pin is removed
   bot.on("messageReactionRemove", async (msg, emoji, uid) => {
       if (!msg.content) {
@@ -100,7 +104,7 @@ module.exports = bot => {
             embed: {
               color: bot.embed.color("pinboard"),
               author: {
-                name: format.tag(msg.author, true),
+                name: bot.tag(msg.author, true),
                 icon_url: msg.author.avatarURL,
               },
               fields: [{

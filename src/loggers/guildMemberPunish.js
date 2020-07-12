@@ -1,25 +1,26 @@
-/*
-  Logs when a member is kicked, banned, or unbanned.
-*/
+/**
+ * @fileoverview Guild member punish logger
+ * @description Logs when a member is banned, unbanned, or kicked thru the client
+ * @module logger/guildMemberPunish
+ */
 
-const Logging = require("../../structures/Logger");
-const format = require("../../utils/format");
+const Logger = require("../structures/Logger");
 
 module.exports = (bot) => {
   // Logging database
-  const loggingdb = new Logging(bot.db);
-  const cansend = async (guild) => {
+  const loggingdb = new Logger(bot.db);
+  const canSend = async (guild) => {
     if (!guild || !guild.channels) return;
-    const canlog = await loggingdb.canLog(guild);
-    if (!canlog) return;
+    const canLog = await loggingdb.canLog(guild);
+    if (!canLog) return;
     // Sets type
     const channel = await loggingdb.guildLogging(guild, "modLogging");
     if (guild.channels.has(channel)) return channel;
   };
 
   // Tries to log
-  const trysend = async (guild, event, embed) => {
-    const channel = await cansend(guild, event);
+  const trySend = async (guild, event, embed) => {
+    const channel = await canSend(guild, event);
     if (channel) {
       bot.createMessage(channel, {
         embed: embed,
@@ -29,7 +30,7 @@ module.exports = (bot) => {
 
   // Logs when a member is banned
   bot.on("guildBanAdd", async (guild, user) => {
-    const channel = await cansend(guild, "guildBanAdd");
+    const channel = await canSend(guild, "guildBanAdd");
     if (!channel) return;
     // Reads audit logs
     const logs = await guild.getAuditLogs(1, null, 22).catch(() => {});
@@ -40,7 +41,7 @@ module.exports = (bot) => {
       color: bot.embed.color("error"),
       description: `**ID:** ${user.id}`,
       author: {
-        name: `${format.tag(user, true)} was banned by ${format.tag(banner, true)}.`,
+        name: `${bot.tag(user, true)} was banned by ${bot.tag(banner, true)}.`,
         icon_url: user.avatarURL,
       },
     };
@@ -50,7 +51,7 @@ module.exports = (bot) => {
 
   // Logs when a member is unbanned
   bot.on("guildBanRemove", async (guild, user) => {
-    const channel = await cansend(guild, "guildBanRemove");
+    const channel = await canSend(guild, "guildBanRemove");
     if (!channel) return;
     // Reads audit logs
     const logs = await guild.getAuditLogs(1, null, 23).catch(() => {});
@@ -61,7 +62,7 @@ module.exports = (bot) => {
       description: `**ID:** ${user.id}`,
       color: bot.embed.color("success"),
       author: {
-        name: `${format.tag(user, true)} was unbanned by ${format.tag(banner, true)}.`,
+        name: `${bot.tag(user, true)} was unbanned by ${bot.tag(banner, true)}.`,
         icon_url: user.avatarURL,
       },
     };
@@ -70,11 +71,11 @@ module.exports = (bot) => {
   });
 
   // Logs when a member is kicked
-  bot.on("guildKick", (guild, reason, user, member) => trysend(guild, "guildKick", {
+  bot.on("guildKick", (guild, reason, user, member) => trySend(guild, "guildKick", {
     description: `**Reason:** ${reason} \n **ID:** ${user.id}`,
     color: bot.embed.color("error"),
     author: {
-      name: `${format.tag(user, true)} kicked ${format.tag(member, true)}.`,
+      name: `${bot.tag(user, true)} kicked ${bot.tag(member, true)}.`,
       icon_url: user.avatarURL,
     },
   }));

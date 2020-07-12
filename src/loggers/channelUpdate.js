@@ -1,17 +1,18 @@
-/*
-  Logs when a channel is created, deleted, or edited.
-*/
+/**
+ * @fileoverview Channel update logger
+ * @description Logs when a channel is created, deleted, or modified
+ * @module logger/channelUpdate
+ */
 
-const Logging = require("../../structures/Logger");
-const format = require("../../utils/format");
+const Logger = require("../structures/Logger");
 
 module.exports = (bot) => {
   // Logging database
-  const loggingdb = new Logging(bot.db);
-  const cansend = async (guild) => {
+  const loggingdb = new Logger(bot.db);
+  const canSend = async (guild) => {
     if (!guild || !guild.channels) return;
-    const canlog = await loggingdb.canLog(guild);
-    if (!canlog) return;
+    const canLog = await loggingdb.canLog(guild);
+    if (!canLog) return;
     // Sets type
     const channel = await loggingdb.guildLogging(guild, "eventLogging");
     if (guild.channels.has(channel)) return channel;
@@ -21,7 +22,7 @@ module.exports = (bot) => {
   bot.on("channelCreate", async channel => {
     // Finds channel; returns if it shouldn't log
     if (channel.type === 1 || channel.type === 3) return;
-    const logchannel = await cansend(channel.guild, "channelCreate");
+    const logchannel = await canSend(channel.guild, "channelCreate");
     if (!logchannel) return;
     const embed = {
       color: bot.embed.color("general"),
@@ -38,7 +39,7 @@ module.exports = (bot) => {
       const user = logs.users[0];
       // Adds to the embed
       if (log && new Date().getTime() - new Date(log.id / 4194304 + 1420070400000).getTime() < 3000) {
-        embed.author.name = `${format.tag(user)} created a channel.`;
+        embed.author.name = `${bot.tag(user)} created a channel.`;
         embed.author.icon_url = user.avatarURL;
       }
     }
@@ -50,7 +51,7 @@ module.exports = (bot) => {
   bot.on("channelDelete", async channel => {
     // Finds channel; returns if it shouldn't log
     if (channel.type === 1 || channel.type === 3) return;
-    const logchannel = await cansend(channel.guild, "channelCreate");
+    const logchannel = await canSend(channel.guild, "channelCreate");
     if (!logchannel) return;
     const embed = {
       color: bot.embed.color("error"),
@@ -67,7 +68,7 @@ module.exports = (bot) => {
       const user = logs.users[0];
       // Adds to the embed
       if (log && new Date().getTime() - new Date(log.id / 4194304 + 1420070400000).getTime() < 3000) {
-        embed.author.name = `${format.tag(user)} deleted #${channel.name}.`;
+        embed.author.name = `${bot.tag(user)} deleted #${channel.name}.`;
         embed.author.icon_url = user.avatarURL;
       }
     }
@@ -79,7 +80,7 @@ module.exports = (bot) => {
   bot.on("channelUpdate", async (channel, oldchannel) => {
     // Finds channel; returns if it shouldn't log
     if (channel.type === 1 || channel.type === 3) return;
-    const logchannel = await cansend(channel.guild, "channelUpdate");
+    const logchannel = await canSend(channel.guild, "channelUpdate");
     if (!logchannel) return;
     const embed = {
       color: bot.embed.color("general"),
@@ -138,7 +139,7 @@ module.exports = (bot) => {
       const log = logs.entries[0];
       const user = logs.users[0];
       if (log && new Date().getTime() - new Date(log.id / 4194304 + 1420070400000).getTime() < 3000) {
-        embed.author.name = `${format.tag(user)} edited #${oldchannel.name}.`;
+        embed.author.name = `${bot.tag(user)} edited #${oldchannel.name}.`;
         embed.author.icon_url = user.avatarURL;
       }
     }

@@ -26,6 +26,7 @@ const config = {
   warn: "Yellow",
 };
 
+// todo: use format.date
 function date(syear = true) {
   const date = new Date();
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

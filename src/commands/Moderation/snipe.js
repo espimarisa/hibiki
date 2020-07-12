@@ -25,7 +25,7 @@ class snipeCommand extends Command {
       return this.bot.embed("❌ Error", "You don't have the required role to view sniped messages.", msg, "error");
     }
 
-    const snipeMsg = this.bot.sniped[msg.channel.id];
+    const snipeMsg = this.bot.snipeData[msg.channel.id];
     if (!snipeMsg) return this.bot.embed("❌ Error", "No message to snipe.", "error");
 
     msg.channel.createMessage({
