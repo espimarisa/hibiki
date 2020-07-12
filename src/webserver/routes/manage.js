@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-module.exports = (bot, passport) => {
+module.exports = (bot) => {
   // Checks if user is authenticated
   const checkAuth = (req, res, next) => {
     if (req.isAuthenticated()) return next();
