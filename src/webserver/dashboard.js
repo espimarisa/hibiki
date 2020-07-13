@@ -1,45 +1,43 @@
 /**
  * @fileoverview Dashboard webserver
  * @description Main app file for the dashboard; handles all express modules
- * @module webserver
+ * @module webserver/dashboard
  */
-
-// TODO: figure out why auth is broken, even on previously working (bad) code
-// even moving stuff here instead of in routes makes no difference
 
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const eSession = require("express-session");
-const session = require("express-session-rethinkdb")(eSession);
+const expressSession = require("express-session");
 const express = require("express");
 const passport = require("passport");
-const { dashboard: config, rethink: dbConfig } = require("../../config");
+
+const { dashboard: config, rethink: database } = require("../../config");
+const session = require("@geo1088/express-session-rethinkdb")(expressSession);
 const app = express();
 
 app.enable("trust proxy", 1);
-
-// removing helmet didn't change shit!
 app.use(require("helmet")());
 
-// Configures session store
-const sessionStore = new session({
-    connectOptions: {
-      host: dbConfig.host,
-      port: dbConfig.port,
-      db: dbConfig.db,
-      user: dbConfig.user || "admin",
-      password: dbConfig.password,
-    },
-});
 module.exports = async (bot) => {
   if (!config || !config.cookiesecret || !config.port || !config.redirect_uri || !config.secret) return;
+
+  // Configures session store
+  const sessionStore = new session({
+    connectOptions: {
+      host: database.host,
+      port: database.port,
+      db: database.db,
+      user: database.user || "admin",
+      password: database.password,
+      debug: false,
+      silent: true,
+    },
+  });
 
   // Configures bodyParser
   app.use(bodyParser.urlencoded({ extended: true, parameterLimit: 10000, limit: "5mb" }));
   app.use(bodyParser.json({ parameterLimit: 10000, limit: "5mb" }));
 
   // Sets headers
-  // I was told this would help, we did this in v2 aswell. Made fuckall difference !!
   app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", true);
@@ -47,17 +45,22 @@ module.exports = async (bot) => {
     next();
   });
 
-  // Configures cookieParser & starts passport
-  app.use(cookieParser(config.cookiesecret));
-  app.use(eSession({
-      secret: config.cookiesecret,
-      store: sessionStore,
-      cookie: {
-          maxAge: 8064e5 * 2,
-      },
-      resave: false,
-      saveUninitialized: false,
+  // Configures expressSession
+  app.use(expressSession({
+    secret: config.cookiesecret,
+    store: sessionStore,
+    name: bot.user.username,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      signed: true,
+      path: "/",
+    },
+    resave: false,
+    saveUninitialized: false,
   }));
+
+  // Starts passport & cookieParser
+  app.use(cookieParser(config.cookiesecret));
   app.use(passport.initialize());
   app.use(passport.session());
 

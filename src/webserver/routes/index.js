@@ -11,6 +11,10 @@ module.exports = (bot) => {
     res.redirect(301, "/auth/");
   });
 
+  router.get("/logout/", (req, res) => {
+    res.redirect(301, "/auth/logout");
+  });
+
   router.get("/invite/", (req, res) => {
     res.redirect(301, `https://discordapp.com/oauth2/authorize?&client_id=${bot.user.id}&scope=bot&permissions=506850534`);
   });
