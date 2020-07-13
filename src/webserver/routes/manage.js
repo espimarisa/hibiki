@@ -6,7 +6,7 @@ module.exports = (bot) => {
   // Checks if user is authenticated
   const checkAuth = (req, res, next) => {
     if (req.isAuthenticated()) return next();
-    return res.redirect("../../auth/");
+    return res.redirect(301, "../../auth/");
   };
 
   // Renders list of servers

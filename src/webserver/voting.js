@@ -1,6 +1,7 @@
 /**
  * @fileoverview Voting webserver
  * @description Listens for votes on top.gg and gives voters cookies
+ * @module webserver/voting
  */
 
 const express = require("express");
