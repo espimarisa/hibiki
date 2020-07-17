@@ -39,7 +39,7 @@ class warningsCommand extends Command {
       );
     }
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
         title: `⚠ ${user.username} has ${warnings.length} warning${warnings.length === 1 ? "" : "s"}.`,
         color: this.bot.embed.color("general"),
