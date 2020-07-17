@@ -1,6 +1,7 @@
 /**
  * @fileoverview Reminders script
  * @description Handles reminders if the bot goes offline
+ * @module script/reminders
  */
 
 const format = require("../utils/format");

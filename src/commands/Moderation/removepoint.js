@@ -3,7 +3,7 @@ const Command = require("../../structures/Command");
 class removepointCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["removemerit", "removemerits", "removepoint", "removepoints", "rmmerits", "rmpoints"],
+      aliases: ["removemerit", "removemerits", "removepoint", "removepoints", "rmmerit", "rmmerits", "rmpoint", "rmpoints"],
       args: "<id:string>",
       description: "Removes one or more reputation points from a member.",
       requiredperms: "manageMessages",
@@ -37,7 +37,7 @@ class removepointCommand extends Command {
     }
 
     this.bot.emit("pointRemove", msg.channel.guild, msg.member, removed.map(p => `\`${p.point}\``));
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
         title: `✨ Removed ${removed.length} point${removed.length === 1 ? "" : "s"}.`,
         description: `${removed.map(p => p.point).join(", ")}`,

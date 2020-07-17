@@ -14,7 +14,7 @@ class yuriCommand extends Command {
     const body = await fetch("https://nekos.life/api/v2/img/yuri").then(res => res.json().catch(() => {}));
     if (!body || !body.url) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", msg, "error");
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
         title: "🏳️‍🌈 Yuri",
         color: this.bot.embed.color("general"),

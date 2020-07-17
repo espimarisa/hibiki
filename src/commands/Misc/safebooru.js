@@ -25,7 +25,7 @@ class safebooruCommand extends Command {
 
     const random = Math.floor(Math.random() * body.length);
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
         title: "🖼 Safebooru",
         color: 0xBDE6E8,

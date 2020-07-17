@@ -15,7 +15,7 @@ class lewdcatgirlgifCommand extends Command {
     const body = await fetch("https://nekos.life/api/v2/img/nsfw_neko_gif").then(res => res.json().catch(() => {}));
     if (!body || !body.url) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", msg, "error");
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
         title: "🔞 Lewd Catgirl Gif",
         color: this.bot.embed.color("general"),

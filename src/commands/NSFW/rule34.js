@@ -22,7 +22,7 @@ class rule34Command extends Command {
       return this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body[0].sample_url}).`, msg, "error");
     }
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
         title: "🔞 Rule 34",
         color: 0xA8E5A2,
