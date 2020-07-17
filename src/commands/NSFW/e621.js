@@ -30,7 +30,7 @@ class e621Command extends Command {
       return this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body.posts[0].file.url}).`, msg, "error");
     }
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
         title: "🔞 e621",
         color: 0xFCBF31,

@@ -30,7 +30,7 @@ class unbanCommand extends Command {
     const failed = unbans.filter(b => !b.unbanned);
     if (!unbanned.length) return this.bot.embed("❌ Error", "Failed to unban all of the IDs given.", msg, "error");
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
         title: `⚒ Unbanned ${unbanned.length} ID${unbanned.length > 1 ? "s" : ""}.`,
         description: `**${unbanned.map(m => m.user).join(", ")}**`,

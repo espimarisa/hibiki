@@ -18,7 +18,7 @@ class hypnohubCommand extends Command {
     if (!body) return this.bot.embed("❌ Error", "No images were found.", msg, "error");
     const random = Math.floor(Math.random() * body.posts.length);
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
         title: "🔞 Hypnohub",
         color: 0xFDEA73,

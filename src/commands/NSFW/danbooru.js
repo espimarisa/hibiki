@@ -27,7 +27,7 @@ class danbooruCommand extends Command {
       return this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body[0].file_url}).`, msg, "error");
     }
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
         title: "🔞 Danbooru",
         color: 0x006FFA,

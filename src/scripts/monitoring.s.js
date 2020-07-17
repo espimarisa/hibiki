@@ -1,6 +1,7 @@
 /**
- * @fileoverview Monitoring script
- * @description Watches steam accounts for bans
+ * @fileoverview Steam monitoring script
+ * @description Watches Steam accounts for bans
+ * @module script/monitoring
  */
 
 const fetch = require("node-fetch");

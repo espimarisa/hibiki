@@ -120,7 +120,7 @@ class twitterCommand extends Command {
     if (body.profile_banner_url) construct.image = { url: body.profile_banner_url };
     if (body.description) construct.description = body.description;
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: construct,
     });
   }

@@ -39,7 +39,7 @@ class pointsCommand extends Command {
       );
     }
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
         title: `✨ ${user.username} has ${points.length} point${points.length === 1 ? "" : "s"}.`,
         color: this.bot.embed.color("general"),

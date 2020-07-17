@@ -15,7 +15,7 @@ class dogCommand extends Command {
     const body = await fetch("https://random.dog/woof.json").then(res => res.json().catch(() => {}));
     if (!body || !body.url) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", msg, "error");
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
         title: "🐶 Dog",
         color: this.bot.embed.color("general"),

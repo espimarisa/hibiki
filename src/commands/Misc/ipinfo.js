@@ -59,7 +59,7 @@ class ipinfoCommand extends Command {
       };
     }
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: construct,
     });
   }

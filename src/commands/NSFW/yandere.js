@@ -18,7 +18,7 @@ class yandereCommand extends Command {
     if (!body || !body.posts.length) return this.bot.embed("❌ Error", "No images were found.", msg, "error");
     const random = Math.floor(Math.random() * body.posts.length);
 
-    await msg.channel.createMessage({
+    msg.channel.createMessage({
       embed: {
         title: "🔞 Yande.re",
         color: 0xEE8887,
