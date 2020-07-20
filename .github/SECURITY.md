@@ -8,19 +8,18 @@ Only the latest release of Hibiki is supported. This is whatever version the mai
 ## Testing
 If you believe you have found a vulnerability, be sure you test it in:
   - The latest stable version or release
-  - The latest [development commit][2]
+  - The latest commit or pre-release
 
-If the issue persists between development builds or is in production, then you should contact us. Otherwise, we may have patched it out or updated code.
+If the issue persists between current commits or is in production, then you should contact us. Otherwise, we may have patched it out or updated code.
 
 ## Reporting
 If you believe you have discovered a vulnerability or exploit and have followed the testing guide above, it's best to directly contact the owner using a link below, instead of creating an issue that others can possibly exploit on production.
 
-[Discord][3] - [Telegram][4] - [Email][5]
+[Discord][2] - [Telegram][3] - [Email][4]
 
 If you are unable to make contact thru any of these methods whatsoever, you can go ahead and make an issue and we'll immediately look into it. However, it's best to do this as a last resort to prevent any possible damages.
 
 [1]: https://github.com/smolespi/Hibiki/releases/latest "Releases"
-[2]: https://github.com/smolespi/Hibiki/tree/development "Development"
-[3]: https://discord.gg/gZEj4sM "Discord"
-[4]: https://t.me/smolespi "Telegram"
-[5]: mailto:espi@lesbian.codes "Email"
+[2]: https://discord.gg/gZEj4sM "Discord"
+[3]: https://t.me/smolespi "Telegram"
+[4]: mailto:espi@lesbian.codes "Email"
