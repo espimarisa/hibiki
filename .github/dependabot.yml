@@ -9,6 +9,6 @@ updates:
   open-pull-requests-limit: 10
   versioning-strategy: increase
   commit-message:
-    prefix: "chore: "
+    prefix: "deps: "
   labels:
     - "dependabot"
