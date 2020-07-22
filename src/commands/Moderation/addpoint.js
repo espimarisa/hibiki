@@ -1,5 +1,5 @@
 const Command = require("../../structures/Command");
-const { Snowflake } = require("../../utils/Snowflake");
+const { Snowflake } = require("../../utils/snowflake");
 
 class addpointCommand extends Command {
   constructor(...args) {
