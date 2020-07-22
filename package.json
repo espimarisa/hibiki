@@ -3,6 +3,7 @@
   "version": "3.2.0-alpha",
   "description": "An easy, customizable, and powerful Discord bot that can do anything that your server needs.",
   "author": "smolespi <espi@lesbian.codes> (https://lesbian.codes)",
+  "private": true,
   "contributors": [
     "resolved <resolvedxd@gmail.com> (https://github.com/resolvedxd)",
     "cth103 <cthdev@email.com> (https://github.com/cthpw103)"
@@ -39,10 +40,18 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "helmet": "^3.23.3",
+    "lavaclient": "^3.0.10",
     "node-fetch": "^2.6.0",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "rethinkdb-ts": "^2.4.2"
+  },
+  "optionalDependencies": {
+    "@discordjs/opus": "^0.3.2",
+    "bufferutil": "^4.0.1",
+    "erlpack": "^0.1.3",
+    "eventemitter3": "^4.0.4",
+    "zlib-sync": "^0.1.7"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
