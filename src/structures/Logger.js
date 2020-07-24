@@ -3,7 +3,6 @@
  * @description Manages loggers and their types
  */
 
-
 class Logging {
   /**
    * Creates a logging function
