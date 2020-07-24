@@ -39,7 +39,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "helmet": "^3.23.3",
-    "lavaclient": "^3.0.10",
+    "lavaclient": "^3.0.11",
     "node-fetch": "^2.6.0",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
