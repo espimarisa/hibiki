@@ -24,9 +24,7 @@ module.exports = async (bot) => {
   const sessionStore = new session({
     connectOptions: {
       host: database.host,
-      port: database.port,
       db: database.db,
-      user: database.user || "admin",
       password: database.password,
       debug: false,
       silent: true,

@@ -32,12 +32,10 @@ const requiredtables = config.rethink.tables;
   }));
 
   // Creates marriage index
-  if (config.rethink.marriages) {
-    const index = await db.table("marriages").indexList().run();
-    if (!index.includes("marriages")) {
-      await db.table("marriages").indexCreate("marriages", [r.row("id"), r.row("spouse")], { multi: true }).run();
-      log.success("Created the marriage index");
-    }
+  const index = await db.table("marriages").indexList().run();
+  if (!index.includes("marriages")) {
+    await db.table("marriages").indexCreate("marriages", [r.row("id"), r.row("spouse")], { multi: true }).run();
+    log.success("Created the marriage index");
   }
 
   log.success("RethinkDB has been setup properly.");
