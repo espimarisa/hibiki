@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  db:
+    image: rethinkdb
+    volumes:
+      - ./rethinkdb_data:/data
+    restart: always
+    command: rethinkdb -d /data
+  bot:
+    build: "."
+    environment:
+      NODE_ENV: production
+    ports:
+      - "127.0.0.1:5555:5555"
+      - "127.0.0.1:5556:5556"
+      - "127.0.0.1:5557:5557"
+      - "127.0.0.1:5558:5558"
+    volumes:
+      - ./config.js:/app/config.js
+    restart: always
+    depends_on: [db]

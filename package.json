@@ -25,7 +25,8 @@
     "dev": "nodemon",
     "lint": "eslint --fix .",
     "setup": "node src/scripts/setup.js",
-    "start": "pm2 start pm2.config.json && pm2 logs",
+    "start": "node .",
+    "pm2": "pm2 start pm2.config.json && pm2 logs",
     "test": "eslint ."
   },
   "dependencies": {

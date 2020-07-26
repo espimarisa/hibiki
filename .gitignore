@@ -1,10 +1,7 @@
-# Config files
+# Configs
 cfg.json
 config.json
-configuration.json
-cfg.js
 config.js
-configuration.js
 
 # Binaries
 ffmpeg
@@ -15,19 +12,21 @@ ffprobe
 ffprobe.exe
 rethinkdb
 rethinkdb.exe
+Lavalink
+Lavalink.jar
 
 # Modules
+.sass-cache
 dist/
 docs/
 node_modules/
 out/
 sass/
 rethinkdb_data/
-.sass-cache
 
 # Logs & lockfiles
-logs/*
 .npm
+logs/*
 npm
 npm-debug.log
 npm-error.log
