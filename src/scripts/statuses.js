@@ -23,7 +23,7 @@ module.exports.switch = (bot) => {
   bot.editStatus(bot.config.status, {
     name: statuses[Math.floor(statuses.length * Math.random())],
     type: bot.config.statustype,
-    url: bot.config.statusurl.length ? bot.config.statusurl : "https://twitch.tv/.",
+    url: "https://twitch.tv/.",
   });
 
   // Timeout for switching
@@ -31,7 +31,7 @@ module.exports.switch = (bot) => {
     bot.editStatus(bot.config.status, {
       name: statuses[Math.floor(statuses.length * Math.random())],
       type: bot.config.statustype,
-      url: bot.config.statusurl.length ? bot.config.statusurl : "https://twitch.tv/.",
+      url: "https://twitch.tv/.",
     });
   }, 50000);
 };

@@ -1,6 +1,7 @@
 /**
  * @fileoverview Setup
  * @description Creates required RethinkDB tables and indexes
+ * @module setup
  */
 
 const { r } = require("rethinkdb-ts");
