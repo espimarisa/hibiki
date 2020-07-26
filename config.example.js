@@ -7,7 +7,6 @@ module.exports = {
     status: "online",
     statuses: ["help", "guilds", "users", "version"],
     statustype: 3,
-    statusurl: "https://twitch.tv/.",
     support: "gZEj4sM",
     token: "",
   },
@@ -22,7 +21,7 @@ module.exports = {
   dashboard: {
     cookiesecret: "",
     secret: "",
-    port: "",
+    port: 5555,
     redirect_uri: "http://localhost:port/auth/callback",
   },
 
@@ -62,9 +61,16 @@ module.exports = {
     ],
   },
 
+  lavalink: {
+    id: "hibiki",
+    host: "localhost",
+    port: 5556,
+    password: "",
+  },
+
   voting: {
     auth: "",
-    port: "",
+    port: 5557,
   },
 
 };
