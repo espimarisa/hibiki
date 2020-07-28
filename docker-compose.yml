@@ -6,7 +6,6 @@ services:
     volumes:
       - ./rethinkdb_data:/data
     restart: always
-    command: rethinkdb -d /data
   bot:
     build: "."
     environment:
