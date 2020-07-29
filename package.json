@@ -25,8 +25,7 @@
     "dev": "nodemon",
     "lint": "eslint --fix .",
     "setup": "node src/scripts/setup.js",
-    "start": "node .",
-    "pm2": "pm2 start pm2.config.json && pm2 logs",
+    "start": "pm2 start pm2.config.json && pm2 logs",
     "test": "eslint ."
   },
   "dependencies": {
@@ -40,7 +39,6 @@
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "helmet": "^3.23.3",
-    "lavaclient": "^3.0.12",
     "node-fetch": "^2.6.0",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",

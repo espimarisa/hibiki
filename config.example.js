@@ -21,7 +21,7 @@ module.exports = {
   dashboard: {
     cookiesecret: "",
     secret: "",
-    port: 5555,
+    port: 7012,
     redirect_uri: "http://localhost:port/auth/callback",
   },
 
@@ -61,16 +61,9 @@ module.exports = {
     ],
   },
 
-  lavalink: {
-    id: "hibiki",
-    host: "localhost",
-    port: 5556,
-    password: "",
-  },
-
   voting: {
     auth: "",
-    port: 5557,
+    port: 7013,
   },
 
 };

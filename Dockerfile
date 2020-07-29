@@ -1,3 +1,6 @@
+# Currently broken! Don't try and use this until it's fixed.
+# - Espi
+
 FROM node:alpine
 RUN apk add git
 
@@ -9,6 +12,6 @@ RUN apk add --no-cache --virtual .build-deps alpine-sdk python \
  && apk del .build-deps
 USER nobody
 
-EXPOSE 5555-5558
+EXPOSE 7012-7013
 
 CMD npm run setup && npm start
