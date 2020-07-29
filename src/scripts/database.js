@@ -21,7 +21,7 @@ const log = require("./logger");
 module.exports.start = async function database() {
   await r.connectPool({
     db: config.rethink.db,
-    // servers: docker === true ? [{ host: "db" }] : [{ host: "localhost" }],
+    servers: docker === true ? [{ host: "db" }] : [{ host: "localhost" }],
     password: config.rethink.password,
     port: config.rethink.port,
     user: config.rethink.user ? config.rethink.user : "admin",
