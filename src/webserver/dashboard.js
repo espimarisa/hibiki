@@ -10,6 +10,7 @@ const expressSession = require("express-session");
 const express = require("express");
 const passport = require("passport");
 
+const docker = require("../utils/docker");
 const { dashboard: config, rethink: database } = require("../../config");
 const session = require("@geo1088/express-session-rethinkdb")(expressSession);
 const app = express();
@@ -26,7 +27,9 @@ module.exports = async (bot) => {
       host: database.host,
       db: database.db,
       password: database.password,
-      debug: false,
+      servers: docker === true ? [{ host: "db" }] : [{ host: "localhost" }],
+      port: database.port ? database.port : 28015,
+      user: database.user ? database.user : "admin",
       silent: true,
     },
   });
