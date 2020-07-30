@@ -84,6 +84,38 @@ class Handler extends Event {
         `The prefix in this server is \`${guildcfg && guildcfg.prefix ? guildcfg.prefix : this.bot.cfg.prefixes[0]}\`.`,
         msg,
       );
+    }
+
+    let customcmd;
+    if (guildcfg && guildcfg.customCommands) {
+      customcmd = guildcfg.customCommands.find(c => c.name === cmdName);
+    }
+
+    // Sends the embed
+    if (customcmd && !cmd) {
+      if (msg.mentions && msg.mentions[0]) {
+        customcmd.content = customcmd.content.replace(/{mentioner}/g, `<@${msg.mentions[0].id}>`);
+      } else customcmd.content = customcmd.content.replace(/{mentioner}/g, `<@${msg.author.id}>`);
+      // Replaces content
+      customcmd.content = customcmd.content.replace(/{author}/g, `<@${msg.author.id}>`);
+      customcmd.content = customcmd.content.replace(/{random}/g, Math.floor(Math.random() * 100));
+      customcmd.content = customcmd.content.replace(/{guild}/g, msg.guild.name);
+
+      return msg.channel.createMessage({
+        embed: {
+          title: `✨ ${customcmd.name}`,
+          description: customcmd.content.substring(0, 2048),
+          color: this.bot.embed.color("general"),
+          image: {
+            url: customcmd.image,
+          },
+          footer: {
+            text: msg.guild.members.get(customcmd.createdBy) ?
+              `Ran by ${this.bot.tag(msg.author)} | Created by ${this.bot.tag(msg.guild.members.get(customcmd.createdBy), false)}` : customcmd.name,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
+        },
+      });
     } else if (!cmd) return;
 
     // Permission checking
