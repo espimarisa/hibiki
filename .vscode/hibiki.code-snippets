@@ -23,7 +23,7 @@
     "scope": "javascript",
     "prefix": ["hibiki-event"],
     "body": [
-      "const Event = require(\"../../structures/Event\");\n",
+      "const Event = require(\"../structures/Event\");\n",
       "class $1 extends Event {",
       "  constructor(...args) {",
       "    super(...args, {",
