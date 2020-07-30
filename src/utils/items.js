@@ -42,6 +42,13 @@ module.exports = [{
   label: "Disabled Commands",
   type: "array",
 }, {
+  category: "Features",
+  id: "easyTranslate",
+  emoji: "🌍",
+  label: "🌍 Easy Translate",
+  type: "bool",
+  description: "Automatically translate content reacted to with a flag emoji.",
+}, {
   category: "Automod",
   emoji: "⚒",
   id: "invitePunishments",

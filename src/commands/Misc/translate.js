@@ -53,7 +53,7 @@ class translateCommand extends Command {
 
     this.bot.embed(
       "🌍 Translate",
-      `Translations may not be 100% correct. \n ${body[0][0][1]} **(${body[2].toUpperCase()})** ➜ ${body[0][0][0]} **(${locale.toUpperCase()})**`,
+      `Translations may not be 100% accurate. \n ${body[0][0][1]} **(${body[2].toUpperCase()})** ➜ ${body[0][0][0]} **(${locale.toUpperCase()})**`,
       msg,
     );
   }
