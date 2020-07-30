@@ -71,8 +71,8 @@ module.exports.events = async function loadEvents(bot) {
     // Adds events; runs them
     bot.events.push(new event(bot, /(.{1,})\.js/.exec(evnt)[1]));
     event = bot.events.find(e => e.id === evnt.split(".js")[0]);
-    bot.on(event.name, (arg1, arg2) => {
-      event.run(arg1, arg2);
+    bot.on(event.name, (arg1, arg2, arg3, arg4, arg5) => {
+      event.run(arg1, arg2, arg3, arg4, arg5);
     });
   });
 

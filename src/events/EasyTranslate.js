@@ -8,8 +8,9 @@ class easyTranslate extends Event {
     });
   }
 
-  async run(msg, emoji) {
+  async run(msg, emoji, uid) {
     if (!msg || !msg.author || !msg.content || !msg.channel || msg.channel.type !== 0) return;
+    const reactioner = this.bot.users.find(m => m.id === uid);
 
     // Converts emojis into unicode
     const toUni = function(str) {
@@ -64,8 +65,8 @@ class easyTranslate extends Event {
           url: msg.attachment,
         },
         footer: {
-          text: `Translated by ${this.bot.tag(msg.author)} from ${body[2].toUpperCase()} to ${lang.toUpperCase()}. May not be 100% accurate.`,
-          icon_url: msg.author.dynamicAvatarURL(),
+          text: `Translated by ${this.bot.tag(reactioner)} from ${body[2].toUpperCase()} to ${lang.toUpperCase()}. May not be 100% accurate.`,
+          icon_url: reactioner.dynamicAvatarURL(),
         },
       },
     });
