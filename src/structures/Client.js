@@ -40,6 +40,7 @@ class Hibiki extends Client {
     this.tag = require("../utils/format").tag;
     this.version = require("../../package").version;
 
+    this.cooldowns = [];
     this.commands = [];
     this.events = [];
     this.loggers = [];

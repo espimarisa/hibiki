@@ -19,7 +19,6 @@ class Handler extends Event {
     super(...args, {
       name: "messageCreate",
     });
-    this.cooldowns = [];
   }
 
   /**
@@ -169,11 +168,11 @@ class Handler extends Event {
 
     // Cooldowns
     if (cmd.cooldown && !this.bot.config.owners.includes(msg.author.id)) {
-      if (this.cooldowns.includes(`${cmd.id}:${msg.author.id}`)) return msg.addReaction("⌛");
+      if (this.bot.cooldowns.includes(`${cmd.id}:${msg.author.id}`)) return msg.addReaction("⌛");
       else {
-        this.cooldowns.push(`${cmd.id}:${msg.author.id}`);
+        this.bot.cooldowns.push(`${cmd.id}:${msg.author.id}`);
         setTimeout(() => {
-          this.cooldowns.splice(this.cooldowns.indexOf(`${cmd.id}:${msg.author.id}`), 1);
+          this.bot.cooldowns.splice(this.bot.cooldowns.indexOf(`${cmd.id}:${msg.author.id}`), 1);
         }, cmd.cooldown >= 1000 ? cmd.cooldown : cmd.cooldown * 1000);
       }
     }
