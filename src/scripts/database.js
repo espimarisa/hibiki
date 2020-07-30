@@ -27,7 +27,6 @@ module.exports.start = async function database() {
     user: config.rethink.user ? config.rethink.user : "admin",
     silent: true,
   }).catch(err => {
-    console.error(err);
     log.error(`Error while starting the database, exiting: ${err}`);
     process.exit(1);
   });
