@@ -42,7 +42,7 @@
     "node-fetch": "^2.6.0",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
-    "rethinkdb-ts": "^2.4.2"
+    "rethinkdb-ts": "^2.4.4"
   },
   "optionalDependencies": {
     "@discordjs/opus": "^0.3.2",
