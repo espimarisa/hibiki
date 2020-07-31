@@ -1,6 +1,6 @@
 /**
  * @fileoverview Docker checker
- * @description Looks to see if the bot is running in docke
+ * @description Looks to see if the bot is running in docker
  * @module docker
  */
 
