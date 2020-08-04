@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
 const express = require("express");
+const helmet = require("helmet");
 const passport = require("passport");
 
 const docker = require("../utils/docker");
@@ -16,7 +17,16 @@ const session = require("@geo1088/express-session-rethinkdb")(expressSession);
 const app = express();
 
 app.enable("trust proxy", 1);
-app.use(require("helmet")());
+app.use(helmet({ contentSecurityPolicy: false }));
+
+// Sets securityPolicy
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'", "fonts.googleapis.com", "fonts.gstatic.com", "cdn.jsdelivr.net"],
+    imgSrc: ["'self'", "avatars1.githubusercontent.com", "cdn.discordapp.com"],
+    scriptSrc: ["'self'", "discord.com", "discordapp.com", "cdn.jsdelivr.net"],
+  },
+}));
 
 module.exports = async (bot) => {
   if (!config || !config.cookiesecret || !config.port || !config.redirect_uri || !config.secret) return;
