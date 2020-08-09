@@ -11,10 +11,12 @@
 
 module.exports.switch = (bot) => {
   // Formats statuses
+  let useramnt = 0;
+  bot.guilds.forEach(g => { useramnt += g.memberCount; });
   const statuses = bot.config.statuses.map(s => {
     if (s === "help") s = `${bot.config.prefixes[0]}help | hibiki.app`;
     if (s === "guilds") s = `${bot.guilds.size} servers`;
-    if (s === "users") s = `${bot.users.size} users`;
+    if (s === "users") s = `${useramnt} users`;
     if (s === "version") s = `v${bot.version} | hibiki.app`;
     return s;
   });

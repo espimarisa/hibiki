@@ -35,6 +35,9 @@ class aboutCommand extends Command {
       return (amount / Math.pow(1024, i)).toFixed(1) + " " + sizes[i];
     }
 
+    let useramnt = 0;
+    this.bot.guilds.forEach(g => { useramnt += g.memberCount; });
+
     msg.channel.createMessage({
       embed: {
         title: "🤖 About",
@@ -43,7 +46,7 @@ class aboutCommand extends Command {
         color: this.bot.embed.color("general"),
         fields: [{
           name: "Analytics",
-          value: `${this.bot.users.size} total users \n` + `${this.bot.guilds.size} total servers \n` +
+          value: `${useramnt} total users \n` + `${this.bot.guilds.size} total servers \n` +
             `${this.bot.commands.length} commands \n` + `${this.bot.events.length} running events \n` +
             `${format.uptime(process.uptime())} of uptime`,
           inline: true,
