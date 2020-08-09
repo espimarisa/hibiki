@@ -26,7 +26,7 @@ class snipeCommand extends Command {
     }
 
     const snipeMsg = this.bot.snipeData[msg.channel.id];
-    if (!snipeMsg) return this.bot.embed("❌ Error", "No message to snipe.", "error");
+    if (!snipeMsg) return this.bot.embed("❌ Error", "No message to snipe.", msg, "error");
 
     msg.channel.createMessage({
       embed: {
