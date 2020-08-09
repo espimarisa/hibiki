@@ -10,14 +10,14 @@ const expressSession = require("express-session");
 const express = require("express");
 const helmet = require("helmet");
 const passport = require("passport");
-
 const docker = require("../utils/docker");
+
 const { dashboard: config, rethink: database } = require("../../config");
 const session = require("@geo1088/express-session-rethinkdb")(expressSession);
 const app = express();
 
-app.enable("trust proxy", 1);
 app.use(helmet({ contentSecurityPolicy: false }));
+app.enable("trust proxy", 1);
 
 // Sets securityPolicy
 app.use(helmet.contentSecurityPolicy({
@@ -85,7 +85,7 @@ module.exports = async (bot) => {
   app.use("/", require("./routes/index")(bot));
   app.use("/auth/", require("./routes/auth")(bot, passport));
   app.use("/manage/", require("./routes/manage")(bot, passport));
-  // app.use("/api/", require("./routes/api")(bot));
+  app.use("/api/", require("./routes/api")(bot));
 
   // 404 handler
   app.use((req, res) => {
