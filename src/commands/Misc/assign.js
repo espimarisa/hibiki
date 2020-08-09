@@ -37,7 +37,7 @@ class assignCommand extends Command {
     // Assigns the role
     if (assignable) {
       try {
-        await msg.member.removeRole(role.id, "Self-assignable role");
+        await msg.member.addRole(role.id, "Self-assignable role");
       } catch (err) {
         return this.bot.embed("❌ Error", "Failed to give you the role.", msg, "error");
       }
