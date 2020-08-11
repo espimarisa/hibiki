@@ -23,11 +23,11 @@ module.exports = (bot) => {
     res.redirect(301, `https://discordapp.com/oauth2/authorize?&client_id=${bot.user.id}&scope=bot&permissions=506850534`);
   });
 
-  router.get("/support/" || router.get("/discord"), (req, res) => {
+  router.get("/support/", (req, res) => {
     res.redirect(301, `https://discord.gg/${bot.config.support}`);
   });
 
-  router.get("/github/" || router.get("/repo/"), (req, res) => {
+  router.get("/github/", (req, res) => {
     res.redirect(301, "https://github.com/smolespi/Hibiki");
   });
 

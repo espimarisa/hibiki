@@ -76,7 +76,7 @@ module.exports.edit = (title, description, msg, colortype) => {
   if (description) construct.embed.description = description;
 
   // Keeps the footer
-  if (msg.embeds[0].footer) {
+  if (msg && msg.embeds[0].footer) {
     construct.embed.footer = msg.embeds[0].footer;
   }
 
