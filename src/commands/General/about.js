@@ -15,10 +15,20 @@ class aboutCommand extends Command {
     // Formats OS platform
     function formatOS(platform, release) {
       switch (platform) {
+        case "aix":
+          return `IBM AIX ${release}`;
+        case "android":
+          return `Android ${release}`;
         case "darwin":
           return `macOS ${(parseFloat(release).toFixed(2) - parseFloat("7.6").toFixed(2) + parseFloat("0.03")).toFixed(2)}`;
         case "linux":
           return `Linux ${release}`;
+        case "freebsd":
+          return `FreeBSD ${release}`;
+        case "openbsd":
+          return `OpenBSD ${release}`;
+        case "sunos":
+          return `Solaris ${release}`;
         case "win32":
           return `Windows ${release}`;
         default:
@@ -41,8 +51,7 @@ class aboutCommand extends Command {
     msg.channel.createMessage({
       embed: {
         title: "🤖 About",
-        description: `**${this.bot.user.username}**, by` +
-          " [smolespi](https://lesbian.codes), [resolved](https://github.com/resolvedxd/), and [cth103](https://github.com/cthpw103). 💖",
+        description: `**${this.bot.user.username}**, by [smolespi](https://lesbian.codes), [resolved](https://github.com/resolvedxd/), and [cth103](https://github.com/cthpw103). 💖`,
         color: this.bot.embed.color("general"),
         fields: [{
           name: "Analytics",
@@ -52,8 +61,8 @@ class aboutCommand extends Command {
           inline: true,
         }, {
           name: "Versions",
-          value: `Hibiki v${this.bot.version} \n` + `Eris v${require("eris").VERSION} \n` +
-            `Node.js ${process.version}\n` + `V8 v${process.versions.v8}`,
+          value: `Hibiki v${this.bot.version} \n` + `Eris v${require("eris").VERSION} \n` + `Node.js ${process.version}\n` +
+            `V8 v${process.versions.v8}`,
           inline: true,
         }, {
           name: `Host Info`,
