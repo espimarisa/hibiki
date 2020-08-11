@@ -25,7 +25,7 @@ class setupCommand extends Command {
   constructor(...args) {
     super(...args, {
       args: "[show:string]",
-      aliases: ["cfg", "guildcfg", "setup"],
+      aliases: ["cfg", "config", "guildcfg"],
       description: "Configs the bot or views the config.",
       allowdisable: false,
       cooldown: 3,
@@ -94,7 +94,7 @@ class setupCommand extends Command {
     const omsg = await msg.channel.createMessage({
       embed: {
         title: "🔧 Setup",
-        description: `You can also use the [web dashboard](${this.bot.config.homepage}/login/).`,
+        description: `You can also use the [web dashboard](${this.bot.config.homepage}/login/) for a better experience.`,
         color: this.bot.embed.color("general"),
         fields: categories.map(cat => {
           return {
@@ -236,8 +236,9 @@ class setupCommand extends Command {
           if (cfg[setting.id].includes(punishment)) cfg[setting.id].splice(cfg[setting.id].indexOf(punishment), 1);
           else cfg[setting.id].push(punishment);
           this.bot.embed.edit(
-            `🔨 Punishments for ${setting.pickerLabel}`, validpunishments.map(p => `${punishments[p]} ${p}${punishmentDescription[p] ?
-               punishmentDescription[p] : ""}: **${cfg[setting.id].includes(p) ? "enabled" : "disabled"}**`).join("\n")), omsg;
+            `🔨 Punishments for ${setting.pickerLabel}`,
+            validpunishments.map(p => `${punishments[p]} ${p}${punishmentDescription[p] ?
+            punishmentDescription[p] : ""}: **${cfg[setting.id].includes(p) ? "enabled" : "disabled"}**`).join("\n")), omsg;
         }, this.bot).catch(async e => {
           if (e === "timeout") {
             // Timeout handler
@@ -261,8 +262,8 @@ class setupCommand extends Command {
             const errormsg = await this.bot.embed(
               "❌ Error",
               `Invalid ${setting.type}${Math.abs(cooldown - 2) === 0 ? "" : `; **${Math.abs(cooldown - 2)}** attempts left before exiting.`}`,
-              "error",
               msg,
+              "error",
             );
 
             cooldown++;
