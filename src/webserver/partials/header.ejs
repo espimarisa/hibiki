@@ -1,0 +1,80 @@
+<%# Navbar %>
+<section class="hero gradient is-fullheight">
+  <div class="hero-head">
+    <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+      <div class="container">
+        <div class="navbar-brand">
+          <a href="/" class="navbar-item">
+            <img src="https://cdn.discordapp.com/avatars/<%= bot.user.id %>/<%= bot.user.avatar %>.png?size=512" class="navlogo mr-3" alt="logo">
+            <p><%= bot.user.username %> v<%= bot.version %></p>
+          </a>
+          <a class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu" role="button">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+        <div class="navbar-menu" id="navMenu">
+          <div class="navbar-end">
+            <a href="/invite/" class="navbar-item">
+              <span class="icon"><i class="fa fa-plus"></i></span>
+              <span>Invite</span>
+            </a>
+            <a href="/login/" class="navbar-item">
+              <span class="icon"><i class="fa fa-wrench"></i></span>
+              <span>Dashboard</span>
+            </a>
+            <a href="/privacy/" class="navbar-item">
+              <span class="icon"><i class="fa fa-shield"></i></span>
+              <span>Privacy Policy</span>
+            </a>
+            <a href="/support/" class="navbar-item">
+              <span class="icon"><i class="fa fa-discord"></i></span>
+              <span>Support</span>
+            </a>
+            <a href="/github/" class="navbar-item">
+              <span class="icon"><i class="fa fa-github"></i></span>
+              <span>GitHub</span>
+            </a>
+            <a href="/twitter/" class="navbar-item">
+              <span class="icon"><i class="fa fa-twitter"></i></span>
+              <span>Twitter</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <%# Index header %>
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <div class="animate__animated animate__slideInDown animate__faster">
+        <img src="https://cdn.discordapp.com/avatars/<%= bot.user.id %>/<%= bot.user.avatar %>.png?size=512" class="logo" alt="logo">
+      </div>
+      <div class="animate__animated animate__slideInUp animate__faster">
+        <p class="is-size-2 has-text-weight-semibold"><%= bot.user.username %></p>
+        <p class="control has-text-centered">
+          <a class="button is-large" href="/invite/">
+            <span class="icon is-small">
+              <i class="fa fa-plus"></i>
+            </span>
+            <span>Invite <%= bot.user.username %></span>
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-footer animate__animated animate__fadeIn animate__faster">
+    <div class="tabs is-centered is-fullwidth">
+      <div class="container">
+        <ul>
+          <li><a href="#stats"><span class="icon is-small"><i class="fa fa-bar-chart"></i></span>Statistics</a></li>
+          <li><a href="#features"><span class="icon is-small"><i class="fa fa-magic"></i></span>Features</a></li>
+          <li><a href="#about"><span class="icon is-small"><i class="fa fa-info-circle"></i></span>About</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

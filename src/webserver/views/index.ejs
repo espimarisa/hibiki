@@ -1,1 +1,23 @@
-<p> Index </p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("../partials/head.ejs") %>
+  <script src="../public/js/navbar.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css/animate.min.css" crossorigin="anonymous">
+  <meta content="https://hibiki.app" property="og:url">
+  <meta content="<%= bot.user.username %>" property="og:title">
+  <meta content="<%= bot.user.username %>" name="twitter:title">
+  <meta content="An easy, customizable, and powerful Discord bot that can do anything that your server needs." name="description">
+  <meta content="An easy, customizable, and powerful Discord bot that can do anything that your server needs." property="og:description">
+  <meta content="An easy, customizable, and powerful Discord bot that can do anything that your server needs." name="twitter:description">
+  <title><%= bot.user.username %></title>
+</head>
+
+<body>
+  <%- include("../partials/header.ejs") %>
+  <%- include("../partials/about.ejs") %>
+  <%- include("../partials/footer.ejs") %>
+</body>
+
+</html>
