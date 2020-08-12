@@ -26,20 +26,23 @@ module.exports = (bot, passport) => {
 
   // Logs the authed user out
   router.get("/logout/", (req, res) => {
-    req.logout();
-    res.redirect(301, "../../");
+    req.session.destroy(() => {
+      res.redirect(301, "../../");
+    });
   });
 
   // Login fail page; destroys the session
   router.get("/fail/", (req, res) => {
-    req.logout();
-    res.render("authfail");
+    req.session.destroy(() => {
+      res.render("authfail");
+    });
   });
 
   // Login fail page; destroys the session
   router.get("/ratelimited/", (req, res) => {
-    req.logout();
-    res.render("429");
+    req.session.destroy(() => {
+      res.render("429");
+    });
   });
 
   // Passport serialization
