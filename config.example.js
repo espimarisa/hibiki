@@ -12,7 +12,7 @@ module.exports = {
   },
 
   colors: {
-    general: "#9194FF",
+    general: "#8E94F2",
     error: "#FF0048",
     pinboard: "#3498DB",
     success: "#41FF70",
