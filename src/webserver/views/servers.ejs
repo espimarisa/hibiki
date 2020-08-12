@@ -1,1 +1,87 @@
-<p> Servers </p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("../partials/head.ejs") %>
+  <script src="/public/js/navbar.js"></script>
+  <title>Servers - <%= bot.user.username %></title>
+</head>
+
+<body>
+  <% let managableguilds = user["guilds"].filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id)); %>
+
+  <%# Navbar %>
+  <section class="hero gradient">
+    <div class="hero-head">
+      <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+        <div class="container">
+          <div class="navbar-brand">
+            <a href="/" class="navbar-item">
+              <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=512" class="navlogo mr-3" alt="user">
+              <p>Logged in as <%= user.username %>#<%= user.discriminator %></p>
+            </a>
+            <a class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu" role="button">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+          <div class="navbar-menu" id="navMenu">
+            <div class="navbar-end">
+              <a href="/manage/profile/" class="navbar-item">
+                <span class="icon"><i class="fa fa-user"></i></span>
+                <span>Edit Profile</span>
+              </a>
+              <a href="/login/" class="navbar-item">
+                <span class="icon"><i class="fa fa-refresh"></i></span>
+                <span>Refresh</span>
+              </a>
+              <a href="/logout/" class="navbar-item">
+                <span class="icon"><i class="fa fa-sign-out"></i></span>
+                <span>Logout</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <%# Header %>
+    <div class="hero-body">
+      <div class="container">
+        <p class="title is-size-3">Welcome to the dashboard, <%= user.username %>.</p>
+        <p class="subtitle is-size-5">Select a server to configure, or add <%= bot.user.username %> to a server you can manage.</p>
+      </div>
+    </div>
+  </section>
+
+  <%# List of guilds %>
+  <section class="section container">
+    <% managableguilds.map(g => {%>
+    <article class="media">
+      <figure class="media-left">
+        <div class="image is-48x48">
+          <img src="<%= g.icon ? `https://cdn.discordapp.com/icons/${g.id}/${g.icon}.png?size=64` : "https://cdn.discordapp.com/embed/avatars/0.png"%>" class="is-rounded">
+        </div>
+      </figure>
+      <div class="media-content is-clipped">
+        <p class="subtitle is-size-2"><%= g.name %></p>
+      </div>
+      <div class="media-right">
+        <% if (bot.guilds.has(g.id)) { %>
+        <a href="/manage/:<%=g.id%>" class="button is-medium">
+          <span class="icon"><i class="fa fa-wrench"></i></span>
+          <p>Config</p>
+        </a>
+        <% } else { %>
+        <a href="<%=`https://discordapp.com/oauth2/authorize?client_id=${bot.id}&scope=bot&guild_id=${g.id}`%>" class="button is-medium">
+          <span class="icon"><i class="fa fa-plus"></i></span>
+          <p>Invite</p>
+        </a>
+        <% } %>
+    </article>
+    <% }) %>
+  </section>
+</body>
+
+</html>
