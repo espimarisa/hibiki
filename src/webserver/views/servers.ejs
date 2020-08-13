@@ -16,7 +16,7 @@
       <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
         <div class="container">
           <div class="navbar-brand">
-            <a href="/" class="navbar-item">
+            <a href="/manage/profile/" class="navbar-item">
               <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png?size=512" class="navlogo mr-3" alt="user">
               <p>Logged in as <%= user.username %>#<%= user.discriminator %></p>
             </a>
@@ -28,6 +28,10 @@
           </div>
           <div class="navbar-menu" id="navMenu">
             <div class="navbar-end">
+              <a href="/" class="navbar-item">
+                <span class="icon"><i class="fa fa-home"></i></span>
+                <span>Home</span>
+              </a>
               <a href="/manage/profile/" class="navbar-item">
                 <span class="icon"><i class="fa fa-user"></i></span>
                 <span>Edit Profile</span>
@@ -69,13 +73,13 @@
       </div>
       <div class="media-right">
         <% if (bot.guilds.has(g.id)) { %>
-        <a href="/manage/:<%=g.id%>" class="button is-medium">
-          <span class="icon"><i class="fa fa-wrench"></i></span>
+        <a href="/manage/<%=g.id%>" class="button is-medium">
+          <span class="icon is-small"><i class="fa fa-wrench"></i></span>
           <p>Config</p>
         </a>
         <% } else { %>
         <a href="<%=`https://discordapp.com/oauth2/authorize?client_id=${bot.id}&scope=bot&guild_id=${g.id}`%>" class="button is-medium">
-          <span class="icon"><i class="fa fa-plus"></i></span>
+          <span class="icon is-small"><i class="fa fa-plus"></i></span>
           <p>Invite</p>
         </a>
         <% } %>

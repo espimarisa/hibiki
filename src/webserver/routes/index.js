@@ -4,10 +4,20 @@ const format = require("../../utils/format");
 const router = express.Router();
 
 module.exports = (bot) => {
+  // Gets authed user data
+  const getAuthedUser = user => ({
+    username: user.username,
+    discriminator: user.discriminator,
+    guilds: user.guilds,
+    id: user.id,
+    avatar: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : "https://cdn.discordapp.com/embed/avatars/0.png",
+  });
+
   router.get("/", (req, res) => {
     res.render("index", {
       bot: bot,
       format: format,
+      user: req.isAuthenticated() ? getAuthedUser(req.user) : null,
     });
   });
 
