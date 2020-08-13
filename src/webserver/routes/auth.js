@@ -5,6 +5,8 @@ const config = require("../../../config").dashboard;
 const router = express.Router();
 const scope = ["identify", "guilds"];
 
+const destroySession = req => new Promise((rs, rj) => req.session.destroy(e => e ? rj(e) : rs()));
+
 module.exports = (bot, passport) => {
   // Passport strategy
   passport.use(new discordStrategy({
@@ -25,24 +27,21 @@ module.exports = (bot, passport) => {
   });
 
   // Logs the authed user out
-  router.get("/logout/", (req, res) => {
-    req.session.destroy(() => {
-      res.redirect(301, "../../");
-    });
+  router.get("/logout/", async (req, res) => {
+    await destroySession(req);
+    res.redirect(301, "/");
   });
 
   // Login fail page; destroys the session
-  router.get("/fail/", (req, res) => {
-    req.session.destroy(() => {
-      res.render("authfail");
-    });
+  router.get("/fail/", async (req, res) => {
+    await destroySession(req);
+    res.render("authfail");
   });
 
   // Login fail page; destroys the session
-  router.get("/ratelimited/", (req, res) => {
-    req.session.destroy(() => {
-      res.render("429");
-    });
+  router.get("/ratelimited/", async (req, res) => {
+    await destroySession(req);
+    res.render("429");
   });
 
   // Passport serialization
