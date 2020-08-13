@@ -5,8 +5,10 @@
       <div class="container">
         <div class="navbar-brand">
           <a href="/" class="navbar-item">
-            <img src="https://cdn.discordapp.com/avatars/<%= bot.user.id %>/<%= bot.user.avatar %>.png?size=512" class="navlogo mr-3" alt="logo">
-            <p><%= bot.user.username %> v<%= bot.version %></p>
+            <figure class="image is-inline-block">
+              <img src="<%= bot.user.dynamicAvatarURL() %>" class="is-rounded" alt="logo">
+            </figure>
+            <span class="is-inline-block ml-3"><%= bot.user.username %> v<%= bot.version %></span>
           </a>
           <a class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu" role="button">
             <span aria-hidden="true"></span>
@@ -26,16 +28,6 @@
             </a>
           </div>
           <div class="navbar-end">
-            <% if (user) { %>
-            <a href="/manage/profile" class="navbar-item">
-              <img src="<%= user.avatar %>" class="navlogo mr-3" alt="user">
-              <span><%= user.username %>#<%= user.discriminator %></span>
-            </a>
-            <a href="/logout/" class="navbar-item">
-              <span class="icon"><i class="fa fa-sign-out"></i></span>
-              <span>Logout</span>
-            </a>
-            <% } else { %>
             <a href="/support/" class="navbar-item">
               <span class="icon"><i class="fa fa-discord"></i></span>
               <span>Support</span>
@@ -48,6 +40,25 @@
               <span class="icon"><i class="fa fa-twitter"></i></span>
               <span>Twitter</span>
             </a>
+            <% if (user) { %>
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">
+                <figure class="image is-inline-block">
+                  <img src="<%= user.avatar %>" class="is-rounded" alt="avatar">
+                </figure>
+                <span class="is-inline-block ml-3"><%= user.username %>#<%= user.discriminator %></span>
+              </a>
+              <div class="navbar-dropdown">
+                <a href="/manage/profile/" class="navbar-item">
+                  <span class="icon"><i class="fa fa-user"></i></span>
+                  <span>Profile</span>
+                </a>
+                <a href="/logout/" class="navbar-item">
+                  <span class="icon"><i class="fa fa-sign-out"></i></span>
+                  <span>Logout</span>
+                </a>
+              </div>
+            </div>
             <% } %>
           </div>
         </div>
