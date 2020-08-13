@@ -15,12 +15,8 @@
           </a>
         </div>
         <div class="navbar-menu" id="navMenu">
-          <div class="navbar-end">
-            <a href="/invite/" class="navbar-item">
-              <span class="icon"><i class="fa fa-plus"></i></span>
-              <span>Invite</span>
-            </a>
-            <a href="/login/" class="navbar-item">
+          <div class="navbar-start" id="navMenu">
+            <a href="/manage/servers/" class="navbar-item">
               <span class="icon"><i class="fa fa-wrench"></i></span>
               <span>Dashboard</span>
             </a>
@@ -28,6 +24,18 @@
               <span class="icon"><i class="fa fa-shield"></i></span>
               <span>Privacy Policy</span>
             </a>
+          </div>
+          <div class="navbar-end">
+            <% if (user) { %>
+            <a href="/manage/profile" class="navbar-item">
+              <img src="<%= user.avatar %>" class="navlogo mr-3" alt="user">
+              <span><%= user.username %>#<%= user.discriminator %></span>
+            </a>
+            <a href="/logout/" class="navbar-item">
+              <span class="icon"><i class="fa fa-sign-out"></i></span>
+              <span>Logout</span>
+            </a>
+            <% } else { %>
             <a href="/support/" class="navbar-item">
               <span class="icon"><i class="fa fa-discord"></i></span>
               <span>Support</span>
@@ -40,6 +48,7 @@
               <span class="icon"><i class="fa fa-twitter"></i></span>
               <span>Twitter</span>
             </a>
+            <% } %>
           </div>
         </div>
       </div>

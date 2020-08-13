@@ -8,6 +8,5 @@ const express = require("express");
 const router = express.Router();
 
 module.exports = (bot) => {
-  console.log(bot.id);
   return router;
 };

@@ -3,7 +3,8 @@
 
 <head>
   <%- include("../partials/head.ejs") %>
-  <title>Profile - <%= bot.user.username %></title>
+  <script src="/public/js/navbar.js" crossorigin="anonymous"></script>
+  <title>Configure - <%= guild.name %></title>
 </head>
 
 <body>
@@ -25,13 +26,13 @@
           </div>
           <div class="navbar-menu" id="navMenu">
             <div class="navbar-end">
+              <a href="/manage/profile/" class="navbar-item">
+                <span class="icon"><i class="fa fa-user"></i></span>
+                <span>Edit Profile</span>
+              </a>
               <a href="/manage/servers/" class="navbar-item">
                 <span class="icon"><i class="fa fa-home"></i></span>
                 <span>Servers</span>
-              </a>
-              <a href="/login/" class="navbar-item">
-                <span class="icon"><i class="fa fa-refresh"></i></span>
-                <span>Refresh</span>
               </a>
               <a href="/logout/" class="navbar-item">
                 <span class="icon"><i class="fa fa-sign-out"></i></span>
@@ -43,18 +44,17 @@
       </nav>
     </div>
 
-
     <%# Header %>
     <div class="hero-body">
       <div class="container has-text-centered">
         <figure class="image is-128x128 is-inline-block">
-          <img src="<%= user.avatar %>" class="navlogo mr-3" alt="user" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+          <img src="<%= guild.icon ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128` : "https://cdn.discordapp.com/embed/avatars/0.png" %>> alt="Server Icon" class="is-rounded">
         </figure>
-        <p class="title is-size-3">Editing Profile</p>
+        <p class="title is-size-3"><%= guild.name %></p>
       </div>
     </div>
-
   </section>
+
 </body>
 
 </html>
