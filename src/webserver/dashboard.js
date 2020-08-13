@@ -16,6 +16,11 @@ const { dashboard: config, rethink: database } = require("../../config");
 const session = require("@geo1088/express-session-rethinkdb")(expressSession);
 const app = express();
 
+const noCache = (_, res, next) => {
+    res.header("Cache-Control", "no-cache");
+    next();
+};
+
 app.use(helmet({ contentSecurityPolicy: false }));
 app.enable("trust proxy", 1);
 
@@ -35,10 +40,9 @@ module.exports = async (bot) => {
   // Configures session store
   const sessionStore = new session({
     connectOptions: {
-      host: database.host,
+      host: docker === true ? "db" : database.host,
       db: database.db,
       password: database.password,
-      servers: docker === true ? [{ host: "db" }] : [{ host: "localhost" }],
       port: database.port ? database.port : 28015,
       user: database.user ? database.user : "admin",
       silent: true,
@@ -84,9 +88,9 @@ module.exports = async (bot) => {
 
   // Routes
   app.use("/", require("./routes/index")(bot));
-  app.use("/auth/", require("./routes/auth")(bot, passport));
-  app.use("/manage/", require("./routes/manage")(bot, passport));
-  app.use("/api/", require("./routes/api")(bot));
+  app.use("/auth/", noCache, require("./routes/auth")(bot, passport));
+  app.use("/manage/", noCache, require("./routes/manage")(bot, passport));
+  app.use("/api/", noCache, require("./routes/api")(bot));
 
   // 404 handler
   app.use((req, res) => {
