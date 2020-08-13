@@ -36,7 +36,7 @@ module.exports = (bot) => {
     if (!req.isAuthenticated()) { res.status(401).render("401"); }
     // User & guild perms
     const user = getAuthedUser(req.user);
-    const managableguilds = user["guilds"].filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id));
+    const managableguilds = user.guilds.filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id));
     const guild = managableguilds.find(g => g.id === req.params.id);
     // Renders the dashboard
     if (!guild) return res.status(403).render("403");
