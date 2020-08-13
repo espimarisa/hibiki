@@ -14,8 +14,10 @@
         <div class="container">
           <div class="navbar-brand">
             <a href="/manage/profile/" class="navbar-item">
-              <img src="<%= user.avatar %>" class="navlogo mr-3" alt="user" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
-              <p>Logged in as <%= user.username %>#<%= user.discriminator %></p>
+              <figure class="image is-inline-block">
+                <img src="<%= user.avatar %>" class="is-rounded" alt="avatar">
+              </figure>
+              <span class="is-inline-block ml-3"><%= user.username %>#<%= user.discriminator %></span>
             </a>
             <a class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu" role="button">
               <span aria-hidden="true"></span>
@@ -48,7 +50,7 @@
     <div class="hero-body">
       <div class="container has-text-centered">
         <figure class="image is-128x128 is-inline-block">
-          <img src="<%= user.avatar %>" class="navlogo mr-3" alt="user" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+          <img src="<%= user.avatar %>" class="is-rounded" alt="user" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
         </figure>
         <p class="title is-size-3">Editing Profile</p>
       </div>
