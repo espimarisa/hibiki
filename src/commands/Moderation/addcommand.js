@@ -15,7 +15,7 @@ class addcommandCommand extends Command {
     let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
 
     if (!args.length || !args.length && !guildcfg) {
-      return this.bot.embed("❌ Error", "retard", msg, "error");
+      return this.bot.embed("❌ Error", "No **name** was provided.", msg, "error");
     }
 
     const name = args[0];
