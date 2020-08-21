@@ -11,32 +11,33 @@
 
 You can invite the main application [here][4]. Any other instances of Hibiki are **not official** and could possibly carry privacy/security risks. The only official bot is `Hibiki#1448 (493904957523623936)`.
 
-## Features
-  - ⏰ Reminders
-  - 🔗 Invite inspector
-  - ⚠ Warning system
-  - 🔍 API lookup utilities
-  - 👥 User info commands
-  - 🔧 Server info commands
-  - 🎮 Steam ban monitoring
-  - ✨ Reputation point system
-  - 📜 Powerful & tweakable logging
-  - 🏷️ Assignable and automatic roles
-  - ❤ Roleplay & interaction commands
-  - 🌐 Complete configuration dashboard
-  - 📌 Customizable pinboard / starboard
-  - 🔨 Moderation & automod commands
-  - 🤖 Completely open source and modular
+## Features'
+
+- ⏰ Reminders
+- ⚠ Warning system
+- 🔗 Invite inspector
+- 🔍 API lookup utilities
+- 👥 User info commands
+- 🔧 Server info commands
+- 🎮 Steam ban monitoring
+- ✨ Reputation point system
+- 📜 Powerful & tweakable logging
+- 🏷️ Assignable and automatic roles
+- ❤ Roleplay & interaction commands
+- 🌐 Complete configuration dashboard
+- 📌 Customizable pinboard / starboard
+- 🔨 Moderation & automod commands
+- 🤖 Completely open source and modular
 
    ... and many more!
 
 ## Hosting
+
 Refer to the [wiki][5] for a self-hosting guide.
 
 ## License
-This source is licensed under the [GNU AGPL-v3][6] or later.
-<br>
-&copy; 2018 - 2020 [smolespi][7], [resolved][8], and [cth103][9] (a [jiktim][10] project).
+
+[GNU AGPL-v3][6] or later.
 
 [1]: https://hibiki.app "Hibiki"
 [2]: https://nodejs.org "Node.js"
@@ -44,7 +45,3 @@ This source is licensed under the [GNU AGPL-v3][6] or later.
 [4]: https://discordapp.com/oauth2/authorize?&client_id=493904957523623936&scope=bot&permissions=506850534 "Invite"
 [5]: https://github.com/smolespi/Hibiki/wiki "Wiki"
 [6]: LICENSE "LICENSE"
-[7]: https://lesbian.codes "smolespi"
-[8]: https://github.com/resolvedxd "resolved"
-[9]: https://github.com/cthpw103 "cth103"
-[10]: https://jikt.im "jiktim"
