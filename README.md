@@ -11,23 +11,23 @@
 
 You can invite the main application [here][4]. Any other instances of Hibiki are **not official** and could possibly carry privacy/security risks. The only official bot is `Hibiki#1448 (493904957523623936)`.
 
-## Features'
+## Features
 
-- ⏰ Reminders
-- ⚠ Warning system
-- 🔗 Invite inspector
-- 🔍 API lookup utilities
-- 👥 User info commands
-- 🔧 Server info commands
-- 🎮 Steam ban monitoring
-- ✨ Reputation point system
-- 📜 Powerful & tweakable logging
-- 🏷️ Assignable and automatic roles
-- ❤ Roleplay & interaction commands
-- 🌐 Complete configuration dashboard
-- 📌 Customizable pinboard / starboard
-- 🔨 Moderation & automod commands
-- 🤖 Completely open source and modular
+  - ⏰ Reminders
+  - ⚠ Warning system
+  - 🔗 Invite inspector
+  - 🔍 API lookup utilities
+  - 👥 User info commands
+  - 🔧 Server info commands
+  - 🎮 Steam ban monitoring
+  - ✨ Reputation point system
+  - 📜 Powerful & tweakable logging
+  - 🏷️ Assignable and automatic roles
+  - ❤ Roleplay & interaction commands
+  - 🌐 Complete configuration dashboard
+  - 📌 Customizable pinboard / starboard
+  - 🔨 Moderation & automod commands
+  - 🤖 Completely open source and modular
 
    ... and many more!
 
@@ -37,7 +37,7 @@ Refer to the [wiki][5] for a self-hosting guide.
 
 ## License
 
-[GNU AGPL-v3][6] or later.
+[GNU AGPL-v3][6] or later
 
 [1]: https://hibiki.app "Hibiki"
 [2]: https://nodejs.org "Node.js"
