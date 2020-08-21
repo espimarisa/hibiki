@@ -5,7 +5,8 @@
   "author": "smolespi <espi@lesbian.codes> (https://lesbian.codes)",
   "contributors": [
     "resolved <resolvedxd@gmail.com> (https://github.com/resolvedxd)",
-    "cth103 <cthdev@email.com> (https://github.com/cthpw103)"
+    "cth103 <cthdev@email.com> (https://github.com/cthpw103)",
+    "TTtie <me@tttie.cz> (https://tttie.cz)"
   ],
   "license": "AGPL-3.0-or-later",
   "homepage": "https://hibiki.app",
@@ -45,11 +46,9 @@
     "rethinkdb-ts": "^2.4.5"
   },
   "optionalDependencies": {
-    "@discordjs/opus": "^0.3.2",
     "bufferutil": "^4.0.1",
     "erlpack": "^0.1.3",
-    "eventemitter3": "^4.0.4",
-    "zlib-sync": "^0.1.7"
+    "eventemitter3": "^4.0.4"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
