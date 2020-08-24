@@ -10,40 +10,7 @@
 <body>
   <%# Navbar %>
   <section class="hero gradient">
-    <div class="hero-head">
-      <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
-        <div class="container">
-          <div class="navbar-brand">
-            <a href="/manage/profile/" class="navbar-item">
-              <img src="<%= user.avatar %>" class="navlogo mr-3" alt="user" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
-              <p>Logged in as <%= user.username %>#<%= user.discriminator %></p>
-            </a>
-            <a class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu" role="button">
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-            </a>
-          </div>
-          <div class="navbar-menu" id="navMenu">
-            <div class="navbar-end">
-              <a href="/manage/profile/" class="navbar-item">
-                <span class="icon"><i class="fa fa-user"></i></span>
-                <span>Edit Profile</span>
-              </a>
-              <a href="/manage/servers/" class="navbar-item">
-                <span class="icon"><i class="fa fa-home"></i></span>
-                <span>Servers</span>
-              </a>
-              <a href="/logout/" class="navbar-item">
-                <span class="icon"><i class="fa fa-sign-out"></i></span>
-                <span>Logout</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </div>
-
+    <%- include("../partials/navbar.ejs") %>
     <%# Header %>
     <div class="hero-body">
       <div class="container has-text-centered">

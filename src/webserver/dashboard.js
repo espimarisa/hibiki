@@ -17,8 +17,8 @@ const session = require("@geo1088/express-session-rethinkdb")(expressSession);
 const app = express();
 
 const noCache = (_, res, next) => {
-    res.header("Cache-Control", "no-cache");
-    next();
+  res.header("Cache-Control", "no-cache");
+  next();
 };
 
 app.use(helmet({ contentSecurityPolicy: false }));
@@ -30,7 +30,7 @@ app.use(helmet.contentSecurityPolicy({
     defaultSrc: ["'self'", "fonts.googleapis.com", "fonts.gstatic.com", "cdn.jsdelivr.net"],
     imgSrc: ["'self'", "avatars1.githubusercontent.com", "cdn.discordapp.com"],
     scriptSrc: ["'self'", "discord.com", "discordapp.com", "cdn.jsdelivr.net"],
-    styleSrc: ["'self'", "cdn.jsdelivr.net", "discord.com", "discordapp.com" ],
+    styleSrc: ["'self'", "cdn.jsdelivr.net", "discord.com", "discordapp.com", "fonts.googleapis.com", "fonts.gstatic.com"],
   },
 }));
 

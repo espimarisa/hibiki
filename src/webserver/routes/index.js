@@ -17,6 +17,7 @@ module.exports = (bot) => {
     res.render("index", {
       bot: bot,
       format: format,
+      page: req.url,
       user: req.isAuthenticated() ? getAuthedUser(req.user) : null,
     });
   });

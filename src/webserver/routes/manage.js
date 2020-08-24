@@ -21,14 +21,15 @@ module.exports = (bot) => {
 
   // List of servers
   router.get("/servers/", checkAuth, async (req, res) => {
-    res.render("servers", { bot: bot, user: req.user });
+    const user = getAuthedUser(req.user);
+    res.render("servers", { bot: bot, page: req.url.split("/")[1], user: user });
   });
 
   // Profile manager
   router.get("/profile/", checkAuth, async (req, res) => {
     const user = getAuthedUser(req.user);
     const usercfg = await bot.db.table("usercfg").get(user.id).run();
-    res.render("profile", { bot: bot, cfg: usercfg, user: user });
+    res.render("profile", { bot: bot, cfg: usercfg, page: req.url.split("/")[1], user: user });
   });
 
   // Server manager
@@ -41,7 +42,7 @@ module.exports = (bot) => {
     // Renders the dashboard
     if (!guild) return res.status(403).render("403");
     const cfg = await bot.db.table("guildcfg").get(guild.id).run();
-    res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, items: items, user: user });
+    res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, items: items, page: "dash", user: user });
   });
 
   return router;

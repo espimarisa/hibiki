@@ -23,6 +23,8 @@ node_modules/
 out/
 sass/
 rethinkdb_data/
+bulma/
+bulma-dark/
 
 # Logs & lockfiles
 .npm
