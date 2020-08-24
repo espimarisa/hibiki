@@ -25,7 +25,6 @@ module.exports = {
     "jsx-quotes": [1, "prefer-double"],
     "lines-around-comment": [1, { beforeBlockComment: false }],
     "max-depth": [1, 8],
-    "max-len": [1, { code: 190, ignoreComments: true, ignoreStrings: true, tabWidth: 2 }],
     "max-nested-callbacks": [1, 8],
     "max-params": [1, 8],
     "new-parens": 1,

@@ -1,98 +1,29 @@
 <%# Navbar %>
 <section class="hero gradient is-fullheight">
-  <div class="hero-head">
-    <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
-      <div class="container">
-        <div class="navbar-brand">
-          <a href="/" class="navbar-item">
-            <figure class="image is-inline-block">
-              <img src="<%= bot.user.dynamicAvatarURL() %>" class="is-rounded" alt="logo">
-            </figure>
-            <span class="is-inline-block ml-3"><%= bot.user.username %> v<%= bot.version %></span>
-          </a>
-          <a class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu" role="button">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-          </a>
-        </div>
-        <div class="navbar-menu" id="navMenu">
-          <div class="navbar-start" id="navMenu">
-            <a href="/manage/servers/" class="navbar-item">
-              <span class="icon"><i class="fa fa-wrench"></i></span>
-              <span>Dashboard</span>
-            </a>
-            <a href="/privacy/" class="navbar-item">
-              <span class="icon"><i class="fa fa-shield"></i></span>
-              <span>Privacy Policy</span>
-            </a>
-          </div>
-          <div class="navbar-end">
-            <a href="/support/" class="navbar-item">
-              <span class="icon"><i class="fa fa-discord"></i></span>
-              <span>Support</span>
-            </a>
-            <a href="/github/" class="navbar-item">
-              <span class="icon"><i class="fa fa-github"></i></span>
-              <span>GitHub</span>
-            </a>
-            <a href="/twitter/" class="navbar-item">
-              <span class="icon"><i class="fa fa-twitter"></i></span>
-              <span>Twitter</span>
-            </a>
-            <% if (user) { %>
-            <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link">
-                <figure class="image is-inline-block">
-                  <img src="<%= user.avatar %>" class="is-rounded" alt="avatar">
-                </figure>
-                <span class="is-inline-block ml-3"><%= user.username %>#<%= user.discriminator %></span>
-              </a>
-              <div class="navbar-dropdown">
-                <a href="/manage/profile/" class="navbar-item">
-                  <span class="icon"><i class="fa fa-user"></i></span>
-                  <span>Profile</span>
-                </a>
-                <a href="/logout/" class="navbar-item">
-                  <span class="icon"><i class="fa fa-sign-out"></i></span>
-                  <span>Logout</span>
-                </a>
-              </div>
-            </div>
-            <% } %>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </div>
-
+  <%- include("../partials/navbar.ejs") %>
   <%# Index header %>
   <div class="hero-body">
-    <div class="container has-text-centered">
-      <div class="animate__animated animate__slideInDown animate__faster">
-        <img src="https://cdn.discordapp.com/avatars/<%= bot.user.id %>/<%= bot.user.avatar %>.png?size=512" class="logo" alt="logo">
-      </div>
-      <div class="animate__animated animate__slideInUp animate__faster">
-        <p class="is-size-2 has-text-weight-semibold"><%= bot.user.username %></p>
-        <p class="control has-text-centered">
-          <a class="button is-large" href="/invite/">
-            <span class="icon is-small">
-              <i class="fa fa-plus"></i>
-            </span>
-            <span>Invite <%= bot.user.username %></span>
-          </a>
-        </p>
-      </div>
+    <div class="container has-text-centered has-text-light animate__animated animate__fadeIn animate__faster">
+      <img src="<%= bot.user.dynamicAvatarURL() %>" class="logo" alt="logo">
+      <p class="is-size-2 has-text-weight-semibold"><%= bot.user.username %></p>
+      <p class="control has-text-centered">
+        <a class="button is-large is-white" href="/invite/">
+          <span class="icon is-small">
+            <i class="fa fa-plus"></i>
+          </span>
+          <span>Invite <%= bot.user.username %></span>
+        </a>
+      </p>
     </div>
   </div>
 
-  <div class="hero-footer animate__animated animate__fadeIn animate__faster">
+  <div class="hero-footer animate__animated animate__fadeInUp animate__faster">
     <div class="tabs is-centered is-fullwidth">
       <div class="container">
         <ul>
-          <li><a href="#stats"><span class="icon is-small"><i class="fa fa-bar-chart"></i></span>Statistics</a></li>
-          <li><a href="#features"><span class="icon is-small"><i class="fa fa-magic"></i></span>Features</a></li>
-          <li><a href="#about"><span class="icon is-small"><i class="fa fa-info-circle"></i></span>About</a></li>
+          <li><a href="#stats" class="has-text-light"><span class="icon is-small"><i class="fas fa-chart-bar"></i></span>Statistics</a></li>
+          <li><a href="#features" class="has-text-light"><span class="icon is-small"><i class="fas fa-magic"></i></span>Features</a></li>
+          <li><a href="#about" class="has-text-light"><span class="icon is-small"><i class="fas fa-info-circle"></i></span>About</a></li>
         </ul>
       </div>
     </div>
