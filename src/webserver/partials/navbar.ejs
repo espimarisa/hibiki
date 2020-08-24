@@ -61,7 +61,7 @@
         <%# If the user's logged in %>
         <% if (user) { %>
         <div class="navbar-end">
-          <a class="navbar-item has-text-white" href="/manage/profile">
+          <a href="/manage/profile" class="navbar-item has-text-white" >
             <img src="<%= user.avatar %>" class="nav-logo is-inline-block" alt="avatar">
             <span class="is-inline-block ml-2"><%= user.username %>#<%= user.discriminator %></span>
           </a>

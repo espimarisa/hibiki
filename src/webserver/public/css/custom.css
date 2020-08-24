@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap:400,700");
+
 /* Layout */
 
 html {
@@ -6,11 +8,6 @@ html {
 
 .about {
   max-width: 60em;
-}
-
-.footer {
-  background: #676cb8;
-  padding: 1em !important;
 }
 
 .media {
@@ -26,17 +23,14 @@ html {
   justify-content: center;
 }
 
-.spacing {
-  margin: 5em;
-}
 
 /* Text */
 
-a.navbar-item,
-.navbar-toggle,
-.navbar-burger:hover,
-.navbar-menu.is-active,
-.navbar-menu.is-active:hover {
+a, div, p, h1, h2, h3, h4, h5, h6, i, span, strong {
+  font-family: "Ubuntu", sans-serif;
+}
+
+a.navbar-item, .navbar-toggle,.navbar-burger:hover, .navbar-menu.is-active, .navbar-menu.is-active:hover {
   background: transparent !important;
 }
 
@@ -44,10 +38,10 @@ a.navbar-item,
   color: #9e67b8;
 }
 
-
 .link:hover {
   color: #ccc;
 }
+
 
 /* Icon & Images */
 

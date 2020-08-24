@@ -1,7 +1,8 @@
 # Configs
+cfg.js
 cfg.json
-config.json
 config.js
+config.json
 
 # Binaries
 ffmpeg
@@ -21,10 +22,7 @@ dist/
 docs/
 node_modules/
 out/
-sass/
 rethinkdb_data/
-bulma/
-bulma-dark/
 
 # Logs & lockfiles
 .npm
