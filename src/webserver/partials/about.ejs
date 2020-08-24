@@ -1,28 +1,28 @@
 <%# Stats  %>
 <% let useramnt = 0; bot.guilds.forEach(g => { useramnt += g.memberCount; }); %>
-<section class="hero is-dark is-bold" id="stats">
+<section class="hero is-black is-bold" id="stats">
   <div class="hero-body">
     <div class="container">
       <div class="columns has-text-centered">
         <div class="column">
-          <span class="icon is-large"><i class="fa fa-comment fa-3x"></i></span>
+          <span class="icon is-large"><i class="fas fa-comment-alt fa-3x"></i></span>
           <p class="subtitle"><%= bot.guilds.size %> servers</p>
         </div>
         <div class="column">
-          <span class="icon is-large"><i class="fa fa-users fa-3x"></i></span>
+          <span class="icon is-large"><i class="fas fa-users fa-3x"></i></span>
           <p class="subtitle"><%= useramnt %> users</p>
         </div>
         <div class="column">
-          <span class="icon is-large"><i class="fa fa-book fa-3x"></i></span>
+          <span class="icon is-large"><i class="fas fa-stream fa-3x"></i></span>
           <p class="subtitle"><%= bot.commands.length %> commands</p>
         </div>
         <div class="column">
-          <span class="icon is-large"><i class="fa fa-signal fa-3x"></i></span>
-          <p class="subtitle"><%= bot.shards.get(0).latency %> ms</p>
+          <span class="icon is-large"><i class="fas fa-clock fa-3x"></i></span>
+          <p class="subtitle"><%= format.uptime(process.uptime()); %></p>
         </div>
         <div class="column">
-          <span class="icon is-large"><i class="fa fa-clock-o fa-3x"></i></span>
-          <p class="subtitle"><%= format.uptime(process.uptime()); %></p>
+          <span class="icon is-large"><i class="fas fa-wifi fa-3x"></i></span>
+          <p class="subtitle"><%= bot.shards.get(0).latency %> ms</p>
         </div>
       </div>
     </div>
@@ -44,43 +44,43 @@
           <div class="tile has-text-centered">
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating floating fa fa-paw fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fa fa-cat fa-3x"></i></span>
                 <p class="title is-size-4">Get pictures of various animals</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating floating fa fa-comment fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fa fa-comment fa-3x"></i></span>
                 <p class="title is-size-4">View XKCD and Garfield comics</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating floating fa fa-sort fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fa fa-paw fa-3x"></i></span>
                 <p class="title is-size-4">Get pictures of cute catgirls and foxgirls</p>
               </div>
             </div>
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
                 <span class="icon is-large"><i class="floating fa fa-heart fa-3x"></i></span>
-                <p class="title is-size-4">Roleplay with other users with anime gifs</p>
+                <p class="title is-size-4">Roleplay with users with anime gifs</p>
               </div>
               <div class="tile is-child">
                 <span class="icon is-large"><i class="floating fa fa-book fa-3x"></i></span>
                 <p class="title is-size-4">Define from the Urban Dictionary</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-picture-o fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fa fa-image fa-3x"></i></span>
                 <p class="title is-size-4">View images from boorus and NSFW</p>
               </div>
             </div>
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-paint-brush fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-paint-brush fa-3x"></i></span>
                 <p class="title is-size-4">Get cat, dog, and useless facts</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-question-circle fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-question-circle fa-3x"></i></span>
                 <p class="title is-size-4">Get answers from a magic 8-ball</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-percent fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-percent fa-3x"></i></span>
                 <p class="title is-size-4">Calculate coolness and gayness levels</p>
               </div>
             </div>
@@ -116,39 +116,39 @@
           <div class="tile has-text-centered">
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-book fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-book fa-3x"></i></span>
                 <p class="title is-size-4">Define a word from the dictionary</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-shopping-bag fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-shopping-bag fa-3x"></i></span>
                 <p class="title is-size-4">Search for packages on npm and AUR</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-sort fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-sort fa-3x"></i></span>
                 <p class="title is-size-4">Convert currencies and other units</p>
               </div>
             </div>
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-globe fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-globe fa-3x"></i></span>
                 <p class="title is-size-4">Return info about an IP address</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-github fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fab fa-github fa-3x"></i></span>
                 <p class="title is-size-4">Get info about a GitHub user or repo</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-steam fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fab fa-steam fa-3x"></i></span>
                 <p class="title is-size-4">Get info of a Steam profile and its bans</p>
               </div>
             </div>
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-paint-brush fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-palette fa-3x"></i></span>
                 <p class="title is-size-4">Get RGB, HSL, and hex for a color</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-twitter fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fab fa-twitter fa-3x"></i></span>
                 <p class="title is-size-4">Get Twitter profile info and stats</p>
               </div>
               <div class="tile is-child">
@@ -178,43 +178,43 @@
           <div class="tile has-text-centered">
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-ban fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-scroll fa-3x"></i></span>
                 <p class="title is-size-4">Log message and user updates</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-archive fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-sticky-note fa-3x"></i></span>
                 <p class="title is-size-4">Log when a role or channel is changed</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-sign-language fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-sign-language fa-3x"></i></span>
                 <p class="title is-size-4">Send custom leave/join messages</p>
               </div>
             </div>
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-exclamation-triangle fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-exclamation-triangle fa-3x"></i></span>
                 <p class="title is-size-4">Give members warnings/strikes</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-star fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-star fa-3x"></i></span>
                 <p class="title is-size-4">Give members repuation points</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-gavel fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-gavel fa-3x"></i></span>
                 <p class="title is-size-4">Forceban users that aren't present</p>
               </div>
             </div>
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-exclamation-circle fa-3x"></i></span>
-                <p class="title is-size-4">Automod message spam and invites</p>
+                <span class="icon is-large"><i class="floating fas fa-robot fa-3x"></i></span>
+                <p class="title is-size-4">Auto moderate spam and invites</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-eye fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-eye fa-3x"></i></span>
                 <p class="title is-size-4">Sniping of deleted messages</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-bomb fa-3x"></i></span>
+                <span class="icon is-large"><i class="floating fas fa-bomb fa-3x"></i></span>
                 <p class="title is-size-4">Purge a set amount of messages fast</p>
               </div>
             </div>
@@ -264,19 +264,19 @@
     <p class="is-size-3 has-text-weight-semibold">Ready to improve your server?</p>
     <a class="button is-medium" href="/github/">
       <span class="icon is-small">
-        <i class="fa fa-github"></i>
+        <i class="fab fa-github"></i>
       </span>
       <span>View on GitHub</span>
     </a>
     <a class="button is-medium" href="/invite/">
       <span class="icon is-small">
-        <i class="fa fa-plus"></i>
+        <i class="fas fa-plus"></i>
       </span>
       <span>Add to Server</span>
     </a>
     <a class="button is-medium" href="/vote/">
       <span class="icon is-small">
-        <i class="fa fa-check"></i>
+        <i class="fas fa-vote-yea"></i>
       </span>
       <span>Vote on top.gg</span>
     </a>
@@ -288,7 +288,7 @@
   <div class="hero-body">
     <div class="container">
       <p class="title is-size-2">Team</p>
-      <p class="subtitle is-size-4">We develop <%= bot.user.username %> and keep it running!</p>
+      <p class="subtitle is-size-4">We develop and keep <%= bot.user.username %> running!</p>
       <div class="columns">
         <div class="column is-one-fourth">
           <div class="card">
