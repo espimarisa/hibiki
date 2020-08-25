@@ -37,6 +37,7 @@ module.exports = {
     "no-return-await": 1,
     "no-undef": 0,
     "no-unneeded-ternary": 1,
+    "no-var": 1,
     "object-curly-spacing": [1, "always"],
     "operator-linebreak": [1, "after"],
     "padded-blocks": [1, "never"],
