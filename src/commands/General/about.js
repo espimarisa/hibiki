@@ -65,12 +65,17 @@ class aboutCommand extends Command {
             `V8 v${process.versions.v8}`,
           inline: true,
         }, {
-          name: `Host Info`,
+          name: "Host Info",
           value: `Bot using ${formatBytes(process.memoryUsage().rss)} of memory \n` +
             `System using ${formatBytes(os.totalmem() - os.freemem())} of memory \n` +
             `System up for ${format.uptime(os.uptime())} \n` +
             `Running on ${formatOS(os.platform(), os.release())} ${os.arch()}`,
           inline: false,
+        }, {
+          name: "About",
+          value: `${this.bot.user.username} is an easy and powerful all-in-one Discord bot. \n` +
+          `Wanna see how everything works? View the [GitHub](https://github.com/smolespi/Hibiki) repository. \n` +
+          `[Invite](${this.bot.config.homepage}/invite/) • [Support](https://discord.gg/${this.bot.config.support}) • [Vote](https://top.gg/bot/${this.bot.user.id}/vote) • [Website](${this.bot.config.homepage})`,
         }],
         thumbnail: {
           url: this.bot.user.dynamicAvatarURL(),
