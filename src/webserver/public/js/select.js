@@ -3,4 +3,3 @@
  * @description Handles multiple selections
  * @module webserver/select
  */
-
