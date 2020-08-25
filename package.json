@@ -23,6 +23,7 @@
     "node": ">=12.0.0"
   },
   "scripts": {
+    "beautify": "beautify-proj -i . -o . -c .jsbeautifyrc -e ./node_modules",
     "dev": "nodemon",
     "lint": "eslint --fix .",
     "setup": "node src/scripts/setup.js",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
+    "beautify-proj": "^1.0.0",
     "eslint": "^7.7.0",
     "nodemon": "^2.0.4",
     "pm2": "^4.4.1"
