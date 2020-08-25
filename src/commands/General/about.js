@@ -75,7 +75,7 @@ class aboutCommand extends Command {
           name: "About",
           value: `${this.bot.user.username} is an easy and powerful all-in-one Discord bot. \n` +
           "Wanna see how everything works? View the [GitHub](https://github.com/smolespi/Hibiki) repository. \n" +
-          `[Invite](${this.bot.config.homepage}/invite/) • [Support](https://discord.gg/${this.bot.config.support}) • [Vote](https://top.gg/bot/${this.bot.user.id}/vote) • [Website](${this.bot.config.homepage})`,
+          `[Invite](${this.bot.config.homepage}/invite/) • [Support](https://discord.gg/gZEj4sM • [Vote](https://top.gg/bot/${this.bot.user.id}/vote) • [Website](${this.bot.config.homepage})`,
         }],
         thumbnail: {
           url: this.bot.user.dynamicAvatarURL(),
