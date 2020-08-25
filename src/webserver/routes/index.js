@@ -35,7 +35,7 @@ module.exports = (bot) => {
   });
 
   router.get("/support/", (req, res) => {
-    res.redirect(301, `https://discord.gg/${bot.config.support}`);
+    res.redirect(301, `https://discord.gg/gZEj4sM`);
   });
 
   router.get("/github/", (req, res) => {
