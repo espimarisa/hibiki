@@ -106,6 +106,10 @@ module.exports = {
     if (!features) return undefined;
     return features.map(feature => {
       switch (feature) {
+        case "COMMUNITY":
+          return "Community";
+        case "WELCOME_SCREEN_ENABLED":
+          return "Welcome Screen Enabled";
         case "INVITE_SPLASH":
           return "Invite Splash";
         case "VANITY_URL":
