@@ -14,7 +14,7 @@ class serverCommand extends Command {
     let guild = msg.channel.guild;
     (args[0] && this.bot.config.owners.includes(msg.author.id)) ?
     guild = this.bot.guilds.find(g => g.name.toLowerCase().startsWith(args.join(" ")) ||
-      g.id === args.join(" ")) : guild = msg.channel.guild;
+      g.id === args.join(" ")): guild = msg.channel.guild;
     if (!guild) return msg.channel.guild;
 
     let bots = 0;

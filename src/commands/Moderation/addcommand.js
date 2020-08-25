@@ -32,7 +32,8 @@ class addcommandCommand extends Command {
     // Image parsing
     let img;
     const urlcheck = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/.exec(content);
-    if (urlcheck && (urlcheck[0].endsWith(".jpg") || urlcheck[0].endsWith(".png") || urlcheck[0].endsWith(".gif"))) content = content.slice(0, urlcheck.index) + content.slice(urlcheck.index + urlcheck[0].length, content.length);
+    if (urlcheck && (urlcheck[0].endsWith(".jpg") || urlcheck[0].endsWith(".png") || urlcheck[0].endsWith(".gif"))) content = content.slice(0,
+      urlcheck.index) + content.slice(urlcheck.index + urlcheck[0].length, content.length);
     if (urlcheck && (urlcheck[0].endsWith(".jpg") || urlcheck[0].endsWith(".png") || urlcheck[0].endsWith(".gif"))) img = urlcheck[0];
     if (msg.attachments && msg.attachments[0]) img = msg.attachments[0].proxy_url;
 
@@ -50,7 +51,8 @@ class addcommandCommand extends Command {
 
     if (!guildcfg.customCommands) guildcfg.customCommands = [];
     if (guildcfg.customCommands.length >= 30) return this.bot.embed("❌ Error", "You cant have more than **30** commands.", msg, "error");
-    if (guildcfg.customCommands.find(cmd => cmd.name === name)) return this.bot.embed("❌ Error", `The command **${name}** already exists.`, msg, "error");
+    if (guildcfg.customCommands.find(cmd => cmd.name === name)) return this.bot.embed("❌ Error", `The command **${name}** already exists.`, msg,
+      "error");
 
     guildcfg.customCommands.push({
       name: name,
