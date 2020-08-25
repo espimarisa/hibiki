@@ -110,7 +110,8 @@ class Handler extends Event {
           },
           footer: {
             text: msg.guild.members.get(customcmd.createdBy) ?
-              `Ran by ${this.bot.tag(msg.author)} | Created by ${this.bot.tag(msg.guild.members.get(customcmd.createdBy), false)}` : customcmd.name,
+              `Ran by ${this.bot.tag(msg.author)} | Created by ${this.bot.tag(msg.guild.members.get(customcmd.createdBy), false)}` : customcmd
+              .name,
             icon_url: msg.author.dynamicAvatarURL(),
           },
         },
