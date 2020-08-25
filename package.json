@@ -47,7 +47,6 @@
     "rethinkdb-ts": "^2.4.5"
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
     "beautify-proj": "^1.0.0",
     "eslint": "^7.7.0",
     "nodemon": "^2.0.4",
