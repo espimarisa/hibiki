@@ -134,7 +134,7 @@ class serverCommand extends Command {
 
     if (guild.features.length) {
       fields.push({
-        name: "Boost Features",
+        name: "Server Features",
         value: format.features(guild.features).join(", "),
         inline: false,
       });
