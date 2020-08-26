@@ -4,7 +4,7 @@ class verifyCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["t", "trust", "v"],
-      args: "<member:member>",
+      args: "<member:member&strict>",
       description: "Gives the verified role to A member.",
       clientperms: "manageRoles",
       requiredperms: "manageRoles",

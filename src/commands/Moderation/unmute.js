@@ -4,7 +4,7 @@ class unmuteCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["um", "unsilence"],
-      args: "<member:member> [reason:string]",
+      args: "<member:member&strict> [reason:string]",
       description: "Unmutes a member.",
       clientperms: "manageRoles",
       requiredperms: "manageMessages",
