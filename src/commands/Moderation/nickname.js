@@ -4,7 +4,7 @@ class nicknameCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["nick", "set-nick", "set-nickname"],
-      args: "<member:member> [nickname:string]",
+      args: "<member:member&strict> [nickname:string]",
       description: "Changes a user's nickname.",
       clientperms: "manageNicknames",
       requiredperms: "manageNicknames",

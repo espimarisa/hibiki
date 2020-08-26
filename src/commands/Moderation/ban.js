@@ -6,7 +6,7 @@ class banCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["b"],
-      args: "<member:member> [reason:string]",
+      args: "<member:member&strict> [reason:string]",
       description: "Bans a member from the server.",
       clientperms: "banMembers",
       requiredperms: "manageMessages",
