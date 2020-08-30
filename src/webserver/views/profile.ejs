@@ -3,6 +3,8 @@
 
 <head>
   <%- include("../partials/head.ejs") %>
+  <script src="/public/js/profile.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js" crossorigin="anonymous"></script>
   <title>Profile - <%= bot.user.username %></title>
 </head>
 
@@ -12,11 +14,18 @@
     <div class="hero-body">
       <div class="container has-text-centered">
         <figure class="image is-128x128 is-inline-block">
-          <img src="<%= user.avatar %>" class="is-rounded" alt="user" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+          <img src="<%= user.avatar %>" class="is-rounded" alt="user">
         </figure>
         <p class="title is-size-3 has-text-white">Editing Profile</p>
       </div>
     </div>
+  </section>
+
+
+  <section class="section container content">
+    <p class="title is-size-3">Bio</p>
+    <p class="subtitle is-size-5">A short description about yourself, for display on your profile.</p>
+    <input class="input" id="bio" type="text" placeholder="Your desired bio, will be trimmed to 120 characters.">
   </section>
 
   <%- include("../partials/footer.ejs") %>
