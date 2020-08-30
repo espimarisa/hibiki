@@ -6,6 +6,7 @@
 
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const csurf = require("csurf");
 const expressSession = require("express-session");
 const express = require("express");
 const helmet = require("helmet");
@@ -77,6 +78,7 @@ module.exports = async (bot) => {
 
   // Starts passport & cookieParser
   app.use(cookieParser(config.cookiesecret));
+  app.use(csurf({ cookie: true }));
   app.use(passport.initialize());
   app.use(passport.session());
 
