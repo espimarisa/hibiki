@@ -4,7 +4,7 @@
 <head>
   <%- include("../partials/head.ejs") %>
   <script src="/public/js/navbar.js" crossorigin="anonymous"></script>
-  <title>Configure - <%= guild.name %></title>
+  <title>Manage - <%= guild.name %></title>
 </head>
 
 <body>
@@ -15,9 +15,9 @@
     <div class="hero-body">
       <div class="container has-text-centered">
         <figure class="image is-128x128 is-inline-block">
-          <img src="<%= guild.icon ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128` : "https://cdn.discordapp.com/embed/avatars/0.png" %>> alt="Server Icon" class="is-rounded">
+          <img src="<%= guild.icon ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128` : "https://cdn.discordapp.com/embed/avatars/0.png" %>> class="is-rounded" alt="icon">
         </figure>
-        <p class="title is-size-3"><%= guild.name %></p>
+        <p class="title is-size-3 has-text-white">Managing <%= guild.name %></p>
       </div>
     </div>
   </section>
