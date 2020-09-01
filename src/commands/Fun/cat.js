@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class catCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["kitten", "kitty", "pussy", "randomcat"],
+      aliases: ["kitten", "kitty", "randomcat"],
       description: "Sends a random cat picture.",
       allowdms: true,
       cooldown: 3,

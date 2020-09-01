@@ -1,22 +1,23 @@
 const Command = require("../../structures/Command");
 const fetch = require("node-fetch");
 
-class femdomCommand extends Command {
+class feetCommand extends Command {
   constructor(...args) {
     super(...args, {
-      description: "Sends a femdom ecchi/hentai image.",
+      aliases: ["feet"],
+      description: "Sends a random ecchi/hentai feet picture.",
       nsfw: true,
       cooldown: 3,
     });
   }
 
   async run(msg) {
-    const body = await fetch("https://nekos.life/api/v2/img/femdom").then(res => res.json().catch(() => {}));
-    if (!body || !body.url) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", "error");
+    const body = await fetch("https://nekos.life/api/v2/img/feet").then(res => res.json().catch(() => {}));
+    if (!body || !body.url) return this.bot.embed("❌ Error", "Couldn't send the image. Try again later.", msg, "error");
 
     msg.channel.createMessage({
       embed: {
-        title: "🔞 Femdom",
+        title: "🔞 Feet",
         color: this.bot.embed.color("general"),
         image: {
           url: body.url,
@@ -30,4 +31,4 @@ class femdomCommand extends Command {
   }
 }
 
-module.exports = femdomCommand;
+module.exports = feetCommand;
