@@ -13,6 +13,35 @@ class e621Command extends Command {
   }
 
   async run(msg, args) {
+    // Filter's specific content
+    const search = args.join("").toLowerCase();
+    if (search.includes("hibiki") || search.includes("loli") || search.includes("shota") || search.includes("cub")) {
+      msg.channel.createMessage({
+        embed: {
+          title: "❌ Disgusting...",
+          color: this.bot.embed.color("error"),
+          image: {
+            url: "https://i.imgur.com/evfz3WI.png",
+          },
+          footer: {
+            text: `Ran by ${this.bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
+        },
+      });
+
+      // Logs TOS breakers
+      return this.bot.createMessage(this.bot.config.logchannel, {
+        embed: {
+          color: this.bot.embed.color("error"),
+          author: {
+            name: `${this.bot.tag(msg.author)} (${msg.author.id}) searched for ${search} on ${this.id}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
+        },
+      });
+    }
+
     const body = await fetch(`https://e621.net/posts.json?page=dapi&s=post&q=index&json=1&tags=${encodeURIComponent(args.join(" "))}`, {
       headers: {
         "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
