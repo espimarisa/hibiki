@@ -11,10 +11,11 @@ class httpdogCommand extends Command {
     super(...args, {
       args: "[code:string]",
       description: "Sends a picture of a HTTP Status Code dog.",
+      cooldown: 3,
     });
   }
 
-  async run(msg, args) {
+  run(msg, args) {
     // Gets the status code
     let code;
     const codeToFind = statusCodes.filter(c => c === `${args.join("")}`);
