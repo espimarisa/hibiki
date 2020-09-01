@@ -14,6 +14,36 @@ class danbooruCommand extends Command {
 
   async run(msg, args) {
     if (args.length > 2) return this.bot.embed("❌ Error", "You can only search for 2 tags at a time.", msg, "error");
+
+    // Filter's specific content
+    const search = args.join("").toLowerCase();
+    if (search.includes("hibiki") || search.includes("loli") || search.includes("shota")) {
+      msg.channel.createMessage({
+        embed: {
+          title: "❌ Disgusting...",
+          color: this.bot.embed.color("error"),
+          image: {
+            url: "https://i.imgur.com/evfz3WI.png",
+          },
+          footer: {
+            text: `Ran by ${this.bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
+        },
+      });
+
+      // Logs TOS breakers
+      return this.bot.createMessage(this.bot.config.logchannel, {
+        embed: {
+          color: this.bot.embed.color("error"),
+          author: {
+            name: `${this.bot.tag(msg.author)} (${msg.author.id}) searched for ${search} on ${this.id}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
+        },
+      });
+    }
+
     const body = await fetch(`https://danbooru.donmai.us/posts.json?&tags=${encodeURIComponent(args.join(" "))}`)
       .then(res => res.json().catch(() => {}));
 
