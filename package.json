@@ -47,9 +47,14 @@
     "passport-discord": "^0.1.4",
     "rethinkdb-ts": "^2.4.5"
   },
+  "optionalDependencies": {
+    "erlpack": "^0.1.3",
+    "eventemitter3": "^4.0.7",
+    "zlib-sync": "^0.1.7"
+  },
   "devDependencies": {
     "beautify-proj": "^1.0.0",
-    "eslint": "^7.7.0",
+    "eslint": "^7.8.1",
     "nodemon": "^2.0.4",
     "pm2": "^4.4.1"
   }
