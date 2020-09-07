@@ -20,7 +20,12 @@ class assignCommand extends Command {
     }
 
     if (!args.length) {
-      // Sends list of roles
+      // If the server doesn't have any roles
+      if (!guildcfg || !guildcfg.assignableRoles || !guildcfg.assignableRoles.length) {
+        return this.bot.embed("📃 Assignable Roles", "This server has no assignable roles.", msg);
+      }
+
+      // Sends a list of assignable roles
       let assignableroles = guildcfg.assignableRoles.map(r => {
         if (msg.channel.guild.roles.has(r)) return `\`${msg.channel.guild.roles.get(r).name}\``;
       });
