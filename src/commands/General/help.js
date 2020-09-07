@@ -182,5 +182,4 @@ class helpCommand extends Command {
   }
 }
 
-
 module.exports = helpCommand;
