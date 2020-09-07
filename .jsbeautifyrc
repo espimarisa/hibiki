@@ -19,7 +19,7 @@
     "space_in_empty_paren": false,
     "space_in_paren": false,
     "unescape_strings": false,
-    "wrap_line_length": 150
+    "wrap_line_length": 190
   },
   "css": {
     "allowed_file_extensions": ["css", "less", "sass", "scss"],

@@ -11,6 +11,7 @@ module.exports = {
   },
 
   rules: {
+    "arrow-parens": [1, "as-needed"],
     "block-spacing": [1, "always"],
     "brace-style": [1, "1tbs", { allowSingleLine: true }],
     "comma-dangle": [1, "always-multiline"],
