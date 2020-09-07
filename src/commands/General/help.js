@@ -23,7 +23,7 @@ class helpCommand extends Command {
         case "General":
           label = "🤖 **General commands**";
           break;
-        case "Misc":
+        case "Miscellaneous":
           label = "✨ **Miscellaneous commands**";
           break;
         case "Moderation":
