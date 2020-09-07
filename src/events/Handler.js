@@ -62,9 +62,9 @@ class Handler extends Event {
     }
 
     let prefix;
-    const prefixes = this.bot.config.prefixes.map(p => msg.content.startsWith(p)).indexOf(true);
+    const prefixes = this.bot.config.prefixes.map(p => msg.content.toLowerCase().startsWith(p)).indexOf(true);
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
-    if (guildcfg && guildcfg.prefix && msg.content.startsWith(guildcfg.prefix)) prefix = guildcfg.prefix;
+    if (guildcfg && guildcfg.prefix && msg.content.toLowerCase().startsWith(guildcfg.prefix)) prefix = guildcfg.prefix;
     else if ((!guildcfg || !guildcfg.prefix) && (this.bot.config.prefixes && prefixes !== -1)) prefix = this.bot.config.prefixes[prefixes];
     else if (msg.content.startsWith(`<@!${this.bot.user.id}> `)) prefix = `<@!${this.bot.user.id}> `;
     else if (msg.content.startsWith(`<@${this.bot.user.id}> `)) prefix = `<@${this.bot.user.id}> `;
