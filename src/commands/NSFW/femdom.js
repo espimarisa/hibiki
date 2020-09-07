@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 class femdomCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["femdom"],
+      aliases: ["femdomhentai"],
       description: "Sends a femdom ecchi/hentai image.",
       nsfw: true,
       cooldown: 3,
