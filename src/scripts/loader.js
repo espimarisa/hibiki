@@ -33,6 +33,7 @@ module.exports.commands = async function loadCommands(bot) {
     cmds.forEach(cmd => {
       let command;
       try {
+        if (cmd.isDirectory || !cmd.endsWith(".js")) return;
         command = require(`${command_directory}/${subfolder}/${cmd}`);
       } catch (err) {
         bot.log(`${cmd} failed to load: ${err}`);
@@ -63,6 +64,7 @@ module.exports.events = async function loadEvents(bot) {
   files.forEach(evnt => {
     let event;
     try {
+      if (evnt.isDirectory || !evnt.endsWith(".js")) return;
       event = require(`${event_directory}/${evnt}`);
     } catch (err) {
       bot.log(`${evnt} failed to load: ${err}`);
@@ -94,6 +96,7 @@ module.exports.loggers = async function loadLoggers(bot) {
   files.forEach(l => {
     let logger;
     try {
+      if (l.isDirectory || !l.endsWith(".js")) return;
       logger = require(`${logger_directory}/${l}`);
       logger(bot, bot.db, /(.{1,})\.js/.exec(logger));
     } catch (err) {
@@ -120,8 +123,7 @@ module.exports.scripts = async function loadScripts(bot) {
   const files = readdirSync(script_directory);
   files.forEach(s => {
     let script;
-    if (s.isDirectory) return;
-    if (!s.endsWith(".s.js")) return;
+    if (s.isDirectory || s.endsWith(".js")) return;
     try {
       script = require(`${script_directory}/${s}`)(bot);
     } catch (err) {
