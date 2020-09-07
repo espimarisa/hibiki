@@ -66,6 +66,7 @@ class Args {
       if (typeof value == "undefined") return;
       argg.value = value;
       argObj[i] = argg;
+      argObj.map(val => `${val.optional ? "[" : "<"}${val.name}${val.optional ? "]" : ">"}`).join(delimiter);
     });
 
     return argObj;
