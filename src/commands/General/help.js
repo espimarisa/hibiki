@@ -53,6 +53,7 @@ class helpCommand extends Command {
     if (args) cmd = this.bot.commands.find(c => c.id.toLowerCase() === args.join(" ").toLowerCase() ||
       c.aliases.includes(args.join(" ").toLowerCase()));
 
+    // If no command, send a list of commands
     if (!cmd) {
       let db;
       if (msg.channel.type !== 1) db = await this.bot.db.table("guildcfg").get(msg.channel.guild.id);
@@ -137,7 +138,7 @@ class helpCommand extends Command {
       // Adds a reaction; ignores in DMs
       if (msg.channel instanceof eris.PrivateChannel) return;
       if (dmson) return msg.addReaction("📬");
-
+    } else {
       // Specific command help
       const construct = [];
       if (cmd.aliases.length) {
