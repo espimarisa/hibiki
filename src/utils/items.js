@@ -45,7 +45,7 @@ module.exports = [{
   category: "Features",
   id: "easyTranslate",
   emoji: "🌍",
-  label: "🌍 Easy Translate",
+  label: "Easy Translate",
   type: "bool",
   description: "Automatically translate content reacted to with a flag emoji.",
 }, {
