@@ -1,15 +1,15 @@
 const Command = require("../../structures/Command");
-const waitFor = require("../../utils/waitFor");
 const askFor = require("../../utils/ask").for;
+const waitFor = require("../../utils/waitFor");
 
-const categoryemojis = {
+const categoryEmojis = {
   Features: "✨",
   Roles: "👥",
   Automod: "🔨",
   Logging: "📜",
 };
 
-const typelabels = {
+const typeLabels = {
   channelID: "Channel",
   roleID: "Role",
   bool: "Toggle",
@@ -47,27 +47,31 @@ class setupCommand extends Command {
     if (!cfg.invitePunishments) cfg.invitePunishments = [];
     if (!cfg.spamPunishments) cfg.spamPunishments = [];
 
-    // Config show functionality
+    // Shows the current config
     if (args.length && args.join(" ").toLowerCase() === "show") {
       return msg.channel.createMessage({
         embed: {
           title: "🔧 Server Config",
           color: this.bot.embed.color("general"),
           fields: settings.filter(f => f.id || cfg[f.id]).sort((a, b) => a.id > b.id ? 1 : -1).map(s => {
-            let sid = cfg[s.id];
-            if (s.type === "channelID" && cfg[s.id]) sid = `<#${cfg[s.id]}>`;
-            else if (s.type === "roleID" && cfg[s.id]) sid = `<@&${cfg[s.id]}>`;
-            else if (s.type === "roleArray" && cfg[s.id]) sid = cfg[s.id].map(r => `<@&${r}>`).join(", ");
-            else if (s.type === "channelArray" && cfg[s.id]) sid = cfg[s.id].map(c => `<#${c}>`).join(", ");
-            else if (s.type === "punishment") sid = cfg[s.id].join(", ");
-            else if (s.type === "array" && cfg[s.id]) sid = cfg[s.id].map(c => `${c}`).join(", ");
-            if (sid)
+            let settingId = cfg[s.id];
+            if (s.type === "channelID" && cfg[s.id]) settingId = `<#${cfg[s.id]}>`;
+            else if (s.type === "roleID" && cfg[s.id]) settingId = `<@&${cfg[s.id]}>`;
+            else if (s.type === "roleArray" && cfg[s.id]) settingId = cfg[s.id].map(r => `<@&${r}>`).join(", ");
+            else if (s.type === "channelArray" && cfg[s.id]) settingId = cfg[s.id].map(c => `<#${c}>`).join(", ");
+            else if (s.type === "punishment") settingId = cfg[s.id].join(", ");
+            else if (s.type === "array" && cfg[s.id]) settingId = cfg[s.id].map(c => `${c}`).join(", ");
+            if (settingId)
               return {
                 name: s.label || s.id,
-                value: sid,
+                value: settingId,
                 inline: true,
               };
           }).filter(s => s),
+          footer: {
+            text: `Ran by ${this.bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
         },
       });
     }
@@ -78,7 +82,7 @@ class setupCommand extends Command {
     settings.forEach(s => {
       const cat = categories.find(c => c.name === s.category);
       if (!s.category) return;
-      if (!cat) categories.push({ name: s.category, emoji: categoryemojis[s.category], items: [s.id] });
+      if (!cat) categories.push({ name: s.category, emoji: categoryEmojis[s.category], items: [s.id] });
       else {
         cat.items.push(s.id);
         categories.map(c => categories.find(cc => cc.id === c.id) || c);
@@ -94,7 +98,7 @@ class setupCommand extends Command {
     const omsg = await msg.channel.createMessage({
       embed: {
         title: "🔧 Setup",
-        description: `You can also use the [web dashboard](${this.bot.config.homepage}/login/) for a better experience.`,
+        description: this.bot.config.homepage ? `You should use the [web dashboard](${this.bot.config.homepage}/login/) for a better experience.` : "",
         color: this.bot.embed.color("general"),
         fields: categories.map(cat => {
           return {
@@ -102,6 +106,10 @@ class setupCommand extends Command {
             value: `${cat.items.map(i => `\`${i}\``).join(", ")}`,
           };
         }),
+        footer: {
+          text: `Ran by ${this.bot.tag(msg.author)}`,
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
       },
     });
 
@@ -116,6 +124,10 @@ class setupCommand extends Command {
               value: `${cat.items.map(i => `\`${i}\``).join(", ")}`,
             };
           }),
+          footer: {
+            text: `Ran by ${bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
         },
       });
 
@@ -127,11 +139,8 @@ class setupCommand extends Command {
 
       // Waits for a reaction
       await waitFor("messageReactionAdd", 60000, async (message, emoji, uid) => {
-        if (message.id !== m.id) return;
-        if (uid !== msg.author.id) return;
-        if (!emoji.name) return;
-        if (stop) return;
         // Looks for the category
+        if (message.id !== m.id || uid !== msg.author.id || !emoji.name || stop) return;
         category = categories.find(cat => cat.emoji.length > 2 ? cat.emoji.split(":")[1] === emoji.id : cat.emoji === emoji.name);
         if (!category) return;
         await m.removeReactions();
@@ -145,21 +154,24 @@ class setupCommand extends Command {
       return category;
     }
 
-    const color = this.bot.embed.color("general");
     // Returns the category items
-    function itemsEmbed(category) {
+    function itemsEmbed(category, bot) {
       return {
         embed: {
           title: "🔧 Setup",
-          color: color,
+          color: bot.embed.color("general"),
           fields: category.items.map(cat => {
             const setting = settings.find(s => s.id === cat);
             return {
               name: `${setting.emoji} ${setting.label}`,
-              value: typelabels[setting.type] || setting.type,
+              value: typeLabels[setting.type] || setting.type,
               inline: true,
             };
           }),
+          footer: {
+            text: `Ran by ${bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
         },
       };
     }
@@ -167,7 +179,7 @@ class setupCommand extends Command {
     // Gets the category; timeout handler
     let category = await getCategory(omsg, this.bot, false);
     if (category.error === "timeout") return this.bot.embed.edit("❌ Error", "Timeout reached, exiting setup.", omsg, "error");
-    omsg.edit(itemsEmbed(category));
+    omsg.edit(itemsEmbed(category, this.bot));
     await omsg.removeReactions();
     await category.items.map(async cat => omsg.addReaction(settings.find(s => s.id === cat).emoji));
     omsg.addReaction(back);
@@ -193,9 +205,9 @@ class setupCommand extends Command {
         else cfg[setting.id] = true;
         await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(cfg).run();
         this.bot.embed.edit(setting.label, `${setting.id} has been **${cfg[setting.id] ? "enabled" : "disabled"}**.`, omsg, "success");
-        setTimeout(() => omsg.edit(itemsEmbed(category)), 1500);
-        // Punishments
+        setTimeout(() => omsg.edit(itemsEmbed(category, this.bot)), 1500);
       } else if (setting.type === "punishment") {
+        // Sets the punishment info
         const punishments = { Mute: "1️⃣", Purge: "2️⃣", Warn: "3️⃣" };
         const punishmentDescription = { Mute: null, Purge: null, Warn: null };
         const validpunishments = Object.getOwnPropertyNames(punishments);
@@ -220,11 +232,11 @@ class setupCommand extends Command {
           if (user !== msg.author.id) return;
           if (!emojii.name) return;
 
-          // Submit emoji
+          // Submission emoji
           if (emojii.name === submit) {
             await omsg.removeReactions();
             await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(cfg).run();
-            omsg.edit(itemsEmbed(category));
+            omsg.edit(itemsEmbed(category, this.bot));
             category.items.map(cat => omsg.addReaction(settings.find(s => s.id === cat).emoji));
             omsg.addReaction(back);
             return true;
@@ -235,6 +247,8 @@ class setupCommand extends Command {
           const punishment = validpunishments.find(p => punishments[p] === emojii.name);
           if (cfg[setting.id].includes(punishment)) cfg[setting.id].splice(cfg[setting.id].indexOf(punishment), 1);
           else cfg[setting.id].push(punishment);
+
+          // Sends when item changed
           this.bot.embed.edit(
             `🔨 Punishments for ${setting.pickerLabel}`,
             validpunishments.map(p => `${punishments[p]} ${p}${punishmentDescription[p] ?
@@ -245,16 +259,14 @@ class setupCommand extends Command {
             await omsg.removeReactions();
             category.items.map(cat => omsg.addReaction(settings.find(s => s.id === cat).emoji));
             omsg.addReaction(back);
-            return omsg.edit(itemsEmbed(category));
+            return omsg.edit(itemsEmbed(category, this.bot));
           }
         });
       } else {
         // Asks for a response
-        this.bot.embed.edit("🔧 Setup", `Respond with the desired **${setting.type || setting.type}**.`, omsg);
-        await waitFor("messageCreate", 90000, async (m) => {
-          if (m.author.id !== msg.author.id) return;
-          if (m.channel.id !== msg.channel.id) return;
-          if (!msg.content) return;
+        this.bot.embed.edit("🔧 Setup", `Respond with the desired **${setting.type || setting.type}**. You have **60 seconds** to respond.`, omsg);
+        await waitFor("messageCreate", 60000, async m => {
+          if (m.author.id !== msg.author.id || m.channel.id !== msg.channel.id || !msg.content) return;
 
           // Asks for the type of response; 3 attempts
           let result = askFor(setting.type, m.content, msg.guild);
@@ -273,7 +285,7 @@ class setupCommand extends Command {
 
             // If cooldown reached
             if (cooldown > 2) {
-              omsg.edit(itemsEmbed(category));
+              omsg.edit(itemsEmbed(category, this.bot));
               return true;
             }
 
@@ -289,11 +301,11 @@ class setupCommand extends Command {
             return this.bot.embed("❌ Error", `You can't set more than ${setting.maximum} channels.`, msg, "error");
           }
 
-          if (setting.type === "number" && setting.maximum && setting.maximum &&
-            (setting.minimum > result || setting.maximum < result)) {
+          // Number comparisons
+          if (setting.type === "number" && setting.maximum && setting.maximum && (setting.minimum > result || setting.maximum < result)) {
             return this.bot.embed(
               "❌ Error",
-              `The number needs to be under ${setting.maximum} and under ${setting.minimum}.`,
+              `The number needs to be under ${setting.maximum} and over ${setting.minimum}.`,
               msg,
               "error",
             );
@@ -304,11 +316,10 @@ class setupCommand extends Command {
           cfg[setting.id] = result;
           await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(cfg).run();
 
-          // Deletes msg
           m.delete();
           const setmsg = await this.bot.embed("✅ Success", `**${setting.id}** has been set to **${result}**.`, msg, "success");
           setTimeout(() => { setmsg.delete().catch(() => {}); }, 2000);
-          omsg.edit(itemsEmbed(category));
+          omsg.edit(itemsEmbed(category, this.bot));
           return true;
         }, this.bot);
       }
