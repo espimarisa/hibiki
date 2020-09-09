@@ -33,30 +33,28 @@ class roleinfoCommand extends Command {
       inline: true,
     });
 
-    if (role.color !== 0) {
-      fields.push({
-        name: "Color",
-        value: `#${role.color.toString(16)}`,
-        inline: true,
-      });
+    if (role.color !== 0) fields.push({
+      name: "Color",
+      value: `#${role.color.toString(16)}`,
+      inline: true,
+    });
 
-      fields.push({
-        name: "Created",
-        value: `${format.date(role.createdAt)} (${format.dateParse(new Date() / 1000 - role.createdAt / 1000)} ago)`,
-      });
+    fields.push({
+      name: "Created",
+      value: `${format.date(role.createdAt)} (${format.dateParse(new Date() / 1000 - role.createdAt / 1000)} ago)`,
+    });
 
-      if (settings.length) {
-        fields.push({
-          name: "Settings",
-          value: `${settings.join(", ")}`,
-        });
-      }
-
+    if (settings.length) {
       fields.push({
-        name: "Info",
-        value: `${mems} members have the role, and it's in position ${role.position}.`,
+        name: "Settings",
+        value: `${settings.join(", ")}`,
       });
     }
+
+    fields.push({
+      name: "Info",
+      value: `${mems} members have the role, and it's in position ${role.position}.`,
+    });
 
     msg.channel.createMessage({
       embed: {
