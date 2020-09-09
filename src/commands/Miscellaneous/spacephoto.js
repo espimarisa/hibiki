@@ -12,10 +12,11 @@ class spacephotoCommand extends Command {
   }
 
   async run(msg, args) {
-    // Fetches the API
     const nasamsg = await this.bot.embed("☄ Space Image", "Searching NASA's archive...", msg);
     const body = await fetch(`https://images-api.nasa.gov/search?media_type=image&q=${encodeURIComponent(args.join(" "))}`)
       .then(res => res.json().catch(() => {}));
+
+    // Gets an image
     const images = body.collection.items;
     const data = images[Math.floor(Math.random() * images.length)];
     if (!data) return this.bot.embed.edit("❌ Error", "No images found.", nasamsg, "error");

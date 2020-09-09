@@ -12,24 +12,24 @@ class removewarnCommand extends Command {
   }
 
   async run(msg, args) {
-    // Maps the IDs
+    // Maps the points
     const warnings = await Promise.all(args.map(async id => {
       if (!id) {
         return { removed: false, warning: id };
       }
 
-      // Gets the warnings
+      // Gets the warnings in the database
       const warning = await this.bot.db.table("warnings").get(id).run();
       if (!warning || warning.guild !== msg.channel.guild.id) {
         return { removed: false, warning: id };
       }
 
-      // Deletes the IDs
+      // Deletes the warnings
       await this.bot.db.table("warnings").get(id).delete().run();
       return { removed: true, warning: id };
     }));
 
-    // Sets amount of IDs removed / failed
+    // Sets amount of warnings removed / failed
     const removed = warnings.filter(w => w.removed);
     const failed = warnings.filter(w => !w.removed);
 
@@ -38,6 +38,7 @@ class removewarnCommand extends Command {
     }
 
     this.bot.emit("warningRemove", msg.channel.guild, msg.member, removed.map(w => `\`${w.warning}\``));
+
     msg.channel.createMessage({
       embed: {
         title: `⚠ Removed ${removed.length} warning${removed.length === 1 ? "" : "s"}.`,

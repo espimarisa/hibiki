@@ -17,7 +17,7 @@ class muteCommand extends Command {
     const user = pargs[0].value;
     let reason = args.slice(1).join(" ");
     if (!reason.length) reason = "No reason provided.";
-    if (reason.length > 512) reason = reason.slice(0, 512);
+    else if (reason.length > 512) reason = reason.slice(0, 512);
 
     // Reads db; finds role
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();

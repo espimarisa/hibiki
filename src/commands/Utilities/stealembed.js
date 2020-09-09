@@ -1,6 +1,7 @@
+const { inspect } = require("util");
+
 const Command = require("../../structures/Command");
 const fetch = require("node-fetch");
-const { inspect } = require("util");
 
 class stealembedCommand extends Command {
   constructor(...args) {

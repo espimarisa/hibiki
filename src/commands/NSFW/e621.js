@@ -13,7 +13,7 @@ class e621Command extends Command {
   }
 
   async run(msg, args) {
-    // Filter's specific content
+    // Filters specific content
     const search = args.join("").toLowerCase();
     if (search.includes("hibiki") || search.includes("loli") || search.includes("shota") || search.includes("cub")) {
       msg.channel.createMessage({

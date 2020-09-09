@@ -5,7 +5,7 @@ class asshentaiCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["ahentai"],
-      description: "Sends a random ecchi/hentai ass picture.",
+      description: "Sends a random ass ecchi/hentai picture.",
       nsfw: true,
       cooldown: 3,
     });

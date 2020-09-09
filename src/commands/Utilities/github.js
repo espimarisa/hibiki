@@ -30,13 +30,11 @@ class githubCommand extends Command {
       if (body.fork) fields.push({ name: "Owner", value: `Forked from ${body.source.full_name}`, inline: true });
       if (body.language) fields.push({ name: "Main Language", value: `${body.language}`, inline: true });
 
-      if (body.license && body.license.spdx_id !== "NOASSERTION") {
-        fields.push({
-          name: "License",
-          value: `${body.license.spdx_id}`,
-          inline: true,
-        });
-      }
+      if (body.license && body.license.spdx_id !== "NOASSERTION") fields.push({
+        name: "License",
+        value: `${body.license.spdx_id}`,
+        inline: true,
+      });
 
       if (body.stargazers_count > 0) fields.push({ name: "Stars", value: body.stargazers_count, inline: true });
       if (body.subscribers_count > 0) fields.push({ name: "Watching", value: body.subscribers_count, inline: true });
@@ -104,6 +102,7 @@ class githubCommand extends Command {
       },
     };
 
+    // If the item has a description
     if (body.bio) embed.description = body.bio;
     msg.channel.createMessage({
       embed: embed,

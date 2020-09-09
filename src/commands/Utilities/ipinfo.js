@@ -35,12 +35,10 @@ class ipinfoCommand extends Command {
     if (body.city) fields.push({ name: "City", value: body.city, inline: true });
     if (body.region) fields.push({ name: "Region", value: body.region, inline: true });
 
-    if (!abuseinfo.errors) {
-      fields.push({
-        name: "Abuse Info",
-        value: `${abuseinfo.data.totalReports} reports; ${abuseinfo.data.abuseConfidenceScore}%`,
-      });
-    }
+    if (!abuseinfo.errors) fields.push({
+      name: "Abuse Info",
+      value: `${abuseinfo.data.totalReports} reports; ${abuseinfo.data.abuseConfidenceScore}%`,
+    });
 
     const construct = {
       title: `🌐 ${body.ip}`,
