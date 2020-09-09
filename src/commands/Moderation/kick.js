@@ -18,7 +18,7 @@ class kickCommand extends Command {
     const user = pargs[0].value;
     let reason = args.slice(1).join(" ");
     if (!reason.length) reason = "No reason provided.";
-    if (reason.length > 512) reason = reason.slice(0, 512);
+    else if (reason.length > 512) reason = reason.slice(0, 512);
 
     // If bot doesn't have high enough role
     if (!hierarchy(msg.channel.guild.members.get(this.bot.user.id), user)) {
@@ -49,7 +49,7 @@ class kickCommand extends Command {
       }).catch(() => {});
 
       this.bot.emit("guildKick", msg.channel.guild, reason, msg.member, user);
-      await kickmsg.edit(this.bot.embed("🔨 Kick", `**${user.username}** was kicked by **${msg.author.username}**.`));
+      await this.bot.embed.edit("🔨 Kick", `**${user.username}** was kicked by **${msg.author.username}**.`, kickmsg);
     }
   }
 }
