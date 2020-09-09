@@ -6,7 +6,7 @@
 
 const format = require("../utils/format");
 
-module.exports = (bot) => {
+module.exports = bot => {
   // Logs when added to a server
   if (!bot.config.logchannel) return;
   bot.on("guildCreate", async guild => {

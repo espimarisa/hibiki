@@ -66,7 +66,7 @@ class cowsayCommand extends Command {
     };
 
     // Sets the cowsay
-    const cowsay = (t) => {
+    const cowsay = t => {
       dashes = "";
       let length = Math.max(...t.match(/.{1,41}/g).map(a => {
         return a.length;

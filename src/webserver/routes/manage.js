@@ -3,7 +3,7 @@ const items = require("../../utils/items");
 
 const router = express.Router();
 
-module.exports = (bot) => {
+module.exports = bot => {
   // Checks if user is authenticated
   const checkAuth = (req, res, next) => {
     if (req.isAuthenticated()) return next();

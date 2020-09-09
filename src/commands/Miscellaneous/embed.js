@@ -107,7 +107,7 @@ class embedCommand extends Command {
         embedmsg,
       );
 
-      const [resp] = await waitFor("messageCreate", 30000, async (message) => {
+      const [resp] = await waitFor("messageCreate", 30000, async message => {
         if (message.author.id !== msg.author.id) return false;
         if (message.channel.id !== msg.channel.id) return false;
         message.delete().catch(() => {});

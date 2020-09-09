@@ -16,7 +16,7 @@ class Args {
   constructor(bot) {
     this.bot = bot;
     this.argtypes = {
-      string: (a) => { return a; },
+      string: a => { return a; },
     };
 
     // Loads argtypes
@@ -30,7 +30,7 @@ class Args {
         }
 
         if (!argtype) return;
-        argtype.forEach((atype) => this.argtypes[atype.name] = atype);
+        argtype.forEach(atype => this.argtypes[atype.name] = atype);
       });
     });
   }

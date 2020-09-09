@@ -3,7 +3,7 @@ const format = require("../../utils/format");
 
 const router = express.Router();
 
-module.exports = (bot) => {
+module.exports = bot => {
   // Gets authed user data
   const getAuthedUser = user => ({
     username: user.username,

@@ -41,22 +41,22 @@ function date(syear = true) {
   return `${colors[config.date]}[${month} ${day}${syear ? ` ${year} ` : " "}${time}]${colors.NC}`;
 }
 
-module.exports = (args) => {
+module.exports = args => {
   console.log(`${date(false)} ${colors[config.general]}${args} ${colors.NC}`);
 };
 
-module.exports.error = (args) => {
+module.exports.error = args => {
   console.log(`${date(false)} ${colors[config.error]}${args} ${colors.NC}`);
 };
 
-module.exports.info = (args) => {
+module.exports.info = args => {
   console.log(`${date(false)} ${colors[config.info]}${args} ${colors.NC}`);
 };
 
-module.exports.success = (args) => {
+module.exports.success = args => {
   console.log(`${date(false)} ${colors[config.success]}${args} ${colors.NC}`);
 };
 
-module.exports.warn = (args) => {
+module.exports.warn = args => {
   console.log(`${date(false)} ${colors[config.warn]}${args} ${colors.NC}`);
 };
