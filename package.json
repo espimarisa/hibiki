@@ -23,7 +23,7 @@
     "node": ">=12.0.0"
   },
   "scripts": {
-    "beautify": "beautify-proj -i . -o . -c .jsbeautifyrc -e ./node_modules",
+    "beautify": "beautify-proj -i . -o ../ -c .jsbeautifyrc -e ./node_modules",
     "dev": "nodemon",
     "lint": "eslint --fix .",
     "setup": "node src/scripts/setup.js",
