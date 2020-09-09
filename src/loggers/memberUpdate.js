@@ -7,10 +7,10 @@
 const Logger = require("../structures/Logger");
 const format = require("../utils/format");
 
-module.exports = (bot) => {
+module.exports = bot => {
   // Logging database
   const loggingdb = new Logger(bot.db);
-  const canSend = async (guild) => {
+  const canSend = async guild => {
     if (!guild || !guild.channels) return;
     const canLog = await loggingdb.canLog(guild);
     if (!canLog) return;

@@ -62,6 +62,7 @@ class Handler extends Event {
     }
 
     let prefix;
+    // Gets the command prefix and handles mention support
     const prefixes = this.bot.config.prefixes.map(p => msg.content.toLowerCase().startsWith(p)).indexOf(true);
     const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
     if (guildcfg && guildcfg.prefix && msg.content.toLowerCase().startsWith(guildcfg.prefix)) prefix = guildcfg.prefix;
@@ -92,9 +93,10 @@ class Handler extends Event {
 
     // Sends the embed
     if (customcmd && !cmd) {
-      if (msg.mentions && msg.mentions[0]) {
-        customcmd.content = customcmd.content.replace(/{mentioner}/g, `<@${msg.mentions[0].id}>`);
-      } else customcmd.content = customcmd.content.replace(/{mentioner}/g, `<@${msg.author.id}>`);
+      // Mentioners
+      if (msg.mentions && msg.mentions[0]) customcmd.content = customcmd.content.replace(/{mentioner}/g, `<@${msg.mentions[0].id}>`);
+      else customcmd.content = customcmd.content.replace(/{mentioner}/g, `<@${msg.author.id}>`);
+
       // Replaces content
       customcmd.content = customcmd.content.replace(/{author}/g, `<@${msg.author.id}>`);
       customcmd.content = customcmd.content.replace(/{random}/g, Math.floor(Math.random() * 100));
@@ -110,19 +112,19 @@ class Handler extends Event {
           },
           footer: {
             text: msg.guild.members.get(customcmd.createdBy) ?
-              `Ran by ${this.bot.tag(msg.author)} | Created by ${this.bot.tag(msg.guild.members.get(customcmd.createdBy), false)}` : customcmd
-              .name,
+              `Ran by ${this.bot.tag(msg.author)} | Created by ${this.bot.tag(msg.guild.members.get(customcmd.createdBy))}` : customcmd.name,
             icon_url: msg.author.dynamicAvatarURL(),
           },
         },
       });
     } else if (!cmd) return;
 
-    // Permission checking
+    // If the bot doesn't have sendMessages, dm the author
     if (!msg.channel.memberHasPermission(this.bot.user.id, "sendMessages")) {
       return msg.member.createMessage(`I don't have permission to send messages in <#${msg.channel.id}>.`);
     }
 
+    // If the bot doesn't have embed permission
     if (!msg.channel.memberHasPermission(this.bot.user.id, "embedLinks")) {
       return msg.channel.createMessage("In order to function properly, I need permission to **embed links**.");
     }
@@ -141,10 +143,13 @@ class Handler extends Event {
     // Client perms
     if (cmd.clientperms) {
       const botperms = msg.channel.guild.members.get(this.bot.user.id).permission;
+
+      // Sends plain message if no embed permissions
       if (!botperms.has("embedLinks")) {
         return msg.channel.createMessage("In order to function properly, I need permission to **embed links**.");
       }
 
+      // Sends if lacks clientperms
       if (!botperms.has(cmd.clientperms)) {
         return this.bot.embed("❌ Error", `I need the **${cmd.clientperms}** permission to run that command.`, msg, "error");
       }
@@ -155,33 +160,33 @@ class Handler extends Event {
       return this.bot.embed("❌ Error", "That command can only be ran in a NSFW channel.", msg, "error");
     }
 
-    // Required perms
-    if (cmd.requiredperms && (!msg.member.permission.has(cmd.requiredperms) ||
-        !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffRole)) {
-      return this.bot.embed("❌ Error", `You need the **${cmd.requiredperms}** permission to run this.`, msg, "error");
+    // Staff commands
+    if (!msg.member.permission.has("administrator") && cmd.staff && guildcfg && guildcfg.staffRole && !msg.member.roles.includes(guildcfg.staffRole)) {
+      return this.bot.embed("❌ Error", "That command is only for staff members.", msg, "error");
     }
 
-    // Staff commands
-    if (cmd.staff && (!msg.member.permission.has("administrator") || guildcfg && guildcfg.staffRole &&
-        !msg.member.roles.includes(guildcfg.staffRole))) {
-      return this.bot.embed("❌ Error", "That command is only for staff members.", msg, "error");
+    // Required perms
+    if (cmd.requiredperms && (!msg.member.permission.has(cmd.requiredperms) || !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffRole)) {
+      return this.bot.embed("❌ Error", `You need the **${cmd.requiredperms}** permission to run this.`, msg, "error");
     }
 
     // Cooldowns
     if (cmd.cooldown && !this.bot.config.owners.includes(msg.author.id)) {
       if (this.bot.cooldowns.includes(`${cmd.id}:${msg.author.id}`)) return msg.addReaction("⌛");
-      else {
-        this.bot.cooldowns.push(`${cmd.id}:${msg.author.id}`);
-        setTimeout(() => {
-          this.bot.cooldowns.splice(this.bot.cooldowns.indexOf(`${cmd.id}:${msg.author.id}`), 1);
-        }, cmd.cooldown >= 1000 ? cmd.cooldown : cmd.cooldown * 1000);
-      }
+    } else {
+      this.bot.cooldowns.push(`${cmd.id}:${msg.author.id}`);
+      setTimeout(() => {
+        this.bot.cooldowns.splice(this.bot.cooldowns.indexOf(`${cmd.id}:${msg.author.id}`), 1);
+      }, cmd.cooldown >= 1000 ? cmd.cooldown : cmd.cooldown * 1000);
     }
 
     // Command args
     let parsedArgs;
     if (cmd.args) {
+      // Parses arguments
       parsedArgs = this.bot.args.parse(cmd.args, args.join(" "), cmd.argsDelimiter, msg);
+
+      // Handles and sends missing arguments
       const missingargs = parsedArgs.filter(a => typeof a.value == "undefined" && !a.optional);
       if (missingargs.length) {
         return this.bot.embed("❌ Error", `No **${missingargs.map(a => a.name).join(" or ")}** was provided.`, msg, "error");
@@ -194,7 +199,11 @@ class Handler extends Event {
       else { this.bot.log(`${this.bot.tag(msg.author)} ran ${cmd.id} in ${msg.channel.guild.name}`); }
       await cmd.run(msg, args, parsedArgs);
     } catch (err) {
-      if (err === "timeout") return;
+      // Ignores timeouts and permission errors
+      if (err && err.code && err.code === 10007 || err.code === 10008 || err.code === 10011 ||
+        err.code === 10013 || err.code === 10026 || err.code === 50001 || err.code === 50007 || err === "timeout") return;
+
+      // Configures sentry info
       sentry.configureScope(scope => {
         scope.setUser({ id: msg.author.id, username: this.bot.tag(msg.author) });
         scope.setExtra("guild", msg.channel.guild.name);
