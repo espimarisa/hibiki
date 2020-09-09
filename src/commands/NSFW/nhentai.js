@@ -1,3 +1,4 @@
+// Todo: implement reader support that @resolvedxd made
 const Command = require("../../structures/Command");
 const format = require("../../utils/format");
 const fetch = require("node-fetch");
@@ -18,22 +19,18 @@ class nhentaiCommand extends Command {
     let book;
     // Looks for a valid ID
     if (args.length && /\d{1,6}/.test(args.join(" "))) {
-      const body = await fetch(`https://nhentai.net/api/gallery/${encodeURIComponent(args.join(" "))}`)
-        .then(res => res.json().catch(() => {}));
+      const body = await fetch(`https://nhentai.net/api/gallery/${encodeURIComponent(args.join(" "))}`).then(res => res.json().catch(() => {}));
       book = body;
     } else if (args.length) {
-      // Searches
-      const id = await fetch(`https://nhentai.net/api/galleries/search?query=${encodeURIComponent(args.join(" "))}`)
-        .then(res => res.json().catch(() => {}));
+      // Searches for a doujin
+      const id = await fetch(`https://nhentai.net/api/galleries/search?query=${encodeURIComponent(args.join(" "))}`).then(res => res.json().catch(() => {}));
       if (!id.result || !id.result.length) return this.bot.embed("❌ Error", "Doujin not found.", msg, "error");
-      const body = await fetch(`https://nhentai.net/api/gallery/${id.result[0].id}`)
-        .then(res => res.json().catch(() => {}));
+      const body = await fetch(`https://nhentai.net/api/gallery/${id.result[0].id}`).then(res => res.json().catch(() => {}));
       if (!body) return this.bot.embed("❌ Error", "No doujin found. Try again later.", msg, "error");
       book = body;
     } else {
       // Gets a random book
-      const body = await fetch(`https://nhentai.net/api/gallery/${Math.floor(Math.random() * 310000)}`)
-        .then(res => res.json().catch(() => {}));
+      const body = await fetch(`https://nhentai.net/api/gallery/${Math.floor(Math.random() * 310000)}`).then(res => res.json().catch(() => {}));
       book = body;
     }
 

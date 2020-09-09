@@ -5,7 +5,7 @@ class thighsCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["thigh"],
-      description: "Sends a random NSFW IRL thigh picture.",
+      description: "Sends a NSFW IRL thigh picture.",
       nsfw: true,
       cooldown: 3,
     });

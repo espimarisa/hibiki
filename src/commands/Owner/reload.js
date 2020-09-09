@@ -20,17 +20,26 @@ class reloadCommand extends Command {
     // Reloads
     args.forEach(arg => {
       let command;
+
+      // Looks for the command
       const cmd = this.bot.commands.find(c => c.id === arg.toLowerCase() || c.aliases.includes(arg.toLowerCase()));
+
+      // Sends if there's no command
       if (!cmd) return fail.push({ id: arg.toLowerCase(), error: "Command not found." });
+
+      // Deletes the cache
       const oldmodule = require(`../${cmd.category}/${cmd.id}`);
       delete require.cache[require.resolve(`../${cmd.category}/${cmd.id}`)];
       try {
+        // Loads the command
         command = require(`../${cmd.category}/${cmd.id}`);
       } catch (err) {
         fail.push({ id: cmd.id, error: err });
+        // Loads the old command if needed
         this.bot.commands.push(new oldmodule(this.bot, cmd.category, cmd.id));
       }
 
+      // Success list
       if (command) {
         const index = this.bot.commands.indexOf(cmd);
         if (index !== -1) this.bot.commands.splice(index, 1);

@@ -20,39 +20,30 @@ class channelinfoCommand extends Command {
       value: channel.id,
     });
 
-    if (channel.parentID) {
-      fields.push({
-        name: "Category",
-        value: `${msg.channel.guild.channels.get(channel.parentID).name}`,
-      });
-    }
+    if (channel.parentID) fields.push({
+      name: "Category",
+      value: `${msg.channel.guild.channels.get(channel.parentID).name}`,
+    });
 
-    if (channel.topic) {
-      fields.push({
-        name: "Topic",
-        value: `${channel.topic}`,
-      });
-    }
+    if (channel.topic) fields.push({
+      name: "Topic",
+      value: `${channel.topic}`,
+    });
 
     fields.push({
       name: "Created",
       value: `${format.date(channel.createdAt)} (${format.dateParse(new Date() / 1000 - channel.createdAt / 1000)} ago)`,
     });
 
-    if (channel.type === 0) {
-      fields.push({
-        name: "Info",
-        value: `The channel ${channel.nsfw ? "is" : "isn't"} NSFW and is in position ${channel.position}.`,
-      });
-    }
+    if (channel.type === 0) fields.push({
+      name: "Info",
+      value: `The channel ${channel.nsfw ? "is" : "isn't"} NSFW and is in position ${channel.position}.`,
+    });
 
-    if (channel.type === 2) {
-      fields.push({
-        name: "Info",
-        value: `The channel's bitrate is ${channel.bitrate / 1000}kbps and it's` +
-          ` limited to ${channel.userLimit > 0 ? `${channel.userLimit}` : "infinite"} users.`,
-      });
-    }
+    if (channel.type === 2) fields.push({
+      name: "Info",
+      value: `The channel's bitrate is ${channel.bitrate / 1000}kbps and it's limited to ${channel.userLimit > 0 ? `${channel.userLimit}` : "infinite"} users.`,
+    });
 
     msg.channel.createMessage({
       embed: {

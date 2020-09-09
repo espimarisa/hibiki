@@ -5,7 +5,7 @@ class futanariCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["futa", "futanari"],
-      description: "Sends a random futa hentai image.",
+      description: "Sends a NSFW futa hentai image.",
       nsfw: true,
       cooldown: 3,
     });

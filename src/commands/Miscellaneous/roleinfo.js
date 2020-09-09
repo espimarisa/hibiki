@@ -44,12 +44,10 @@ class roleinfoCommand extends Command {
       value: `${format.date(role.createdAt)} (${format.dateParse(new Date() / 1000 - role.createdAt / 1000)} ago)`,
     });
 
-    if (settings.length) {
-      fields.push({
-        name: "Settings",
-        value: `${settings.join(", ")}`,
-      });
-    }
+    if (settings.length) fields.push({
+      name: "Settings",
+      value: `${settings.join(", ")}`,
+    });
 
     fields.push({
       name: "Info",

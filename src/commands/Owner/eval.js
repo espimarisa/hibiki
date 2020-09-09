@@ -1,6 +1,6 @@
+const { inspect } = require("util");
 const Command = require("../../structures/Command");
 const fetch = require("node-fetch");
-const { inspect } = require("util");
 
 class evalCommand extends Command {
   constructor(...args) {

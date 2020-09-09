@@ -28,7 +28,7 @@ class colorCommand extends Command {
     // Randomly sets a color
     else if (!args) color = this.hexToRGB(Math.floor(Math.random() * 16777215).toString(16));
     else if (namecheck) color = this.hexToRGB(namecheck[0]);
-    if (!color) return this.bot.embed("❌ Error", "Invalid hex or color.", msg, "error");
+    else if (!color) return this.bot.embed("❌ Error", "Invalid hex or color.", msg, "error");
     const hex = this.rgbToHex(color.r, color.g, color.b);
 
     msg.channel.createMessage({

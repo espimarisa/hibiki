@@ -1,5 +1,5 @@
-const Command = require("../../structures/Command");
 const { Snowflake } = require("../../utils/snowflake");
+const Command = require("../../structures/Command");
 const format = require("../../utils/format");
 
 class remindCommand extends Command {
@@ -10,6 +10,7 @@ class remindCommand extends Command {
       description: "Sends a reminder to you later on.",
       cooldown: 3,
     });
+
     this.timeoutHandles = [];
   }
 
@@ -36,11 +37,15 @@ class remindCommand extends Command {
       });
     }
 
-    // Reminder removal
+    // Reminder removal functionality
     if (args[0] && (args[0].toLowerCase() === "remove" || args[0].toLowerCase() === "delete")) {
       if (!args[1] || !args[1].length) return this.bot.embed("❌ Error", "You provided an invalid ID.", msg, "error");
+
+      // If a user didn't set the reminder they provided
       const db = await this.bot.db.table("reminders").get(args[1]).run();
       if (db.user !== msg.author.id) return this.bot.embed("❌ Error", "You didn't create that reminder.", msg, "error");
+
+      // Looks for the reminder; skips if it errored or skipped
       const reminder = await this.bot.db.table("reminders").get(args[1]).delete().run();
       if (reminder.skipped || reminder.errors) return this.bot.embed("❌ Error", "Reminder not found.", msg, "error");
 
@@ -52,25 +57,26 @@ class remindCommand extends Command {
 
     // Time regex
     let val = 0;
-    const fargs = [...args];
+    const finalArgs = [...args];
     args = args.join(" ").replace(
-      /\d{1,2}( )?(w(eek(s)?)?)?(d(ay(s)?)?)?(h(our(s)?)?(r(s)?)?)?(m(inute(s)?)?(in(s)?)?)?(s(econd(s)?)?(ec(s)?)?)?( and( )?)?([, ]{1,2})?/ig,
-      "",
+      // This regex looks so fucking stupid. But it works!
+      /\d{1,2}( )?(w(eek(s)?)?)?(d(ay(s)?)?)?(h(our(s)?)?(r(s)?)?)?(m(inute(s)?)?(in(s)?)?)?(s(econd(s)?)?(ec(s)?)?)?( and( )?)?([, ]{1,2})?/ig, "",
     ).split(" ");
 
     // Parses the time given
-    const timeArg = fargs.join(" ").substring(0, fargs.join(" ").indexOf(args.join(" ")));
+    const timeArg = finalArgs.join(" ").substring(0, finalArgs.join(" ").indexOf(args.join(" ")));
     timeArg.split("").forEach((char, i) => {
+      // Returns if it isn't a proper value
       if (isNaN(parseInt(char))) return;
       if (i === timeArg.length - 1) return;
-      let v = timeArg[i + 1].toLowerCase();
+      let value = timeArg[i + 1].toLowerCase();
       if (!isNaN(parseInt(timeArg[i + 1])) && !isNaN(parseInt(char))) return;
       if (!isNaN(parseInt(char)) && !isNaN(parseInt(timeArg[i - 1]))) char = `${timeArg[i - 1]}${char}`;
-      if (timeArg[i + 2] && (v === " " || v === ",") && /[wdhms]/.exec(timeArg[i + 2].toLowerCase())) v = timeArg[i + 2];
+      if (timeArg[i + 2] && (value === " " || value === ",") && /[wdhms]/.exec(timeArg[i + 2].toLowerCase())) value = timeArg[i + 2];
 
       // Gets exact time given
-      if (isNaN(parseInt(v))) {
-        switch (v) {
+      if (isNaN(parseInt(value))) {
+        switch (value) {
           case "w":
             val += char * 604800000;
             break;
@@ -109,13 +115,12 @@ class remindCommand extends Command {
     };
 
     // Sets timeout to send reminder
-    const rdb = await this.bot.db.table("reminders").insert(reminder).run();
-    if (!rdb.errors) {
-      const handle = setTimeout(async (r) => {
+    const reminderDatabase = await this.bot.db.table("reminders").insert(reminder).run();
+    if (!reminderDatabase.errors) {
+      const handle = setTimeout(async r => {
         const db = await this.bot.db.table("reminders").get(r.id).run();
-        if (!db) return;
         const user = this.bot.users.get(r.user);
-        if (!user) return;
+        if (!db || !user) return;
         const dm = await user.getDMChannel();
         if (!dm) return;
 
@@ -139,8 +144,7 @@ class remindCommand extends Command {
       msg.channel.createMessage({
         embed: {
           title: "⏰ Reminder",
-          description: `I'll remind you to ${args.join(" ")} in ` +
-            `${timeArg.split(" ").filter((a, i) => !(a.length === 0 || (a === " " && i === args.length))).join(" ")}.`,
+          description: `I'll remind you to ${args.join(" ")} in ${timeArg.split(" ").filter((a, i) => !(a.length === 0 || (a === " " && i === args.length))).join(" ")}.`,
           color: this.bot.embed.color("general"),
           fields: [{
             name: "ID",

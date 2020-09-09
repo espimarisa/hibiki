@@ -60,7 +60,7 @@ class aboutCommand extends Command {
             `${format.uptime(process.uptime())} of uptime`,
           inline: true,
         }, {
-          name: "Versions",
+          name: "Version",
           value: `Hibiki v${this.bot.version} \n` + `Eris v${require("eris").VERSION} \n` + `Node.js ${process.version}\n` +
             `V8 v${process.versions.v8}`,
           inline: true,

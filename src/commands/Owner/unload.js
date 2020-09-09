@@ -12,8 +12,11 @@ class unloadCommand extends Command {
   }
 
   run(msg, args) {
+    // FInds the command
     const cmd = this.bot.commands.find(c => c.id === args.join(" ").toLowerCase() || c.aliases.includes(args.join(" ").toLowerCase()));
     if (!cmd) return this.bot.embed("❌ Error", "No **command** was provided.", msg, "error");
+
+    // Deletes the cache
     delete require.cache[require.resolve(`../${cmd.category}/${cmd.id}`)];
     const index = this.bot.commands.indexOf(cmd);
     if (index !== -1) this.bot.commands.splice(index, 1);

@@ -13,7 +13,7 @@ class yandereCommand extends Command {
   }
 
   async run(msg, args) {
-    // Filter's specific content
+    // Filters specific content
     const search = args.join("").toLowerCase();
     if (search.includes("loli") || search.includes("shota")) {
       msg.channel.createMessage({

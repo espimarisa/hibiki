@@ -1,6 +1,6 @@
 const Command = require("../../structures/Command");
 
-class pointsCommand extends Command {
+class pollCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["createpoll", "startpoll"],
@@ -18,8 +18,11 @@ class pointsCommand extends Command {
     if (urlcheck) imgurl = urlcheck[0];
     if (!imgurl && msg.attachments && msg.attachments[0]) imgurl = msg.attachments[0].proxy_url;
     if (!imgurl) imgurl = null;
+
+    // If no text is given
     if (!args[0]) return this.bot.embed("❌ Error", "You didn't provide anything to put in the poll.", msg, "error");
 
+    // Sends the poll
     const pollmsg = await msg.channel.createMessage({
       embed: {
         description: args,
@@ -38,9 +41,10 @@ class pointsCommand extends Command {
       },
     });
 
+    // Adds poll reactions
     await pollmsg.addReaction("👍").catch(() => {});
     await pollmsg.addReaction("👎").catch(() => {});
   }
 }
 
-module.exports = pointsCommand;
+module.exports = pollCommand;

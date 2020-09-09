@@ -12,12 +12,13 @@ class removepointCommand extends Command {
   }
 
   async run(msg, args) {
+    // Maps the points
     const points = await Promise.all(args.map(async id => {
       if (!id) {
         return { removed: false, point: id };
       }
 
-      // Gets the points
+      // Gets the points in the database
       const point = await this.bot.db.table("points").get(id).run();
       if (!point || point.guild !== msg.channel.guild.id) {
         return { removed: false, point: id };
@@ -37,6 +38,7 @@ class removepointCommand extends Command {
     }
 
     this.bot.emit("pointRemove", msg.channel.guild, msg.member, removed.map(p => `\`${p.point}\``));
+
     msg.channel.createMessage({
       embed: {
         title: `✨ Removed ${removed.length} point${removed.length === 1 ? "" : "s"}.`,

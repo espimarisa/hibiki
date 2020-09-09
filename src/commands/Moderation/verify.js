@@ -5,7 +5,7 @@ class verifyCommand extends Command {
     super(...args, {
       aliases: ["t", "trust", "v"],
       args: "<member:member&strict>",
-      description: "Gives the verified role to A member.",
+      description: "Gives the verified role to a member.",
       clientperms: "manageRoles",
       requiredperms: "manageRoles",
       staff: true,
@@ -30,6 +30,7 @@ class verifyCommand extends Command {
       return this.bot.embed("❌ Error", `**${user.username}** already has the verified role.`, msg, "error");
     }
 
+    // Adds the role
     try {
       await user.addRole(guildcfg.verifiedRole, `Verified by ${this.bot.tag(msg.author, true)}`);
     } catch (err) {

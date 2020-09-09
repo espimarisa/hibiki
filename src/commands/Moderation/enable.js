@@ -29,6 +29,8 @@ class enableCommand extends Command {
     // Looks for cmd/category
     const cmd = cmds.find(c => (c.id === command || c.aliases.includes(command)) && c.allowdisable);
     const category = categories.find(c => c.toLowerCase() === command.toLowerCase());
+
+    // If there's no command, but a category
     if (!cmd && category) {
       if (!guildcfg.disabledCategories) guildcfg.disabledCategories = [];
       if (!guildcfg.disabledCategories.includes(category)) {

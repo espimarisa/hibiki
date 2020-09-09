@@ -15,6 +15,7 @@ class cookiesCommand extends Command {
     const economydb = await this.bot.db.table("economy").get(user.id).run();
     if (!economydb) cookies = 0;
     else cookies = economydb.amount;
+
     this.bot.embed(
       "🍪 Cookies",
       `${user.id === msg.author.id ? `You have` : `**${user.username}** has`} **${cookies}** cookie${cookies === 1 ? "" : "s"}.`,

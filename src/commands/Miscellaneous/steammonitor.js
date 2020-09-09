@@ -29,19 +29,19 @@ class steammonitorCommand extends Command {
     let ban;
     if (/^\d+$/.test(args[0])) steamid = args[0];
 
+    // If no ID, look at a vanity URL
     if (!steamid) {
       id = await fetch(
-        "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/" +
-        `?key=${this.bot.key.steam}&vanityurl=${encodeURIComponent(args[0])}`,
+        `http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${this.bot.key.steam}&vanityurl=${encodeURIComponent(args[0])}`,
       ).then(res => res.json().catch(() => {}));
 
       if (!id || id.response.success !== 1) return this.bot.embed("❌ Error", "Account not found.", msg, "error");
       steamid = id.response.steamid;
     }
 
+    // Gets profile info
     profile = await fetch(
-      "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/" +
-      `?key=${this.bot.key.steam}&steamids=${steamid}`,
+      `http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${this.bot.key.steam}&steamids=${steamid}`,
     ).then(res => res.json().catch(() => {}));
     profile = profile.response.players[0];
 
@@ -68,8 +68,7 @@ class steammonitorCommand extends Command {
 
     if (!db.find(d => d.id === steamid)) {
       ban = await fetch(
-        "http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/" +
-        `?key=${this.bot.key.steam}&steamids=${steamid}`,
+        `http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=${this.bot.key.steam}&steamids=${steamid}`,
       ).then(res => res.json().catch(() => {}));
       ban = ban.players[0];
 

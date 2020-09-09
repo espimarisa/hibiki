@@ -35,53 +35,50 @@ class fortniteCommand extends Command {
 
     // Embed fields
     const fields = [];
-    if (body.lifeTimeStats[8].value) {
-      fields.push({
-        name: "Wins",
-        value: body.lifeTimeStats[8].value,
-        inline: true,
-      });
-    }
 
-    if (body.lifeTimeStats[7].value) {
-      fields.push({
-        name: "Matches",
-        value: body.lifeTimeStats[7].value,
-        inline: true,
-      });
-    }
+    // Total wins
+    if (body.lifeTimeStats[8].value) fields.push({
+      name: "Wins",
+      value: body.lifeTimeStats[8].value,
+      inline: true,
+    });
 
-    if (body.lifeTimeStats[10].value) {
-      fields.push({
-        name: "Kills",
-        value: body.lifeTimeStats[10].value,
-        inline: true,
-      });
-    }
 
-    if (body.lifeTimeStats[6].value) {
-      fields.push({
-        name: "Score",
-        value: body.lifeTimeStats[6].value,
-        inline: true,
-      });
-    }
+    // Total matches
+    if (body.lifeTimeStats[7].value) fields.push({
+      name: "Matches",
+      value: body.lifeTimeStats[7].value,
+      inline: true,
+    });
 
-    if (body.lifeTimeStats[11].value) {
-      fields.push({
-        name: "K/D Ratio",
-        value: body.lifeTimeStats[11].value,
-        inline: true,
-      });
-    }
 
-    if (body.lifeTimeStats[9].value) {
-      fields.push({
-        name: "Win Percent",
-        value: body.lifeTimeStats[9].value,
-        inline: true,
-      });
-    }
+    if (body.lifeTimeStats[10].value) fields.push({
+      name: "Kills",
+      value: body.lifeTimeStats[10].value,
+      inline: true,
+    });
+
+    // Total score
+    if (body.lifeTimeStats[6].value) fields.push({
+      name: "Score",
+      value: body.lifeTimeStats[6].value,
+      inline: true,
+    });
+
+
+    // K/D Ratio
+    if (body.lifeTimeStats[11].value) fields.push({
+      name: "K/D Ratio",
+      value: body.lifeTimeStats[11].value,
+      inline: true,
+    });
+
+    // Win percentage
+    if (body.lifeTimeStats[9].value) fields.push({
+      name: "Win Percent",
+      value: body.lifeTimeStats[9].value,
+      inline: true,
+    });
 
     fortnitemsg.edit({
       embed: {

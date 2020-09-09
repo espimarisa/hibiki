@@ -23,13 +23,13 @@ class forcebanCommand extends Command {
 
     // Tries to ban the IDs
     const bans = await Promise.all(args.map(async user => {
-      const m = msg.channel.guild.members.find(mem => mem.id === user);
-      if (m) {
+      const presentMember = msg.channel.guild.members.find(mem => mem.id === user);
+      if (presentMember) {
         // Checks role hiearchy
-        if (!hierarchy(msg.member, m)) { return { banned: false, user: user }; }
+        if (!hierarchy(msg.member, presentMember)) { return { banned: false, user: user }; }
         try {
-          // Bans the IDs
-          await m.ban(0, `Forcebanned by ${this.bot.tag(msg.author, true)}`);
+          // Bans the present member
+          await presentMember.ban(0, `Forcebanned by ${this.bot.tag(msg.author, true)}`);
           return { banned: true, user: user };
         } catch (err) {
           return { banned: false, user: user };

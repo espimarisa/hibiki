@@ -17,8 +17,8 @@ class currencyCommand extends Command {
     const to = args[2];
 
     if (!from) return this.bot.embed("❌ Error", "No amount to **convert from** was provided.", msg, "error");
-    if (!base || !isNaN(base)) return this.bot.embed("❌ Error", "No **base currency** was provided.", msg, "error");
-    if (!to) return this.bot.embed("❌ Error", "No amount to **convert to** was provided.", msg, "error");
+    else if (!base || !isNaN(base)) return this.bot.embed("❌ Error", "No **base currency** was provided.", msg, "error");
+    else if (!to) return this.bot.embed("❌ Error", "No amount to **convert to** was provided.", msg, "error");
 
     const body = await fetch(
       `https://api.exchangeratesapi.io/latest?base=${encodeURIComponent(base.toUpperCase())}&symbols=${encodeURIComponent(to.toUpperCase())}`,

@@ -6,8 +6,6 @@ class inspectCommand extends Command {
       aliases: ["lookup", "lookupinvite", "inspectinvite", "inviteinspect", "invitelookup"],
       args: "<invite:string>",
       description: "Returns info about a server invite.",
-      requiredperms: "manageMessages",
-      staff: true,
     });
   }
 
@@ -23,12 +21,10 @@ class inspectCommand extends Command {
       value: invinfo.guild.id,
     });
 
-    if (invinfo.channel) {
-      fields.push({
-        name: "Channel",
-        value: `#${invinfo.channel.name} (${invinfo.channel.id})`,
-      });
-    }
+    if (invinfo.channel) fields.push({
+      name: "Channel",
+      value: `#${invinfo.channel.name} (${invinfo.channel.id})`,
+    });
 
     if (invinfo.inviter) fields.push({
       name: "Inviter",
@@ -36,26 +32,21 @@ class inspectCommand extends Command {
         `${invinfo.inviter ? invinfo.inviter.discriminator : ""} (${invinfo.inviter ? invinfo.inviter.id : invinfo.guild.id})`,
     });
 
-
-    if (invinfo.memberCount) {
-      fields.push({
-        name: "Members",
-        value: `${invinfo.memberCount} members, ${invinfo.presenceCount} currently online`,
-      });
-    }
+    if (invinfo.memberCount) fields.push({
+      name: "Members",
+      value: `${invinfo.memberCount} members, ${invinfo.presenceCount} currently online`,
+    });
 
     msg.channel.createMessage({
       embed: {
         color: this.bot.embed.color("general"),
         fields: fields,
         author: {
-          icon_url: invinfo.guild.icon ? `https://cdn.discordapp.com/icons/${invinfo.guild.id}/${invinfo.guild.icon}.png` :
-            "https://cdn.discordapp.com/embed/avatars/0.png",
+          icon_url: invinfo.guild.icon ? `https://cdn.discordapp.com/icons/${invinfo.guild.id}/${invinfo.guild.icon}.png` : "https://cdn.discordapp.com/embed/avatars/0.png",
           name: `${invinfo.guild.name} (${invinfo.code})`,
         },
         thumbnail: {
-          url: invinfo.guild.icon ? `https://cdn.discordapp.com/icons/${invinfo.guild.id}/${invinfo.guild.icon}.png` :
-            "https://cdn.discordapp.com/embed/avatars/0.png",
+          url: invinfo.guild.icon ? `https://cdn.discordapp.com/icons/${invinfo.guild.id}/${invinfo.guild.icon}.png` : "https://cdn.discordapp.com/embed/avatars/0.png",
         },
         footer: {
           text: `Ran by ${this.bot.tag(msg.author)}`,

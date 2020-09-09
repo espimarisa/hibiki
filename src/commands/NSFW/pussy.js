@@ -5,7 +5,7 @@ class pussyCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["irlpussy"],
-      description: "Sends a random NSFW IRL pussy picture.",
+      description: "Sends a NSFW IRL pussy picture.",
       nsfw: true,
       cooldown: 3,
     });

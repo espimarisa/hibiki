@@ -16,6 +16,8 @@ class urbanCommand extends Command {
     const query = args.join(" ");
     const body = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`)
       .then(res => res.json().catch(() => {}));
+
+    // If the API fails to return info
     if (!body) return this.bot.embed("❌ Error", "Couldn't send the definition. Try again later.", msg, "error");
 
     // Sorts by highest rated definition

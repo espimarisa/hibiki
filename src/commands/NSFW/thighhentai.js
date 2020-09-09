@@ -5,7 +5,7 @@ class thighhentaiCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["thentai"],
-      description: "Sends a random ecchi/hentai thigh picture.",
+      description: "Sends a NSFW ecchi/hentai thigh picture.",
       nsfw: true,
       cooldown: 3,
     });

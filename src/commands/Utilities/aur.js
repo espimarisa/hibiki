@@ -1,7 +1,7 @@
 const Command = require("../../structures/Command");
-const fetch = require("node-fetch");
 const format = require("../../utils/format");
 const waitFor = require("../../utils/waitFor");
+const fetch = require("node-fetch");
 
 class aurCommand extends Command {
   constructor(...args) {
@@ -31,7 +31,7 @@ class aurCommand extends Command {
       );
 
       // Waits for a response
-      await waitFor("messageCreate", 15000, async (m) => {
+      await waitFor("messageCreate", 15000, async m => {
         if (m.author.id !== msg.author.id) return;
         if (m.channel.id !== msg.channel.id) return;
         if (!m.content) return;
@@ -41,6 +41,8 @@ class aurCommand extends Command {
         pkg = foundpkg;
         return true;
       }, this.bot).catch(err => err.message === "timeout" && this.bot.embed.edit("❌ Error", "Timeout reached.", aurmsg, "error"));
+
+      // Sends if the package is invalid
       if (!pkg && aurmsg) return this.bot.embed.edit("❌ Error", "Invalid package, exiting.", aurmsg, "error");
     }
 
@@ -53,37 +55,11 @@ class aurCommand extends Command {
     // Embed construct
     const fields = [];
     let depends = [];
-    if (pkg.numvotes) {
-      fields.push({
-        name: "Votes",
-        value: pkg.NumVotes,
-        inline: true,
-      });
-    }
 
-    if (pkg.Maintainer) {
-      fields.push({
-        name: "Maintainer",
-        value: pkg.Maintainer,
-        inline: true,
-      });
-    }
-
-    if (pkg.FirstSubmitted) {
-      fields.push({
-        name: "Submitted",
-        value: format.date(pkg.FirstSubmitted * 1000),
-        inline: true,
-      });
-    }
-
-    if (pkg.LastModified) {
-      fields.push({
-        name: "Updated",
-        value: format.date(pkg.LastModified * 1000),
-        inline: true,
-      });
-    }
+    if (pkg.numvotes) fields.push({ name: "Votes", value: pkg.NumVotes, inline: true });
+    if (pkg.Maintainer) fields.push({ name: "Maintainer", value: pkg.Maintainer, inline: true });
+    if (pkg.FirstSubmitted) fields.push({ name: "Submitted", value: format.date(pkg.FirstSubmitted * 1000), inline: true });
+    if (pkg.LastModified) fields.push({ name: "Modified", value: format.date(pkg.LastModified * 1000), inline: true });
 
     if (pkginfo) {
       if (pkginfo.Depends) depends = [...depends, pkginfo.Depends];

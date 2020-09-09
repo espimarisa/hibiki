@@ -5,7 +5,7 @@ class femdomCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["femdomhentai"],
-      description: "Sends a femdom ecchi/hentai image.",
+      description: "Sends a NSFW femdom ecchi/hentai image.",
       nsfw: true,
       cooldown: 3,
     });

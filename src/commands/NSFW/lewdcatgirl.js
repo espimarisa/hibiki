@@ -1,11 +1,11 @@
 const Command = require("../../structures/Command");
 const fetch = require("node-fetch");
 
-class lewdnekoCommand extends Command {
+class lewdcatgirlCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["lewdneko"],
-      description: "Sends a lewd catgirl picture.",
+      description: "Sends a NSFW catgirl picture.",
       nsfw: true,
       cooldown: 3,
     });
@@ -31,4 +31,4 @@ class lewdnekoCommand extends Command {
   }
 }
 
-module.exports = lewdnekoCommand;
+module.exports = lewdcatgirlCommand;
