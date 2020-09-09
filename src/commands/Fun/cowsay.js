@@ -65,7 +65,8 @@ class cowsayCommand extends Command {
       return c.map(callback);
     };
 
-    const cowsay = t => {
+    // Sets the cowsay
+    const cowsay = (t) => {
       dashes = "";
       let length = Math.max(...t.match(/.{1,41}/g).map(a => {
         return a.length;
@@ -78,6 +79,7 @@ class cowsayCommand extends Command {
       return `\n${dashes.replace(/-/g, "_")}\n${fixLineBreak(t.match(/.{1,41}/g), length).join("\n")}\n${dashes}\n${cow}`;
     };
 
+    // Sends the cowsay
     this.bot.embed("🐮 Cowsay", `\`\`\`\n ${cowsay(args.join(" "))}\n\`\`\``, msg);
   }
 }

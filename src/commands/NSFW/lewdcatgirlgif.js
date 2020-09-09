@@ -5,7 +5,7 @@ class lewdcatgirlgifCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["lewdkitsunegif", "lewdnekogif"],
-      description: "Sends a lewd catgirl gif.",
+      description: "Sends a NSFW catgirl gif.",
       nsfw: true,
       cooldown: 3,
     });

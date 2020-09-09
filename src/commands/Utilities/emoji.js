@@ -31,6 +31,7 @@ class emojiCommand extends Command {
           characters.push(charCode.toString(16));
         }
       }
+
       return characters.join("-");
     }
 

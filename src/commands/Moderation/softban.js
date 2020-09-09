@@ -18,7 +18,7 @@ class softbanCommand extends Command {
     const user = pargs[0].value;
     let reason = args.slice(1).join(" ");
     if (!reason.length) reason = "No reason provided.";
-    if (reason.length > 512) reason = reason.slice(0, 512);
+    else if (reason.length > 512) reason = reason.slice(0, 512);
 
     // If bot doesn't have high enough role
     if (!hierarchy(msg.channel.guild.members.get(this.bot.user.id), user)) {
@@ -32,6 +32,7 @@ class softbanCommand extends Command {
       const response = await yn(this.bot, { author: msg.author, channel: msg.channel });
       if (!response) return this.bot.embed.edit("🔨 Softban", `Cancelled softbanning **${user.username}**.`, softbanmsg);
 
+      // Tries to ban the user; deletes no messages
       try {
         await user.ban(0, `${reason} (by ${this.bot.tag(msg.author, true)})`).catch(() => {});
       } catch (err) {

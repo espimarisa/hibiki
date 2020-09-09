@@ -33,7 +33,9 @@ class unassignCommand extends Command {
 
       this.bot.emit("roleUnassign", msg.channel.guild, msg.member, role);
       this.bot.embed("✅ Success", `The **${role.name}** role was removed from you.`, msg, "success");
-    } else if (!assignable) return this.bot.embed("❌ Error", "That isn't an assignable role.", msg, "error");
+    } else if (!assignable) {
+      return this.bot.embed("❌ Error", "That isn't an assignable role.", msg, "error");
+    }
   }
 }
 

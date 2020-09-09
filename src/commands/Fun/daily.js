@@ -32,6 +32,7 @@ class dailyCommand extends Command {
         lastclaim: 9999,
       };
 
+      // Inserts blank info if needed
       await this.bot.db.table("economy").insert(cookies).run();
     }
 

@@ -13,6 +13,7 @@ class unbanCommand extends Command {
   }
 
   async run(msg, args) {
+    // Only 10 IDs can be unbanned at a time
     if (args.length > 10) return this.bot.embed("❌ Error", "Only 10 IDs can be unbanned at a time.", msg, "error");
 
     // Attempts to unban

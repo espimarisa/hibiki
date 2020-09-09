@@ -12,6 +12,8 @@ class setassignableCommand extends Command {
 
   async run(msg, args, pargs) {
     const role = pargs[0].value;
+
+    // Prevents assignable integration roles
     if (role.managed) return this.bot.embed("❌ Error", "That role isn't able to be assigned.", msg, "error");
     let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
 

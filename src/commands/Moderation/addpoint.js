@@ -1,10 +1,10 @@
-const Command = require("../../structures/Command");
 const { Snowflake } = require("../../utils/snowflake");
+const Command = require("../../structures/Command");
 
 class addpointCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["addreputation", "addmerit", "addrep", "merit"],
+      aliases: ["addmerit", "addrep", "addreputation", "merit"],
       args: "<member:member&strict> [reason:string]",
       description: "Gives a member a reputation point.",
       requiredperms: "manageMessages",

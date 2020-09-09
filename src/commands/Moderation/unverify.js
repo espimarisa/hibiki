@@ -30,6 +30,7 @@ class unverifyCommand extends Command {
       return this.bot.embed("❌ Error", `**${user.username}** doesn't have the verified role.`, msg, "error");
     }
 
+    // Removes the role
     try {
       await user.removeRole(guildcfg.verifiedRole, `Unverified by ${this.bot.tag(msg.author, true)}`);
     } catch (err) {

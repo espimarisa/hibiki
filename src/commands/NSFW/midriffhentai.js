@@ -5,7 +5,7 @@ class midriffhentaiCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["midriff"],
-      description: "Sends a random ecchi/hentai midriff picture.",
+      description: "Sends a NSFW ecchi/hentai midriff picture.",
       nsfw: true,
       cooldown: 3,
     });

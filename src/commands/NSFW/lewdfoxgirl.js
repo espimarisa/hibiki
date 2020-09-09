@@ -5,7 +5,7 @@ class lewdfoxgirlCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["lewdkitsune"],
-      description: "Sends a lewd foxgirl picture.",
+      description: "Sends a NSFW foxgirl picture.",
       nsfw: true,
       cooldown: 3,
     });

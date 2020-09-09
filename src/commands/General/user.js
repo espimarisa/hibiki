@@ -100,29 +100,25 @@ class userCommand extends Command {
       value: `Created on ${format.date(user.createdAt)} \n` + `Joined on ${format.date(user.joinedAt)}`,
     });
 
-    if (playing) {
-      fields.push({
-        name: playingname,
-        value: `${playing}`,
-        inline: false,
-      });
-    }
+    if (playing) fields.push({
+      name: playingname,
+      value: `${playing}`,
+      inline: false,
+    });
 
-    if (user.nick) {
-      fields.push({
-        name: "Nickname",
-        value: `${user.nick}`,
-        inline: true,
-      });
-    }
+    if (user.nick) fields.push({
+      name: "Nickname",
+      value: `${user.nick}`,
+      inline: true,
+    });
 
-    if (user.roles.length) {
-      fields.push({
-        name: "Highest Role",
-        value: `${user.highestRole.name}`,
-        inline: true,
-      });
-    }
+
+    if (user.roles.length) fields.push({
+      name: "Highest Role",
+      value: `${user.highestRole.name}`,
+      inline: true,
+    });
+
 
     fields.push({
       name: "Status",
@@ -130,47 +126,41 @@ class userCommand extends Command {
       inline: true,
     });
 
-    if (spouse) {
-      fields.push({
-        name: "Married To",
-        value: `${spouseid ? this.bot.users.find(m => m.id === spouseid) ? this.bot.users.find(m => m.id === spouseid).username : `<@!${spouseid}>` : "Nobody"}`,
-        inline: true,
-      });
-    }
+    if (spouse) fields.push({
+      name: "Married To",
+      value: `${spouseid ? this.bot.users.find(m => m.id === spouseid) ? this.bot.users.find(m => m.id === spouseid).username : `<@!${spouseid}>` : "Nobody"}`,
+      inline: true,
+    });
 
-    /* if (usercfg && usercfg.country) {
-      fields.push({
-        name: "Country",
-        value: usercfg.country,
-        inline: true,
-      });
-    }
 
-    if (usercfg && usercfg.timezone) {
-      fields.push({
-        name: "Timezone",
-        value: usercfg.timezone,
-        inline: true,
-      });
-    }
+    if (usercfg && usercfg.country) fields.push({
+      name: "Country",
+      value: usercfg.country,
+      inline: true,
+    });
 
-    if (usercfg && usercfg.pronouns) {
-      fields.push({
-        name: "Pronouns",
-        value: usercfg.pronouns,
-        inline: true,
-      });
-    } */
 
-    if (cookies && cookies.amount > 0 || pointcount || warningcount) {
-      fields.push({
-        name: "Bot Stats",
-        value: `${pointcount ? `${pointcount} point${pointcount === 1 ? "" : "s"}` : ""} \n` +
-          `${warningcount ? `${warningcount} warning${warningcount === 1 ? "" : "s"} \n` : ""}` +
-          `${cookies && cookies.amount > 0 ? `${cookies.amount} cookie${cookies.amount === 1 ? "" : "s"}` : ""}`,
-        inline: false,
-      });
-    }
+    if (usercfg && usercfg.timezone) fields.push({
+      name: "Timezone",
+      value: usercfg.timezone,
+      inline: true,
+    });
+
+
+    if (usercfg && usercfg.pronouns) fields.push({
+      name: "Pronouns",
+      value: usercfg.pronouns,
+      inline: true,
+    });
+
+    if (cookies && cookies.amount > 0 || pointcount || warningcount) fields.push({
+      name: "Bot Stats",
+      value: `${pointcount ? `${pointcount} point${pointcount === 1 ? "" : "s"}` : ""} \n` +
+        `${warningcount ? `${warningcount} warning${warningcount === 1 ? "" : "s"} \n` : ""}` +
+        `${cookies && cookies.amount > 0 ? `${cookies.amount} cookie${cookies.amount === 1 ? "" : "s"}` : ""}`,
+      inline: false,
+    });
+
 
     msg.channel.createMessage({
       embed: {
