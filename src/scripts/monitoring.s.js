@@ -6,7 +6,7 @@
 
 const fetch = require("node-fetch");
 
-module.exports = async (bot) => {
+module.exports = async bot => {
   if (!bot.key.steam) return;
   await new Promise(resolve => setTimeout(resolve, 30000));
   setInterval(async () => {

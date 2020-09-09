@@ -4,7 +4,7 @@
  * @module logger/messagePinboard
  */
 
-module.exports = (bot) => {
+module.exports = bot => {
   // When a pin is removed
   bot.on("messageReactionRemove", async (msg, emoji, uid) => {
       if (!msg.content) {

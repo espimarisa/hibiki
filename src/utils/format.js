@@ -102,7 +102,7 @@ module.exports = {
    * @param {object} features Guild features object
    */
 
-  features: (features) => {
+  features: features => {
     if (!features) return undefined;
     return features.map(feature => {
       switch (feature) {
@@ -203,7 +203,7 @@ module.exports = {
    * @param {number} uptime Uptime timestamp, in seconds
    */
 
-  uptime: (uptime) => {
+  uptime: uptime => {
     const date = new Date(uptime * 1000);
     const days = date.getUTCDate() - 1,
       hours = date.getUTCHours(),

@@ -6,13 +6,13 @@
 
 const format = require("../utils/format");
 
-module.exports = async (bot) => {
+module.exports = async bot => {
   // Loads all reminders (waits 30 seconds)
   await new Promise(resolve => setTimeout(resolve, 30000));
   const reminderdb = await bot.db.table("reminders").run();
   reminderdb.forEach(rd => {
     // Sets a timeout
-    setTimeout(async (r) => {
+    setTimeout(async r => {
       const db = await bot.db.table("reminders").get(r.id).run();
       if (!db) return;
       const user = bot.users.get(r.user);

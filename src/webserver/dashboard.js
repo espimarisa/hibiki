@@ -35,7 +35,7 @@ app.use(helmet.contentSecurityPolicy({
   },
 }));
 
-module.exports = async (bot) => {
+module.exports = async bot => {
   if (!config || !config.cookiesecret || !config.port || !config.redirect_uri || !config.secret) return;
 
   // Configures session store

@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(require("helmet")());
 
-module.exports = (bot) => {
+module.exports = bot => {
   if (!config || !config.port || !config.auth) return;
   app.post("/voteReceive", async (req, res) => {
     // Sends if unauthorized

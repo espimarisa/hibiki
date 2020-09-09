@@ -7,7 +7,7 @@
 const express = require("express");
 const router = express.Router();
 
-module.exports = (bot) => {
+module.exports = bot => {
   // Gets a user's bio
   router.get("/getBio", async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).send({ error: "401" });

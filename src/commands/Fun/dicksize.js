@@ -13,7 +13,7 @@ class dicksizeCommand extends Command {
     const inches = user.id % 7.1;
     if (user.bot) return this.bot.embed("❌ Error", `I don't think **${user.username}** has a dick.`, msg, "error");
 
-    const suffix = (a) => {
+    const suffix = a => {
       return a > 1 || a < 0 || a === 0 ? "es" : "";
     };
 

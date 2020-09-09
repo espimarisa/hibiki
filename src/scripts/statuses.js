@@ -9,7 +9,7 @@
  * @param {object} bot Main bot object
  */
 
-module.exports.switch = (bot) => {
+module.exports.switch = bot => {
   // Formats statuses
   let useramnt = 0;
   bot.guilds.forEach(g => { useramnt += g.memberCount; });
