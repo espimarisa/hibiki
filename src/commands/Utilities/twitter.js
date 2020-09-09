@@ -56,49 +56,37 @@ class twitterCommand extends Command {
       });
     }
 
-    if (body.location) {
-      fields.push({
-        name: "Location",
-        value: `${body.location}`,
-        inline: true,
-      });
-    }
+    if (body.location) fields.push({
+      name: "Location",
+      value: `${body.location}`,
+      inline: true,
+    });
 
-    if (body.url) {
-      fields.push({
-        name: "Website",
-        value: `[Website](${body.url})`,
-        inline: true,
-      });
-    }
+    if (body.url) fields.push({
+      name: "Website",
+      value: `[Website](${body.url})`,
+      inline: true,
+    });
 
-    if (body.protected && body.verified) {
-      fields.push({
-        name: "Notes",
-        value: "This account is private and verified.",
-      });
-    }
+    if (body.protected && body.verified) fields.push({
+      name: "Notes",
+      value: "This account is private and verified.",
+    });
 
-    if (body.verified && !body.protected) {
-      fields.push({
-        name: "Notes",
-        value: "This account is verified.",
-      });
-    }
+    if (body.verified && !body.protected) fields.push({
+      name: "Notes",
+      value: "This account is verified.",
+    });
 
-    if (body.protected && !body.verified) {
-      fields.push({
-        name: "Notes",
-        value: "This account is private.",
-      });
-    }
+    if (body.protected && !body.verified) fields.push({
+      name: "Notes",
+      value: "This account is private.",
+    });
 
-    if (body.status) {
-      fields.push({
-        name: "Latest Tweet",
-        value: body.status.text,
-      });
-    }
+    if (body.status) fields.push({
+      name: "Latest Tweet",
+      value: body.status.text,
+    });
 
     const construct = {
       color: 0x00ACED,
