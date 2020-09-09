@@ -29,13 +29,17 @@ class disableCommand extends Command {
     // Looks for cmd/category
     const cmd = cmds.find(c => (c.id === command || c.aliases.includes(command)));
     const category = categories.find(c => c.toLowerCase() === command.toLowerCase());
+
+    // If a category was found but not a command
     if (!cmd && category) {
       if (!guildcfg.disabledCategories) guildcfg.disabledCategories = [];
 
-      if (category === "Owner" || category === "Core") {
+      // Prevents owner or general commands from being disabled
+      if (category === "Owner" || category === "General") {
         return this.bot.embed("❌ Error", "That's not allowed to be disabled.", msg, "error");
       }
 
+      // If a category is already disabled
       if (guildcfg.disabledCategories && guildcfg.disabledCategories.includes(category)) {
         return this.bot.embed("❌ Error", "That's already disabled.", msg, "error");
       }
