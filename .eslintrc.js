@@ -7,6 +7,7 @@ module.exports = {
   ignorePatterns: ["docs/", "dist/", "out/", "rethinkdb_data/", "node_modules/"],
   extends: "eslint:recommended",
   parserOptions: {
+    sourceType: "module",
     ecmaVersion: 2020,
   },
 

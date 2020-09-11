@@ -1,0 +1,85 @@
+<h2 class="title is-size-2" id="automod"><i class="fas fa-hammer mr-2"></i>Automod</h2>
+<p class="subtitle is-size-4">Configures how automod works.</p>
+
+<div class="field">
+  <p class="title is-size-4">Toggle Antispam</p>
+  <p class="subtitle is-size-5">Toggles whether the antispam module should be enabled or not.</p>
+  <div id="antiSpam" class="control">
+    <label class="radio">
+      <input type="radio" name="antiSpam"> Enabled </input>
+    </label>
+    <label class="radio">
+      <input type="radio" name="antiSpam"> Disabled </input>
+    </label>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Spam Punishments</p>
+  <p class="subtitle is-size-5">Punishments given to a member when they spam.</p>
+  <div id="spamPunishments" class="control">
+    <input type="checkbox"> Delete message</input>
+    <br>
+    <input type="checkbox"> Mute the member </input>
+    <br>
+    <input type="checkbox"> Warn the member</input>
+    </label>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Spam Threshold</p>
+  <p class="subtitle is-size-5">Max number of messages that can be sent before AntiSpam acts. 7 is default; 0 disables.</p>
+  <div class="control">
+    <div id="spamThreshold" class="select">
+      <select>
+        <option selected>0</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option>8</option>
+        <option>9</option>
+        <option>10</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Toggle AntiInvite</p>
+  <p class="subtitle is-size-5">Enables or disables the AntiInvite module.</p>
+  <div id="antiInvite" class="control">
+    <label class="radio">
+      <input type="radio" name="antiInvitea"> Enabled </input>
+    </label>
+    <label class="radio">
+      <input type="radio" name="antiInvitea"> Disabled </input>
+    </label>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Invite Punishments</p>
+  <p class="subtitle is-size-5">Punishments given to a member when they post a Discord invite.</p>
+  <div id="invitePunishments" class="control">
+    <input type="checkbox"> Delete message </input>
+    <br>
+    <input type="checkbox"> Mute the member </input>
+    <br>
+    <input type="checkbox"> Warn the member </input>
+    </label>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Punishment Message</p>
+  <p class="subtitle is-size-5">Should a message be sent in chat if a member is punished?</p>
+  <div id="msgOnPunishment" class="control">
+    <label class="radio">
+      <input type="radio" name="msgOnPunishmenta"> Enabled </input>
+    </label>
+    <label class="radio">
+      <input type="radio" name="msgOnPunishmenta"> Disabled </input>
+    </label>
+  </div>
+</div>

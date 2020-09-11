@@ -34,15 +34,16 @@ module.exports = bot => {
 
   // Server manager
   router.get("/:id", checkAuth, async (req, res) => {
+    // Checks to see if the user can access
     if (!req.isAuthenticated()) { res.status(401).render("401"); }
-    // User & guild perms
     const user = getAuthedUser(req.user);
-    const managableguilds = user.guilds.filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id));
-    const guild = managableguilds.find(g => g.id === req.params.id);
-    // Renders the dashboard
+    const managableGuilds = user.guilds.filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id));
+    const guild = managableGuilds.find(g => g.id === req.params.id);
+
+    // Renders the dashboard and sends the config
     if (!guild) return res.status(403).render("403");
     const cfg = await bot.db.table("guildcfg").get(guild.id).run();
-    res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, items: items, page: "manage", user: user });
+    res.render("manage.ejs", { guild: guild, bot: bot, cfg: cfg, items: items, page: "manage", user: user, csrfToken: req.csrfToken() });
   });
 
   return router;

@@ -81,7 +81,7 @@ class Handler extends Event {
     if (!cmdName.length && (prefix.startsWith(`<@${this.bot.user.id}>`) || prefix.startsWith(`<@!${this.bot.user.id}>`))) {
       return this.bot.embed(
         "🤖 Prefix",
-        `The prefix in this server is \`${guildcfg && guildcfg.prefix ? guildcfg.prefix : this.bot.cfg.prefixes[0]}\`.`,
+        `The prefix in this server is \`${guildcfg && guildcfg.prefix ? guildcfg.prefix : this.bot.config.prefixes[0]}\`.`,
         msg,
       );
     }
