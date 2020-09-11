@@ -1,0 +1,101 @@
+<% let roles = bot.guilds.get(guild.id).roles.map(r => ({name: r.name, managed: r.managed, color: r.color.toString(16), id: r.id}));
+roles.splice(roles.find(r => r.name === "@everyone"), 1);
+roles = roles.filter(r => !r.managed); %>
+
+<h2 class="title is-size-2" id="roles"><i class="fas fa-user-tag mr-2"></i>Roles</h2>
+<p class="subtitle is-size-4">Configures role functions and their designated roles.</p>
+
+<div class="field">
+  <p class="title is-size-4">Agree Role</p>
+  <p class="subtitle is-size-5">Role given when a member runs the agree command to agree to the rules.</p>
+  <div class="control">
+    <div id="agreeRole" class="select">
+      <select>
+        <option id="none">None</option>
+        <% for(let i = 0; i < roles.length; i++) { %>
+        <% let role = roles[i] %>
+        <option id=<%=role.id%>><%= role.name %></option>
+        <% } %>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Assignable Roles</p>
+  <p class="subtitle is-size-5">Roles that any member can give themselves with the assign command.</p>
+  <div class="control">
+    <div id="assignableRoles" class="select">
+      <select multiple="multiple" class="multiple-select">
+        <% for(let i = 0; i < roles.length; i++) { %>
+        <% let role = roles[i] %>
+        <option><%= role.name %> (<%= role.id %>)</option>
+        <% } %>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Staff Role</p>
+  <p class="subtitle is-size-5">The role that allows members to run staff commands. Otherwise, commands use their own required permissions.</p>
+  <div class="control">
+    <div id="staffRole" class="select">
+      <select>
+        <option id="none">None</option>
+        <% for(let i = 0; i < roles.length; i++) { %>
+        <% let role = roles[i] %>
+        <option id=<%=role.id%>><%= role.name %></option>
+        <% } %>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Muted Role</p>
+  <p class="subtitle is-size-5">The role given to a member when they're muted. Consider revoking it's ability to send messages.</p>
+  <div class="control">
+    <div id="mutedRole" class="select">
+      <select>
+        <option id="none">None</option>
+        <% for(let i = 0; i < roles.length; i++) { %>
+        <% let role = roles[i] %>
+        <option id=<%=role.id%>><%= role.name %></option>
+        <% } %>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Automatic Roles</p>
+  <p class="subtitle is-size-5">Roles automatically given to new members when they join the server.</p>
+  <div class="control">
+    <div id="autoRoles" class="select">
+      <select multiple="multiple" class="multiple-select">
+        <% for(let i = 0; i < roles.length; i++) { %>
+        <% let role = roles[i] %>
+        <option><%= role.name %> (<%= role.id %>)</option>
+        <% } %>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Verified Role</p>
+  <p class="subtitle is-size-5">The role given to a member when they're verified with the verify comamnd. Consider using this as a special-access or trusted/friend role.</p>
+  <div class="control">
+    <div id="verifiedRole" class="select">
+      <select>
+        <option id="none">None</option>
+        <% for(let i = 0; i < roles.length; i++) { let role = roles[i] %>
+        <option id=<%=role.id%>><%= role.name %></option>
+        <% } %>
+      </select>
+    </div>
+  </div>
+</div>
+
+<br>

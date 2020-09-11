@@ -1,0 +1,60 @@
+<% let channels = bot.guilds.get(guild.id).channels.map(c => ({name: c.name, id: c.id, type: c.type}));
+channels = channels.filter(c => c.type === 0);
+channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).permissionsOf(bot.user.id).has("sendMessages")); %>
+
+<h2 class="title is-size-2" id="roles"><i class="fas fa-comment-slash mr-2"></i>Sniping</h2>
+<p class="subtitle is-size-4">Configures how message sniping works.</p>
+
+<div class="field">
+  <p class="title is-size-4">Enable Sniping</p>
+  <p class="subtitle is-size-5">Controls whether deleted messages will be viewable with the snipe command.</p>
+  <div id="snipingEnable" class="control">
+    <label class="radio">
+      <input type="radio" name="snipingEnable" checked> Enabled (default) </input>
+    </label>
+    <label class="radio">
+      <input type="radio" name="snipingEnable"> Disabled </input>
+    </label>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Snipe Invites</p>
+  <p class="subtitle is-size-5">Should Discord invites be snipeable?</p>
+  <div id="snipingInvites" class="control">
+    <label class="radio">
+      <input type="radio" name="snipingInvites"> Enabled </input>
+    </label>
+    <label class="radio">
+      <input type="radio" name="snipingInvites" checked> Disabled (default) </input>
+    </label>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Ignored Snipe Channels</p>
+  <p class="subtitle is-size-5">Channels that will be ignored from message sniping. It's a good idea to ignore private channels.</p>
+  <div class="control">
+    <div id="snipingIgnore" class="select">
+      <select multiple="multiple" class="multiple-select">
+        <% for(let i = 0; i < channels.length; i++) { %>
+        <% let channel = channels[i] %>
+        <option><%= channel.name %> (<%= channel.id %>)</option>
+        <% } %>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <p class="title is-size-4">Sniping Permission</p>
+    <p class="subtitle is-size-5">Controls what members can use the snipe command.</p>
+    <div id="snipingPermission" class="control">
+      <label class="radio">
+        <input type="radio" name="snipingPermission" checked> Anyome (Default) </input>
+      </label>
+      <label class="radio">
+        <input type="radio" name="snipingPermission"> Staff Only </input>
+      </label>
+    </div>
+  </div>
+</div>

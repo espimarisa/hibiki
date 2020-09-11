@@ -67,7 +67,7 @@ module.exports = [{
   label: "Join Message",
   type: "string",
   minimum: 1,
-  maximum: 100,
+  maximum: 200,
 }, {
   category: "Logging",
   emoji: "🚪",
@@ -75,7 +75,7 @@ module.exports = [{
   label: "Leave Message",
   type: "string",
   minimum: 1,
-  maximum: 100,
+  maximum: 200,
 }, {
   category: "Logging",
   emoji: "📄",

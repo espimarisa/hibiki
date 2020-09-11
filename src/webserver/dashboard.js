@@ -30,8 +30,8 @@ app.use(helmet.contentSecurityPolicy({
   directives: {
     defaultSrc: ["'self'", "fonts.googleapis.com", "fonts.gstatic.com", "cdn.jsdelivr.net"],
     imgSrc: ["'self'", "avatars1.githubusercontent.com", "cdn.discordapp.com"],
-    scriptSrc: ["'self'", "discord.com", "discordapp.com", "cdn.jsdelivr.net"],
-    styleSrc: ["'self'", "cdn.jsdelivr.net", "discord.com", "discordapp.com", "fonts.googleapis.com", "fonts.gstatic.com"],
+    scriptSrc: ["'self'", "'unsafe-inline'", "discord.com", "discordapp.com", "cdn.jsdelivr.net"],
+    styleSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "discord.com", "discordapp.com", "fonts.googleapis.com", "fonts.gstatic.com"],
   },
 }));
 
@@ -72,13 +72,20 @@ module.exports = async bot => {
       signed: true,
       path: "/",
     },
+    httpOnly: true,
     resave: false,
     saveUninitialized: false,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
   }));
 
   // Starts passport & cookieParser
   app.use(cookieParser(config.cookiesecret));
-  app.use(csurf({ cookie: true }));
+
+  app.use(csurf({
+    cookie: true,
+  }));
+
   app.use(passport.initialize());
   app.use(passport.session());
 

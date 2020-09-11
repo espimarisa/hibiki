@@ -24,8 +24,9 @@ module.exports = async bot => {
     });
 
     if (ids.length > 0) {
-      body = await fetch(`http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=${bot.key.steam}&steamids=${ids.join(",")}`)
-        .then(res => res.json().catch(() => {}));
+      body = await fetch(
+        `http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=${bot.key.steam}&steamids=${ids.join(",")}`,
+      ).then(res => res.json().catch(() => {}));
       if (bans) bans = bans.players;
     } else return;
 
