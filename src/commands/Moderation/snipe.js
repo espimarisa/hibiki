@@ -22,7 +22,7 @@ class snipeCommand extends Command {
     }
 
     // If permission isn't public; member doesn't have the role
-    if (guildcfg && !guildcfg.snipingPermission && guildcfg.staffRole && !msg.member.roles.includes(guildcfg.staffRole)) {
+    if (guildcfg && guildcfg.snipingPermission && guildcfg.snipingPermission === false && guildcfg.staffRole && !msg.member.roles.includes(guildcfg.staffRole)) {
       return this.bot.embed("❌ Error", "You don't have the required role to view sniped messages.", msg, "error");
     }
 

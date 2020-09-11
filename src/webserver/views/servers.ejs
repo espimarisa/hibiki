@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  <% let managableguilds = user["guilds"].filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id)); %>
+  <% let managableGuilds = user["guilds"].filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id)); %>
   <section class="hero gradient">
     <%- include("../partials/navbar.ejs") %>
     <div class="hero-body">
@@ -21,7 +21,7 @@
 
   <%# List of guilds %>
   <section class="section container">
-    <% managableguilds.map(g => { %>
+    <% managableGuilds.map(g => { %>
     <article class="media">
       <figure class="media-left">
         <div class="image is-48x48">

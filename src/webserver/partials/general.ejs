@@ -1,0 +1,35 @@
+<% const cmds = bot.commands.filter(c => c.category !== "Owner") %>
+
+<h2 class="title is-size-2" id="general"><i class="fas fa-cog mr-2"></i>General</h2>
+<p class="subtitle is-size-4">Basic options and functionality to configure.</p>
+
+<div class="field">
+  <p class="title is-size-4">Prefix</p>
+  <p class="subtitle is-size-5">Text put before commands. Defaults to <%= bot.config.prefixes[0] %>.</p>
+  <div class="control">
+    <input id="prefix" class="input" type="text" placeholder="15 characters or less">
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">EasyTranslate</p>
+  <p class="subtitle is-size-5">Controls whether messages reacted with a country's emoji will be automatically translated.</p>
+  <div id="easyTranslate" class="control">
+    <label class="radio">
+      <input type="radio" name="easyTranslate" checked> Enabled (default) </input>
+    </label>
+    <label class="radio">
+      <input type="radio" name="easyTranslate"> Disabled </input>
+    </label>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Disabled Items</p>
+  <p class="subtitle is-size-5">Commands/categories to prevent from running in this server.</p>
+  <div class="control">
+    <div id="disabledCmds" class="select">
+      <select multiple="multiple" class="multiple-select"></select>
+    </div>
+  </div>
+</div>

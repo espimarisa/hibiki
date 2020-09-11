@@ -3,8 +3,9 @@
 
 <head>
   <%- include("../partials/head.ejs") %>
-  <script src="/public/js/profile.js" crossorigin="anonymous"></script>
+  <meta name="csrf-token" content="<%= csrfToken %>">
   <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/multiple-select/dist/multiple-select.min.js" crossorigin="anonymous"></script>
   <title>Profile - <%= bot.user.username %></title>
 </head>
 
@@ -21,14 +22,17 @@
     </div>
   </section>
 
-
   <section class="section container content">
     <p class="title is-size-3">Bio</p>
-    <p class="subtitle is-size-5">A short description about yourself, for display on your profile.</p>
+    <p class="subtitle is-size-5">A short description about yourself.</p>
     <input class="input" id="bio" type="text" placeholder="Your desired bio, will be trimmed to 120 characters.">
   </section>
 
   <%- include("../partials/footer.ejs") %>
 </body>
+
+<%# Imports scripts %>
+<script src="/public/js/bio.js"></script>
+<script src="/public/js/profile.js"></script>
 
 </html>

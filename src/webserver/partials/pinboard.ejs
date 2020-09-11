@@ -1,0 +1,63 @@
+<% let channels = bot.guilds.get(guild.id).channels.map(c => ({name: c.name, id: c.id, type: c.type}));
+channels = channels.filter(c => c.type === 0);
+channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).permissionsOf(bot.user.id).has("sendMessages")); %>
+
+<h2 class="title is-size-2" id="pinboard"><i class="fas fa-thumbtack mr-2"></i>Pinboard</h2>
+<p class="subtitle is-size-4">Configures and toggles Pinboard (aka Starboard) functionality.</p>
+
+<div class="field">
+  <p class="title is-size-4">Pinboard Channel</p>
+  <p class="subtitle is-size-5">The channel the Pinboard will post valid messages to.</p>
+  <div class="control">
+    <div id="pinChannel" class="select">
+      <select>
+        <option id="none">None</option>
+        <% for(let i = 0; i < channels.length; i++) { %>
+        <% let channel = channels[i] %>
+        <option id=<%=channel.id%>>#<%= channel.name %></option>
+        <% } %>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Self-Pinning</p>
+  <p class="subtitle is-size-5">Controls if members can self-pin messages.</p>
+  <div id="pinSelfPinning" class="control">
+    <label class="radio">
+      <input type="radio" name="pinSelfPinning"> Enabled </input>
+    </label>
+    <label class="radio">
+      <input type="radio" name="pinSelfPinning"> Disabled </input>
+    </label>
+  </div>
+</div>
+
+<div class="field">
+  <p class="title is-size-4">Pin Amount</p>
+  <p class="subtitle is-size-5">The minimum amount of reactions a message needs to get in order to post to the Pinboard.</p>
+  <div class="control">
+    <div id="pinAmount" class="select">
+      <select>
+        <option selected>0</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option>8</option>
+        <option>9</option>
+        <option>10</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<p class="title is-size-4">Pin Emoji</p>
+<p class="subtitle is-size-5">The Emoji used for Pinboard reactions.</p>
+<div id="twemoji-picker">
+  <button id="pinEmoji" class="trigger">📌</button>
+</div>
