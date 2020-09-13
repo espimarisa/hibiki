@@ -112,13 +112,11 @@ class userCommand extends Command {
       inline: true,
     });
 
-
     if (user.roles.length) fields.push({
       name: "Highest Role",
       value: `${user.highestRole.name}`,
       inline: true,
     });
-
 
     fields.push({
       name: "Status",
@@ -132,20 +130,17 @@ class userCommand extends Command {
       inline: true,
     });
 
-
     if (usercfg && usercfg.country) fields.push({
       name: "Country",
       value: usercfg.country,
       inline: true,
     });
 
-
     if (usercfg && usercfg.timezone) fields.push({
       name: "Timezone",
       value: usercfg.timezone,
       inline: true,
     });
-
 
     if (usercfg && usercfg.pronouns) fields.push({
       name: "Pronouns",

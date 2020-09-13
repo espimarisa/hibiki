@@ -55,6 +55,7 @@ class setupCommand extends Command {
           color: this.bot.embed.color("general"),
           fields: settings.filter(f => f.id || cfg[f.id]).sort((a, b) => a.id > b.id ? 1 : -1).map(s => {
             let settingId = cfg[s.id];
+            if (s.category === "Profile") return;
             if (s.type === "channelID" && cfg[s.id]) settingId = `<#${cfg[s.id]}>`;
             else if (s.type === "roleID" && cfg[s.id]) settingId = `<@&${cfg[s.id]}>`;
             else if (s.type === "roleArray" && cfg[s.id]) settingId = cfg[s.id].map(r => `<@&${r}>`).join(", ");
@@ -82,6 +83,7 @@ class setupCommand extends Command {
     settings.forEach(s => {
       const cat = categories.find(c => c.name === s.category);
       if (!s.category) return;
+      if (s.category === "Profile") return;
       if (!cat) categories.push({ name: s.category, emoji: categoryEmojis[s.category], items: [s.id] });
       else {
         cat.items.push(s.id);
@@ -98,7 +100,7 @@ class setupCommand extends Command {
     const omsg = await msg.channel.createMessage({
       embed: {
         title: "🔧 Setup",
-        description: this.bot.config.homepage ? `You should use the [web dashboard](${this.bot.config.homepage}/login/) for a better experience.` : "",
+        description: this.bot.config.homepage ? `You should use the [web dashboard](${this.bot.config.homepage}/manage/servers) for a better experience.` : "",
         color: this.bot.embed.color("general"),
         fields: categories.map(cat => {
           return {
@@ -143,6 +145,7 @@ class setupCommand extends Command {
         if (message.id !== m.id || uid !== msg.author.id || !emoji.name || stop) return;
         category = categories.find(cat => cat.emoji.length > 2 ? cat.emoji.split(":")[1] === emoji.id : cat.emoji === emoji.name);
         if (!category) return;
+        if (category === "Profile") return;
         await m.removeReactions();
         return true;
       }, bot).catch(e => {
@@ -194,6 +197,7 @@ class setupCommand extends Command {
       // Finds the setting
       const setting = settings.find(s => s.id === category.items.find(cat => settings.find(s => s.id === cat).emoji === emoji.name));
       if (!setting) return;
+      if (setting.category === "Profile") return;
 
       // Removes reaction & updates
       message.removeReaction(emoji.name, uid);

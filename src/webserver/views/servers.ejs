@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <%- include("../partials/head.ejs") %>
+  <%- include("../partials/head") %>
   <script src="/public/js/navbar.js" crossorigin="anonymous"></script>
   <title>Servers - <%= bot.user.username %></title>
 </head>
@@ -10,7 +10,7 @@
 <body>
   <% let managableGuilds = user["guilds"].filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id)); %>
   <section class="hero gradient">
-    <%- include("../partials/navbar.ejs") %>
+    <%- include("../partials/navbar") %>
     <div class="hero-body">
       <div class="container">
         <p class="title has-text-white is-size-3">Welcome to the dashboard, <%= user.username %>.</p>
@@ -38,7 +38,7 @@
           <p>Config</p>
         </a>
         <% } else { %>
-        <a href="<%=`https://discordapp.com/oauth2/authorize?client_id=${bot.id}&scope=bot&guild_id=${g.id}`%>" class="button is-medium">
+        <a href="<%=`https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=506850534&guild_id=${g.id}`%>" class="button is-medium">
           <span class="icon is-small"><i class="fa fa-plus"></i></span>
           <p>Invite</p>
         </a>
@@ -46,7 +46,8 @@
     </article>
     <% }) %>
   </section>
-  <%- include("../partials/footer.ejs") %>
+
+  <%- include("../partials/footer") %>
 </body>
 
 </html>

@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-  <%- include("../partials/head.ejs") %>
+  <%- include("../partials/head") %>
+  <meta name="user-id" content="<%= user.id %>">
   <meta name="csrf-token" content="<%= csrfToken %>">
   <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/multiple-select/dist/multiple-select.min.js" crossorigin="anonymous"></script>
@@ -11,7 +12,7 @@
 
 <body>
   <section class="hero gradient">
-    <%- include("../partials/navbar.ejs") %>
+    <%- include("../partials/navbar") %>
     <div class="hero-body">
       <div class="container has-text-centered">
         <figure class="image is-128x128 is-inline-block">
@@ -22,17 +23,43 @@
     </div>
   </section>
 
-  <section class="section container content">
-    <p class="title is-size-3">Bio</p>
-    <p class="subtitle is-size-5">A short description about yourself.</p>
-    <input class="input" id="bio" type="text" placeholder="Your desired bio, will be trimmed to 120 characters.">
+
+  <%# Main content %>
+  <section class="section container">
+    <div class="sticky-buttons">
+      <div class="buttons">
+        <a href="#" class="button">
+          <span class="icon"><i class="fas fa-arrow-up"></i></span>
+          <span>Back to top</span>
+        </a>
+        <a class="button" id="submit">
+          <%# Handles csrf validation. Don't remove this, or shit will break. %>
+          <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+          <span class="icon"><i class="fas fa-check"></i></span>
+          <span id="saved">Save changes</span>
+        </a>
+        <a class="button is-danger" id="delete">
+          <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+          <span class="icon"><i class="fas fa-trash"></i></span>
+          <span id="reset">Reset config</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="field">
+      <p class="title is-size-4">Bio</p>
+      <p class="subtitle is-size-5">A short amount of info about yourself. Will show on your profile.</p>
+      <div class="control">
+        <input class="input" id="bio" type="text" placeholder="Your desired bio, will be trimmed to 120 characters.">
+      </div>
+    </div>
+
   </section>
 
-  <%- include("../partials/footer.ejs") %>
+  <%- include("../partials/footer") %>
 </body>
 
 <%# Imports scripts %>
-<script src="/public/js/bio.js"></script>
 <script src="/public/js/profile.js"></script>
 
 </html>
