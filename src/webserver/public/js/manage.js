@@ -5,21 +5,39 @@
  * @module webserver/manage
  */
 
-// Gets a server's config
-async function getConfig(id) {
-  const body = await fetch(`/api/getConfig/${id}`, { credentials: "include" }).then(res => res.json().catch(() => {}));
-  return body;
-}
-
 // Gets the csrf token
 const token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
+// Gets a server's config
+async function getGuildConfig(id) {
+  const body = await fetch(`/api/getGuildConfig/${id}`, {
+    credentials: "include",
+    headers: {
+      "CSRF-Token": token,
+    },
+  }).then(res => res.json().catch(() => {}));
+  return body;
+}
+
 // Updates a config
-async function updateConfig(id, cfg) {
-  return fetch(`/api/updateConfig/${id}`, {
+async function updateGuildConfig(id, cfg) {
+  return fetch(`/api/updateGuildConfig/${id}`, {
     method: "post",
     credentials: "include",
     body: JSON.stringify(cfg),
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "CSRF-Token": token,
+    },
+  });
+}
+
+// Resets a config
+async function resetGuildConfig(id) {
+  return fetch(`/api/resetGuildConfig/${id}`, {
+    method: "post",
+    credentials: "include",
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
@@ -33,7 +51,9 @@ let oldcfg;
 // Listens on window load
 window.addEventListener("load", async () => {
   // Gets items and IDs
+  // Hibiki, powered by unreliable and shitty regexes
   const id = /manage\/([\d]{17,19})/.exec(document.URL)[1];
+
   const fetchedItems = await fetch("/api/getItems", {
     credentials: "include",
     headers: {
@@ -44,7 +64,7 @@ window.addEventListener("load", async () => {
   const configItems = fetchedItems.map(p => p.id);
 
   if (!id) return;
-  let guildConfig = await getConfig(id);
+  let guildConfig = await getGuildConfig(id);
   oldcfg = { ...guildConfig };
   if (!guildConfig) guildConfig = {};
 
@@ -160,7 +180,7 @@ window.addEventListener("load", async () => {
   });
 
   // Refreshes local guildConfig
-  function refreshConfig() {
+  function refreshGuildConfig() {
     configItems.forEach(p => {
       // Gets the items
       const type = fetchedItems.find(c => c.id === p).type;
@@ -239,11 +259,10 @@ window.addEventListener("load", async () => {
     const button = document.getElementById("submit");
     // Loading animation
     button.classList.add("is-loading");
-    // Refreshes config
-    refreshConfig();
+    refreshGuildConfig();
     oldcfg = { ...guildConfig };
     // Updates config
-    updateConfig(id, guildConfig).then(res => {
+    updateGuildConfig(id, guildConfig).then(res => {
       if (res.status === 200) {
         // Button animation & changes
         button.classList.remove("is-loading");
@@ -263,10 +282,44 @@ window.addEventListener("load", async () => {
     });
   });
 
+  // Deletion button functionality
+  document.getElementById("delete").addEventListener("click", async () => {
+    const button = document.getElementById("delete");
+    // Loading animation
+    button.classList.add("is-loading");
+    oldcfg = { ...guildConfig };
+    // Updates config
+    resetGuildConfig(id).then(res => {
+      if (res.status === 200) {
+        // Button animation & changes
+        button.classList.remove("is-loading");
+        button.classList.remove("is-light");
+        button.classList.add("is-success");
+        document.getElementById("reset").innerText = "Config reset";
+        setTimeout(() => {
+          document.getElementById("reset").innerText = "Reset config";
+          button.classList.remove("is-success");
+        }, 2000);
+      } else {
+        // Displays if error (user likely not authed)
+        document.getElementById("reset").innerText = "Error, please refresh";
+        button.classList.add("is-error");
+        button.classList.remove("is-success");
+      }
+
+      // Force reloads the window
+      return window.location.reload(true);
+    });
+  });
+
+
   // Config changes
-  function compareConfig() {
-    // Refreshes config; hides elements
-    refreshConfig();
+  function compareGuildConfig() {
+    // Don't ask for confirmation on deletion
+    if (JSON.stringify(guildConfig === { id: id })) return;
+
+    refreshGuildConfig();
+
     // Compares objects; leave confirmation
     if (JSON.stringify(oldcfg) !== JSON.stringify(guildConfig)) window.onbeforeunload = function() {
       return "Do you really want to leave?";
@@ -276,6 +329,6 @@ window.addEventListener("load", async () => {
   }
 
   // Event listeners
-  document.addEventListener("click", compareConfig);
-  document.addEventListener("input", compareConfig);
+  document.addEventListener("click", compareGuildConfig);
+  document.addEventListener("input", compareGuildConfig);
 });

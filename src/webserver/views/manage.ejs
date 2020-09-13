@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <%- include("../partials/head.ejs") %>
+  <%- include("../partials/head") %>
   <meta name="csrf-token" content="<%= csrfToken %>">
   <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/multiple-select/dist/multiple-select.min.js" crossorigin="anonymous"></script>
@@ -13,7 +13,7 @@
 <body>
   <%# Header %>
   <section class="hero gradient">
-    <%- include("../partials/navbar.ejs") %>
+    <%- include("../partials/navbar") %>
     <div class="hero-body">
       <div class="container has-text-centered">
         <figure class="image is-128x128 is-inline-block">
@@ -54,6 +54,11 @@
               <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
               <span class="icon"><i class="fas fa-check"></i></span>
               <span id="saved">Save changes</span>
+            </a>
+            <a class="button is-danger" id="delete">
+              <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+              <span class="icon"><i class="fas fa-trash"></i></span>
+              <span id="reset">Reset config</span>
             </a>
           </div>
         </div>

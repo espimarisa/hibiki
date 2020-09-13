@@ -2,22 +2,22 @@
 <html lang="en">
 
 <head>
-  <%- include("../partials/head.ejs") %>
+  <%- include("../partials/head") %>
   <script src="/public/js/navbar.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css/animate.min.css" crossorigin="anonymous">
   <meta content="https://hibiki.app" property="og:url">
   <meta content="<%= bot.user.username %>" property="og:title">
   <meta content="<%= bot.user.username %>" name="twitter:title">
   <meta content="An easy, customizable, and powerful Discord bot that can do anything that your server needs." name="description">
   <meta content="An easy, customizable, and powerful Discord bot that can do anything that your server needs." property="og:description">
   <meta content="An easy, customizable, and powerful Discord bot that can do anything that your server needs." name="twitter:description">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css/animate.min.css" crossorigin="anonymous">
   <title><%= bot.user.username %></title>
 </head>
 
 <body>
   <%# Navbar %>
   <section class="hero gradient is-fullheight">
-    <%- include("../partials/navbar.ejs") %>
+    <%- include("../partials/navbar") %>
     <div class="hero-body">
       <div class="container has-text-centered has-text-light animate__animated animate__fadeIn animate__faster">
         <img src="<%= bot.user.dynamicAvatarURL() %>" class="logo" alt="logo">
@@ -46,8 +46,8 @@
     </div>
   </section>
 
-  <%- include("../partials/about.ejs") %>
-  <%- include("../partials/footer.ejs") %>
+  <%- include("../partials/about") %>
+  <%- include("../partials/footer") %>
 </body>
 
 </html>
