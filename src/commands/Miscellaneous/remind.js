@@ -52,7 +52,7 @@ class remindCommand extends Command {
       // Clears the timeout
       const handle = this.timeoutHandles.find(h => h.id === args[1]);
       if (handle) clearTimeout(handle);
-      return this.bot.embed("⏰ Reminder", `Reminder removed.`, msg);
+      return this.bot.embed("⏰ Reminder", "Reminder removed.", msg);
     }
 
     // Time regex

@@ -44,7 +44,7 @@ module.exports = {
     "operator-linebreak": [1, "after"],
     "padded-blocks": [1, "never"],
     "prefer-const": ["error", { destructuring: "any", ignoreReadBeforeAssign: false }],
-    "quotes": [1, "double", { avoidEscape: true, allowTemplateLiterals: true }],
+    "quotes": [1, "double", { avoidEscape: true, allowTemplateLiterals: false }],
     "quote-props": [1, "consistent-as-needed"],
     "semi": [1, "always"],
     "semi-spacing": [1, { before: false, after: true }],
