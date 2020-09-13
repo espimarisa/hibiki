@@ -23,7 +23,7 @@ class xkcdCommand extends Command {
 
     // Random comic
     else {
-      const body = await fetch(`https://xkcd.com/info.0.json`).then(res => res.json());
+      const body = await fetch("https://xkcd.com/info.0.json").then(res => res.json());
       const random = Math.floor(Math.random() * body.num) + 1;
       api = `https://xkcd.com/${random}/info.0.json`;
     }

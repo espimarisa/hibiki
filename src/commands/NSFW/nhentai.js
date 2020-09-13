@@ -67,7 +67,7 @@ class nhentaiCommand extends Command {
         }],
         author: {
           name: book.title.pretty || book.title.english,
-          icon_url: `https://i.imgur.com/jboGQa0.png`,
+          icon_url: "https://i.imgur.com/jboGQa0.png",
           url: `https://nhentai.net/g/${book.id}/`,
         },
         thumbnail: {

@@ -18,7 +18,7 @@ class cookiesCommand extends Command {
 
     this.bot.embed(
       "🍪 Cookies",
-      `${user.id === msg.author.id ? `You have` : `**${user.username}** has`} **${cookies}** cookie${cookies === 1 ? "" : "s"}.`,
+      `${user.id === msg.author.id ? "You have" : `**${user.username}** has`} **${cookies}** cookie${cookies === 1 ? "" : "s"}.`,
       msg,
     );
   }

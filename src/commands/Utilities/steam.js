@@ -25,7 +25,7 @@ class steamCommand extends Command {
     // Vanity URL checker
     if (/^\d+$/.test(args[0])) steamid = args[0];
     else if (args.join(" ").startsWith("https://steamcommunity.com/id/")) args[0] = args.join(" ")
-      .substring(`https://steamcommunity.com/id/`.length, args.join(" ").length);
+      .substring("https://steamcommunity.com/id/".length, args.join(" ").length);
 
     if (!steamid) {
       id = await fetch(

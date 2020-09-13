@@ -87,7 +87,7 @@ class helpCommand extends Command {
               }).join(" "),
             })),
             footer: {
-              text: `Ran by ${this.bot.tag(msg.author)} | Run ${db && db.prefix ? db.prefix : this.bot.config.prefixes[0]}` + `help <command> for info about a command.`,
+              text: `Ran by ${this.bot.tag(msg.author)} | Run ${db && db.prefix ? db.prefix : this.bot.config.prefixes[0]}` + "help <command> for info about a command.",
               icon_url: msg.author.dynamicAvatarURL(),
             },
           },
@@ -108,7 +108,7 @@ class helpCommand extends Command {
             }).join(" "),
           })),
           footer: {
-            text: `Ran by ${this.bot.tag(msg.author)} | Run ${db && db.prefix ? db.prefix : this.bot.config.prefixes[0]}` + `help <command> for info about a command.`,
+            text: `Ran by ${this.bot.tag(msg.author)} | Run ${db && db.prefix ? db.prefix : this.bot.config.prefixes[0]}` + "help <command> for info about a command.",
             icon_url: msg.author.dynamicAvatarURL(),
           },
         },
@@ -125,7 +125,7 @@ class helpCommand extends Command {
               }).join(" "),
             })),
             footer: {
-              text: `Ran by ${this.bot.tag(msg.author)} | Run ${db && db.prefix ? db.prefix : this.bot.config.prefixes[0]}` + `help <command> for info about a command.`,
+              text: `Ran by ${this.bot.tag(msg.author)} | Run ${db && db.prefix ? db.prefix : this.bot.config.prefixes[0]}` + "help <command> for info about a command.",
               icon_url: msg.author.dynamicAvatarURL(),
             },
           },
