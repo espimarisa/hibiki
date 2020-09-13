@@ -15,7 +15,7 @@ class snipeCommand extends Command {
     if (guildcfg && guildcfg.snipingEnable === false) {
       return this.bot.embed(
         "❌ Error",
-        `Message sniping hasn't been enabled. You can configure it using the [web dashboard](${this.bot.config.homepage}/dashboard/.)`,
+        `Message sniping hasn't been enabled. You can configure it using the [web dashboard](${this.bot.config.homepage}/manage/servers).`,
         msg,
         "error",
       );

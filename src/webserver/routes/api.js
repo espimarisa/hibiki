@@ -10,35 +10,7 @@ const items = require("../../utils/items");
 const router = express.Router();
 
 module.exports = bot => {
-  // Gets a user's bio
-  router.get("/getBio", async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(401).send({ error: "401" });
-    const userConfig = await bot.db.table("usercfg").get(req.user.id).run();
-    if (!userConfig || !userConfig.bio) return res.status(404).send({ error: "404" });
-    res.send(userConfig.bio);
-  });
-
-  // Updates a user's bio
-  router.get("/updateBio", async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(401).send({ error: "401" });
-    let userConfig = await bot.db.table("usercfg").get(req.user.id).run();
-    if (!req.query || typeof req.query.bio === "undefined") return res.status(400).send({ error: "400" });
-    let bio = req.query.bio;
-    if (req.query.bio.length === 0 && typeof req.query.bio === "string") bio = null;
-    else bio = bio.substring(0, 120);
-
-    if (!userConfig) {
-      userConfig = { id: req.user.id, bio: bio };
-      await bot.db.table("usercfg").insert(userConfig).run();
-      return res.sendStatus(200);
-    }
-
-    userConfig.bio = bio;
-    await bot.db.table("usercfg").get(req.user.id).update(userConfig).run();
-    res.sendStatus(200);
-  });
-
-  // Gets items
+  // Gets setup items, commands, and profile items
   router.get("/getItems", async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).send({ error: "401" });
 
@@ -46,8 +18,7 @@ module.exports = bot => {
     if (req.query.commands) {
       const cmds = [];
       bot.commands.forEach(cmd => {
-        if (!cmds.find(c => c.label === cmd.category) && cmd.category !== "Owner")
-          cmds.push({ label: cmd.category, type: "optgroup", children: [] });
+        if (!cmds.find(c => c.label === cmd.category) && cmd.category !== "Owner") cmds.push({ label: cmd.category, type: "optgroup", children: [] });
       });
 
       // Ignores owner cmds
@@ -60,12 +31,23 @@ module.exports = bot => {
       return res.status(200).send(cmds);
     }
 
+    // Sends profile items
+    if (req.query.profile) {
+      const profileItems = [];
+      items.forEach(i => {
+        if (i.category !== "Profile") return;
+        profileItems.push(i);
+      });
+
+      return res.status(200).send(profileItems);
+    }
+
     // Sends configurable items
     res.status(200).send(items);
   });
 
-  // Gets a guildConfig
-  router.get("/getConfig/:id", async (req, res) => {
+  // Gets a guildconfig
+  router.get("/getGuildConfig/:id", async (req, res) => {
     // Checks to see if the user has permission
     if (!req.isAuthenticated()) return res.status(401).send({ error: "401" });
     const managableGuilds = req.user.guilds.filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id));
@@ -79,16 +61,15 @@ module.exports = bot => {
   });
 
   // Updates a guildConfig
-  router.post("/updateConfig/:id", async (req, res) => {
+  router.post("/updateGuildConfig/:id", async (req, res) => {
     // Checks to see if the user has permission
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     const managableGuilds = req.user.guilds.filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id));
     const guild = managableGuilds.find(g => g.id === req.params.id);
     if (!guild) return res.status(403);
 
-    // Gets configs
+    // Gets config
     let guildConfig = await bot.db.table("guildcfg").get(guild.id).run();
-    // let userConfig = await bot.db.table("usercfg").get(req.user.id).run();
 
     // Inserts guildConfig
     if (!guildConfig) {
@@ -158,6 +139,110 @@ module.exports = bot => {
 
     // Updates the config
     await bot.db.table("guildcfg").get(guild.id).update(guildConfig).run();
+    res.sendStatus(200);
+  });
+
+  // Resets a guild config
+  router.post("/resetGuildConfig/:id", async (req, res) => {
+    // Checks to see if the user has permission
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
+    const managableGuilds = req.user.guilds.filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id));
+    const guild = managableGuilds.find(g => g.id === req.params.id);
+    if (!guild) return res.status(403);
+
+    // Gets config
+    let guildConfig = await bot.db.table("guildcfg").get(guild.id).run();
+
+    // Inserts guildConfig
+    if (!guildConfig) {
+      guildConfig = { id: guild.id };
+      await bot.db.table("guildcfg").insert(guildConfig).run();
+    }
+
+    guildConfig = { id: guild.id };
+
+    // Deletes the config
+    await bot.db.table("guildcfg").get(guild.id).delete().run();
+    await bot.db.table("guildcfg").insert({ id: guild.id }).run();
+    res.sendStatus(200);
+  });
+
+  // Gets a profileConfig
+  router.get("/getProfileConfig/:id", async (req, res) => {
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "401" });
+
+    // Gets the config
+    const profileConfig = await bot.db.table("usercfg").get(req.user.id).run();
+    if (!profileConfig) return res.status(404).send({ error: "404" });
+    res.send(profileConfig);
+  });
+
+  // Updates a profileConfig
+  router.post("/updateProfileConfig/:id", async (req, res) => {
+    // Checks to see if the user has permission
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
+
+    // Gets configs
+    let profileConfig = await bot.db.table("usercfg").get(req.user.id).run();
+
+    // Inserts profileConfig
+    if (!profileConfig) {
+      profileConfig = { id: req.user.id };
+      await bot.db.table("usercfg").insert(profileConfig).run();
+    }
+
+    // If no profileConfig
+    if (!req.body) return res.status(400).send({ error: "No config" });
+    profileConfig = req.body;
+
+    // Each profileConfig type/option
+    Object.keys(profileConfig).forEach(c => {
+      if (c === "id") return;
+      const opt = profileConfig[c];
+      if (!opt) return;
+
+      // Finds the items
+      const item = items.find(i => i.id === c);
+      if (!item) return delete profileConfig[c];
+
+      // Number type; has no maximum or minimum
+      if (item.type === "number" && typeof opt !== "number") delete profileConfig[c];
+      // Number type; has maximum
+      else if (item.type === "number" && item.maximum && opt > item.maximum) profileConfig[c] = item.maximum;
+      // Number type; has minimum
+      else if (item.type === "number" && item.minimum && opt < item.minimum) profileConfig[c] = item.minimum;
+      else if (item.type === "bool" && typeof opt !== "boolean") profileConfig[c] = null;
+      // String; has maximum
+      else if (item.type === "string" && item.maximum) profileConfig[c] = opt.substring(0, 15);
+      // String; has minimum
+      else if (item.type === "string" && item.minimum && opt.length < item.minimum) profileConfig[c] = null;
+      else if (item.type === "array" && !Array.isArray(profileConfig[c])) return profileConfig[c] = null;
+    });
+
+    // Updates the config
+    await bot.db.table("usercfg").get(req.user.id).update(profileConfig).run();
+    res.sendStatus(200);
+  });
+
+  // Resets a profile config
+  router.post("/resetProfileConfig/:id", async (req, res) => {
+    // Checks to see if the user has permission
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
+
+    // Gets configs
+    let profileConfig = await bot.db.table("usercfg").get(req.user.id).run();
+
+    // Inserts guildConfig
+    if (!profileConfig) {
+      profileConfig = { id: req.user.id };
+      await bot.db.table("usercfg").insert(profileConfig).run();
+    }
+
+    profileConfig = { id: req.user.id };
+
+    // Deletes the config
+    await bot.db.table("usercfg").get(req.user.id).delete().run();
+    await bot.db.table("usercfg").insert({ id: req.user.id }).run();
     res.sendStatus(200);
   });
 

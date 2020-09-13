@@ -1,6 +1,6 @@
 /**
  * @fileoverview Navbar handler
- * @description Handles bulma navbar functionality
+ * @description Handles Bulma navbar functionality
  * @module webserver/navbar
  */
 

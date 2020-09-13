@@ -192,4 +192,14 @@ module.exports = [{
   id: "verifiedRole",
   label: "Verified Role",
   type: "roleID",
+}, {
+  category: "Profile",
+  id: "bio",
+  type: "string",
+  minimum: 1,
+  maximum: 200,
+}, {
+  category: "Profile",
+  id: "pronouns",
+  type: "array",
 }];
