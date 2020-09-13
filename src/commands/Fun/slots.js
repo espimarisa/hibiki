@@ -21,7 +21,7 @@ class slotsCommand extends Command {
     if (!args[0] || isNaN(args[0])) {
       return this.bot.embed(
         "🎰 Slots",
-        `Play using slots <amount>. \n` + `${emotes.map(e => `${e} are worth ${modifiers[emotes.indexOf(e)]}.`).join("\n") }`,
+        "Play using slots <amount>. \n" + `${emotes.map(e => `${e} are worth ${modifiers[emotes.indexOf(e)]}.`).join("\n") }`,
         msg,
       );
     }

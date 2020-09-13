@@ -9,7 +9,7 @@ $(async () => {
   // Gets the csrf token
   const token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
-  const cmds = await fetch(`../../api/getItems?commands=true`, {
+  const cmds = await fetch("../../api/getItems?commands=true", {
     credentials: "include",
     headers: {
       "CSRF-Token": token,

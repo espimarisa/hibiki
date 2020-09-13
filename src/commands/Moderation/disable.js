@@ -65,7 +65,7 @@ class disableCommand extends Command {
       this.bot.emit("commandDisable", msg.channel.guild, msg.member, command);
       this.bot.embed("✅ Success", `The **${cmd.id}** command has been disabled.`, msg, "success");
     } else {
-      this.bot.embed("❌ Error", `That isn't allowed to be disabled.`, msg, "error");
+      this.bot.embed("❌ Error", "That isn't allowed to be disabled.", msg, "error");
     }
   }
 }

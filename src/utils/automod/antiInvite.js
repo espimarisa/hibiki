@@ -19,7 +19,7 @@ module.exports = async (msg, bot, cfg) => {
 
     // If msgOnPunishment is on
     if (cfg.msgOnPunishment) {
-      const pmsg = await msg.channel.createMessage(bot.embed(`⚠️ Automod`, "Invites aren't allowed here.", "error"));
+      const pmsg = await msg.channel.createMessage(bot.embed("⚠️ Automod", "Invites aren't allowed here.", "error"));
       setTimeout(() => pmsg.delete("AutoMod message deletion").catch(() => {}), 4000);
     }
 
