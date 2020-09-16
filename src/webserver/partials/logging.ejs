@@ -102,6 +102,21 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
 </div>
 
 <div class="field">
+  <p class="title is-size-4">Ignored Logging Channels</p>
+  <p class="subtitle is-size-5">Channels that the message logging module will ignore. It's a good idea to ignore private channels.</p>
+  <div class="control">
+    <div id="ignoredLoggingChannels" class="select">
+      <select multiple="multiple" class="multiple-select">
+        <% for(let i = 0; i < channels.length; i++) { %>
+        <% let channel = channels[i] %>
+        <option><%= channel.name %> (<%= channel.id %>)</option>
+        <% } %>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="field">
   <p class="title is-size-4">Join Message</p>
   <p class="subtitle is-size-5">Message sent when a member joins if the leave/join channel is set. {member}, {membercount}, and {servername} will parse. Leave empty if you wish to use the default.</p>
   <div class="control">

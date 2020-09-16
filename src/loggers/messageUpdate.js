@@ -9,19 +9,19 @@ const Logger = require("../structures/Logger");
 module.exports = bot => {
   // Logging database
   const loggingdb = new Logger(bot.db);
-  const canSend = async guild => {
+  const canSend = async (guild, evchannel) => {
     if (!guild || !guild.channels) return;
     const canLog = await loggingdb.canLog(guild);
     if (!canLog) return;
     // Sets type
-    const channel = await loggingdb.guildLogging(guild, "messageLogging");
+    const channel = await loggingdb.guildLogging(guild, "messageLogging", evchannel);
     if (guild.channels.has(channel)) return channel;
   };
 
   // Logs when a message is deleted
   bot.on("messageDelete", async msg => {
     // Finds channel; returns if it shouldn't log
-    const channel = await canSend(msg.channel.guild, "messageDelete");
+    const channel = await canSend(msg.channel.guild, msg.channel.id);
     if (!channel || !msg || !msg.author || msg.author.id === bot.user.id) return;
     if (msg.content.length > 1024) msg.content.slice(768);
     bot.createMessage(channel, {
@@ -54,7 +54,7 @@ module.exports = bot => {
   // Logs when a message is updated
   bot.on("messageUpdate", async (msg, oldmsg) => {
     // Finds channel; returns if it shouldn't log
-    const channel = await canSend(msg.channel.guild, "messageUpdate");
+    const channel = await canSend(msg.channel.guild, msg.channel.id);
     if (!channel || !oldmsg || !msg.author || msg.author.id === bot.user.id) return;
     if (msg.content === oldmsg.content) return;
     if (msg.content.length > 1024) msg.content.slice(768);
