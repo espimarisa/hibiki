@@ -29,7 +29,8 @@ class guildCreate extends Event {
           embed: {
             title: `✨ I was added to your server, ${oid.username}.`,
             description: `\n To get a list of commands, run \`${this.bot.config.prefixes[0]}help\` in your server. \n` +
-              `You can also configure my options using the [web dashboard](${this.bot.config.homepage}/manage/servers).`,
+              `You can also configure my options using the [web dashboard](${this.bot.config.homepage}/manage/servers). \n` +
+              `By using ${this.bot.user.username}, you agree to our [privacy policy](${this.bot.config.homepage}/privacy/ and Discord's TOS.)`,
             color: this.bot.embed.color("general"),
           },
         }).catch(() => {});
