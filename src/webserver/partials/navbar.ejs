@@ -1,3 +1,9 @@
+<%# Warns if the user has JavaScript disabled %>
+<noscript>
+  <div class="notification">
+    <p>In order for the dashboard to function properly, you need to enable JavaScript. Additionally, your ad or tracker blocker may be blocking a script. We promise we don't track you!</p>
+  </div>
+</noscript>
 <div class="hero-head">
   <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
     <div class="container">
@@ -61,7 +67,7 @@
         <%# If the user's logged in %>
         <% if (user) { %>
         <div class="navbar-end">
-          <a href="/manage/profile" class="navbar-item has-text-white" >
+          <a href="/manage/profile" class="navbar-item has-text-white">
             <img src="<%= user.avatar %>" class="nav-logo is-inline-block" alt="avatar">
             <span class="is-inline-block ml-2"><%= user.username %>#<%= user.discriminator %></span>
           </a>
