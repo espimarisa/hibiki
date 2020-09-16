@@ -64,7 +64,6 @@ $(async () => {
       }
     },
 
-    // Shows howe many selected
     formatCountSelected: count => {
       return `${count} selected`;
     },
@@ -80,7 +79,6 @@ $(async () => {
       }
     },
 
-    // Shows how many selected
     formatCountSelected: count => {
       return `${count} selected`;
     },
@@ -97,7 +95,22 @@ $(async () => {
       }
     },
 
-    // Shows howe many selected
+    formatCountSelected: count => {
+      return `${count} selected`;
+    },
+  });
+
+  // ignoredLoggingChannels
+  $("#ignoredLoggingChannels > select").multipleSelect({
+    ...baseOptions,
+    minimumCountSelected: 1,
+    onClick: () => {
+      if ($("#ignoredLoggingChannels > select").val()) {
+        const values = $("#ignoredLoggingChannels > select").val();
+        $(document.getElementById("ignoredLoggingChannels").children[0]).multipleSelect("setSelects", values);
+      }
+    },
+
     formatCountSelected: count => {
       return `${count} selected`;
     },

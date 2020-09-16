@@ -9,12 +9,12 @@ const Logger = require("../structures/Logger");
 module.exports = bot => {
   // Logging database
   const loggingdb = new Logger(bot.db);
-  const canSend = async guild => {
+  const canSend = async (guild, evchannel) => {
     if (!guild || !guild.channels) return;
     const canLog = await loggingdb.canLog(guild);
     if (!canLog) return;
     // Sets type
-    const channel = await loggingdb.guildLogging(guild, "eventLogging");
+    const channel = await loggingdb.guildLogging(guild, "eventLogging", evchannel);
     if (guild.channels.has(channel)) return channel;
   };
 
@@ -22,7 +22,7 @@ module.exports = bot => {
   bot.on("channelCreate", async channel => {
     // Finds channel; returns if it shouldn't log
     if (channel.type === 1 || channel.type === 3) return;
-    const logchannel = await canSend(channel.guild, "channelCreate");
+    const logchannel = await canSend(channel.guild, "channelCreate", channel.id);
     if (!logchannel) return;
     const embed = {
       color: bot.embed.color("general"),

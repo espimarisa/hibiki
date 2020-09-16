@@ -100,6 +100,13 @@ module.exports = [{
   id: "modLogging",
   label: "Mod Logging Channel",
   type: "channelID",
+},
+{
+  category: "Logging",
+  emoji: "📵",
+  id: "ignoredLoggingChannels",
+  label: "Ignored Logging Channels",
+  type: "channelArray",
 }, {
   category: "Automod",
   emoji: "💬",
@@ -201,5 +208,13 @@ module.exports = [{
 }, {
   category: "Profile",
   id: "pronouns",
-  type: "array",
+  type: "selection",
+}, {
+  category: "Profile",
+  id: "timezone",
+  type: "string",
+}, {
+  category: "Profile",
+  id: "country",
+  type: "string",
 }];
