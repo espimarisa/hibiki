@@ -166,7 +166,7 @@ class Handler extends Event {
     }
 
     // Required perms
-    if (cmd.requiredperms && (!msg.member.permission.has(cmd.requiredperms) || !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffRole)) {
+    if (cmd.requiredperms && (!msg.member.permission.has(cmd.requiredperms) && !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffRole)) {
       return this.bot.embed("❌ Error", `You need the **${cmd.requiredperms}** permission to run this.`, msg, "error");
     }
 
