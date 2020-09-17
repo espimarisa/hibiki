@@ -33,7 +33,7 @@ class easyTranslate extends Event {
 
     // Gets config
     const cfg = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
-    if (!cfg || cfg && cfg.easyTranslateDisable === true) return;
+    if (cfg && cfg.easyTranslate === false) return;
 
     // Cooldown to avoid spam
     const cooldown = this.bot.cooldowns.find(cd => cd === `easytranslate:${msg.channel.id}`);
