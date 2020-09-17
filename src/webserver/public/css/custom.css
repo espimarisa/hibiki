@@ -4,10 +4,6 @@ html {
   scroll-behavior: smooth;
 }
 
-.about {
-  max-width: 60em;
-}
-
 .media {
   align-items: center;
   justify-content: center;
@@ -41,31 +37,16 @@ a.navbar-item, .navbar-toggle, .navbar-burger:hover, .navbar-menu.is-active, .na
   background: transparent !important;
 }
 
-.link {
-  color: #9e67b8;
-}
-
-.link:hover {
-  color: #ccc;
-}
-
 .input,
 .select select,
 .textarea {
   max-width: 450px;
 }
 
-/* Icon & Images */
-
-.avatar {
-  border: 3px #8E94F2 solid;
-  border-radius: 50%;
-  height: 200px;
-  width: 200px;
-}
+/* Images */
 
 .logo {
-  box-shadow: 0px 0px 20px #cdbeeb;
+  box-shadow: 0px 0px 20px #98e0ff;
   border-radius: 50%;
   width: 300px;
   height: 300px;
@@ -76,6 +57,10 @@ a.navbar-item, .navbar-toggle, .navbar-burger:hover, .navbar-menu.is-active, .na
 }
 
 /* Multiselect & Picker Styling */
+
+.field {
+  padding-bottom: 1.5em;
+}
 
 .icon-caret {
   opacity: 0;
@@ -110,10 +95,6 @@ a.navbar-item, .navbar-toggle, .navbar-burger:hover, .navbar-menu.is-active, .na
 
 .select:after {
   z-index: 0 !important;
-}
-
-.field {
-  padding-bottom: 1.5em;
 }
 
 /* Animations */
