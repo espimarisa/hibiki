@@ -56,7 +56,7 @@ class helpCommand extends Command {
     // If no command, send a list of commands
     if (!cmd) {
       let db;
-      if (msg.channel.type !== 1) db = await this.bot.db.table("guildconfig").get(msg.channel.guild.id);
+      if (msg.channel.type !== 1) db = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
       let categories = [];
 
       // Hides owner & disabled cmds
