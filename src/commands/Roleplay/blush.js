@@ -1,7 +1,7 @@
 const Command = require("../../structures/Command");
 const fetch = require("node-fetch");
 
-class bangheadCommand extends Command {
+class blushCommand extends Command {
   constructor(...args) {
     super(...args, {
       aliases: ["blushing"],
@@ -38,4 +38,4 @@ class bangheadCommand extends Command {
   }
 }
 
-module.exports = bangheadCommand;
+module.exports = blushCommand;
