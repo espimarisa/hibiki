@@ -19,18 +19,7 @@ $(async () => {
   // Sets options
   const baseOptions = {
     selectAll: false,
-    width: 153,
-    height: 153,
     placeholder: "None",
-    // Opening & closing
-    onOpen: () => {
-      document.getElementsByClassName("ms-choice")[0].style["border-color"] = "#1abc9c";
-      document.getElementsByClassName("ms-choice")[0].style.boxShadow = "0 0 0 0.125em rgba(26, 188, 156, .25)";
-    },
-    onClose: () => {
-      document.getElementsByClassName("ms-choice")[0].style["border-color"] = "";
-      document.getElementsByClassName("ms-choice")[0].style.boxShadow = "";
-    },
   };
 
   // Disabled cmds
@@ -75,6 +64,7 @@ $(async () => {
     minimumCountSelected: 1,
     onClick: () => {
       if ($("#assignableRoles > select").val()) {
+        const values = $("#assignableRoles > select").val();
         $(document.getElementById("assignableRoles").children[0]).multipleSelect("setSelects", values);
       }
     },
