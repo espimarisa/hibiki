@@ -43,11 +43,11 @@ module.exports = [{
     type: "array",
   }, {
     category: "Features",
-    id: "easyTranslate",
+    id: "easyTranslateDisable",
     emoji: "🌍",
     label: "Easy Translate",
     type: "bool",
-    description: "Automatically translate content reacted to with a flag emoji.",
+    description: "Disables the automatic translation of content reacted to with a flag emoji.",
   }, {
     category: "Automod",
     emoji: "⚒",
