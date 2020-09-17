@@ -212,9 +212,9 @@ module.exports = [{
 }, {
   category: "Profile",
   id: "timezone",
-  type: "string",
+  type: "autofill",
 }, {
   category: "Profile",
-  id: "country",
-  type: "string",
+  id: "timezoneHide",
+  type: "bool",
 }];

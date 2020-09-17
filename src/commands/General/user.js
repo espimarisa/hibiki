@@ -1,5 +1,12 @@
 const Command = require("../../structures/Command");
 const format = require("../../utils/format");
+const dayjs = require("dayjs");
+
+// Dayjs plugins
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone");
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 class userCommand extends Command {
   constructor(...args) {
@@ -87,6 +94,15 @@ class userCommand extends Command {
     points.forEach(p => { if (p.guild === msg.channel.guild.id && p.receiver === user.id) pointcount++; });
     warnings.forEach(w => { if (w.guild === msg.channel.guild.id && w.receiver === user.id) warningcount++; });
 
+    // Gets user's current time
+    let timeForUser;
+    let timezone;
+    const currentTime = new Date();
+    if (!usercfg || !usercfg.timezone || usercfg && usercfg.timezoneHide === true) timeForUser = null;
+    else timezone = dayjs(currentTime).tz(usercfg.timezone);
+    if (!timezone || !timezone.$d) timeForUser = null;
+    else timeForUser = format.date(timezone.$d);
+
     // Embed constructor
     const fields = [];
     fields.push({
@@ -112,39 +128,33 @@ class userCommand extends Command {
       inline: true,
     });
 
-    if (user.roles.length) fields.push({
-      name: "Highest Role",
-      value: `${user.highestRole.name}`,
-      inline: true,
-    });
-
     fields.push({
       name: "Status",
       value: formatStatus(user.status),
       inline: true,
     });
 
-    if (spouse) fields.push({
-      name: "Married To",
-      value: `${spouseid ? this.bot.users.find(m => m.id === spouseid) ? this.bot.users.find(m => m.id === spouseid).username : `<@!${spouseid}>` : "Nobody"}`,
-      inline: true,
-    });
-
-    if (usercfg && usercfg.country) fields.push({
-      name: "Country",
-      value: usercfg.country,
-      inline: true,
-    });
-
-    if (usercfg && usercfg.timezone) fields.push({
-      name: "Timezone",
-      value: usercfg.timezone,
+    if (user.roles.length) fields.push({
+      name: "Highest Role",
+      value: `${user.highestRole.name}`,
       inline: true,
     });
 
     if (usercfg && usercfg.pronouns) fields.push({
       name: "Pronouns",
       value: usercfg.pronouns,
+      inline: true,
+    });
+
+    if (timeForUser !== null) fields.push({
+      name: "Current Time",
+      value: `${timeForUser}`,
+      inline: true,
+    });
+
+    if (spouse) fields.push({
+      name: "Married To",
+      value: `${spouseid ? this.bot.users.find(m => m.id === spouseid) ? this.bot.users.find(m => m.id === spouseid).username : `<@!${spouseid}>` : "Nobody"}`,
       inline: true,
     });
 

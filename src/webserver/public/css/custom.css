@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap:400,700");
-
 /* Layout */
 
 html {
@@ -39,10 +37,6 @@ html {
 
 /* Text */
 
-a, div, p, h1, h2, h3, h4, h5, h6, i, span, strong {
-  font-family: "Ubuntu", sans-serif;
-}
-
 a.navbar-item, .navbar-toggle, .navbar-burger:hover, .navbar-menu.is-active, .navbar-menu.is-active:hover {
   background: transparent !important;
 }
@@ -81,7 +75,7 @@ a.navbar-item, .navbar-toggle, .navbar-burger:hover, .navbar-menu.is-active, .na
   border-radius: 50%;
 }
 
-/* Multiselect Styling */
+/* Multiselect & Picker Styling */
 
 .icon-caret {
   opacity: 0;
@@ -91,15 +85,27 @@ a.navbar-item, .navbar-toggle, .navbar-burger:hover, .navbar-menu.is-active, .na
   border-width: 2px;
 }
 
-.ms-choice {
-  height: 2.5em;
-  padding-right: 2.5em;
+.ms-choice, #pinEmoji {
+  height: 40px !important;
   border-width: 1px;
   font-size: 1em;
   border-radius: .4em;
   padding: calc(.375em - 1px) calc(.625em - 1px);
-  line-height: 2.5;
   outline: 0;
+}
+
+.placeholder, #pinEmoji {
+  vertical-align: middle;
+  justify-content: center;
+  padding-right: 2.5em;
+  display: inline-flex;
+  font-size: 1rem;
+  height: 2.5em;
+  line-height: 1.5;
+  padding-bottom: calc(.5em - 1px);
+  padding-left: calc(.75em - 1px);
+  padding-right: calc(.75em - 1px);
+  padding-top: calc(.5em - 1px);
 }
 
 .select:after {

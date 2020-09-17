@@ -266,7 +266,6 @@ window.addEventListener("load", async () => {
       if (res.status === 200) {
         // Button animation & changes
         button.classList.remove("is-loading");
-        button.classList.remove("is-light");
         button.classList.add("is-success");
         document.getElementById("saved").innerText = "Changes saved";
         setTimeout(() => {
@@ -294,17 +293,17 @@ window.addEventListener("load", async () => {
         // Button animation & changes
         button.classList.remove("is-loading");
         button.classList.remove("is-light");
-        button.classList.add("is-success");
+        button.classList.add("is-danger");
         document.getElementById("reset").innerText = "Config reset";
         setTimeout(() => {
           document.getElementById("reset").innerText = "Reset config";
-          button.classList.remove("is-success");
+          button.classList.remove("is-danger");
         }, 2000);
       } else {
         // Displays if error (user likely not authed)
         document.getElementById("reset").innerText = "Error, please refresh";
         button.classList.add("is-error");
-        button.classList.remove("is-success");
+        button.classList.remove("is-danger");
       }
 
       // Force reloads the window
