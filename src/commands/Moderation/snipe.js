@@ -9,10 +9,10 @@ class snipeCommand extends Command {
   }
 
   async run(msg) {
-    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
+    const guildconfig = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
 
     // Sends if message sniping has been disabled
-    if (guildcfg && guildcfg.snipingEnable === false) {
+    if (guildconfig && guildconfig.snipingEnable === false) {
       return this.bot.embed(
         "❌ Error",
         `Message sniping hasn't been enabled. You can configure it using the [web dashboard](${this.bot.config.homepage}/manage/servers).`,
@@ -22,7 +22,7 @@ class snipeCommand extends Command {
     }
 
     // If permission isn't public; member doesn't have the role
-    if (guildcfg && guildcfg.snipingPermission && guildcfg.snipingPermission === false && guildcfg.staffRole && !msg.member.roles.includes(guildcfg.staffRole)) {
+    if (guildconfig && guildconfig.snipingPermission && guildconfig.snipingPermission === false && guildconfig.staffRole && !msg.member.roles.includes(guildconfig.staffRole)) {
       return this.bot.embed("❌ Error", "You don't have the required role to view sniped messages.", msg, "error");
     }
 

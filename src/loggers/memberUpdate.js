@@ -34,20 +34,20 @@ module.exports = bot => {
     // Invalid member
     if (!member.username || !member.user && !member.user.username) return;
     bot.emit("loggingMemberAdd", guild, member);
-    const guildcfg = await bot.db.table("guildcfg").get(guild.id).run();
+    const guildconfig = await bot.db.table("guildconfig").get(guild.id).run();
     // Re-mutes muted members
     const muted = await bot.db.table("mutecache").run();
     const mute = muted.find(m => m.member === member.id && m.guild === guild.id);
-    if (mute && guildcfg.mutedRole) await member.addRole(guildcfg.mutedRole, "Rejoined after being muted").catch(() => {});
+    if (mute && guildconfig.mutedRole) await member.addRole(guildconfig.mutedRole, "Rejoined after being muted").catch(() => {});
     // If no config
-    if (!guildcfg || !guildcfg.leaveJoin) return;
-    const leaveJoin = guildcfg.leaveJoin;
+    if (!guildconfig || !guildconfig.leaveJoin) return;
+    const leaveJoin = guildconfig.leaveJoin;
     const leavejoinchannel = guild.channels.find(c => c.id === leaveJoin);
     if (!leavejoinchannel) return;
     // Handler for custom join messages
     let joinMessage = `Welcome to **${guild.name}, **${member.username}.`;
-    if (guildcfg.joinMessage && guildcfg.joinMessage.length < 2000) {
-      joinMessage = guildcfg.joinMessage;
+    if (guildconfig.joinMessage && guildconfig.joinMessage.length < 2000) {
+      joinMessage = guildconfig.joinMessage;
       joinMessage = joinMessage.replace("{member}", `${member.username}`);
       joinMessage = joinMessage.replace("{membercount}", `${guild.memberCount}`);
       joinMessage = joinMessage.replace("{servername}", `${guild.name}`);
@@ -67,16 +67,16 @@ module.exports = bot => {
     // Invalid member
     if (!member.username || !member.user && !member.user.username) return;
     bot.emit("loggingMemberRemove", guild, member);
-    const guildcfg = await bot.db.table("guildcfg").get(guild.id).run();
+    const guildconfig = await bot.db.table("guildconfig").get(guild.id).run();
     // If no config
-    if (!guildcfg || !guildcfg.leaveJoin) return;
-    const leaveJoin = guildcfg.leaveJoin;
+    if (!guildconfig || !guildconfig.leaveJoin) return;
+    const leaveJoin = guildconfig.leaveJoin;
     const leavejoinchannel = guild.channels.find(c => c.id === leaveJoin);
     if (!leavejoinchannel) return;
     // Handler for custom leave messages
     let leaveMessage = `We'll miss you, ${member.username}.`;
-    if (guildcfg.leaveMessage && guildcfg.leaveMessage.length < 2000) {
-      leaveMessage = guildcfg.leaveMessage;
+    if (guildconfig.leaveMessage && guildconfig.leaveMessage.length < 2000) {
+      leaveMessage = guildconfig.leaveMessage;
       leaveMessage = leaveMessage.replace("{member}", `**${member.username}**`);
       leaveMessage = leaveMessage.replace("{membercount}", `**${guild.memberCount}**`);
       leaveMessage = leaveMessage.replace("{servername}", `**${guild.name}**`);

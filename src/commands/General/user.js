@@ -87,7 +87,7 @@ class userCommand extends Command {
     // Gets database items
     const cookies = await this.bot.db.table("economy").get(user.id).run();
     const points = await this.bot.db.table("points").run();
-    const usercfg = await this.bot.db.table("usercfg").get(user.id).run();
+    const userconfig = await this.bot.db.table("userconfig").get(user.id).run();
     const warnings = await this.bot.db.table("warnings").run();
     const [spouse] = await this.bot.db.table("marriages").getAll(user.id, { index: "marriages" }).run();
     if (spouse) spouseid = spouse.id === user.id ? spouse.spouse : spouse.id;
@@ -98,8 +98,8 @@ class userCommand extends Command {
     let timeForUser;
     let timezone;
     const currentTime = new Date();
-    if (!usercfg || !usercfg.timezone || usercfg && usercfg.timezoneHide === true) timeForUser = null;
-    else timezone = dayjs(currentTime).tz(usercfg.timezone);
+    if (!userconfig || !userconfig.timezone || userconfig && userconfig.timezoneHide === true) timeForUser = null;
+    else timezone = dayjs(currentTime).tz(userconfig.timezone);
     if (!timezone || !timezone.$d) timeForUser = null;
     else timeForUser = format.date(timezone.$d);
 
@@ -140,9 +140,9 @@ class userCommand extends Command {
       inline: true,
     });
 
-    if (usercfg && usercfg.pronouns) fields.push({
+    if (userconfig && userconfig.pronouns) fields.push({
       name: "Pronouns",
-      value: usercfg.pronouns,
+      value: userconfig.pronouns,
       inline: true,
     });
 
@@ -169,7 +169,7 @@ class userCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        description: usercfg && usercfg.bio ? usercfg.bio : null,
+        description: userconfig && userconfig.bio ? userconfig.bio : null,
         color: this.bot.embed.color("general"),
         fields: fields,
         author: {

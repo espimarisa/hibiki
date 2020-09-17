@@ -64,9 +64,9 @@ class Handler extends Event {
     let prefix;
     // Gets the command prefix and handles mention support
     const prefixes = this.bot.config.prefixes.map(p => msg.content.toLowerCase().startsWith(p)).indexOf(true);
-    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
-    if (guildcfg && guildcfg.prefix && msg.content.toLowerCase().startsWith(guildcfg.prefix)) prefix = guildcfg.prefix;
-    else if ((!guildcfg || !guildcfg.prefix) && (this.bot.config.prefixes && prefixes !== -1)) prefix = this.bot.config.prefixes[prefixes];
+    const guildconfig = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
+    if (guildconfig && guildconfig.prefix && msg.content.toLowerCase().startsWith(guildconfig.prefix)) prefix = guildconfig.prefix;
+    else if ((!guildconfig || !guildconfig.prefix) && (this.bot.config.prefixes && prefixes !== -1)) prefix = this.bot.config.prefixes[prefixes];
     else if (msg.content.startsWith(`<@!${this.bot.user.id}> `)) prefix = `<@!${this.bot.user.id}> `;
     else if (msg.content.startsWith(`<@${this.bot.user.id}> `)) prefix = `<@${this.bot.user.id}> `;
     else if (msg.content.startsWith(`<@${this.bot.user.id}>`)) prefix = `<@${this.bot.user.id}>`;
@@ -81,14 +81,14 @@ class Handler extends Event {
     if (!cmdName.length && (prefix.startsWith(`<@${this.bot.user.id}>`) || prefix.startsWith(`<@!${this.bot.user.id}>`))) {
       return this.bot.embed(
         "🤖 Prefix",
-        `The prefix in this server is \`${guildcfg && guildcfg.prefix ? guildcfg.prefix : this.bot.config.prefixes[0]}\`.`,
+        `The prefix in this server is \`${guildconfig && guildconfig.prefix ? guildconfig.prefix : this.bot.config.prefixes[0]}\`.`,
         msg,
       );
     }
 
     let customcmd;
-    if (guildcfg && guildcfg.customCommands) {
-      customcmd = guildcfg.customCommands.find(c => c.name === cmdName);
+    if (guildconfig && guildconfig.customCommands) {
+      customcmd = guildconfig.customCommands.find(c => c.name === cmdName);
     }
 
     // Sends the embed
@@ -131,12 +131,12 @@ class Handler extends Event {
 
     // Owner commands; disabled categories
     if (cmd.owner && !this.bot.config.owners.includes(msg.author.id)) return;
-    if (guildcfg && (guildcfg.disabledCategories || []).includes(cmd.category) && cmd.allowdisable) {
+    if (guildconfig && (guildconfig.disabledCategories || []).includes(cmd.category) && cmd.allowdisable) {
       return this.bot.embed("❌ Error", "The category that command is in is disabled in this server.", msg, "error");
     }
 
     // Disabled commands
-    if (guildcfg && (guildcfg.disabledCmds || []).includes(cmd.id) && cmd.allowdisable) {
+    if (guildconfig && (guildconfig.disabledCmds || []).includes(cmd.id) && cmd.allowdisable) {
       return this.bot.embed("❌ Error", "That command is disabled in this server.", msg, "error");
     }
 
@@ -161,12 +161,12 @@ class Handler extends Event {
     }
 
     // Staff commands
-    if (!msg.member.permission.has("administrator") && cmd.staff && guildcfg && guildcfg.staffRole && !msg.member.roles.includes(guildcfg.staffRole)) {
+    if (!msg.member.permission.has("administrator") && cmd.staff && guildconfig && guildconfig.staffRole && !msg.member.roles.includes(guildconfig.staffRole)) {
       return this.bot.embed("❌ Error", "That command is only for staff members.", msg, "error");
     }
 
     // Required perms
-    if (cmd.requiredperms && (!msg.member.permission.has(cmd.requiredperms) && !msg.member.permission.has("administrator")) && (!guildcfg || !guildcfg.staffRole)) {
+    if (cmd.requiredperms && (!msg.member.permission.has(cmd.requiredperms) && !msg.member.permission.has("administrator")) && (!guildconfig || !guildconfig.staffRole)) {
       return this.bot.embed("❌ Error", `You need the **${cmd.requiredperms}** permission to run this.`, msg, "error");
     }
 

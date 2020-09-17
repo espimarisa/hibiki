@@ -11,9 +11,9 @@ class assignCommand extends Command {
   }
 
   async run(msg, args, pargs) {
-    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
-    if (!guildcfg || !guildcfg.assignableRoles || !guildcfg.assignableRoles.length) {
-      await this.bot.db.table("guildcfg").insert({
+    const guildconfig = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
+    if (!guildconfig || !guildconfig.assignableRoles || !guildconfig.assignableRoles.length) {
+      await this.bot.db.table("guildconfig").insert({
         id: msg.channel.guild.id,
         assignableRoles: [],
       }).run();
@@ -21,12 +21,12 @@ class assignCommand extends Command {
 
     if (!args.length) {
       // If the server doesn't have any roles
-      if (!guildcfg || !guildcfg.assignableRoles || !guildcfg.assignableRoles.length) {
+      if (!guildconfig || !guildconfig.assignableRoles || !guildconfig.assignableRoles.length) {
         return this.bot.embed("📃 Assignable Roles", "This server has no assignable roles.", msg);
       }
 
       // Sends a list of assignable roles
-      let assignableroles = guildcfg.assignableRoles.map(r => {
+      let assignableroles = guildconfig.assignableRoles.map(r => {
         if (msg.channel.guild.roles.has(r)) return `\`${msg.channel.guild.roles.get(r).name}\``;
       });
 
@@ -37,7 +37,7 @@ class assignCommand extends Command {
     // Looks for the role
     const role = pargs[0].value;
     if (!role) return this.bot.embed("❌ Error", "No **role** was provided.", msg, "error");
-    const assignable = guildcfg.assignableRoles.includes(role.id);
+    const assignable = guildconfig.assignableRoles.includes(role.id);
 
     // Assigns the role
     if (assignable) {
