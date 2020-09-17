@@ -65,6 +65,10 @@ window.addEventListener("load", async () => {
   oldcfg = { ...profileConfig };
   if (!profileConfig) profileConfig = {};
 
+  // Sets locale info
+  const localeInfo = Intl.DateTimeFormat().resolvedOptions();
+  document.getElementById("timezone").value = localeInfo.timeZone;
+
   // Slices content
   [document.getElementById("bio")].forEach(d => {
     d.addEventListener("input", starget => {
@@ -81,8 +85,8 @@ window.addEventListener("load", async () => {
 
     // Boolean checker
     if (type === "bool") {
-      if (profileConfig[p]) document.getElementById(p).children[0].children[0].checked = true;
-      else document.getElementById(p).children[1].children[0].checked = true;
+      if (profileConfig[p]) document.getElementById(p).children[0].checked = true;
+      else document.getElementById(p).children[0].checked = false;
     }
 
     // Checks number content
@@ -93,6 +97,13 @@ window.addEventListener("load", async () => {
 
     // Sets string; emoji as content
     if (type === "string") element.value = profileConfig[p];
+
+    // Single string select
+    if (type === "selection") {
+      const opt = Array.from(element.children[0].children).find(a => a.id === profileConfig[p]);
+      if (!opt) return;
+      document.getElementById(p).children[0].value = opt.innerText;
+    }
   });
 
   // Refreshes local profileConfig
@@ -105,7 +116,7 @@ window.addEventListener("load", async () => {
 
       // Sets booleans in profileConfig
       if (type === "bool") {
-        profileConfig[p] = document.getElementById(p).children[0].children[0].checked;
+        profileConfig[p] = document.getElementById(p).children[0].checked;
       }
 
       // Sets numbers in profileConfig
@@ -115,6 +126,17 @@ window.addEventListener("load", async () => {
 
       // Sets string; emoji in profileConfig
       if (type === "string") profileConfig[p] = element.value;
+
+      // Single string select
+      if (type === "selection") {
+        const r = Array.from(element.children[0].children).find(a => a.innerText === element.children[0].value).id;
+        profileConfig[p] = !r || r.toLowerCase() === "no preference" ? null : r;
+      }
+
+      // Locale info
+      if (type === "autofill") {
+        profileConfig[p] = localeInfo.timeZone;
+      }
     });
   }
 
@@ -131,7 +153,6 @@ window.addEventListener("load", async () => {
       if (res.status === 200) {
         // Button animation & changes
         button.classList.remove("is-loading");
-        button.classList.remove("is-light");
         button.classList.add("is-success");
         document.getElementById("saved").innerText = "Changes saved";
         setTimeout(() => {
@@ -159,17 +180,17 @@ window.addEventListener("load", async () => {
         // Button animation & changes
         button.classList.remove("is-loading");
         button.classList.remove("is-light");
-        button.classList.add("is-success");
+        button.classList.add("is-danger");
         document.getElementById("reset").innerText = "Config reset";
         setTimeout(() => {
           document.getElementById("reset").innerText = "Reset config";
-          button.classList.remove("is-success");
+          button.classList.remove("is-danger");
         }, 2000);
       } else {
         // Displays if error (user likely not authed)
         document.getElementById("reset").innerText = "Error, please refresh";
         button.classList.add("is-error");
-        button.classList.remove("is-success");
+        button.classList.remove("is-danger");
       }
 
       // Force reloads the window

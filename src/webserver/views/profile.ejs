@@ -5,6 +5,7 @@
   <%- include("../partials/head") %>
   <meta name="user-id" content="<%= user.id %>">
   <meta name="csrf-token" content="<%= csrfToken %>">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-switch/dist/css/bulma-switch.min.css">
   <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/multiple-select/dist/multiple-select.min.js" crossorigin="anonymous"></script>
   <title>Profile - <%= bot.user.username %></title>
@@ -23,7 +24,6 @@
     </div>
   </section>
 
-
   <%# Main content %>
   <section class="section container">
     <div class="sticky-buttons">
@@ -38,13 +38,14 @@
           <span class="icon"><i class="fas fa-check"></i></span>
           <span id="saved">Save changes</span>
         </a>
-        <a class="button is-danger" id="delete">
-          <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+        <a class="button" id="delete">
           <span class="icon"><i class="fas fa-trash"></i></span>
-          <span id="reset">Reset config</span>
+          <span id="reset">Reset profile</span>
         </a>
       </div>
     </div>
+
+    <br>
 
     <div class="field">
       <p class="title is-size-4">Bio</p>
@@ -54,6 +55,37 @@
       </div>
     </div>
 
+    <div class="field">
+      <p class="title is-size-4">Preferred Pronouns</p>
+      <p class="subtitle is-size-5">The pronouns you prefer to go by.</p>
+      <div class="control">
+        <div id="pronouns" class="select">
+          <select>
+            <option selected>No preference</option>
+            <option id="He/Him">He/Him</option>
+            <option id="She/Her">She/Her</option>
+            <option id="They/Them">They/Them</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <p class="title is-size-4">Timezone</p>
+      <p class="subtitle is-size-5">Your current timezone, used to tell you what time it is. Automatically set from your browser.</p>
+      <div class="control">
+        <input class="input" id="timezone" type="text" placeholder="Timezone not detected." disabled>
+      </div>
+    </div>
+
+    <div class="field">
+      <p class="title is-size-4">Time Visibility</p>
+      <p class="subtitle is-size-5">Toggle if you want to hide your current time.</p>
+      <div class="field" id="timezoneHide" class="control">
+        <input id="timezoneHideSwitch" type="checkbox" name="timezoneHideSwitch" class="switch is-rounded is-link">
+        <label for="timezoneHideSwitch">Hide time on my profile</label>
+      </div>
+    </div>
   </section>
 
   <%- include("../partials/footer") %>

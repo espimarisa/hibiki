@@ -30,6 +30,8 @@
       <div class="column">
         <%# Sidebar %>
         <div class="menu sticky">
+          <%# TODO: Make all the checkboxes use switches ;) %>
+          <%# TODO: Make the multiselect styling match Bulma's text position %>
           <p class="menu-label is-active">Settings</p>
           <ul id="menu" class="menu-list">
             <li><a href="#general">General Options</a></li>
@@ -55,8 +57,7 @@
               <span class="icon"><i class="fas fa-check"></i></span>
               <span id="saved">Save changes</span>
             </a>
-            <a class="button is-danger" id="delete">
-              <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
+            <a class="button" id="delete">
               <span class="icon"><i class="fas fa-trash"></i></span>
               <span id="reset">Reset config</span>
             </a>
