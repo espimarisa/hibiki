@@ -14,11 +14,11 @@ class verifyCommand extends Command {
 
   async run(msg, args, pargs) {
     const user = pargs[0].value;
-    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
+    const guildconfig = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
 
     // If no role or cfg
-    if (!guildcfg || !guildcfg.verifiedRole) {
-      await this.bot.db.table("guildcfg").insert({
+    if (!guildconfig || !guildconfig.verifiedRole) {
+      await this.bot.db.table("guildconfig").insert({
         id: msg.channel.guild.id,
       }).run();
 
@@ -26,13 +26,13 @@ class verifyCommand extends Command {
     }
 
     // If member already has verified role
-    if (user.roles.includes(guildcfg.verifiedRole)) {
+    if (user.roles.includes(guildconfig.verifiedRole)) {
       return this.bot.embed("❌ Error", `**${user.username}** already has the verified role.`, msg, "error");
     }
 
     // Adds the role
     try {
-      await user.addRole(guildcfg.verifiedRole, `Verified by ${this.bot.tag(msg.author, true)}`);
+      await user.addRole(guildconfig.verifiedRole, `Verified by ${this.bot.tag(msg.author, true)}`);
     } catch (err) {
       return this.bot.embed("❌ Error", `Failed to verify **${this.bot.tag(user.username)}**.`, msg, "error");
     }

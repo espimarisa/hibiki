@@ -26,12 +26,12 @@ class Logging {
     if (type !== "eventLogging" && type !== "memberLogging" && type !== "messageLogging") type = "modLogging";
     if (!guild) return;
 
-    const guildcfg = await this.db.table("guildcfg").get(guild.id ? guild.id : guild).run();
-    if (!guildcfg) return null;
+    const guildconfig = await this.db.table("guildconfig").get(guild.id ? guild.id : guild).run();
+    if (!guildconfig) return null;
 
     // Ignores channels set to be ignored
-    if (guildcfg.ignoredLoggingChannels && guildcfg.ignoredLoggingChannels.includes(evchannel)) return null;
-    return type ? guildcfg[type] : guildcfg.loggingChannel;
+    if (guildconfig.ignoredLoggingChannels && guildconfig.ignoredLoggingChannels.includes(evchannel)) return null;
+    return type ? guildconfig[type] : guildconfig.loggingChannel;
   }
 
   /**

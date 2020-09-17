@@ -12,10 +12,10 @@ class prefixCommand extends Command {
   async run(msg, args) {
     // Looks for custom prefix
     const prefix = args.join(" ").trim();
-    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
+    const guildconfig = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
 
-    if (!args.length && (!guildcfg || !guildcfg.prefix)) {
-      await this.bot.db.table("guildcfg").insert({
+    if (!args.length && (!guildconfig || !guildconfig.prefix)) {
+      await this.bot.db.table("guildconfig").insert({
         id: msg.channel.guild.id,
         prefix: this.bot.config.prefixes[0],
       }).run();
@@ -24,11 +24,11 @@ class prefixCommand extends Command {
     }
 
     // If there's a prefix & no args
-    if (!args.length) return this.bot.embed("🤖 Prefix", `The prefix in this server is \`${guildcfg.prefix}\`.`, msg);
+    if (!args.length) return this.bot.embed("🤖 Prefix", `The prefix in this server is \`${guildconfig.prefix}\`.`, msg);
 
-    // If no guildcfg
-    if (!guildcfg || !guildcfg.prefix) {
-      await this.bot.db.table("guildcfg").insert({
+    // If no guildconfig
+    if (!guildconfig || !guildconfig.prefix) {
+      await this.bot.db.table("guildconfig").insert({
         id: msg.channel.guild.id,
         prefix: this.bot.config.prefixes[0],
       }).run();
@@ -42,7 +42,7 @@ class prefixCommand extends Command {
     }
 
     // Updates DB
-    await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update({
+    await this.bot.db.table("guildconfig").get(msg.channel.guild.id).update({
       id: msg.channel.guild.id,
       prefix: prefix,
     }).run();

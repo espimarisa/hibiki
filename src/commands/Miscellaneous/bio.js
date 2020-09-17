@@ -13,7 +13,7 @@ class bioCommand extends Command {
     // Other user's bios
     const user = this.bot.args.argtypes.member(args.join(" "), msg);
     if (user) {
-      const cfg = await this.bot.db.table("usercfg").get(user.id).run();
+      const cfg = await this.bot.db.table("userconfig").get(user.id).run();
       return cfg && cfg.bio ?
         this.bot.embed("👤 Bio", `**${user.username}**'s bio is \`${cfg.bio}\`.`, msg) :
         this.bot.embed("❌ Error", `**${user.username}** doesn't have a bio.`, msg, "error");
@@ -21,18 +21,18 @@ class bioCommand extends Command {
 
     // Bio limit
     if (args.join(" ").length > 120) return this.bot.embed("❌ Error", "Max bio length is 120.", msg, "error");
-    let cfg = await this.bot.db.table("usercfg").get(msg.author.id).run();
+    let cfg = await this.bot.db.table("userconfig").get(msg.author.id).run();
     if (!args.length && (!cfg || !cfg.bio)) return this.bot.embed("❌ Error", "You didn't provide a bio.", msg, "error");
 
     // Shows the bio
     else if (!args.length && cfg && cfg.bio) return this.bot.embed("👤 Bio", `Your bio is currently \`${cfg.bio}\`.`, msg);
     if (!cfg) { cfg = { id: msg.author.id, bio: null }; }
-    await this.bot.db.table("usercfg").insert(cfg).run();
+    await this.bot.db.table("userconfig").insert(cfg).run();
 
     // Bio clearing
     if (["clear", "delete", "remove"].includes(args.join(" ").toLowerCase())) {
       cfg.bio = null;
-      await this.bot.db.table("usercfg").get(msg.author.id).update(cfg).run();
+      await this.bot.db.table("userconfig").get(msg.author.id).update(cfg).run();
       return this.bot.embed("👤 Bio", "Your bio has been cleared.", msg);
     }
 
@@ -42,8 +42,8 @@ class bioCommand extends Command {
       return this.bot.embed("❌ Error", "Your bio included an advertisement.", msg, "error");
     }
 
-    // Updates usercfg
-    await this.bot.db.table("usercfg").get(msg.author.id).update(cfg).run();
+    // Updates userconfig
+    await this.bot.db.table("userconfig").get(msg.author.id).update(cfg).run();
     this.bot.embed("👤 Bio", `Your bio was set to \`${cfg.bio}\`.`, msg);
   }
 }

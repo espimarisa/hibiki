@@ -12,9 +12,9 @@ class addcommandCommand extends Command {
   }
 
   async run(msg, args) {
-    let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
+    let guildconfig = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
 
-    if (!args.length || !args.length && !guildcfg) {
+    if (!args.length || !args.length && !guildconfig) {
       return this.bot.embed("❌ Error", "No **name** was provided.", msg, "error");
     }
 
@@ -41,32 +41,32 @@ class addcommandCommand extends Command {
     if (!imgurl && msg.attachments && msg.attachments[0]) imgurl = msg.attachments[0].proxy_url;
     if (!imgurl) imgurl = null;
 
-    if (!guildcfg) {
-      await this.bot.db.table("guildcfg").insert({
+    if (!guildconfig) {
+      await this.bot.db.table("guildconfig").insert({
         id: msg.guild.id,
         customCommands: [],
       }).run();
 
-      guildcfg = {
+      guildconfig = {
         id: msg.guild.id,
         customCommands: [],
       };
     }
 
     // If too many commands or if the custom command exists
-    if (!guildcfg.customCommands) guildcfg.customCommands = [];
-    if (guildcfg.customCommands.length >= 30) return this.bot.embed("❌ Error", "You cant have more than **30** commands.", msg, "error");
-    if (guildcfg.customCommands.find(cmd => cmd.name === name)) return this.bot.embed("❌ Error", `The custom command **${name}** already exists.`, msg, "error");
+    if (!guildconfig.customCommands) guildconfig.customCommands = [];
+    if (guildconfig.customCommands.length >= 30) return this.bot.embed("❌ Error", "You cant have more than **30** commands.", msg, "error");
+    if (guildconfig.customCommands.find(cmd => cmd.name === name)) return this.bot.embed("❌ Error", `The custom command **${name}** already exists.`, msg, "error");
 
     // Updates database
-    guildcfg.customCommands.push({
+    guildconfig.customCommands.push({
       name: name,
       content: content,
       createdBy: msg.author.id,
       image: imgurl ? imgurl : null,
     });
 
-    await this.bot.db.table("guildcfg").get(msg.guild.id).update(guildcfg).run();
+    await this.bot.db.table("guildconfig").get(msg.guild.id).update(guildconfig).run();
     this.bot.emit("commandCreate", msg.channel.guild, msg.author, name);
     this.bot.embed("✅ Success", `Successfully created command **${name}** with content: **${content}**`, msg, "success");
   }
