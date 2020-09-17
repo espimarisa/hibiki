@@ -22,8 +22,8 @@ class automod extends Event {
         msg.member.permission.has("manageGuild") || msg.member.permission.has("manageMessages")))
       return;
 
-    if (cfg.antiSpam && cfg.spamPunishments) await require("../utils/automod/antispam")(msg, this.bot, cfg);
-    if (cfg.antiInvite && cfg.invitePunishments) await require("../utils/automod/antiinvite")(msg, this.bot, cfg);
+    if (cfg.antiSpam && cfg.spamPunishments) await require("../utils/automod/antiSpam")(msg, this.bot, cfg);
+    if (cfg.antiInvite && cfg.invitePunishments) await require("../utils/automod/antiInvite")(msg, this.bot, cfg);
   }
 }
 
