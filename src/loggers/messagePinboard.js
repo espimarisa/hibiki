@@ -14,22 +14,22 @@ module.exports = bot => {
       if (!msg) return;
       if (msg.author.bot) return;
 
-      // Gets guildcfg
-      const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id).run();
-      if (!guildcfg) return;
-      const pin = guildcfg.pinEmoji ? guildcfg.pinEmoji : "📌";
+      // Gets guildconfig
+      const guildconfig = await bot.db.table("guildconfig").get(msg.channel.guild.id).run();
+      if (!guildconfig) return;
+      const pin = guildconfig.pinEmoji ? guildconfig.pinEmoji : "📌";
       // Checks for pin reaction
       if (msg.reactions[pin] && msg.reactions[pin].count) {
-        if (guildcfg.pinSelfPinning && msg.author.id === uid) return;
-        if (!guildcfg) {
-          return bot.db.table("guildcfg").insert({
+        if (guildconfig.pinSelfPinning && msg.author.id === uid) return;
+        if (!guildconfig) {
+          return bot.db.table("guildconfig").insert({
             id: msg.channel.guild.id,
           }).run();
         }
 
-        if (guildcfg && guildcfg.pinChannel && guildcfg.pinAmount) {
+        if (guildconfig && guildconfig.pinChannel && guildconfig.pinAmount) {
           // Looks for channel; gwets msgs
-          const pinChannel = await msg.channel.guild.channels.get(guildcfg.pinChannel);
+          const pinChannel = await msg.channel.guild.channels.get(guildconfig.pinChannel);
           if (!pinChannel) return;
           const getmsgs = await pinChannel.getMessages(50).catch(() => {});
           if (!getmsgs) return;
@@ -37,7 +37,7 @@ module.exports = bot => {
           const pinmsg = getmsgs.find(m => m.embeds[0] && m.embeds[0].footer && m.embeds[0].footer.text.startsWith(pin) && m.embeds[0].footer
             .text.endsWith(msg.id));
           if (msg.reactions[pin].count === 0) pin.delete().catch(() => {});
-          if (parseInt(guildcfg.pinAmount) <= msg.reactions[pin].count) {
+          if (parseInt(guildconfig.pinAmount) <= msg.reactions[pin].count) {
             // Edits the pinmsg
             if (pinmsg) {
               const embed = pinmsg.embeds[0];
@@ -47,16 +47,16 @@ module.exports = bot => {
           }
         }
       } else {
-        // Gets guildcfg
-        const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id).run();
-        if (!guildcfg) {
-          return bot.db.table("guildcfg").insert({
+        // Gets guildconfig
+        const guildconfig = await bot.db.table("guildconfig").get(msg.channel.guild.id).run();
+        if (!guildconfig) {
+          return bot.db.table("guildconfig").insert({
             id: msg.channel.guild.id,
           }).run();
         }
 
         // Gets the pinChannel
-        const pinChannel = await msg.channel.guild.channels.get(guildcfg.pinChannel);
+        const pinChannel = await msg.channel.guild.channels.get(guildconfig.pinChannel);
         if (!pinChannel) return;
         const getmsgs = await pinChannel.getMessages(50);
         const pinmsg = getmsgs.find(m => m.embeds[0] && m.embeds[0].footer && m.embeds[0].footer.text.startsWith(pin) && m.embeds[0].footer.text
@@ -75,16 +75,16 @@ module.exports = bot => {
 
       if (!msg) return;
       if (msg.author.bot) return;
-      const guildcfg = await bot.db.table("guildcfg").get(msg.channel.guild.id).run();
-      if (!guildcfg) return;
-      const pin = guildcfg.pinEmoji ? guildcfg.pinEmoji : "📌";
+      const guildconfig = await bot.db.table("guildconfig").get(msg.channel.guild.id).run();
+      if (!guildconfig) return;
+      const pin = guildconfig.pinEmoji ? guildconfig.pinEmoji : "📌";
       // Checks for the pin reaction
       if (msg.reactions[pin] && msg.reactions[pin].count) {
         // Self-pinning check; checks channel & amount
-        if (guildcfg.pinSelfPinning === false && msg.author.id === uid) return;
-        if (guildcfg && guildcfg.pinChannel && guildcfg.pinAmount && parseInt(guildcfg.pinAmount) <= msg.reactions[pin].count) {
+        if (guildconfig.pinSelfPinning === false && msg.author.id === uid) return;
+        if (guildconfig && guildconfig.pinChannel && guildconfig.pinAmount && parseInt(guildconfig.pinAmount) <= msg.reactions[pin].count) {
           // Looks for channel; gwets msgs
-          const pinChannel = await msg.channel.guild.channels.get(guildcfg.pinChannel);
+          const pinChannel = await msg.channel.guild.channels.get(guildconfig.pinChannel);
           if (!pinChannel) return;
           const getmsgs = await pinChannel.getMessages(50).catch(() => {});
           if (!getmsgs) return;
@@ -136,7 +136,7 @@ module.exports = bot => {
             };
           }
 
-          bot.createMessage(guildcfg.pinChannel, embedconstruct).catch(() => {});
+          bot.createMessage(guildconfig.pinChannel, embedconstruct).catch(() => {});
         }
       }
     });

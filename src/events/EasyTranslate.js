@@ -32,7 +32,7 @@ class easyTranslate extends Event {
     else if (lang === "BR") lang = "PT";
 
     // Gets config
-    const cfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
+    const cfg = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
     if (!cfg || !cfg.easyTranslate) return;
 
     // Cooldown to avoid spam

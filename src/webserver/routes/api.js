@@ -55,7 +55,7 @@ module.exports = bot => {
     if (!guild) return res.status(403);
 
     // Gets the config
-    const guildConfig = await bot.db.table("guildcfg").get(guild.id).run();
+    const guildConfig = await bot.db.table("guildconfig").get(guild.id).run();
     if (!guildConfig) return res.status(404).send({ error: "404" });
     res.send(guildConfig);
   });
@@ -69,12 +69,12 @@ module.exports = bot => {
     if (!guild) return res.status(403);
 
     // Gets config
-    let guildConfig = await bot.db.table("guildcfg").get(guild.id).run();
+    let guildConfig = await bot.db.table("guildconfig").get(guild.id).run();
 
     // Inserts guildConfig
     if (!guildConfig) {
       guildConfig = { id: guild.id };
-      await bot.db.table("guildcfg").insert(guildConfig).run();
+      await bot.db.table("guildconfig").insert(guildConfig).run();
     }
 
     // If no guildConfig
@@ -138,7 +138,7 @@ module.exports = bot => {
     });
 
     // Updates the config
-    await bot.db.table("guildcfg").get(guild.id).update(guildConfig).run();
+    await bot.db.table("guildconfig").get(guild.id).update(guildConfig).run();
     res.sendStatus(200);
   });
 
@@ -151,19 +151,19 @@ module.exports = bot => {
     if (!guild) return res.status(403);
 
     // Gets config
-    let guildConfig = await bot.db.table("guildcfg").get(guild.id).run();
+    let guildConfig = await bot.db.table("guildconfig").get(guild.id).run();
 
     // Inserts guildConfig
     if (!guildConfig) {
       guildConfig = { id: guild.id };
-      await bot.db.table("guildcfg").insert(guildConfig).run();
+      await bot.db.table("guildconfig").insert(guildConfig).run();
     }
 
     guildConfig = { id: guild.id };
 
     // Deletes the config
-    await bot.db.table("guildcfg").get(guild.id).delete().run();
-    await bot.db.table("guildcfg").insert({ id: guild.id }).run();
+    await bot.db.table("guildconfig").get(guild.id).delete().run();
+    await bot.db.table("guildconfig").insert({ id: guild.id }).run();
     res.sendStatus(200);
   });
 
@@ -172,7 +172,7 @@ module.exports = bot => {
     if (!req.isAuthenticated()) return res.status(401).send({ error: "401" });
 
     // Gets the config
-    const profileConfig = await bot.db.table("usercfg").get(req.user.id).run();
+    const profileConfig = await bot.db.table("userconfig").get(req.user.id).run();
     if (!profileConfig) return res.status(404).send({ error: "404" });
     res.send(profileConfig);
   });
@@ -183,12 +183,12 @@ module.exports = bot => {
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
 
     // Gets configs
-    let profileConfig = await bot.db.table("usercfg").get(req.user.id).run();
+    let profileConfig = await bot.db.table("userconfig").get(req.user.id).run();
 
     // Inserts profileConfig
     if (!profileConfig) {
       profileConfig = { id: req.user.id };
-      await bot.db.table("usercfg").insert(profileConfig).run();
+      await bot.db.table("userconfig").insert(profileConfig).run();
     }
 
     // If no profileConfig
@@ -220,7 +220,7 @@ module.exports = bot => {
     });
 
     // Updates the config
-    await bot.db.table("usercfg").get(req.user.id).update(profileConfig).run();
+    await bot.db.table("userconfig").get(req.user.id).update(profileConfig).run();
     res.sendStatus(200);
   });
 
@@ -230,19 +230,19 @@ module.exports = bot => {
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
 
     // Gets configs
-    let profileConfig = await bot.db.table("usercfg").get(req.user.id).run();
+    let profileConfig = await bot.db.table("userconfig").get(req.user.id).run();
 
     // Inserts guildConfig
     if (!profileConfig) {
       profileConfig = { id: req.user.id };
-      await bot.db.table("usercfg").insert(profileConfig).run();
+      await bot.db.table("userconfig").insert(profileConfig).run();
     }
 
     profileConfig = { id: req.user.id };
 
     // Deletes the config
-    await bot.db.table("usercfg").get(req.user.id).delete().run();
-    await bot.db.table("usercfg").insert({ id: req.user.id }).run();
+    await bot.db.table("userconfig").get(req.user.id).delete().run();
+    await bot.db.table("userconfig").insert({ id: req.user.id }).run();
     res.sendStatus(200);
   });
 

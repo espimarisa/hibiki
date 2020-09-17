@@ -15,22 +15,22 @@ class setassignableCommand extends Command {
 
     // Prevents assignable integration roles
     if (role.managed) return this.bot.embed("❌ Error", "That role isn't able to be assigned.", msg, "error");
-    let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
+    let guildconfig = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
 
-    // If no guildcfg
-    if (!guildcfg || !guildcfg.assignableRoles || !guildcfg.assignableRoles.length) {
-      await this.bot.db.table("guildcfg").insert({
+    // If no guildconfig
+    if (!guildconfig || !guildconfig.assignableRoles || !guildconfig.assignableRoles.length) {
+      await this.bot.db.table("guildconfig").insert({
         id: msg.channel.guild.id,
         assignableRoles: [],
       }).run();
 
-      guildcfg = { id: msg.channel.guild.id, assignableRoles: [] };
+      guildconfig = { id: msg.channel.guild.id, assignableRoles: [] };
     }
 
-    // Updates the guildcfg
-    if (!guildcfg.assignableRoles.includes(role.id)) {
-      guildcfg.assignableRoles.push(role.id);
-      await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(guildcfg).run();
+    // Updates the guildconfig
+    if (!guildconfig.assignableRoles.includes(role.id)) {
+      guildconfig.assignableRoles.push(role.id);
+      await this.bot.db.table("guildconfig").get(msg.channel.guild.id).update(guildconfig).run();
       this.bot.emit("setAssignable", msg.channel.guild, msg.member, role);
       this.bot.embed("✅ Success", `**${role.name}** can now be assigned using the assign command.`, msg, "success");
     } else {

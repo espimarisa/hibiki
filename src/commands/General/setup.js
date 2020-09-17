@@ -25,7 +25,7 @@ class setupCommand extends Command {
   constructor(...args) {
     super(...args, {
       args: "[show:string]",
-      aliases: ["cfg", "config", "guildcfg"],
+      aliases: ["cfg", "config", "guildconfig"],
       description: "Configs the bot or views the config.",
       allowdisable: false,
       cooldown: 3,
@@ -35,9 +35,9 @@ class setupCommand extends Command {
   async run(msg, args) {
     // Gets the config
     const settings = require("../../utils/items");
-    let cfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
+    let cfg = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
     if (!cfg) {
-      await this.bot.db.table("guildcfg").insert({
+      await this.bot.db.table("guildconfig").insert({
         id: msg.channel.guild.id,
       }).run();
 
@@ -207,7 +207,7 @@ class setupCommand extends Command {
       if (setting.type === "bool") {
         if (cfg[setting.id]) cfg[setting.id] = !cfg[setting.id];
         else cfg[setting.id] = true;
-        await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(cfg).run();
+        await this.bot.db.table("guildconfig").get(msg.channel.guild.id).update(cfg).run();
         this.bot.embed.edit(setting.label, `${setting.id} has been **${cfg[setting.id] ? "enabled" : "disabled"}**.`, omsg, "success");
         setTimeout(() => omsg.edit(itemsEmbed(category, this.bot)), 1500);
       } else if (setting.type === "punishment") {
@@ -239,7 +239,7 @@ class setupCommand extends Command {
           // Submission emoji
           if (emojii.name === submit) {
             await omsg.removeReactions();
-            await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(cfg).run();
+            await this.bot.db.table("guildconfig").get(msg.channel.guild.id).update(cfg).run();
             omsg.edit(itemsEmbed(category, this.bot));
             category.items.map(cat => omsg.addReaction(settings.find(s => s.id === cat).emoji));
             omsg.addReaction(back);
@@ -318,7 +318,7 @@ class setupCommand extends Command {
           // Clear handler
           if (result === "clear") result = null;
           cfg[setting.id] = result;
-          await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(cfg).run();
+          await this.bot.db.table("guildconfig").get(msg.channel.guild.id).update(cfg).run();
 
           m.delete();
           const setmsg = await this.bot.embed("✅ Success", `**${setting.id}** has been set to **${result}**.`, msg, "success");

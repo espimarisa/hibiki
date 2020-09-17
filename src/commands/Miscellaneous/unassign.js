@@ -12,16 +12,16 @@ class unassignCommand extends Command {
 
   async run(msg, args, pargs) {
     const role = pargs[0].value;
-    const guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
+    const guildconfig = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
 
-    if (!guildcfg || !guildcfg.assignableRoles || !guildcfg.assignableRoles.length) {
-      await this.bot.db.table("guildcfg").insert({
+    if (!guildconfig || !guildconfig.assignableRoles || !guildconfig.assignableRoles.length) {
+      await this.bot.db.table("guildconfig").insert({
         id: msg.channel.guild.id,
         assignableRoles: [],
       }).run();
     }
 
-    const assignable = guildcfg.assignableRoles.includes(role.id);
+    const assignable = guildconfig.assignableRoles.includes(role.id);
 
     // Removes the role
     if (assignable) {

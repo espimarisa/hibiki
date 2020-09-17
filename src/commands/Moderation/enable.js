@@ -11,19 +11,19 @@ class enableCommand extends Command {
   }
 
   async run(msg, [command]) {
-    let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
+    let guildconfig = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
     const cmds = this.bot.commands.filter(cmd => cmd.allowdisable);
     const categories = [];
     this.bot.commands.forEach(c => categories.includes(c.category) && c.category !== "Owner" ? "" : categories.push(c.category));
 
-    if (!guildcfg) {
-      await this.bot.db.table("guildcfg").insert({
+    if (!guildconfig) {
+      await this.bot.db.table("guildconfig").insert({
         id: msg.channel.guild.id,
         disabledCmds: [],
         disabledCategories: [],
       }).run();
 
-      guildcfg = { id: msg.channel.guild.id, disabledCmds: [], disabledCategories: [] };
+      guildconfig = { id: msg.channel.guild.id, disabledCmds: [], disabledCategories: [] };
     }
 
     // Looks for cmd/category
@@ -32,29 +32,29 @@ class enableCommand extends Command {
 
     // If there's no command, but a category
     if (!cmd && category) {
-      if (!guildcfg.disabledCategories) guildcfg.disabledCategories = [];
-      if (!guildcfg.disabledCategories.includes(category)) {
+      if (!guildconfig.disabledCategories) guildconfig.disabledCategories = [];
+      if (!guildconfig.disabledCategories.includes(category)) {
         return this.bot.embed("❌ Error", "That category is already enabled.", msg, "error");
       }
 
       // Updates DB
-      guildcfg.disabledCategories.splice(guildcfg.disabledCategories.indexOf(category), 1);
-      await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(guildcfg).run();
+      guildconfig.disabledCategories.splice(guildconfig.disabledCategories.indexOf(category), 1);
+      await this.bot.db.table("guildconfig").get(msg.channel.guild.id).update(guildconfig).run();
       this.bot.emit("categoryEnable", msg.channel.guild, msg.member, category);
       return this.bot.embed("✅ Success", `The **${category}** category has been enabled.`, msg, "success");
     }
 
     // If not found or is already enabled
     if (!cmd) return this.bot.embed("❌ Error", "That command doesn't exist.", msg, "error");
-    if (!guildcfg.disabledCmds) guildcfg.disabledCmds = [];
-    if (guildcfg.disabledCmds && !guildcfg.disabledCmds.includes(cmd.id)) {
+    if (!guildconfig.disabledCmds) guildconfig.disabledCmds = [];
+    if (guildconfig.disabledCmds && !guildconfig.disabledCmds.includes(cmd.id)) {
       return this.bot.embed("❌ Error", "That command isn't disabled.", msg, "error");
     }
 
     if (cmd) {
       // Updates db
-      guildcfg.disabledCmds.splice(guildcfg.disabledCmds.indexOf(cmd.id), 1);
-      await this.bot.db.table("guildcfg").get(msg.channel.guild.id).update(guildcfg).run();
+      guildconfig.disabledCmds.splice(guildconfig.disabledCmds.indexOf(cmd.id), 1);
+      await this.bot.db.table("guildconfig").get(msg.channel.guild.id).update(guildconfig).run();
       this.bot.emit("commandEnable", msg.channel.guild, msg.member, command);
       this.bot.embed("✅ Success", `The **${cmd.id}** command has been enabled.`, msg, "success");
     } else {

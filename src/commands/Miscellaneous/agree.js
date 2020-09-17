@@ -8,17 +8,17 @@ class agreeCommand extends Command {
   }
 
   async run(msg) {
-    let guildcfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
-    if (!guildcfg) guildcfg = { id: msg.channel.guild.id };
-    if (!guildcfg.agreeChannel) return;
+    let guildconfig = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
+    if (!guildconfig) guildconfig = { id: msg.channel.guild.id };
+    if (!guildconfig.agreeChannel) return;
 
     // Finds the agree channel
-    const agreeChannel = await msg.channel.guild.channels.find(c => c.id === guildcfg.agreeChannel);
+    const agreeChannel = await msg.channel.guild.channels.find(c => c.id === guildconfig.agreeChannel);
     if (!agreeChannel) return;
     if (msg.channel.id !== agreeChannel.id) return;
 
     // Finds the agree role
-    const agreeRole = await msg.channel.guild.roles.find(r => r.id === guildcfg.agreeRole);
+    const agreeRole = await msg.channel.guild.roles.find(r => r.id === guildconfig.agreeRole);
     if (!agreeRole) return;
     const memberRole = await msg.member.roles.includes(agreeRole.id);
     if (memberRole === true) return;

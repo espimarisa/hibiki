@@ -13,7 +13,7 @@ class automod extends Event {
     if (msg.channel instanceof Eris.PrivateChannel) return;
     if (!msg.member) return;
     if (msg.bot) return;
-    const cfg = await this.bot.db.table("guildcfg").get(msg.channel.guild.id).run();
+    const cfg = await this.bot.db.table("guildconfig").get(msg.channel.guild.id).run();
     if (!cfg) return;
 
     // Don't automod staff

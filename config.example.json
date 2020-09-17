@@ -54,8 +54,8 @@
     "port": "",
     "user": "",
     "tables": [
-      "blacklist", "economy", "guildcfg", "marriages", "monitoring", "mutecache",
-      "points", "reminders", "session", "steammonitor", "usercfg", "warnings"
+      "blacklist", "economy", "guildconfig", "marriages", "monitoring", "mutecache",
+      "points", "reminders", "session", "steammonitor", "userconfig", "warnings"
     ]
   },
 

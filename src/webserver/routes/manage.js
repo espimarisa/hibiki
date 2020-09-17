@@ -28,8 +28,8 @@ module.exports = bot => {
   // Profile manager
   router.get("/profile/", checkAuth, async (req, res) => {
     const user = getAuthedUser(req.user);
-    const usercfg = await bot.db.table("usercfg").get(user.id).run();
-    res.render("profile", { bot: bot, cfg: usercfg, page: req.url.split("/")[1], user: user, csrfToken: req.csrfToken() });
+    const userconfig = await bot.db.table("userconfig").get(user.id).run();
+    res.render("profile", { bot: bot, cfg: userconfig, page: req.url.split("/")[1], user: user, csrfToken: req.csrfToken() });
   });
 
   // Server manager
@@ -42,7 +42,7 @@ module.exports = bot => {
 
     // Renders the dashboard and sends the config
     if (!guild) return res.status(403).render("403");
-    const cfg = await bot.db.table("guildcfg").get(guild.id).run();
+    const cfg = await bot.db.table("guildconfig").get(guild.id).run();
     res.render("manage", { guild: guild, bot: bot, cfg: cfg, items: items, page: "manage", user: user, csrfToken: req.csrfToken() });
   });
 
