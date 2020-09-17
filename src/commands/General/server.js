@@ -75,69 +75,53 @@ class serverCommand extends Command {
       inline: true,
     });
 
-    if (guild.emojis.length) {
-      fields.push({
-        name: "Emojis",
-        value: guild.emojis.length,
-        inline: true,
-      });
-    }
+    if (guild.emojis.length) fields.push({
+      name: "Emojis",
+      value: guild.emojis.length,
+      inline: true,
+    });
 
-    if (guild.explicitContentFilter > 0) {
-      fields.push({
-        name: "Message Filter",
-        value: `Level ${guild.explicitContentFilter}`,
-        inline: true,
-      });
-    }
+    if (guild.explicitContentFilter > 0) fields.push({
+      name: "Message Filter",
+      value: `Level ${guild.explicitContentFilter}`,
+      inline: true,
+    });
 
-    if (guild.verificationLevel > 0) {
-      fields.push({
-        name: "Verification",
-        value: `Level ${guild.verificationLevel}`,
-        inline: true,
-      });
-    }
+    if (guild.verificationLevel > 0) fields.push({
+      name: "Verification",
+      value: `Level ${guild.verificationLevel}`,
+      inline: true,
+    });
 
-    if (guild.mfaLevel === 1) {
-      fields.push({
-        name: "2FA",
-        value: "Enabled",
-        inline: true,
-      });
-    }
+    if (guild.mfaLevel === 1) fields.push({
+      name: "2FA",
+      value: "Enabled",
+      inline: true,
+    });
 
-    if (guild.defaultNotifications === 0) {
-      fields.push({
-        name: "Notifications",
-        value: "All messages",
-        inline: true,
-      });
-    }
+    if (guild.defaultNotifications === 0) fields.push({
+      name: "Notifications",
+      value: "All messages",
+      inline: true,
+    });
 
-    if (guild.premiumSubscriptionCount > 0) {
-      fields.push({
-        name: "Boosters",
-        value: guild.premiumSubscriptionCount,
-        inline: true,
-      });
-    }
+    if (guild.premiumSubscriptionCount > 0) fields.push({
+      name: "Boosters",
+      value: guild.premiumSubscriptionCount,
+      inline: true,
+    });
 
-    if (guild.premiumTier > 0) {
-      fields.push({
-        name: "Boost Level",
-        value: guild.premiumTier,
-        inline: true,
-      });
-    }
+    if (guild.premiumTier > 0) fields.push({
+      name: "Boost Level",
+      value: guild.premiumTier,
+      inline: true,
+    });
 
-    if (guild.features.length) {
-      fields.push({
-        name: "Server Features",
-        value: format.features(guild.features).join(", "),
-        inline: false,
-      });
-    }
+    if (guild.features.length) fields.push({
+      name: "Server Features",
+      value: format.features(guild.features).join(", "),
+      inline: false,
+    });
 
     msg.channel.createMessage({
       embed: {

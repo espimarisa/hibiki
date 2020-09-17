@@ -50,7 +50,7 @@ module.exports = {
       }
     }
 
-    // Fallback colour
+    // Fallback color
     return cl < 0 ? ["#000000", `Invalid Color: ${ color}`, false] : [`#${ this.names[cl][0]}`, this.names[cl][1], false];
   },
 
