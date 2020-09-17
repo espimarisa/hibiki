@@ -6,11 +6,12 @@
 
 module.exports = {
   init: function() {
-    let color, rgb;
+    let color, rgb, hsl;
     for (let i = 0; i < this.names.length; i++) {
       color = `#${ this.names[i][0]}`;
       rgb = this.rgb(color);
-      this.names[i].push(rgb[0], rgb[1], rgb[2]);
+      hsl = this.hsl(color);
+      this.names[i].push(rgb[0], rgb[1], rgb[2], hsl[0], hsl[1], hsl[2]);
     }
   },
 
@@ -18,15 +19,19 @@ module.exports = {
   name: function(color) {
     color = color.toUpperCase();
     if (color.length < 3 || color.length > 7) return ["#000000", `Invalid Color: ${ color}`, false];
-    if (color.length % 3 === 0) color = `#${ color}`;
-    if (color.length === 4) color = `#${ color.substr(1, 1) }${color.substr(1, 1) }
-    ${color.substr(2, 1) }${color.substr(2, 1) }${color.substr(3, 1) }${color.substr(3, 1)}`;
+    else if (color.length % 3 === 0) color = `#${ color}`;
+    else if (color.length === 4) color = `#${ color.substr(1, 1) }${color.substr(1, 1) }${color.substr(2, 1) }${color.substr(2, 1) }${color.substr(3, 1) }${color.substr(3, 1)}`;
 
     // RGB
     const rgb = this.rgb(color);
     const r = rgb[0],
       g = rgb[1],
       b = rgb[2];
+    // HSL
+    const hsl = this.hsl(color);
+    const h = hsl[0],
+      s = hsl[1],
+      l = hsl[2];
     let ndf1 = 0;
     ndf2 = 0;
     ndf = 0;
@@ -37,6 +42,7 @@ module.exports = {
     for (let i = 0; i < this.names.length; i++) {
       if (color === `#${ this.names[i][0]}`) return [`#${ this.names[i][0]}`, this.names[i][1], true];
       ndf1 = Math.pow(r - this.names[i][2], 2) + Math.pow(g - this.names[i][3], 2) + Math.pow(b - this.names[i][4], 2);
+      ndf2 = Math.pow(h - this.names[i][5], 2) + Math.pow(s - this.names[i][6], 2) + Math.pow(l - this.names[i][7], 2);
       ndf = ndf1 + ndf2 * 2;
       if (df < 0 || df > ndf) {
         df = ndf;
@@ -44,10 +50,37 @@ module.exports = {
       }
     }
 
-    // Fallback color
+    // Fallback colour
     return cl < 0 ? ["#000000", `Invalid Color: ${ color}`, false] : [`#${ this.names[cl][0]}`, this.names[cl][1], false];
   },
 
+  // HSL
+  hsl: function(color) {
+    const rgb = [parseInt(`0x${ color.substring(1, 3)}`) / 255, parseInt(`0x${ color.substring(3, 5)}`) / 255, parseInt(`0x${ color.substring(5, 7)}`) / 255];
+    let h, s;
+    const r = rgb[0],
+      g = rgb[1],
+      b = rgb[2];
+
+    // Min/max math
+    const min = Math.min(r, Math.min(g, b));
+    const max = Math.max(r, Math.max(g, b));
+    const delta = max - min;
+    const l = (min + max) / 2;
+    s = 0;
+    if (l > 0 && l < 1) s = delta / (l < 0.5 ? 2 * l : 2 - 2 * l);
+    h = 0;
+    if (delta > 0) {
+      if (max === r && max !== g) h += (g - b) / delta;
+      else if (max === g && max !== b) h += 2 + (b - r) / delta;
+      else if (max === b && max !== r) h += 4 + (r - g) / delta;
+      h /= 6;
+    }
+    // Returns the number
+    return [parseInt(h * 255), parseInt(s * 255), parseInt(l * 255)];
+  },
+
+  // Parses
   rgb: function(color) {
     return [parseInt(`0x${ color.substring(1, 3)}`), parseInt(`0x${ color.substring(3, 5)}`), parseInt(`0x${ color.substring(5, 7)}`)];
   },
