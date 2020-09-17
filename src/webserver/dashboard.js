@@ -31,7 +31,7 @@ app.use(helmet.contentSecurityPolicy({
     defaultSrc: ["'self'", "fonts.googleapis.com", "fonts.gstatic.com", "cdn.jsdelivr.net"],
     imgSrc: ["'self'", "avatars1.githubusercontent.com", "cdn.discordapp.com"],
     scriptSrc: ["'self'", "'unsafe-inline'", "discord.com", "discordapp.com", "cdn.jsdelivr.net"],
-    styleSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "discord.com", "discordapp.com", "fonts.googleapis.com", "fonts.gstatic.com"],
+    styleSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net", "discord.com", "discordapp.com"],
   },
 }));
 
