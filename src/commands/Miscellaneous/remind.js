@@ -19,7 +19,7 @@ class remindCommand extends Command {
     if (!args[0] || args[0].toLowerCase() === "list") {
       let db = await this.bot.db.table("reminders").run();
       db = db.filter(d => d.user === msg.author.id);
-      if (!db.length) return this.bot.embed("⏰ Reminders", "You don't have any reminders. Set one using remind <time> <reminder>", msg);
+      if (!db.length) return this.bot.embed("⏰ Reminders", "You don't have any reminders. Set one using remind <time> <reminder>.", msg);
 
       return msg.channel.createMessage({
         embed: {

@@ -20,7 +20,7 @@ class steamCommand extends Command {
     let bans;
     let games;
     let steamlvl;
-    let description;
+    // let description;
 
     // Vanity URL checker
     if (/^\d+$/.test(args[0])) steamid = args[0];
@@ -64,14 +64,14 @@ class steamCommand extends Command {
     ).then(res => res.json().catch(() => {}));
     steamlvl = steamlvl.response.player_level;
 
-    // Gets bio
-    // TODO: Fix this
-    description = await fetch(`http://steamcommunity.com/profiles/${steamid}`).then(res => res.text().catch(() => {}));
+    // // Gets bio
+    // description = await fetch(`http://steamcommunity.com/profiles/${steamid}`).then(res => res.text().catch(() => {}));
+    // description = /<meta name="description">[\s\n]{0,}([\w\d\s;_\-,.]{0,512})/.exec(description);
 
-    description = /<div class="profile_summary">[\s\n]{0,}([\w\d\s;_\-,.]{0,512})<\/div>/.exec(description);
-    if (description) description = description[1];
-    if (!description || description === "No information given.") description = null;
-    if (description && description.length > 256) description = `${description.substring(0, 256)}...`;
+    // console.log(description);
+    // if (description) description = description[1];
+    // if (!description || description === "No information given.") description = null;
+    // if (description && description.length > 256) description = `${description.substring(0, 256)}...`;
     if (!profile || !bans || !games) return this.bot.embed("❌ Error", "Account not found.", msg, "error");
 
     // Formats statuses
@@ -117,21 +117,17 @@ class steamCommand extends Command {
       inline: true,
     }];
 
-    if (profile.loccountrycode) {
-      fieldsConstruct.push({
-        name: "Country",
-        value: `:flag_${profile.loccountrycode.toLowerCase()}:` || "Unknown",
-        inline: true,
-      });
-    }
+    if (profile.loccountrycode) fieldsConstruct.push({
+      name: "Country",
+      value: `:flag_${profile.loccountrycode.toLowerCase()}:` || "Unknown",
+      inline: true,
+    });
 
-    if (profile.realname) {
-      fieldsConstruct.push({
-        name: "Real Name",
-        value: profile.realname,
-        inline: true,
-      });
-    }
+    if (profile.realname) fieldsConstruct.push({
+      name: "Real Name",
+      value: profile.realname,
+      inline: true,
+    });
 
     let banstring = "";
     if (bans.NumberOfVACBans > 0 || bans.NumberOfGameBans > 0 || bans.EconomyBan !== "none") {
@@ -151,7 +147,7 @@ class steamCommand extends Command {
 
     steamsg.edit({
       embed: {
-        description: description,
+        // description: description,
         color: 0x66C0F4,
         fields: fieldsConstruct,
         author: {
