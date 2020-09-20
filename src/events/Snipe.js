@@ -30,8 +30,8 @@ class Snipe extends Event {
     this.bot.snipeData[msg.channel.id] = {
       id: msg.channel.id,
       content: msg.content,
-      author: `${msg.author.username}#${msg.author.discriminator}`,
-      authorpfp: msg.author.dynamicAvatarURL(null, 1024),
+      author: msg.author ? `${msg.author.username}#${msg.author.discriminator}` : null,
+      authorpfp: msg.author ? msg.author.dynamicAvatarURL(null, 1024) : null,
       timestamp: msg.timestamp,
       msgid: msg.id,
       attachment: msg.attachments[0] !== undefined && msg.attachments[0].proxy_url !== undefined ? msg.attachments[0].proxy_url : undefined,
