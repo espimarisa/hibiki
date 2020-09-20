@@ -36,8 +36,8 @@ class snipeCommand extends Command {
         color: this.bot.embed.color("general"),
         timestamp: new Date(snipeMsg.timestamp),
         author: {
-          name: `${snipeMsg.author} said...`,
-          icon_url: snipeMsg.authorpfp,
+          name: snipeMsg.author ? `${snipeMsg.author} said...` : null,
+          icon_url: snipeMsg.authorpfp ? snipeMsg.authorpfp : null,
         },
         footer: {
           text: `Ran by ${this.bot.tag(msg.author)}`,

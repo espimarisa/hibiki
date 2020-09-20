@@ -49,7 +49,9 @@ class assignCommand extends Command {
 
       this.bot.emit("roleAssign", msg.channel.guild, msg.member, role);
       this.bot.embed("✅ Success", `You now have the **${role.name}** role.`, msg, "success");
-    } else if (!assignable) return this.bot.embed("❌ Error", "That isn't an assignable role.", msg, "error");
+    } else if (!assignable) {
+      return this.bot.embed("❌ Error", "That isn't an assignable role.", msg, "error");
+    }
   }
 }
 

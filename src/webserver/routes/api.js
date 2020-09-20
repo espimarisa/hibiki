@@ -108,7 +108,7 @@ module.exports = bot => {
       else if (item.type === "roleID" && !bot.guilds.get(guild.id).roles.find(r => r.id === opt)) guildConfig[c] = null;
       else if (item.type === "bool" && typeof opt !== "boolean") guildConfig[c] = null;
       // String; has maximum
-      else if (item.type === "string" && item.maximum) guildConfig[c] = opt.substring(0, 15);
+      else if (item.type === "string" && item.maximum) guildConfig[c] = opt.substring(0, item.maximum);
       // String; has minimum
       else if (item.type === "string" && item.minimum && opt.length < item.minimum) guildConfig[c] = null;
       else if (item.type === "array" && !Array.isArray(guildConfig[c])) return guildConfig[c] = null;
@@ -213,7 +213,7 @@ module.exports = bot => {
       else if (item.type === "number" && item.minimum && opt < item.minimum) profileConfig[c] = item.minimum;
       else if (item.type === "bool" && typeof opt !== "boolean") profileConfig[c] = null;
       // String; has maximum
-      else if (item.type === "string" && item.maximum) profileConfig[c] = opt.substring(0, 15);
+      else if (item.type === "string" && item.maximum) profileConfig[c] = opt.substring(0, item.maximum);
       // String; has minimum
       else if (item.type === "string" && item.minimum && opt.length < item.minimum) profileConfig[c] = null;
       else if (item.type === "array" && !Array.isArray(profileConfig[c])) return profileConfig[c] = null;
