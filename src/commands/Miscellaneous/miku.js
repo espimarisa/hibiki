@@ -11,8 +11,8 @@ class mikuCommand extends Command {
     });
   }
 
-  async run(msg, args) {
-    const body = await fetch(`https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1&tags=hatsune_miku%20rating:safe`)
+  async run(msg) {
+    const body = await fetch("https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1&tags=hatsune_miku%20rating:safe")
       .then(res => res.json().catch(() => {}));
 
     if (!body || !body[0].image || !body[0].directory) {
