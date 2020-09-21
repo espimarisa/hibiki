@@ -34,7 +34,7 @@ class Snipe extends Event {
       authorpfp: msg.author ? msg.author.dynamicAvatarURL(null, 1024) : null,
       timestamp: msg.timestamp,
       msgid: msg.id,
-      attachment: msg.attachments[0] !== undefined && msg.attachments[0].proxy_url !== undefined ? msg.attachments[0].proxy_url : undefined,
+      attachment: msg && msg.attachments && msg.attachments[0] !== undefined && msg.attachments[0].proxy_url !== undefined ? msg.attachments[0].proxy_url : undefined,
     };
   }
 }
