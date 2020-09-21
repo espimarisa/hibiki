@@ -4,8 +4,7 @@ const fetch = require("node-fetch");
 class mikuCommand extends Command {
   constructor(...args) {
     super(...args, {
-      aliases: ["hatsunemiki"],
-      args: "[tags:string]",
+      aliases: ["hatsunemiku"],
       description: "Sends an image of Hatsune Miku.",
       cooldown: 3,
     });
@@ -28,7 +27,7 @@ class mikuCommand extends Command {
     msg.channel.createMessage({
       embed: {
         title: "🌸 Hatsune Miku",
-        color: 0x86CECB,
+        color: this.bot.embed.color("general"),
         image: {
           url: `https://safebooru.org/images/${body[random].directory}/${body[random].image}`,
         },

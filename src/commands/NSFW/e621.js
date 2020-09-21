@@ -42,13 +42,14 @@ class e621Command extends Command {
       });
     }
 
-    const body = await fetch(`https://e621.net/posts.json?page=dapi&s=post&q=index&json=1&tags=${encodeURIComponent(args.join(" "))}`, {
+    const body = await fetch(`https://e621.net/posts.json?&s=post&q=index&json=1?limit=200&tags=${encodeURIComponent(args.join(" "))}`, {
       headers: {
         "User-Agent": `${this.bot.user.username}/${this.bot.version}`,
       },
     }).then(res => res.json().catch(() => {}));
 
-    if (!body || !body.posts[0] || !body.posts[0].file || !body.posts[0].file.url || !body.posts.length) {
+    // This is utterly fucking retarded. When will Node.js target ES2020 so we can just use ??.
+    if (!body || body && body && !body.posts[0] || body && body.posts && !body.posts[0].file || body && body.posts && !body.posts[0].file.url || !body && body.posts && body.posts.length || body && body.success === false) {
       return this.bot.embed("❌ Error", "No images were found.", msg, "error");
     }
 
