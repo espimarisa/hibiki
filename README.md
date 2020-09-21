@@ -7,7 +7,7 @@
 [![Support](https://img.shields.io/discord/620287077778587651?color=purple&label=support)](https://discord.gg/gZEj4sM)
 [![Website](https://img.shields.io/website?down_color=critical&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fhibiki.app)](https://hibiki.app)
 
-[Hibiki][1] is an easy, customizable, and powerful Discord bot that can do anything that your server needs. Powered by [Node.js][2] and [Eris][3], it's written to be simple and easy to understand, but without sacrificing any powerful features.
+[Hibiki][1] is an easy, customizable, and powerful Discord bot that does anything that your server needs. Powered by [Node.js][2] and [Eris][3], it's written to be simple and easy to understand, but not sacrificing any powerful features.
 
 You can invite the main application [here][4]. Any other instances of Hibiki are **not official** and could possibly carry privacy/security risks. The only official bot is `Hibiki#1448 (493904957523623936)`.
 
