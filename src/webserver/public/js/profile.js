@@ -100,7 +100,7 @@ window.addEventListener("load", async () => {
 
     // Single string select
     if (type === "selection") {
-      const opt = Array.from(element.children[0].children).find(a => a.id === profileConfig[p]);
+      const opt = Array.from(element.children[0].children)[profileConfig[p]];
       if (!opt) return;
       document.getElementById(p).children[0].value = opt.innerText;
     }
@@ -129,8 +129,9 @@ window.addEventListener("load", async () => {
 
       // Single string select
       if (type === "selection") {
-        const r = Array.from(element.children[0].children).find(a => a.innerText === element.children[0].value).id;
-        profileConfig[p] = !r || r.toLowerCase() === "no preference" ? null : r;
+        const pronouns = Array.from(element.children[0].children);
+        const r = pronouns.indexOf(pronouns.find(a => a.innerText === element.children[0].value));
+        profileConfig[p] = r;
       }
 
       // Locale info

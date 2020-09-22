@@ -41,7 +41,7 @@ module.exports = bot => {
     const guild = managableGuilds.find(g => g.id === req.params.id);
 
     // Renders the dashboard and sends the config
-    if (!guild) return res.status(403).render("403");
+    if (!guild) return res.status(401).render("401");
     const cfg = await bot.db.table("guildconfig").get(guild.id).run();
     res.render("manage", { guild: guild, bot: bot, cfg: cfg, items: items, page: "manage", user: user, csrfToken: req.csrfToken() });
   });

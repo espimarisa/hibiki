@@ -5,14 +5,21 @@
  */
 
 const express = require("express");
+const dayjs = require("dayjs");
 const items = require("../../utils/items");
+
+// Dayjs plugins
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone");
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const router = express.Router();
 
 module.exports = bot => {
   // Gets setup items, commands, and profile items
   router.get("/getItems", async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(401).send({ error: "401" });
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
 
     // Sends loaded cmds
     if (req.query.commands) {
@@ -49,14 +56,14 @@ module.exports = bot => {
   // Gets a guildconfig
   router.get("/getGuildConfig/:id", async (req, res) => {
     // Checks to see if the user has permission
-    if (!req.isAuthenticated()) return res.status(401).send({ error: "401" });
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     const managableGuilds = req.user.guilds.filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id));
     const guild = managableGuilds.find(g => g.id === req.params.id);
-    if (!guild) return res.status(403);
+    if (!guild) return res.status(401).send({ error: "Unauthorized to manage guild" });
 
     // Gets the config
     const guildConfig = await bot.db.table("guildconfig").get(guild.id).run();
-    if (!guildConfig) return res.status(404).send({ error: "404" });
+    if (!guildConfig) return res.status(204).send({ message: "Guild has empty config" });
     res.send(guildConfig);
   });
 
@@ -66,7 +73,7 @@ module.exports = bot => {
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     const managableGuilds = req.user.guilds.filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id));
     const guild = managableGuilds.find(g => g.id === req.params.id);
-    if (!guild) return res.status(403);
+    if (!guild) return res.status(401).send({ error: "Unauthorized to manage guild" });
 
     // Gets config
     let guildConfig = await bot.db.table("guildconfig").get(guild.id).run();
@@ -78,7 +85,7 @@ module.exports = bot => {
     }
 
     // If no guildConfig
-    if (!req.body) return res.status(400).send({ error: "No config" });
+    if (!req.body) return res.status(204).send({ message: "An empty body was sent" });
     guildConfig = req.body;
 
     // Each guildConfig type/option
@@ -101,12 +108,13 @@ module.exports = bot => {
       else if (item.type === "channelID" && !bot.guilds.get(guild.id).channels.find(channel => channel.id === opt)) guildConfig[c] = null;
       // Channelarray
       else if (item.type === "channelArray") guildConfig[c] = opt.filter(c => bot.guilds.get(guild.id).channels.find(channel => channel.id === c));
-      // Rolearray; has no maximum
-      else if (item.type === "roleArray") guildConfig[c] = opt.filter(r => bot.guilds.get(guild.id).roles.find(rol => rol.id === r));
-      // Rolearray; has maximum
-      // else if (item.type === "roleArray" && item.maximum && guildConfig[c].length > item.maximum) guildConfig[c].length = item.maximum;
-      else if (item.type === "roleID" && !bot.guilds.get(guild.id).roles.find(r => r.id === opt)) guildConfig[c] = null;
+      // Rolearrays
+      else if (item.type === "roleArray") {
+        guildConfig[c] = opt.filter(r => bot.guilds.get(guild.id).roles.find(rol => rol.id === r));
+        if (item.maximum && guildConfig[c].length > item.maximum) guildConfig[c].length = item.maximum;
+      } else if (item.type === "roleID" && !bot.guilds.get(guild.id).roles.find(r => r.id === opt)) guildConfig[c] = null;
       else if (item.type === "bool" && typeof opt !== "boolean") guildConfig[c] = null;
+
       // String; has maximum
       else if (item.type === "string" && item.maximum) guildConfig[c] = opt.substring(0, item.maximum);
       // String; has minimum
@@ -148,7 +156,7 @@ module.exports = bot => {
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     const managableGuilds = req.user.guilds.filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.get(g.id));
     const guild = managableGuilds.find(g => g.id === req.params.id);
-    if (!guild) return res.status(403);
+    if (!guild) return res.status(401).send({ error: "Unauthorized to manage guild" });
 
     // Gets config
     let guildConfig = await bot.db.table("guildconfig").get(guild.id).run();
@@ -169,18 +177,26 @@ module.exports = bot => {
 
   // Gets a profileConfig
   router.get("/getProfileConfig/:id", async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(401).send({ error: "401" });
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
 
     // Gets the config
     const profileConfig = await bot.db.table("userconfig").get(req.user.id).run();
-    if (!profileConfig) return res.status(404).send({ error: "404" });
+    if (!profileConfig) return res.status(204).send({ message: "Profile has empty config" });
     res.send(profileConfig);
   });
 
+  let invalidTimezone = false;
   // Updates a profileConfig
   router.post("/updateProfileConfig/:id", async (req, res) => {
     // Checks to see if the user has permission
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
+
+    // Timezone checking
+    try { dayjs(new Date()).tz(guildConfig[c]); } catch (_) {
+      invalidTimezone = true;
+    }
+
+    if (invalidTimezone) return res.status(400).send({ message: "Invalid input given, reload the page" });
 
     // Gets configs
     let profileConfig = await bot.db.table("userconfig").get(req.user.id).run();
@@ -192,7 +208,7 @@ module.exports = bot => {
     }
 
     // If no profileConfig
-    if (!req.body) return res.status(400).send({ error: "No config" });
+    if (!req.body) return res.status(204).send({ message: "An empty body was sent" });
     profileConfig = req.body;
 
     // Each profileConfig type/option

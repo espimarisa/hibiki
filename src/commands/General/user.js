@@ -1,6 +1,7 @@
 const Command = require("../../structures/Command");
 const format = require("../../utils/format");
 const dayjs = require("dayjs");
+const pronouns = ["No preference", "He/Him", "She/Her", "They/Them"];
 
 // Dayjs plugins
 const utc = require("dayjs/plugin/utc");
@@ -140,9 +141,9 @@ class userCommand extends Command {
       inline: true,
     });
 
-    if (userconfig && userconfig.pronouns) fields.push({
+    if (userconfig && userconfig.pronouns && userconfig.pronouns !== 0) fields.push({
       name: "Pronouns",
-      value: userconfig.pronouns,
+      value: pronouns[userconfig.pronouns],
       inline: true,
     });
 
