@@ -51,7 +51,7 @@ class aboutCommand extends Command {
     msg.channel.createMessage({
       embed: {
         title: "🤖 About",
-        description: `**${this.bot.user.username}**, by [smolespi](https://lesbian.codes) and [contributors](https://github.com/smolespi/Hibiki/graphs/contributors). 💖`,
+        description: `**${this.bot.user.username}**, by [smolespi](https://lesbian.codes), [resolved](https://github.com/resolvedxd), and [contributors](https://github.com/smolespi/Hibiki/graphs/contributors). 💖`,
         color: this.bot.embed.color("general"),
         fields: [{
           name: "Analytics",
@@ -75,7 +75,7 @@ class aboutCommand extends Command {
           name: "About",
           value: `${this.bot.user.username} is an easy and powerful all-in-one Discord bot. \n` +
             "Wanna see how everything works? View the [GitHub](https://github.com/smolespi/Hibiki) repository. \n" +
-            `[Dashboard](${this.bot.config.homepage}/manage/servers) • [Invite](${this.bot.config.homepage}/invite/) • [Support](https://discord.gg/gZEj4sM) • [Vote](https://top.gg/bot/${this.bot.user.id}/vote) • [Website](${this.bot.config.homepage})`,
+            `[Dashboard](${this.bot.config.homepage}/manage/servers) • [Invite](${this.bot.config.homepage}/invite/) • [Privacy](${this.bot.config.homepage}/privacy/) • [Support](https://discord.gg/gZEj4sM) • [Vote](https://top.gg/bot/${this.bot.user.id}/vote) • [Website](${this.bot.config.homepage})`,
         }],
         thumbnail: {
           url: this.bot.user.dynamicAvatarURL(),
