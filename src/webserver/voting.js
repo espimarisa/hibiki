@@ -19,7 +19,7 @@ module.exports = bot => {
     if (req.headers.authorization !== config.auth) {
       if (req.headers.authorization && req.headers.authorization.length || !req.headers.authorization) {
         bot.log.warn(`${req.connection.remoteAddress} tried to make a request with the wrong auth key.`);
-        return res.sendStatus(403);
+        return res.sendStatus(401);
       }
     }
 
