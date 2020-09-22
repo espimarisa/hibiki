@@ -4,6 +4,9 @@
  * @module webserver/dashboard
  */
 
+const { minify } = require("terser");
+const { readdirSync, readFileSync } = require("fs");
+
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const csurf = require("csurf");
@@ -92,8 +95,31 @@ module.exports = async bot => {
   // Configures ejs options
   app.set("views", `${__dirname}/views`);
   app.set("partials", `${__dirname}/partials`);
-  app.use("/public/", express.static(`${__dirname}/public`, { dotfiles: "allow" }));
   app.set("view engine", "ejs");
+
+  // Minfiies JavaScript files if in production
+  if (process.env.NODE_ENV === "production") {
+    const files = readdirSync(`${__dirname}/public/js`, { withFileTypes: true });
+    for (const file of files) {
+      if (file.isDirectory()) return;
+      if (!file.name.endsWith(".js")) return;
+      const fileSource = readFileSync(`${__dirname}/public/js/${file.name}`, { encoding: "utf-8" });
+      const minifiedFile = await minify(fileSource);
+
+      // Uses non-minified files if errored
+      if (minifiedFile.error || !minifiedFile.code) {
+        bot.log.error(`Error while minifying ${file.name}, the non-minified one will be served instead.`);
+        app.use(`/public/js/${file.name}`, (req, res) => { res.send(fileSource); });
+        return;
+      }
+
+      // Uses minified files
+      app.use(`/public/js/${file.name}`, (req, res) => { res.set("Content-Type", "application/javascript").send(minifiedFile.code); });
+    }
+  }
+
+  // Express static/public
+  app.use("/public/", express.static(`${__dirname}/public`, { dotfiles: "allow" }));
 
   // Routes
   app.use("/", require("./routes/index")(bot));
