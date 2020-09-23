@@ -108,7 +108,7 @@ module.exports = async bot => {
   app.set("view engine", "ejs");
 
   // Minfiies files if in production; adds robots.txt, and compresses data
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV === "production") {
     const files = readdirSync(`${__dirname}/public/js`, { withFileTypes: true });
     for (const file of files) {
       if (file.isDirectory()) return;
