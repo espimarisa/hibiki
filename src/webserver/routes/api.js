@@ -191,13 +191,6 @@ module.exports = bot => {
     // Checks to see if the user has permission
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
 
-    // Timezone checking
-    try { dayjs(new Date()).tz(guildConfig[c]); } catch (_) {
-      invalidTimezone = true;
-    }
-
-    if (invalidTimezone) return res.status(400).send({ message: "Invalid input given, reload the page" });
-
     // Gets configs
     let profileConfig = await bot.db.table("userconfig").get(req.user.id).run();
 
@@ -233,6 +226,13 @@ module.exports = bot => {
       // String; has minimum
       else if (item.type === "string" && item.minimum && opt.length < item.minimum) profileConfig[c] = null;
       else if (item.type === "array" && !Array.isArray(profileConfig[c])) return profileConfig[c] = null;
+
+      // Timezone checking
+      try { dayjs(new Date()).tz(profileConfig[c]); } catch (_) {
+        invalidTimezone = true;
+      }
+
+      if (invalidTimezone) return profileConfig[c] = null;
     });
 
     // Updates the config
