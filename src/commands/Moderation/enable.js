@@ -6,6 +6,7 @@ class enableCommand extends Command {
       args: "<item:string>",
       description: "Enables a command or category.",
       allowdisable: false,
+      requiredperms: "manageMessages",
       staff: true,
     });
   }

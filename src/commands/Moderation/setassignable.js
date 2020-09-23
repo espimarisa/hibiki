@@ -6,6 +6,7 @@ class setassignableCommand extends Command {
       aliases: ["addassign", "addassignable", "addassignablerole", "assignablerole", "makeassign", "makeassignable"],
       args: "<role:role>",
       description: "Sets a role to be assignable.",
+      requiredperms: "manageRoles",
       staff: true,
     });
   }
