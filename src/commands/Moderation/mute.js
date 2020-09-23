@@ -74,9 +74,6 @@ class muteCommand extends Command {
         } catch (err) {
           return this.bot.embed("❌ Error", `Failed to remove **${user.username}**'s other roles.`, msg, "error");
         }
-
-        this.bot.emit("memberMute", msg.channel.guild, msg.member, user, reason);
-        return this.bot.embed("✅ Success", `**${user.username}** was muted.`, msg, "success");
       });
 
       // Mutes the member
