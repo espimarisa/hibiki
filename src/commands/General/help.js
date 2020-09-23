@@ -134,7 +134,7 @@ class helpCommand extends Command {
 
       // Adds a reaction; ignores in DMs
       if (msg.channel instanceof eris.PrivateChannel) return;
-      if (dmson) return msg.addReaction("📬");
+      if (dmson) return msg.addReaction("📬").catch(() => {});
     } else {
       // Specific command help
       const construct = [];
