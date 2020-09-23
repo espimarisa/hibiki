@@ -37,6 +37,26 @@ a.navbar-item, .navbar-toggle, .navbar-burger:hover, .navbar-menu.is-active, .na
   background: transparent !important;
 }
 
+#autoRoles>div>button>span {
+  padding-top: 0.5em;
+}
+
+#assignableRoles>div>button>span {
+  padding-top: 0.5em;
+}
+
+#snipingIgnore>div>button>span {
+  padding-top: 0.5em;
+}
+
+#ignoredLoggingChannels>div>button>span {
+  padding-top: 0.5em;
+}
+
+#disabledCmds>div>button>span {
+  padding-top: 0.5em;
+}
+
 .input,
 .select select,
 .textarea {
