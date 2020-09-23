@@ -228,11 +228,13 @@ module.exports = bot => {
       else if (item.type === "array" && !Array.isArray(profileConfig[c])) return profileConfig[c] = null;
 
       // Timezone checking
-      try { dayjs(new Date()).tz(profileConfig[c]); } catch (_) {
-        invalidTimezone = true;
-      }
+      else if (item.id === "timezone") {
+        try { dayjs(new Date()).tz(profileConfig[c]); } catch (_) {
+          invalidTimezone = true;
+        }
 
-      if (invalidTimezone) return profileConfig[c] = null;
+        if (invalidTimezone) return profileConfig[c] = null;
+      }
     });
 
     // Updates the config
