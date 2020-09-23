@@ -6,6 +6,7 @@ class removeassignableCommand extends Command {
       aliases: ["removeassign", "removeassignablerole", "rmassign", "rmassignable", "unassignable"],
       args: "<role:role>",
       description: "Makes an assignable role unassignable.",
+      requiredperms: "manageRoles",
       staff: true,
     });
   }

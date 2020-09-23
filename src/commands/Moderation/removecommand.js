@@ -6,7 +6,7 @@ class removecommandCommand extends Command {
       aliases: ["delcmd", "delcommand", "deletecmd", "deletecommand", "removecmd"],
       args: "[command:string]",
       description: "Removes a custom command.",
-      requiredPerms: "manageMessages",
+      requiredperms: "manageMessages",
       staff: true,
     });
   }
