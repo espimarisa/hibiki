@@ -6,7 +6,7 @@ class addcommandCommand extends Command {
       aliases: ["addcmd", "createcommand"],
       args: "[name:string] [content:string]",
       description: "Creates a custom command.",
-      requiredPerms: "manageMessages",
+      requiredperms: "manageMessages",
       staff: true,
     });
   }

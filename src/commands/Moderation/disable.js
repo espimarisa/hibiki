@@ -6,6 +6,7 @@ class disableCommand extends Command {
       args: "<item:string>",
       description: "Disables a command or category.",
       allowdisable: false,
+      requiredperms: "manageMessages",
       staff: true,
     });
   }
