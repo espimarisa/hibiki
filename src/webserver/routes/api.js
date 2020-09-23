@@ -63,7 +63,7 @@ module.exports = bot => {
 
     // Gets the config
     const guildConfig = await bot.db.table("guildconfig").get(guild.id).run();
-    if (!guildConfig) return res.status(204).send({ message: "Guild has empty config" });
+    if (!guildConfig) return res.status(204).end();
     res.send(guildConfig);
   });
 
@@ -85,7 +85,7 @@ module.exports = bot => {
     }
 
     // If no guildConfig
-    if (!req.body) return res.status(204).send({ message: "An empty body was sent" });
+    if (!req.body) return res.status(204).end();
     guildConfig = req.body;
 
     // Each guildConfig type/option
@@ -181,7 +181,7 @@ module.exports = bot => {
 
     // Gets the config
     const profileConfig = await bot.db.table("userconfig").get(req.user.id).run();
-    if (!profileConfig) return res.status(204).send({ message: "Profile has empty config" });
+    if (!profileConfig) return res.status(204).end();
     res.send(profileConfig);
   });
 
@@ -208,7 +208,7 @@ module.exports = bot => {
     }
 
     // If no profileConfig
-    if (!req.body) return res.status(204).send({ message: "An empty body was sent" });
+    if (!req.body) return res.status(204).end();
     profileConfig = req.body;
 
     // Each profileConfig type/option

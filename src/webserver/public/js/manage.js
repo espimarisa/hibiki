@@ -15,7 +15,10 @@ async function getGuildConfig(id) {
     headers: {
       "CSRF-Token": token,
     },
-  }).then(res => res.json().catch(() => {}));
+  }).then(res => {
+      if (res.status === 204) return {};
+      return res.json().catch(() => {});
+  });
   return body;
 }
 
@@ -263,7 +266,7 @@ window.addEventListener("load", async () => {
     oldcfg = { ...guildConfig };
     // Updates config
     updateGuildConfig(id, guildConfig).then(res => {
-      if (res.status === 200) {
+      if (res.status === 200 || res.status === 204) {
         // Button animation & changes
         button.classList.remove("is-loading");
         button.classList.add("is-success");
