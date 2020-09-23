@@ -8,12 +8,14 @@ const { minify } = require("terser");
 const { readdirSync, readFileSync } = require("fs");
 
 const bodyParser = require("body-parser");
+const compression = require("compression");
 const cookieParser = require("cookie-parser");
 const csurf = require("csurf");
 const expressSession = require("express-session");
 const express = require("express");
 const helmet = require("helmet");
 const passport = require("passport");
+const robots = require("express-robots-txt");
 const docker = require("../utils/docker");
 
 const { dashboard: config, rethink: database } = require("../../config");
@@ -24,6 +26,14 @@ const noCache = (_, res, next) => {
   res.header("Cache-Control", "no-cache");
   next();
 };
+
+function shouldCompress (req, res) {
+  if (req.headers["x-no-compression"]) {
+    return false;
+  }
+
+  return compression.filter(req, res);
+}
 
 app.use(helmet({ contentSecurityPolicy: false }));
 app.enable("trust proxy", 1);
@@ -97,8 +107,8 @@ module.exports = async bot => {
   app.set("partials", `${__dirname}/partials`);
   app.set("view engine", "ejs");
 
-  // Minfiies JavaScript files if in production
-  if (process.env.NODE_ENV === "production") {
+  // Minfiies files if in production; adds robots.txt, and compresses data
+  if (process.env.NODE_ENV !== "production") {
     const files = readdirSync(`${__dirname}/public/js`, { withFileTypes: true });
     for (const file of files) {
       if (file.isDirectory()) return;
@@ -115,6 +125,11 @@ module.exports = async bot => {
 
       // Uses minified files
       app.use(`/public/js/${file.name}`, (req, res) => { res.set("Content-Type", "application/javascript").send(minifiedFile.code); });
+
+      // Adds robots.txt
+      app.use(robots({ UserAgent: "*", Disallow: "/public/", CrawlDelay: "5" }));
+
+      app.use(compression({ filter: shouldCompress }));
     }
   }
 
