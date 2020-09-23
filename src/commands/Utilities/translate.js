@@ -26,6 +26,8 @@ class translateCommand extends Command {
   async run(msg, args) {
     let locale = "en";
 
+    if (!args.length) return this.bot.embed("❌ Error", "No **text to convert** was given.", msg, "error");
+
     // Adjusts some locales
     if (args[0].toLowerCase().startsWith("se ")) {
       locale = "sv";
