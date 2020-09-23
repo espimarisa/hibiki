@@ -9,7 +9,7 @@
     <div class="container">
       <div class="navbar-brand">
         <a href="/" class="navbar-item has-text-white">
-          <img src="<%= bot.user.dynamicAvatarURL() %>" class="nav-logo is-rounded" alt="logo">
+          <img src="<%= bot.user.dynamicAvatarURL(null, 64) %>" class="nav-logo is-rounded" alt="logo">
           <span class="is-inline-block ml-2"><%= bot.user.username %> v<%= bot.version %></span>
         </a>
         <a class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu" role="button">

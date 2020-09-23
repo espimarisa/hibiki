@@ -20,7 +20,7 @@
     <%- include("../partials/navbar") %>
     <div class="hero-body">
       <div class="container has-text-centered has-text-light animate__animated animate__fadeIn animate__faster">
-        <img src="<%= bot.user.dynamicAvatarURL() %>" class="logo" alt="logo">
+        <img src="<%= bot.user.dynamicAvatarURL(null, 512) %>" class="logo" alt="logo">
         <p class="is-size-2 has-text-weight-semibold"><%= bot.user.username %></p>
         <p class="control has-text-centered">
           <a href="/invite/" class="button is-large is-white">
