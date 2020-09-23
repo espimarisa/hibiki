@@ -16,7 +16,7 @@ module.exports = bot => {
     discriminator: user.discriminator,
     guilds: user.guilds,
     id: user.id,
-    avatar: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : "https://cdn.discordapp.com/embed/avatars/0.png",
+    avatar: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128` : "https://cdn.discordapp.com/embed/avatars/0.png",
   });
 
   // List of servers
