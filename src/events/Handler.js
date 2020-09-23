@@ -201,7 +201,7 @@ class Handler extends Event {
     } catch (err) {
       // Ignores timeouts and permission errors
       if (err && err.code && err.code === 10007 || err.code === 10008 || err.code === 10011 ||
-        err.code === 10013 || err.code === 10026 || err.code === 50001 || err.code === 50007 || err === "timeout") return;
+        err.code === 10013 || err.code === 10026 || err.code === 50001 || err.code === 50007 || err.code === 90001 || err === "timeout") return;
 
       // Configures sentry info
       sentry.configureScope(scope => {
