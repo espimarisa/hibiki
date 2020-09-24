@@ -26,8 +26,8 @@ class garfieldCommand extends Command {
       // Gets image URL
       function pad(n) { return n < 10 ? `0${n}` : n; }
       const archive = "https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/";
-      const url = `${archive + date.getFullYear()}/${date.getFullYear()}-${pad(date.getMonth())}-${pad(date.getDate())}.gif`;
-      const garfield = [url, date.getFullYear(), pad(date.getMonth() + 1), pad(date.getDate() + 1), total];
+      const url = `${archive + date.getUTCFullYear()}/${date.getUTCFullYear()}-${pad(date.getUTCMonth())}-${pad(date.getUTCDate())}.gif`;
+      const garfield = [url, date.getUTCFullYear(), pad(date.getUTCMonth()), pad(date.getUTCDate()), total];
       return garfield;
     }
 
