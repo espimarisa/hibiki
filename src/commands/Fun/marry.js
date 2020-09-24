@@ -15,12 +15,12 @@ class marryCommand extends Command {
     const state = await this.bot.db.table("marriages").getAll(msg.author.id, user.id, { index: "marriages" }).run();
 
     // If author is married
-    if (state.find(m => m.id === msg.author.id || m.marriedTo === msg.author.id)) {
+    if (state.find(m => m.id === msg.author.id || m.spouse === msg.author.id)) {
       return this.bot.embed("❌ Error", "You're already married.", msg, "error");
     }
 
     // If mentioned user is married
-    if (state.find(m => m.id === user.id || m.marriedTo === user.id)) {
+    if (state.find(m => m.id === user.id || m.spouse === user.id)) {
       return this.bot.embed("❌ Error", `**${user.username}** is already married.`, msg, "error");
     }
 
