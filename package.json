@@ -1,6 +1,6 @@
 {
   "name": "hibiki",
-  "version": "3.2.3",
+  "version": "3.2.4-alpha",
   "description": "An easy, customizable, and powerful Discord bot that does anything that your server needs.",
   "author": "smolespi <espi@lesbian.codes> (https://lesbian.codes)",
   "contributors": [
@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "beautify-proj": "^1.0.0",
-    "eslint": "^7.9.0",
+    "eslint": "^7.10.0",
     "nodemon": "^2.0.4",
     "pm2": "^4.4.1"
   }
