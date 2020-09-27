@@ -104,7 +104,7 @@ module.exports = bot => {
             embed: {
               color: bot.embed.color("pinboard"),
               author: {
-                name: bot.tag(msg.author, true),
+                name: bot.tag(msg.author),
                 icon_url: msg.author.avatarURL,
               },
               fields: [{
