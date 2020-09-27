@@ -69,7 +69,7 @@ class easyTranslate extends Event {
           icon_url: reactioner.dynamicAvatarURL(),
         },
       },
-    });
+    }).catch(() => {});
   }
 }
 
