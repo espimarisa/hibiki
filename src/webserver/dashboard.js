@@ -27,13 +27,8 @@ const noCache = (_, res, next) => {
   next();
 };
 
-function shouldCompress (req, res) {
-  if (req.headers["x-no-compression"]) {
-    return false;
-  }
-
-  return compression.filter(req, res);
-}
+// Decides if we should compress data or not
+const shouldCompress = (req, res) => !req.headers["X-No-Compression"] && compression.filter(req, res);
 
 app.use(helmet({ contentSecurityPolicy: false }));
 app.enable("trust proxy", 1);
@@ -54,7 +49,7 @@ module.exports = async bot => {
   // Configures session store
   const sessionStore = new session({
     connectOptions: {
-      host: docker === true ? "db" : database.host,
+      host: docker ? "db" : database.host,
       db: database.db,
       password: database.password,
       port: database.port ? database.port : 28015,
@@ -92,13 +87,11 @@ module.exports = async bot => {
     secure: process.env.NODE_ENV === "production",
   }));
 
-  // Starts passport & cookieParser
+  // Configures cookieParser and csurf
   app.use(cookieParser(config.cookiesecret));
+  app.use(csurf({ cookie: true }));
 
-  app.use(csurf({
-    cookie: true,
-  }));
-
+  // Configures passport
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -123,24 +116,21 @@ module.exports = async bot => {
         return;
       }
 
-      // Uses minified files
+      // Uses minified files, adds robots.txt, and enables the compression filter
       app.use(`/public/js/${file.name}`, (req, res) => { res.set("Content-Type", "application/javascript").send(minifiedFile.code); });
-
-      // Adds robots.txt
       app.use(robots({ UserAgent: "*", Disallow: "/public/", CrawlDelay: "5" }));
-
       app.use(compression({ filter: shouldCompress }));
     }
   }
 
-  // Express static/public
+  // Sets public/static directory
   app.use("/public/", express.static(`${__dirname}/public`, { dotfiles: "allow" }));
 
   // Routes
   app.use("/", require("./routes/index")(bot));
+  app.use("/api/", noCache, require("./routes/api")(bot));
   app.use("/auth/", noCache, require("./routes/auth")(bot, passport));
   app.use("/manage/", noCache, require("./routes/manage")(bot, passport));
-  app.use("/api/", noCache, require("./routes/api")(bot));
 
   // 404 handler
   app.use((req, res) => {
