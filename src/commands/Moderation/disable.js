@@ -53,7 +53,7 @@ class disableCommand extends Command {
     }
 
     // If not found or is already disabled
-    if (!cmd) return this.bot.embed("❌ Error", "That command/category doesn't exist.", msg, "error");
+    if (!cmd) return this.bot.embed("❌ Error", "That command/category doesn't exist or isn't allowed to be disabled.", msg, "error");
     if (!guildconfig.disabledCmds) guildconfig.disabledCmds = [];
     if (guildconfig.disabledCmds && guildconfig.disabledCmds.includes(cmd.id)) {
       return this.bot.embed("❌ Error", "That's already disabled.", msg, "error");
