@@ -37,7 +37,7 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
     "csurf": "^1.11.0",
-    "dayjs": "^1.8.36",
+    "dayjs": "^1.9.1",
     "ejs": "^3.1.5",
     "eris": "^0.13.3",
     "eris-additions": "^1.4.1",
@@ -49,7 +49,7 @@
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "rethinkdb-ts": "^2.4.5",
-    "terser": "^5.3.2"
+    "terser": "^5.3.3"
   },
   "optionalDependencies": {
     "erlpack": "^0.1.3",
