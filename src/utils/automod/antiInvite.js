@@ -1,7 +1,7 @@
 /**
  * @fileoverview Automod antiInvite module
  * @description Looks for discord invites and applies a punishment if set
- * @module automod/antiInvite.js
+ * @module automod/antiInvite
  */
 
 const punish = require("./punishments");
