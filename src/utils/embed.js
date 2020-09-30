@@ -46,7 +46,8 @@ module.exports = (title, description, msg, colortype) => {
   }
 
   construct.embed.color = color;
-  if (msg) return msg.channel.createMessage(construct);
+  if (!msg) throw new Error("No message object to send, contact a developer!");
+  else if (msg) return msg.channel.createMessage(construct);
 };
 
 /**
