@@ -50,8 +50,7 @@ class helpCommand extends Command {
 
     // Finds a command
     let cmd;
-    if (args) cmd = this.bot.commands.find(c => c.id.toLowerCase() === args.join(" ").toLowerCase() ||
-      c.aliases.includes(args.join(" ").toLowerCase()));
+    if (args) cmd = this.bot.commands.find(c => c.id.toLowerCase() === args.join(" ").toLowerCase() || c.aliases.includes(args.join(" ").toLowerCase()));
 
     // If no command, send a list of commands
     if (!cmd) {
@@ -81,7 +80,7 @@ class helpCommand extends Command {
               name: sortedcategories[categories.indexOf(category)],
               // Hides disabled commands
               value: this.bot.commands.map(c => {
-                if (db && db.disabledCmds && db.disabledCmds.includes(c.id)) return;
+                if (db && db.disabledCmds && db.disabledCmds.includes(c.id) && c.allowdisable !== false) return;
                 if (c.category !== category) return;
                 return `\`${c.id}\``;
               }).join(" "),
