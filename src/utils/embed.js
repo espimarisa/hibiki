@@ -14,7 +14,9 @@ const format = require("./format");
  * @param {object} msg Message object for setting the footer & sending the embed
  * @param {string} [colortype] Type of color (set in the config file)
  *
- * @example this.bot.embed("title", "description", "colortype", msg);
+ * The color is automatically set to "general" if you don't specify it.
+ * Otherise, you can set it to "error", "success", or "pinboard", or any other colors you add in config.json.
+ * @example this.bot.embed("title", "description", msg, "colortype");
  */
 
 module.exports = (title, description, msg, colortype) => {

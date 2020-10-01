@@ -31,7 +31,10 @@ class Handler extends Event {
   async run(msg) {
     if (!msg || !msg.author || msg.author.bot) return;
     const blacklist = await this.bot.db.table("blacklist").run();
-    if (blacklist.find(u => u.user === msg.author.id)) return;
+    if (blacklist.find(u => u.user === msg.author.id)) {
+      this.bot.log.error(`Blacklisted user ${this.bot.tag(msg.author)} (${msg.author.id}) tried to run a command in ${msg.channel.guild.name} (${msg.channel.guild.id}).`);
+      return;
+    }
 
     // DM handling & logger
     if (msg.channel instanceof eris.PrivateChannel && this.bot.config.logchannel) {
@@ -131,12 +134,12 @@ class Handler extends Event {
 
     // Owner commands; disabled categories
     if (cmd.owner && !this.bot.config.owners.includes(msg.author.id)) return;
-    if (guildconfig && (guildconfig.disabledCategories || []).includes(cmd.category) && cmd.allowdisable) {
+    if (guildconfig && (guildconfig.disabledCategories || []).includes(cmd.category) && cmd.allowdisable !== false) {
       return this.bot.embed("❌ Error", "The category that command is in is disabled in this server.", msg, "error");
     }
 
     // Disabled commands
-    if (guildconfig && (guildconfig.disabledCmds || []).includes(cmd.id) && cmd.allowdisable) {
+    if (guildconfig && (guildconfig.disabledCmds || []).includes(cmd.id) && cmd.allowdisable !== false) {
       return this.bot.embed("❌ Error", "That command is disabled in this server.", msg, "error");
     }
 
@@ -200,13 +203,14 @@ class Handler extends Event {
       await cmd.run(msg, args, parsedArgs);
     } catch (err) {
       // Ignores timeouts and permission errors
-      if (err && err.code && err.code === 10007 || err.code === 10008 || err.code === 10011 ||
-        err.code === 10013 || err.code === 10026 || err.code === 50001 || err.code === 50007 || err.code === 90001 || err === "timeout") return;
+      if (err && err.code && err.code === 10007 || err.code === 10008 || err.code === 10011 || err.code === 10013 ||
+        err.code === 10026 || err.code === 50001 || err.code === 50007 || err.code === 90001 || err === "timeout") return;
 
       // Configures sentry info
       sentry.configureScope(scope => {
         scope.setUser({ id: msg.author.id, username: this.bot.tag(msg.author) });
         scope.setExtra("guild", msg.channel.guild.name);
+        scope.setExtra("guildID", msg.channel.guild.id);
       });
 
       // Logs the error
