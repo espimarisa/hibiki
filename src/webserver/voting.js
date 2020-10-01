@@ -6,6 +6,7 @@
 
 const express = require("express");
 const config = require("../../config").voting;
+const docker = require("../utils/docker");
 
 // Sets up express
 const app = express();
@@ -68,6 +69,6 @@ module.exports = bot => {
   });
 
   // Listens on port
-  app.listen(config.port, "0.0.0.0");
+  app.listen(docker ? 7013 : config.port, "0.0.0.0");
   bot.log.info(`Voting handler listening on port ${config.port}`);
 };
