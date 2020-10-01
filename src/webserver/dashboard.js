@@ -140,5 +140,5 @@ module.exports = async bot => {
   });
 
   bot.log.info(`Dashboard listening on port ${config.port}`);
-  app.listen(config.port);
+  app.listen(docker ? 7012 : config.port);
 };
