@@ -12,7 +12,7 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
     <div id="pinChannel" class="select">
       <select>
         <option id="none">None</option>
-        <% for(let i = 0; i < channels.length; i++) { %>
+        <% for (let i = 0; i < channels.length; i++) { %>
         <% let channel = channels[i] %>
         <option id=<%=channel.id%>>#<%= channel.name %></option>
         <% } %>

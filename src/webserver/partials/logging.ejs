@@ -12,7 +12,7 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
     <div id="agreeChannel" class="select">
       <select>
         <option id="none">None</option>
-        <% for(let i = 0; i < channels.length; i++) { %>
+        <% for (let i = 0; i < channels.length; i++) { %>
         <% let channel = channels[i] %>
         <option id=<%=channel.id%>>#<%= channel.name %></option>
         <% } %>
@@ -28,7 +28,7 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
     <div id="leaveJoin" class="select">
       <select>
         <option id="none">None</option>
-        <% for(let i = 0; i < channels.length; i++) { %>
+        <% for (let i = 0; i < channels.length; i++) { %>
         <% let channel = channels[i] %>
         <option id=<%=channel.id%>>#<%= channel.name %></option>
         <% } %>
@@ -44,7 +44,7 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
     <div id="eventLogging" class="select">
       <select>
         <option id="none">None</option>
-        <% for(let i = 0; i < channels.length; i++) { %>
+        <% for (let i = 0; i < channels.length; i++) { %>
         <% let channel = channels[i] %>
         <option id=<%=channel.id%>>#<%= channel.name %></option>
         <% } %>
@@ -60,7 +60,7 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
     <div id="messageLogging" class="select">
       <select>
         <option id="none">None</option>
-        <% for(let i = 0; i < channels.length; i++) { %>
+        <% for (let i = 0; i < channels.length; i++) { %>
         <% let channel = channels[i] %>
         <option id=<%=channel.id%>>#<%= channel.name %></option>
         <% } %>
@@ -76,7 +76,7 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
     <div id="modLogging" class="select">
       <select>
         <option id="none">None</option>
-        <% for(let i = 0; i < channels.length; i++) { %>
+        <% for (let i = 0; i < channels.length; i++) { %>
         <% let channel = channels[i] %>
         <option id=<%=channel.id%>>#<%= channel.name %></option>
         <% } %>
@@ -92,7 +92,7 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
     <div id="memberLogging" class="select">
       <select>
         <option id="none">None</option>
-        <% for(let i = 0; i < channels.length; i++) { %>
+        <% for (let i = 0; i < channels.length; i++) { %>
         <% let channel = channels[i] %>
         <option id=<%=channel.id%>>#<%= channel.name %></option>
         <% } %>
@@ -106,8 +106,8 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
   <p class="subtitle is-size-5">Channels that the message logging module will ignore. It's a good idea to ignore private channels.</p>
   <div class="control">
     <div id="ignoredLoggingChannels" class="select">
-      <select multiple="multiple" class="multiple-select">
-        <% for(let i = 0; i < channels.length; i++) { %>
+      <select id="multiIgnoredChannels" class="multiple-select">
+        <% for (let i = 0; i < channels.length; i++) { %>
         <% let channel = channels[i] %>
         <option><%= channel.name %> (<%= channel.id %>)</option>
         <% } %>

@@ -1,4 +1,4 @@
-<% const cmds = bot.commands.filter(c => c.category !== "Owner") %>
+<% const cmds = bot.commands.filter(c => c.category !== "Owner" && c.allowdisable !== false) %>
 
 <h2 class="title is-size-2" id="general"><i class="fas fa-cog mr-2"></i>General</h2>
 <p class="subtitle is-size-4">Basic options and functionality to configure.</p>
@@ -29,7 +29,6 @@
   <p class="subtitle is-size-5">Commands/categories to prevent from running in this server.</p>
   <div class="control">
     <div id="disabledCmds" class="select">
-      <select multiple="multiple" class="multiple-select"></select>
     </div>
   </div>
 </div>
