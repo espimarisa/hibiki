@@ -37,26 +37,6 @@ a.navbar-item, .navbar-toggle, .navbar-burger:hover, .navbar-menu.is-active, .na
   background: transparent !important;
 }
 
-#autoRoles>div>button>span {
-  padding-top: 0.5em;
-}
-
-#assignableRoles>div>button>span {
-  padding-top: 0.5em;
-}
-
-#snipingIgnore>div>button>span {
-  padding-top: 0.5em;
-}
-
-#ignoredLoggingChannels>div>button>span {
-  padding-top: 0.5em;
-}
-
-#disabledCmds>div>button>span {
-  padding-top: 0.5em;
-}
-
 .input,
 .select select,
 .textarea {
@@ -82,15 +62,7 @@ a.navbar-item, .navbar-toggle, .navbar-burger:hover, .navbar-menu.is-active, .na
   padding-bottom: 1.5em;
 }
 
-.icon-caret {
-  opacity: 0;
-}
-
-.ms-choice:hover {
-  border-width: 2px;
-}
-
-.ms-choice, #pinEmoji {
+ #pinEmoji {
   height: 40px !important;
   border-width: 1px;
   font-size: 1em;
@@ -99,7 +71,7 @@ a.navbar-item, .navbar-toggle, .navbar-burger:hover, .navbar-menu.is-active, .na
   outline: 0;
 }
 
-.placeholder, #pinEmoji {
+ #pinEmoji {
   vertical-align: middle;
   justify-content: center;
   padding-right: 2.5em;
@@ -115,6 +87,10 @@ a.navbar-item, .navbar-toggle, .navbar-burger:hover, .navbar-menu.is-active, .na
 
 .select:after {
   z-index: 0 !important;
+}
+
+.emoji-picker__wrapper {
+  z-index: 50;
 }
 
 /* Animations */

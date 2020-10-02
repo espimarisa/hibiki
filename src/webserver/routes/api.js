@@ -18,20 +18,21 @@ const router = express.Router();
 
 module.exports = bot => {
   // Gets setup items, commands, and profile items
-  router.get("/getItems", async (req, res) => {
+  router.get("/getItems/", async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
 
     // Sends loaded cmds
     if (req.query.commands) {
       const cmds = [];
       bot.commands.forEach(cmd => {
-        if (!cmds.find(c => c.label === cmd.category) && cmd.category !== "Owner") cmds.push({ label: cmd.category, type: "optgroup", children: [] });
+        if (!cmds.find(c => c.label === cmd.category) && cmd.category !== "Owner") cmds.push({ label: cmd.category, type: "group", children: [] });
       });
 
       // Ignores owner cmds
       bot.commands.forEach(cmd => {
         if (cmd.category === "Owner") return;
-        cmds.find(c => c.label === cmd.category).children.push({ text: cmd.id, value: cmd.id });
+        if (cmd.allowdisable === false) return;
+        cmds.find(c => c.label === cmd.category).children.push({ label: cmd.id });
       });
 
       // Sends cmds
@@ -140,7 +141,7 @@ module.exports = bot => {
       // Disabled commands
       if (c === "disabledCmds") guildConfig[c] = guildConfig[c].filter(cmd => {
         const command = bot.commands.map(c => c.id === cmd);
-        if (command && !command.allowdisable) return true;
+        if (command && command.allowdisable === true) return true;
         return false;
       });
     });

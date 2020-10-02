@@ -17,8 +17,8 @@ async function getProfileConfig(id) {
       "CSRF-Token": token,
     },
   }).then(res => {
-      if (res.status === 204) return {};
-      return res.json().catch(() => {});
+    if (res.status === 204) return {};
+    return res.json().catch(() => {});
   });
   return body;
 }
@@ -77,6 +77,7 @@ window.addEventListener("load", async () => {
     d.addEventListener("input", starget => {
       const e = starget.target;
       if (e.id === "bio" && e.value.length > 200) e.value = e.value.substring(0, 200);
+      // TODO: implement ad blocker here (view bio.js)
     });
   });
 

@@ -12,7 +12,7 @@ roles = roles.filter(r => !r.managed); %>
     <div id="agreeRole" class="select">
       <select>
         <option id="none">None</option>
-        <% for(let i = 0; i < roles.length; i++) { %>
+        <% for (let i = 0; i < roles.length; i++) { %>
         <% let role = roles[i] %>
         <option id=<%=role.id%>><%= role.name %></option>
         <% } %>
@@ -26,8 +26,8 @@ roles = roles.filter(r => !r.managed); %>
   <p class="subtitle is-size-5">Roles that any member can give themselves with the assign command.</p>
   <div class="control">
     <div id="assignableRoles" class="select">
-      <select multiple="multiple" class="multiple-select">
-        <% for(let i = 0; i < roles.length; i++) { %>
+      <select id="multiAssignableRoles" class="multiple-select">
+        <% for (let i = 0; i < roles.length; i++) { %>
         <% let role = roles[i] %>
         <option><%= role.name %> (<%= role.id %>)</option>
         <% } %>
@@ -43,7 +43,7 @@ roles = roles.filter(r => !r.managed); %>
     <div id="staffRole" class="select">
       <select>
         <option id="none">None</option>
-        <% for(let i = 0; i < roles.length; i++) { %>
+        <% for (let i = 0; i < roles.length; i++) { %>
         <% let role = roles[i] %>
         <option id=<%=role.id%>><%= role.name %></option>
         <% } %>
@@ -59,7 +59,7 @@ roles = roles.filter(r => !r.managed); %>
     <div id="mutedRole" class="select">
       <select>
         <option id="none">None</option>
-        <% for(let i = 0; i < roles.length; i++) { %>
+        <% for (let i = 0; i < roles.length; i++) { %>
         <% let role = roles[i] %>
         <option id=<%=role.id%>><%= role.name %></option>
         <% } %>
@@ -73,8 +73,8 @@ roles = roles.filter(r => !r.managed); %>
   <p class="subtitle is-size-5">Roles automatically given to new members when they join the server.</p>
   <div class="control">
     <div id="autoRoles" class="select">
-      <select multiple="multiple" class="multiple-select">
-        <% for(let i = 0; i < roles.length; i++) { %>
+      <select id="multiAutomaticRoles" class="multiple-select">
+        <% for (let i = 0; i < roles.length; i++) { %>
         <% let role = roles[i] %>
         <option><%= role.name %> (<%= role.id %>)</option>
         <% } %>
@@ -90,7 +90,7 @@ roles = roles.filter(r => !r.managed); %>
     <div id="verifiedRole" class="select">
       <select>
         <option id="none">None</option>
-        <% for(let i = 0; i < roles.length; i++) { let role = roles[i] %>
+        <% for (let i = 0; i < roles.length; i++) { let role = roles[i] %>
         <option id=<%=role.id%>><%= role.name %></option>
         <% } %>
       </select>
