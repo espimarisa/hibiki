@@ -16,8 +16,8 @@ async function getGuildConfig(id) {
       "CSRF-Token": token,
     },
   }).then(res => {
-      if (res.status === 204) return {};
-      return res.json().catch(() => {});
+    if (res.status === 204) return {};
+    return res.json().catch(() => {});
   });
   return body;
 }
@@ -50,20 +50,46 @@ async function resetGuildConfig(id) {
 }
 
 let oldcfg;
+let multiCats;
 
 // Listens on window load
 window.addEventListener("load", async () => {
-  // Gets items and IDs
-  // Hibiki, powered by unreliable and shitty regexes
-  const id = /manage\/([\d]{17,19})/.exec(document.URL)[1];
+  const token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+  const commands = await fetch("../../api/getItems?commands=true", {
+    credentials: "include",
+    headers: {
+      "CSRF-Token": token,
+    },
+  }).then(res => res.json().catch(() => {}));
 
+  // Multiselect base options
+  const baseOptions = {
+    searchEnable: true,
+  };
+
+  // Multiselect handler for commands & categories
+  multiCats = new Bulmaselect("disabledCmds", { ...baseOptions, options: commands });
+
+  // Multiselect handler for channelArrays
+  const multiChannelArrays = {
+    ignoredLoggingChannels: new Bulmaselect("multiIgnoredChannels", { ...baseOptions }),
+    snipingIgnore: new Bulmaselect("multiSnipingIgnore", { ...baseOptions }),
+  };
+
+  // Multiselect handler for roleArrays
+  const multiRoleArrays = {
+    assignableRoles: new Bulmaselect("multiAssignableRoles", { ...baseOptions }),
+    autoRoles: new Bulmaselect("multiAutomaticRoles", { ...baseOptions }),
+  };
+
+  // Gets items and IDs
+  const id = /manage\/([\d]{17,19})/.exec(document.URL)[1];
   const fetchedItems = await fetch("/api/getItems", {
     credentials: "include",
     headers: {
       "CSRF-Token": token,
     },
   }).then(res => res.json());
-  const commands = await fetch("/api/getItems?commands=true", { credentials: "include" }).then(res => res.json());
   const configItems = fetchedItems.map(p => p.id);
 
   if (!id) return;
@@ -121,64 +147,36 @@ window.addEventListener("load", async () => {
 
     // Sets RoleArray as content
     if (type === "roleArray") {
+      if (!multiRoleArrays[p]) return;
       if (typeof guildConfig[p] !== "object") guildConfig[p] = [guildConfig[p]];
-      const roles = [];
-      const cc = [];
-      const multiselect = Array.from(document.querySelector(`#${p} > div > div > ul`).children);
 
-      // Pushes the roles
-      multiselect.forEach(e => {
-        if (!e.children[0]) return;
-        roles.push(e.children[0].children[0].value);
+      multiRoleArrays[p].options.forEach(s => {
+        const id = /.{1,32} \(([0-9]{16,19})\)/.exec(s.label)[1];
+        if (guildConfig[p] && guildConfig[p].includes(id)) s.state = true;
       });
-
-      // Role IDs
-      roles.forEach(r => {
-        const id = /.{1,32} \(([0-9]{16,19})\)/.exec(r)[1];
-        if (guildConfig[p] && guildConfig[p].includes(id)) cc.push(r);
-      });
-
-      // Sets the selected items
-      $(document.getElementById(p).children[0]).multipleSelect("setSelects", cc);
     }
 
     // Sets ChannelArray as content
     if (type === "channelArray") {
+      if (!multiChannelArrays[p]) return;
       if (typeof guildConfig[p] !== "object") guildConfig[p] = [guildConfig[p]];
-      const channels = [];
-      const cc = [];
-      const multiselect = Array.from(document.querySelector(`#${p} > div > div > ul`).children);
 
-      // Pushes the channels
-      multiselect.forEach(e => {
-        if (!e.children[0]) return;
-        channels.push(e.children[0].children[0].value);
+      multiChannelArrays[p].options.forEach(s => {
+        const id = /.{1,32} \(([0-9]{16,19})\)/.exec(s.label)[1];
+        if (guildConfig[p] && guildConfig[p].includes(id)) s.state = true;
       });
-
-      // Channel IDs
-      channels.forEach(c => {
-        const id = /.{1,32} \(([0-9]{16,19})\)/.exec(c)[1];
-        if (guildConfig[p] && guildConfig[p].includes(id)) cc.push(c);
-      });
-
-      // Sets the selected items
-      $(document.getElementById(p).children[0]).multipleSelect("setSelects", cc);
     }
 
     // Disabled command selector
     if (p === "disabledCmds") {
-      $("#disabledCmds > select").multipleSelect("setSelects", [...guildConfig[p], ...$("#disabledCmds > select").multipleSelect("getSelects")]);
-    }
-
-    // Disabled categories selector
-    if (p === "disabledCategories") {
-      let cc = $("#disabledCmds > select").multipleSelect("getSelects");
-      // Selects disabled cmds
-      guildConfig[p].forEach(cat => {
-        const disabledCommands = commands.find(cmd => cmd.label === cat).children.map(child => child.value);
-        cc = [...disabledCommands, ...cc];
+      multiCats.options.forEach(o => {
+        if (o.type === "group") {
+          if (guildConfig.disabledCategories && guildConfig.disabledCategories.includes(o.label)) o.state = true;
+          else o.children.forEach(c => {
+            if (guildConfig.disabledCmds && guildConfig.disabledCmds.includes(c.label)) c.state = true;
+          });
+        }
       });
-      $("#disabledCmds > select").multipleSelect("setSelects", cc);
     }
   });
 
@@ -223,7 +221,8 @@ window.addEventListener("load", async () => {
 
       // Sets roles in guildConfig
       if (type === "roleArray") {
-        const values = $(document.getElementById(p).children[0]).val();
+        if (!multiRoleArrays[p]) return;
+        const values = multiRoleArrays[p].getSelected().map(s => s.label);
         const ids = [];
         values.forEach(v => {
           ids.push(/.{1,32} \(([0-9]{16,19})\)/.exec(v)[1]);
@@ -233,7 +232,8 @@ window.addEventListener("load", async () => {
 
       // Sets channels in guildConfig
       if (type === "channelArray") {
-        const values = $(document.getElementById(p).children[0]).val();
+        if (!multiChannelArrays[p]) return;
+        const values = multiChannelArrays[p].getSelected().map(s => s.label);
         const ids = [];
         values.forEach(v => {
           ids.push(/.{1,32} \(([0-9]{16,19})\)/.exec(v)[1]);
@@ -243,18 +243,14 @@ window.addEventListener("load", async () => {
     });
 
     // Selected disabled items
-    const disabledcats = [];
-    const disabledcmds = $("#disabledCmds > select").multipleSelect("getSelects");
-
-    // Pushes each item
-    document.querySelector("#disabledCmds > div > div > ul").children.forEach(c => {
-      if (c.children.length && c.children[0].classList[0] && c.children[0].children[0].checked)
-        disabledcats.push(c.children[0].innerText.replace(/\s/g, ""));
+    if (!guildConfig.disabledCmds || !guildConfig.disabledCategories || Array.isArray(guildConfig.disabledCmds)) guildConfig.disabledCmds = [];
+    if (!guildConfig.disabledCmds || !guildConfig.disabledCategories || Array.isArray(guildConfig.disabledCategories)) guildConfig.disabledCategories = [];
+    multiCats.getSelected().forEach(o => {
+      if (o.type === "group") {
+        if (o.state) guildConfig.disabledCategories.push(o.label);
+        else o.children.forEach(c => guildConfig.disabledCmds.push(c.label));
+      }
     });
-
-    // Sets disabled items in guildConfig
-    guildConfig.disabledCmds = disabledcmds.filter(cmd => !disabledcats.includes(commands.find(c => c.children.find(child => child.value === cmd)).label));
-    guildConfig.disabledCategories = disabledcats;
   }
 
   // Submission button functionality

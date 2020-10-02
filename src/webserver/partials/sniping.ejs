@@ -2,7 +2,7 @@
 channels = channels.filter(c => c.type === 0);
 channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).permissionsOf(bot.user.id).has("sendMessages")); %>
 
-<h2 class="title is-size-2" id="roles"><i class="fas fa-comment-slash mr-2"></i>Sniping</h2>
+<h2 class="title is-size-2" id="sniping"><i class="fas fa-comment-slash mr-2"></i>Sniping</h2>
 <p class="subtitle is-size-4">Configures how message sniping works.</p>
 
 <div class="field">
@@ -36,8 +36,8 @@ channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).perm
   <p class="subtitle is-size-5">Channels that will be ignored from message sniping. It's a good idea to ignore private channels.</p>
   <div class="control">
     <div id="snipingIgnore" class="select">
-      <select multiple="multiple" class="multiple-select">
-        <% for(let i = 0; i < channels.length; i++) { %>
+      <select id="multiSnipingIgnore" class="multiple-select">
+        <% for (let i = 0; i < channels.length; i++) { %>
         <% let channel = channels[i] %>
         <option><%= channel.name %> (<%= channel.id %>)</option>
         <% } %>
