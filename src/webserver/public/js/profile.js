@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * @fileoverview Profile manager
  * @description Manages a profile via the API

@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * @fileoverview Guild manager
  * @description Manages a guildconfig via the API

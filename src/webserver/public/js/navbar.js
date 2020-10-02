@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * @fileoverview Navbar handler
  * @description Handles Bulma navbar functionality
