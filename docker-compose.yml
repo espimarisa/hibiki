@@ -20,4 +20,4 @@ services:
         networks: [hibiki_net]
 
 networks:
-    hibiki_net
+    hibiki_net:
