@@ -11,7 +11,8 @@ services:
         restart: always
         depends_on: [db]
         networks: [hibiki_net]
-
+        volumes:
+            - ./config.json:/app/config.json
     db:
         image: rethinkdb
         volumes:
