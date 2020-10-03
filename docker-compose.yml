@@ -13,6 +13,7 @@ services:
         networks: [hibiki_net]
         volumes:
             - ./config.json:/app/config.json
+        mem_limit: 512M
     db:
         image: rethinkdb
         volumes:
