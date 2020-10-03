@@ -10,7 +10,7 @@ const log = require("./logger");
 const start = require("./database").start;
 const requiredtables = config.rethink.tables;
 
-(async () => {
+const setupDB = module.exports = async () => {
   await start().catch(err => {
     log.error(`Error while starting RethinkDB (Is it running; are you authorized?): ${err}`);
     process.exit();
@@ -40,5 +40,8 @@ const requiredtables = config.rethink.tables;
   }
 
   log.success("RethinkDB has been setup properly.");
-  process.exit(0);
-})();
+};
+
+if (require.main === module) {
+  setupDB().then(() => process.exit(0));
+}
