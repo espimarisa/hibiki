@@ -30,4 +30,6 @@ module.exports.start = async function database() {
     log.error(`Error while starting the database, exiting: ${err}`);
     process.exit(1);
   });
+
+  await r.db(config.rethink.db).wait();
 };
