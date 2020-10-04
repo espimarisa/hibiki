@@ -10,6 +10,7 @@ const config = require("../../config");
 const database = require("../scripts/database");
 const load = require("../scripts/loader");
 const statuses = require("../scripts/statuses");
+const setup = require("../scripts/setup");
 const sentry = require("@sentry/node");
 const startup = new Date();
 
@@ -54,6 +55,7 @@ class Hibiki extends Client {
 
   /** Runs when the bot is ready */
   readyListener() {
+    setup();
     load.all(this);
     statuses.switch(this);
     try { sentry.init({ dsn: this.key.sentry }); } catch (err) { this.log.error(`Sentry failed to start: ${err}`); }

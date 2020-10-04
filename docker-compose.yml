@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+    bot:
+        build: .
+        environment: 
+            NODE_ENV: production
+        ports: 
+            - "127.0.0.1:7012:7012"
+            - "127.0.0.1:7013:7013"
+        restart: always
+        depends_on: [db]
+        networks: [hibiki_net]
+        volumes:
+            - ./config.json:/app/config.json
+        mem_limit: 512M
+    db:
+        image: rethinkdb
+        volumes:
+            - ./rethinkdb_data:/data
+        restart: always
+        networks: [hibiki_net]
+
+networks:
+    hibiki_net:
