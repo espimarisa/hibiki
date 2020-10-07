@@ -85,17 +85,20 @@ class muteCommand extends Command {
 
       // Tries to DM user about their mute
       const dmchannel = await user.user.getDMChannel().catch(() => {});
-      dmchannel.createMessage({
-        embed: {
-          title: `🔇 Muted in ${msg.channel.guild.name}`,
-          description: `You were muted for ${reason ? `\`${reason}\`` : "no reason provided."}`,
-          color: this.bot.embed.color("error"),
-          footer: {
-            text: `Muted by ${this.bot.tag(msg.author)}`,
-            icon_url: msg.author.dynamicAvatarURL(),
+
+      if (dmchannel) {
+        dmchannel.createMessage({
+          embed: {
+            title: `🔇 Muted in ${msg.channel.guild.name}`,
+            description: `You were muted for ${reason ? `\`${reason}\`` : "no reason provided."}`,
+            color: this.bot.embed.color("error"),
+            footer: {
+              text: `Muted by ${this.bot.tag(msg.author)}`,
+              icon_url: msg.author.dynamicAvatarURL(),
+            },
           },
-        },
-      }).catch(() => {});
+        }).catch(() => {});
+      }
 
       this.bot.emit("memberMute", msg.channel.guild, msg.member, user, reason);
       this.bot.embed("✅ Success", `**${user.username}** was muted.`, msg, "success");

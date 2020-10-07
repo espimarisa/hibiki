@@ -40,13 +40,16 @@ class kickCommand extends Command {
 
       // Tries to DM kicked user
       const dmchannel = await user.user.getDMChannel().catch(() => {});
-      dmchannel.createMessage({
-        embed: {
-          title: `🚪 Kicked from ${msg.channel.guild.name}`,
-          description: `You were kicked for \`${reason}\`.`,
-          color: this.bot.embed.color("general"),
-        },
-      }).catch(() => {});
+
+      if (dmchannel) {
+        dmchannel.createMessage({
+          embed: {
+            title: `🚪 Kicked from ${msg.channel.guild.name}`,
+            description: `You were kicked for \`${reason}\`.`,
+            color: this.bot.embed.color("general"),
+          },
+        }).catch(() => {});
+      }
 
       this.bot.emit("guildKick", msg.channel.guild, reason, msg.member, user);
       await this.bot.embed.edit("🔨 Kick", `**${user.username}** was kicked by **${msg.author.username}**.`, kickmsg);

@@ -30,7 +30,7 @@ class purgeCommand extends Command {
 
     // Gets the messages to purge
     if (resp && resp.response === true) {
-      if (resp.msg) resp.msg.delete();
+      if (resp.msg) resp.msg.delete().catch(() => {});
       // Add 2 to account for response & the message that ran the command
       const messages = await msg.channel.getMessages(parseInt(amount) + 2);
       const toPurge = await messages.filter(m => {
