@@ -30,17 +30,20 @@ class warnCommand extends Command {
 
     // Tries to DM user about their warning
     const dmchannel = await user.user.getDMChannel().catch(() => {});
-    dmchannel.createMessage({
-      embed: {
-        title: `⚠ Warned in ${msg.channel.guild.name}`,
-        description: `You were warned for ${reason ? `\`${reason}\`` : "no reason provided."}`,
-        color: this.bot.embed.color("error"),
-        footer: {
-          text: `Warned by ${this.bot.tag(msg.author)}`,
-          icon_url: msg.author.dynamicAvatarURL(),
+
+    if (dmchannel) {
+      dmchannel.createMessage({
+        embed: {
+          title: `⚠ Warned in ${msg.channel.guild.name}`,
+          description: `You were warned for ${reason ? `\`${reason}\`` : "no reason provided."}`,
+          color: this.bot.embed.color("error"),
+          footer: {
+            text: `Warned by ${this.bot.tag(msg.author)}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
         },
-      },
-    }).catch(() => {});
+      }).catch(() => {});
+    }
 
     this.bot.emit("memberWarn", msg.channel.guild, msg.member, user, id, reason || "No reason provided.");
     this.bot.embed("✅ Success", `**${user.username}** was given a warning${reason.length ? ` for \`${reason}\`.` : "."}`, msg, "success");

@@ -41,13 +41,16 @@ class softbanCommand extends Command {
 
       // Tries to DM banned user
       const dmchannel = await user.user.getDMChannel().catch(() => {});
-      dmchannel.createMessage({
-        embed: {
-          title: `🚪 Banned from ${msg.channel.guild.name}`,
-          description: `You were banned for \`${reason}\`.`,
-          color: this.bot.embed.color("general"),
-        },
-      }).catch(() => {});
+
+      if (dmchannel) {
+        dmchannel.createMessage({
+          embed: {
+            title: `🚪 Banned from ${msg.channel.guild.name}`,
+            description: `You were banned for \`${reason}\`.`,
+            color: this.bot.embed.color("general"),
+          },
+        }).catch(() => {});
+      }
 
       this.bot.embed.edit("🔨 Softban", `**${user.username}** was banned by **${msg.author.username}**.`, softbanmsg);
     }
