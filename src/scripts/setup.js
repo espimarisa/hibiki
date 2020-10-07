@@ -39,7 +39,7 @@ const setupDB = module.exports = async () => {
     log.success("Created the marriage index");
   }
 
-  log.success("RethinkDB has been setup properly.");
+  log.info("RethinkDB is setup properly");
 };
 
 if (require.main === module) {

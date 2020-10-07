@@ -55,7 +55,7 @@ class danbooruCommand extends Command {
 
     // Gets random post
     const random = Math.floor(Math.random() * body.length);
-    if (body[random].file_url.endsWith(".webm") || body[random].file_url.endsWith(".mp4")) {
+    if (body && random && body[random].file_url.endsWith(".webm") || body[random].file_url.endsWith(".mp4")) {
       return this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body[0].file_url}).`, msg, "error");
     }
 

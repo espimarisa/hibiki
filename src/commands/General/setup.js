@@ -320,7 +320,7 @@ class setupCommand extends Command {
           cfg[setting.id] = result;
           await this.bot.db.table("guildconfig").get(msg.channel.guild.id).update(cfg).run();
 
-          m.delete();
+          m.delete().catch(() => {});
           const setmsg = await this.bot.embed("✅ Success", `**${setting.id}** has been set to **${result}**.`, msg, "success");
           setTimeout(() => { setmsg.delete().catch(() => {}); }, 2000);
           omsg.edit(itemsEmbed(category, this.bot));
