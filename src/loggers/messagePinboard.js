@@ -13,6 +13,7 @@ module.exports = bot => {
 
       if (!msg) return;
       if (msg.author.bot) return;
+      if (!msg.channel || !msg.channel.guild || !msg.channel.guild.id) return;
 
       // Gets guildconfig
       const guildconfig = await bot.db.table("guildconfig").get(msg.channel.guild.id).run();
@@ -90,8 +91,9 @@ module.exports = bot => {
           if (!getmsgs) return;
           // Finds pin msgs
           const pinmsg = getmsgs.find(m => m.embeds[0] && m.embeds[0].footer && m.embeds[0].footer.text.startsWith(pin) && m.embeds[0].footer
-            .text.endsWith(msg.id));
+            .text.endsWith(msg.id) && m.author.id === bot.user.id);
           if (msg.reactions[pin].count === 0) pin.delete().catch(() => {});
+
           // Edits the pinmsg
           if (pinmsg) {
             const embed = pinmsg.embeds[0];
