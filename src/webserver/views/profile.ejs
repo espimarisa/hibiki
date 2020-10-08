@@ -36,9 +36,9 @@
           <span class="icon"><i class="fas fa-check"></i></span>
           <span id="saved">Save changes</span>
         </a>
-        <a class="button" id="delete">
+        <a class="button modal-button" data-target="#modal" aria-haspopup="true">
           <span class="icon"><i class="fas fa-trash"></i></span>
-          <span id="reset">Reset profile</span>
+          <span>Reset profile</span>
         </a>
       </div>
     </div>
@@ -86,10 +86,12 @@
     </div>
   </section>
 
+  <%- include("../partials/modal") %>
   <%- include("../partials/footer") %>
 </body>
 
 <%# Imports scripts %>
+<script src="/public/js/modal.js"></script>
 <script src="/public/js/profile.js"></script>
 
 </html>
