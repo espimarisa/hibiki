@@ -4,7 +4,7 @@
 <head>
   <%- include("../partials/head") %>
   <meta name="csrf-token" content="<%= csrfToken %>">
-  <script src="https://cdn.jsdelivr.net/npm/bulmaselect@1.0.4/dist/bulmaselect.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bulmaselect@1.0.5/dist/bulmaselect.min.js" crossorigin="anonymous"></script>
   <title>Manage - <%= guild.name %></title>
 </head>
 
@@ -53,9 +53,9 @@
               <span class="icon"><i class="fas fa-check"></i></span>
               <span id="saved">Save changes</span>
             </a>
-            <a class="button modal-button" data-target="#modal" aria-haspopup="true" id="delete">
+            <a class="button modal-button" data-target="#modal" aria-haspopup="true">
               <span class="icon"><i class="fas fa-trash"></i></span>
-              <span id="reset">Reset config</span>
+              <span>Reset config</span>
             </a>
           </div>
         </div>
@@ -77,6 +77,7 @@
 </body>
 
 <script src="/public/js/manage.js"></script>
+<script src="/public/js/modal.js"></script>
 <script src="/public/js/navbar.js"></script>
 <script src="/public/js/picker.js" type="module"></script>
 
