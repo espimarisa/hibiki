@@ -7,7 +7,6 @@ const { Client } = require("eris");
 const { r } = require("rethinkdb-ts");
 const Args = require("./Args");
 const config = require("../../config");
-const database = require("../scripts/database");
 const load = require("../scripts/loader");
 const statuses = require("../scripts/statuses");
 const setup = require("../scripts/setup");
@@ -29,7 +28,6 @@ class Hibiki extends Client {
 
   constructor(token, options) {
     super(token, options);
-    database.start(this);
 
     this.config = config.bot;
     this.key = config.keys;
@@ -54,8 +52,8 @@ class Hibiki extends Client {
   }
 
   /** Runs when the bot is ready */
-  readyListener() {
-    setup();
+  async readyListener() {
+    await setup();
     load.all(this);
     statuses.switch(this);
     try { sentry.init({ dsn: this.key.sentry }); } catch (err) { this.log.error(`Sentry failed to start: ${err}`); }

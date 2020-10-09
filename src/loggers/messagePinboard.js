@@ -71,7 +71,7 @@ module.exports = bot => {
     .on("messageReactionAdd", async (msg, emoji, uid) => {
       let embedconstruct = {};
       if (!msg.content) {
-        msg = await msg.channel.getMessage(msg.id)
+        msg = await msg.channel.getMessage(msg.id);
       }
 
       if (!msg) return;
