@@ -16,7 +16,7 @@ class payCommand extends Command {
     // Blocks bots, selfpaying, and non-integers
     if (user.bot) return this.bot.embed("❌ Error", "You can't give cookies to a bot.", msg, "error");
     if (user.id === msg.author.id) return this.bot.embed("❌ Error", "Fraud is illegal.", msg, "error");
-    if (!amount || isNaN(amount)) return this.bot.embed("❌ Error", "You provided an invalid amount of cookies.", msg, "error");
+    if (!amount || isNaN(amount) || amount < 0) return this.bot.embed("❌ Error", "You provided an invalid amount of cookies.", msg, "error");
 
     // Gets author & user's cookies
     let ucookies = await this.bot.db.table("economy").get(user.id).run();
