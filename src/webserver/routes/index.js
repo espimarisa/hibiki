@@ -50,9 +50,5 @@ module.exports = bot => {
     res.redirect(301, "https://top.gg/bot/493904957523623936/vote");
   });
 
-  router.get("/twitter/", (req, res) => {
-    res.redirect(301, "https://twitter.com/HibikiApp");
-  });
-
   return router;
 };
