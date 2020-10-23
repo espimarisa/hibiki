@@ -8,7 +8,11 @@ module.exports = bot => {
   // When a pin is removed
   bot.on("messageReactionRemove", async (msg, emoji, uid) => {
       if (!msg.content) {
-        msg = await msg.channel.getMessage(msg.id);
+        try {
+          msg = await msg.channel.getMessage(msg.id);
+        } catch (err) {
+          return;
+        }
       }
 
       if (!msg) return;
@@ -71,7 +75,11 @@ module.exports = bot => {
     .on("messageReactionAdd", async (msg, emoji, uid) => {
       let embedconstruct = {};
       if (!msg.content) {
-        msg = await msg.channel.getMessage(msg.id);
+        try {
+          msg = await msg.channel.getMessage(msg.id);
+        } catch (err) {
+          return;
+        }
       }
 
       if (!msg) return;
