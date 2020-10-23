@@ -1,6 +1,6 @@
 {
   "name": "hibiki",
-  "version": "3.2.6-alpha",
+  "version": "3.2.7",
   "description": "An easy, customizable, and powerful Discord bot that does anything that your server needs.",
   "author": "smolespi <espi@lesbian.codes> (https://lesbian.codes)",
   "contributors": [
@@ -49,8 +49,7 @@
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "rethinkdb-ts": "^2.4.5",
-    "terser": "^5.3.8",
-    "zlib-sync": "^0.1.7"
+    "terser": "^5.3.8"
   },
   "optionalDependencies": {
     "erlpack": "^0.1.3",
