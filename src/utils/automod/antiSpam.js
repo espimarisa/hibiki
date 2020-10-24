@@ -18,9 +18,9 @@ module.exports = async (msg, bot, cfg) => {
       // Sends a message if msgOnPunishment is enabled
       if (cfg.msgOnPunishment) {
         const pmsg = await bot.embed(
-          `🔨 ${msg.author.username} has been ${cfg.spamPunishments.map(p => `${p.toLowerCase()}ed`).filter(p => p !== "purged").join(" and ")} for spamming.`,
+          `🔨 ${msg.author.username} has been ${cfg.spamPunishments.map(p => `${p.toLowerCase()}d`).filter(p => p !== "purged").join(" and ")} for spamming.`, null,
           msg, "error");
-        setTimeout(() => pmsg.delete("AutoMod message deletion").catch(() => {}), 3000);
+          setTimeout(() => pmsg.delete("AutoMod message deletion").catch(() => {}), 3000);
       }
     });
 
