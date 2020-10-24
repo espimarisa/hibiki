@@ -2,7 +2,7 @@
 channels = channels.filter(c => c.type === 0);
 channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).permissionsOf(bot.user.id).has("sendMessages")); %>
 
-<h2 class="title is-size-2" id="channels"><i class="fas fa-scroll mr-2"></i>Logging</h2>
+<h2 class="title is-size-2" id="logging"><i class="fas fa-scroll mr-2"></i>Logging</h2>
 <p class="subtitle is-size-4">Sets what channels things log to and how logging works.</p>
 
 <div class="field">
