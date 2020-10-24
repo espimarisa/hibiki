@@ -32,7 +32,7 @@ module.exports = bot => {
   bot.on("setAssignable", (guild, user, role) => trySend(guild, "setAssignable", {
     color: bot.embed.color("general"),
     author: {
-      name: `${bot.tag(user, true)} made ${role.name} assignable.`,
+      name: `${bot.tag(user)} made ${role.name} assignable.`,
       icon_url: user.avatarURL,
     },
   }));
@@ -41,7 +41,7 @@ module.exports = bot => {
   bot.on("removeAssignable", (guild, user, role) => trySend(guild, "removeAssignable", {
     color: bot.embed.color("general"),
     author: {
-      name: `${bot.tag(user, true)} made ${role.name} unassignable.`,
+      name: `${bot.tag(user)} made ${role.name} unassignable.`,
       icon_url: user.avatarURL,
     },
   }));
