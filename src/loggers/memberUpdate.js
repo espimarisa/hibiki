@@ -96,7 +96,7 @@ module.exports = bot => {
     color: bot.embed.color("success"),
     timestamp: new Date(),
     author: {
-      name: `${bot.tag(member, true)} joined`,
+      name: `${bot.tag(member)} joined`,
       icon_url: member.avatarURL,
     },
     thumbnail: {
@@ -123,7 +123,7 @@ module.exports = bot => {
     color: bot.embed.color("error"),
     timestamp: new Date(),
     author: {
-      name: `${bot.tag(member, true)} left`,
+      name: `${bot.tag(member)} left`,
       icon_url: member.avatarURL,
     },
     thumbnail: {

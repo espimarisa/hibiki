@@ -41,7 +41,7 @@ module.exports = bot => {
       color: bot.embed.color("error"),
       description: `**ID:** ${user.id}`,
       author: {
-        name: `${bot.tag(user, true)} was banned by ${bot.tag(banner, true)}.`,
+        name: `${bot.tag(user)} was banned by ${bot.tag(banner)}.`,
         icon_url: user.avatarURL,
       },
     };
@@ -62,7 +62,7 @@ module.exports = bot => {
       description: `**ID:** ${user.id}`,
       color: bot.embed.color("success"),
       author: {
-        name: `${bot.tag(user, true)} was unbanned by ${bot.tag(banner, true)}.`,
+        name: `${bot.tag(user)} was unbanned by ${bot.tag(banner)}.`,
         icon_url: user.avatarURL,
       },
     };
@@ -75,7 +75,7 @@ module.exports = bot => {
     description: `**Reason:** ${reason} \n **ID:** ${user.id}`,
     color: bot.embed.color("error"),
     author: {
-      name: `${bot.tag(user, true)} kicked ${bot.tag(member, true)}.`,
+      name: `${bot.tag(user)} kicked ${bot.tag(member)}.`,
       icon_url: user.avatarURL,
     },
   }));
