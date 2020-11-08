@@ -37,7 +37,7 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
     "csurf": "^1.11.0",
-    "dayjs": "^1.9.4",
+    "dayjs": "^1.9.5",
     "ejs": "^3.1.5",
     "eris": "^0.14.0",
     "eris-additions": "^1.4.1",
