@@ -7,7 +7,7 @@ COPY ./package-lock.json /app/package-lock.json
 WORKDIR /app
 
 RUN apk add --no-cache --virtual .build-deps alpine-sdk python \
- && npm install --only=production \
+ && npm install \
  && apk del .build-deps
 COPY . /app
 USER nobody
@@ -15,4 +15,4 @@ USER nobody
 EXPOSE 7012
 EXPOSE 7013
 
-CMD ["node", "."]
+CMD ["npm", "start"]
