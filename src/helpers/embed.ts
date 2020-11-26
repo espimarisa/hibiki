@@ -13,7 +13,7 @@ const config: botConfig = <botConfig>configFile;
 /**
  * Creates a new simple oneliner embed
  * @param {string} title The title field of the embed
- * @param {string} description The description field of the embed. Set to null if you want it to be empty
+ * @param {string} desc The description field of the embed. Set to null if you want it to be empty
  * @param {Message<TextChannel>} msg The message object to use, usually just msg
  * @param {string} colortype The type of color to use. If not given, will use "generaL". View colors portion of config.json
  *
@@ -21,7 +21,7 @@ const config: botConfig = <botConfig>configFile;
  * @example createEmbed("Embed Title", "Embed Description", msg, "error")
  */
 
-export async function createEmbed(title: string, description: string | null, msg: Message<TextChannel>, colortype?: string): Promise<any> {
+export async function createEmbed(title: string, desc: string | null, msg: Message<TextChannel>, colortype?: string): Promise<unknown> {
   if (!msg) throw new Error("No message object was provided");
   if (msg && !msg.channel) return;
   let embedTitle;
@@ -34,7 +34,7 @@ export async function createEmbed(title: string, description: string | null, msg
   };
 
   if (title) embedTitle = title;
-  if (description) embedDescription = description;
+  if (desc) embedDescription = desc;
 
   if (typeof msg === "object" && msg.author) {
     embedFooter.text = `Ran by ${msg.author.username}#${msg.author.discriminator}`;
@@ -64,7 +64,7 @@ export async function createEmbed(title: string, description: string | null, msg
 /**
  * Edits a simple oneliner embed
  * @param {string} title The title field of the embed
- * @param {string} description The description field of the embed. Set to null if you want it to be empty
+ * @param {string} desc The description field of the embed. Set to null if you want it to be empty
  * @param {Message<TextChannel>} msg The message object to use. Use the msg object you defined earlier!
  * @param {string} colortype The type of color to use. If not given, will use "generaL". View colors portion of config.json
  *
@@ -73,7 +73,7 @@ export async function createEmbed(title: string, description: string | null, msg
  * await editEmbed("Edited Title", "Edited Description", msgtoedit, "success")
  */
 
-export async function editEmbed(title: string, description: string | null, msg: Message<TextChannel>, colortype?: string): Promise<any> {
+export async function editEmbed(title: string, desc: string | null, msg: Message<TextChannel>, colortype?: string): Promise<unknown> {
   if (!msg) throw new Error("No message object was provided");
   if (msg && !msg.channel) return;
   let embedTitle;
@@ -82,7 +82,7 @@ export async function editEmbed(title: string, description: string | null, msg: 
   let embedFieldColor;
 
   if (title) embedTitle = title;
-  if (description) embedDescription = description;
+  if (desc) embedDescription = desc;
 
   if (colortype) {
     embedFieldColor = embedColor(colortype);
