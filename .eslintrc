@@ -1,5 +1,4 @@
 {
-
   "env": {
     "es6": true,
     "amd": true
@@ -13,9 +12,7 @@
     "ecmaVersion": 2020
   },
 
-  "extends": [
-    "eslint:recommended"
-  ],
+  "extends": ["eslint:recommended"],
 
   "rules": {
     "arrow-parens": [1, "as-needed"],
@@ -58,5 +55,28 @@
     "space-in-parens": [1, "never"],
     "space-infix-ops": [1, { "int32Hint": true }],
     "spaced-comment": [1, "always"]
-  }
+  },
+
+  // Typescript overrides
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+
+      // Enable if you need jsx support
+      // "parserOptions": {
+      // "ecmaFeatures": { "jsx": true }
+      // },
+
+      "rules": {
+        "semi": "off",
+        "@typescript-eslint/no-unused-vars": "error",
+        "@typescript-eslint/member-delimiter-style": "error",
+        "@typescript-eslint/member-ordering": "error",
+        "@typescript-eslint/type-annotation-spacing": "error",
+        "@typescript-eslint/semi": [1, "always"]
+      }
+    }
+  ]
 }

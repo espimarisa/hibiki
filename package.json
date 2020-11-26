@@ -1,65 +1,43 @@
 {
+  "private": "true",
   "name": "hibiki",
-  "version": "3.2.9",
-  "description": "An easy, customizable, and powerful Discord bot that does anything that your server needs.",
-  "author": "smolespi <espi@lesbian.codes> (https://lesbian.codes)",
-  "contributors": [
-    "resolved <resolvedxd@gmail.com> (https://github.com/resolvedxd)",
-    "cth103 <cthdev@email.com> (https://github.com/cthpw103)",
-    "TTtie <me@tttie.cz> (https://tttie.cz)"
-  ],
-  "license": "AGPL-3.0-or-later",
+  "version": "4.0.0-alpha",
+  "description": "A feature-packed, versatile, and all-in-one Discord bot that enhances your server's experience.",
+  "author": "Espi <contact@espi.me> (https://espi.me)",
+  "contributors": [],
+  "license": "MIT",
   "homepage": "https://hibiki.app",
-  "main": "src/index.js",
+  "main": "dist/src/index.js",
   "bugs": {
-    "url": "https://github.com/smolespi/Hibiki/issues"
+    "url": "https://github.com/smolespi/hibiki/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/smolespi/Hibiki.git"
+    "url": "git+https://github.com/smolespi/hibiki.git"
   },
   "engines": {
     "npm": ">=6.9.0",
-    "node": ">=12.0.0"
+    "node": ">=14.0.0"
   },
   "scripts": {
-    "beautify": "beautify-proj -i . -o ../ -c .jsbeautifyrc -e ./node_modules",
+    "build": "tsc",
     "dev": "nodemon",
     "lint": "eslint --fix .",
-    "setup": "node src/scripts/setup.js",
-    "start": "pm2 start pm2.config.json && pm2 logs",
+    "start": "tsc && cross-env NODE_ENV=production node dist/src/index.js",
     "test": "eslint ."
   },
   "dependencies": {
-    "@geo1088/express-session-rethinkdb": "^0.4.2",
-    "@sentry/node": "^5.27.4",
-    "body-parser": "^1.19.0",
-    "compression": "^1.7.4",
-    "cookie-parser": "^1.4.5",
-    "csurf": "^1.11.0",
-    "dayjs": "^1.9.6",
-    "ejs": "^3.1.5",
-    "eris": "^0.14.0",
-    "eris-additions": "^1.4.1",
-    "express": "^4.17.1",
-    "express-robots-txt": "^0.5.0",
-    "express-session": "^1.17.1",
-    "helmet": "^4.2.0",
-    "node-fetch": "^2.6.1",
-    "passport": "^0.4.1",
-    "passport-discord": "^0.1.4",
-    "rethinkdb-ts": "^2.4.5",
-    "terser": "^5.3.8"
-  },
-  "optionalDependencies": {
-    "erlpack": "^0.1.3",
-    "eventemitter3": "^4.0.7",
-    "zlib-sync": "^0.1.7"
+    "axios": "^0.21.0",
+    "eris": "^0.14.0"
   },
   "devDependencies": {
-    "beautify-proj": "^1.0.0",
-    "eslint": "^7.13.0",
+    "@types/node": "^14.14.10",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
+    "cross-env": "^7.0.2",
+    "eslint": "^7.14.0",
     "nodemon": "^2.0.6",
-    "pm2": "^4.5.0"
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.2"
   }
 }
