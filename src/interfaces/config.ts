@@ -19,4 +19,5 @@ interface colors extends Record<string, string> {
   general: string;
   success: string;
   error: string;
+  other: string;
 }
