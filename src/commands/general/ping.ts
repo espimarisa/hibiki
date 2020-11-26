@@ -17,7 +17,7 @@ class pingCommand extends Command {
   description = "Displays the current shard latency and heartbeat of the bot.";
 
   async run(msg: Message<TextChannel>, bot: hibikiClient): Promise<void> {
-    const pingmsg = await bot.createEmbed("🏓 Ping", `Sending... (latency: ${msg.channel.guild.shard.latency}ms)`, msg);
+    const pingmsg = (await bot.createEmbed("🏓 Ping", `Sending... (latency: ${msg.channel.guild.shard.latency}ms)`, msg)) as Message;
 
     pingmsg.edit({
       embed: {
