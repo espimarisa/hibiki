@@ -2,18 +2,18 @@
   "private": "true",
   "name": "hibiki",
   "version": "4.0.0-alpha",
-  "description": "An all-in-one, feature-packed, and versatile Discord bot that enhances your server's experience.",
+  "description": "An easy, versatile, all-in-one Discord bot that can do anything that your server needs.",
   "author": "Espi <contact@espi.me> (https://espi.me)",
   "contributors": [],
   "license": "MIT",
   "homepage": "https://hibiki.app",
   "main": "dist/src/index.js",
   "bugs": {
-    "url": "https://github.com/smolespi/hibiki/issues"
+    "url": "https://github.com/smolespi/Hibiki/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/smolespi/hibiki.git"
+    "url": "git+https://github.com/smolespi/Hibiki.git"
   },
   "engines": {
     "npm": ">=6.9.0",

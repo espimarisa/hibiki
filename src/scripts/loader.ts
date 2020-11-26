@@ -19,14 +19,14 @@ const COMMANDS_DIRECTORY = path.join(__dirname, "../commands");
 // this probably sucks but i do not care right now
 export async function loadItems(bot: hibikiClient): Promise<void> {
   const commandFiles = readdirSync(COMMANDS_DIRECTORY);
-  commandFiles.forEach(subfolder => {
+  commandFiles.forEach((subfolder) => {
     const stats = statSync(`${COMMANDS_DIRECTORY}/${subfolder}`);
     if (!stats.isDirectory) return;
 
     const commands = readdirSync(`${COMMANDS_DIRECTORY}/${subfolder}`);
 
     // Tries to load each command
-    commands.forEach(async cmd => {
+    commands.forEach(async (cmd) => {
       let command;
 
       try {

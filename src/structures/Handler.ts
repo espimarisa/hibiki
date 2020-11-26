@@ -13,10 +13,10 @@ export class Handler {
 
   constructor(bot: hibikiClient) {
     this.bot = bot;
-    this.bot.on("messageCreate", msg => this.onMessage(msg));
+    this.bot.on("messageCreate", (msg) => this.onMessage(msg));
   }
 
-  async onMessage(msg: Message): Promise<any> {
+  async onMessage(msg: Message): Promise<unknown> {
     if (!msg || !msg.content || msg.author.bot === true || !msg.channel) return;
 
     // Gets the channel and prefix
@@ -32,7 +32,7 @@ export class Handler {
 
     const commandName = msg.content.toLowerCase().split(" ").shift()?.replace(`${prefix}`, "").trim();
     if (!commandName) return;
-    const command = this.bot.commands.find(cmd => cmd.name === commandName || cmd.aliases?.includes(commandName));
+    const command = this.bot.commands.find((cmd) => cmd.name === commandName || cmd.aliases?.includes(commandName));
     if (!command) return;
 
     // Handles owner commands
