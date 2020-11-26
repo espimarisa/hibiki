@@ -2,7 +2,7 @@
   "private": "true",
   "name": "hibiki",
   "version": "4.0.0-alpha",
-  "description": "An easy, versatile, all-in-one Discord bot that can do anything that your server needs.",
+  "description": "An easy, versatile, and all-in-one Discord bot that can do anything that your server needs.",
   "author": "Espi <contact@espi.me> (https://espi.me)",
   "contributors": [],
   "license": "MIT",
@@ -22,7 +22,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon",
-    "format": "prettier --config .prettierrc 'src/**/*.{css,htm,html,js,json,ts,tsx}' --write",
+    "format": "cross-env prettier --config .prettierrc 'src/**/*.{css,htm,html,js,json,ts,tsx}' --write",
     "lint": "eslint --fix .",
     "start": "tsc && cross-env NODE_ENV=production node dist/src/index.js",
     "test": "eslint ."
