@@ -14,5 +14,4 @@
 - [ ] Unsure of functionality
 
 ## Description
-Write your description here. Be sure to follow the [code of conduct](CODE_OF_CONDUCT.md).
-If this fixes an issue, tag it with #IssueID.
+Write your description here. If this fixes an issue, tag it with #IssueID.
