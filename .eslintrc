@@ -12,7 +12,7 @@
     "ecmaVersion": 2020
   },
 
-  "extends": ["eslint:recommended"],
+  "extends": ["eslint:recommended", "prettier"],
 
   "rules": {
     "arrow-parens": [1, "as-needed"],
@@ -47,6 +47,7 @@
     "operator-linebreak": [1, "after"],
     "padded-blocks": [1, "never"],
     "prefer-const": ["error", { "destructuring": "any", "ignoreReadBeforeAssign": false }],
+    "prettier/prettier": 1,
     "quotes": [1, "double", { "avoidEscape": true, "allowTemplateLiterals": false }],
     "quote-props": [1, "consistent-as-needed"],
     "semi": [1, "always"],
@@ -62,7 +63,13 @@
     {
       "files": ["*.ts", "*.tsx"],
       "parser": "@typescript-eslint/parser",
-      "plugins": ["@typescript-eslint"],
+      "plugins": ["@typescript-eslint", "prettier"],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
+      ],
 
       // Enable if you need jsx support
       // "parserOptions": {
