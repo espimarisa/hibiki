@@ -1,6 +1,6 @@
 ---
 name: Help Needed
-about: Official support needed
+about: Official support needed. Note that we will NOT provide self-hosting support here. If you believe you've found a bug, use the BUG template instead.
 title: "[HELP]"
 labels: user-support
 assignees: "smolespi"

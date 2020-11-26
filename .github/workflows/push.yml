@@ -9,15 +9,11 @@ jobs:
       matrix:
         node-version: [14.x]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2.3.4
     - name: Node ${{ matrix.node-version }}
       uses: actions/setup-node@v2-beta
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Dependabot
-      uses: ridedott/merge-me-action@master
-      with:
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
     - name: Testing
       run: |
         npm install
