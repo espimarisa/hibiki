@@ -1,7 +1,7 @@
 # Hibiki Privacy Policy
-## Updated 17 September 2020
+## Updated 25 November 2020
 
-This Privacy Policy applies to personal information collected through jiktim's ("we", "us", or "our") "Hibiki" Discord application and website, "hibiki.app". If you have any questions, please contact a developer or email `espi@lesbian.codes` with your inquiry. Additionally, this is not 100% legally binding and pretty informal.
+This Privacy Policy applies to personal information collected through jiktim's ("we", "us", or "our") "Hibiki" Discord application and website, "hibiki.app". If you have any questions, please contact a developer or email `contact@espi.me` with your inquiry. Additionally, this is not 100% legally binding and pretty informal.
 
 Do note that this applies to the **official** instance of Hibiki (493904957523623936). Other instances may not respect this.
 
@@ -28,4 +28,4 @@ We collect very little information, however, for some configurations and functio
 - Command Responses: some commands, such as the con fig or createCommand commands, ask for a response. We will store the msg.content data in order to send that response at a later time.
 
 ### Closure
-We do not, and never will, sell or redistribute any user or guild data. If you wish for us to remove all data belonging to you or your guild, contact one of the developers or email `espi@lesbian.codes`. Additionally, we do not view any sensitive information (oAuth tokens, for example) and keep your data secure.
+We do not, and never will, sell or redistribute any user or guild data. If you wish for us to remove all data belonging to you or your guild, contact one of the developers or email `contact@espi.me`. Additionally, we do not view any sensitive information (oAuth tokens, for example) and keep your data secure.
