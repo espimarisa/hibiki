@@ -1,66 +1,23 @@
 {
-  "bot": {
-    "logchannel": "",
-    "homepage": "https://hibiki.app",
-    "owners": [""],
-    "prefixes": [""],
-    "status": "online",
-    "statuses": ["help", "guilds", "users", "version"],
-    "statustype": 3,
-    "token": ""
-  },
+  "token": "",
+  "owners": [""],
+  "prefix": "",
 
   "colors": {
-    "general": "#6fcbf2",
+    "general": "#6FCBF2",
+    "success": "#41FF70",
     "error": "#FF0048",
-    "pinboard": "#3498DB",
-    "success": "#41FF70"
-  },
-
-  "dashboard": {
-    "cookiesecret": "",
-    "secret": "",
-    "port": 7012,
-    "redirect_uri": "http://localhost:port/auth/callback"
+    "other": "#3498DB"
   },
 
   "options": {
     "defaultImageFormat": "png",
     "defaultImageSize": 512,
-    "maxShards": 1
+    "maxShards": 1,
+    "compress": true
   },
 
-  "keys": {
-    "abuseipdb": "",
-    "dictionary": "",
-    "dbots": "",
-    "fortnite": "",
-    "github": "",
-    "ipinfo": "",
-    "maps": "",
-    "osu": "",
-    "sentry": "",
-    "steam": "",
-    "topgg": "",
-    "twitter": "",
-    "weather": "",
-    "weebsh": ""
-  },
-
-  "rethink": {
-    "db": "hibiki",
-    "host": "",
-    "password": "",
-    "port": "",
-    "user": "",
-    "tables": [
-      "blacklist", "economy", "guildconfig", "marriages", "monitoring", "mutecache",
-      "points", "reminders", "session", "steammonitor", "userconfig", "warnings"
-    ]
-  },
-
-  "voting": {
-    "auth": "",
-    "port": 7013
+  "apikeys": {
+    "tempthing": "placeholder"
   }
 }
