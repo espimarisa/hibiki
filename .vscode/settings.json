@@ -17,5 +17,11 @@
   }, {
     "icon": "server",
     "extensions": ["webserver"],
+  }, {
+    "icon": "db",
+    "extensions": ["providers"],
+  }, {
+    "icon": null,
+    "extensions": ["image"]
   }],
 }
