@@ -1,11 +1,11 @@
 /**
- * @fileoverview Embed helper
- * @description A helper to create and edit simple embeds
+ * @file Embed
+ * @description Functions to create and edit oneliner embeds
  * @author Espi <contact@espi.me>
  * @module helpers/embed
  */
 
-import { Message, TextChannel } from "eris";
+import { Message } from "eris";
 import { botConfig } from "../interfaces/config";
 import * as configFile from "../../config.json";
 const config: botConfig = <botConfig>configFile;
@@ -14,14 +14,14 @@ const config: botConfig = <botConfig>configFile;
  * Creates a new simple oneliner embed
  * @param {string} title The title field of the embed
  * @param {string} desc The description field of the embed. Set to null if you want it to be empty
- * @param {Message<TextChannel>} msg The message object to use, usually just msg
+ * @param {Message} msg The message object to use, usually just msg
  * @param {string} colortype The type of color to use. If not given, will use "generaL". View colors portion of config.json
  *
  * @await
  * @example createEmbed("Embed Title", "Embed Description", msg, "error")
  */
 
-export async function createEmbed(title: string, desc: string | null, msg: Message<TextChannel>, colortype?: string): Promise<unknown> {
+export async function createEmbed(title: string, desc: string | null, msg: Message, colortype?: string): Promise<unknown> {
   if (!msg) throw new Error("No message object was provided");
   if (msg && !msg.channel) return;
   let embedTitle;
@@ -42,9 +42,9 @@ export async function createEmbed(title: string, desc: string | null, msg: Messa
   }
 
   if (colortype) {
-    embedFieldColor = embedColor(colortype);
+    embedFieldColor = convertHex(colortype);
   } else {
-    embedFieldColor = embedColor("general");
+    embedFieldColor = convertHex("general");
   }
 
   const embedConstruct = {
@@ -65,15 +65,15 @@ export async function createEmbed(title: string, desc: string | null, msg: Messa
  * Edits a simple oneliner embed
  * @param {string} title The title field of the embed
  * @param {string} desc The description field of the embed. Set to null if you want it to be empty
- * @param {Message<TextChannel>} msg The message object to use. Use the msg object you defined earlier!
+ * @param {Message} msg The message object to use. Use the msg object you defined earlier!
  * @param {string} colortype The type of color to use. If not given, will use "generaL". View colors portion of config.json
  *
  * @await
- * @example const msgtoedit = await createEmbed("Embed Title", "Embed Description", msg, "error")
+ * @example const msgtoedit = (await createEmbed("Embed Title", "Embed Description", msg, "error")) as Message;
  * await editEmbed("Edited Title", "Edited Description", msgtoedit, "success")
  */
 
-export async function editEmbed(title: string, desc: string | null, msg: Message<TextChannel>, colortype?: string): Promise<unknown> {
+export async function editEmbed(title: string, desc: string | null, msg: Message, colortype?: string): Promise<unknown> {
   if (!msg) throw new Error("No message object was provided");
   if (msg && !msg.channel) return;
   let embedTitle;
@@ -85,9 +85,9 @@ export async function editEmbed(title: string, desc: string | null, msg: Message
   if (desc) embedDescription = desc;
 
   if (colortype) {
-    embedFieldColor = embedColor(colortype);
+    embedFieldColor = convertHex(colortype);
   } else {
-    embedFieldColor = embedColor("general");
+    embedFieldColor = convertHex("general");
   }
 
   // TODO: handle exceptions properly
@@ -112,9 +112,9 @@ export async function editEmbed(title: string, desc: string | null, msg: Message
  * Converts a hex color to hexadecimal since Discord's API sucks
  * @param {string} colortype The color in the config to convert.
  *
- * @example color: bot.embedColor("general"),
+ * @example color: bot.convertHex("general"),
  */
 
-export function embedColor(colortype: string): number {
+export function convertHex(colortype: string): number {
   return parseInt(config.colors[colortype].replace(/#/g, "0x"));
 }
