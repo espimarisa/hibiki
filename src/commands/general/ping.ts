@@ -1,7 +1,7 @@
 /**
- * @fileoverview Hibiki ping command
- * @description Displays the currentt shard latency and heartbeat of the bot.
+ * @file Ping command
  * @author Espi <contact@espi.me>
+ * @command
  */
 
 import { Message, TextChannel } from "eris";
@@ -9,24 +9,23 @@ import { Command, CommandCategories } from "../../structures/Command";
 import { hibikiClient } from "../../structures/Client";
 
 class pingCommand extends Command {
-  // TODO: Inherit this from the filename, instead of doing it as abstract and needing to do it here.
   name = "ping";
-  category = CommandCategories.FUN;
-  // TODO: Inherit category from the subfolder. Have an enum or something to format them from "fun" to "Fun", etc.
+  category = CommandCategories.GENERAL;
   aliases = ["pong"];
-  description = "Displays the current shard latency and heartbeat of the bot.";
+  description = "Displays the current shard latency of the bot.";
 
   async run(msg: Message<TextChannel>, bot: hibikiClient): Promise<void> {
+    console.log(await bot.db.getGuildConfig(msg.channel.guild.id));
+
     const pingmsg = (await bot.createEmbed("🏓 Ping", `Sending... (latency: ${msg.channel.guild.shard.latency}ms)`, msg)) as Message;
 
     pingmsg.edit({
       embed: {
         title: "🏓 Pong!",
         description: `This message took ${pingmsg.timestamp - msg.timestamp}ms to send.`,
-        color: bot.embedColor("general"),
+        color: bot.convertHex("general"),
         footer: {
-          // TODO: bot.tagUser(msg.author);
-          text: `Ran by ${msg.author.username}#${msg.author.discriminator} | Latency: ${msg.channel.guild.shard.latency}ms`,
+          text: `Ran by ${bot.tagUser(msg.author)} | Latency: ${msg.channel.guild.shard.latency}ms`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

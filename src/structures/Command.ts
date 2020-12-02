@@ -1,11 +1,12 @@
 /**
- * @fileoverview Hibiki command constructor
- * @description Main command constructor for any commands and their enums
+ * @file Command
+ * @description Base class for commands
  * @author Espi <contact@espi.me>
  */
 
-import { hibikiClient } from "./Client";
 import { Message } from "eris";
+import { Argument } from "./Argument";
+import { hibikiClient } from "./Client";
 
 // TODO: Actually implement this
 export enum PermissionLevel {
@@ -15,6 +16,10 @@ export enum PermissionLevel {
   SERVER_MOD,
   ANYONE,
 }
+
+/**
+ * @enum Command category names
+ */
 
 export enum CommandCategories {
   FUN = "Fun",
@@ -28,19 +33,31 @@ export enum CommandCategories {
   UTILITY = "Utility",
 }
 
+/**
+ * Main command class
+ * @abstract
+ */
+
 export abstract class Command {
-  name: string | undefined;
-  aliases?: string[] = [];
-  category: string | undefined;
-  cooldown?: number;
-  description: string | undefined;
-  // TODO: Don't load a command if it's missing any requiredKeys in config.json
+  aliases: string[] = [];
+  args: Argument[] = [];
+  cooldown!: number;
   requiredkeys?: string[] = [];
-  // TODO: add ClientPerms and actually parse this stuff in the handler
-  requiredperms: PermissionLevel = PermissionLevel.ANYONE;
+  requiredperms?: PermissionLevel = PermissionLevel.ANYONE;
   allowdms = false;
   nsfw = false;
   owner = false;
+
+  abstract name: string;
+  abstract category: string;
+  abstract description: string;
+
+  /**
+   * Runs a command
+   * @param {Message} msg Main message object
+   * @param {hibikiClient} bot Main bot object
+   * @param {Record<string, unknown>} args Arguments to pass
+   */
 
   abstract run(msg: Message, bot?: hibikiClient, args?: Record<string, unknown>): Promise<void>;
 }

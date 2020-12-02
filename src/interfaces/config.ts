@@ -1,7 +1,8 @@
 /**
- * @fileoverview Config file interface
- * @description Interface/typings for the config file
+ * @file Config interface
+ * @description Interface for the main config file
  * @author Espi <contact@espi.me>
+ * @interface
  */
 
 // Config options

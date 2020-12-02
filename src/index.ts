@@ -1,5 +1,5 @@
 /**
- * @fileoverview Main Hibiki file
+ * @file Index
  * @description Creates an instance of Hibiki
  * @author Espi <contact@espi.me>
  * @license MIT
