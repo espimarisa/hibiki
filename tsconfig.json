@@ -30,6 +30,7 @@
     "skipLibCheck": true,
     "outDir": "./dist",
     "baseUrl": "./src",
+    "suppressImplicitAnyIndexErrors": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
