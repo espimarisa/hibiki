@@ -2,9 +2,13 @@
   "private": "true",
   "name": "hibiki",
   "version": "4.0.0-alpha",
-  "description": "An easy, versatile, and all-in-one Discord bot that can do anything that your server needs.",
+  "description": "An easy, versatile, and all-in-one Discord bot that does anything your server needs.",
   "author": "Espi <contact@espi.me> (https://espi.me)",
-  "contributors": [],
+  "contributors": [
+    "resolved <resolvedxd@gmail.com> (https://github.com/resolvedxd)",
+    "cth103 <eim@riseup.net> (https://github.com/cthpw103)",
+    "TTtie <me@tttie.cz> (https://tttie.cz)"
+  ],
   "license": "MIT",
   "homepage": "https://hibiki.app",
   "main": "dist/src/index.js",
@@ -28,19 +32,26 @@
     "test": "eslint ."
   },
   "dependencies": {
+    "@sentry/node": "^5.28.0",
     "axios": "^0.21.0",
-    "eris": "^0.14.0"
+    "eris": "^0.14.0",
+    "rethinkdb-ts": "^2.4.5",
+    "validator": "^13.5.1",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.0"
   },
   "devDependencies": {
+    "@sentry/types": "^5.28.0",
     "@types/node": "^14.14.10",
-    "@typescript-eslint/eslint-plugin": "^4.8.2",
-    "@typescript-eslint/parser": "^4.8.2",
-    "cross-env": "^7.0.2",
+    "@types/validator": "^13.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
     "nodemon": "^2.0.6",
-    "prettier": "^2.2.0",
+    "prettier": "^2.2.1",
     "ts-node": "^9.0.0",
     "typescript": "^4.1.2"
   }
