@@ -2,7 +2,7 @@
  * @file Index
  * @description Creates an instance of Hibiki
  * @author Espi <contact@espi.me>
- * @license MIT
+ * @license AGPL-3.0-or-later
  */
 
 import { hibikiClient } from "./structures/Client";
