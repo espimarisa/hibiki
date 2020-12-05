@@ -18,7 +18,7 @@ class aboutCommand extends Command {
   description = "Displays bot information and statistics.";
   allowdms: true = true;
 
-  async run(msg: Message<TextChannel>, bot: hibikiClient): Promise<void> {
+  async run(msg: Message<TextChannel>, string: any, bot: hibikiClient): Promise<void> {
     // Formats bytes
     function formatBytes(bytes: number) {
       if (bytes === 0) return "0 Bytes";
@@ -76,29 +76,45 @@ class aboutCommand extends Command {
     const hostUptime = formatUptime(os.uptime());
 
     // Information strings
-    const statString = `${bot.users.size} total users \n${bot.guilds.size} total servers \n${bot.commands.length} total commands \nBot up for ${botUptime}`;
-    const versionString = `Hibiki v${botVersion} \nEris v${erisVersion} \nNode.js ${process.version} \nTypeScript v${tsVersion}`;
-    const hostString = `Bot using ${botMemoryUsage} of memory \nSystem using ${hostMemoryUsage} of memory \nSystem up for ${hostUptime} \n Running on ${hostPlatform}`;
-    // const aboutString = ``;
+    const statisticsString = string("general.ABOUT_STATISTICS_STRING", {
+      users: bot.users.size,
+      guilds: bot.guilds.size,
+      commands: bot.commands.length,
+      uptime: botUptime,
+    });
+
+    const moduleString = string("general.ABOUT_MODULES_STRING", {
+      botVersion: botVersion,
+      erisVersion: erisVersion,
+      nodeVersion: process.version,
+      tsVersion: tsVersion,
+    });
+
+    const hostString = string("general.ABOUT_HOST_STRING", {
+      botMemoryUsage: botMemoryUsage,
+      hostMemoryUsage: hostMemoryUsage,
+      uptime: hostUptime,
+      platform: hostPlatform,
+    });
 
     msg.channel.createMessage({
       embed: {
-        title: "🤖 About",
-        description: `**${bot.user.username}**, by [smolespi](https://espi.me), [resolved](https://github.com/resolvedxd), and [contributors](https://github.com/smolespi/Hibiki). 💖`,
+        title: string("general.ABOUT_TITLE"),
+        description: string("general.ABOUT_DESCRIPTION", { username: bot.user.username }),
         color: bot.convertHex("general"),
         fields: [
           {
-            name: "Statistics",
-            value: statString,
+            name: string("general.ABOUT_STATISTICS"),
+            value: statisticsString,
             inline: true,
           },
           {
-            name: "Modules",
-            value: versionString,
+            name: string("general.ABOUT_MODULES"),
+            value: moduleString,
             inline: true,
           },
           {
-            name: "Host",
+            name: string("general.ABOUT_HOST"),
             value: hostString,
             inline: false,
           },
@@ -107,7 +123,7 @@ class aboutCommand extends Command {
           url: bot.user.dynamicAvatarURL(),
         },
         footer: {
-          text: `Ran by ${bot.tagUser(msg.author)}`,
+          text: string("global.RAN_BY_FOOTER", { author: bot.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

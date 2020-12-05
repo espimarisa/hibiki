@@ -26,11 +26,11 @@
     "strict": true,
     "strictBindCallApply": true,
     "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
     "target": "es2020",
     "skipLibCheck": true,
     "outDir": "./dist",
     "baseUrl": "./src",
-    "suppressImplicitAnyIndexErrors": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

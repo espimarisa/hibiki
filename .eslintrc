@@ -82,7 +82,8 @@
         "@typescript-eslint/member-delimiter-style": "error",
         "@typescript-eslint/member-ordering": "error",
         "@typescript-eslint/type-annotation-spacing": "error",
-        "@typescript-eslint/semi": [1, "always"]
+        "@typescript-eslint/semi": [1, "always"],
+        "@typescript-eslint/no-explicit-any": 0
       }
     }
   ]
