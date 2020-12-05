@@ -1,5 +1,5 @@
 /**
- * @file Logger
+ * @file Bot logger
  * @description Creates and manages winston loggers
  * @author Espi <contact@espi.me>
  * @module helpers/logger
@@ -17,7 +17,7 @@ const logFormat = format.combine(
   format.printf((info) => `${formatLogDate(info.timestamp)} (${info.level}): ${info.message}`),
 );
 
-// Creates our loggers
+// Creates the logger
 export const botLogger = createLogger({
   format: logFormat,
   transports: [new transports.Console()],

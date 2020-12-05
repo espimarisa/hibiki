@@ -2,6 +2,9 @@
   "token": "",
   "owners": [""],
   "prefix": "",
+  "logchannel": "",
+  "statuses": ["guilds", "help", "users", "version"],
+  "intents": ["guilds", "guildMembers", "guildBans", "guildVoiceStates", "guildMessages", "guildMessageReactions"],
 
   "colors": {
     "general": "#6FCBF2",
@@ -17,7 +20,16 @@
     "compress": true
   },
 
+  "database": {
+    "provider": "rethink",
+    "db": "hibiki",
+    "password": "",
+    "port": "",
+    "host": "",
+    "user": ""
+  },
+
   "apikeys": {
-    "tempthing": "placeholder"
+    "sentry": ""
   }
 }
