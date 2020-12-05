@@ -59,5 +59,5 @@ export abstract class Command {
    * @param {Record<string, unknown>} args Arguments to pass
    */
 
-  abstract run(msg: Message, bot?: hibikiClient, args?: Record<string, unknown>): Promise<void>;
+  abstract run(msg: Message, str: unknown, bot?: hibikiClient, args?: Record<string, unknown>): Promise<void>;
 }

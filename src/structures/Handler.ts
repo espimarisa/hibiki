@@ -31,8 +31,12 @@ export class CommandHandler {
   async onMessage(msg: Message): Promise<unknown> {
     if (!msg || !msg.content || msg.author.bot === true || !msg.channel || !msg.author) return;
 
-    // Logs any DMs sent
+    // Finds the locale to use
+    const userLocale = await this.bot.localeSystem.getUserLocale(msg.author.id, this.bot);
+    const str = this.bot.localeSystem.getLocaleFunction(userLocale);
+
     if (msg.channel instanceof PrivateChannel && config.logchannel !== "") {
+      // Logs any DMs sent
       this.bot.createMessage(config.logchannel, {
         embed: {
           description: `${msg.content}`,
@@ -87,6 +91,6 @@ export class CommandHandler {
     // TODO: Make a enum for permissions and stop using eris-additions
 
     // Runs the command
-    command.run(msg, this.bot);
+    command.run(msg, str, this.bot);
   }
 }

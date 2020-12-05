@@ -4,8 +4,8 @@
  * @author Espi <contact@espi.me>
  */
 
-import { DatabaseProvider } from "../structures/Database";
 import { r } from "rethinkdb-ts";
+import { DatabaseProvider } from "../structures/Database";
 import { hibikiClient } from "../structures/Client";
 import config from "../../config.json";
 
@@ -26,7 +26,6 @@ startRethink();
 
 export class RethinkProvider extends DatabaseProvider {
   db: typeof r;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dblock: any;
 
   constructor(bot: hibikiClient) {
