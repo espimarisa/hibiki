@@ -15,7 +15,7 @@ class urbanCommand extends Command {
   async run(msg, args) {
     const query = args.join(" ");
     const body = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`)
-      .then(res => res.json().catch(() => {}));
+      .then(res => res.json().catch(() => { }));
 
     // If the API fails to return info
     if (!body) return this.bot.embed("❌ Error", "Couldn't send the definition. Try again later.", msg, "error");
@@ -28,7 +28,10 @@ class urbanCommand extends Command {
     // Cleans up definitions & examples
     word.definition = topword[0].definition.replace(/[[\]]/g, "");
     word.example = topword[0].example.replace(/[[\]]/g, "");
-    if (word.definition.length > 1024) word.definition.slice(1024);
+    if (word.definition.length > 1024) {
+      let fullstop = word.definition.slice(0, 1024).lastIndexOf('.');
+      word.definition = word.definition.slice(0, fullstop + 1);
+    };
 
     const fields = [];
     if (word.example) fields.push({ name: "Example", value: `${word.example}` });
