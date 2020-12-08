@@ -32,6 +32,6 @@
     "outDir": "./dist",
     "baseUrl": "./src",
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/**/*.json"],
   "exclude": ["node_modules"]
 }
