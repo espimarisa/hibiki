@@ -8,6 +8,9 @@ import { Message } from "eris";
 import { Argument } from "./Argument";
 import { hibikiClient } from "./Client";
 
+// Locale string function
+export type LocaleString = (string: string, args?: Record<string, unknown> | undefined) => string;
+
 // TODO: Actually implement this
 export enum PermissionLevel {
   BOT_OWNER,
