@@ -4,7 +4,7 @@
     "prefix": ["hibiki-command"],
     "body": [
       "import { Message, TextChannel } from \"eris\";",
-      "import { Command, CommandCategories, PermissionLevel } from \"../../structures/Command\";",
+      "import { Command, CommandCategories, LocaleString, PermissionLevel } from \"../../structures/Command\";",
       "import { hibikiClient } from \"../../structures/Client\";",
       "",
       "class $1Command extends Command {",
@@ -18,7 +18,7 @@
       "  nsfw = false;",
       "  owner = false;",
       "",
-      "  async run(msg: Message<TextChannel>, string: any, bot: hibikiClient) {",
+      "  async run(msg: Message<TextChannel>, string: LocaleString, bot: hibikiClient) {",
       "    $6",
       "  }",
       "}",

@@ -6,6 +6,7 @@
 
 import { Message, GuildChannel, PrivateChannel } from "eris";
 import { hibikiClient } from "./Client";
+import { LocaleString } from "./Command";
 import config from "../../config.json";
 
 export class CommandHandler {
@@ -33,7 +34,7 @@ export class CommandHandler {
 
     // Finds the locale to use
     const userLocale = await this.bot.localeSystem.getUserLocale(msg.author.id, this.bot);
-    const str = this.bot.localeSystem.getLocaleFunction(userLocale);
+    const str = this.bot.localeSystem.getLocaleFunction(userLocale) as LocaleString;
 
     if (msg.channel instanceof PrivateChannel && config.logchannel !== "") {
       // Logs any DMs sent

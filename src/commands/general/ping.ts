@@ -5,7 +5,7 @@
  */
 
 import { Message, TextChannel } from "eris";
-import { Command, CommandCategories } from "../../structures/Command";
+import { Command, CommandCategories, LocaleString } from "../../structures/Command";
 import { hibikiClient } from "../../structures/Client";
 
 class pingCommand extends Command {
@@ -14,7 +14,7 @@ class pingCommand extends Command {
   aliases = ["pong"];
   description = "Returns the bot's latency.";
 
-  async run(msg: Message<TextChannel>, string: any, bot: hibikiClient): Promise<void> {
+  async run(msg: Message<TextChannel>, string: LocaleString, bot: hibikiClient): Promise<void> {
     const pingmsg = await msg.channel.createMessage({
       embed: {
         title: string("general.PING_INITIAL_TITLE"),

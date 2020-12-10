@@ -7,7 +7,7 @@
 import { Message, TextChannel, VERSION as erisVersion } from "eris";
 import { version as tsVersion } from "typescript";
 import { version as botVersion } from "../../../package.json";
-import { Command, CommandCategories } from "../../structures/Command";
+import { Command, CommandCategories, LocaleString } from "../../structures/Command";
 import { hibikiClient } from "../../structures/Client";
 import os from "os";
 
@@ -18,7 +18,7 @@ class aboutCommand extends Command {
   description = "Displays bot information and statistics.";
   allowdms: true = true;
 
-  async run(msg: Message<TextChannel>, string: any, bot: hibikiClient): Promise<void> {
+  async run(msg: Message<TextChannel>, string: LocaleString, bot: hibikiClient): Promise<void> {
     // Formats bytes
     function formatBytes(bytes: number) {
       if (bytes === 0) return "0 Bytes";
