@@ -11,7 +11,7 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["esnext"],
+    "lib": ["es2020"],
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,
