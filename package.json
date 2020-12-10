@@ -32,7 +32,7 @@
     "test": "eslint ."
   },
   "dependencies": {
-    "@sentry/node": "^5.28.0",
+    "@sentry/node": "^5.29.0",
     "axios": "^0.21.0",
     "eris": "^0.14.0",
     "rethinkdb-ts": "^2.4.5",
@@ -41,18 +41,18 @@
     "winston-daily-rotate-file": "^4.5.0"
   },
   "devDependencies": {
-    "@sentry/types": "^5.28.0",
-    "@types/node": "^14.14.10",
+    "@sentry/types": "^5.29.0",
+    "@types/node": "^14.14.11",
     "@types/validator": "^13.1.1",
-    "@typescript-eslint/eslint-plugin": "^4.9.0",
-    "@typescript-eslint/parser": "^4.9.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.1",
+    "@typescript-eslint/parser": "^4.9.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.15.0",
-    "eslint-config-prettier": "^6.15.0",
+    "eslint-config-prettier": "^7.0.0",
     "eslint-plugin-prettier": "^3.2.0",
     "nodemon": "^2.0.6",
     "prettier": "^2.2.1",
-    "ts-node": "^9.1.0",
+    "ts-node": "^9.1.1",
     "typescript": "^4.1.2"
   }
 }

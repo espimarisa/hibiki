@@ -54,7 +54,6 @@ export class LocaleSystem {
    * getLocale_en("STRING_NAME", { arguments?: here });
    */
 
-  // TODO: Add "fallback" support.
   getLocale(language: string, fieldName: string, args: { [x: string]: any } | undefined): string {
     // Gets the string category
     const category = fieldName.split(".");
