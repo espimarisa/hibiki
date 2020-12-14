@@ -1,15 +1,14 @@
 /**
  * @file Status switcher
  * @description Cycles between configured bot statuses
- * @author Espi <contact@espi.me>
  */
 
-import { hibikiClient } from "../structures/Client";
+import { HibikiClient } from "../classes/Client";
 import { version } from "../../package.json";
 import config from "../../config.json";
 
 // Rotates bot statuses
-export function switchStatuses(bot: hibikiClient): void {
+export function switchStatuses(bot: HibikiClient): void {
   const statuses = config.statuses.map((s) => {
     if (s === "help") s = `${config.prefix}help | hibiki.app`;
     else if (s === "guilds") s = `${bot.guilds.size} guilds`;

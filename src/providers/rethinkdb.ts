@@ -1,12 +1,11 @@
 /**
  * @file RethinkDB Provider
  * @description Main database provider for RethinkDB
- * @author Espi <contact@espi.me>
  */
 
 import { r } from "rethinkdb-ts";
-import { DatabaseProvider } from "../structures/Database";
-import { hibikiClient } from "../structures/Client";
+import { DatabaseProvider } from "../classes/Database";
+import { HibikiClient } from "../classes/Client";
 import config from "../../config.json";
 
 const rethinkOptions = {
@@ -28,30 +27,21 @@ export class RethinkProvider extends DatabaseProvider {
   db: typeof r;
   dblock: any;
 
-  constructor(bot: hibikiClient) {
+  /**
+   * Creates a new database provider
+   * @param {HibikiClient} bot Main bot object
+   */
+
+  constructor(bot: HibikiClient) {
     super(bot);
     this.db = r;
     this.dblock = this.db.db(rethinkOptions.db).wait();
   }
 
-  /**
-   * Return's a guild's config
-   * @param guild The guild ID to search
-   *
-   * @example getGuildConfig(msg.channel.guild.id);
-   */
-
   async getGuildConfig(guild: string): Promise<unknown> {
     await this.dblock;
     return this.db.table("guildconfig").get(guild).run();
   }
-
-  /**
-   * Returns a user's profile config
-   * @param {string} user The user ID to search
-   *
-   * @example getUserConfig(msg.author.id);
-   */
 
   async getUserConfig(user: string): Promise<unknown> {
     await this.dblock;
