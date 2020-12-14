@@ -1,10 +1,9 @@
 /**
  * @file Event
  * @description Base class for events
- * @author Espi <contact@espi.me>
  */
 
-import { hibikiClient } from "./Client";
+import { HibikiClient } from "./Client";
 
 /**
  * Main event class
@@ -14,5 +13,5 @@ import { hibikiClient } from "./Client";
 export abstract class Event {
   abstract events: string[];
 
-  abstract run(bot: hibikiClient, ...args: unknown[]): void;
+  abstract run(bot: HibikiClient, ...args: unknown[]): void;
 }

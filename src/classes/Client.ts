@@ -1,10 +1,10 @@
 /**
  * @file Client
  * @description Connects to Discord and handles global functions
- * @author Espi <contact@espi.me>
  */
 
 import { Client } from "eris";
+import { ArgParser } from "./Args";
 import { Command } from "./Command";
 import { Event } from "./Event";
 import { CommandHandler } from "./Handler";
@@ -22,7 +22,7 @@ import path from "path";
 
 const LOCALES_DIRECTORY = path.join(__dirname, "../locales");
 
-export class hibikiClient extends Client {
+export class HibikiClient extends Client {
   commands: Array<Command> = [];
   events: Array<Event> = [];
   loggers: Array<Logger> = [];
@@ -33,6 +33,7 @@ export class hibikiClient extends Client {
   tagUser: typeof tagUser;
   commandHandler: CommandHandler;
   localeSystem: LocaleSystem;
+  args: ArgParser;
   db: RethinkProvider;
   log: typeof botLogger;
 
@@ -53,6 +54,7 @@ export class hibikiClient extends Client {
     this.tagUser = tagUser;
 
     // Handlers & functions
+    this.args = new ArgParser(this);
     this.db = new RethinkProvider(this);
     this.commandHandler = new CommandHandler(this);
     this.localeSystem = new LocaleSystem(LOCALES_DIRECTORY);
