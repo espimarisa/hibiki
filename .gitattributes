@@ -14,6 +14,7 @@ LICENSE text eol=lf
 *.jsbeautifyrc text eol=lf
 *.json text eol=lf
 *.prettierrc text eol=lf
+*.prettierignore text eol=lf
 *.sh text eol=lf
 *.ts text eol=lf
 *.tsx text eol=lf

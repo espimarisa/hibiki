@@ -5,6 +5,7 @@
   "logchannel": "",
   "statuses": ["guilds", "help", "users", "version"],
   "intents": ["guilds", "guildMembers", "guildBans", "guildVoiceStates", "guildMessages", "guildMessageReactions"],
+  "defaultLocale": "en",
 
   "colors": {
     "general": "#6FCBF2",
