@@ -1,25 +1,24 @@
 /**
  * @file Handler
  * @description Handles and executes commands and events
- * @author Espi <contact@espi.me>
  */
 
 import { Message, GuildChannel, PrivateChannel } from "eris";
-import { hibikiClient } from "./Client";
+import { HibikiClient } from "./Client";
 import { LocaleString } from "./Command";
 import config from "../../config.json";
 
 export class CommandHandler {
-  bot: hibikiClient;
+  bot: HibikiClient;
 
   /**
    * Command handler class
-   * @param {hibikiClient} bot Main bot object
+   * @param {HibikiClient} bot Main bot object
    * @listens messageCreate Listens for new messages
    * @example new CommandHandler(this.bot);
    */
 
-  constructor(bot: hibikiClient) {
+  constructor(bot: HibikiClient) {
     this.bot = bot;
     this.bot.on("messageCreate", (msg) => this.onMessage(msg));
   }
@@ -61,7 +60,7 @@ export class CommandHandler {
     if (!msg.content.startsWith(prefix)) return;
 
     // Finds the command to run
-    const commandName = msg.content.toLowerCase().split(" ").shift()?.replace(`${prefix}`, "").trim();
+    const [commandName, ...args] = msg.content.trim().slice(prefix.length).split(/ +/g);
     if (!commandName) return;
     const command = this.bot.commands.find((cmd) => cmd.name === commandName || cmd.aliases?.includes(commandName));
     if (!command) return;
@@ -91,7 +90,22 @@ export class CommandHandler {
 
     // TODO: Make a enum for permissions and stop using eris-additions
 
+    // Handles command arguments
+    let parsedArgs;
+
+    if (command.args) {
+      // Parses arguments
+      parsedArgs = this.bot.args.parse(command.args, args.join(" "), msg);
+
+      // Handles and sends missing arguments
+      const missingargs = parsedArgs.filter((a: Record<string, unknown>) => typeof a.value == "undefined" && !a.optional);
+
+      if (missingargs.length) {
+        return this.bot.createEmbed("❌ Error", "uhhhh ohhh idkk what happennn mens :c", msg, "error");
+      }
+    }
+
     // Runs the command
-    command.run(msg, str, this.bot);
+    command.run(msg, str, this.bot, args, parsedArgs);
   }
 }
