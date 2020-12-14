@@ -1,23 +1,22 @@
 /**
  * @file Database
  * @description Base structure for database providers
- * @author Espi <contact@espi.me>
  */
 
-import { hibikiClient } from "./Client";
+import { HibikiClient } from "./Client";
 const errorString = "Method not implemented.";
 
 export class DatabaseProvider {
-  bot: hibikiClient;
+  bot: HibikiClient;
 
   /**
    * Creates a new database provider.
-   * @param {hibikiClient} bot Main bot object
+   * @param {HibikiClient} bot Main bot object
    *
    * @example new Database(this.bot);
    */
 
-  constructor(bot: hibikiClient) {
+  constructor(bot: HibikiClient) {
     this.bot = bot;
   }
 

@@ -1,16 +1,14 @@
 /**
  * @file Locale system
  * @description Functions for locale and string parsing
- * @author Espi <contact@espi.me>
- * @author resolved <resolvedxd@gmail.com>
  */
 
 import { readdir, readFile } from "fs";
-import { hibikiClient } from "./Client";
+import { HibikiClient } from "./Client";
+import config from "../../config.json";
 
 export class LocaleSystem {
   locales: Record<string, string>;
-  fallback_locale: string;
 
   /**
    * Creates a new locale system
@@ -21,7 +19,6 @@ export class LocaleSystem {
 
   constructor(path: string) {
     this.locales = {};
-    this.fallback_locale = "en";
     if (path) this.updateLocales(path);
   }
 
@@ -59,8 +56,8 @@ export class LocaleSystem {
     const category = fieldName.split(".");
     let output = "";
 
-    output = this.findLocaleString(language, fieldName, category);
-    if (!output) output = this.findLocaleString(this.fallback_locale, fieldName, category);
+    output = this._findLocaleString(language, fieldName, category);
+    if (!output) output = this._findLocaleString(config.defaultLocale ? config.defaultLocale : "en", fieldName, category);
 
     // Sends an error if the string doesn't exist
     if (!output) throw new Error(`${fieldName} is missing in the string table for ${language}`);
@@ -95,7 +92,7 @@ export class LocaleSystem {
    * @param bot Main bot object
    */
 
-  async getUserLocale(user: string, bot: hibikiClient): Promise<string> {
+  async getUserLocale(user: string, bot: HibikiClient): Promise<string> {
     let locale = "";
     const userConfig = (await bot.db.getUserConfig(user)) as Record<string, string>;
     if (userConfig?.locale) locale = userConfig.locale;
@@ -104,7 +101,7 @@ export class LocaleSystem {
     return locale;
   }
 
-  private findLocaleString(language: string, fieldName: string, category: (string | number)[]) {
+  private _findLocaleString(language: string, fieldName: string, category: (string | number)[]) {
     let output = "";
 
     // Attempts to find the string if the category isn't provided

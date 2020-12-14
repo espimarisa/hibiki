@@ -1,15 +1,14 @@
 /**
  * @file Command
  * @description Base class for commands
- * @author Espi <contact@espi.me>
  */
 
 import { Message } from "eris";
-import { Argument } from "./Argument";
-import { hibikiClient } from "./Client";
+import { HibikiClient } from "./Client";
 
-// Locale string function
+// Command types
 export type LocaleString = (string: string, args?: Record<string, unknown> | undefined) => string;
+export type ParsedArgs = (commandArgs: string, args: string, msg: Message) => string;
 
 // TODO: Actually implement this
 export enum PermissionLevel {
@@ -43,7 +42,7 @@ export enum CommandCategories {
 
 export abstract class Command {
   aliases: string[] = [];
-  args: Argument[] = [];
+  args!: string;
   cooldown!: number;
   requiredkeys?: string[] = [];
   requiredperms?: PermissionLevel = PermissionLevel.ANYONE;
@@ -58,9 +57,9 @@ export abstract class Command {
   /**
    * Runs a command
    * @param {Message} msg Main message object
-   * @param {hibikiClient} bot Main bot object
+   * @param {HibikiClient} bot Main bot object
    * @param {Record<string, unknown>} args Arguments to pass
    */
 
-  abstract run(msg: Message, str: unknown, bot?: hibikiClient, args?: Record<string, unknown>): Promise<void>;
+  abstract run(msg: Message, str: LocaleString, bot?: HibikiClient, args?: string[], parsedArgs?: ParsedArgs): Promise<void>;
 }
