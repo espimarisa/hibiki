@@ -1,11 +1,10 @@
 /**
  * @file Loader
  * @description Loads commands, events, locales, and other modules
- * @author Espi <contact@espi.me>
  * @module scripts/loader
  */
 
-import { hibikiClient } from "../structures/Client";
+import { HibikiClient } from "../classes/Client";
 import { readdirSync, statSync } from "fs";
 import path from "path";
 
@@ -14,11 +13,11 @@ const EVENTS_DIRECTORY = path.join(__dirname, "../events");
 
 /**
  * Loads all items
- * @param {hibikiClient} bot Main bot object
+ * @param {HibikiClient} bot Main bot object
  * @async
  */
 
-export async function loadItems(bot: hibikiClient): Promise<void> {
+export async function loadItems(bot: HibikiClient): Promise<void> {
   // Filetypes to try to load
   const fileTypes = /\.(js|ts|json)$/i;
 

@@ -1,11 +1,10 @@
 /**
  * @file Index
  * @description Creates an instance of Hibiki
- * @author Espi <contact@espi.me>
  * @license AGPL-3.0-or-later
  */
 
-import { hibikiClient } from "./structures/Client";
+import { HibikiClient } from "./classes/Client";
 import config from "../config.json";
 
-new hibikiClient(config.token, config.options);
+new HibikiClient(config.token, config.options);

@@ -1,7 +1,6 @@
 /**
  * @file Bot logger
  * @description Creates and manages winston loggers
- * @author Espi <contact@espi.me>
  * @module helpers/logger
  */
 

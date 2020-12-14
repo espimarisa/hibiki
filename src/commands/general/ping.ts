@@ -1,20 +1,14 @@
-/**
- * @file Ping command
- * @author Espi <contact@espi.me>
- * @command
- */
-
 import { Message, TextChannel } from "eris";
-import { Command, CommandCategories, LocaleString } from "../../structures/Command";
-import { hibikiClient } from "../../structures/Client";
+import { Command, CommandCategories, LocaleString } from "../../classes/Command";
+import { HibikiClient } from "../../classes/Client";
 
-class pingCommand extends Command {
+class PingCommand extends Command {
   name = "ping";
   category = CommandCategories.GENERAL;
   aliases = ["pong"];
   description = "Returns the bot's latency.";
 
-  async run(msg: Message<TextChannel>, string: LocaleString, bot: hibikiClient): Promise<void> {
+  async run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient): Promise<void> {
     const pingmsg = await msg.channel.createMessage({
       embed: {
         title: string("general.PING_INITIAL_TITLE"),
@@ -41,4 +35,4 @@ class pingCommand extends Command {
   }
 }
 
-export default new pingCommand();
+export default new PingCommand();

@@ -1,24 +1,18 @@
-/**
- * @file About command
- * @author Espi <contact@espi.me>
- * @command
- */
-
 import { Message, TextChannel, VERSION as erisVersion } from "eris";
 import { version as tsVersion } from "typescript";
 import { version as botVersion } from "../../../package.json";
-import { Command, CommandCategories, LocaleString } from "../../structures/Command";
-import { hibikiClient } from "../../structures/Client";
+import { Command, CommandCategories, LocaleString } from "../../classes/Command";
+import { HibikiClient } from "../../classes/Client";
 import os from "os";
 
-class aboutCommand extends Command {
+class AboutCommand extends Command {
   name = "about";
   category = CommandCategories.GENERAL;
   aliases = ["aboutbot", "botinfo", "botstats", "info", "information", "stats", "statistics", "uptime"];
   description = "Displays bot information and statistics.";
   allowdms: true = true;
 
-  async run(msg: Message<TextChannel>, string: LocaleString, bot: hibikiClient): Promise<void> {
+  async run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient): Promise<void> {
     // Formats bytes
     function formatBytes(bytes: number) {
       if (bytes === 0) return "0 Bytes";
@@ -131,4 +125,4 @@ class aboutCommand extends Command {
   }
 }
 
-export default new aboutCommand();
+export default new AboutCommand();
