@@ -4,8 +4,8 @@
     "prefix": ["hibiki-command"],
     "body": [
       "import { Message, TextChannel } from \"eris\";",
-      "import { Command, CommandCategories, LocaleString, PermissionLevel } from \"../../structures/Command\";",
-      "import { hibikiClient } from \"../../structures/Client\";",
+      "import { Command, CommandCategories, LocaleString, PermissionLevel } from \"../../classes/Command\";",
+      "import { HibikiClient } from \"../../classes/Client\";",
       "",
       "class $1Command extends Command {",
       "  name = \"$2\";",
@@ -18,7 +18,7 @@
       "  nsfw = false;",
       "  owner = false;",
       "",
-      "  async run(msg: Message<TextChannel>, string: LocaleString, bot: hibikiClient) {",
+      "  async run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient) {",
       "    $6",
       "  }",
       "}",
@@ -27,5 +27,5 @@
       ""
     ],
     "description": "Template for a new Hibiki command."
-  },
+  }
 }
