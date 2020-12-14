@@ -22,6 +22,11 @@
     "PING_FINAL_FOOTER": "Ran by {author} | Latency: {latency}ms"
   },
 
+  "image": {
+    "CAT_TITLE": "🐱 Cat",
+    "CAT_FOOTER": "Ran by {author} | Powered by random.cat"
+  },
+
   "moderation": {
     "PURGE_DESCRIPTION": "purged {msgs:# messages#! message!}"
   }
