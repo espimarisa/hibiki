@@ -1,7 +1,6 @@
 /**
  * @file Formatter
  * @description Formats and beautifies items
- * @author Espi <contact@espi.me>
  * @module helpers/format
  */
 

@@ -1,7 +1,6 @@
 /**
  * @file Constants
  * @description Regexes and other constants used throughout the app
- * @author Espi <contact@espi.me>
  * @module helpers/constants
  */
 

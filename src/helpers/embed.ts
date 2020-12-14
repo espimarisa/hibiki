@@ -1,14 +1,11 @@
 /**
  * @file Embed
  * @description Functions to create and edit oneliner embeds
- * @author Espi <contact@espi.me>
  * @module helpers/embed
  */
 
 import { Message } from "eris";
-import { botConfig } from "../interfaces/config";
-import * as configFile from "../../config.json";
-const config: botConfig = <botConfig>configFile;
+import config from "../../config.json";
 
 /**
  * Creates a new simple oneliner embed
