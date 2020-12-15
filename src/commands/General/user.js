@@ -32,7 +32,7 @@ class userCommand extends Command {
     }
 
     // Spotify & playing
-    if (user.activities) {
+    if (user && user.activities !== undefined) {
       const song = user.activities.find(s => s.id === "spotify:1");
       const game = user.activities.find(s => s.id !== "spotify:1" && s.id !== "custom");
       if (song && !game) playing = `${song.details} \n` + `by ${song.state} \n` + `on ${song.assets.large_text}`;
@@ -56,14 +56,14 @@ class userCommand extends Command {
           playingname = "Watching";
           break;
         case 4:
-          playingname = `${user.activities.find(s => s.id === "spotify:1") ? "Listening to" : "Custom Status"}`;
+          playingname = `${user.activities?.find(s => s.id === "spotify:1") ? "Listening to" : "Custom Status"}`;
           break;
         default:
           playingname = "Unknown";
           break;
       }
 
-      if (user.activities.find(s => s.id !== "spotify:1" && s.id !== "custom")) playingname = "Playing";
+      if (user && user.activities && user.activities.find(s => s.id !== "spotify:1" && s.id !== "custom")) playingname = "Playing";
     } else playingname = "Playing";
 
 
