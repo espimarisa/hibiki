@@ -8,6 +8,7 @@ import { HibikiClient } from "../classes/Client";
 import { LocaleString, ParsedArgs } from "../classes/Command";
 import { Event } from "../classes/Event";
 import config from "../../config.json";
+import * as Sentry from "@sentry/node";
 
 export class HandlerEvent extends Event {
   events = ["messageCreate"];
@@ -51,14 +52,14 @@ export class HandlerEvent extends Event {
     }
 
     // Handles NSFW commands
-    if (command.nsfw === true && msg.channel.nsfw === false) {
-      bot.createEmbed("❌ Error", "This command can only be ran in a NSFW channel.", msg, "error");
+    if (command.nsfw === true && msg.channel.nsfw === false && msg.channel.guild) {
+      bot.createEmbed(str("global.ERROR"), str("global.ERROR_NSFW", { command: command.name }), msg, "error");
       return;
     }
 
-    // Handles DMs & commands in DMs
+    // Handles commands in DMs
     if (command.allowdms === false && msg.channel instanceof PrivateChannel) {
-      bot.createEmbed("❌ Error", "This command can only be ran in a server.", msg, "error");
+      bot.createEmbed(str("global.ERROR"), str("global.ERROR_ALLOWDMS", { command: command.name }), msg, "error");
       return;
     }
 
@@ -68,21 +69,38 @@ export class HandlerEvent extends Event {
     let parsedArgs;
 
     if (command.args) {
-      // Parses arguments
+      // Parses arguments and sends if missing any
       parsedArgs = bot.args.parse(command.args, args.join(" "), msg);
-
-      // Handles and sends missing arguments
       const missingargs = parsedArgs.filter((a: Record<string, unknown>) => typeof a.value == "undefined" && !a.optional);
 
       if (missingargs.length) {
-        bot.createEmbed("❌ Error", `You didn't provide a **${missingargs.map((a: ParsedArgs) => a.name).join(" or ")}**.`, msg, "error");
+        bot.createEmbed(
+          str("global.ERROR"),
+          str("global.ERROR_MISSING_ARGUMENTS", { arg: `${missingargs.map((a: ParsedArgs) => a.name).join(` ${str("global.OR")} `)}.` }),
+          msg,
+          "error",
+        );
+
         return;
       }
     }
 
     // Runs the command
-    bot.log.info(`${bot.tagUser(msg.author)} ran ${command.name} in ${msg.channel.guild.name}${args.length ? `: ${args}` : ""}`);
-    command.run(msg, str, bot, args, parsedArgs);
+    bot.log.info(`${bot.tagUser(msg.author)} ran ${command.name} in ${msg.channel.guild?.name}${args.length ? `: ${args}` : ""}`);
+
+    try {
+      await command.run(msg, str, bot, args, parsedArgs);
+    } catch (err) {
+      Sentry.configureScope((scope) => {
+        scope.setUser({ id: msg.author.id, username: bot.tagUser(msg.author) });
+        scope.setExtra("guild", msg.channel.guild?.name);
+        scope.setExtra("guildID", msg.channel.guild?.id);
+      });
+
+      Sentry.captureException(err);
+      console.error(err);
+      return bot.createEmbed(str("global.ERROR"), str("global.ERROR_CODE_DESCRIPTION", { error: err }), msg, "error");
+    }
   }
 }
 
