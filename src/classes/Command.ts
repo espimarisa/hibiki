@@ -42,7 +42,7 @@ export enum CommandCategories {
 
 export abstract class Command {
   aliases: string[] = [];
-  args!: string;
+  args: string;
   cooldown!: number;
   requiredkeys?: string[] = [];
   requiredperms?: PermissionLevel = PermissionLevel.ANYONE;
@@ -53,13 +53,6 @@ export abstract class Command {
   abstract name: string;
   abstract category: string;
   abstract description: string;
-
-  /**
-   * Runs a command
-   * @param {Message} msg Main message object
-   * @param {HibikiClient} bot Main bot object
-   * @param {Record<string, unknown>} args Arguments to pass
-   */
 
   abstract run(msg: Message, str: LocaleString, bot?: HibikiClient, args?: string[], parsedArgs?: ParsedArgs): Promise<void>;
 }

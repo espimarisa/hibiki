@@ -6,7 +6,7 @@
 import { Member, Message, TextChannel } from "eris";
 import { HibikiClient } from "./Client";
 
-export class ArgParser {
+export class Args {
   argtypes: Record<any, any>;
   bot: HibikiClient;
 

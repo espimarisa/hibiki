@@ -10,7 +10,7 @@ class AboutCommand extends Command {
   category = CommandCategories.GENERAL;
   aliases = ["aboutbot", "botinfo", "botstats", "info", "information", "stats", "statistics", "uptime"];
   description = "Displays bot information and statistics.";
-  allowdms: true = true;
+  allowdms = true;
 
   async run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient): Promise<void> {
     // Formats bytes

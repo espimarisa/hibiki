@@ -13,7 +13,8 @@ class CatCommand extends Command {
   category = CommandCategories.IMAGE;
   aliases = ["kitten", "kitty"];
   description = "Sends a random picture of a cat.";
-  cooldown!: 3000;
+  cooldown = 3000;
+  allowdms = true;
 
   async run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient): Promise<void> {
     // TODO: Add an global Exception handler
