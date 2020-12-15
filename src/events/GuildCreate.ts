@@ -5,7 +5,7 @@ import { Event } from "../classes/Event";
 class GuildCreateEvent extends Event {
   events = ["guildCreate"];
 
-  async run(guild: Guild, bot: HibikiClient): Promise<void> {
+  async run(guild: Guild, bot: HibikiClient) {
     bot.log.info(`Added to guild: ${guild.name} (${guild.id})`);
   }
 }

@@ -15,12 +15,12 @@ export class DatabaseProvider {
   }
 
   // Gets a server's config
-  getGuildConfig(id: string): void {
+  getGuildConfig(id: string) {
     if (!id) throw new Error(errorString);
   }
 
   // Get's a user's config
-  getUserConfig(id: string): void {
+  getUserConfig(id: string) {
     if (!id) throw new Error(errorString);
   }
 }

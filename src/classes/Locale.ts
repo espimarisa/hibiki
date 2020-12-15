@@ -16,7 +16,7 @@ export class LocaleSystem {
     if (path) this.updateLocales(path);
   }
 
-  updateLocales(path: string): void {
+  updateLocales(path: string) {
     // Reads the locales directory
     readdir(path, { withFileTypes: true }, (err, files) => {
       if (err) throw err;
@@ -36,7 +36,7 @@ export class LocaleSystem {
   }
 
   /** Returns a string from a specific locale */
-  getLocale(language: string, fieldName: string, args: { [x: string]: any } | undefined): string {
+  getLocale(language: string, fieldName: string, args: { [x: string]: any } | undefined) {
     // Gets the string category
     const category = fieldName.split(".");
     let output = "";
@@ -64,11 +64,11 @@ export class LocaleSystem {
 
   /** Runs the function to return a locale string */
   getLocaleFunction(language: string) {
-    return (fieldName: string, args?: Record<string, unknown> | undefined): string => this.getLocale(language, fieldName, args);
+    return (fieldName: string, args?: Record<string, unknown> | undefined) => this.getLocale(language, fieldName, args);
   }
 
   /** Returns what locale a user uses */
-  async getUserLocale(user: string, bot: HibikiClient): Promise<string> {
+  async getUserLocale(user: string, bot: HibikiClient) {
     let locale = "";
     const userConfig = await bot.db.getUserConfig(user);
     if (userConfig?.locale) locale = userConfig.locale;

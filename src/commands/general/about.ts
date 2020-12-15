@@ -12,7 +12,7 @@ class AboutCommand extends Command {
   description = "Displays bot information and statistics.";
   allowdms = true;
 
-  async run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient): Promise<void> {
+  run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient) {
     // Formats bytes
     function formatBytes(bytes: number) {
       if (bytes === 0) return "0 Bytes";
@@ -48,7 +48,7 @@ class AboutCommand extends Command {
     }
 
     // Formats uptime
-    function formatUptime(uptime: number): string {
+    function formatUptime(uptime: number) {
       const date = new Date(uptime * 1000);
       const days = date.getUTCDate() - 1;
       const hours = date.getUTCHours();
