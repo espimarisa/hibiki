@@ -12,12 +12,7 @@ const COMMANDS_DIRECTORY = path.join(__dirname, "../commands");
 const EVENTS_DIRECTORY = path.join(__dirname, "../events");
 const fileTypes = /\.(js|ts)$/i;
 
-/**
- * Loads all items
- * @param {HibikiClient} bot Main bot object
- * @async
- */
-
+/** Loads all items */
 export async function loadItems(bot: HibikiClient): Promise<void> {
   // Loads commands
   const commandFiles = readdirSync(COMMANDS_DIRECTORY);

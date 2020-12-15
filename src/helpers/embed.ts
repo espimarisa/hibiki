@@ -7,18 +7,8 @@
 import { Message } from "eris";
 import config from "../../config.json";
 
-/**
- * Creates a new simple oneliner embed
- * @param {string} title The title field of the embed
- * @param {string} desc The description field of the embed. Set to null if you want it to be empty
- * @param {Message} msg The message object to use, usually just msg
- * @param {string} colortype The type of color to use. If not given, will use "generaL". View colors portion of config.json
- *
- * @await
- * @example createEmbed("Embed Title", "Embed Description", msg, "error")
- */
-
-export async function createEmbed(title: string, desc: string | null, msg: Message, colortype?: string): Promise<unknown> {
+/** Creates a new oneliner embed */
+export async function createEmbed(title: string, desc: string | null, msg: Message, colortype?: string) {
   if (!msg) throw new Error("No message object was provided");
   if (msg && !msg.channel) return;
   let embedTitle;
@@ -58,18 +48,7 @@ export async function createEmbed(title: string, desc: string | null, msg: Messa
   return msg.channel.createMessage(embedConstruct);
 }
 
-/**
- * Edits a simple oneliner embed
- * @param {string} title The title field of the embed
- * @param {string} desc The description field of the embed. Set to null if you want it to be empty
- * @param {Message} msg The message object to use. Use the msg object you defined earlier!
- * @param {string} colortype The type of color to use. If not given, will use "generaL". View colors portion of config.json
- *
- * @await
- * @example const msgtoedit = (await createEmbed("Embed Title", "Embed Description", msg, "error")) as Message;
- * await editEmbed("Edited Title", "Edited Description", msgtoedit, "success")
- */
-
+/** Edits a oneliner embed */
 export async function editEmbed(title: string, desc: string | null, msg: Message, colortype?: string): Promise<unknown> {
   if (!msg) throw new Error("No message object was provided");
   if (msg && !msg.channel) return;
@@ -105,13 +84,7 @@ export async function editEmbed(title: string, desc: string | null, msg: Message
   return msg.edit(embedConstruct);
 }
 
-/**
- * Converts a hex color to hexadecimal since Discord's API sucks
- * @param {string} colortype The color in the config to convert.
- *
- * @example color: bot.convertHex("general"),
- */
-
+/** Converts a hex color in the config to decimal */
 export function convertHex(colortype: string): number {
   return parseInt(config.colors[colortype].replace(/#/g, "0x"));
 }

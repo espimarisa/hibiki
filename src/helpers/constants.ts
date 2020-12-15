@@ -15,3 +15,6 @@ export const emojiNameRegex = /(?<=:)[^\s]+(?=:)/;
 // Invite regexes
 export const inviteRegex = /https(:)\/\/discord.(gg)\/[a-zA-Z0-9]+/g;
 export const fullInviteRegex = /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|com)|discordapp\.com\/invite)\/.+[a-z]/g;
+
+// Strings and URLs
+export const defaultAvatar = "https://cdn.discordapp.com/embed/avatars/0.png";

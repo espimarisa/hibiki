@@ -3,27 +3,26 @@ import { Command, CommandCategories, LocaleString } from "../../classes/Command"
 import { HibikiClient } from "../../classes/Client";
 import axios from "axios";
 
-class CatCommand extends Command {
-  name = "cat";
+class DogCommand extends Command {
+  name = "dog";
   category = CommandCategories.IMAGE;
-  aliases = ["kitten", "kitty"];
-  description = "Sends a random picture of a cat.";
+  aliases = ["puppy"];
+  description = "Sends a random picture of a dog.";
   cooldown = 3000;
   allowdms = true;
 
   async run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient): Promise<void> {
-    // TODO: Add an global Exception handler
-    const body = await axios.get("http://aws.random.cat/meow");
+    const body = await axios.get("https://random.dog/woof.json");
 
     msg.channel.createMessage({
       embed: {
-        title: string("image.CAT_TITLE"),
+        title: string("image.DOG_TITLE"),
         color: bot.convertHex("general"),
         image: {
-          url: body.data.file,
+          url: body.data.url,
         },
         footer: {
-          text: string("image.CAT_FOOTER", { author: bot.tagUser(msg.author) }),
+          text: string("image.DOG_FOOTER", { author: bot.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
@@ -31,4 +30,4 @@ class CatCommand extends Command {
   }
 }
 
-export default new CatCommand();
+export default new DogCommand();

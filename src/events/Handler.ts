@@ -81,6 +81,7 @@ export class HandlerEvent extends Event {
     }
 
     // Runs the command
+    bot.log.info(`${bot.tagUser(msg.author)} ran ${command.name} in ${msg.channel.guild.name}${args.length ? `: ${args}` : ""}`);
     command.run(msg, str, bot, args, parsedArgs);
   }
 }

@@ -17,8 +17,8 @@ const rethinkOptions = {
   silent: true,
 };
 
-async function startRethink() {
-  await r.connectPool(rethinkOptions);
+function startRethink() {
+  return r.connectPool(rethinkOptions);
 }
 
 startRethink();
@@ -27,11 +27,7 @@ export class RethinkProvider extends DatabaseProvider {
   db: typeof r;
   dblock: any;
 
-  /**
-   * Creates a new database provider
-   * @param {HibikiClient} bot Main bot object
-   */
-
+  /** Creates a new database provider */
   constructor(bot: HibikiClient) {
     super(bot);
     this.db = r;

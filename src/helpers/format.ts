@@ -6,13 +6,7 @@
 
 import { User } from "eris";
 
-/**
- * Tags a user.
- * @param {User} user The user object to tag
- *
- * @example tagUser(msg.author);
- */
-
+/** Tags a user by username#discriminator */
 export function tagUser(user: User): string {
   return `${user.username}#${user.discriminator}`;
 }
@@ -27,11 +21,7 @@ const logColors = {
   yellow: "\x1b[33m",
 };
 
-/**
- * Formats a date for console logging
- * @param {Date} timestamp The timestamp to format
- */
-
+/** Formats a date for console logging */
 export function formatLogDate(timestamp: Date): string {
   const date = new Date(timestamp);
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
