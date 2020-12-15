@@ -2,9 +2,15 @@
   "name": "English",
 
   "global": {
+    "OR": "or",
     "ERROR": "❌ Error",
     "SUCCESS": "✅ Success",
-    "RAN_BY_FOOTER": "Ran by {author}"
+    "RAN_BY_FOOTER": "Ran by {author}",
+
+    "ERROR_MISSING_ARGUMENTS": "You didn't provide a **{arg}**.",
+    "ERROR_NSFW": "The **{command}** command can only be ran in a NSFW channel.",
+    "ERROR_ALLOWDMS": "The **{command}** command can only be ran in a server.",
+    "ERROR_CODE_DESCRIPTION": "An error occurred and has been logged. \n ```js\n{error}\n```"
   },
 
   "general": {
@@ -40,6 +46,9 @@
 
     "DOG_TITLE": "🐶 Dog",
     "DOG_FOOTER": "Ran by {author} | Powered by random.dog",
+
+    "DUCK_TITLE": "🦆 Duck",
+    "DUCK_FOOTER": "Ran by {author} | Powered by random-d.uk",
 
     "FOX_TITLE": "🦊 Fox",
     "FOX_FOOTER": "Ran by {author} | Powered by randomfox.ca"
