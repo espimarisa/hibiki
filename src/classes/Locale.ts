@@ -10,13 +10,7 @@ import config from "../../config.json";
 export class LocaleSystem {
   locales: Record<string, string>;
 
-  /**
-   * Creates a new locale system
-   * @param {string} path The path to search for locales in
-   *
-   * @example new LocaleSystem("../locales");
-   */
-
+  /** Creates a new locale system */
   constructor(path: string) {
     this.locales = {};
     if (path) this.updateLocales(path);
@@ -41,16 +35,7 @@ export class LocaleSystem {
     });
   }
 
-  /**
-   * Returns a string from a specific locale
-   * @param {string} language The language code to get
-   * @param {string} fieldName The string to get
-   * @param {Record<string, unknown>} args Any args to pass to the string
-   *
-   * @example const getLocale_en = getLocaleFunction("en")
-   * getLocale_en("STRING_NAME", { arguments?: here });
-   */
-
+  /** Returns a string from a specific locale */
   getLocale(language: string, fieldName: string, args: { [x: string]: any } | undefined): string {
     // Gets the string category
     const category = fieldName.split(".");
@@ -77,24 +62,15 @@ export class LocaleSystem {
     return output;
   }
 
-  /**
-   * Runs the function to return a locale string
-   * @param {string} language The locale to search for the string in
-   */
-
+  /** Runs the function to return a locale string */
   getLocaleFunction(language: string) {
     return (fieldName: string, args?: Record<string, unknown> | undefined): string => this.getLocale(language, fieldName, args);
   }
 
-  /**
-   * Returns what locale a user uses
-   * @param user User ID
-   * @param bot Main bot object
-   */
-
+  /** Returns what locale a user uses */
   async getUserLocale(user: string, bot: HibikiClient): Promise<string> {
     let locale = "";
-    const userConfig = (await bot.db.getUserConfig(user)) as Record<string, string>;
+    const userConfig = await bot.db.getUserConfig(user);
     if (userConfig?.locale) locale = userConfig.locale;
     else if (!userConfig?.locale) locale = "en";
 
