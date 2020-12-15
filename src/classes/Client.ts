@@ -4,18 +4,17 @@
  */
 
 import { Client } from "eris";
-import { ArgParser } from "./Args";
+import { Args } from "./Args";
 import { Command } from "./Command";
 import { Event } from "./Event";
-import { CommandHandler } from "./Handler";
 import { LocaleSystem } from "./Locale";
 import { Logger } from "./Logger";
 import { RethinkProvider } from "../providers/rethinkdb";
 import { createEmbed, editEmbed, convertHex } from "../helpers/embed";
 import { tagUser } from "../helpers/format";
+import { loadItems } from "../helpers/loader";
 import { botLogger } from "../helpers/logger";
-import { loadItems } from "../utils/loader";
-import { switchStatuses } from "../utils/statuses";
+import { switchStatuses } from "../helpers/statuses";
 import config from "../../config.json";
 import Sentry from "@sentry/node";
 import path from "path";
@@ -31,9 +30,8 @@ export class HibikiClient extends Client {
   editEmbed: typeof editEmbed;
   convertHex: typeof convertHex;
   tagUser: typeof tagUser;
-  commandHandler: CommandHandler;
   localeSystem: LocaleSystem;
-  args: ArgParser;
+  args: Args;
   db: RethinkProvider;
   log: typeof botLogger;
 
@@ -54,9 +52,8 @@ export class HibikiClient extends Client {
     this.tagUser = tagUser;
 
     // Handlers & functions
-    this.args = new ArgParser(this);
+    this.args = new Args(this);
     this.db = new RethinkProvider(this);
-    this.commandHandler = new CommandHandler(this);
     this.localeSystem = new LocaleSystem(LOCALES_DIRECTORY);
 
     this.connect();
