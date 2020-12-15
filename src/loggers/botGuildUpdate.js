@@ -32,7 +32,7 @@ module.exports = bot => {
           value: format.date(guild.createdAt),
         }, {
           name: "Owner",
-          value: `${bot.tag(owner)} (${owner.id})`,
+          value: `${bot.tag(owner)}`,
         }, {
           name: "Members",
           value: `${guild.memberCount - bots} members, ${bots} bots`,
@@ -71,7 +71,7 @@ module.exports = bot => {
           value: format.date(guild.createdAt),
         }, {
           name: "Owner",
-          value: `${bot.tag(owner)} (${owner.id})`,
+          value: `${bot.tag(owner)}`,
         }, {
           name: "Members",
           value: `${guild.memberCount - bots} members, ${bots} bots`,

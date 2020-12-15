@@ -54,7 +54,8 @@ class e621Command extends Command {
     }
 
     const random = Math.floor(Math.random() * body.posts.length);
-    if (body && body.posts && body.posts[random].file.url.endsWith(".webm") ||
+    if (body && body.posts && body.posts[random] && body.posts[random].file.url &&
+      body.posts[random].file.url.endsWith(".webm") ||
       body && body.posts && body.posts[random].file.url.endsWith(".mp4") ||
       body && body.posts && body.posts[random].file.url.endsWith(".swf")) {
       return this.bot.embed("❌ Error", `Post is a video. You can view it [here](${body.posts[0].file.url}).`, msg, "error");
