@@ -1,6 +1,8 @@
 {
   "name": "English",
   "global": {
+    "ERROR": "❌ Error",
+    "SUCCESS": "✅ Success",
     "RAN_BY_FOOTER": "Ran by {author}"
   },
   "general": {
@@ -12,15 +14,25 @@
     "ABOUT_STATISTICS_STRING": "{users} total users \n{guilds} total guilds \n{commands} total commands \nBot up for {uptime}",
     "ABOUT_MODULES_STRING": "Hibiki v{botVersion} \nEris v{erisVersion} \nNode.js {nodeVersion} \nTypeScript v{tsVersion}",
     "ABOUT_HOST_STRING": "Bot using {botMemoryUsage} of memory \nSystem using {hostMemoryUsage} of memory \nSystem up for {uptime} \nRunning on {platform}",
+    "BANNER_ERROR": "This server doesn't have a banner.",
+    "CHANGELOG_TITLE": "📚 Changelog",
+    "CHANGELOG_DESCRIPTION": "The latest changelog can be viewed [here](https://github.com/smolespi/Hibiki/releases/latest).",
     "PING_INITIAL_TITLE": "🏓 Ping",
     "PING_INITIAL_DESCRIPTION": "Sending... (latency: {latency}ms).",
     "PING_FINAL_TITLE": "🏓 Pong!",
     "PING_FINAL_DESCRIPTION": "This message took {latency}ms to send.",
-    "PING_FINAL_FOOTER": "Ran by {author} | Latency: {latency}ms"
+    "PING_FINAL_FOOTER": "Ran by {author} | Latency: {latency}ms",
+    "SPLASHBANNER_ERROR": "This server doesn't have a splash page banner."
   },
   "image": {
     "CAT_TITLE": "🐱 Cat",
-    "CAT_FOOTER": "Ran by {author} | Powered by random.cat"
+    "CAT_FOOTER": "Ran by {author} | Powered by random.cat",
+    "CATGIRL_TITLE": "🐱 Catgirl",
+    "CATGIRL_FOOTER": "Ran by {author} | Powered by nekos.life",
+    "DOG_TITLE": "🐶 Dog",
+    "DOG_FOOTER": "Ran by {author} | Powered by random.dog",
+    "FOX_TITLE": "🦊 Fox",
+    "FOX_FOOTER": "Ran by {author} | Powered by randomfox.ca"
   },
   "moderation": {
     "PURGE_DESCRIPTION": "purged {msgs:# messages#! message!}"
