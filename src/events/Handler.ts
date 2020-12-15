@@ -12,7 +12,7 @@ import config from "../../config.json";
 export class HandlerEvent extends Event {
   events = ["messageCreate"];
 
-  async run(msg: Message<TextChannel>, bot: HibikiClient): Promise<void> {
+  async run(msg: Message<TextChannel>, bot: HibikiClient) {
     if (!msg || !msg.content || msg.author.bot === true || !msg.channel || !msg.author) return;
     let prefix;
 

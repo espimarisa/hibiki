@@ -13,7 +13,7 @@ const EVENTS_DIRECTORY = path.join(__dirname, "../events");
 const fileTypes = /\.(js|ts)$/i;
 
 /** Loads all items */
-export async function loadItems(bot: HibikiClient): Promise<void> {
+export async function loadItems(bot: HibikiClient) {
   // Loads commands
   const commandFiles = readdirSync(COMMANDS_DIRECTORY);
   commandFiles.forEach((subfolder) => {

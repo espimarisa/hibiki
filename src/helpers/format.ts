@@ -7,7 +7,7 @@
 import { User } from "eris";
 
 /** Tags a user by username#discriminator */
-export function tagUser(user: User): string {
+export function tagUser(user: User) {
   return `${user.username}#${user.discriminator}`;
 }
 
@@ -22,7 +22,7 @@ const logColors = {
 };
 
 /** Formats a date for console logging */
-export function formatLogDate(timestamp: Date): string {
+export function formatLogDate(timestamp: Date) {
   const date = new Date(timestamp);
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const month = monthNames[date.getMonth()];

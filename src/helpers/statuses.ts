@@ -8,7 +8,7 @@ import { version } from "../../package.json";
 import config from "../../config.json";
 
 // Rotates bot statuses
-export function switchStatuses(bot: HibikiClient): void {
+export function switchStatuses(bot: HibikiClient) {
   const statuses = config.statuses.map((s) => {
     if (s === "help") s = `${config.prefixes[0]}help | hibiki.app`;
     else if (s === "guilds") s = `${bot.guilds.size} guilds`;

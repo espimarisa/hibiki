@@ -62,7 +62,7 @@ export class HibikiClient extends Client {
   }
 
   // Runs when the bot is ready
-  async readyListener(): Promise<void> {
+  async readyListener() {
     await loadItems(this);
     switchStatuses(this);
     if (config.apikeys.sentry) this.initializeSentry();
@@ -72,7 +72,7 @@ export class HibikiClient extends Client {
   }
 
   // Initializes sentry
-  initializeSentry(): void {
+  initializeSentry() {
     try {
       Sentry.init({
         dsn: config.apikeys.sentry,
