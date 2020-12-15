@@ -1,7 +1,7 @@
 {
   "token": "",
   "owners": [""],
-  "prefix": "",
+  "prefixes": [""],
   "logchannel": "",
   "statuses": ["guilds", "help", "users", "version"],
   "intents": ["guilds", "guildMembers", "guildBans", "guildVoiceStates", "guildMessages", "guildMessageReactions"],

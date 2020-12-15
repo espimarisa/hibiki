@@ -1,6 +1,6 @@
 /**
  * @file Loader
- * @description Loads commands, events, locales, and other modules
+ * @description Loads commands, events, and other modules
  * @module scripts/loader
  */
 
@@ -10,6 +10,7 @@ import path from "path";
 
 const COMMANDS_DIRECTORY = path.join(__dirname, "../commands");
 const EVENTS_DIRECTORY = path.join(__dirname, "../events");
+const fileTypes = /\.(js|ts)$/i;
 
 /**
  * Loads all items
@@ -18,9 +19,6 @@ const EVENTS_DIRECTORY = path.join(__dirname, "../events");
  */
 
 export async function loadItems(bot: HibikiClient): Promise<void> {
-  // Filetypes to try to load
-  const fileTypes = /\.(js|ts|json)$/i;
-
   // Loads commands
   const commandFiles = readdirSync(COMMANDS_DIRECTORY);
   commandFiles.forEach((subfolder) => {
@@ -48,7 +46,7 @@ export async function loadItems(bot: HibikiClient): Promise<void> {
   // Tries to load each event
   const eventFiles = readdirSync(EVENTS_DIRECTORY);
   eventFiles.forEach(async (e) => {
-    let event;
+    let event: any;
 
     try {
       if (!fileTypes.test(e)) return;
@@ -59,5 +57,10 @@ export async function loadItems(bot: HibikiClient): Promise<void> {
 
     if (!event) return;
     bot.events.push(event.default);
+
+    // Runs each event
+    event.default.events.forEach((ev: any) => {
+      bot.on(ev, (...eventParams) => event.default.run(...eventParams, bot));
+    });
   });
 }
