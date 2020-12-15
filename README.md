@@ -55,7 +55,7 @@ Hibiki is licensed under the [GNU AGPL-v3][license] or later.
 
 ## Contributing
 
-View the [contributing][contributing] file for details on how to contribute. If you have a security concern, read our [security][security] file before filing an issue.
+View the [contributing][contributing] file for details on how to contribute to the code. If you're looking to help us translate Hibiki into other languages, view our [Crowdin][translating] page. If you have a security concern of vulnerability to report to us, read out [security][security] file before filing an issue.
 
 [hibiki]: https://hibiki.app "Hibiki Website"
 [invite]: https://discordapp.com/oauth2/authorize?&client_id=493904957523623936&scope=bot&permissions=506850534 "Invite the main Hibiki instance"
@@ -67,3 +67,4 @@ View the [contributing][contributing] file for details on how to contribute. If 
 [latest]: https://github.com/smolespi/Hibiki/releases/latest "Latest GitHub release"
 [stable]: https://github.com/smolespi/Hibiki/releases "Latest stable GitHub release"
 [workflow]: https://github.com/smolespi/Hibiki/actions?query=workflow%3AHibiki "Main GitHub workflow"
+[translating]: https://translate.hibiki.app
