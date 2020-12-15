@@ -9,13 +9,7 @@ const errorString = "Method not implemented.";
 export class DatabaseProvider {
   bot: HibikiClient;
 
-  /**
-   * Creates a new database provider.
-   * @param {HibikiClient} bot Main bot object
-   *
-   * @example new Database(this.bot);
-   */
-
+  /** Creates a new database provider */
   constructor(bot: HibikiClient) {
     this.bot = bot;
   }

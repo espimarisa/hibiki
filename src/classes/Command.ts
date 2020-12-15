@@ -19,10 +19,7 @@ export enum PermissionLevel {
   ANYONE,
 }
 
-/**
- * @enum Command category names
- */
-
+/** Command category names */
 export enum CommandCategories {
   FUN = "Fun",
   GENERAL = "General",
@@ -35,14 +32,10 @@ export enum CommandCategories {
   UTILITY = "Utility",
 }
 
-/**
- * Main command class
- * @abstract
- */
-
+/** Main command class */
 export abstract class Command {
   aliases: string[] = [];
-  args: string;
+  args!: string;
   cooldown!: number;
   requiredkeys?: string[] = [];
   requiredperms?: PermissionLevel = PermissionLevel.ANYONE;
@@ -54,5 +47,5 @@ export abstract class Command {
   abstract category: string;
   abstract description: string;
 
-  abstract run(msg: Message, str: LocaleString, bot?: HibikiClient, args?: string[], parsedArgs?: ParsedArgs): Promise<void>;
+  abstract run(msg: Message, str: LocaleString, bot?: HibikiClient, args?: string[], parsedArgs?: ParsedArgs): Promise<unknown> | void;
 }
