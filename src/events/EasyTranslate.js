@@ -66,7 +66,7 @@ class easyTranslate extends Event {
         },
         footer: {
           text: `Translated by ${this.bot.tag(reactioner)} from ${body[2].toUpperCase()} to ${lang.toUpperCase()}.`,
-          icon_url: reactioner.dynamicAvatarURL(),
+          icon_url: reactioner ? reactioner.dynamicAvatarURL() : null,
         },
       },
     }).catch(() => {});
