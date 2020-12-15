@@ -29,9 +29,9 @@ class urbanCommand extends Command {
     word.definition = topword[0].definition.replace(/[[\]]/g, "");
     word.example = topword[0].example.replace(/[[\]]/g, "");
     if (word.definition.length > 1024) {
-      let fullstop = word.definition.slice(0, 1024).lastIndexOf('.');
+      const fullstop = word.definition.slice(0, 1024).lastIndexOf(".");
       word.definition = word.definition.slice(0, fullstop + 1);
-    };
+    }
 
     const fields = [];
     if (word.example) fields.push({ name: "Example", value: `${word.example}` });
