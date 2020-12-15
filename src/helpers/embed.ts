@@ -49,7 +49,7 @@ export async function createEmbed(title: string, desc: string | null, msg: Messa
 }
 
 /** Edits a oneliner embed */
-export async function editEmbed(title: string, desc: string | null, msg: Message, colortype?: string): Promise<unknown> {
+export async function editEmbed(title: string, desc: string | null, msg: Message, colortype?: string) {
   if (!msg) throw new Error("No message object was provided");
   if (msg && !msg.channel) return;
   let embedTitle;
@@ -85,6 +85,6 @@ export async function editEmbed(title: string, desc: string | null, msg: Message
 }
 
 /** Converts a hex color in the config to decimal */
-export function convertHex(colortype: string): number {
+export function convertHex(colortype: string) {
   return parseInt(config.colors[colortype].replace(/#/g, "0x"));
 }

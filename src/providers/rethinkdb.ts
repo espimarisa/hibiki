@@ -34,12 +34,12 @@ export class RethinkProvider extends DatabaseProvider {
     this.dblock = this.db.db(rethinkOptions.db).wait();
   }
 
-  async getGuildConfig(guild: string): Promise<Record<string, string>> {
+  async getGuildConfig(guild: string) {
     await this.dblock;
     return this.db.table("guildconfig").get(guild).run();
   }
 
-  async getUserConfig(user: string): Promise<Record<string, string>> {
+  async getUserConfig(user: string) {
     await this.dblock;
     return this.db.table("userconfig").get(user).run();
   }
