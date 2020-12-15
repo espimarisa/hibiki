@@ -1,6 +1,6 @@
 # Hibiki Privacy Policy
 
-## Updated 25 November 2020
+## Updated 15 December 2020
 
 This Privacy Policy applies to personal information collected through jiktim's ("we", "us", or "our") "Hibiki" Discord application and website, "hibiki.app". If you have any questions, please contact a developer or email `contact@espi.me` with your inquiry. Additionally, this is not 100% legally binding and pretty informal.
 
@@ -20,15 +20,15 @@ Collected for authentication:
 
 Collected for features:
 
-- Your timezone and locale information. This is provided using your web browser's native API (Intl.DateTimeFormat().resolvedOptions()) and doesn't contain anything personally identifiable, but contains your timezone and locale. We currently only read the timezone part, however. If you don't wish to use this data, head over to https://hibiki.app/manage/profile and delete your profile data. Don't save the changes, they're deleted automatically. Additionally, any profile edits will save this data. Your current time is displayed on your profile when a user runs h!profile.
+- Your timezone and locale information. This is provided using your web browser's native API (Intl.DateTimeFormat().resolvedOptions()) and doesn't contain anything personally identifiable. We currently only read the timezone part of said function. If you don't wish to use this data, head over to https://hibiki.app/manage/profile and delete your profile data. Don't save the changes, they're deleted automatically. Additionally, any profile edits will save this data. Your current time is displayed on your profile when a user runs h!profile.
 
 ### Hibiki Bot Application
 
-We collect very little information, however, for some configurations and functionality to work, we need to collect the following:
+We collect very little information, however, for some configurations and functionality to work, we need to collect the following (optional) data:
 
-- User &amp; Server ID: a unique number for every Discord server ("guild") and user, this is stored in order to know which server should be modified and to verify if the user is authorized to modify the server. This is non-personal information and can be accessed by anyone. If you do not wish to provide this, do not use our bot, or even Discord as it's public.
+- User &amp; Server ID: a unique number for every Discord server ("guild") and user, this is stored in order to know which server should be modified and to verify if the user is authorized to modify the server. This is non-personal information and can be accessed by anyone. If you do not wish to provide this, do not use our bot, or even Discord as it's public information.
 
-- Command Responses: some commands, such as the con fig or createCommand commands, ask for a response. We will store the msg.content data in order to send that response at a later time.
+- Command Responses: some commands, such as the config or createCommand commands, ask for a response. We store the msg.content data in the database in order to send that response at a later time.
 
 ### Closure
 
