@@ -39,7 +39,7 @@ class Handler extends Event {
     // DM handling & logger
     if (msg.channel instanceof eris.PrivateChannel && this.bot.config.logchannel) {
       const cmd = this.bot.commands.find(
-        c => msg.content.toLowerCase().startsWith(`${this.bot.config.prefixes[0]}${c.id}`) || msg.content.toLowerCase().startsWith(c.id),
+        c => msg.content.toLowerCase() === (`${this.bot.config.prefixes[0]}${c.id}`) || msg.content.toLowerCase() === (c.id),
       );
 
       // Commands in dms
