@@ -51,7 +51,10 @@
     "DUCK_FOOTER": "Ran by {author} | Powered by random-d.uk",
 
     "FOX_TITLE": "🦊 Fox",
-    "FOX_FOOTER": "Ran by {author} | Powered by randomfox.ca"
+    "FOX_FOOTER": "Ran by {author} | Powered by randomfox.ca",
+
+    "FOXGIRL_TITLE": "🦊 Foxgirl",
+    "FOXGIRL_FOOTER": "Ran by {author} | Powered by nekos.life"
   },
 
   "moderation": {

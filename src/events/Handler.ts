@@ -14,7 +14,7 @@ export class HandlerEvent extends Event {
   events = ["messageCreate"];
 
   async run(msg: Message<TextChannel>, bot: HibikiClient) {
-    if (!msg || !msg.content || msg.author.bot === true || !msg.channel || !msg.author) return;
+    if (!msg || !msg.content || msg.author.bot || !msg.channel || !msg.author) return;
     let prefix;
 
     // Finds the locale and what prefix to use
@@ -52,13 +52,13 @@ export class HandlerEvent extends Event {
     }
 
     // Handles NSFW commands
-    if (command.nsfw === true && msg.channel.nsfw === false && msg.channel.guild) {
+    if (command.nsfw && !msg.channel.nsfw && msg.channel.guild) {
       bot.createEmbed(str("global.ERROR"), str("global.ERROR_NSFW", { command: command.name }), msg, "error");
       return;
     }
 
     // Handles commands in DMs
-    if (command.allowdms === false && msg.channel instanceof PrivateChannel) {
+    if (!command.allowdms && msg.channel instanceof PrivateChannel) {
       bot.createEmbed(str("global.ERROR"), str("global.ERROR_ALLOWDMS", { command: command.name }), msg, "error");
       return;
     }
