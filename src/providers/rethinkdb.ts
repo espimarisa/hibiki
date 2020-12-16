@@ -43,4 +43,9 @@ export class RethinkProvider extends DatabaseProvider {
     await this.dblock;
     return this.db.table("userconfig").get(user).run();
   }
+
+  async getBlacklistedGuild(guild: string) {
+    await this.dblock;
+    return this.db.table("blacklist").get(guild).run();
+  }
 }
