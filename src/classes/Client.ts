@@ -65,7 +65,7 @@ export class HibikiClient extends Client {
   async readyListener() {
     await loadItems(this);
     switchStatuses(this);
-    if (config.apikeys.sentry) this.initializeSentry();
+    if (config.keys.sentry) this.initializeSentry();
     this.log.info(`Logged in as ${this.tagUser(this.user)} on ${this.guilds.size} guilds`);
     this.log.info(`${this.commands.length} commands loaded`);
     this.log.info(`${this.events.length} events loaded`);
@@ -75,7 +75,7 @@ export class HibikiClient extends Client {
   initializeSentry() {
     try {
       Sentry.init({
-        dsn: config.apikeys.sentry,
+        dsn: config.keys.sentry,
         environment: process.env.NODE_ENV,
         tracesSampleRate: 0.5,
       });

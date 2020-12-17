@@ -8,7 +8,7 @@ class PingCommand extends Command {
   aliases = ["pong"];
   description = "Returns the bot's latency.";
 
-  async run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient) {
+  async run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
     const pingmsg = await msg.channel.createMessage({
       embed: {
         title: string("general.PING_INITIAL_TITLE"),

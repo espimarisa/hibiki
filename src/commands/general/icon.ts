@@ -9,7 +9,7 @@ class IconCommand extends Command {
   aliases = ["guildicon", "servericon"];
   description = "Sends the server's icon.";
 
-  run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient) {
+  run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
     msg.channel.createMessage({
       embed: {
         color: bot.convertHex("general"),

@@ -12,7 +12,7 @@ class AboutCommand extends Command {
   description = "Displays bot information and statistics.";
   allowdms = true;
 
-  run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient) {
+  run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
     // Formats bytes
     function formatBytes(bytes: number) {
       if (bytes === 0) return "0 Bytes";

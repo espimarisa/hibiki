@@ -64,7 +64,7 @@ export class LocaleSystem {
 
   /** Runs the function to return a locale string */
   getLocaleFunction(language: string) {
-    return (fieldName: string, args?: Record<string, unknown> | undefined) => this.getLocale(language, fieldName, args);
+    return (fieldName: string, args?: Record<string, unknown>) => this.getLocale(language, fieldName, args);
   }
 
   /** Returns what locale a user uses */
@@ -77,7 +77,7 @@ export class LocaleSystem {
     return locale;
   }
 
-  private _findLocaleString(language: string, fieldName: string, category: (string | number)[]) {
+  private _findLocaleString(language: string, fieldName: string, category: string[]) {
     let output = "";
 
     // Attempts to find the string if the category isn't provided

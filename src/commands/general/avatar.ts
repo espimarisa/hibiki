@@ -9,7 +9,7 @@ class AvatarCommand extends Command {
   aliases = ["pfp", "profilepic", "profilepicture", "uicon", "usericon"];
   description = "Sends a member's profile picture.";
 
-  run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient, _args: string[], pargs: ParsedArgs) {
+  run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString, pargs: ParsedArgs) {
     const user = pargs[0].value;
 
     msg.channel.createMessage({

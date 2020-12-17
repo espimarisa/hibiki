@@ -11,7 +11,8 @@ class FoxgirlCommand extends Command {
   cooldown = 3000;
   allowdms = true;
 
-  async run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient) {
+  async run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
+    // TODO: Stop using nekos.life. We could get banned over this!!!
     const body = await axios.get("https://nekos.life/api/v2/img/fox_girl");
 
     msg.channel.createMessage({

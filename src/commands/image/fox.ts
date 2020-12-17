@@ -10,7 +10,7 @@ class FoxCommand extends Command {
   cooldown = 3000;
   allowdms = true;
 
-  async run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient) {
+  async run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
     const body = await axios.get("https://randomfox.ca/floof/");
 
     msg.channel.createMessage({

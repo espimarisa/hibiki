@@ -7,7 +7,7 @@ import { Member, Message, TextChannel } from "eris";
 import { HibikiClient } from "./Client";
 
 export class Args {
-  argtypes: Record<any, any>;
+  argtypes: Record<string, any>;
   bot: HibikiClient;
 
   constructor(bot: HibikiClient) {

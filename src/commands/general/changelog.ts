@@ -9,7 +9,7 @@ class ChangelogCommand extends Command {
   description = "Sends the latest version's changelog.";
   allowdms = true;
 
-  run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient) {
+  run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
     msg.channel.createMessage({
       embed: {
         title: string("general.CHANGELOG_TITLE"),

@@ -7,10 +7,15 @@
     "SUCCESS": "✅ Success",
     "RAN_BY_FOOTER": "Ran by {author}",
 
-    "ERROR_MISSING_ARGUMENTS": "You didn't provide a **{arg}**.",
-    "ERROR_NSFW": "The **{command}** command can only be ran in a NSFW channel.",
     "ERROR_ALLOWDMS": "The **{command}** command can only be ran in a server.",
-    "ERROR_CODE_DESCRIPTION": "An error occurred and has been logged. \n ```js\n{error}\n```"
+    "ERROR_NSFW": "The **{command}** command can only be ran in a NSFW channel.",
+    "ERROR_SENDPERMS": "I don't have permission to **send messages** in {channel}.",
+    "ERROR_EMBEDPERMS": "I don't have permission to **embed links** in {channel}.",
+    "ERROR_CLIENTPERMS": "I need permission to **{perms}** to run that command.",
+    "ERROR_STAFFCOMMAND": "The **{command}** can only be used by staff members.",
+    "ERROR_REQUIREDPERMS": "You need permission to **{perms}** to run that command.",
+    "ERROR_MISSINGARGS": "You didn't provide a **{arg}**.",
+    "ERROR_OUTPUT": "An error occurred and has been logged. \n ```js\n{error}\n```"
   },
 
   "general": {
@@ -42,7 +47,7 @@
     "CAT_FOOTER": "Ran by {author} | Powered by random.cat",
 
     "CATGIRL_TITLE": "🐱 Catgirl",
-    "CATGIRL_FOOTER": "Ran by {author} | Powered by nekos.life",
+    "CATGIRL_FOOTER": "Ran by {author} | Powered by api.nekobot.xyz",
 
     "DOG_TITLE": "🐶 Dog",
     "DOG_FOOTER": "Ran by {author} | Powered by random.dog",
@@ -59,5 +64,10 @@
 
   "moderation": {
     "PURGE_DESCRIPTION": "purged {msgs:# messages#! message!}"
+  },
+
+  "nsfw": {
+    "LEWDCATGIRL_TITLE": "🐱 Lewd Catgirl",
+    "LEWDCATGIRL_FOOTER": "Ran by {author} | Powered by api.nekobot.xyz"
   }
 }
