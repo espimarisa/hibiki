@@ -7,7 +7,7 @@ class BannerCommand extends Command {
   category = CommandCategories.GENERAL;
   description = "Sends the server's banner.";
 
-  run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient) {
+  run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
     // Sends if a guild has no banner
     if (!msg.channel.guild.banner) {
       return msg.channel.createMessage({

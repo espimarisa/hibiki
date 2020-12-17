@@ -8,7 +8,7 @@ class SplashBannerCommand extends Command {
   aliases = ["splash"];
   description = "Sends the server's splash page banner.";
 
-  run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient) {
+  run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
     // Sends if a guild has no splash banner
     if (!msg.channel.guild.splashURL) {
       return msg.channel.createMessage({
