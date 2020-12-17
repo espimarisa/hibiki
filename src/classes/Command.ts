@@ -10,15 +10,6 @@ import { HibikiClient } from "./Client";
 export type LocaleString = (string: string, args?: Record<string, unknown> | undefined) => string;
 export type ParsedArgs = (commandArgs: string, args: string, msg: Message) => string;
 
-// TODO: Actually implement this
-export enum PermissionLevel {
-  BOT_OWNER,
-  SERVER_OWNER,
-  SERVER_ADMIN,
-  SERVER_MOD,
-  ANYONE,
-}
-
 /** Command category names */
 export enum CommandCategories {
   FUN = "Fun",
@@ -38,14 +29,16 @@ export abstract class Command {
   args!: string;
   cooldown!: number;
   requiredkeys?: string[] = [];
-  requiredperms?: PermissionLevel = PermissionLevel.ANYONE;
+  clientperms?: string;
+  requiredperms?: string;
   allowdms = false;
   nsfw = false;
   owner = false;
+  staff = false;
 
   abstract name: string;
   abstract category: string;
   abstract description: string;
 
-  abstract run(msg: Message, str: LocaleString, bot?: HibikiClient, args?: string[], parsedArgs?: ParsedArgs): Promise<unknown> | void;
+  abstract run(msg: Message, bot?: HibikiClient, string?: LocaleString, args?: ParsedArgs): Promise<unknown> | void;
 }

@@ -11,7 +11,7 @@ class CatCommand extends Command {
   cooldown = 3000;
   allowdms = true;
 
-  async run(msg: Message<TextChannel>, string: LocaleString, bot: HibikiClient) {
+  async run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
     // TODO: Add an global Exception handler
     const body = await axios.get("http://aws.random.cat/meow");
 
