@@ -29,8 +29,8 @@ export abstract class Command {
   args!: string;
   cooldown!: number;
   requiredkeys?: string[] = [];
-  clientperms?: string;
-  requiredperms?: string;
+  clientperms?: string | string[] = [];
+  requiredperms?: string | string[] = [];
   allowdms = false;
   nsfw = false;
   owner = false;

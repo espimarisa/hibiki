@@ -67,9 +67,30 @@ export class HandlerEvent extends Event {
         return dmChannel.createMessage(string("global.ERROR_EMBEDPERMS", { channel: `<#${msg.channel.id}>` }));
       }
 
-      // Handles commands with clientPerms
-      if (command.clientperms && !botPerms.has(command.clientperms)) {
-        return bot.createEmbed(string("global.ERROR"), string("global.ERROR_CLIENTPERMS", { perms: command.clientperms }), msg, "error");
+      // Handles clientPerms
+      if (command.clientperms) {
+        // One clientperm
+        if (typeof command.clientperms == "string" && !botPerms.has(command.clientperms)) {
+          return bot.createEmbed(string("global.ERROR"), string("global.ERROR_CLIENTPERMS", { perms: command.clientperms }), msg, "error");
+        }
+
+        // Array of clientperms
+        else if (Array.isArray(command.clientperms)) {
+          const missingPerms: string[] = [];
+          command.clientperms.forEach((perm) => {
+            if (!botPerms.has(perm)) missingPerms.push(perm);
+          });
+
+          // Sends any missingperms
+          if (missingPerms.length) {
+            return bot.createEmbed(
+              string("global.ERROR"),
+              string("global.ERROR_CLIENTPERMS", { perms: missingPerms.map((mperm) => `\`${mperm}\``).join(",") }),
+              msg,
+              "error",
+            );
+          }
+        }
       }
 
       // Handles staff commands
@@ -77,13 +98,34 @@ export class HandlerEvent extends Event {
         if (!msg.member?.permissions.has("administrator") && guildconfig?.staffRole && !msg.member?.roles.includes(guildconfig.staffRole)) {
           return bot.createEmbed(string("global.ERROR"), string("global.ERROR_STAFFCOMMAND"), msg, "error");
         }
+      }
 
-        // Handles commands with requiredPerms
-        if (command.requiredperms && !guildconfig?.staffRole) {
-          if (!msg.member?.permissions.has(command.requiredperms) && !msg.member?.permissions.has("administrator")) {
+      // Handles commands with requiredPerms
+      if (command.requiredperms && !guildconfig?.staffRole) {
+        // One requiredperms
+        if (typeof command.requiredperms == "string") {
+          if (!msg.member?.permissions.has(command.requiredperms)) {
             return bot.createEmbed(
               string("global.ERROR"),
               string("global.ERROR_REQUIREDPERMS", { perms: command.requiredperms }),
+              msg,
+              "error",
+            );
+          }
+        }
+
+        // Array of clientperms
+        else if (Array.isArray(command.requiredperms)) {
+          const missingPerms: any[] = [];
+          command.requiredperms.forEach((perm) => {
+            if (!msg.member?.permissions.has(perm)) missingPerms.push(perm);
+          });
+
+          // Sends any missingperms
+          if (missingPerms.length) {
+            return bot.createEmbed(
+              string("global.ERROR"),
+              string("global.ERROR_REQUIREDPERMS", { perms: missingPerms.map((mperm) => `\`${mperm}\``).join(",") }),
               msg,
               "error",
             );
@@ -119,10 +161,11 @@ export class HandlerEvent extends Event {
       }
     }
 
-    // Runs the command
+    // Logs when a command is ran
     bot.log.info(`${bot.tagUser(msg.author)} ran ${command.name} in ${msg.channel.guild?.name}${args.length ? `: ${args}` : ""}`);
 
     try {
+      // Tries to run a command and catches any errors
       await command.run(msg, bot, string, parsedArgs);
     } catch (err) {
       Sentry.configureScope((scope) => {
