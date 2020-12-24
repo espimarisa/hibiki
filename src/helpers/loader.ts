@@ -10,9 +10,10 @@ import { join } from "path";
 
 const COMMANDS_DIRECTORY = join(__dirname, "../commands");
 const EVENTS_DIRECTORY = join(__dirname, "../events");
-const loadedCommands = {};
 const fileTypes = /\.(js|ts)$/i;
+const loadedCommands = {};
 
+/** Loads all commands */
 function loadCommands(path: string, bot: HibikiClient) {
   readdir(path, { withFileTypes: true }, (ioerr, files) => {
     if (ioerr) return;
@@ -35,7 +36,8 @@ function loadCommands(path: string, bot: HibikiClient) {
       }
 
       if (!command) return;
-      // Pushes the command's
+
+      // Pushes the commands
       const splitPath = path.split("/");
       bot.commands.push(new command(bot, file.name.split(fileTypes)[0], splitPath[splitPath.length - 1]));
 
@@ -47,16 +49,18 @@ function loadCommands(path: string, bot: HibikiClient) {
   });
 }
 
-// Loads each event file
+/** Loads and runs events */
 function loadEvents(path: string, bot: HibikiClient) {
+  // Subscribes to and runs events
   function subscribeEvents() {
     bot.events.forEach((e: any) => {
       e.events.forEach((ev: string) => {
-        bot.on(ev, (...eventParams: any) => e.run(...eventParams));
+        bot.on(ev, (...eventParams: any) => e.run(ev, ...eventParams));
       });
     });
   }
 
+  // Loads each event file
   readdir(EVENTS_DIRECTORY, { withFileTypes: true }, (ioerr, files) => {
     if (ioerr) return;
 

@@ -9,10 +9,10 @@
   "defaultLocale": "en",
 
   "colors": {
-    "general": "#6FCBF2",
-    "success": "#41FF70",
+    "general": "#8E94F2",
     "error": "#FF0048",
-    "other": "#3498DB"
+    "pinboard": "#3498DB",
+    "success": "#41FF70"
   },
 
   "options": {
@@ -25,24 +25,33 @@
   "database": {
     "provider": "rethink",
     "db": "hibiki",
-    "host": "",
     "password": "",
-    "user": "",
-    "port": 28015
+    "port": 28015,
+    "host": "",
+    "user": ""
   },
 
   "lavalink": {
-    "enabled": true,
     "host": "localhost",
     "password": "youshallnotpass",
+    "enabled": true,
+    "port": 2333,
+    "maxlength": 720000,
     "spotifyClientID": "",
-    "spotifyClientSecret": "",
-    "port": 2333
+    "spotifyClientSecret": ""
   },
 
   "keys": {
     "sentry": "",
-    "topgg": "",
-    "dbots": ""
+    "weebsh": ""
+  },
+
+  "botlists": {
+    "botsfordiscord": "",
+    "botsondiscord": "",
+    "dboats": "",
+    "dbots": "",
+    "discordbotlist": "",
+    "topgg": ""
   }
 }

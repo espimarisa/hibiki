@@ -3,8 +3,6 @@
  * @description Main database provider for RethinkDB
  */
 
-import type { HibikiClient } from "../classes/Client";
-import { DatabaseProvider } from "../classes/Database";
 import { botLogger } from "../helpers/logger";
 import { r } from "rethinkdb-ts";
 import config from "../../config.json";
@@ -27,13 +25,12 @@ startRethink().catch((err) => {
   process.exit(1);
 });
 
-export class RethinkProvider extends DatabaseProvider {
+export class RethinkProvider {
   db: typeof r;
   dblock: any;
 
   /** Creates a new database provider */
-  constructor(bot: HibikiClient) {
-    super(bot);
+  constructor() {
     this.db = r;
     this.dblock = this.db.db(config.database.db ?? "db").wait();
   }
