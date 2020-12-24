@@ -3,7 +3,7 @@
  * @description Cycles between configured bot statuses
  */
 
-import { HibikiClient } from "../classes/Client";
+import type { HibikiClient } from "../classes/Client";
 import { version } from "../../package.json";
 import config from "../../config.json";
 

@@ -3,8 +3,8 @@
  * @description Handles and parses command arguments
  */
 
-import { Member, Message, TextChannel } from "eris";
-import { HibikiClient } from "./Client";
+import type { Member, Message, TextChannel } from "eris";
+import type { HibikiClient } from "./Client";
 
 export class Args {
   argtypes: Record<string, any>;

@@ -3,9 +3,7 @@
  * @description Handles and executes commands
  */
 
-import { Message, TextChannel, PrivateChannel } from "eris";
-import { HibikiClient } from "../classes/Client";
-import { LocaleString, ParsedArgs } from "../classes/Command";
+import { Message, PrivateChannel, TextChannel } from "eris";
 import { Event } from "../classes/Event";
 import config from "../../config.json";
 import * as Sentry from "@sentry/node";
@@ -13,28 +11,31 @@ import * as Sentry from "@sentry/node";
 export class HandlerEvent extends Event {
   events = ["messageCreate"];
 
-  async run(msg: Message<TextChannel>, bot: HibikiClient) {
+  async run(msg: Message<TextChannel>) {
     if (!msg || !msg.content || msg.author.bot || !msg.channel || !msg.author) return;
     let prefix;
 
-    // Finds the locale and what prefix to use
-    const userLocale = await bot.localeSystem.getUserLocale(msg.author.id, bot);
-    const string = bot.localeSystem.getLocaleFunction(userLocale) as LocaleString;
-    const prefixes = config.prefixes.map((p) => msg.content.toLowerCase().startsWith(p)).indexOf(true);
-    const guildconfig = await bot.db.getGuildConfig(msg.channel.guild ? msg.channel.guild.id : "");
+    // Finds what locale to use
+    const userLocale = await this.bot.localeSystem.getUserLocale(msg.author.id, this.bot);
+    const string = this.bot.localeSystem.getLocaleFunction(userLocale) as LocaleString;
+    msg.string = string;
 
-    // Checks for a valid prefix
+    // Finds what prefix to use
+    const prefixes = config.prefixes.map((p) => msg.content.toLowerCase().startsWith(p)).indexOf(true);
+    const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild ? msg.channel.guild.id : "");
     if (guildconfig && guildconfig.prefix && msg.content.toLowerCase().startsWith(guildconfig.prefix)) prefix = guildconfig.prefix;
     else if ((!guildconfig || !guildconfig.prefix) && config.prefixes && prefixes !== -1) prefix = config.prefixes[prefixes];
-    else if (msg.content.startsWith(`<@!${bot.user.id}> `)) prefix = `<@!${bot.user.id}> `;
-    else if (msg.content.startsWith(`<@${bot.user.id}> `)) prefix = `<@${bot.user.id}> `;
-    else if (msg.content.startsWith(`<@${bot.user.id}>`)) prefix = `<@${bot.user.id}>`;
-    else if (msg.content.startsWith(`<@!${bot.user.id}>`)) prefix = `<@!${bot.user.id}>`;
+    else if (msg.content.startsWith(`<@!${this.bot.user.id}> `)) prefix = `<@!${this.bot.user.id}> `;
+    else if (msg.content.startsWith(`<@${this.bot.user.id}> `)) prefix = `<@${this.bot.user.id}> `;
+    else if (msg.content.startsWith(`<@${this.bot.user.id}>`)) prefix = `<@${this.bot.user.id}>`;
+    else if (msg.content.startsWith(`<@!${this.bot.user.id}>`)) prefix = `<@!${this.bot.user.id}>`;
     if (!prefix) return;
 
     // Finds the command to run
     const [commandName, ...args] = msg.content.trim().slice(prefix.length).split(/ +/g);
-    const command = bot.commands.find((cmd) => cmd?.name === commandName.toLowerCase() || cmd?.aliases.includes(commandName.toLowerCase()));
+    const command = this.bot.commands.find(
+      (cmd) => cmd?.name === commandName.toLowerCase() || cmd?.aliases.includes(commandName.toLowerCase()),
+    );
     if (!command) return;
 
     // Handles owner commands
@@ -42,105 +43,92 @@ export class HandlerEvent extends Event {
 
     // Handles commands in DMs
     if (!command.allowdms && msg.channel instanceof PrivateChannel) {
-      bot.createEmbed(string("global.ERROR"), string("global.ERROR_ALLOWDMS", { command: command.name }), msg, "error");
+      msg.createEmbed(string("global.ERROR"), string("global.ERROR_ALLOWDMS", { command: command.name }), "error");
       return;
     }
 
     // Handles NSFW commands
     if (command.nsfw && !msg.channel.nsfw && msg.channel.guild) {
-      bot.createEmbed(string("global.ERROR"), string("global.ERROR_NSFW", { command: command.name }), msg, "error");
+      msg.createEmbed(string("global.ERROR"), string("global.ERROR_NSFW", { command: command.name }), "error");
       return;
+    }
+
+    // Handles voice-only commands
+    if (command.voice) {
+      const uservoice = msg.channel.guild.members.get(msg.author.id)?.voiceState.channelID;
+      const botvoice = msg.channel.guild.members.get(this.bot.user.id)?.voiceState.channelID;
+
+      // If the user isn't in a voice channel or if the user isn't in the same channel as the bot
+      if (!uservoice || (botvoice && uservoice !== botvoice)) {
+        msg.createEmbed(string("global.ERROR"), string("global.ERROR_VOICE", { command: command.name }), "error");
+        return;
+      }
     }
 
     // Handles clientPerms, botPerms, requiredPerms, and staff commands
     if (msg.channel.guild) {
       const dmChannel = await msg.author.getDMChannel();
-      const botPerms = msg.channel.guild.members.get(bot.user.id)?.permissions;
+      const botPerms = msg.channel.guild.members.get(this.bot.user.id)?.permissions;
 
       // Sends if the bot can't send messages in a channel or guild
-      if (!msg.channel.permissionsOf(bot.user.id).has("sendMessages") || !botPerms?.has("sendMessages")) {
+      if (!msg.channel.permissionsOf(this.bot.user.id).has("sendMessages") || !botPerms?.has("sendMessages")) {
         return dmChannel.createMessage(string("global.ERROR_SENDPERMS", { channel: `<#${msg.channel.id}>` }));
       }
 
       // Sends if the bot can't embed messages in a channel or guild
-      if (!msg.channel.permissionsOf(bot.user.id).has("embedLinks") || !botPerms.has("embedLinks")) {
+      if (!msg.channel.permissionsOf(this.bot.user.id).has("embedLinks") || !botPerms.has("embedLinks")) {
         return dmChannel.createMessage(string("global.ERROR_EMBEDPERMS", { channel: `<#${msg.channel.id}>` }));
       }
 
       // Handles clientPerms
-      if (command.clientperms) {
-        // One clientperm
-        if (typeof command.clientperms == "string" && !botPerms.has(command.clientperms)) {
-          return bot.createEmbed(string("global.ERROR"), string("global.ERROR_CLIENTPERMS", { perms: command.clientperms }), msg, "error");
-        }
+      if (command.clientperms?.length) {
+        const missingPerms: string[] = [];
+        command.clientperms.forEach((perm) => {
+          if (!botPerms.has(perm)) missingPerms.push(perm);
+        });
 
-        // Array of clientperms
-        else if (Array.isArray(command.clientperms)) {
-          const missingPerms: string[] = [];
-          command.clientperms.forEach((perm) => {
-            if (!botPerms.has(perm)) missingPerms.push(perm);
-          });
-
-          // Sends any missingperms
-          if (missingPerms.length) {
-            return bot.createEmbed(
-              string("global.ERROR"),
-              string("global.ERROR_CLIENTPERMS", { perms: missingPerms.map((mperm) => `\`${mperm}\``).join(",") }),
-              msg,
-              "error",
-            );
-          }
+        // Sends any missingperms
+        if (missingPerms.length) {
+          return msg.createEmbed(
+            string("global.ERROR"),
+            string("global.ERROR_CLIENTPERMS", { perms: missingPerms.map((mperm) => `\`${mperm}\``).join(",") }),
+            "error",
+          );
         }
       }
 
       // Handles staff commands
       if (command.staff) {
         if (!msg.member?.permissions.has("administrator") && guildconfig?.staffRole && !msg.member?.roles.includes(guildconfig.staffRole)) {
-          return bot.createEmbed(string("global.ERROR"), string("global.ERROR_STAFFCOMMAND"), msg, "error");
+          return msg.createEmbed(string("global.ERROR"), string("global.ERROR_STAFFCOMMAND"), "error");
         }
       }
 
       // Handles commands with requiredPerms
-      if (command.requiredperms && !guildconfig?.staffRole) {
-        // One requiredperms
-        if (typeof command.requiredperms == "string") {
-          if (!msg.member?.permissions.has(command.requiredperms)) {
-            return bot.createEmbed(
-              string("global.ERROR"),
-              string("global.ERROR_REQUIREDPERMS", { perms: command.requiredperms }),
-              msg,
-              "error",
-            );
-          }
-        }
+      if (command.requiredperms?.length && !guildconfig?.staffRole) {
+        const missingPerms: any[] = [];
+        command.requiredperms.forEach((perm) => {
+          if (!msg.member?.permissions.has(perm)) missingPerms.push(perm);
+        });
 
-        // Array of clientperms
-        else if (Array.isArray(command.requiredperms)) {
-          const missingPerms: any[] = [];
-          command.requiredperms.forEach((perm) => {
-            if (!msg.member?.permissions.has(perm)) missingPerms.push(perm);
-          });
-
-          // Sends any missingperms
-          if (missingPerms.length) {
-            return bot.createEmbed(
-              string("global.ERROR"),
-              string("global.ERROR_REQUIREDPERMS", { perms: missingPerms.map((mperm) => `\`${mperm}\``).join(",") }),
-              msg,
-              "error",
-            );
-          }
+        // Sends any missingperms
+        if (missingPerms.length) {
+          return msg.createEmbed(
+            string("global.ERROR"),
+            string("global.ERROR_REQUIREDPERMS", { perms: missingPerms.map((mperm) => `\`${mperm}\``).join(",") }),
+            "error",
+          );
         }
       }
     }
 
     // Handles command cooldowns
     if (command.cooldown && !config.owners.includes(msg.author.id)) {
-      const cooldown = bot.cooldowns.get(command.name + msg.author.id);
+      const cooldown = this.bot.cooldowns.get(command.name + msg.author.id);
       if (cooldown) return msg.addReaction("⌛");
-      bot.cooldowns.set(command.name + msg.author.id, new Date());
+      this.bot.cooldowns.set(command.name + msg.author.id, new Date());
       setTimeout(() => {
-        bot.cooldowns.delete(command.name + msg.author.id);
+        this.bot.cooldowns.delete(command.name + msg.author.id);
       }, command.cooldown);
     }
 
@@ -148,37 +136,34 @@ export class HandlerEvent extends Event {
     let parsedArgs;
     if (command.args) {
       // Parses arguments and sends if missing any
-      parsedArgs = bot.args.parse(command.args, args.join(" "), msg);
+      parsedArgs = this.bot.args.parse(command.args, args.join(" "), msg);
       const missingargs = parsedArgs.filter((a: Record<string, unknown>) => typeof a.value == "undefined" && !a.optional);
 
       if (missingargs.length) {
-        return bot.createEmbed(
+        return msg.createEmbed(
           string("global.ERROR"),
-          string("global.ERROR_MISSINGARGS", { arg: `${missingargs.map((a: ParsedArgs) => a.name).join(` ${string("global.OR")} `)}.` }),
-          msg,
+          string("global.ERROR_MISSINGARGS", { arg: `${missingargs.map((a: ParsedArgs) => a.name).join(` ${string("global.OR")} `)}` }),
           "error",
         );
       }
     }
 
     // Logs when a command is ran
-    bot.log.info(`${bot.tagUser(msg.author)} ran ${command.name} in ${msg.channel.guild?.name}${args.length ? `: ${args}` : ""}`);
+    this.bot.log.info(`${this.bot.tagUser(msg.author)} ran ${command.name} in ${msg.channel.guild?.name}${args.length ? `: ${args}` : ""}`);
 
     try {
       // Tries to run a command and catches any errors
-      await command.run(msg, bot, string, parsedArgs);
+      await command.run(msg, parsedArgs, args);
     } catch (err) {
       Sentry.configureScope((scope) => {
-        scope.setUser({ id: msg.author.id, username: bot.tagUser(msg.author) });
+        scope.setUser({ id: msg.author.id, username: this.bot.tagUser(msg.author) });
         scope.setExtra("guild", msg.channel.guild?.name);
         scope.setExtra("guildID", msg.channel.guild?.id);
       });
 
       Sentry.captureException(err);
       console.error(err);
-      return bot.createEmbed(string("global.ERROR"), string("global.ERROR_OUTPUT", { error: err }), msg, "error");
+      return msg.createEmbed(string("global.ERROR"), string("global.ERROR_OUTPUT", { error: err }), "error");
     }
   }
 }
-
-export default new HandlerEvent();

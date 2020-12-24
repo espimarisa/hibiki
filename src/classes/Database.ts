@@ -3,7 +3,7 @@
  * @description Base structure for database providers
  */
 
-import { HibikiClient } from "./Client";
+import type { HibikiClient } from "./Client";
 const errorString = "Method not implemented.";
 
 export class DatabaseProvider {

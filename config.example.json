@@ -5,6 +5,7 @@
   "logchannel": "",
   "statuses": ["guilds", "help", "users", "version"],
   "intents": ["guilds", "guildMembers", "guildBans", "guildVoiceStates", "guildMessages", "guildMessageReactions"],
+  "homepage": "https://hibiki.app",
   "defaultLocale": "en",
 
   "colors": {
@@ -24,13 +25,24 @@
   "database": {
     "provider": "rethink",
     "db": "hibiki",
-    "password": "",
-    "port": "",
     "host": "",
-    "user": ""
+    "password": "",
+    "user": "",
+    "port": 28015
   },
 
-  "apikeys": {
-    "sentry": ""
+  "lavalink": {
+    "enabled": true,
+    "host": "localhost",
+    "password": "youshallnotpass",
+    "spotifyClientID": "",
+    "spotifyClientSecret": "",
+    "port": 2333
+  },
+
+  "keys": {
+    "sentry": "",
+    "topgg": "",
+    "dbots": ""
   }
 }

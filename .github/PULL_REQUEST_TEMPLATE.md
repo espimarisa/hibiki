@@ -1,15 +1,18 @@
 ## What does this PR do?
 
-- [ ] Adds a feature
+- [ ] Adds or edits a feature
 - [ ] Fixes a bug
+- [ ] Edits typings
 - [ ] Edits documentation
-- [ ] Edits this repository
+- [ ] Edits config files
+- [ ] Edits CI or workflows
 - [ ] Something else
 
 ## Things to check
 
 - [ ] Have you tested changes locally?
 - [ ] Have you followed our linter rules?
+- [ ] Have you ensured TypeScript compiles?
 
 ## Notes
 

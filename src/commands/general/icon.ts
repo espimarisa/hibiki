@@ -1,18 +1,15 @@
-import { Message, TextChannel } from "eris";
-import { Command, CommandCategories, LocaleString } from "../../classes/Command";
-import { HibikiClient } from "../../classes/Client";
+import type { Message, TextChannel } from "eris";
+import { Command } from "../../classes/Command";
 import { defaultAvatar } from "../../helpers/constants";
 
-class IconCommand extends Command {
-  name = "icon";
-  category = CommandCategories.GENERAL;
+export class IconCommand extends Command {
   aliases = ["guildicon", "servericon"];
   description = "Sends the server's icon.";
 
-  run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
+  run(msg: Message<TextChannel>) {
     msg.channel.createMessage({
       embed: {
-        color: bot.convertHex("general"),
+        color: msg.convertHex("general"),
         author: {
           icon_url: msg.channel.guild.iconURL || defaultAvatar,
           name: msg.channel.guild.name,
@@ -22,11 +19,9 @@ class IconCommand extends Command {
         },
         footer: {
           icon_url: msg.author.dynamicAvatarURL(),
-          text: string("global.RAN_BY_FOOTER", { author: bot.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", { author: this.bot.tagUser(msg.author) }),
         },
       },
     });
   }
 }
-
-export default new IconCommand();

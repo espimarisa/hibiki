@@ -1,18 +1,16 @@
-import { Message, TextChannel, VERSION as erisVersion } from "eris";
+import type { Message, TextChannel } from "eris";
+import { VERSION as erisVersion } from "eris";
 import { version as tsVersion } from "typescript";
 import { version as botVersion } from "../../../package.json";
-import { Command, CommandCategories, LocaleString } from "../../classes/Command";
-import { HibikiClient } from "../../classes/Client";
+import { Command } from "../../classes/Command";
 import os from "os";
 
-class AboutCommand extends Command {
-  name = "about";
-  category = CommandCategories.GENERAL;
+export class AboutCommand extends Command {
   aliases = ["aboutbot", "botinfo", "botstats", "info", "information", "stats", "statistics", "uptime"];
   description = "Displays bot information and statistics.";
   allowdms = true;
 
-  run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
+  run(msg: Message<TextChannel>) {
     // Formats bytes
     function formatBytes(bytes: number) {
       if (bytes === 0) return "0 Bytes";
@@ -70,21 +68,21 @@ class AboutCommand extends Command {
     const hostUptime = formatUptime(os.uptime());
 
     // Information strings
-    const statisticsString = string("general.ABOUT_STATISTICS_STRING", {
-      users: bot.users.size,
-      guilds: bot.guilds.size,
-      commands: bot.commands.length,
+    const statisticsString = msg.string("general.ABOUT_STATISTICS_STRING", {
+      users: this.bot.users.size,
+      guilds: this.bot.guilds.size,
+      commands: this.bot.commands.length,
       uptime: botUptime,
     });
 
-    const moduleString = string("general.ABOUT_MODULES_STRING", {
+    const moduleString = msg.string("general.ABOUT_MODULES_STRING", {
       botVersion: botVersion,
       erisVersion: erisVersion,
       nodeVersion: process.version,
       tsVersion: tsVersion,
     });
 
-    const hostString = string("general.ABOUT_HOST_STRING", {
+    const hostString = msg.string("general.ABOUT_HOST_STRING", {
       botMemoryUsage: botMemoryUsage,
       hostMemoryUsage: hostMemoryUsage,
       uptime: hostUptime,
@@ -93,36 +91,34 @@ class AboutCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        title: string("general.ABOUT_TITLE"),
-        description: string("general.ABOUT_DESCRIPTION", { username: bot.user.username }),
-        color: bot.convertHex("general"),
+        title: `🤖 ${msg.string("general.ABOUT")}`,
+        description: msg.string("general.ABOUT_DESCRIPTION", { username: this.bot.user.username }),
+        color: msg.convertHex("general"),
         fields: [
           {
-            name: string("general.ABOUT_STATISTICS"),
+            name: msg.string("general.ABOUT_STATISTICS"),
             value: statisticsString,
             inline: true,
           },
           {
-            name: string("general.ABOUT_MODULES"),
+            name: msg.string("general.ABOUT_MODULES"),
             value: moduleString,
             inline: true,
           },
           {
-            name: string("general.ABOUT_HOST"),
+            name: msg.string("general.ABOUT_HOST"),
             value: hostString,
             inline: false,
           },
         ],
         thumbnail: {
-          url: bot.user.dynamicAvatarURL(),
+          url: this.bot.user.dynamicAvatarURL(),
         },
         footer: {
-          text: string("global.RAN_BY_FOOTER", { author: bot.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", { author: this.bot.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });
   }
 }
-
-export default new AboutCommand();

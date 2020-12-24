@@ -1,61 +1,90 @@
 /**
  * @file Loader
  * @description Loads commands, events, and other modules
- * @module scripts/loader
+ * @module helpers/loader
  */
 
-import { HibikiClient } from "../classes/Client";
-import { readdirSync, statSync } from "fs";
-import path from "path";
+import type { HibikiClient } from "../classes/Client";
+import { readdir } from "fs";
+import { join } from "path";
 
-const COMMANDS_DIRECTORY = path.join(__dirname, "../commands");
-const EVENTS_DIRECTORY = path.join(__dirname, "../events");
+const COMMANDS_DIRECTORY = join(__dirname, "../commands");
+const EVENTS_DIRECTORY = join(__dirname, "../events");
+const loadedCommands = {};
 const fileTypes = /\.(js|ts)$/i;
 
-/** Loads all items */
-export async function loadItems(bot: HibikiClient) {
-  // Loads commands
-  const commandFiles = readdirSync(COMMANDS_DIRECTORY);
-  commandFiles.forEach((subfolder) => {
-    const stats = statSync(`${COMMANDS_DIRECTORY}/${subfolder}`);
-    if (!stats.isDirectory) return;
+function loadCommands(path: string, bot: HibikiClient) {
+  readdir(path, { withFileTypes: true }, (ioerr, files) => {
+    if (ioerr) return;
 
-    const commands = readdirSync(`${COMMANDS_DIRECTORY}/${subfolder}`);
+    files.forEach((file, i) => {
+      if (file.isDirectory()) {
+        loadedCommands[`${path}/${file.name}`] = false;
+        return loadCommands(`${path}/${file.name}`, bot);
+      }
 
-    // Tries to load each command
-    commands.forEach(async (cmd) => {
+      // Tries to import each command
       let command;
+      if (!fileTypes.test(file.name)) return;
 
       try {
-        if (!fileTypes.test(cmd)) return;
-        command = await require(`${COMMANDS_DIRECTORY}/${subfolder}/${cmd}`);
+        const importedCommand = require(`${path}/${file.name}`);
+        command = importedCommand[Object.keys(importedCommand)[0]];
       } catch (err) {
-        bot.log.error(`Command ${cmd} failed to load: ${err}`);
+        bot.log.error(`Command ${file.name} failed to load: ${err}`);
       }
 
       if (!command) return;
-      bot.commands.push(command.default);
+      // Pushes the command's
+      const splitPath = path.split("/");
+      bot.commands.push(new command(bot, file.name.split(fileTypes)[0], splitPath[splitPath.length - 1]));
+
+      if (i === files.length - 1) {
+        loadedCommands[path] = true;
+        if (!Object.values(loadedCommands).includes(false)) bot.log.info(`${bot.commands.length} commands loaded`);
+      }
     });
   });
+}
 
-  // Tries to load each event
-  const eventFiles = readdirSync(EVENTS_DIRECTORY);
-  eventFiles.forEach(async (e) => {
-    let event: any;
+// Loads each event file
+function loadEvents(path: string, bot: HibikiClient) {
+  function subscribeEvents() {
+    bot.events.forEach((e: any) => {
+      e.events.forEach((ev: string) => {
+        bot.on(ev, (...eventParams: any) => e.run(...eventParams));
+      });
+    });
+  }
 
-    try {
-      if (!fileTypes.test(e)) return;
-      event = await require(`${EVENTS_DIRECTORY}/${e}`);
-    } catch (err) {
-      bot.log.error(`Event ${e} failed to load: ${err}`);
-    }
+  readdir(EVENTS_DIRECTORY, { withFileTypes: true }, (ioerr, files) => {
+    if (ioerr) return;
 
-    if (!event) return;
-    bot.events.push(event.default);
+    files.forEach((file, i) => {
+      if (file.isDirectory()) return;
 
-    // Runs each event
-    event.default.events.forEach((ev: any) => {
-      bot.on(ev, (...eventParams) => event.default.run(...eventParams, bot));
+      let event;
+      if (!fileTypes.test(file.name)) return;
+
+      try {
+        const importedEvent = require(`${path}/${file.name}`);
+        event = importedEvent[Object.keys(importedEvent)[0]];
+      } catch (err) {
+        bot.log.error(`Event ${file.name} failed to load: ${err}`);
+      }
+
+      // Pushes the events and runs them
+      bot.events.push(new event(bot, file.name.split(fileTypes)[0]));
+      if (i === files.length - 1) {
+        subscribeEvents();
+        bot.log.info(`${bot.events.length} events loaded`);
+      }
     });
   });
+}
+
+/** Loads all items */
+export async function loadItems(bot: HibikiClient) {
+  loadCommands(COMMANDS_DIRECTORY, bot);
+  loadEvents(EVENTS_DIRECTORY, bot);
 }

@@ -3,18 +3,19 @@
  * @description Connects to Discord and handles global functions
  */
 
-import { Client } from "eris";
+import type { Command } from "./Command";
+import type { Event } from "./Event";
+import type { Logger } from "./Logger";
 import { Args } from "./Args";
-import { Command } from "./Command";
-import { Event } from "./Event";
+import { Lavalink } from "./Lavalink";
 import { LocaleSystem } from "./Locale";
-import { Logger } from "./Logger";
-import { RethinkProvider } from "../providers/rethinkdb";
-import { createEmbed, editEmbed, convertHex } from "../helpers/embed";
+import { convertHex, createEmbed, editEmbed } from "../helpers/embed";
 import { tagUser } from "../helpers/format";
 import { loadItems } from "../helpers/loader";
 import { botLogger } from "../helpers/logger";
 import { switchStatuses } from "../helpers/statuses";
+import { RethinkProvider } from "../providers/rethinkdb";
+import Eris, { Client } from "eris";
 import config from "../../config.json";
 import Sentry from "@sentry/node";
 import path from "path";
@@ -26,10 +27,8 @@ export class HibikiClient extends Client {
   events: Array<Event> = [];
   loggers: Array<Logger> = [];
   cooldowns: Map<string, unknown>;
-  createEmbed: typeof createEmbed;
-  editEmbed: typeof editEmbed;
-  convertHex: typeof convertHex;
   tagUser: typeof tagUser;
+  lavalink: Lavalink;
   localeSystem: LocaleSystem;
   args: Args;
   db: RethinkProvider;
@@ -37,6 +36,10 @@ export class HibikiClient extends Client {
 
   constructor(token: string, options: Record<string, unknown>) {
     super(token, options);
+    // Prototype extensions
+    Eris.Message.prototype.createEmbed = createEmbed;
+    Eris.Message.prototype.editEmbed = editEmbed;
+    Eris.Message.prototype.convertHex = convertHex;
 
     // Collections
     this.commands = [];
@@ -44,16 +47,12 @@ export class HibikiClient extends Client {
     this.loggers = [];
     this.cooldowns = new Map();
 
-    // Prototype extensions
-    this.log = botLogger;
-    this.createEmbed = createEmbed;
-    this.editEmbed = editEmbed;
-    this.convertHex = convertHex;
-    this.tagUser = tagUser;
-
     // Handlers & functions
+    this.log = botLogger;
+    this.tagUser = tagUser;
     this.args = new Args(this);
     this.db = new RethinkProvider(this);
+    this.lavalink = new Lavalink(this);
     this.localeSystem = new LocaleSystem(LOCALES_DIRECTORY);
 
     this.connect();
@@ -66,9 +65,8 @@ export class HibikiClient extends Client {
     await loadItems(this);
     switchStatuses(this);
     if (config.keys.sentry) this.initializeSentry();
+    if (config.lavalink.enabled) this.lavalink.manager.init(this.user.id);
     this.log.info(`Logged in as ${this.tagUser(this.user)} on ${this.guilds.size} guilds`);
-    this.log.info(`${this.commands.length} commands loaded`);
-    this.log.info(`${this.events.length} events loaded`);
   }
 
   // Initializes sentry

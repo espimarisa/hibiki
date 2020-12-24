@@ -1,29 +1,26 @@
-import { Message, TextChannel } from "eris";
-import { Command, CommandCategories, LocaleString, ParsedArgs } from "../../classes/Command";
-import { HibikiClient } from "../../classes/Client";
+import type { Member, Message, TextChannel } from "eris";
+import { Command } from "../../classes/Command";
 
-class AvatarCommand extends Command {
-  name = "avatar";
-  category = CommandCategories.GENERAL;
+export class AvatarCommand extends Command {
   args = "[member:member&fallback]";
   aliases = ["pfp", "profilepic", "profilepicture", "uicon", "usericon"];
   description = "Sends a member's profile picture.";
 
-  run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString, pargs: ParsedArgs) {
-    const user = pargs[0].value;
+  run(msg: Message<TextChannel>, pargs: ParsedArgs) {
+    const member = pargs[0].value as Member;
 
     msg.channel.createMessage({
       embed: {
-        color: bot.convertHex("general"),
+        color: msg.convertHex("general"),
         author: {
-          icon_url: user.user.dynamicAvatarURL(),
-          name: bot.tagUser(user.user),
+          icon_url: member.user.dynamicAvatarURL(),
+          name: this.bot.tagUser(member.user),
         },
         image: {
-          url: user.user.dynamicAvatarURL(null),
+          url: member.user.dynamicAvatarURL(null),
         },
         footer: {
-          text: string("global.RAN_BY_FOOTER", { author: bot.tagUser(user.user) }),
+          text: msg.string("global.RAN_BY", { author: this.bot.tagUser(member.user) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
@@ -31,4 +28,4 @@ class AvatarCommand extends Command {
   }
 }
 
-export default new AvatarCommand();
+// todo cleanup string emojis and names

@@ -4,13 +4,12 @@
  * @module helpers/embed
  */
 
-import { Message } from "eris";
+import type { Message } from "eris";
 import config from "../../config.json";
 
 /** Creates a new oneliner embed */
-export async function createEmbed(title: string, desc: string | null, msg: Message, colortype?: string) {
-  if (!msg) throw new Error("No message object was provided");
-  if (msg && !msg.channel) return;
+export async function createEmbed(this: Message, title: string, desc?: string, colortype?: string) {
+  if (this && !this.channel) return;
   let embedTitle;
   let embedDescription;
   let embedFieldColor;
@@ -23,9 +22,9 @@ export async function createEmbed(title: string, desc: string | null, msg: Messa
   if (title) embedTitle = title;
   if (desc) embedDescription = desc;
 
-  if (typeof msg === "object" && msg.author) {
-    embedFooter.text = `Ran by ${msg.author.username}#${msg.author.discriminator}`;
-    embedFooter.icon_url = msg.author.dynamicAvatarURL();
+  if (typeof this === "object" && this.author) {
+    embedFooter.text = `Ran by ${this.author.username}#${this.author.discriminator}`;
+    embedFooter.icon_url = this.author.dynamicAvatarURL();
   }
 
   if (colortype) {
@@ -40,18 +39,17 @@ export async function createEmbed(title: string, desc: string | null, msg: Messa
       description: embedDescription,
       color: embedFieldColor,
       footer: embedFooter,
-      timestamp: new Date(),
     },
   };
 
   // TODO: Log any issues here with a *proper* logger so we can actually figure out problems!
-  return msg.channel.createMessage(embedConstruct);
+  return this.channel.createMessage(embedConstruct);
 }
 
 /** Edits a oneliner embed */
-export async function editEmbed(title: string, desc: string | null, msg: Message, colortype?: string) {
-  if (!msg) throw new Error("No message object was provided");
-  if (msg && !msg.channel) return;
+export async function editEmbed(this: Message, title: string, desc?: string, colortype?: string) {
+  if (!this) throw new Error("No message object was provided");
+  if (this && !this.channel) return;
   let embedTitle;
   let embedDescription;
   let embedFooter;
@@ -67,8 +65,8 @@ export async function editEmbed(title: string, desc: string | null, msg: Message
   }
 
   // TODO: handle exceptions properly
-  if (msg && msg.embeds[0].footer) {
-    embedFooter = msg.embeds[0].footer;
+  if (this && this.embeds[0].footer) {
+    embedFooter = this.embeds[0].footer;
   }
 
   const embedConstruct = {
@@ -77,11 +75,10 @@ export async function editEmbed(title: string, desc: string | null, msg: Message
       description: embedDescription,
       color: embedFieldColor,
       footer: embedFooter,
-      timestamp: new Date(),
     },
   };
 
-  return msg.edit(embedConstruct);
+  return this.edit(embedConstruct);
 }
 
 /** Converts a hex color in the config to decimal */

@@ -1,33 +1,31 @@
-import { Message, TextChannel } from "eris";
-import { Command, CommandCategories, LocaleString } from "../../classes/Command";
-import { HibikiClient } from "../../classes/Client";
+import type { Message, TextChannel } from "eris";
+import { Command } from "../../classes/Command";
 import axios from "axios";
 
-class CatgirlCommand extends Command {
-  name = "catgirl";
-  category = CommandCategories.IMAGE;
+export class CatgirlCommand extends Command {
   aliases = ["neko"];
   description = "Sends a picture of a catgirl.";
   cooldown = 3000;
   allowdms = true;
 
-  async run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
+  async run(msg: Message<TextChannel>) {
     const body = await axios.get("https://nekobot.xyz/api/image?type=neko");
 
     msg.channel.createMessage({
       embed: {
-        title: string("image.CATGIRL_TITLE"),
-        color: bot.convertHex("general"),
+        title: `🐱 ${msg.string("image.CATGIRL")}`,
+        color: msg.convertHex("general"),
         image: {
           url: body.data.message,
         },
         footer: {
-          text: string("image.CATGIRL_FOOTER", { author: bot.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", {
+            author: this.bot.tagUser(msg.author),
+            poweredBy: "api.nekobot.xyz",
+          }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });
   }
 }
-
-export default new CatgirlCommand();
