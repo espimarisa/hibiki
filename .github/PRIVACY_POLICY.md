@@ -1,35 +1,36 @@
 # Hibiki Privacy Policy
 
-## Updated 15 December 2020
+### Updated 23 December 2020
 
-This Privacy Policy applies to personal information collected through jiktim's ("we", "us", or "our") "Hibiki" Discord application and website, "hibiki.app". If you have any questions, please contact a developer or email `contact@espi.me` with your inquiry. Additionally, this is not 100% legally binding and pretty informal.
+This privacy policy applies to all information collected by the main "Hibiki" Discord application and website. If you have any questions or concerns, contact a developer.
 
-Do note that this applies to the **official** instance of Hibiki (493904957523623936). Other instances may not respect this.
+Do note that while this applies for the **official** Hibiki instance `(493904957523623936)`, other instances of Hibiki may not respect this. You're advised to use the main instance.
 
-## Information we collect
+## Information Collected
 
-### hibiki.app
+#### Bot Application
 
-We require certain information for authentication. The information we collect does not reveal your specific identity (like your name, email, address, or IP). Additionally, some data is provided in the configuration dashboard, but nothing personally identifiable.
+Hibiki (the bot application) does not log any personally identifiable information (PII). However, in order for some modules to work, we need to retrieve some data.
 
-Collected for authentication:
+**Required for functionality**:
 
-- oAuth tokens: a read-only, encrypted &amp; signed one-use token in order to verify the Discord account belongs to you. You can control the information we can get from the token, however, for proper authentication to work you must provide "user" and "guilds". This is stored in order to properly authenticate a user and is necessary for logging-in via Discord. If you do not wish to provide this, do not sign in to the dashboard. Additionally, your token is invalidated and deleted upon logout (https://hibiki.app/logout/).
+- User ID: Hibiki reads your unique 16-18 digit Discord user ID to read your user config and know who to tag/mention.
+- Guild ID: Hibiki reads the current guild's config to read the guildconfig and know what to do/run or what not to do.
 
-- A user cookie to identify that (you) are the currently authenticated user is saved in your browser. This is encrypted, signed, and secure. If you don't want this stored anymore, you can logout at https://hibiki.app/logout. Additionally, another cookie (csrf) verifies that form submissions are legitimate and you aren't being phished.
+This information is **NOT** identifiable and is publically viewable through Discord's open API. If you have a problem with this, do not use our application.
 
-Collected for features:
+Additionally, some modules may need to collect the following:
 
-- Your timezone and locale information. This is provided using your web browser's native API (Intl.DateTimeFormat().resolvedOptions()) and doesn't contain anything personally identifiable. We currently only read the timezone part of said function. If you don't wish to use this data, head over to https://hibiki.app/manage/profile and delete your profile data. Don't save the changes, they're deleted automatically. Additionally, any profile edits will save this data. Your current time is displayed on your profile when a user runs h!profile.
+- Message data: Data in message responses that the application reads to store a response for some modules (example: welcome messages).
 
-### Hibiki Bot Application
+#### Hibiki.app
 
-We collect very little information, however, for some configurations and functionality to work, we need to collect the following (optional) data:
+In order for the dashboard to handle user authentication properly, you must sign in through Discord's oAuth2 API. This returns some information that the application uses to verify that you are who your account says you are.
 
-- User &amp; Server ID: a unique number for every Discord server ("guild") and user, this is stored in order to know which server should be modified and to verify if the user is authorized to modify the server. This is non-personal information and can be accessed by anyone. If you do not wish to provide this, do not use our bot, or even Discord as it's public information.
+- oAuth token: A read-only, signed and protected single-use token that is passed to the application to retrieve your username, user ID, avatar, and any guilds you have permission to manage. We cannot read or modify this value. If you do not wish to provide this, don't log into the dashboard.
 
-- Command Responses: some commands, such as the config or createCommand commands, ask for a response. We store the msg.content data in the database in order to send that response at a later time.
+- Your timezone and locale: This is provided using your web browser's native API `(Intl.DateTimeFormat().resolvedOptions())`. We use this so you (and other users) can see what time it is for you relative to your timezone. If you do not wish to provide this, clear your profile data.
 
-### Closure
+#### GDPR
 
-We do not, and never will, sell or redistribute any user or guild data. If you wish for us to remove all data belonging to you or your guild, contact one of the developers or email `contact@espi.me`. Additionally, we do not view any sensitive information (oAuth tokens, for example) and keep your data secure.
+If you would like a dump of your user data, you can do so every 30 days by running `h!gdpr` or doing so through the profile dashboard.

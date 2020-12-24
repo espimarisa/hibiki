@@ -55,7 +55,17 @@
     "space-before-blocks": [1, "always"],
     "space-in-parens": [1, "never"],
     "space-infix-ops": [1, { "int32Hint": true }],
-    "spaced-comment": [1, "always"]
+    "spaced-comment": [1, "always"],
+    "sort-imports": [
+      "warn",
+      {
+        "ignoreCase": false,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
+        "allowSeparatedGroups": false
+      }
+    ]
   },
 
   // Typescript overrides
@@ -84,7 +94,9 @@
         "@typescript-eslint/type-annotation-spacing": "error",
         "@typescript-eslint/semi": [1, "always"],
         "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/no-var-requires": 0,
         "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/naming-convention": [
           "warn",
           { "selector": "default", "format": ["camelCase"] },

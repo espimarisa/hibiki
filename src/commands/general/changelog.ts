@@ -1,27 +1,22 @@
-import { Message, TextChannel } from "eris";
-import { Command, CommandCategories, LocaleString } from "../../classes/Command";
-import { HibikiClient } from "../../classes/Client";
+import type { Message, TextChannel } from "eris";
+import { Command } from "../../classes/Command";
 
-class ChangelogCommand extends Command {
-  name = "changelog";
-  category = CommandCategories.GENERAL;
+export class ChangelogCommand extends Command {
   aliases = ["cl", "clog", "updates", "whatsnew"];
   description = "Sends the latest version's changelog.";
   allowdms = true;
 
-  run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
+  run(msg: Message<TextChannel>) {
     msg.channel.createMessage({
       embed: {
-        title: string("general.CHANGELOG_TITLE"),
-        description: string("general.CHANGELOG_DESCRIPTION"),
-        color: bot.convertHex("general"),
+        title: `📚 ${msg.string("general.CHANGELOG")}`,
+        description: msg.string("general.CHANGELOG_DESCRIPTION"),
+        color: msg.convertHex("general"),
         footer: {
-          text: string("global.RAN_BY_FOOTER", { author: bot.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", { author: this.bot.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });
   }
 }
-
-export default new ChangelogCommand();

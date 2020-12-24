@@ -7,8 +7,6 @@
 import { createLogger, format, transports } from "winston";
 import { formatLogDate } from "./format";
 
-// TODO: Implement winstonDailyRotateFile
-
 // Log formatting options
 const logFormat = format.combine(
   format.colorize(),

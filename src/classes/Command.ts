@@ -3,42 +3,27 @@
  * @description Base class for commands
  */
 
-import { Message } from "eris";
-import { HibikiClient } from "./Client";
-
-// Command types
-export type LocaleString = (string: string, args?: Record<string, unknown> | undefined) => string;
-export type ParsedArgs = (commandArgs: string, args: string, msg: Message) => string;
-
-/** Command category names */
-export enum CommandCategories {
-  FUN = "Fun",
-  GENERAL = "General",
-  IMAGE = "Image",
-  MODERATION = "Moderation",
-  MUSIC = "Music",
-  NSFW = "NSFW",
-  OWNER = "Owner",
-  ROLEPLAY = "Roleplay",
-  UTILITY = "Utility",
-}
+import type { Message } from "eris";
+import type { HibikiClient } from "./Client";
 
 /** Main command class */
 export abstract class Command {
   aliases: string[] = [];
-  args!: string;
-  cooldown!: number;
+  args?: string;
+  cooldown?: number;
   requiredkeys?: string[] = [];
-  clientperms?: string | string[] = [];
-  requiredperms?: string | string[] = [];
+  clientperms?: string[] = [];
+  requiredperms?: string[] = [];
   allowdms = false;
+  allowdisable = true;
   nsfw = false;
   owner = false;
   staff = false;
+  voice = false;
 
-  abstract name: string;
-  abstract category: string;
   abstract description: string;
 
-  abstract run(msg: Message, bot?: HibikiClient, string?: LocaleString, args?: ParsedArgs): Promise<unknown> | void;
+  constructor(protected bot: HibikiClient, public name: string, public category: string) {}
+
+  abstract run(msg: Message, pargs?: ParsedArgs, args?: string[]): Promise<unknown> | void;
 }

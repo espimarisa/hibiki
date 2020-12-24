@@ -4,7 +4,7 @@
  * @module helpers/format
  */
 
-import { User } from "eris";
+import type { User } from "eris";
 
 /** Tags a user by username#discriminator */
 export function tagUser(user: User) {
@@ -30,4 +30,19 @@ export function formatLogDate(timestamp: Date) {
   const year = date.getFullYear();
   const time = `${(date.getHours() < 10 ? "0" : "") + date.getHours()}:${(date.getMinutes() < 10 ? "0" : "") + date.getMinutes()}`;
   return `${logColors.cyan}[${month} ${day} ${year} ${time}]${logColors.reset}`;
+}
+
+/** Formats seconds to a HH:MM:SS timestamp */
+export function toHHMMSS(seconds: number) {
+  let hours = Math.floor(seconds / 3600);
+  let minutes = Math.floor((seconds - hours * 3600) / 60);
+  seconds = seconds - hours * 3600 - minutes * 60;
+  if (hours < 10) hours = 0 + hours;
+  if (minutes < 10) minutes = 0 + minutes;
+  if (seconds < 10) seconds = 0 + seconds;
+
+  const time = `${hours > 0 ? `${hours < 10 ? "0" : ""}${hours}:` : ""}${minutes < 10 ? "0" : ""}${minutes}:${
+    seconds < 10 ? "0" : ""
+  }${seconds}`;
+  return time;
 }

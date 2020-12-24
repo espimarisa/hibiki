@@ -3,25 +3,29 @@
  * @description Main database provider for RethinkDB
  */
 
-import { r } from "rethinkdb-ts";
+import type { HibikiClient } from "../classes/Client";
 import { DatabaseProvider } from "../classes/Database";
-import { HibikiClient } from "../classes/Client";
+import { botLogger } from "../helpers/logger";
+import { r } from "rethinkdb-ts";
 import config from "../../config.json";
 
-const rethinkOptions = {
-  db: config.database.db,
-  // password: config.database.password,
-  // port: config.database.port,
-  // host: config.database.host,
-  // user: config.database.user,
-  silent: true,
-};
-
+/** Starts RethinkDB */
 function startRethink() {
-  return r.connectPool(rethinkOptions);
+  return r.connectPool({
+    db: config.database.db || undefined,
+    password: config.database.password || undefined,
+    port: Number(config.database.port) || 28015,
+    host: config.database.host || undefined,
+    user: config.database.user || undefined,
+    silent: true,
+  });
 }
 
-startRethink();
+// Starts RethinkDB and catches any errors
+startRethink().catch((err) => {
+  botLogger.error(`RethinkDB failed to start. Be sure the config file is setup properly and that it's running. Exiting. (error: ${err})`);
+  process.exit(1);
+});
 
 export class RethinkProvider extends DatabaseProvider {
   db: typeof r;
@@ -31,7 +35,7 @@ export class RethinkProvider extends DatabaseProvider {
   constructor(bot: HibikiClient) {
     super(bot);
     this.db = r;
-    this.dblock = this.db.db(rethinkOptions.db).wait();
+    this.dblock = this.db.db(config.database.db ?? "db").wait();
   }
 
   async getGuildConfig(guild: string) {
