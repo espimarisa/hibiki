@@ -21,15 +21,15 @@ const logColors = {
   yellow: "\x1b[33m",
 };
 
-/** Formats a date for console logging */
-export function formatLogDate(timestamp: Date) {
+/** Formats a timestamp to a human-readable one */
+export function dateFormat(timestamp: Date | number, colors = false) {
   const date = new Date(timestamp);
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const month = monthNames[date.getMonth()];
   const day = date.getDate();
   const year = date.getFullYear();
   const time = `${(date.getHours() < 10 ? "0" : "") + date.getHours()}:${(date.getMinutes() < 10 ? "0" : "") + date.getMinutes()}`;
-  return `${logColors.cyan}[${month} ${day} ${year} ${time}]${logColors.reset}`;
+  return `${colors ? `${logColors.cyan}[` : ""}${month} ${day} ${year} ${time}${colors ? `]${logColors.reset}` : ""}`;
 }
 
 /** Formats seconds to a HH:MM:SS timestamp */
@@ -45,4 +45,52 @@ export function toHHMMSS(seconds: number) {
     seconds < 10 ? "0" : ""
   }${seconds}`;
   return time;
+}
+
+/** Formats guild regions */
+export function regionFormat(region: string) {
+  switch (region) {
+    case "amsterdam":
+      return "Amsterdam";
+    case "brazil":
+      return "Brazil";
+    case "eu-central":
+      return "Central Europe";
+    case "eu-west":
+      return "Western Europe";
+    case "europe":
+      return "Europe";
+    case "dubai":
+      return "Dubai";
+    case "frankfurt":
+      return "Frankfurt";
+    case "hongkong":
+      return "Hong Kong";
+    case "london":
+      return "London";
+    case "japan":
+      return "Japan";
+    case "india":
+      return "India";
+    case "russia":
+      return "Russia";
+    case "singapore":
+      return "Singapore";
+    case "southafrica":
+      return "South Africa";
+    case "south-korea":
+      return "South Korea";
+    case "sydney":
+      return "Sydney";
+    case "us-central":
+      return "US Central";
+    case "us-east":
+      return "US East";
+    case "us-south":
+      return "US South";
+    case "us-west":
+      return "US West";
+    default:
+      return region;
+  }
 }
