@@ -3,8 +3,8 @@
  * @description Functions for locale and string parsing
  */
 
-import { readdir, readFile } from "fs";
-import { HibikiClient } from "./Client";
+import type { HibikiClient } from "./Client";
+import { readFile, readdir } from "fs";
 import config from "../../config.json";
 
 export class LocaleSystem {
@@ -50,14 +50,30 @@ export class LocaleSystem {
     // Passes arguments to the string
     if (args) {
       Object.getOwnPropertyNames(args).forEach((arg) => {
-        // Handles plurals/non-plural and arguments
-        const argumentRegex = new RegExp(`{${arg}:#([\\w ]{1,})#!([\\w ]{1,})!}`);
+        // Handles plurals/non-plural and arguments/optionals
+        const argumentRegex = new RegExp(`{${arg}:#(.+)#!(.+)!(?:\\?(.+)\\?)?}`);
+        const optionalRegex = new RegExp(`({optional:${arg}:(.+)})`);
+
+        // Replaces optional strings with content
+        const optional = optionalRegex.exec(output);
+        if (optional) output = output.replace(optional[1], args[arg] ? optional[2] : "");
         const plurals = argumentRegex.exec(output);
+
         // Sends the output with the correct grammar
-        if (plurals) output = output.replace(plurals[0], `${args[arg]}${args[arg] === 1 ? plurals[2] : plurals[1]}`);
-        else if (!plurals) output = output.replace(`{${arg}}`, args[arg]);
+        if (plurals) {
+          let plural = "";
+          if (args[arg] === 1) plural = plurals[2];
+          else if (plurals[3] && args[arg] >= 2 && args[arg] <= 4) plural = plurals[3];
+          else plural = plurals[1];
+
+          output = output.replace(plurals[0], `${args[arg]}${plural}`);
+        } else if (!plurals) output = output.replace(`{${arg}}`, args[arg]);
       });
     }
+    const optionalRegex = new RegExp(`({optional:.+:(.+)})`);
+    const optional = optionalRegex.exec(output);
+
+    if (optional) output = output.replace(optional[1], "");
 
     return output;
   }

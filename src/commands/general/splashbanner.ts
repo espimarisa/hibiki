@@ -1,24 +1,21 @@
-import { Message, TextChannel } from "eris";
-import { Command, CommandCategories, LocaleString } from "../../classes/Command";
-import { HibikiClient } from "../../classes/Client";
+import type { Message, TextChannel } from "eris";
+import { Command } from "../../classes/Command";
 
-class SplashBannerCommand extends Command {
-  name = "splashbanner";
-  category = CommandCategories.GENERAL;
+export class SplashBannerCommand extends Command {
   aliases = ["splash"];
   description = "Sends the server's splash page banner.";
 
-  run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
+  run(msg: Message<TextChannel>) {
     // Sends if a guild has no splash banner
     if (!msg.channel.guild.splashURL) {
       return msg.channel.createMessage({
         embed: {
-          title: string("global.ERROR"),
-          description: string("general.SPLASHBANNER_ERROR"),
-          color: bot.convertHex("error"),
+          title: msg.string("global.ERROR"),
+          description: msg.string("general.SPLASHBANNER_ERROR"),
+          color: msg.convertHex("general"),
           footer: {
             icon_url: msg.author.dynamicAvatarURL(),
-            text: string("global.RAN_BY_FOOTER", { author: bot.tagUser(msg.author) }),
+            text: msg.string("global.RAN_BY", { author: this.bot.tagUser(msg.author) }),
           },
         },
       });
@@ -26,7 +23,7 @@ class SplashBannerCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        color: bot.convertHex("general"),
+        color: msg.convertHex("general"),
         author: {
           icon_url: msg.channel.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
           name: msg.channel.guild.name,
@@ -36,11 +33,9 @@ class SplashBannerCommand extends Command {
         },
         footer: {
           icon_url: msg.author.dynamicAvatarURL(),
-          text: string("global.RAN_BY_FOOTER", { author: bot.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", { author: this.bot.tagUser(msg.author) }),
         },
       },
     });
   }
 }
-
-export default new SplashBannerCommand();

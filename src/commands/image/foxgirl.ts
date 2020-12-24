@@ -1,34 +1,31 @@
-import { Message, TextChannel } from "eris";
-import { Command, CommandCategories, LocaleString } from "../../classes/Command";
-import { HibikiClient } from "../../classes/Client";
+import type { Message } from "eris";
+import { Command } from "../../classes/Command";
 import axios from "axios";
 
-class FoxgirlCommand extends Command {
-  name = "foxgirl";
-  category = CommandCategories.IMAGE;
+export class FoxgirlCommand extends Command {
   aliases = ["kitsune"];
   description = "Sends a picture of a foxgirl.";
   cooldown = 3000;
   allowdms = true;
 
-  async run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
-    // TODO: Stop using nekos.life. We could get banned over this!!!
+  async run(msg: Message) {
     const body = await axios.get("https://nekos.life/api/v2/img/fox_girl");
 
     msg.channel.createMessage({
       embed: {
-        title: string("image.FOXGIRL_TITLE"),
-        color: bot.convertHex("general"),
+        title: `🦊 ${msg.string("image.FOXGIRL_TITLE")}`,
+        color: msg.convertHex("general"),
         image: {
           url: body.data.url,
         },
         footer: {
-          text: string("image.FOXGIRL_FOOTER", { author: bot.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", {
+            author: this.bot.tagUser(msg.author),
+            poweredBy: "nekos.life",
+          }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });
   }
 }
-
-export default new FoxgirlCommand();

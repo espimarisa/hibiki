@@ -1,23 +1,20 @@
-import { Message, TextChannel } from "eris";
-import { Command, CommandCategories, LocaleString } from "../../classes/Command";
-import { HibikiClient } from "../../classes/Client";
+import type { Message, TextChannel } from "eris";
+import { Command } from "../../classes/Command";
 
-class BannerCommand extends Command {
-  name = "banner";
-  category = CommandCategories.GENERAL;
+export class BannerCommand extends Command {
   description = "Sends the server's banner.";
 
-  run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
+  run(msg: Message<TextChannel>) {
     // Sends if a guild has no banner
     if (!msg.channel.guild.banner) {
       return msg.channel.createMessage({
         embed: {
-          title: string("global.ERROR"),
-          description: string("general.BANNER_ERROR"),
-          color: bot.convertHex("error"),
+          title: msg.string("global.ERROR"),
+          description: msg.string("general.BANNER_ERROR"),
+          color: msg.convertHex("general"),
           footer: {
             icon_url: msg.author.dynamicAvatarURL(),
-            text: string("global.RAN_BY_FOOTER", { author: bot.tagUser(msg.author) }),
+            text: msg.string("global.RAN_BY", { author: this.bot.tagUser(msg.author) }),
           },
         },
       });
@@ -25,7 +22,7 @@ class BannerCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        color: bot.convertHex("general"),
+        color: msg.convertHex("general"),
         author: {
           icon_url: msg.channel.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
           name: msg.channel.guild.name,
@@ -35,11 +32,9 @@ class BannerCommand extends Command {
         },
         footer: {
           icon_url: msg.author.dynamicAvatarURL(),
-          text: string("global.RAN_BY_FOOTER", { author: bot.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", { author: this.bot.tagUser(msg.author) }),
         },
       },
     });
   }
 }
-
-export default new BannerCommand();

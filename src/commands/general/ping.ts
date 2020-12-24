@@ -1,21 +1,21 @@
-import { Message, TextChannel } from "eris";
-import { Command, CommandCategories, LocaleString } from "../../classes/Command";
-import { HibikiClient } from "../../classes/Client";
+import type { Message, TextChannel } from "eris";
+import { Command } from "../../classes/Command";
 
-class PingCommand extends Command {
-  name = "ping";
-  category = CommandCategories.GENERAL;
+export class PingCommand extends Command {
   aliases = ["pong"];
   description = "Returns the bot's latency.";
 
-  async run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
+  async run(msg: Message<TextChannel>) {
     const pingmsg = await msg.channel.createMessage({
       embed: {
-        title: string("general.PING_INITIAL_TITLE"),
-        description: string("general.PING_INITIAL_DESCRIPTION", { latency: msg.channel.guild.shard.latency }),
-        color: bot.convertHex("general"),
+        title: `🏓 ${msg.string("general.PING")}`,
+        description: msg.string("general.PING_INITIAL_DESCRIPTION", { latency: msg.channel.guild.shard.latency }),
+        color: msg.convertHex("general"),
         footer: {
-          text: string("global.RAN_BY_FOOTER", { author: bot.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", {
+            author: this.bot.tagUser(msg.author),
+            extra: `${msg.string("global.LATENCY")}: ${msg.channel.guild.shard.latency}ms`,
+          }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
@@ -23,16 +23,17 @@ class PingCommand extends Command {
 
     pingmsg.edit({
       embed: {
-        title: string("general.PING_FINAL_TITLE"),
-        description: string("general.PING_FINAL_DESCRIPTION", { latency: pingmsg.timestamp - msg.timestamp }),
-        color: bot.convertHex("general"),
+        title: `🏓 ${msg.string("general.PONG")}`,
+        description: msg.string("general.PING_LATENCY", { latency: pingmsg.timestamp - msg.timestamp }),
+        color: msg.convertHex("general"),
         footer: {
-          text: string("general.PING_FINAL_FOOTER", { author: bot.tagUser(msg.author), latency: msg.channel.guild.shard.latency }),
+          text: msg.string("global.RAN_BY", {
+            author: this.bot.tagUser(msg.author),
+            extra: `${msg.string("global.LATENCY")}: ${msg.channel.guild.shard.latency}ms`,
+          }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });
   }
 }
-
-export default new PingCommand();

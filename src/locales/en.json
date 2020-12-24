@@ -1,73 +1,108 @@
 {
-  "name": "English",
-
-  "global": {
-    "OR": "or",
-    "ERROR": "❌ Error",
-    "SUCCESS": "✅ Success",
-    "RAN_BY_FOOTER": "Ran by {author}",
-
-    "ERROR_ALLOWDMS": "The **{command}** command can only be ran in a server.",
-    "ERROR_NSFW": "The **{command}** command can only be ran in a NSFW channel.",
-    "ERROR_SENDPERMS": "I don't have permission to **send messages** in {channel}.",
-    "ERROR_EMBEDPERMS": "I don't have permission to **embed links** in {channel}.",
-    "ERROR_CLIENTPERMS": "I need permission to **{perms}** to run that command.",
-    "ERROR_STAFFCOMMAND": "The **{command}** can only be used by staff members.",
-    "ERROR_REQUIREDPERMS": "You need permission to **{perms}** to run that command.",
-    "ERROR_MISSINGARGS": "You didn't provide a **{arg}**.",
-    "ERROR_OUTPUT": "An error occurred and has been logged. \n ```js\n{error}\n```"
+  "fun": {
+    "DICE": "Dice",
+    "DICE_RESULT": "The **{sides}-sided** die landed on **{result}**.",
+    "GAYLEVEL": "Gay Level",
+    "GAYLEVEL_LEVEL": "**{member}** is **{level}%** gay!"
   },
 
   "general": {
-    "ABOUT_TITLE": "🤖 About",
+    "ABOUT": "About",
     "ABOUT_DESCRIPTION": "{username}, by [smolespi](https://espi.me), [resolved](https://github.com/resolvedxd), and [contributors](https://github.com/smolespi/Hibiki). 💖",
-    "ABOUT_STATISTICS": "Statistics",
-    "ABOUT_MODULES": "Modules",
     "ABOUT_HOST": "Host",
-    "ABOUT_STATISTICS_STRING": "{users} total users \n{guilds} total guilds \n{commands} total commands \nBot up for {uptime}",
-    "ABOUT_MODULES_STRING": "Hibiki v{botVersion} \nEris v{erisVersion} \nNode.js {nodeVersion} \nTypeScript v{tsVersion}",
     "ABOUT_HOST_STRING": "Bot using {botMemoryUsage} of memory \nSystem using {hostMemoryUsage} of memory \nSystem up for {uptime} \nRunning on {platform}",
-
+    "ABOUT_MODULES": "Modules",
+    "ABOUT_MODULES_STRING": "Hibiki v{botVersion} \nEris v{erisVersion} \nNode.js {nodeVersion} \nTypeScript v{tsVersion}",
+    "ABOUT_STATISTICS": "Statistics",
+    "ABOUT_STATISTICS_STRING": "{users} total users \n{guilds} total guilds \n{commands} total commands \nBot up for {uptime}",
     "BANNER_ERROR": "This server doesn't have a banner.",
-
-    "CHANGELOG_TITLE": "📚 Changelog",
+    "CHANGELOG": "Changelog",
     "CHANGELOG_DESCRIPTION": "The latest changelog can be viewed [here](https://github.com/smolespi/Hibiki/releases/latest).",
-
-    "PING_INITIAL_TITLE": "🏓 Ping",
-    "PING_INITIAL_DESCRIPTION": "Sending... (latency: {latency}ms).",
-    "PING_FINAL_TITLE": "🏓 Pong!",
-    "PING_FINAL_DESCRIPTION": "This message took {latency}ms to send.",
+    "PING": "Ping",
     "PING_FINAL_FOOTER": "Ran by {author} | Latency: {latency}ms",
-
+    "PING_INITIAL_DESCRIPTION": "Sending... (latency: {latency}ms).",
+    "PING_LATENCY": "This message took {latency}ms to send.",
+    "PONG": "Pong!",
     "SPLASHBANNER_ERROR": "This server doesn't have a splash page banner."
   },
 
+  "global": {
+    "ERROR": "❌ Error",
+    "ERROR_ALLOWDMS": "The **{command}** command can only be ran in a server.",
+    "ERROR_CLIENTPERMS": "I need permission to **{perms}** to run that command.",
+    "ERROR_EMBEDPERMS": "I don't have permission to **embed links** in {channel}.",
+    "ERROR_MISSINGARGS": "You didn't provide a **{arg}**.",
+    "ERROR_NSFW": "The **{command}** command can only be ran in a NSFW channel.",
+    "ERROR_OUTPUT": "An error occurred and has been logged. \n ```js\n{error}\n```",
+    "ERROR_REQUIREDPERMS": "You need permission to **{perms}** to run that command.",
+    "ERROR_SENDPERMS": "I don't have permission to **send messages** in {channel}.",
+    "ERROR_STAFFCOMMAND": "The **{command}** can only be used by staff members.",
+    "ERROR_VOICE": "You must be in a voice channel or in the same voice channel as me to use the **{command}** command.",
+    "LATENCY": "Latency",
+    "OR": "or",
+    "RAN_BY": "Ran by {author}{optional:poweredBy: | Powered by {poweredBy}{optional:extra: | {extra}}",
+    "SUCCESS": "✅ Success",
+    "TIMEOUT_REACH": "The timeout for input has been reached."
+  },
+
   "image": {
-    "CAT_TITLE": "🐱 Cat",
-    "CAT_FOOTER": "Ran by {author} | Powered by random.cat",
-
-    "CATGIRL_TITLE": "🐱 Catgirl",
-    "CATGIRL_FOOTER": "Ran by {author} | Powered by api.nekobot.xyz",
-
-    "DOG_TITLE": "🐶 Dog",
-    "DOG_FOOTER": "Ran by {author} | Powered by random.dog",
-
-    "DUCK_TITLE": "🦆 Duck",
-    "DUCK_FOOTER": "Ran by {author} | Powered by random-d.uk",
-
-    "FOX_TITLE": "🦊 Fox",
-    "FOX_FOOTER": "Ran by {author} | Powered by randomfox.ca",
-
-    "FOXGIRL_TITLE": "🦊 Foxgirl",
-    "FOXGIRL_FOOTER": "Ran by {author} | Powered by nekos.life"
+    "CAT": "Cat",
+    "CATGIRL": "Catgirl",
+    "DOG": "Dog",
+    "DUCK": "Duck",
+    "FOX": "Fox",
+    "FOXGIRL": "Foxgirl"
   },
 
   "moderation": {
     "PURGE_DESCRIPTION": "purged {msgs:# messages#! message!}"
   },
 
+  "music": {
+    "ADDED": "Added",
+    "ADDED_PLAYLIST": "Added playlist **{name}** to the queue.",
+    "ADDED_TO_QUEUE": "**{track}** was added to the queue.",
+    "ADDED_TRACK": "Added **{track}** to the queue.",
+    "DURATION": "Duration",
+    "END_OF_QUEUE": "The last song in the queue has ended so playback has stopped.",
+    "EXITED_QUEUE": "Exited Queue",
+    "INVALID_NUMBER": "An invalid number was provided.",
+    "ITEMS_REMOVED": "Items Removed (too long)",
+    "LOADFAILED": "Failed to load that item. Try again later, or maybe try a different URL.",
+    "NO_MATCHES": "Nothing was found for your search. Maybe try a YouTube URL?",
+    "NOTHING_PLAYING": "Nothing is currently playing.",
+    "NOW_PLAYING": "Now Playing",
+    "NOW_PLAYING_INFO": "[{track}]({url}) by {author} is now playing.",
+    "PAUSE_PAUSED": "Paused playing **{track}**. To resume, run the command again.",
+    "PAUSE_RESUMED": "Resumed playing **{track}**.",
+    "PAUSED": "Paused",
+    "PLAY_RESERROR": "An error occurred while trying to play that item. \n ```js\n{error}\n```",
+    "PLAYLIST_ADDED": "Playlist Added",
+    "PLAYLIST_NOTHING": "No valid items were found in the playlist",
+    "QUEUE": "Queue",
+    "QUEUE_REPEAT": "**{option}** repeating the queue.",
+    "QUEUE_SHUFFLED": "Shuffled all songs in the queue.",
+    "REPEATING": "Repeating",
+    "REQUESTED_BY_FOOTER": "Requested by {requester}",
+    "RESUMED": "Resumed",
+    "SEARCH": "Search Results",
+    "SEARCH_RESULTS": "Type the matching number to start playing it. \n\n {results}",
+    "SHUFFLE": "Shuffle",
+    "SKIP_DESCRIPTION": "Skipped playing {title}.",
+    "SKIPPED": "Skipped",
+    "SONG_REPEAT": "**{option}** repeating the current song. To change the option, run the command again.",
+    "STOPPED": "Stopped",
+    "STOPPED_PLAYING": "Stopped playing and ended the queue.",
+    "TOO_LONG": "The track you requested to be played is too long. The limit is **{limit} minutes**.",
+    "VOLUME": "Volume",
+    "VOLUME_CHANGED": "The volume was set to **{volume}%**."
+  },
+
   "nsfw": {
-    "LEWDCATGIRL_TITLE": "🐱 Lewd Catgirl",
-    "LEWDCATGIRL_FOOTER": "Ran by {author} | Powered by api.nekobot.xyz"
+    "LEWDCATGIRL": "Lewd Catgirl"
+  },
+
+  "roleplay": {
+    "BANGHEAD": "**{user}** is banging their head!"
   }
 }

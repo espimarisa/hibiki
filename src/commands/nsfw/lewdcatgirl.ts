@@ -1,34 +1,32 @@
-import { Message, TextChannel } from "eris";
-import { Command, CommandCategories, LocaleString } from "../../classes/Command";
-import { HibikiClient } from "../../classes/Client";
+import type { Message, TextChannel } from "eris";
+import { Command } from "../../classes/Command";
 import axios from "axios";
 
-class LewdcatgirlCommand extends Command {
-  name = "lewdcatgirl";
+export class LewdcatgirlCommand extends Command {
   description = "Send a NSFW image of a catgirl.";
-  category = CommandCategories.NSFW;
   aliases = ["catgirlhentai", "nekohentai", "lewdneko"];
   cooldown = 4000;
   allowdms = true;
   nsfw = true;
 
-  async run(msg: Message<TextChannel>, bot: HibikiClient, string: LocaleString) {
+  async run(msg: Message<TextChannel>) {
     const body = await axios.get("https://nekobot.xyz/api/image?type=hneko");
 
     msg.channel.createMessage({
       embed: {
-        title: string("nsfw.LEWDCATGIRL_TITLE"),
-        color: bot.convertHex("general"),
+        title: `🐱 ${msg.string("nsfw.LEWDCATGIRL_TITLE")}`,
+        color: msg.convertHex("general"),
         image: {
           url: body.data.message,
         },
         footer: {
-          text: string("nsfw.LEWDCATGIRL_FOOTER", { author: bot.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", {
+            author: this.bot.tagUser(msg.author),
+            poweredBy: "api.nekobot.xyz",
+          }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });
   }
 }
-
-export default new LewdcatgirlCommand();

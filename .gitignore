@@ -3,6 +3,7 @@ cfg.js
 cfg.json
 config.js
 config.json
+application.yml
 
 # Binaries
 ffmpeg
