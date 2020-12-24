@@ -11,7 +11,7 @@ import * as Sentry from "@sentry/node";
 export class HandlerEvent extends Event {
   events = ["messageCreate"];
 
-  async run(msg: Message<TextChannel>) {
+  async run(event: string, msg: Message<TextChannel>) {
     if (!msg || !msg.content || msg.author.bot || !msg.channel || !msg.author) return;
     let prefix;
 
@@ -36,6 +36,7 @@ export class HandlerEvent extends Event {
     const command = this.bot.commands.find(
       (cmd) => cmd?.name === commandName.toLowerCase() || cmd?.aliases.includes(commandName.toLowerCase()),
     );
+
     if (!command) return;
 
     // Handles owner commands

@@ -10,5 +10,5 @@ export abstract class Event {
 
   constructor(protected bot: HibikiClient, public name: string) {}
 
-  abstract run(...params: unknown[]): Promise<unknown> | void;
+  abstract run(event: string, ...params: unknown[]): Promise<unknown> | void;
 }

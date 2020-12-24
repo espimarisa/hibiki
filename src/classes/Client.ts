@@ -9,18 +9,19 @@ import type { Logger } from "./Logger";
 import { Args } from "./Args";
 import { Lavalink } from "./Lavalink";
 import { LocaleSystem } from "./Locale";
+import { RethinkProvider } from "./RethinkDB";
 import { convertHex, createEmbed, editEmbed } from "../helpers/embed";
+import { botCount } from "../helpers/botcount";
 import { tagUser } from "../helpers/format";
 import { loadItems } from "../helpers/loader";
 import { botLogger } from "../helpers/logger";
 import { switchStatuses } from "../helpers/statuses";
-import { RethinkProvider } from "../providers/rethinkdb";
 import Eris, { Client } from "eris";
+import { join } from "path";
 import config from "../../config.json";
 import Sentry from "@sentry/node";
-import path from "path";
 
-const LOCALES_DIRECTORY = path.join(__dirname, "../locales");
+const LOCALES_DIRECTORY = join(__dirname, "../locales");
 
 export class HibikiClient extends Client {
   commands: Array<Command> = [];
@@ -40,6 +41,9 @@ export class HibikiClient extends Client {
     Eris.Message.prototype.createEmbed = createEmbed;
     Eris.Message.prototype.editEmbed = editEmbed;
     Eris.Message.prototype.convertHex = convertHex;
+    Object.defineProperty(Eris.Guild.prototype, "botCount", {
+      get: botCount,
+    });
 
     // Collections
     this.commands = [];
@@ -51,7 +55,7 @@ export class HibikiClient extends Client {
     this.log = botLogger;
     this.tagUser = tagUser;
     this.args = new Args(this);
-    this.db = new RethinkProvider(this);
+    this.db = new RethinkProvider();
     this.lavalink = new Lavalink(this);
     this.localeSystem = new LocaleSystem(LOCALES_DIRECTORY);
 

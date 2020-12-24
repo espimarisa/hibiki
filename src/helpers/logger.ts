@@ -5,13 +5,13 @@
  */
 
 import { createLogger, format, transports } from "winston";
-import { formatLogDate } from "./format";
+import { dateFormat } from "./format";
 
 // Log formatting options
 const logFormat = format.combine(
   format.colorize(),
   format.timestamp(),
-  format.printf((info) => `${formatLogDate(info.timestamp)} (${info.level}): ${info.message}`),
+  format.printf((info) => `${dateFormat(info.timestamp, true)} (${info.level}): ${info.message}`),
 );
 
 // Creates the logger
