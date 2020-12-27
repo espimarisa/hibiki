@@ -10,16 +10,16 @@ export function waitFor(event: string, timeout: number, check: any, bot: HibikiC
   let t: NodeJS.Timeout;
 
   if (!check || typeof check !== "function") check = () => true;
-  return new Promise((rs, rj) => {
-    const listener = async (...args: any[]) => {
+  return new Promise((resolve, reject) => {
+    const listener = async (...args: string[]) => {
       const finalCheck = await check(...args);
       if (check && typeof check === "function" && finalCheck) {
         dispose();
-        rs([...args]);
+        resolve([...args]);
       }
     };
 
-    // Removes listeners
+    // Removes listeneresolve
     const dispose = () => {
       bot.removeListener(event, listener);
       if (t) clearTimeout(t);
@@ -29,7 +29,7 @@ export function waitFor(event: string, timeout: number, check: any, bot: HibikiC
     if (timeout) {
       t = setTimeout(() => {
         dispose();
-        rj("timeout");
+        reject("timeout");
       }, timeout);
     }
 
