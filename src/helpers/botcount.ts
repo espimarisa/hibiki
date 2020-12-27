@@ -1,5 +1,5 @@
 /**
- * @file Bot counter
+ * @file Bot count
  * @description Compares and returns proper bot vs member count metrics
  * @module helper/botcount
  */

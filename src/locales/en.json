@@ -8,7 +8,7 @@
 
   "general": {
     "ABOUT": "About",
-    "ABOUT_DESCRIPTION": "{username}, by [smolespi](https://espi.me), [resolved](https://github.com/resolvedxd), and [contributors](https://github.com/smolespi/Hibiki). 💖",
+    "ABOUT_DESCRIPTION": "{username}, by [smolespi](https://espi.me), [resolved](https://github.com/resolvedxd), and [contributors](https://github.com/smolespi/Hibiki).",
     "ABOUT_HOST": "Host",
     "ABOUT_HOST_STRING": "Bot using {botMemoryUsage} of memory \nSystem using {hostMemoryUsage} of memory \nSystem up for {uptime} \nRunning on {platform}",
     "ABOUT_MODULES": "Modules",
@@ -27,6 +27,7 @@
   },
 
   "global": {
+    "CANCELLED": "🛑 Cancelled",
     "ERROR": "❌ Error",
     "ERROR_ALLOWDMS": "The **{command}** command can only be ran in a server.",
     "ERROR_CLIENTPERMS": "I need permission to **{perms}** to run that command.",
@@ -39,10 +40,13 @@
     "ERROR_STAFFCOMMAND": "The **{command}** can only be used by staff members.",
     "ERROR_VOICE": "You must be in a voice channel or in the same voice channel as me to use the **{command}** command.",
     "LATENCY": "Latency",
+    "NO_REASON": "No reason provided.",
     "OR": "or",
     "RAN_BY": "Ran by {author}{optional:poweredBy: | Powered by {poweredBy}{optional:extra: | {extra}}",
     "SUCCESS": "✅ Success",
-    "TIMEOUT_REACH": "The timeout for input has been reached."
+    "TIMEOUT_REACH": "The timeout for input has been reached.",
+    "YES": "Yes",
+    "NO": "No"
   },
 
   "image": {
@@ -55,6 +59,14 @@
   },
 
   "moderation": {
+    "KICK": "Kick",
+    "KICK_CANCELLED": "Cancelled kicking **{member}**.",
+    "KICK_CONFIRMATION": "Are you sure you'd like to kick **{member}**?",
+    "KICK_FAILED": "Failed to kick **{member}**.",
+    "KICK_TOOLOWROLE": "My role isn't high enough to kick **{member}**.",
+    "KICKED_FROM": "🚪 Kicked from {guild}",
+    "KICKED_FOR": "You were kicked for `{reason}`.",
+    "KICKED_USER": "**{member}** was kicked by **{author}**.",
     "PURGE_DESCRIPTION": "purged {msgs:# messages#! message!}"
   },
 
@@ -104,5 +116,11 @@
 
   "roleplay": {
     "BANGHEAD": "**{user}** is banging their head!"
+  },
+
+  "utility": {
+    "WIKIPEDIA": "Wikipedia",
+    "WIKIPEDIA_DISAMBIGUATION": "[Page]({page}) is a disambiguation page. Maybe be more specific?",
+    "WIKIPEDIA_NOTFOUND": "Page not found. It may be case-sensitive."
   }
 }

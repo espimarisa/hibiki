@@ -23,7 +23,6 @@ export async function pagify(
   initialPage = 0,
 ) {
   let page = initialPage as any;
-
   // Edits pagify embeds
   if (edit) {
     msg.edit({

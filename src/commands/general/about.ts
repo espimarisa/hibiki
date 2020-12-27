@@ -3,10 +3,11 @@ import { VERSION as erisVersion } from "eris";
 import { version as tsVersion } from "typescript";
 import { version as botVersion } from "../../../package.json";
 import { Command } from "../../classes/Command";
+import { uptimeFormat } from "../../helpers/format";
 import os from "os";
 
 export class AboutCommand extends Command {
-  aliases = ["aboutbot", "botinfo", "botstats", "info", "information", "stats", "statistics", "uptime"];
+  aliases = ["aboutbot", "botinfo", "info", "stats", "statistics", "uptime"];
   description = "Displays bot information and statistics.";
   allowdms = true;
 
@@ -45,27 +46,12 @@ export class AboutCommand extends Command {
       }
     }
 
-    // Formats uptime
-    function formatUptime(uptime: number) {
-      const date = new Date(uptime * 1000);
-      const days = date.getUTCDate() - 1;
-      const hours = date.getUTCHours();
-      const minutes = date.getUTCMinutes();
-      const segments = [];
-      if (days > 0) segments.push(`${days} day${days === 1 ? "" : "s"}`);
-      if (hours > 0) segments.push(`${hours} hour${hours === 1 ? "" : "s"}`);
-      if (minutes === 0) segments.push("less than a minute");
-      if (minutes > 0) segments.push(`${minutes} minute${minutes === 1 ? "" : "s"}`);
-      const dateString = segments.join(", ");
-      return dateString;
-    }
-
     // Host & bot system information
-    const botUptime = formatUptime(process.uptime());
+    const botUptime = uptimeFormat(process.uptime());
     const botMemoryUsage = formatBytes(process.memoryUsage().rss);
     const hostMemoryUsage = formatBytes(os.totalmem() - os.freemem());
     const hostPlatform = `${formatPlatform(os.platform(), os.release())} ${os.arch()}`;
-    const hostUptime = formatUptime(os.uptime());
+    const hostUptime = uptimeFormat(os.uptime());
 
     // Information strings
     const statisticsString = msg.string("general.ABOUT_STATISTICS_STRING", {
@@ -92,7 +78,7 @@ export class AboutCommand extends Command {
     msg.channel.createMessage({
       embed: {
         title: `🤖 ${msg.string("general.ABOUT")}`,
-        description: msg.string("general.ABOUT_DESCRIPTION", { username: this.bot.user.username }),
+        description: `${msg.string("general.ABOUT_DESCRIPTION", { username: this.bot.user.username })} 💜`,
         color: msg.convertHex("general"),
         fields: [
           {

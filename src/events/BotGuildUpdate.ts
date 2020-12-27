@@ -1,3 +1,8 @@
+/**
+ * @file BotGuildUpdate
+ * @description Handles guildCreate and guildDelete events and their logging
+ */
+
 import type { Guild } from "eris";
 import { Event } from "../classes/Event";
 import { convertHex } from "../helpers/embed";

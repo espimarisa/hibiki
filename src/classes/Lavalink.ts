@@ -116,7 +116,7 @@ export class Lavalink {
       let userCount = 0;
 
       // Gets the voice channel and the member amount in it
-      const currentChannel = channel.guild.channels.get(player.options.voiceChannel as any) as VoiceChannel;
+      const currentChannel = channel.guild.channels.get(player.options.voiceChannel) as VoiceChannel;
       currentChannel?.voiceMembers.forEach((m) => (m.user.id === bot.user.id ? null : userCount++));
 
       // Disconnects and destroys the player if the channel is empty or only has the bot in it

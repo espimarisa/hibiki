@@ -23,7 +23,6 @@ export class LocaleSystem {
 
       // Loads each locale
       files.forEach((file) => {
-        // todo: endsWith() to make sure we don't load any junk
         if (file.isDirectory()) this.updateLocales(`${path}/${file.name}`);
         else if (file.isFile()) {
           readFile(`${path}/${file.name}`, { encoding: "utf8" }, (_err, fileData) => {
@@ -36,7 +35,7 @@ export class LocaleSystem {
   }
 
   /** Returns a string from a specific locale */
-  getLocale(language: string, fieldName: string, args: { [x: string]: any } | undefined) {
+  getLocale(language: string, fieldName: string, args?: { [x: string]: any } | undefined) {
     // Gets the string category
     const category = fieldName.split(".");
     let output = "";
@@ -70,11 +69,10 @@ export class LocaleSystem {
         } else if (!plurals) output = output.replace(`{${arg}}`, args[arg]);
       });
     }
+
     const optionalRegex = new RegExp(`({optional:.+:(.+)})`);
     const optional = optionalRegex.exec(output);
-
     if (optional) output = output.replace(optional[1], "");
-
     return output;
   }
 
