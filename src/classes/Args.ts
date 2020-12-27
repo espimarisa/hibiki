@@ -28,7 +28,7 @@ export class Args {
         return b.guilds.find((g) => g.id === a || (flag === "strict" ? g.name === a : g.name.startsWith(a)));
       },
 
-      member: (a: string, msg: Message<TextChannel | any>, flag: string) => {
+      member: (a: string, msg: Message<TextChannel>, flag: string) => {
         const member = msg.channel.guild.members.find((m: Member) =>
           flag !== "strict"
             ? m.username.toLowerCase() === a ||

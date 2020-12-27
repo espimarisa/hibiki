@@ -107,7 +107,7 @@ export class HandlerEvent extends Event {
 
       // Handles commands with requiredPerms
       if (command.requiredperms?.length && !guildconfig?.staffRole) {
-        const missingPerms: any[] = [];
+        const missingPerms: string[] = [];
         command.requiredperms.forEach((perm) => {
           if (!msg.member?.permissions.has(perm)) missingPerms.push(perm);
         });

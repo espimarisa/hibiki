@@ -5,6 +5,7 @@
  */
 
 import type { HibikiClient } from "../classes/Client";
+import type { Event } from "../classes/Event";
 import { readdir } from "fs";
 import { join } from "path";
 
@@ -53,9 +54,9 @@ function loadCommands(path: string, bot: HibikiClient) {
 function loadEvents(path: string, bot: HibikiClient) {
   // Subscribes to and runs events
   function subscribeEvents() {
-    bot.events.forEach((e: any) => {
+    bot.events.forEach((e: Event) => {
       e.events.forEach((ev: string) => {
-        bot.on(ev, (...eventParams: any) => e.run(ev, ...eventParams));
+        bot.on(ev, (...eventParams: string[]) => e.run(ev, ...eventParams));
       });
     });
   }
