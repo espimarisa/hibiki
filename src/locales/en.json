@@ -23,7 +23,8 @@
     "PING_INITIAL_DESCRIPTION": "Sending... (latency: {latency}ms).",
     "PING_LATENCY": "This message took {latency}ms to send.",
     "PONG": "Pong!",
-    "SPLASHBANNER_ERROR": "This server doesn't have a splash page banner."
+    "SPLASHBANNER_ERROR": "This server doesn't have a splash page banner.",
+    "SETUP": ""
   },
 
   "global": {
