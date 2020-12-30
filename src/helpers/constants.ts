@@ -5,7 +5,6 @@
  */
 
 export const userIDRegex = /\d{17,18}/g;
-export const wordRegex = /[^\s]+/g;
 
 // Validate emojis
 export const animatedEmojiRegex = /<a:[^\s]+:\d{17,18}>/;

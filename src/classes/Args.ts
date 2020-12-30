@@ -31,12 +31,12 @@ export class Args {
       member: (a: string, msg: Message<TextChannel>, flag: string) => {
         const member = msg.channel.guild.members.find((m: Member) =>
           flag !== "strict"
-            ? m.username.toLowerCase() === a ||
+            ? m.user.username.toLowerCase() === a ||
               m.id === a ||
               a.startsWith(`<@!${m.id}>`) ||
               a.startsWith(`<@${m.id}>`) ||
               (m.nick && m.nick.toLowerCase() === a)
-            : m.username.startsWith(a) || m.id === a || a.startsWith(`<@!${m.id}>`) || a.startsWith(`<@${m.id}>`),
+            : m.user.username.startsWith(a) || m.id === a || a.startsWith(`<@!${m.id}>`) || a.startsWith(`<@${m.id}>`),
         );
 
         if ((!a || !member) && flag === "fallback") return msg.channel.guild.members.get(msg.author.id);

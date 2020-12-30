@@ -6,6 +6,7 @@
 import type { Command } from "./Command";
 import type { Event } from "./Event";
 import type { Logger } from "./Logger";
+import Eris, { Client } from "eris";
 import { Args } from "./Args";
 import { Lavalink } from "./Lavalink";
 import { LocaleSystem } from "./Locale";
@@ -16,12 +17,11 @@ import { tagUser } from "../helpers/format";
 import { loadItems } from "../helpers/loader";
 import { botLogger } from "../helpers/logger";
 import { switchStatuses } from "../helpers/statuses";
-import Eris, { Client } from "eris";
-import { join } from "path";
+import path from "path";
 import config from "../../config.json";
 import Sentry from "@sentry/node";
 
-const LOCALES_DIRECTORY = join(__dirname, "../locales");
+const LOCALES_DIRECTORY = path.join(__dirname, "../locales");
 
 export class HibikiClient extends Client {
   commands: Array<Command> = [];
