@@ -49,4 +49,14 @@ export class RethinkProvider {
     await this.dblock;
     return this.db.table("blacklist").get(guild).run();
   }
+
+  async updateGuildConfig(config: any) {
+    await this.dblock;
+    return this.db.table("guildconfig").update(config).run();
+  }
+
+  async getMuteCache() {
+    await this.dblock;
+    return this.db.table("mutecache").run();
+  }
 }

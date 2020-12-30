@@ -31,5 +31,5 @@ export function switchStatuses(bot: HibikiClient) {
       type: 3,
       url: "https://twitch.tv/.",
     });
-  }, 50000);
+  }, 60000);
 }

@@ -5,12 +5,14 @@
  */
 
 import type { HibikiClient } from "../classes/Client";
-import type { Event } from "../classes/Event";
+// import type { Event } from "../classes/Event";
+// import type { Logger } from "../classes/Logger";
 import { readdir } from "fs";
 import { join } from "path";
 
 const COMMANDS_DIRECTORY = join(__dirname, "../commands");
 const EVENTS_DIRECTORY = join(__dirname, "../events");
+const LOGGERS_DIRECTORY = join(__dirname, "../loggers");
 const fileTypes = /\.(js|ts)$/i;
 const loadedCommands = {};
 
@@ -33,6 +35,7 @@ function loadCommands(path: string, bot: HibikiClient) {
         const importedCommand = require(`${path}/${file.name}`);
         command = importedCommand[Object.keys(importedCommand)[0]];
       } catch (err) {
+        console.log(err);
         bot.log.error(`Command ${file.name} failed to load: ${err}`);
       }
 
@@ -50,11 +53,11 @@ function loadCommands(path: string, bot: HibikiClient) {
   });
 }
 
-/** Loads and runs events */
-function loadEvents(path: string, bot: HibikiClient) {
-  // Subscribes to and runs events
-  function subscribeEvents() {
-    bot.events.forEach((e: Event) => {
+/** Loads and runs events/loggers */
+function loadEvents(path: string, bot: HibikiClient, logger = false) {
+  // Subscribes to and runs events/loggers
+  function subscribeEvents(array: any) {
+    array.forEach((e: any) => {
       e.events.forEach((ev: string) => {
         bot.on(ev, (...eventParams: string[]) => e.run(ev, ...eventParams));
       });
@@ -62,7 +65,7 @@ function loadEvents(path: string, bot: HibikiClient) {
   }
 
   // Loads each event file
-  readdir(EVENTS_DIRECTORY, { withFileTypes: true }, (ioerr, files) => {
+  readdir(path, { withFileTypes: true }, (ioerr, files) => {
     if (ioerr) return;
 
     files.forEach((file, i) => {
@@ -79,10 +82,10 @@ function loadEvents(path: string, bot: HibikiClient) {
       }
 
       // Pushes the events and runs them
-      bot.events.push(new event(bot, file.name.split(fileTypes)[0]));
+      (logger ? bot.loggers : bot.events).push(new event(bot, file.name.split(fileTypes)[0]));
       if (i === files.length - 1) {
-        subscribeEvents();
-        bot.log.info(`${bot.events.length} events loaded`);
+        subscribeEvents(logger ? bot.loggers : bot.events);
+        bot.log.info(logger ? `${bot.loggers.length} loggers loaded` : `${bot.events.length} events loaded`);
       }
     });
   });
@@ -92,4 +95,5 @@ function loadEvents(path: string, bot: HibikiClient) {
 export async function loadItems(bot: HibikiClient) {
   loadCommands(COMMANDS_DIRECTORY, bot);
   loadEvents(EVENTS_DIRECTORY, bot);
+  loadEvents(LOGGERS_DIRECTORY, bot, true);
 }
