@@ -29,6 +29,7 @@
     "format": "cross-env prettier --config .prettierrc 'src/**/*.{css,htm,html,js,json,ts,tsx}' --write",
     "lint": "eslint --fix .",
     "start": "tsc && cross-env NODE_ENV=production node dist/src/index.js",
+    "setup": "cross-env NODE_ENV=development ts-node --files ./src/utils/setup.ts",
     "test": "eslint ."
   },
   "dependencies": {

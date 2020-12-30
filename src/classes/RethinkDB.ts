@@ -8,7 +8,7 @@ import { r } from "rethinkdb-ts";
 import config from "../../config.json";
 
 /** Starts RethinkDB */
-function startRethink() {
+export function startRethink() {
   return r.connectPool({
     db: config.database.db || undefined,
     password: config.database.password || undefined,
