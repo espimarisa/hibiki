@@ -35,7 +35,7 @@
   "dependencies": {
     "@sentry/node": "^5.29.2",
     "axios": "^0.21.1",
-    "dayjs": "^1.10.0",
+    "dayjs": "^1.10.1",
     "erela.js": "^2.3.1",
     "erela.js-spotify": "^1.2.0",
     "eris": "^0.14.0",
