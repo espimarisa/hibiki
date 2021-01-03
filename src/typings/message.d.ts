@@ -4,9 +4,8 @@
  * @typedef message
  */
 
-import { convertHex, createEmbed, editEmbed } from "../helpers/embed";
-const userLocale = await bot.localeSystem.getUserLocale(msg.author.id, bot);
-const string = bot.localeSystem.getLocaleFunction(userLocale) as LocaleString;
+import type { tagUser } from "helpers/format";
+import type { convertHex, createEmbed, editEmbed } from "../helpers/embed";
 
 declare module "eris" {
   declare interface Message {
@@ -14,5 +13,6 @@ declare module "eris" {
     editEmbed: typeof editEmbed;
     convertHex: typeof convertHex;
     string: typeof string;
+    tagUser: typeof tagUser;
   }
 }

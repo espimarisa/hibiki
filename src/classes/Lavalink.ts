@@ -2,7 +2,7 @@ import type { Member, User, VoiceChannel } from "eris";
 import type { HibikiClient } from "./Client";
 import { Manager } from "erela.js";
 import { convertHex } from "../helpers/embed";
-import { toHHMMSS } from "../helpers/format";
+import { tagUser, toHHMMSS } from "../helpers/format";
 import Spotify from "erela.js-spotify";
 import config from "../../config.json";
 let plugins: Spotify[];
@@ -29,6 +29,7 @@ export class Lavalink {
 
       nodes: [
         {
+          retryAmount: 2,
           host: config.lavalink.host ? config.lavalink.host : "localhost",
           port: config.lavalink.port ? config.lavalink.port : 2333,
           password: config.lavalink.password ? config.lavalink.password : "youshallnotpass",
@@ -72,7 +73,7 @@ export class Lavalink {
                 url: thumbnail ? thumbnail : undefined,
               },
               footer: {
-                text: string("music.REQUESTED_BY_FOOTER", { requester: bot.tagUser(requester as User) }),
+                text: string("music.REQUESTED_BY_FOOTER", { requester: tagUser(requester as User) }),
                 icon_url: bot.user.dynamicAvatarURL(),
               },
             },
@@ -96,7 +97,7 @@ export class Lavalink {
             description: string("music.END_OF_QUEUE"),
             color: convertHex("general"),
             footer: {
-              text: string("music.REQUESTED_BY_FOOTER", { requester: bot.tagUser(requester as User) }),
+              text: string("music.REQUESTED_BY_FOOTER", { requester: tagUser(requester as User) }),
               icon_url: bot.user.dynamicAvatarURL(),
             },
           },

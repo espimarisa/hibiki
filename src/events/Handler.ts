@@ -11,7 +11,7 @@ import * as Sentry from "@sentry/node";
 export class HandlerEvent extends Event {
   events = ["messageCreate"];
 
-  async run(event: string, msg: Message<TextChannel>) {
+  async run(_event: string, msg: Message<TextChannel>) {
     if (!msg || !msg.content || msg.author.bot || !msg.channel || !msg.author) return;
     let prefix;
 
@@ -54,10 +54,23 @@ export class HandlerEvent extends Event {
       return;
     }
 
+    // Handles disabled categories and commands
+    if (command.allowdisable !== false) {
+      // Disabled categories
+      if (guildconfig?.disabledCategories?.includes(command.category)) {
+        return msg.createEmbed(string("global.ERROR"), string("global.ERROR_DISABLEDCATEGORY", { command: command.name }), "error");
+      }
+
+      // Disabled commands
+      if (guildconfig?.disabledCmds?.includes(command.name)) {
+        return msg.createEmbed(string("global.ERROR"), string("global.ERROR_DISABLED", { command: command.name }), "error");
+      }
+    }
+
     // Handles voice-only commands
     if (command.voice) {
-      const uservoice = msg.channel.guild.members.get(msg.author.id)?.voiceState.channelID;
-      const botvoice = msg.channel.guild.members.get(this.bot.user.id)?.voiceState.channelID;
+      const uservoice = msg.channel.guild.members.get(msg.author.id)?.voiceState?.channelID;
+      const botvoice = msg.channel.guild.members.get(this.bot.user.id)?.voiceState?.channelID;
 
       // If the user isn't in a voice channel or if the user isn't in the same channel as the bot
       if (!uservoice || (botvoice && uservoice !== botvoice)) {
@@ -150,18 +163,27 @@ export class HandlerEvent extends Event {
     }
 
     // Logs when a command is ran
-    this.bot.log.info(`${this.bot.tagUser(msg.author)} ran ${command.name} in ${msg.channel.guild?.name}${args.length ? `: ${args}` : ""}`);
+    this.bot.log.info(`${msg.tagUser(msg.author)} ran ${command.name} in ${msg.channel.guild?.name}${args.length ? `: ${args}` : ""}`);
+    this.bot.logs.push({
+      cmdName: command.name,
+      authorID: msg.author.id,
+      guildID: msg.channel.guild.id,
+      args: args,
+      date: msg.timestamp,
+    });
 
     try {
-      // Tries to run a command and catches any errors
+      // Runs the command
       await command.run(msg, parsedArgs, args);
     } catch (err) {
+      // Captures exceptions with Sentry
       Sentry.configureScope((scope) => {
-        scope.setUser({ id: msg.author.id, username: this.bot.tagUser(msg.author) });
+        scope.setUser({ id: msg.author.id, username: msg.tagUser(msg.author) });
         scope.setExtra("guild", msg.channel.guild?.name);
         scope.setExtra("guildID", msg.channel.guild?.id);
       });
 
+      // Logs the error
       Sentry.captureException(err);
       console.error(err);
       return msg.createEmbed(string("global.ERROR"), string("global.ERROR_OUTPUT", { error: err }), "error");

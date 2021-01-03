@@ -8,6 +8,7 @@ export class EvalCommand extends Command {
   description = "Evaluates some code.";
   args = "[code:string]";
   allowdms = true;
+  allowdisable = false;
   owner = true;
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {

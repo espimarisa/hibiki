@@ -4,11 +4,16 @@
  * @module helpers/format
  */
 
-import type { Member, User } from "eris";
+import type { User } from "eris";
+import { auditLogRegex } from "./constants";
 
 /** Tags a user by username#discriminator */
-export function tagUser(user: User | Member) {
-  return `${user.username}#${user.discriminator}`;
+export function tagUser(user: User, emojiFilter = false) {
+  if (emojiFilter && user) {
+    return `${auditLogRegex.exec(user.username) !== null ? auditLogRegex.exec(user.username)[0] : user.id}#${user.discriminator}`;
+  } else if (user) {
+    return `${user.username}#${user.discriminator}`;
+  }
 }
 
 const logColors = {
@@ -108,4 +113,105 @@ export function uptimeFormat(uptime: number) {
   if (minutes > 0) segments.push(`${minutes} minute${minutes === 1 ? "" : "s"}`);
   const dateString = segments.join(", ");
   return dateString;
+}
+
+/** Localizes setup items */
+export function localizeSetupItems(string: LocaleString, item: string, title = false, punishment = false) {
+  switch (item) {
+    case "agreeChannel":
+      if (title) return string("general.CONFIG_AGREECHANNEL");
+      return string("general.CONFIG_AGREECHANNEL_DESCRIPTION");
+    case "agreeRole":
+      if (title) return string("general.CONFIG_AGREEROLE");
+      return string("general.CONFIG_AGREEROLE_DESCRIPTION");
+    case "antiInvite":
+      if (title) return string("general.CONFIG_ANTIINVITE");
+      return string("general.CONFIG_ANTIINVITE_DESCRIPTION");
+    case "antiSpam":
+      if (title) return string("general.CONFIG_ANTISPAM");
+      return string("general.CONFIG_ANTISPAM_DESCRIPTION");
+    case "autoRoles":
+      if (title) return string("general.CONFIG_AUTOROLES");
+      return string("general.CONFIG_AUTOROLES_DESCRIPTION");
+    case "easyTranslate":
+      if (title) return string("general.CONFIG_EASYTRANSLATE");
+      return string("general.CONFIG_EASYTRANSLATE_DESCRIPTION");
+    case "eventLogging":
+      if (title) return string("general.CONFIG_EVENTLOGGING");
+      return string("general.CONFIG_EVENTLOGGING_DESCRIPTION");
+    case "ignoredLoggingChannels":
+      if (title) return string("general.CONFIG_IGNOREDLOGGINGCHANNELS");
+      return string("general.CONFIG_IGNOREDLOGGINGCHANNELS_DESCRIPTION");
+    case "invitePunishments":
+      if (title) return string("general.CONFIG_INVITEPUNISHMENTS");
+      if (punishment) return string("general.CONFIG_FORINVITES");
+      return string("general.CONFIG_INVITEPUNISHMENTS_DESCRIPTION");
+    case "joinMessage":
+      if (title) return string("general.CONFIG_JOINMESSAGE");
+      return string("general.CONFIG_JOINMESSAGE_DESCRIPTION");
+    case "leaveMessage":
+      if (title) return string("general.CONFIG_LEAVEMESSAGE");
+      return string("general.CONFIG_LEAVEMESSAGE_DESCRIPTION");
+    case "leaveJoin":
+      if (title) return string("general.CONFIG_LEAVEJOIN");
+      return string("general.CONFIG_LEAVEJOIN_DESCRIPTION");
+    case "memberLogging":
+      if (title) return string("general.CONFIG_MEMBERLOGGING");
+      return string("general.CONFIG_MEMBERLOGGING_DESCRIPTION");
+    case "messageLogging":
+      if (title) return string("general.CONFIG_MESSAGELOGGING");
+      return string("general.CONFIG_MESSAGELOGGING_DESCRIPTION");
+    case "modLogging":
+      if (title) return string("general.CONFIG_MODLOGGING");
+      return string("general.CONFIG_MODLOGGING_DESCRIPTION");
+    case "msgOnPunishment":
+      if (title) return string("general.CONFIG_MSGONPUNISHMENT");
+      return string("general.CONFIG_MSGONPUNISHMENT_DESCRIPTION");
+    case "mutedRole":
+      if (title) return string("general.CONFIG_MUTEDROLE");
+      return string("general.CONFIG_MUTEDROLE_DESCRIPTION");
+    case "pinAmount":
+      if (title) return string("general.CONFIG_PINAMOUNT");
+      return string("general.CONFIG_PINAMOUNT_DESCRIPTION");
+    case "pinChannel":
+      if (title) return string("general.CONFIG_PINCHANNEL");
+      return string("general.CONFIG_PINCHANNEL_DESCRIPTION");
+    case "pinEmoji":
+      if (title) return string("general.CONFIG_PINEMOJI");
+      return string("general.CONFIG_PINEMOJI_DESCRIPTION");
+    case "pinSelfPinning":
+      if (title) return string("general.CONFIG_PINSELFPINNING");
+      return string("general.CONFIG_PINSELFPINNING_DESCRIPTION");
+    case "snipingEnable":
+      if (title) return string("general.CONFIG_SNIPINGENABLE");
+      return string("general.CONFIG_SNIPINGENABLE_DESCRIPTION");
+    case "snipingIgnore":
+      if (title) return string("general.CONFIG_SNIPINGIGNORE");
+      return string("general.CONFIG_SNIPINGIGNORE_DESCRIPTION");
+    case "snipingInvites":
+      if (title) return string("general.CONFIG_SNIPINGINVITES");
+      return string("general.CONFIG_SNIPINGINVITES_DESCRIPTION");
+    case "snipingPermission":
+      if (title) return string("general.CONFIG_SNIPINGPERMISSION");
+      return string("general.CONFIG_SNIPINGPERMISSION_DESCRIPTION");
+    case "spamPunishments":
+      if (title) return string("general.CONFIG_SPAMPUNISHMENTS");
+      if (punishment) return string("general.CONFIG_FORSPAMMING");
+      return string("general.CONFIG_SPAMPUNISHMENTS_DESCRIPTION");
+    case "spamThreshold":
+      if (title) return string("general.CONFIG_SPAMTHRESHOLD");
+      return string("general.CONFIG_SPAMTHRESHOLD_DESCRIPTION");
+    case "staffRole":
+      if (title) return string("general.CONFIG_STAFFROLE");
+      return string("general.CONFIG_STAFFROLE_DESCRIPTION");
+    case "verifiedRole":
+      if (title) return string("general.CONFIG_VERIFIEDROLE");
+      return string("general.CONFIG_VERIFIEDROLE_DESCRIPTION");
+    case "delete":
+      return string("general.CONFIG_DELETE_DESCRIPTION");
+    case undefined:
+      return "No description";
+    default:
+      return "No description";
+  }
 }

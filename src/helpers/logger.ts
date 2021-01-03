@@ -15,7 +15,7 @@ const logFormat = format.combine(
 );
 
 // Creates the logger
-export const botLogger = createLogger({
+export const logger = createLogger({
   format: logFormat,
   transports: [new transports.Console()],
 });

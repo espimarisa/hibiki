@@ -101,7 +101,7 @@ export class AboutCommand extends Command {
           url: this.bot.user.dynamicAvatarURL(),
         },
         footer: {
-          text: msg.string("global.RAN_BY", { author: this.bot.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

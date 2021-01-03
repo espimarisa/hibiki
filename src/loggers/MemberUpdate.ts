@@ -101,7 +101,7 @@ export class MemberUpdate extends Logger {
         embed: {
           color: convertHex("success"),
           author: {
-            name: `${this.bot.tagUser(member.user)} joined`,
+            name: `${this.tagUser(member.user)} joined`,
             icon_url: member.avatarURL,
           },
           thumbnail: {
@@ -142,7 +142,7 @@ export class MemberUpdate extends Logger {
         embed: {
           color: convertHex("error"),
           author: {
-            name: `${this.bot.tagUser(member.user)} left`,
+            name: `${this.tagUser(member.user)} left`,
             icon_url: member.avatarURL,
           },
           thumbnail: {

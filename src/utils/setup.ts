@@ -6,9 +6,10 @@
 
 import { r } from "rethinkdb-ts";
 import { startRethink } from "../classes/RethinkDB";
+import { logger } from "../helpers/logger";
 import config from "../../config.json";
-import { botLogger } from "../helpers/logger";
 
+// Tables to create
 const requiredtables = [
   "blacklist",
   "economy",
@@ -24,9 +25,9 @@ const requiredtables = [
   "warnings",
 ];
 
-export async function setupRethink() {
+async function setupRethink() {
   await startRethink().catch((err) => {
-    botLogger.error(`RethinkDB failed to start. Be sure the config file is setup properly and that it's running. Exiting. (error: ${err})`);
+    logger.error(`RethinkDB failed to start. Be sure the config file is setup properly and that it's running. Exiting. (error: ${err})`);
     process.exit(1);
   });
 
@@ -34,7 +35,7 @@ export async function setupRethink() {
   const dbList = await r.dbList().run();
   if (!dbList.includes(config.database.db)) {
     await r.dbCreate(config.database.db).run();
-    botLogger.info(`Created the ${config.database.db} database`);
+    logger.info(`Created the ${config.database.db} database`);
   }
 
   // Creates missing tables
@@ -43,22 +44,23 @@ export async function setupRethink() {
     requiredtables.map(async (t) => {
       if (!tables.includes(t)) {
         await db.tableCreate(t).run();
-        botLogger.info(`Created the ${t} table`);
+        logger.info(`Created the ${t} table`);
       }
     }),
   );
 
-  // Creates marriage index
+  // Creates the marriage index
   const index = await db.table("marriages").indexList().run();
   if (!index.includes("marriages")) {
     await db
       .table("marriages")
       .indexCreate("marriages", [r.row("id"), r.row("spouse")], { multi: true })
       .run();
-    botLogger.info("Created the marriage index");
+
+    logger.info("Created the marriage index");
   }
 
-  botLogger.info("RethinkDB is setup properly");
+  logger.info("RethinkDB is setup properly");
 }
 
 if (require.main === module) {

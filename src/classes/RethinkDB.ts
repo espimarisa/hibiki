@@ -1,9 +1,9 @@
 /**
- * @file RethinkDB Provider
- * @description Main database provider for RethinkDB
+ * @file RethinkDB
+ * @description Handles all RethinkDB functionality and functions
  */
 
-import { botLogger } from "../helpers/logger";
+import { logger } from "../helpers/logger";
 import { r } from "rethinkdb-ts";
 import config from "../../config.json";
 
@@ -21,7 +21,7 @@ export function startRethink() {
 
 // Starts RethinkDB and catches any errors
 startRethink().catch((err) => {
-  botLogger.error(`RethinkDB failed to start. Be sure the config file is setup properly and that it's running. Exiting. (error: ${err})`);
+  logger.error(`RethinkDB failed to start. Be sure the config file is setup properly and that it's running. Exiting. (error: ${err})`);
   process.exit(1);
 });
 
@@ -50,13 +50,48 @@ export class RethinkProvider {
     return this.db.table("blacklist").get(guild).run();
   }
 
-  async updateGuildConfig(config: any) {
+  async updateGuildConfig(config: Record<string, unknown>) {
     await this.dblock;
     return this.db.table("guildconfig").update(config).run();
+  }
+
+  async updateUserConfig(config: Record<string, unknown>) {
+    await this.dblock;
+    return this.db.table("userconfig").update(config).run();
   }
 
   async getMuteCache() {
     await this.dblock;
     return this.db.table("mutecache").run();
+  }
+
+  async deleteGuildConfig(guild: string) {
+    await this.dblock;
+    return this.db.table("guildconfig").get(guild).delete().run();
+  }
+
+  async deleteUserConfig(user: string) {
+    await this.dblock;
+    return this.db.table("userconfig").get(user).delete().run();
+  }
+
+  async insertBlankUserConfig(user: string | number) {
+    await this.dblock;
+    return this.db
+      .table("userconfig")
+      .insert({
+        id: user,
+      })
+      .run();
+  }
+
+  async insertBlankGuildConfig(guild: string) {
+    await this.dblock;
+    return this.db
+      .table("guildconfig")
+      .insert({
+        id: guild,
+      })
+      .run();
   }
 }

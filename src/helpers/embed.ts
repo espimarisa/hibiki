@@ -42,7 +42,6 @@ export async function createEmbed(this: Message, title: string, desc?: string, c
     },
   };
 
-  // TODO: Log any issues here with a *proper* logger so we can actually figure out problems!
   return this.channel.createMessage(embedConstruct);
 }
 
@@ -64,7 +63,6 @@ export async function editEmbed(this: Message, title: string, desc?: string, col
     embedFieldColor = convertHex("general");
   }
 
-  // TODO: handle exceptions properly
   if (this && this.embeds[0].footer) {
     embedFooter = this.embeds[0].footer;
   }

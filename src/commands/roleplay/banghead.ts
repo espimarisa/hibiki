@@ -29,7 +29,7 @@ export class BangheadCommand extends Command {
         },
         footer: {
           text: msg.string("global.RAN_BY", {
-            author: this.bot.tagUser(msg.author),
+            author: msg.tagUser(msg.author),
             poweredBy: "weeb.sh",
           }),
           icon_url: msg.author.dynamicAvatarURL(),

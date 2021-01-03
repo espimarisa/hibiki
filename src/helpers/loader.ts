@@ -5,10 +5,9 @@
  */
 
 import type { HibikiClient } from "../classes/Client";
-// import type { Event } from "../classes/Event";
-// import type { Logger } from "../classes/Logger";
 import { readdir } from "fs";
 import { join } from "path";
+import type { Event } from "classes/Event";
 
 const COMMANDS_DIRECTORY = join(__dirname, "../commands");
 const EVENTS_DIRECTORY = join(__dirname, "../events");
@@ -56,8 +55,8 @@ function loadCommands(path: string, bot: HibikiClient) {
 /** Loads and runs events/loggers */
 function loadEvents(path: string, bot: HibikiClient, logger = false) {
   // Subscribes to and runs events/loggers
-  function subscribeEvents(array: any) {
-    array.forEach((e: any) => {
+  function subscribeEvents(array: Event[] = []) {
+    array.forEach((e: Event) => {
       e.events.forEach((ev: string) => {
         bot.on(ev, (...eventParams: string[]) => e.run(ev, ...eventParams));
       });

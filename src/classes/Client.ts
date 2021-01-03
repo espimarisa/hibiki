@@ -15,8 +15,8 @@ import { convertHex, createEmbed, editEmbed } from "../helpers/embed";
 import { botCount } from "../helpers/botcount";
 import { tagUser } from "../helpers/format";
 import { loadItems } from "../helpers/loader";
-import { botLogger } from "../helpers/logger";
-import { switchStatuses } from "../helpers/statuses";
+import { logger } from "../helpers/logger";
+import { statuses } from "../helpers/statuses";
 import path from "path";
 import config from "../../config.json";
 import Sentry from "@sentry/node";
@@ -28,12 +28,12 @@ export class HibikiClient extends Client {
   events: Array<Event> = [];
   loggers: Array<Logger> = [];
   cooldowns: Map<string, unknown>;
-  tagUser: typeof tagUser;
   lavalink: Lavalink;
   localeSystem: LocaleSystem;
   args: Args;
   db: RethinkProvider;
-  log: typeof botLogger;
+  log: typeof logger;
+  logs: Record<string, any>[] = [];
 
   constructor(token: string, options: Record<string, unknown>) {
     super(token, options);
@@ -41,6 +41,7 @@ export class HibikiClient extends Client {
     Eris.Message.prototype.createEmbed = createEmbed;
     Eris.Message.prototype.editEmbed = editEmbed;
     Eris.Message.prototype.convertHex = convertHex;
+    Eris.Message.prototype.tagUser = tagUser;
     Object.defineProperty(Eris.Guild.prototype, "botCount", {
       get: botCount,
     });
@@ -49,11 +50,11 @@ export class HibikiClient extends Client {
     this.commands = [];
     this.events = [];
     this.loggers = [];
+    this.logs = [];
     this.cooldowns = new Map();
 
     // Handlers & functions
-    this.log = botLogger;
-    this.tagUser = tagUser;
+    this.log = logger;
     this.args = new Args(this);
     this.db = new RethinkProvider();
     this.lavalink = new Lavalink(this);
@@ -67,10 +68,10 @@ export class HibikiClient extends Client {
   // Runs when the bot is ready
   async readyListener() {
     await loadItems(this);
-    switchStatuses(this);
+    statuses(this);
     if (config.keys.sentry) this.initializeSentry();
     if (config.lavalink.enabled) this.lavalink.manager.init(this.user.id);
-    this.log.info(`Logged in as ${this.tagUser(this.user)} on ${this.guilds.size} guilds`);
+    this.log.info(`Logged in as ${tagUser(this.user)} on ${this.guilds.size} guilds`);
   }
 
   // Initializes sentry
