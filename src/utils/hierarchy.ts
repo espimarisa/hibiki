@@ -1,7 +1,7 @@
 /**
  * @file Hierarchy
  * @description Compares role hierarchy between two members
- * @module helper/hierarchy
+ * @module utils/hierarchy
  */
 
 import type { Member } from "eris";

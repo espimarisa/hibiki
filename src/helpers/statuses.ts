@@ -8,13 +8,13 @@ import { version } from "../../package.json";
 import config from "../../config.json";
 
 // Rotates bot statuses
-export function switchStatuses(bot: HibikiClient) {
-  const statuses = config.statuses.map((s) => {
-    if (s === "help") s = `${config.prefixes[0]}help | hibiki.app`;
-    else if (s === "guilds") s = `${bot.guilds.size} guilds`;
-    else if (s === "users") s = `${bot.users.size} users`;
-    else if (s === "version") s = `v${version} | hibiki.app`;
-    return s;
+export function statuses(bot: HibikiClient) {
+  const statuses = config.statuses.map((status) => {
+    if (status === "help") status = `${config.prefixes[0]}help | hibiki.app`;
+    else if (status === "guilds") status = `${bot.guilds.size} guilds`;
+    else if (status === "users") status = `${bot.users.size} users`;
+    else if (status === "version") status = `v${version} | hibiki.app`;
+    return status;
   });
 
   // Sets the initial status

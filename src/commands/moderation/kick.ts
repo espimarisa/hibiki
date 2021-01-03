@@ -8,7 +8,7 @@ export class KickCommand extends Command {
   clientperms = ["kickMembers"];
   requiredperms = ["kickMembers"];
   args = "<member:member&strict> [reason:string]";
-  aliases = ["k"];
+  aliases = ["getout", "k"];
   staff = true;
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs, args: string[]) {
@@ -22,7 +22,7 @@ export class KickCommand extends Command {
     if (!roleHierarchy(msg.channel.guild.members.get(this.bot.user.id), member)) {
       return msg.createEmbed(
         msg.string("global.ERROR"),
-        msg.string("moderation.KICK_TOOLOWROLE", { member: this.bot.tagUser(member.user) }),
+        msg.string("moderation.KICK_TOOLOWROLE", { member: msg.tagUser(member.user) }),
         "error",
       );
     }
@@ -31,12 +31,12 @@ export class KickCommand extends Command {
     if (roleHierarchy(msg.member, member)) {
       const kickmsg = await msg.createEmbed(
         `🔨 ${msg.string("moderation.KICK")}`,
-        msg.string("moderation.KICK_CONFIRMATION", { member: this.bot.tagUser(member.user) }),
+        msg.string("moderation.KICK_CONFIRMATION", { member: msg.tagUser(member.user) }),
       );
 
       // Waits for response
       const { response } = await askYesNo(this.bot, msg).catch(() => {
-        return kickmsg.editEmbed(msg.string("global.ERROR"), msg.string("global.TIMEOUT_REACH"), "error");
+        return kickmsg.editEmbed(msg.string("global.ERROR"), msg.string("global.TIMEOUT_REACHED"), "error");
       });
 
       if (typeof response != "boolean") return;
@@ -45,17 +45,16 @@ export class KickCommand extends Command {
       if (response === false)
         return kickmsg.editEmbed(
           msg.string("global.CANCELLED"),
-          msg.string("moderation.KICK_CANCELLED", { member: this.bot.tagUser(member.user) }),
+          msg.string("moderation.KICK_CANCELLED", { member: msg.tagUser(member.user) }),
           "error",
         );
 
       try {
-        // TODO: Add emoji filter again if we need to (test audit logs)
-        await member.kick(`${reason} (by ${this.bot.tagUser(msg.author)}`);
+        await member.kick(`${reason} (by ${msg.tagUser(msg.author, true)})`);
       } catch (err) {
         await kickmsg.editEmbed(
           `🔨 ${msg.string("moderation.KICK")}`,
-          msg.string("moderation.KICK_FAILED", { member: this.bot.tagUser(member.user) }),
+          msg.string("moderation.KICK_FAILED", { member: msg.tagUser(member.user) }),
           "error",
         );
       }
@@ -76,12 +75,10 @@ export class KickCommand extends Command {
           },
         });
 
-        // TODO: Add a handler for errors instead of .catch(() => {})
-
         await kickmsg.editEmbed(
           `🔨 ${msg.string("moderation.KICK")}`,
           msg.string("moderation.KICKED_USER", {
-            member: this.bot.tagUser(member.user),
+            member: msg.tagUser(member.user),
             author: msg.author.username,
           }),
         );

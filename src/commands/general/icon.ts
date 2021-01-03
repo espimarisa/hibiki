@@ -19,7 +19,7 @@ export class IconCommand extends Command {
         },
         footer: {
           icon_url: msg.author.dynamicAvatarURL(),
-          text: msg.string("global.RAN_BY", { author: this.bot.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
         },
       },
     });

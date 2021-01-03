@@ -1,5 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
+import { resError } from "../../utils/exception";
 import axios from "axios";
 
 export class CatCommand extends Command {
@@ -9,8 +10,13 @@ export class CatCommand extends Command {
   allowdms = true;
 
   async run(msg: Message<TextChannel>) {
-    // TODO: Add an global Exception handler
-    const body = await axios.get("http://aws.random.cat/meow");
+    const body = await axios.get("https://aws.random.cat/meow").catch((err) => {
+      resError(err);
+    });
+
+    if (!body || !body.data?.file) {
+      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");
+    }
 
     msg.channel.createMessage({
       embed: {
@@ -19,10 +25,9 @@ export class CatCommand extends Command {
         image: {
           url: body.data.file,
         },
-
         footer: {
           text: msg.string("global.RAN_BY", {
-            author: this.bot.tagUser(msg.author),
+            author: msg.tagUser(msg.author),
             poweredBy: "random.cat",
           }),
           icon_url: msg.author.dynamicAvatarURL(),

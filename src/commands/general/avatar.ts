@@ -2,7 +2,7 @@ import type { Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 
 export class AvatarCommand extends Command {
-  args = "[member:member&fallback]";
+  args = "<member:member&fallback>";
   aliases = ["pfp", "profilepic", "profilepicture", "uicon", "usericon"];
   description = "Sends a member's profile picture.";
 
@@ -14,18 +14,16 @@ export class AvatarCommand extends Command {
         color: msg.convertHex("general"),
         author: {
           icon_url: member.user.dynamicAvatarURL(),
-          name: this.bot.tagUser(member.user),
+          name: msg.tagUser(member.user),
         },
         image: {
           url: member.user.dynamicAvatarURL(null),
         },
         footer: {
-          text: msg.string("global.RAN_BY", { author: this.bot.tagUser(member.user) }),
+          text: msg.string("global.RAN_BY", { author: msg.tagUser(member.user) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });
   }
 }
-
-// todo cleanup string emojis and names

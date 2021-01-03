@@ -4,6 +4,7 @@ import { Command } from "../../classes/Command";
 export class PingCommand extends Command {
   aliases = ["pong"];
   description = "Returns the bot's latency.";
+  allowdisable = false;
 
   async run(msg: Message<TextChannel>) {
     const pingmsg = await msg.channel.createMessage({
@@ -13,7 +14,7 @@ export class PingCommand extends Command {
         color: msg.convertHex("general"),
         footer: {
           text: msg.string("global.RAN_BY", {
-            author: this.bot.tagUser(msg.author),
+            author: msg.tagUser(msg.author),
             extra: `${msg.string("global.LATENCY")}: ${msg.channel.guild.shard.latency}ms`,
           }),
           icon_url: msg.author.dynamicAvatarURL(),
@@ -28,7 +29,7 @@ export class PingCommand extends Command {
         color: msg.convertHex("general"),
         footer: {
           text: msg.string("global.RAN_BY", {
-            author: this.bot.tagUser(msg.author),
+            author: msg.tagUser(msg.author),
             extra: `${msg.string("global.LATENCY")}: ${msg.channel.guild.shard.latency}ms`,
           }),
           icon_url: msg.author.dynamicAvatarURL(),

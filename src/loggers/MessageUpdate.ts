@@ -13,6 +13,7 @@ export class MessageUpdate extends Logger {
 
   // TODO: Add a guildconfig option for logging messages from bots. Set it to "off" by default.
   async run(event: string, msg: Message<TextChannel>, oldmsg: Message<TextChannel>) {
+    if (!msg || !msg.author) return;
     if (msg.author.id === this.bot.user.id) return;
 
     // Sets what message content to use
@@ -43,7 +44,7 @@ export class MessageUpdate extends Logger {
         embed: {
           color: msg.convertHex("error"),
           author: {
-            name: `${this.bot.tagUser(msg.author)}'s message was updated.`,
+            name: `${this.tagUser(msg.author)}'s message was updated.`,
             icon_url: msg.author.dynamicAvatarURL(),
           },
           fields: [
@@ -79,13 +80,15 @@ export class MessageUpdate extends Logger {
 
     // Logs message deletions
     if (event === "messageDelete") {
+      if (!msg || !msg.author) return;
+
       const channel = await this.getChannel(msg.channel, TYPE, event);
       if (!channel) return;
       this.bot.createMessage(channel, {
         embed: {
           color: msg.convertHex("error"),
           author: {
-            name: `${this.bot.tagUser(msg.author)}'s message was deleted.`,
+            name: `${this.tagUser(msg.author)}'s message was deleted.`,
             icon_url: msg.author.dynamicAvatarURL(),
           },
           fields: [

@@ -1,5 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
+import { resError } from "../../utils/exception";
 import axios from "axios";
 
 export class WikipediaCommand extends Command {
@@ -10,13 +11,15 @@ export class WikipediaCommand extends Command {
   allowdms = true;
 
   // TODO: Search with a user's locale instead of only EN
-  // FALL BACK TO EN!!
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
     const query = encodeURIComponent(args.join(" "));
 
-    const body = await axios.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${query}`);
-    if (body.data.title === "Not found.") {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.WIKIPEDIA_NOTFOUND"));
+    const body = await axios.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${query}`).catch((err) => {
+      resError(err);
+    });
+
+    if (!body || !body.data || body.data.title === "Not found.") {
+      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.WIKIPEDIA_NOTFOUND"), "error");
     }
 
     // Handles disambiguation pages

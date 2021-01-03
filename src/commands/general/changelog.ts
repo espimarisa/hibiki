@@ -13,7 +13,7 @@ export class ChangelogCommand extends Command {
         description: msg.string("general.CHANGELOG_DESCRIPTION"),
         color: msg.convertHex("general"),
         footer: {
-          text: msg.string("global.RAN_BY", { author: this.bot.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

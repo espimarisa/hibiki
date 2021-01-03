@@ -97,6 +97,7 @@
         "@typescript-eslint/no-var-requires": 0,
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/naming-convention": [
           "warn",
           { "selector": "default", "format": ["camelCase"] },

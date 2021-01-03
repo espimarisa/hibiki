@@ -4,8 +4,11 @@
  * @module utils/waitFor
  */
 
+import type { Message } from "eris";
 import type { HibikiClient } from "../classes/Client";
+import { convertHex } from "../helpers/embed";
 
+/** Waits for an event to happen and rejects or resolves it */
 export function waitFor(event: string, timeout: number, check: any, bot: HibikiClient) {
   let t: NodeJS.Timeout;
 
@@ -35,4 +38,22 @@ export function waitFor(event: string, timeout: number, check: any, bot: HibikiC
 
     bot.on(event, listener);
   });
+}
+
+/** Handles timeout errors */
+export function timeoutHandler(err: string, omsg: Message, stringFunc: LocaleString, removeReactions = true) {
+  if (err === "timeout") {
+    omsg
+      .edit({
+        embed: {
+          title: stringFunc("global.ERROR"),
+          description: stringFunc("global.TIMEOUT_REACHED"),
+          color: convertHex("error"),
+        },
+      })
+      .catch(() => {});
+
+    // Removes leftover reactions
+    if (removeReactions) omsg.removeReactions().catch(() => {});
+  } else throw err;
 }
