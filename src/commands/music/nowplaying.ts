@@ -32,7 +32,7 @@ export class NowplayingCommand extends Command {
           url: player.queue.current?.thumbnail ? player.queue.current?.thumbnail : undefined,
         },
         footer: {
-          text: msg.string("global.RAN_BY", { author: this.bot.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

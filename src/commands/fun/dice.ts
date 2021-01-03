@@ -12,6 +12,7 @@ export class DiceCommand extends Command {
     // Calculates the amount of sides to use. Default to 6, clamps to 120.
     if (!parseInt(args.join(" "))) sides = 6;
     else if (parseInt(args.join(" ")) > 120) sides = 120;
+    else if (parseInt(args.join(" ")) < 2) sides = 6;
     else sides = parseInt(args.join(" "));
 
     const num = Math.floor(Math.random() * sides) + 1;

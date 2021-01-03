@@ -1,7 +1,7 @@
 /**
  * @file Bot count
- * @description Compares and returns proper bot vs member count metrics
- * @module helper/botcount
+ * @description Compares and returns the amount of bots in a guild
+ * @module helpers/botcount
  */
 
 import type { Guild } from "eris";

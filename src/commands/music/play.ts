@@ -1,6 +1,7 @@
+// TODO: MusicRole, musicChannel, and onlyRequesterCanControl. Add them to validItems.ts.
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { waitFor } from "../../utils/waitFor";
+import { timeoutHandler, waitFor } from "../../utils/waitFor";
 import config from "../../../config.json";
 const maxResults = 5;
 
@@ -63,11 +64,7 @@ export class PlayCommand extends Command {
             return true;
           },
           this.bot,
-        ).catch((err) =>
-          err === "timeout"
-            ? resultMsg?.editEmbed(msg.string("global.ERROR"), msg.string("global.TIMEOUT_REACHED"), "error")
-            : resultMsg?.editEmbed(msg.string("global.ERROR"), msg.string("music.NO_MATCHES"), "error"),
-        )) as any;
+        ).catch((err) => timeoutHandler(err, resultMsg, msg.string))) as any;
 
         // Handles invalid songs
         if (invalidSong) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.INVALID_NUMBER"), "error");
@@ -172,7 +169,7 @@ export class PlayCommand extends Command {
               color: msg.convertHex("general"),
               fields: fields,
               footer: {
-                text: msg.string("global.RAN_BY", { author: this.bot.tagUser(msg.author) }),
+                text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
                 icon_url: msg.author.dynamicAvatarURL(),
               },
             },
