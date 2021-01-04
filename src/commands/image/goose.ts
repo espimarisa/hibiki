@@ -3,13 +3,14 @@ import { Command } from "../../classes/Command";
 import { resError } from "../../utils/exception";
 import axios from "axios";
 
-export class DuckCommand extends Command {
-  description = "Sends a random picture of a duck.";
+export class GooseCommand extends Command {
+  aliases = ["geese"];
+  description = "Sends a random picture of a goose.";
   cooldown = 3000;
   allowdms = true;
 
   async run(msg: Message<TextChannel>) {
-    const body = await axios.get("https://random-d.uk/api/v2/random").catch((err) => {
+    const body = await axios.get("https://nekos.life/api/v2/img/goose").catch((err) => {
       resError(err);
     });
 
@@ -19,7 +20,7 @@ export class DuckCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        title: `🦆 ${msg.string("image.DUCK")}`,
+        title: `🦢 ${msg.string("image.GOOSE")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data.url,
@@ -27,7 +28,7 @@ export class DuckCommand extends Command {
         footer: {
           text: msg.string("global.RAN_BY", {
             author: msg.tagUser(msg.author),
-            poweredBy: "random-d.uk",
+            poweredBy: "nekos.life",
           }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
