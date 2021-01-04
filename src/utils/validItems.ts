@@ -25,6 +25,25 @@ export const validItems = [
   },
   {
     category: "automod",
+    emoji: "😶",
+    id: "antiNewLines",
+    type: "bool",
+  },
+  {
+    category: "automod",
+    emoji: "🔨",
+    id: "antiNewLinesPunishments",
+    type: "punishment",
+  },
+  {
+    category: "automod",
+    emoji: "#️⃣",
+    id: "newlineThreshold",
+    type: "number",
+    minimum: 10,
+  },
+  {
+    category: "automod",
     emoji: "🚯",
     id: "antiSpam",
     type: "bool",

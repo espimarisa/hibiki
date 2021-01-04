@@ -9,7 +9,10 @@ import type { HibikiClient } from "../../classes/Client";
 import { punishMute, punishPurge, punishWarn } from "./punishments";
 const punishedUsers: string[] = [];
 
-export async function automodAntiSpam(msg: Message<TextChannel>, bot: HibikiClient, cfg: Record<string, any>) {
+export async function automodAntiSpam(msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig) {
+  const userLocale = await bot.localeSystem.getUserLocale(msg.author.id, bot);
+  const string = bot.localeSystem.getLocaleFunction(userLocale) as LocaleString;
+
   // Filters thru the antiSpam
   const spam = bot.antiSpam.filter(
     (s) => s.guild === msg.channel.guild.id && s.id === msg.author.id && new Date().getTime() - s.date < 2500,
@@ -21,30 +24,33 @@ export async function automodAntiSpam(msg: Message<TextChannel>, bot: HibikiClie
   // If the spam threshold is met
   if (spam.length >= cfg.spamThreshold) {
     // Handles each type of spam punishment
+
     cfg.spamPunishments.forEach(async (punishment: string) => {
-      // Mutes the punished member
-      if (punishment === "Mute") punishMute(msg, bot, cfg, spam as any);
-
-      // Attempts to purge any spam messages
-      if (punishment === "Purge")
-        await punishPurge(
-          msg,
-          bot.antiSpam
-            .filter((s) => s.guild === msg.channel.guild.id && s.id === msg.author.id && new Date().getTime() - s.date < 10000)
-            .map((s) => s.msgid),
-        );
-
-      // Warns the punished member
-      if (punishment === "Warn") punishWarn(msg, bot, "Spam (Automod)");
+      switch (punishment) {
+        case "Mute":
+          punishMute(msg, bot, cfg, spam as any);
+          break;
+        case "Purge":
+          await punishPurge(
+            msg,
+            bot.antiSpam
+              .filter((s) => s.guild === msg.channel.guild.id && s.id === msg.author.id && new Date().getTime() - s.date < 10000)
+              .map((s) => s.msgid),
+          );
+          break;
+        case "Warn":
+          punishWarn(msg, bot, "Spam (Automod)");
+          break;
+      }
     });
 
     // Sends a message if msgOnPunishment is enabled
     if (cfg.msgOnPunishment) {
       const pmsg = await msg.createEmbed(
-        `🔨 ${msg.author.username} ${msg.string("global.HAS_BEEN")} ${cfg.spamPunishments
-          .map((p: string) => `${p.toLowerCase()}d`)
+        `🔨 ${msg.author.username} ${string("global.HAS_BEEN")} ${cfg.spamPunishments
+          .map((p: string) => `${p.toLowerCase()}`)
           .filter((p: string) => p !== "purged")
-          .join(` ${msg.string("global.AND")} `)} ${msg.string("global.FOR_SPAMMING")}.`,
+          .join(` ${string("global.AND")} `)} ${string("global.FOR_SPAMMING")}.`,
         null,
         "error",
       );

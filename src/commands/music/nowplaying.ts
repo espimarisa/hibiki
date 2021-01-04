@@ -1,6 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { toHHMMSS } from "../../helpers/format";
+import { toHHMMSS } from "../../utils/format";
 
 export class NowplayingCommand extends Command {
   description = "Tells you what song is currently playing.";

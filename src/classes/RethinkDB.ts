@@ -29,82 +29,96 @@ export class RethinkProvider {
   db: typeof r;
   dblock: any;
 
-  /** Creates a new database provider */
   constructor() {
     this.db = r;
     this.dblock = this.db.db(config.database.db ?? "db").wait();
   }
 
-  async getGuildConfig(guild: string) {
+  /**
+   * Guild config functions
+   */
+
+  // Gets a guild's config
+  async getGuildConfig(guild: string): Promise<GuildConfig> {
     await this.dblock;
-    return this.db.table("guildconfig").get(guild).run();
+    return this.db.table("guildconfig").get(guild).run() as Promise<GuildConfig>;
   }
 
-  async getUserConfig(user: string) {
-    await this.dblock;
-    return this.db.table("userconfig").get(user).run();
-  }
-
-  async getBlacklistedGuild(guild: string) {
-    await this.dblock;
-    return this.db.table("blacklist").get(guild).run();
-  }
-
-  async updateGuildConfig(config: Record<string, unknown>) {
+  // Updates a guild's config
+  async updateGuildConfig(config: GuildConfig) {
     await this.dblock;
     return this.db.table("guildconfig").update(config).run();
   }
 
-  async updateUserConfig(config: Record<string, unknown>) {
-    await this.dblock;
-    return this.db.table("userconfig").update(config).run();
-  }
-
-  async getMuteCache() {
-    await this.dblock;
-    return this.db.table("mutecache").run();
-  }
-
+  // Deletes a guild's config
   async deleteGuildConfig(guild: string) {
     await this.dblock;
     return this.db.table("guildconfig").get(guild).delete().run();
   }
 
+  // Inserts a blank guildconfig
+  async insertBlankGuildConfig(guild: string) {
+    await this.dblock;
+    return this.db.table("guildconfig").insert({ id: guild }).run();
+  }
+
+  /**
+   * User config functions
+   */
+
+  // Gets a user's config
+  async getUserConfig(user: string): Promise<UserConfig> {
+    await this.dblock;
+    return this.db.table("userconfig").get(user).run() as Promise<UserConfig>;
+  }
+
+  // Updates a user's config
+  async updateUserConfig(config: UserConfig) {
+    await this.dblock;
+    return this.db.table("userconfig").update(config).run();
+  }
+
+  // Deletes a user's config
   async deleteUserConfig(user: string) {
     await this.dblock;
     return this.db.table("userconfig").get(user).delete().run();
   }
 
-  async insertBlankUserConfig(user: string | number) {
+  // Inserts a blank userconfig
+  async insertBlankUserConfig(user: string) {
     await this.dblock;
-    return this.db
-      .table("userconfig")
-      .insert({
-        id: user,
-      })
-      .run();
+    return this.db.table("userconfig").insert({ id: user }).run();
   }
 
-  async insertBlankGuildConfig(guild: string) {
+  /**
+   * Punishment functions
+   */
+
+  // Gets the mute cache
+  async getMuteCache() {
     await this.dblock;
-    return this.db
-      .table("guildconfig")
-      .insert({
-        id: guild,
-      })
-      .run();
+    return this.db.table("mutecache").run() as Promise<MuteCache>;
   }
 
-  // TODO: stop passing configs as record and pass each value
-  /** Updates a guild's mute cache */
-  async insertMuteCache(config: Record<string, unknown>) {
+  // Inserts a muteCache
+  async insertMuteCache(config: MuteCache) {
     await this.dblock;
     return this.db.table("mutecache").insert(config).run();
   }
 
-  // todo sort
-  async insertUserWarning(config: Record<string, unknown>) {
+  // Inserts a user warning
+  async insertUserWarning(warning: UserWarning) {
     await this.dblock;
-    return this.db.table("warnings").insert(config).run();
+    return this.db.table("warnings").insert(warning).run();
+  }
+
+  /**
+   * Other database functions
+   */
+
+  // Gets a blacklisted guild
+  async getBlacklistedGuild(guild: string) {
+    await this.dblock;
+    return this.db.table("blacklist").get(guild).run();
   }
 }

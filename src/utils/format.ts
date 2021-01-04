@@ -1,11 +1,11 @@
 /**
  * @file Formatter
  * @description Formats and beautifies items
- * @module helpers/format
+ * @module utils/format
  */
 
 import type { User } from "eris";
-import { auditLogRegex } from "./constants";
+import { auditLogRegex } from "../helpers/constants";
 
 /** Tags a user by username#discriminator */
 export function tagUser(user: User, emojiFilter = false) {
@@ -209,9 +209,17 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
       return string("general.CONFIG_VERIFIEDROLE_DESCRIPTION");
     case "delete":
       return string("general.CONFIG_DELETE_DESCRIPTION");
+    case "antiNewLines":
+      if (title) return string("general.CONFIG_ANTINEWLINES");
+      return string("general.CONFIG_ANTINEWLINES_DESCRIPTION");
+    case "antiNewLinesPunishments":
+      if (title) return string("general.CONFIG_ANTINEWLINESPUNISHMENTS");
+      return string("general.CONFIG_ANTINEWLINESPUNISHMENT_DESCRIPTION");
+    case "newlineThreshold":
+      if (title) return string("general.CONFIG_NEWLINETHRESHOLD");
+      return string("general.CONFIG_NEWLINETHRESHOLD_DESCRIPTION");
     case undefined:
-      return "No description";
     default:
-      return "No description";
+      return item;
   }
 }

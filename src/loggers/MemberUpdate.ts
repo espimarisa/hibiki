@@ -7,7 +7,7 @@ import type { Guild, Member, TextChannel } from "eris";
 import { convertHex } from "../helpers/embed";
 import { Logger } from "../classes/Logger";
 import { defaultAvatar } from "../helpers/constants";
-import { dateFormat } from "../helpers/format";
+import { dateFormat } from "../utils/format";
 const TYPE = "memberLogging";
 
 export class MemberUpdate extends Logger {
@@ -23,10 +23,9 @@ export class MemberUpdate extends Logger {
 
       // Gets the leavejoin channel
       const guildconfig = await this.bot.db.getGuildConfig(guild.id);
-      const muted = await this.bot.db.getMuteCache();
-
+      const muted = (await this.bot.db.getMuteCache()) as any;
       // Re-adds any muted roles if the member tried to evade mute
-      const mute = muted.find((m) => m.member === member.id && m.guild === guild.id);
+      const mute = muted.find((m: MuteCache) => m.member === member.id && m.guild === guild.id);
       if (mute && guildconfig.mutedRole) await member.addRole(guildconfig.mutedRole, "Rejoined after being muted");
       if (!guildconfig?.leaveJoin) return;
       const leavejoinchannel = guild.channels.find((c) => c.id === guildconfig?.leaveJoin) as TextChannel;
