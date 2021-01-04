@@ -1,7 +1,7 @@
 import type { Emoji, Member, Message, TextChannel } from "eris";
 import type { HibikiClient } from "../../classes/Client";
 import { Command } from "../../classes/Command";
-import { localizeSetupItems } from "../../helpers/format";
+import { localizeSetupItems } from "../../utils/format";
 import { askForValue, askYesNo } from "../../utils/ask";
 import { validItems } from "../../utils/validItems";
 import { timeoutHandler, waitFor } from "../../utils/waitFor";
@@ -46,8 +46,8 @@ export class SetupCommand extends Command {
       guildconfig = { id: msg.channel.guild.id };
     }
 
-    if (!guildconfig.invitePunishments) guildconfig.invitePunishments = [];
-    if (!guildconfig.spamPunishments) guildconfig.spamPunishments = [];
+    // if (!guildconfig.invitePunishments) guildconfig.invitePunishments = [];
+    // if (!guildconfig.spamPunishments) guildconfig.spamPunishments = [];
 
     // Localizes command categories
     function localizeCategories(category: string) {
@@ -274,6 +274,7 @@ export class SetupCommand extends Command {
               // Removes reactions & slices punishments
               omsg.removeReaction(emoji.name, user.id);
               const punishment = validpunishments.find((p) => punishments[p] === emoji.name);
+              if (!guildconfig[setting.id]) guildconfig[setting.id] = [];
               if (guildconfig[setting.id].includes(punishment)) {
                 guildconfig[setting.id].splice(guildconfig[setting.id].indexOf(punishment), 1);
               } else guildconfig[setting.id].push(punishment);

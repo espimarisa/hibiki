@@ -5,7 +5,7 @@
  */
 
 import { createLogger, format, transports } from "winston";
-import { dateFormat } from "./format";
+import { dateFormat } from "../utils/format";
 
 // Log formatting options
 const logFormat = format.combine(

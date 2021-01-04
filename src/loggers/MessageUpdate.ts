@@ -4,7 +4,7 @@
  */
 
 import type { Message, TextChannel } from "eris";
-import { dateFormat } from "../helpers/format";
+import { dateFormat } from "../utils/format";
 import { Logger } from "../classes/Logger";
 const TYPE = "messageLogging";
 

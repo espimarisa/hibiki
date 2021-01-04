@@ -4,7 +4,7 @@
  */
 
 import type { HibikiClient } from "./Client";
-import { tagUser } from "../helpers/format";
+import { tagUser } from "../utils/format";
 
 export abstract class Event {
   tagUser: typeof tagUser;

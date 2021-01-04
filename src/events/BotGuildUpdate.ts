@@ -7,7 +7,7 @@ import type { Guild } from "eris";
 import { Event } from "../classes/Event";
 import { convertHex } from "../helpers/embed";
 import { defaultAvatar } from "../helpers/constants";
-import { dateFormat, regionFormat } from "../helpers/format";
+import { dateFormat, regionFormat } from "../utils/format";
 import config from "../../config.json";
 import axios from "axios";
 
