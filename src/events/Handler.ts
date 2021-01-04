@@ -21,7 +21,7 @@ export class HandlerEvent extends Event {
     msg.string = string;
 
     // Finds what prefix to use
-    const prefixes = config.prefixes.map((p) => msg.content.toLowerCase().startsWith(p)).indexOf(true);
+    const prefixes = config.prefixes.map((p: string) => msg.content.toLowerCase().startsWith(p)).indexOf(true);
     const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild ? msg.channel.guild.id : "");
     if (guildconfig && guildconfig.prefix && msg.content.toLowerCase().startsWith(guildconfig.prefix)) prefix = guildconfig.prefix;
     else if ((!guildconfig || !guildconfig.prefix) && config.prefixes && prefixes !== -1) prefix = config.prefixes[prefixes];

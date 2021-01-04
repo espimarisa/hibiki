@@ -34,6 +34,7 @@ export class HibikiClient extends Client {
   db: RethinkProvider;
   log: typeof logger;
   logs: Record<string, any>[] = [];
+  antiSpam: Record<string, any>[] = [];
 
   constructor(token: string, options: Record<string, unknown>) {
     super(token, options);
@@ -47,6 +48,7 @@ export class HibikiClient extends Client {
     });
 
     // Collections
+    this.antiSpam = [];
     this.commands = [];
     this.events = [];
     this.loggers = [];

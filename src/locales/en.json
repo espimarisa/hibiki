@@ -130,6 +130,8 @@
 
   "global": {
     "AUTOMOD": "Automod",
+    "AUTOMOD_INVITES": "Posting Discord invite links aren't allowed here.",
+    "AND": "and",
     "BIO": "Bio",
     "CANCELLED": "❌ Cancelled",
     "CONFIRMATION": "Confirmation",
@@ -150,6 +152,7 @@
     "ERROR_STAFFCOMMAND": "The **{command}** can only be used by staff members.",
     "ERROR_VOICE": "You must be in a voice channel or in the same voice channel as me to use the **{command}** command.",
     "FEATURES": "Features",
+    "FOR_SPAMMING": "for spamming.",
     "HAS_BEEN": "has been",
     "LATENCY": "Latency",
     "LOGGING": "Logging",

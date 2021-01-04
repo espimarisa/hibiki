@@ -94,4 +94,17 @@ export class RethinkProvider {
       })
       .run();
   }
+
+  // TODO: stop passing configs as record and pass each value
+  /** Updates a guild's mute cache */
+  async insertMuteCache(config: Record<string, unknown>) {
+    await this.dblock;
+    return this.db.table("mutecache").insert(config).run();
+  }
+
+  // todo sort
+  async insertUserWarning(config: Record<string, unknown>) {
+    await this.dblock;
+    return this.db.table("warnings").insert(config).run();
+  }
 }

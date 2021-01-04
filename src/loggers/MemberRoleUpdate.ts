@@ -9,6 +9,6 @@ export class MemberRoleUpdate extends Logger {
   events = ["memberVerify", "memberUnverify", "roleAssign", "roleUnassign"];
 
   async run(event: string) {
-    
+
   }
 }
