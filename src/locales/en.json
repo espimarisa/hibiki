@@ -168,12 +168,14 @@
     "NO_REASON": "No reason provided.",
     "OR": "or",
     "PINBOARD": "Pinboard",
+    "PLEASE_WAIT": "Please wait...",
     "PRONOUNS": "Pronouns",
     "PRONOUNS_HE": "He/Him",
     "PRONOUNS_SHE": "She/Her",
     "PRONOUNS_THEY": "They/Them",
     "RAN_BY": "Ran by {author}{optional:poweredBy: | Powered by {poweredBy}{optional:extra: | {extra}}",
     "RESERROR_IMAGE": "Failed to send the image. Try again later.",
+    "RESERROR_IMAGEQUERY": "No images found for your query.",
     "RESPOND_WITH": "Respond with the desired **{type}**.",
     "ROLES": "Roles",
     "SECONDS": "Seconds",
@@ -192,7 +194,10 @@
     "DOG": "Dog",
     "DUCK": "Duck",
     "FOX": "Fox",
-    "FOXGIRL": "Foxgirl"
+    "FOXGIRL": "Foxgirl",
+    "GOOSE": "Goose",
+    "LIZARD": "Lizard",
+    "SPACEPHOTO": "Space Photo"
   },
 
   "moderation": {
