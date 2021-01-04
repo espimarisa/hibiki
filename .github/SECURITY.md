@@ -28,4 +28,4 @@ If you are unable to make contact thru any of these methods whatsoever, you can 
 [1]: https://github.com/smolespi/hibiki/releases/latest "Releases"
 [2]: https://discord.gg/gZEj4sM "Discord"
 [3]: https://t.me/smolespi "Telegram"
-[4]: mailto:contact@espi.me "Email"
+[4]: mailto:espi@riseup.net "Email"
