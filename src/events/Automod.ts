@@ -8,6 +8,7 @@ import { PrivateChannel } from "eris";
 import { Event } from "../classes/Event";
 import { automodAntiInvite } from "./automod/antiInvite";
 import { automodAntiSpam } from "./automod/antiSpam";
+import { automodAntiNewLine } from "./automod/antiNewLines";
 
 export class Automod extends Event {
   events = ["messageCreate"];
@@ -37,5 +38,6 @@ export class Automod extends Event {
     // Runs each automod event if it's configured to do so
     if (guildconfig?.antiSpam && guildconfig?.spamPunishments) await automodAntiSpam(msg, this.bot, guildconfig);
     if (guildconfig?.antiInvite && guildconfig?.invitePunishments) await automodAntiInvite(msg, this.bot, guildconfig);
+    if (guildconfig?.antiNewLines && guildconfig?.antiNewLinesPunishments) await automodAntiNewLine(msg, this.bot, guildconfig);
   }
 }

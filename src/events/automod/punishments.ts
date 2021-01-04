@@ -9,7 +9,7 @@ import type { HibikiClient } from "../../classes/Client";
 import { generateSnowflake } from "../../utils/snowflake";
 
 // Mute punishment
-export const punishMute = async (msg: Message<TextChannel>, bot: HibikiClient, cfg: Record<string, any>, reason: string) => {
+export const punishMute = async (msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig, reason: string) => {
   const member = msg.member;
   const guild = msg.channel.guild;
   if (member.roles && member.roles.includes(cfg.mutedRole)) return;

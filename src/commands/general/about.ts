@@ -3,7 +3,7 @@ import { VERSION as erisVersion } from "eris";
 import { version as tsVersion } from "typescript";
 import { version as botVersion } from "../../../package.json";
 import { Command } from "../../classes/Command";
-import { uptimeFormat } from "../../helpers/format";
+import { uptimeFormat } from "../../utils/format";
 import os from "os";
 
 export class AboutCommand extends Command {

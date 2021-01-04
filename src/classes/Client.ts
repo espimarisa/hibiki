@@ -13,7 +13,7 @@ import { LocaleSystem } from "./Locale";
 import { RethinkProvider } from "./RethinkDB";
 import { convertHex, createEmbed, editEmbed } from "../helpers/embed";
 import { botCount } from "../helpers/botcount";
-import { tagUser } from "../helpers/format";
+import { tagUser } from "../utils/format";
 import { loadItems } from "../helpers/loader";
 import { logger } from "../helpers/logger";
 import { statuses } from "../helpers/statuses";

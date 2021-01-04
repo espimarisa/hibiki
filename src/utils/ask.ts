@@ -7,7 +7,7 @@
 import type { HibikiClient } from "../classes/Client";
 import type { Channel, Message, Role, TextChannel, VoiceChannel } from "eris";
 import { defaultEmojiRegex, fullInviteRegex } from "../helpers/constants";
-import { localizeSetupItems } from "../helpers/format";
+import { localizeSetupItems } from "../utils/format";
 import { timeoutHandler, waitFor } from "./waitFor";
 
 import dayjs from "dayjs";
@@ -143,7 +143,7 @@ export async function askForValue(
   omsg: Message<TextChannel>,
   bot: HibikiClient,
   category: string,
-  config: Record<string, string>,
+  config: GuildConfig | UserConfig,
   editFunction: any,
   setting: Record<string, any>,
 ) {
