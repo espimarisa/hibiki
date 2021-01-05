@@ -1,6 +1,7 @@
 /**
  * @file GuildRoleUpdate Logger
- * @description Logs when a role is created, deleted, or modified
+ * @description Logs when a role is created, deleted, or updated
+ * @module logger/GuildRoleUpdate
  */
 
 import type { Guild, Role } from "eris";
@@ -8,11 +9,14 @@ import { convertHex } from "../helpers/embed";
 import { Logger } from "../classes/Logger";
 const TYPE = "eventLogging";
 
-export class GuildRoleUpdat extends Logger {
+export class GuildRoleUpdate extends Logger {
   events = ["guildRoleCreate", "guildRoleDelete", "guildRoleUpdate"];
 
   async run(event: string, guild: Guild, role: Role, oldrole: Role) {
-    /** Logs when a role is created */
+    /**
+     * Logs role creations
+     */
+
     if (event === "guildRoleCreate") {
       const loggingChannel = await this.getChannel(guild, TYPE, event);
       if (!loggingChannel) return;
@@ -29,23 +33,27 @@ export class GuildRoleUpdat extends Logger {
       // Reads the audit logs
       const logs = await guild.getAuditLogs(1, null, 30).catch(() => {});
       if (logs) {
-        const log = logs.entries[0];
-        const user = logs.users[0];
-        // Adds to the embed
-        // @ts-expect-error
-        if (log && new Date().getTime() - new Date(log.id / 4194304 + 1420070400000).getTime() < 3000) {
+        const log = logs?.entries?.[0];
+        const user = logs?.users?.[0];
+
+        // Adds log info to the embed
+        if (log && new Date().getTime() - new Date(parseInt(log.id) / 4194304 + 1420070400000).getTime() < 3000) {
           embed.author.name = `${this.tagUser(user)} created a role.`;
-          embed.author.icon_url = user.avatarURL;
+          embed.author.icon_url = user?.dynamicAvatarURL();
         }
       }
 
       this.bot.createMessage(loggingChannel, { embed: embed }).catch(() => {});
     }
 
-    /** Logs when a role is deleted */
+    /**
+     * Logs role deletions
+     */
+
     if (event === "guildRoleDelete") {
       const loggingChannel = await this.getChannel(guild, TYPE, event);
       if (!loggingChannel) return;
+
       const embed = {
         color: convertHex("error"),
         description: `**ID:** ${role.id}`,
@@ -58,28 +66,30 @@ export class GuildRoleUpdat extends Logger {
       // Reads the audit logs
       const logs = await guild.getAuditLogs(1, null, 32).catch(() => {});
       if (logs) {
-        const log = logs.entries[0];
-        const user = logs.users[0];
-        // Adds to the embed
-        // @ts-expect-error
-        if (log && new Date().getTime() - new Date(log.id / 4194304 + 1420070400000).getTime() < 3000) {
+        const log = logs?.entries?.[0];
+        const user = logs?.users?.[0];
+
+        // Adds log info to the embed
+        if (log && new Date().getTime() - new Date(parseInt(log.id) / 4194304 + 1420070400000).getTime() < 3000) {
           embed.author.name = `${this.tagUser(user)} deleted @${role.name}.`;
-          embed.author.icon_url = user.avatarURL;
+          embed.author.icon_url = user?.dynamicAvatarURL();
         }
       }
 
       this.bot.createMessage(loggingChannel, { embed: embed }).catch(() => {});
     }
 
-    /** Logs when a role is updated */
+    /**
+     * Logs role updates
+     */
+
     if (event === "guildRoleUpdate") {
       const loggingChannel = await this.getChannel(guild, TYPE, event);
       if (!loggingChannel) return;
 
       const embed = {
         color: convertHex("general"),
-        // @ts-expect-error
-        fields: [],
+        fields: [] as any[],
         author: {
           icon_url: "",
           name: `@${oldrole.name} edited`,
@@ -90,7 +100,7 @@ export class GuildRoleUpdat extends Logger {
       if (role.name !== oldrole.name) {
         embed.fields.push({
           name: "Name",
-          value: `${oldrole.name} ➜ ${role.name}`,
+          value: `${oldrole.name || "No name"} ➜ ${role.name || "No name"}`,
         });
       }
 
@@ -98,20 +108,17 @@ export class GuildRoleUpdat extends Logger {
       if (role.color !== oldrole.color) {
         embed.fields.push({
           name: "Color",
-          // @ts-expect-error
-          value: `${oldrole.color ? `${parseInt(oldrole.color).toString(16)}` : "000000"} ➜ ${
-            // @ts-expect-error
-            role.color ? `${parseInt(role.color).toString(16)}` : "000000"
-          }`,
+          value: `${oldrole.color ? `${oldrole.color.toString(16)}` : "000000"} ➜ ${role.color ? `${role.color.toString(16)}` : "000000"}`,
         });
+
         embed.color = role.color;
       }
 
       // Hoist difference
-      if (role.hoist !== undefined && oldrole.hoist !== undefined && role.hoist !== oldrole.hoist) {
+      if (role.hoist && oldrole.hoist && role.hoist !== oldrole.hoist) {
         embed.fields.push({
           name: "Visibility",
-          value: role.hoist ? "Not Showing Seperately ➜ Showing Separately" : "Showing Separately ➜ Not Showing Seperately",
+          value: role.hoist ? "Not Showing Separately ➜ Showing Separately" : "Showing Separately ➜ Not Showing Seperately",
         });
       }
 
@@ -127,15 +134,17 @@ export class GuildRoleUpdat extends Logger {
       if (!embed.fields.length) return;
       const logs = await guild.getAuditLogs(1, null, 31).catch(() => {});
       if (logs) {
-        const log = logs.entries[0];
-        const user = logs.users[0];
-        // Adds to the embed
-        // @ts-expect-error
-        if (log && new Date().getTime() - new Date(log.id / 4194304 + 1420070400000).getTime() < 3000) {
+        const log = logs?.entries?.[0];
+        const user = logs?.users?.[0];
+
+        // Adds log info to the embed
+        if (log && new Date().getTime() - new Date(parseInt(log.id) / 4194304 + 1420070400000).getTime() < 3000) {
           embed.author.name = `${this.tagUser(user)} updated @${role.name}.`;
-          embed.author.icon_url = user.avatarURL;
+          embed.author.icon_url = user.dynamicAvatarURL();
         }
       }
+
+      this.bot.createMessage(loggingChannel, { embed: embed });
     }
   }
 }

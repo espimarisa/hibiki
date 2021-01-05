@@ -1,6 +1,7 @@
 /**
  * @file MemberUpdate Logger
  * @description Logs when a member joins or leaves a guild
+ * @module logger/MemberUpdate
  */
 
 import type { Guild, Member, TextChannel } from "eris";
@@ -14,7 +15,10 @@ export class MemberUpdate extends Logger {
   events = ["guildMemberAdd", "guildMemberRemove", "loggingMemberAdd", "loggingMemberRemove"];
 
   async run(event: string, guild: Guild, member: Member) {
-    /** Logs to leaveJoin when a member joins */
+    /**
+     * Logs to the leavejoin channel when a member joins
+     */
+
     if (event === "guildMemberAdd") {
       if (!member) return;
 
@@ -55,7 +59,10 @@ export class MemberUpdate extends Logger {
       });
     }
 
-    /** Logs to leaveJoin when a member leaves */
+    /**
+     * Logs to the leavejoin channel when a member leaves
+     */
+
     if (event === "guildMemberRemove") {
       if (!member) return;
 
@@ -91,7 +98,10 @@ export class MemberUpdate extends Logger {
       });
     }
 
-    /** Logs to the memberLoggingChannel when a member joins */
+    /**
+     * Logs to the loggingMember channel when a member joins
+     */
+
     if (event === "loggingMemberAdd") {
       const channel = await this.getChannel(guild, TYPE, event);
       if (!channel) return;
@@ -101,7 +111,7 @@ export class MemberUpdate extends Logger {
           color: convertHex("success"),
           author: {
             name: `${this.tagUser(member.user)} joined`,
-            icon_url: member.avatarURL,
+            icon_url: member.user.dynamicAvatarURL(),
           },
           thumbnail: {
             url: member.user ? member.user.dynamicAvatarURL(null, 1024) : defaultAvatar,
@@ -132,7 +142,10 @@ export class MemberUpdate extends Logger {
       });
     }
 
-    /** Logs to the memberLoggingChannel when a member leaves */
+    /**
+     * Logs to the loggingMember channel when a member leaves
+     */
+
     if (event === "loggingMemberRemove") {
       const channel = await this.getChannel(guild, TYPE, event);
       if (!channel) return;
@@ -142,7 +155,7 @@ export class MemberUpdate extends Logger {
           color: convertHex("error"),
           author: {
             name: `${this.tagUser(member.user)} left`,
-            icon_url: member.avatarURL,
+            icon_url: member.user.dynamicAvatarURL(),
           },
           thumbnail: {
             url: member.user ? member.user.dynamicAvatarURL(null, 1024) : defaultAvatar,

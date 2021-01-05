@@ -11,3 +11,9 @@ interface ParsedArgs {
 interface LocaleString {
   (string: string, args?: Record<string, unknown> | undefined): string;
 }
+
+interface MessageReactions {
+  [s: string]: unknown;
+  count: number;
+  me: boolean;
+}
