@@ -1,7 +1,0 @@
-{
-  "delay": "4000",
-  "exec": "cross-env NODE_ENV=development ts-node --files ./src/index.ts",
-  "ext": "ts",
-  "ignore": ["node_modules", "rethinkdb_data"],
-  "watch": ["src"]
-}

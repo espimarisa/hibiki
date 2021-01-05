@@ -3,6 +3,7 @@
  * @description Base class for loggers
  */
 
+import type { GuildChannel } from "eris";
 import { Guild, TextChannel } from "eris";
 import { Event } from "./Event";
 
@@ -12,11 +13,9 @@ export abstract class Logger extends Event {
     let guild;
 
     // Gets the type of logger and whether it's a guild or channel
-    if (type !== "eventLogging" && type !== "memberLogging" && type !== "messageLogging") type = "modLogging";
+    if (type !== "eventLogging" && type !== "memberLogging" && type !== "messageLogging" && type !== "pinChannel") type = "modLogging";
     if (channel?.constructor === Guild) guild = channel;
-    // Who gives a shit about type safety?
-    // @ts-expect-error
-    else guild = channel?.guild;
+    else guild = (channel as GuildChannel)?.guild;
     if (!guild) return;
 
     const guildconfig = await this.bot.db.getGuildConfig(guild.id);
