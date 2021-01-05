@@ -46,9 +46,6 @@ export class SetupCommand extends Command {
       guildconfig = { id: msg.channel.guild.id };
     }
 
-    // if (!guildconfig.invitePunishments) guildconfig.invitePunishments = [];
-    // if (!guildconfig.spamPunishments) guildconfig.spamPunishments = [];
-
     // Localizes command categories
     function localizeCategories(category: string) {
       switch (category) {
@@ -90,6 +87,7 @@ export class SetupCommand extends Command {
       },
     };
     const omsg = await msg.channel.createMessage(primaryEmbed);
+    let reacting = false;
 
     // Gets a category
     async function getCategory(message: Message, bot: HibikiClient, editMsg: boolean) {
@@ -113,8 +111,19 @@ export class SetupCommand extends Command {
 
       // Removes all reactions from the message if there are any
       if (Object.getOwnPropertyNames(omsg.reactions).length > 0) await omsg.removeReactions();
-      categories.map((cat) => cat.emoji).forEach((catEmoji) => omsg.addReaction(catEmoji));
-      omsg.addReaction(deleteEmoji);
+
+      // Ensures that reactions are added to the right items
+      async function ensureReactions() {
+        const emojis = categories.map((cat) => cat.emoji);
+        for await (const emoji of emojis) {
+          if (!reacting) await omsg.addReaction(emoji);
+        }
+
+        if (!reacting) await omsg.addReaction(deleteEmoji);
+      }
+
+      ensureReactions();
+
       let category: any;
 
       // Handles deleting a config
@@ -153,7 +162,6 @@ export class SetupCommand extends Command {
         },
         bot,
       ).catch((err) => timeoutHandler(err, omsg, msg.string));
-
       return category;
     }
 
@@ -181,6 +189,7 @@ export class SetupCommand extends Command {
 
     // Gets the category and handles category timeouts
     let category = await getCategory(omsg, this.bot, false);
+    reacting = true;
     if (!category || category?.error === "timeout") {
       omsg.editEmbed(msg.string("global.ERROR"), msg.string("global.TIMEOUT_REACHED"), "error");
       return;

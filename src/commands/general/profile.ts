@@ -61,6 +61,7 @@ export class ProfileCommand extends Command {
 
     // Edits the embed with items
     const emojiArray = Object.keys(pronounEmojis);
+    let reacting = false;
     function editEmbed() {
       const primaryEmbed = {
         embed: {
@@ -80,9 +81,11 @@ export class ProfileCommand extends Command {
 
     // Adds the emojis to the items
     const omsg = await msg.channel.createMessage(editEmbed());
-    function addEmojis() {
-      items.forEach((item) => omsg.addReaction(item.emoji));
-      omsg.addReaction(deleteEmoji);
+    async function addEmojis() {
+      for await (const item of items) {
+        if (!reacting) await omsg.addReaction(item.emoji);
+      }
+      if (!reacting) await omsg.addReaction(deleteEmoji);
     }
 
     addEmojis();
@@ -126,6 +129,7 @@ export class ProfileCommand extends Command {
 
         // Handles pronoun selections
         if (setting.type === "pronouns") {
+          reacting = true;
           selectingPronouns = true;
           await omsg.removeReactions();
           emojiArray.forEach(async (emoji) => omsg.addReaction(emoji));
@@ -155,6 +159,7 @@ export class ProfileCommand extends Command {
               // Cleans up afterwards
               await omsg.edit(editEmbed());
               await omsg.removeReactions();
+              reacting = false;
               addEmojis();
               selectingPronouns = false;
               return true;
