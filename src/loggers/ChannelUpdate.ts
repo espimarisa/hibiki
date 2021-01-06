@@ -25,7 +25,7 @@ export class ChannelUpdate extends Logger {
       const embed = {
         color: convertHex("general"),
         author: {
-          icon_url: "",
+          icon_url: this.bot.user.dynamicAvatarURL(),
           name: `The ${channel.name} channel was created.`,
         },
         fields: [
@@ -74,7 +74,7 @@ export class ChannelUpdate extends Logger {
       const embed = {
         color: convertHex("error"),
         author: {
-          icon_url: "",
+          icon_url: this.bot.user.dynamicAvatarURL(),
           name: `The ${channel.name} channel was deleted.`,
         },
         fields: [
@@ -126,7 +126,7 @@ export class ChannelUpdate extends Logger {
         color: convertHex("general"),
         fields: [],
         author: {
-          icon_url: "",
+          icon_url: this.bot.user.dynamicAvatarURL(),
           name: `#${oldchannel.name} edited`,
         },
       } as EmbedOptions;

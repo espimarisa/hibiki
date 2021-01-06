@@ -26,7 +26,7 @@ export class GuildRoleUpdate extends Logger {
       const embed = {
         color: convertHex("general"),
         author: {
-          icon_url: "",
+          icon_url: this.bot.user.dynamicAvatarURL(),
           name: `The ${role.name} role was created.`,
         },
         fields: [
@@ -84,7 +84,7 @@ export class GuildRoleUpdate extends Logger {
       const embed = {
         color: convertHex("error"),
         author: {
-          icon_url: "",
+          icon_url: this.bot.user.dynamicAvatarURL(),
           name: `The ${role.name} role was deleted.`,
         },
         fields: [
@@ -142,7 +142,7 @@ export class GuildRoleUpdate extends Logger {
         color: convertHex("general"),
         fields: [],
         author: {
-          icon_url: "",
+          icon_url: this.bot.user.dynamicAvatarURL(),
           name: `The ${oldrole.name} role was edited.`,
         },
       } as EmbedOptions;
