@@ -7,7 +7,17 @@
 import type { EmbedOptions, Guild } from "eris";
 import { Logger } from "../classes/Logger";
 import { convertHex } from "../helpers/embed";
-import { regionFormat } from "../utils/format";
+
+// Formatters
+import {
+  afkTimeoutFormat,
+  contentFilterFormat,
+  mfaLevelFormat,
+  notificationLevelFormat,
+  regionFormat,
+  verificationLevelFormat,
+} from "../utils/format";
+
 const TYPE = "eventLogging";
 
 export class GuildUpdate extends Logger {
@@ -21,7 +31,7 @@ export class GuildUpdate extends Logger {
     const embed = {
       color: convertHex("general"),
       author: {
-        icon_url: "",
+        icon_url: this.bot.user.dynamicAvatarURL(),
         name: "The server was edited.",
       },
       fields: [],
@@ -35,27 +45,119 @@ export class GuildUpdate extends Logger {
       });
     }
 
+    // Owner differences
+    if (guild.ownerID !== oldguild.ownerID) {
+      embed.fields.push({
+        name: "Owner",
+        value: `${this.tagUser(this.bot.users.find((m) => m.id === oldguild.ownerID))} ➜ ${this.tagUser(
+          this.bot.users.find((m) => m.id === guild.ownerID),
+        )}`,
+      });
+    }
+
     // Region differences
     if (guild.region !== oldguild.region) {
       embed.fields.push({
         name: "Region",
         value: `${regionFormat(oldguild.region) || "Unknown"} ➜ ${regionFormat(guild.region) || "Unknown"}`,
+        inline: true,
       });
     }
 
-    // Owner differences
-    if (guild.ownerID !== oldguild.ownerID) {
+    // MFA Level
+    if (guild.mfaLevel !== oldguild.mfaLevel) {
       embed.fields.push({
-        name: "Owner",
-        value: "uh",
+        name: "2FA Level",
+        value: `${mfaLevelFormat(oldguild.mfaLevel)} ➜ ${mfaLevelFormat(guild.mfaLevel)}`,
+        inline: true,
       });
     }
 
-    // Verification level differences
+    // Verification level
     if (guild.verificationLevel !== oldguild.verificationLevel) {
       embed.fields.push({
         name: "Verification Level",
-        value: `Level ${guild.verificationLevel || "Unknown"} ➜ Level ${guild.verificationLevel || "Unknown"}`,
+        value: `${verificationLevelFormat(oldguild.verificationLevel)} ➜ ${verificationLevelFormat(guild.verificationLevel)}`,
+      });
+    }
+
+    // Explicit content filter
+    if (guild.explicitContentFilter !== oldguild.explicitContentFilter) {
+      embed.fields.push({
+        name: "Content Filter",
+        value: `${contentFilterFormat(oldguild.explicitContentFilter)} ➜ ${contentFilterFormat(guild.explicitContentFilter)}`,
+      });
+    }
+
+    // Notification settings
+    if (guild.defaultNotifications !== oldguild.defaultNotifications) {
+      embed.fields.push({
+        name: "Content Filter",
+        value: `${notificationLevelFormat(oldguild.defaultNotifications)} ➜ ${notificationLevelFormat(guild.defaultNotifications)}`,
+      });
+    }
+
+    // AFK channels
+    if (guild.afkChannelID !== oldguild.afkChannelID) {
+      embed.fields.push({
+        name: "AFK Channel",
+        value: `${oldguild.afkChannelID ? guild.channels.get(oldguild.afkChannelID).mention : "None"} ➜ ${
+          guild.afkChannelID ? guild.channels.get(guild.afkChannelID).mention : "None"
+        }`,
+      });
+    }
+
+    // System channel changes
+    if (guild.systemChannelID !== oldguild.systemChannelID) {
+      embed.fields.push({
+        name: "System Message Channel",
+        value: `${oldguild.systemChannelID ? guild.channels.get(oldguild.systemChannelID).mention : "None"} ➜ ${
+          guild.systemChannelID ? guild.channels.get(guild.systemChannelID).mention : "None"
+        }`,
+      });
+    }
+
+    // Public updates channel
+    if (guild.publicUpdatesChannelID !== oldguild.publicUpdatesChannelID) {
+      embed.fields.push({
+        name: "Updates Channel",
+        value: `${oldguild.publicUpdatesChannelID ? guild.channels.get(oldguild.publicUpdatesChannelID).mention : "None"} ➜ ${
+          guild.publicUpdatesChannelID ? guild.channels.get(guild.publicUpdatesChannelID).mention : "None"
+        }`,
+      });
+    }
+
+    // Rule channel changes
+    if (guild.rulesChannelID !== oldguild.rulesChannelID) {
+      embed.fields.push({
+        name: "Rules Channel",
+        value: `${oldguild.rulesChannelID ? guild.channels.get(oldguild.rulesChannelID).mention : "None"} ➜ ${
+          guild.rulesChannelID ? guild.channels.get(guild.rulesChannelID).mention : "None"
+        }`,
+      });
+    }
+
+    // Public description
+    if (guild.description !== oldguild.description) {
+      embed.fields.push({
+        name: "Description",
+        value: `${oldguild.description || "No description"} ➜ ${guild.description || "No description"}`,
+      });
+    }
+
+    // Preferred locales
+    if (guild.preferredLocale !== oldguild.preferredLocale) {
+      embed.fields.push({
+        name: "Preferred Language",
+        value: `${oldguild.preferredLocale || "en-US"} ➜ ${guild.preferredLocale || "en-US"}`,
+      });
+    }
+
+    // AFK timeouts
+    if (guild.afkTimeout !== oldguild.afkTimeout) {
+      embed.fields.push({
+        name: "AFK Timeout",
+        value: `${afkTimeoutFormat(oldguild.afkTimeout)} ➜ ${afkTimeoutFormat(guild.afkTimeout)}`,
       });
     }
 
