@@ -64,8 +64,7 @@ export class MessagePinboard extends Logger {
           if (pinnedMessage) {
             const embed = pinnedMessage.embeds?.[0];
             embed.footer.text = `${pin}${pinReactions.count} | ${msg.id}`;
-            pinnedMessage.edit({ embed: embed });
-            return;
+            return pinnedMessage.edit({ embed: embed });
           }
         }
 

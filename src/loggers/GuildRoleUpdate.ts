@@ -4,9 +4,10 @@
  * @module logger/GuildRoleUpdate
  */
 
-import type { Guild, Role } from "eris";
+import type { EmbedOptions, Guild, Role } from "eris";
 import { convertHex } from "../helpers/embed";
 import { Logger } from "../classes/Logger";
+import { dateFormat } from "../utils/format";
 const TYPE = "eventLogging";
 
 export class GuildRoleUpdate extends Logger {
@@ -20,15 +21,40 @@ export class GuildRoleUpdate extends Logger {
     if (event === "guildRoleCreate") {
       const loggingChannel = await this.getChannel(guild, TYPE, event);
       if (!loggingChannel) return;
+      if (role.managed) return;
 
       const embed = {
         color: convertHex("general"),
-        description: `<@&${role.id}> (${role.id})`,
         author: {
           icon_url: "",
-          name: `@${role.name} created`,
+          name: `The ${role.name} role was created.`,
         },
-      };
+        fields: [
+          {
+            name: "Name",
+            value: `${role.name || "Unknown"}`,
+            inline: false,
+          },
+          {
+            name: "ID",
+            value: role.id,
+            inline: true,
+          },
+          {
+            name: "Created",
+            value: `${dateFormat(role.createdAt) || "Unknown"}`,
+            inline: true,
+          },
+          {
+            name: "Permissions",
+            value: `${
+              Object.keys(role.json)
+                .map((p) => `\`${p}\``)
+                .join(" ") || "Unknown"
+            }`,
+          },
+        ],
+      } as EmbedOptions;
 
       // Reads the audit logs
       const logs = await guild.getAuditLogs(1, null, 30).catch(() => {});
@@ -43,7 +69,7 @@ export class GuildRoleUpdate extends Logger {
         }
       }
 
-      this.bot.createMessage(loggingChannel, { embed: embed }).catch(() => {});
+      this.bot.createMessage(loggingChannel, { embed: embed });
     }
 
     /**
@@ -53,15 +79,40 @@ export class GuildRoleUpdate extends Logger {
     if (event === "guildRoleDelete") {
       const loggingChannel = await this.getChannel(guild, TYPE, event);
       if (!loggingChannel) return;
+      if (role.managed) return;
 
       const embed = {
         color: convertHex("error"),
-        description: `**ID:** ${role.id}`,
         author: {
           icon_url: "",
-          name: `@${role.name} deleted`,
+          name: `The ${role.name} role was deleted.`,
         },
-      };
+        fields: [
+          {
+            name: "Name",
+            value: `${role.name || "Unknown"}`,
+            inline: false,
+          },
+          {
+            name: "ID",
+            value: role.id,
+            inline: true,
+          },
+          {
+            name: "Created",
+            value: `${dateFormat(role.createdAt) || "Unknown"}`,
+            inline: true,
+          },
+          {
+            name: "Permissions",
+            value: `${
+              Object.keys(role.json)
+                .map((p) => `\`${p}\``)
+                .join(" ") || "Unknown"
+            }`,
+          },
+        ],
+      } as EmbedOptions;
 
       // Reads the audit logs
       const logs = await guild.getAuditLogs(1, null, 32).catch(() => {});
@@ -71,12 +122,12 @@ export class GuildRoleUpdate extends Logger {
 
         // Adds log info to the embed
         if (log && new Date().getTime() - new Date(parseInt(log.id) / 4194304 + 1420070400000).getTime() < 3000) {
-          embed.author.name = `${this.tagUser(user)} deleted @${role.name}.`;
+          embed.author.name = `${this.tagUser(user)} deleted a role.`;
           embed.author.icon_url = user?.dynamicAvatarURL();
         }
       }
 
-      this.bot.createMessage(loggingChannel, { embed: embed }).catch(() => {});
+      this.bot.createMessage(loggingChannel, { embed: embed });
     }
 
     /**
@@ -89,12 +140,12 @@ export class GuildRoleUpdate extends Logger {
 
       const embed = {
         color: convertHex("general"),
-        fields: [] as any[],
+        fields: [],
         author: {
           icon_url: "",
-          name: `@${oldrole.name} edited`,
+          name: `The ${oldrole.name} role was edited.`,
         },
-      };
+      } as EmbedOptions;
 
       // Name difference
       if (role.name !== oldrole.name) {
@@ -139,7 +190,7 @@ export class GuildRoleUpdate extends Logger {
 
         // Adds log info to the embed
         if (log && new Date().getTime() - new Date(parseInt(log.id) / 4194304 + 1420070400000).getTime() < 3000) {
-          embed.author.name = `${this.tagUser(user)} updated @${role.name}.`;
+          embed.author.name = `${this.tagUser(user)} updated the ${role.name} role.`;
           embed.author.icon_url = user.dynamicAvatarURL();
         }
       }
