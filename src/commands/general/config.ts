@@ -6,14 +6,16 @@ import { askForValue, askYesNo } from "../../utils/ask";
 import { validItems } from "../../utils/validItems";
 import { timeoutHandler, waitFor } from "../../utils/waitFor";
 
+// TODO: Maybe alphabetically sort stuff. At least categories.
 const categoryEmojis = {
   features: "✨",
-  roles: "👥",
-  automod: "🔨",
+  greeting: "👋",
   logging: "📜",
   music: "🎵",
   pinboard: "📌",
+  roles: "👥",
   sniping: "🚫",
+  automod: "🔨",
 };
 
 const categories: Record<string, any>[] = [];
@@ -55,6 +57,8 @@ export class SetupCommand extends Command {
           return msg.string("global.ROLES");
         case "logging":
           return msg.string("global.LOGGING");
+        case "greeting":
+          return msg.string("global.GREETINGS");
         case "sniping":
           return msg.string("global.SNIPING");
         case "pinboard":
@@ -87,7 +91,8 @@ export class SetupCommand extends Command {
       },
     };
     const omsg = await msg.channel.createMessage(primaryEmbed);
-    let reacting = false;
+    let selectingCategory = false;
+    let selectingItem = false;
 
     // Gets a category
     async function getCategory(message: Message, bot: HibikiClient, editMsg: boolean) {
@@ -113,16 +118,16 @@ export class SetupCommand extends Command {
       if (Object.getOwnPropertyNames(omsg.reactions).length > 0) await omsg.removeReactions();
 
       // Ensures that reactions are added to the right items
-      async function ensureReactions() {
+      async function addCategoryEmojis() {
         const emojis = categories.map((cat) => cat.emoji);
         for await (const emoji of emojis) {
-          if (!reacting) await omsg.addReaction(emoji);
+          if (!selectingCategory) await omsg.addReaction(emoji);
         }
 
-        if (!reacting) await omsg.addReaction(deleteEmoji);
+        if (!selectingCategory) await omsg.addReaction(deleteEmoji);
       }
 
-      ensureReactions();
+      addCategoryEmojis();
 
       let category: any;
 
@@ -189,7 +194,7 @@ export class SetupCommand extends Command {
 
     // Gets the category and handles category timeouts
     let category = await getCategory(omsg, this.bot, false);
-    reacting = true;
+    selectingCategory = true;
     if (!category || category?.error === "timeout") {
       omsg.editEmbed(msg.string("global.ERROR"), msg.string("global.TIMEOUT_REACHED"), "error");
       return;
@@ -197,8 +202,19 @@ export class SetupCommand extends Command {
 
     omsg.edit(itemsEmbed(category));
     await omsg.removeReactions();
-    await category.items.map(async (cat: string) => omsg.addReaction(validItems.find((s) => s.id === cat).emoji));
-    omsg.addReaction(back);
+    async function addItemsEmojis() {
+      const emojis = category.items.map(async (cat: string) => validItems.find((s) => s.id === cat).emoji);
+      for await (const emoji of emojis) {
+        if (!selectingItem) await omsg.addReaction(emoji);
+      }
+
+      if (!selectingItem) await omsg.addReaction(back);
+    }
+
+    addItemsEmojis();
+
+    // await category.items.map(async (cat: string) => omsg.addReaction(validItems.find((s) => s.id === cat).emoji));
+    // omsg.addReaction(back);
 
     // Waits for the reaction
     await waitFor(
@@ -221,6 +237,7 @@ export class SetupCommand extends Command {
         // Removes reactions
         if (!setting) return;
         if (setting.category === "Profile") return;
+
         omsg.removeReaction(emoji.name, user.id);
 
         // Handles booleans
@@ -241,9 +258,20 @@ export class SetupCommand extends Command {
         }
 
         // Handles punishment types
-        else if (setting.type === "punishment") {
-          const punishments = { Mute: "1️⃣", Purge: "2️⃣", Warn: "3️⃣" };
-          const punishmentDescription = { Mute: null as null, Purge: null as null, Warn: null as null };
+        else if (setting.type === "punishment" || setting.type === "raidPunishment") {
+          selectingItem = true;
+          let punishments: any;
+          let punishmentDescription: any;
+
+          // Raid punishments
+          if (setting.type === "raidPunishment") {
+            punishments = { Ban: "1️⃣", Kick: "2️⃣", Mute: "3️⃣" };
+            punishmentDescription = { Ban: null as null, Kick: null as null, Mute: null as null };
+          } else {
+            punishments = { Mute: "1️⃣", Purge: "2️⃣", Warn: "3️⃣" };
+            punishmentDescription = { Mute: null as null, Purge: null as null, Warn: null as null };
+          }
+
           const validpunishments = Object.getOwnPropertyNames(punishments);
           await omsg.removeReactions();
 
@@ -283,10 +311,16 @@ export class SetupCommand extends Command {
               // Removes reactions & slices punishments
               omsg.removeReaction(emoji.name, user.id);
               const punishment = validpunishments.find((p) => punishments[p] === emoji.name);
-              if (!guildconfig[setting.id]) guildconfig[setting.id] = [];
-              if (guildconfig[setting.id].includes(punishment)) {
-                guildconfig[setting.id].splice(guildconfig[setting.id].indexOf(punishment), 1);
-              } else guildconfig[setting.id].push(punishment);
+              if (!guildconfig[setting.id] && setting.type === "punishment") guildconfig[setting.id] = [];
+
+              // Punishments
+              if (setting.type === "punishment") {
+                if (guildconfig[setting.id].includes(punishment)) {
+                  guildconfig[setting.id].splice(guildconfig[setting.id].indexOf(punishment), 1);
+                } else guildconfig[setting.id].push(punishment);
+              } else {
+                guildconfig[setting.id] = punishment;
+              }
 
               // Sends punishment toggle message
               omsg.editEmbed(
