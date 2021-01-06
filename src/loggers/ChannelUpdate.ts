@@ -4,9 +4,10 @@
  * @module logger/ChannelUpdate
  */
 
-import type { TextChannel, VoiceChannel } from "eris";
+import type { EmbedOptions, TextChannel, VoiceChannel } from "eris";
 import { convertHex } from "../helpers/embed";
 import { Logger } from "../classes/Logger";
+import { dateFormat } from "../utils/format";
 const TYPE = "eventLogging";
 
 export class ChannelUpdate extends Logger {
@@ -23,12 +24,28 @@ export class ChannelUpdate extends Logger {
 
       const embed = {
         color: convertHex("general"),
-        description: `<#${channel.id}> (${channel.id})`,
         author: {
           icon_url: "",
-          name: `#${channel.name} created`,
+          name: `The ${channel.name} channel was created.`,
         },
-      };
+        fields: [
+          {
+            name: "Name",
+            value: channel.name,
+            inline: false,
+          },
+          {
+            name: "ID",
+            value: channel.id,
+            inline: true,
+          },
+          {
+            name: "Created",
+            value: `${dateFormat(channel.createdAt)}`,
+            inline: true,
+          },
+        ],
+      } as EmbedOptions;
 
       // Reads the audit logs
       const logs = await channel.guild.getAuditLogs(1, null, 10).catch(() => {});
@@ -54,15 +71,30 @@ export class ChannelUpdate extends Logger {
       const loggingChannel = await this.getChannel(channel.guild, TYPE, event);
       if (!loggingChannel) return;
 
-      // Sends when a channel is deleted
       const embed = {
         color: convertHex("error"),
-        description: `**ID:** ${channel.id}`,
         author: {
           icon_url: "",
-          name: `#${channel.name} deleted`,
+          name: `The ${channel.name} channel was deleted.`,
         },
-      };
+        fields: [
+          {
+            name: "Name",
+            value: `${channel.name || "Unknown"}`,
+            inline: false,
+          },
+          {
+            name: "ID",
+            value: channel.id,
+            inline: true,
+          },
+          {
+            name: "Created",
+            value: `${dateFormat(channel.createdAt) || "Unknown"}`,
+            inline: true,
+          },
+        ],
+      } as EmbedOptions;
 
       // Reads the audit logs
       const logs = await channel.guild.getAuditLogs(1, null, 12).catch(() => {});
@@ -72,7 +104,7 @@ export class ChannelUpdate extends Logger {
 
         // Adds log info to the embed
         if (log && new Date().getTime() - new Date(parseInt(log.id) / 4194304 + 1420070400000).getTime() < 3000) {
-          embed.author.name = `${this.tagUser(user)} deleted #${channel.name}.`;
+          embed.author.name = `${this.tagUser(user)} deleted a channel.`;
           embed.author.icon_url = user?.dynamicAvatarURL();
         }
       }
@@ -92,12 +124,12 @@ export class ChannelUpdate extends Logger {
 
       const embed = {
         color: convertHex("general"),
-        fields: [] as any[],
+        fields: [],
         author: {
           icon_url: "",
           name: `#${oldchannel.name} edited`,
         },
-      };
+      } as EmbedOptions;
 
       // Channel name differences
       if (channel.name !== oldchannel.name) {
