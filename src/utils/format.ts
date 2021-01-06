@@ -218,6 +218,24 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
     case "newlineThreshold":
       if (title) return string("general.CONFIG_NEWLINETHRESHOLD");
       return string("general.CONFIG_NEWLINETHRESHOLD_DESCRIPTION");
+    case "raidPunishments":
+      if (title) return string("general.CONFIG_ANTIRAIDPUNISHMENTS");
+      return string("general.CONFIG_ANTIRAIDPUNISHMENTS_DESCRIPTION");
+    case "antiRaid":
+      if (title) return string("general.CONFIG_ANTIRAID");
+      return string("general.CONFIG_ANTIRAID_DESCRIPTION");
+    case "raidThreshold":
+      if (title) return string("general.CONFIG_ANTIRAIDTHRESHOLD");
+      return string("general.CONFIG_ANTIRAIDTHRESHOLD_DESCRIPTION");
+    case "joinTitle":
+      if (title) return string("general.CONFIG_JOINTITLE");
+      return string("general.CONFIG_JOINTITLE_DESCRIPTION");
+    case "leaveTitle":
+      if (title) return string("general.CONFIG_LEAVETITLE");
+      return string("general.CONFIG_LEAVETITLE_DESCRIPTION");
+    case "greetingFooter":
+      if (title) return string("general.CONFIG_GREETINGFOOTER");
+      return string("general.CONFIG_GREETINGFOOTER_DESCRIPTION");
     case undefined:
     default:
       return item;

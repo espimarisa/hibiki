@@ -35,24 +35,43 @@ export class MemberUpdate extends Logger {
       const leavejoinchannel = guild.channels.find((c) => c.id === guildconfig?.leaveJoin) as TextChannel;
       if (!leavejoinchannel) return;
 
-      // Sets the joinMessage
+      // Default fields
       let joinMessage = `Welcome to **${guild.name}, **${member.user.username}.`;
-      if (guildconfig.joinMessage && guildconfig.joinMessage.length < 2000) {
+      let joinTitle = "🎉 New Member";
+      let greetingFooter = `${guild.name} now has ${guild.memberCount} members.`;
+
+      // Sets the joinMessage
+      if (guildconfig?.joinMessage?.length < 256) {
         joinMessage = guildconfig.joinMessage;
         joinMessage = joinMessage.replace("{member}", `${member.user.username}`);
         joinMessage = joinMessage.replace("{membercount}", `${guild.memberCount}`);
         joinMessage = joinMessage.replace("{servername}", `${guild.name}`);
       }
 
+      // Sets the joinTitle
+      if (guildconfig?.joinTitle?.length < 100) {
+        joinTitle = guildconfig.joinTitle;
+        joinTitle = joinTitle.replace("{member}", `${member.user.username}`);
+        joinTitle = joinTitle.replace("{membercount}", `${guild.memberCount}`);
+        joinTitle = joinTitle.replace("{servername}", `${guild.name}`);
+      }
+
+      // Sets the greetingFooter
+      if (guildconfig?.greetingFooter?.length < 256) {
+        greetingFooter = guildconfig.greetingFooter;
+        greetingFooter = greetingFooter.replace("{member}", `${member.user.username}`);
+        greetingFooter = greetingFooter.replace("{membercount}", `${guild.memberCount}`);
+        greetingFooter = greetingFooter.replace("{servername}", `${guild.name}`);
+      }
+
       // Sends when a member joined
       this.bot.createMessage(leavejoinchannel.id, {
         embed: {
-          // TODO: Allow title to be customised.
-          title: "🎉 New Member",
+          title: joinTitle,
           description: joinMessage,
           color: convertHex("success"),
           footer: {
-            text: `${guild.name} now has ${guild.memberCount} members.`,
+            text: greetingFooter,
             icon_url: this.bot.user.dynamicAvatarURL(),
           },
         },
@@ -75,23 +94,43 @@ export class MemberUpdate extends Logger {
       const leavejoinchannel = guild.channels.find((c) => c.id === guildconfig?.leaveJoin) as TextChannel;
       if (!leavejoinchannel) return;
 
-      // Sets the joinMessage
+      // Sets default fields
       let leaveMessage = `We'll miss you, ${member.user.username}.`;
-      if (guildconfig.leaveMessage && guildconfig.leaveMessage.length < 2000) {
+      let leaveTitle = "👋 Member Left";
+      let greetingFooter = `${guild.name} now has ${guild.memberCount} members.`;
+
+      // Sets the leaveMessage
+      if (guildconfig?.leaveMessage?.length < 256) {
         leaveMessage = guildconfig.leaveMessage;
         leaveMessage = leaveMessage.replace("{member}", `**${member.user.username}**`);
         leaveMessage = leaveMessage.replace("{membercount}", `**${guild.memberCount}**`);
         leaveMessage = leaveMessage.replace("{servername}", `**${guild.name}**`);
       }
 
+      // Sets the leaveTitle
+      if (guildconfig?.leaveTitle?.length < 100) {
+        leaveTitle = guildconfig.leaveTitle;
+        leaveTitle = leaveTitle.replace("{member}", `**${member.user.username}**`);
+        leaveTitle = leaveTitle.replace("{membercount}", `**${guild.memberCount}**`);
+        leaveTitle = leaveTitle.replace("{servername}", `**${guild.name}**`);
+      }
+
+      // Sets the greetingFooter
+      if (guildconfig?.greetingFooter?.length < 64) {
+        greetingFooter = guildconfig.greetingFooter;
+        greetingFooter = greetingFooter.replace("{member}", `${member.user.username}`);
+        greetingFooter = greetingFooter.replace("{membercount}", `${guild.memberCount}`);
+        greetingFooter = greetingFooter.replace("{servername}", `${guild.name}`);
+      }
+
       // Sends when a member leaves
       this.bot.createMessage(leavejoinchannel.id, {
         embed: {
-          title: "👋 Member Left",
+          title: leaveTitle,
           description: leaveMessage,
           color: convertHex("error"),
           footer: {
-            text: `${guild.name} now has ${guild.memberCount} members.`,
+            text: greetingFooter,
             icon_url: this.bot.user.dynamicAvatarURL(),
           },
         },
