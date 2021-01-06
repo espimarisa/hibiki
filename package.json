@@ -11,11 +11,11 @@
   "homepage": "https://hibiki.app",
   "main": "dist/src/index.js",
   "bugs": {
-    "url": "https://github.com/smolespi/Hibiki/issues"
+    "url": "https://github.com/smolespi/hibiki/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/smolespi/Hibiki.git"
+    "url": "git+https://github.com/smolespi/hibiki.git"
   },
   "engines": {
     "npm": ">=6.9.0",
@@ -33,7 +33,7 @@
   "dependencies": {
     "@sentry/node": "^5.29.2",
     "axios": "^0.21.1",
-    "dayjs": "^1.10.1",
+    "dayjs": "^1.10.2",
     "erela.js": "^2.3.1",
     "erela.js-spotify": "^1.2.0",
     "eris": "^0.14.0",

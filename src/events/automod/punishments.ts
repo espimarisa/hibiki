@@ -4,14 +4,21 @@
  * @module automod/punishments
  */
 
-import type { Message, TextChannel } from "eris";
+import type { Guild, Message, TextChannel } from "eris";
+import { Member } from "eris";
 import type { HibikiClient } from "../../classes/Client";
 import { generateSnowflake } from "../../utils/snowflake";
 
 // Mute punishment
-export const punishMute = async (msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig, reason: string) => {
-  const member = msg.member;
-  const guild = msg.channel.guild;
+export const punishMute = async (
+  msg: Message<TextChannel> | Member,
+  bot: HibikiClient,
+  cfg: GuildConfig,
+  reason: string,
+  g: Guild = undefined,
+) => {
+  const member = msg instanceof Member ? msg : msg.member;
+  const guild = msg instanceof Member ? g : msg.channel.guild;
   if (member.roles && member.roles.includes(cfg.mutedRole)) return;
 
   // Updates the mute cache
@@ -35,7 +42,7 @@ export const punishMute = async (msg: Message<TextChannel>, bot: HibikiClient, c
 
   // Adds the muted role to the user
   await member.addRole(cfg.mutedRole, "Automod").catch(() => {});
-  if (reason) bot.emit("automodMute", guild, member, reason);
+  if (reason) bot.emit("automodMemberMute", guild, member.user, undefined, reason);
 };
 
 // Purge punishment

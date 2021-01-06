@@ -40,7 +40,7 @@ export async function automodAntiInvite(msg: Message<TextChannel>, bot: HibikiCl
     }
 
     // Emits the event for logging
-    bot.emit("automodantiInvite", msg.channel.guild, msg.member, msg.content, warning);
+    bot.emit("automodAntiInvite", msg.channel.guild, msg.member.user, msg.content, warning);
     await msg.member?.addRole(cfg.mutedRole, reason).catch(() => {});
   }
 }
