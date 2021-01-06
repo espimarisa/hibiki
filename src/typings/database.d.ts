@@ -45,6 +45,12 @@ interface GuildConfig {
   antiNewLinesPunishments?: string[];
   antiNewLines?: boolean;
   newlineThreshold?: number;
+  raidPunishments?: string;
+  antiRaid?: boolean;
+  raidThreshold?: number;
+  joinTitle?: string;
+  leaveTitle?: string;
+  greetingFooter?: string;
 }
 
 // Interface for userConfigs
