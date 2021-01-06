@@ -5,6 +5,10 @@
  */
 
 export const validItems = [
+  /**
+   * Feature options
+   */
+
   {
     category: "features",
     emoji: "☑",
@@ -12,95 +16,67 @@ export const validItems = [
     type: "channelID",
   },
   {
-    category: "roles",
-    emoji: "✔",
-    id: "agreeRole",
-    type: "roleID",
-  },
-  {
-    category: "automod",
-    emoji: "🔗",
-    id: "antiInvite",
-    type: "bool",
-  },
-  {
-    category: "automod",
-    emoji: "😶",
-    id: "antiNewLines",
-    type: "bool",
-  },
-  {
-    category: "automod",
-    emoji: "🔨",
-    id: "antiNewLinesPunishments",
-    type: "punishment",
-  },
-  {
-    category: "automod",
-    emoji: "#️⃣",
-    id: "newlineThreshold",
-    type: "number",
-    minimum: 10,
-  },
-  {
-    category: "automod",
-    emoji: "🚯",
-    id: "antiSpam",
-    type: "bool",
-  },
-  {
-    id: "assignableRoles",
-    type: "roleArray",
-  },
-  {
-    category: "roles",
-    emoji: "👤",
-    id: "autoRoles",
-    type: "roleArray",
-    maximum: 5,
-  },
-  {
-    id: "disabledCategories",
-    type: "array",
-  },
-  {
-    id: "disabledCmds",
-    type: "array",
-  },
-  {
     category: "features",
     id: "easyTranslate",
     emoji: "🌍",
     type: "bool",
   },
+
+  /**
+   * Greeting options
+   */
+
   {
-    category: "automod",
-    emoji: "⚒",
-    id: "invitePunishments",
-    type: "punishment",
-  },
-  {
-    category: "logging",
+    category: "greeting",
     emoji: "👋",
     id: "leaveJoin",
     type: "channelID",
   },
   {
-    category: "logging",
+    category: "greeting",
     emoji: "✉",
     id: "joinMessage",
     type: "string",
     minimum: 1,
-    maximum: 200,
+    maximum: 256,
   },
   {
-    category: "logging",
+    category: "greeting",
     emoji: "🚪",
     id: "leaveMessage",
     type: "string",
     minimum: 1,
-    maximum: 200,
+    maximum: 256,
   },
+  {
+    category: "greeting",
+    emoji: "📄",
+    id: "joinTitle",
+    type: "string",
+    minimum: 1,
+    maximum: 100,
+  },
+  {
+    category: "greeting",
+    emoji: "📃",
+    id: "leaveTitle",
+    type: "string",
+    minimum: 1,
+    maximum: 100,
+  },
+  {
+    category: "greeting",
+    emoji: "📝",
+    id: "greetingFooter",
+    type: "string",
+    minimum: 1,
+    maximum: 64,
+  },
+
+  /**
+   * Logging options
+   */
+
   {
     category: "logging",
     emoji: "📄",
@@ -131,11 +107,68 @@ export const validItems = [
     id: "ignoredLoggingChannels",
     type: "channelArray",
   },
+
+  /**
+   * Music options
+   * TODO: Add these
+   */
+
+  /**
+   * Pinboard options
+   */
   {
-    category: "automod",
-    emoji: "💬",
-    id: "msgOnPunishment",
+    category: "pinboard",
+    emoji: "📍",
+    id: "pinChannel",
+    type: "channelID",
+  },
+  {
+    category: "pinboard",
+    emoji: "🔢",
+    id: "pinAmount",
+    type: "number",
+  },
+  {
+    category: "pinboard",
+    emoji: "⭐",
+    id: "pinEmoji",
+    type: "emoji",
+  },
+  {
+    category: "pinboard",
+    emoji: "🗣",
+    id: "pinSelfPinning",
     type: "bool",
+  },
+
+  /**
+   * Role options
+   */
+
+  {
+    category: "roles",
+    emoji: "✔",
+    id: "agreeRole",
+    type: "roleID",
+  },
+  {
+    category: "roles",
+    emoji: "☑",
+    id: "verifiedRole",
+    type: "roleID",
+  },
+  {
+    category: "roles",
+    emoji: "🔨",
+    id: "staffRole",
+    type: "roleID",
+  },
+  {
+    category: "roles",
+    emoji: "👤",
+    id: "autoRoles",
+    type: "roleArray",
+    maximum: 5,
   },
   {
     category: "roles",
@@ -143,6 +176,11 @@ export const validItems = [
     id: "mutedRole",
     type: "roleID",
   },
+
+  /**
+   * Sniping options
+   */
+
   {
     category: "sniping",
     emoji: "💣",
@@ -167,41 +205,52 @@ export const validItems = [
     id: "snipingPermission",
     type: "bool",
   },
+
+  /**
+   * Automod options
+   */
+
   {
-    category: "roles",
-    emoji: "🔨",
-    id: "staffRole",
-    type: "roleID",
-  },
-  {
-    category: "pinboard",
-    emoji: "🔢",
-    id: "pinAmount",
-    type: "number",
-  },
-  {
-    category: "pinboard",
-    emoji: "📍",
-    id: "pinChannel",
-    type: "channelID",
-  },
-  {
-    category: "pinboard",
-    emoji: "⭐",
-    id: "pinEmoji",
-    type: "emoji",
-  },
-  {
-    category: "pinboard",
-    emoji: "🗣",
-    id: "pinSelfPinning",
+    category: "automod",
+    emoji: "🔗",
+    id: "antiInvite",
     type: "bool",
   },
   {
-    id: "prefix",
-    type: "string",
-    minimum: 1,
-    maximum: 15,
+    category: "automod",
+    emoji: "😶",
+    id: "antiNewLines",
+    type: "bool",
+  },
+  {
+    category: "automod",
+    emoji: "🔥",
+    id: "antiRaid",
+    type: "bool",
+  },
+  {
+    category: "automod",
+    emoji: "🚯",
+    id: "antiSpam",
+    type: "bool",
+  },
+  {
+    category: "automod",
+    emoji: "🔨",
+    id: "antiNewLinesPunishments",
+    type: "punishment",
+  },
+  {
+    category: "automod",
+    emoji: "⚒",
+    id: "invitePunishments",
+    type: "punishment",
+  },
+  {
+    category: "automod",
+    emoji: "‼",
+    id: "raidPunishments",
+    type: "raidPunishment",
   },
   {
     category: "automod",
@@ -211,18 +260,37 @@ export const validItems = [
   },
   {
     category: "automod",
+    emoji: "💬",
+    id: "msgOnPunishment",
+    type: "bool",
+  },
+  {
+    category: "automod",
+    emoji: "#️⃣",
+    id: "newlineThreshold",
+    type: "number",
+    minimum: 10,
+  },
+  {
+    category: "automod",
+    emoji: "⁉",
+    id: "raidThreshold",
+    type: "number",
+    minimum: 15,
+  },
+  {
+    category: "automod",
     emoji: "🔢",
     id: "spamThreshold",
     minimum: 5,
     maximum: 10,
     type: "number",
   },
-  {
-    category: "roles",
-    emoji: "☑",
-    id: "verifiedRole",
-    type: "roleID",
-  },
+
+  /**
+   * Profile options
+   */
+
   {
     emoji: "🏷️",
     category: "profile",
@@ -249,5 +317,28 @@ export const validItems = [
     category: "profile",
     id: "timezoneHide",
     type: "bool",
+  },
+
+  /**
+   * Other items not in config.ts
+   */
+
+  {
+    id: "assignableRoles",
+    type: "roleArray",
+  },
+  {
+    id: "disabledCategories",
+    type: "array",
+  },
+  {
+    id: "disabledCmds",
+    type: "array",
+  },
+  {
+    id: "prefix",
+    type: "string",
+    minimum: 1,
+    maximum: 15,
   },
 ];
