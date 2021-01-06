@@ -223,3 +223,77 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
       return item;
   }
 }
+
+/** Formats guild verification level */
+export function verificationLevelFormat(level: number) {
+  switch (level) {
+    case 0:
+      return "None";
+    case 1:
+      return "Low";
+    case 2:
+      return "Medium";
+    case 3:
+      return "High";
+    case 4:
+      return "Highest";
+    default:
+      return "Unknown";
+  }
+}
+
+/** Formats MFA/2FA level */
+export function mfaLevelFormat(level: number) {
+  switch (level) {
+    case 0:
+      return "Disabled";
+    case 1:
+      return "Enabled";
+    default:
+      return "Unknown";
+  }
+}
+
+/** Formats notification settings */
+export function notificationLevelFormat(level: number) {
+  switch (level) {
+    case 0:
+      return "All Messages";
+    case 1:
+      return "Only @mentions";
+    default:
+      return "Unknown";
+  }
+}
+
+/** Formats explicit content filter */
+export function contentFilterFormat(level: number) {
+  switch (level) {
+    case 0:
+      return "Off";
+    case 1:
+      return "Only Roleless Members";
+    case 2:
+      return "All Members";
+    default:
+      return "Unknown";
+  }
+}
+
+/** Formats AFK channel timeouts */
+export function afkTimeoutFormat(level: number) {
+  switch (level) {
+    case 60:
+      return "1 minute";
+    case 300:
+      return "5 minutes";
+    case 900:
+      return "15 minutes";
+    case 1800:
+      return "30 minutes";
+    case 3600:
+      return "1 hour";
+    default:
+      return "No timeout";
+  }
+}
