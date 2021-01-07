@@ -17,6 +17,7 @@ import { tagUser } from "../utils/format";
 import { loadItems } from "../helpers/loader";
 import { logger } from "../helpers/logger";
 import { statuses } from "../helpers/statuses";
+import { startDashboard } from "../webserver/dashboard";
 import path from "path";
 import config from "../../config.json";
 import Sentry from "@sentry/node";
@@ -71,13 +72,14 @@ export class HibikiClient extends Client {
   async readyListener() {
     await loadItems(this);
     statuses(this);
-    if (config.keys.sentry) this.initializeSentry();
-    if (config.lavalink.enabled) this.lavalink.manager.init(this.user.id);
+    if (config.keys.sentry) await this.initializeSentry();
+    if (config.lavalink.enabled) await this.lavalink.manager.init(this.user.id);
+    if (config.dashboard.port) await startDashboard(this);
     this.log.info(`Logged in as ${tagUser(this.user)} on ${this.guilds.size} guilds`);
   }
 
   // Initializes sentry
-  initializeSentry() {
+  async initializeSentry() {
     try {
       Sentry.init({
         dsn: config.keys.sentry,

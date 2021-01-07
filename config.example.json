@@ -31,6 +31,13 @@
     "user": ""
   },
 
+  "dashboard": {
+    "redirectURI": "",
+    "secret": "",
+    "cookieSecret": "setThisToSomethingMoreSecure",
+    "port": 6000
+  },
+
   "lavalink": {
     "host": "localhost",
     "password": "youshallnotpass",
