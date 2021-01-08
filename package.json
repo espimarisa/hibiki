@@ -58,8 +58,8 @@
   },
   "devDependencies": {
     "beautify-proj": "^1.0.0",
+    "nodemon": "^2.0.7",
     "eslint": "^7.17.0",
-    "nodemon": "^2.0.6",
     "pm2": "^4.5.1"
   }
 }
