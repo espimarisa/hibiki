@@ -1,7 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { VERSION as erisVersion } from "eris";
 import { version as tsVersion } from "typescript";
-import { version as botVersion } from "../../../package.json";
 import { Command } from "../../classes/Command";
 import { uptimeFormat } from "../../utils/format";
 import os from "os";
@@ -62,7 +61,7 @@ export class AboutCommand extends Command {
     });
 
     const moduleString = msg.string("general.ABOUT_MODULES_STRING", {
-      botVersion: botVersion,
+      botVersion: process.env.npm_package_version,
       erisVersion: erisVersion,
       nodeVersion: process.version,
       tsVersion: tsVersion,

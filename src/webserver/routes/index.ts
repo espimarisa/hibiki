@@ -5,14 +5,28 @@
  */
 
 import type { HibikiClient } from "classes/Client";
+import type { Profile } from "passport-discord";
+import { defaultAvatar } from "../../helpers/constants";
+import { uptimeFormat } from "../../utils/format";
 import express from "express";
 const router = express.Router();
 
 export = (bot: HibikiClient) => {
+  // Gets authed user's info
+  const getAuthedUser = (user: Profile) => ({
+    username: user.username,
+    discriminator: user.discriminator,
+    guilds: user.guilds,
+    id: user.id,
+    avatar: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128` : defaultAvatar,
+  });
+
   router.get("/", (req, res) => {
     res.render("index", {
       bot: bot,
       page: req.url,
+      user: req.isAuthenticated() ? getAuthedUser(req.user as Profile) : null,
+      uptimeFormat: uptimeFormat,
     });
   });
 

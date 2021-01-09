@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "allowJs": false,
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
     "baseUrl": "./src",
@@ -35,5 +35,5 @@
     "typeRoots": ["./src/typings"]
   },
   "exclude": ["node_modules"],
-  "include": ["src/**/*", "src/**/*.json"]
+  "include": ["src/**/*", "src/**/*.json", "src/**/*.ejs", ]
 }

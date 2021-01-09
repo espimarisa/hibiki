@@ -67,7 +67,8 @@ function loadEvents(path: string, bot: HibikiClient, logger = false) {
   readdir(path, { withFileTypes: true }, (ioerr, files) => {
     if (ioerr) return;
 
-    files.forEach((file, i) => {
+    let i = 0;
+    files.forEach((file) => {
       if (file.isDirectory()) return;
 
       let event;
@@ -76,6 +77,7 @@ function loadEvents(path: string, bot: HibikiClient, logger = false) {
       try {
         const importedEvent = require(`${path}/${file.name}`);
         event = importedEvent[Object.keys(importedEvent)[0]];
+        i++;
       } catch (err) {
         bot.log.error(`Event ${file.name} failed to load: ${err}`);
       }
