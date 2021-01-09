@@ -238,7 +238,6 @@ export async function askForValue(
       const setmsg = await msg.createEmbed(
         msg.string("global.SUCCESS"),
         // TODO: Localize result types.
-        // TODO: More timezone validation and shit
         // TODO: Localize setting return (i.e channelID)
         `**${localizeSetupItems(msg.string, setting.id, true)}** ${msg.string("global.SET_TO")} **${result}**.`,
         "success",

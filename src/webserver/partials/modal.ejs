@@ -1,0 +1,19 @@
+<div class="modal" id="modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Are you sure you'd like to reset this config?</p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <footer class="modal-card-foot">
+      <button class="button is-danger" id="delete">
+        <span class="icon is-small"><i class="fas fa-trash"></i></span>
+        <span id="reset">Reset</span>
+      </button>
+      <button class="button cancel" onclick="document.querySelector('#modal > div.modal-card > header > button').click()">
+        <span class="icon is-small"><i class="fas fa-times-circle"></i></span>
+        <span>Cancel</span>
+      </button>
+    </footer>
+  </div>
+</div>

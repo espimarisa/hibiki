@@ -7,6 +7,7 @@
 import type { HibikiClient } from "../../classes/Client";
 import type { NextFunction, Request, Response } from "express";
 import type { GuildInfo, Profile } from "passport-discord";
+import { localizeSetupItems } from "../../utils/format";
 import { defaultAvatar } from "../../helpers/constants";
 import { validItems } from "../../utils/validItems";
 import express from "express";
@@ -55,8 +56,21 @@ export = (bot: HibikiClient) => {
 
     // Renders the dashboard and sends the config
     if (!guild) return res.status(401).render("401");
+
+    // TODO: add default guild locale and replace "en" with it
+    const localeString = bot.localeSystem.getLocaleFunction("en");
+    const localizeItem = (item: string, title = false, punishment = false) => localizeSetupItems(localeString, item, title, punishment);
     const cfg = await bot.db.getGuildConfig(guild.id);
-    res.render("manage", { guild: guild, bot: bot, cfg: cfg, items: validItems, page: "manage", user: user, csrfToken: req.csrfToken() });
+    res.render("manage", {
+      guild: guild,
+      bot: bot,
+      cfg: cfg,
+      items: validItems,
+      page: "manage",
+      user: user,
+      csrfToken: req.csrfToken(),
+      localizeItem: localizeItem,
+    });
   });
 
   return router;

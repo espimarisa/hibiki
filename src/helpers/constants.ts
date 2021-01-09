@@ -16,20 +16,6 @@ export const emojiNameRegex = /(?<=:)[^\s]+(?=:)/;
 
 // Invite regexes
 export const inviteRegex = /https(:)\/\/discord.(gg)\/[a-zA-Z0-9]+/;
-
-/**
- * Fucking motherfucking /g in our regex caused us at least an hour of fucking confusion and JavaScript fuckery.
- * JavaScript is a terrible language and everyone should be using Rust at this point.
- * Additionally, fuck .test() and the dipshit "engineer" that came up with the JavaScript "programming language".
- * Why in the everliving fuck it does some of the stuff it does I will never understand and I don't think even the
- * creator understands what ungodly creation he has brought upon our Earth.
- *
- * TOTAL TIME WASTED ON THIS STUPID SHIT: 1 HOUR AND 17 MINUTES BETWEEN THE DATES OF 1/2/2021 AND 1/3/2021
- *
- * God bless StackOverflow: https://stackoverflow.com/questions/2630418/javascript-regex-returning-true-then-false-then-true-etc
- * - Espi
- */
-
 export const fullInviteRegex = /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|com)|discordapp\.com\/invite)\/.+\w/;
 
 // Strings and URLs
