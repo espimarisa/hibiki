@@ -18,6 +18,7 @@ Lavalink
 Lavalink.jar
 
 # Modules
+src/webserver/public/css*
 .sass-cache
 dist/
 docs/

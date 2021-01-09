@@ -1,1 +1,58 @@
-<p>Index</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("../partials/head") %>
+    <meta content="https://hibiki.app" property="og:url" />
+    <meta content="<%= bot.user.username %>" property="og:title" />
+    <meta content="<%= bot.user.username %>" name="twittx1er:title" />
+    <meta content="An easy, customizable, and powerful Discord bot that does anything that your server needs." name="description" />
+    <meta content="An easy, customizable, and powerful Discord bot that does anything that your server needs." property="og:description" />
+    <meta content="An easy, customizable, and powerful Discord bot that does anything that your server needs." name="twitter:description" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" />
+    <title><%= bot.user.username %></title>
+  </head>
+
+  <section class="hero gradient is-fullheight">
+    <%- include("../partials/navbar") %>
+    <div class="hero-body">
+      <div class="container has-text-centered animate__animated animate__fadeIn animate__faster">
+        <img src="<%= bot.user.dynamicAvatarURL(null, 512) %>" class="logo" alt="logo" />
+        <p class="is-size-2 has-text-weight-semibold has-text-light"><%= bot.user.username %></p>
+        <p class="control has-text-centered">
+          <a href="/invite/" class="button is-large is-light">
+            <span class="icon is-small">
+              <em class="fa fa-plus"></em>
+            </span>
+            <span>Invite <%= bot.user.username %></span>
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="hero-footer animate__animated animate__fadeInUp animate__faster">
+      <div class="tabs is-centered is-fullwidth">
+        <div class="container">
+          <ul>
+            <li>
+              <a href="#stats" class="has-text-light">
+                <span class="icon"> <em class="fas fa-chart-bar"></em></span>Statistics
+              </a>
+            </li>
+            <li>
+              <a href="#features" class="has-text-light">
+                <span class="icon is-small"><em class="fas fa-magic"></em></span>Features
+              </a>
+            </li>
+            <li>
+              <a href="#about" class="has-text-light">
+                <span class="icon is-small"><em class="fas fa-info-circle"></em></span>About
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%- include("../partials/about") %> <%- include("../partials/footer") %>
+</html>

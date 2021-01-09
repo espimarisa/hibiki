@@ -20,6 +20,7 @@ export const validItems = [
     id: "easyTranslate",
     emoji: "🌍",
     type: "bool",
+    default: false,
   },
 
   /**
@@ -126,7 +127,9 @@ export const validItems = [
     category: "pinboard",
     emoji: "🔢",
     id: "pinAmount",
+    minimum: 1,
     type: "number",
+    default: 5,
   },
   {
     category: "pinboard",
@@ -139,6 +142,7 @@ export const validItems = [
     emoji: "🗣",
     id: "pinSelfPinning",
     type: "bool",
+    default: true,
   },
 
   /**
@@ -186,6 +190,7 @@ export const validItems = [
     emoji: "💣",
     id: "snipingEnable",
     type: "bool",
+    default: true,
   },
   {
     category: "sniping",
@@ -198,12 +203,14 @@ export const validItems = [
     emoji: "🔗",
     id: "snipingInvites",
     type: "bool",
+    default: true,
   },
   {
     category: "sniping",
     emoji: "⛔",
     id: "snipingPermission",
     type: "bool",
+    default: false,
   },
 
   /**
@@ -215,24 +222,28 @@ export const validItems = [
     emoji: "🔗",
     id: "antiInvite",
     type: "bool",
+    default: false,
   },
   {
     category: "automod",
     emoji: "😶",
     id: "antiNewLines",
     type: "bool",
+    default: false,
   },
   {
     category: "automod",
     emoji: "🔥",
     id: "antiRaid",
     type: "bool",
+    default: false,
   },
   {
     category: "automod",
     emoji: "🚯",
     id: "antiSpam",
     type: "bool",
+    default: false,
   },
   {
     category: "automod",
@@ -263,6 +274,7 @@ export const validItems = [
     emoji: "💬",
     id: "msgOnPunishment",
     type: "bool",
+    default: true,
   },
   {
     category: "automod",
@@ -270,6 +282,7 @@ export const validItems = [
     id: "newlineThreshold",
     type: "number",
     minimum: 10,
+    default: 15,
   },
   {
     category: "automod",
@@ -277,6 +290,8 @@ export const validItems = [
     id: "raidThreshold",
     type: "number",
     minimum: 15,
+    maximum: 30,
+    default: 20,
   },
   {
     category: "automod",
@@ -284,6 +299,7 @@ export const validItems = [
     id: "spamThreshold",
     minimum: 5,
     maximum: 10,
+    default: 7,
     type: "number",
   },
 
@@ -317,6 +333,7 @@ export const validItems = [
     category: "profile",
     id: "timezoneHide",
     type: "bool",
+    default: false,
   },
 
   /**
@@ -325,18 +342,22 @@ export const validItems = [
 
   {
     id: "assignableRoles",
+    category: "roles",
     type: "roleArray",
   },
   {
     id: "disabledCategories",
+    category: "features",
     type: "array",
   },
   {
     id: "disabledCmds",
+    category: "features",
     type: "array",
   },
   {
     id: "prefix",
+    category: "features",
     type: "string",
     minimum: 1,
     maximum: 15,

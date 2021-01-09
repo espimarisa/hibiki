@@ -1,6 +1,7 @@
 /**
  * @file Dashboard
  * @description Main webserver for the dashboard
+ * @module webserver/dashboard
  */
 
 import type { HibikiClient } from "../classes/Client";
@@ -25,7 +26,7 @@ const noCache = (req: Request, res: Response, next: NextFunction) => {
 
 /** Starts the dashboard */
 export async function startDashboard(bot: HibikiClient) {
-  if (!config.dashboard.port) return;
+  if (!config.dashboard.port || !config.dashboard.cookieSecret || !config.dashboard.redirectURI || !config.dashboard.secret) return;
 
   // Configures session store
   const sessionStore = new session({
@@ -87,19 +88,19 @@ export async function startDashboard(bot: HibikiClient) {
   // Routes and APIs
   app.use("/", require("./routes/index")(bot));
   app.use("/api/", noCache, require("./routes/api")(bot));
-  app.use("/auth/", noCache, require("./routes/auth")(bot, passport));
-  app.use("/manage/", noCache, require("./routes/manage")(bot, passport));
+  app.use("/auth/", noCache, require("./routes/auth")(bot));
+  app.use("/manage/", noCache, require("./routes/manage")(bot));
 
   // 404 handler
   app.use((req, res) => {
-    if (req.accepts("html")) return res.render("404", { url: req.url });
-    else if (req.accepts("json")) return res.send({ error: "404" });
-    else res.type("txt").send("404");
+    if (req.accepts("html")) return res.status(404).render("404", { url: req.url });
+    else if (req.accepts("json")) return res.status(404).send({ error: "404" });
+    else res.status(404).type("txt").send("404");
   });
 
   // Listens on the configured port
   // TODO: Docker support. (ask @TTtie)
   app.listen(config.dashboard.port, async () => {
-    bot.log.info(`Dashboard listening on port ${config.dashboard.port}`);
+    bot.log.info(`Dashboard running on port ${config.dashboard.port}`);
   });
 }
