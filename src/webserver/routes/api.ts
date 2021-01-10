@@ -224,6 +224,8 @@ export = (bot: HibikiClient) => {
     if (!req.body) return res.status(204).end();
     profileConfig = req.body;
 
+    if(profileConfig.id !== user.id) return res.status(403).end();
+
     // Each profileConfig type/option
     Object.keys(profileConfig).forEach((c) => {
       if (c === "id") return;
@@ -256,6 +258,7 @@ export = (bot: HibikiClient) => {
         if (invalidTimezone) return (profileConfig[c] = null);
       }
     });
+    profileConfig.id = user.id;
 
     // Updates the config
     await bot.db.updateUserConfig(profileConfig);

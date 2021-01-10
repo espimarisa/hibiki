@@ -8,14 +8,12 @@ $hibiki-primary-darker: #676cb8;
 $hibiki-secondary-darker: #886fb9;
 $hibiki-link: #60a5ff;
 
-.logo {
+#logo {
   box-shadow: 0px 0px 20px $hibiki-tertiary;
   border-radius: 50%;
-  width: 300px;
-  height: 300px;
 }
 
-.nav-logo {
+.is-rounded {
   border-radius: 50%;
 }
 
@@ -25,6 +23,14 @@ $hibiki-link: #60a5ff;
     vertical-align: middle;
     justify-content: center;
   }
+}
+
+#stare {
+  width: 25%;
+  height: 25%;
+  position: sticky;
+  position: -webkit-sticky;
+  bottom: 0;
 }
 
 a.navbar-item,
@@ -41,6 +47,22 @@ a.navbar-item,
   margin-left: auto;
   margin-right: auto;
   padding-left: 0;
+}
+
+.sticky {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 30px;
+}
+
+.sticky-buttons {
+  background: $body-background-color;
+  position: sticky;
+  position: -webkit-sticky;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  top: 0px;
+  z-index: 35;
 }
 
 // Mixin for animations

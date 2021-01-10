@@ -1,6 +1,7 @@
 import type { Emoji, Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { askForValue, askYesNo } from "../../utils/ask";
+import { localizeProfileItems } from "../../utils/format";
 import { validItems } from "../../utils/validItems";
 import { timeoutHandler, waitFor } from "../../utils/waitFor";
 
@@ -38,27 +39,6 @@ export class ProfileCommand extends Command {
       "4️⃣": pronouns[3],
     };
 
-    // Localizes profile items in validItems
-    function localizeItems(item: string, title = false) {
-      switch (item) {
-        case "bio":
-          if (title) return msg.string("global.BIO");
-          return msg.string("general.PROFILE_BIO_DESCRIPTION");
-        case "pronouns":
-          if (title) return msg.string("global.PRONOUNS");
-          return msg.string("general.PROFILE_PRONOUNS_DESCRIPTION");
-        case "timezone":
-          if (title) return msg.string("global.TIMEZONE");
-          return msg.string("general.PROFILE_TIMEZONE_DESCRIPTION");
-        case "timezoneHide":
-          if (title) return msg.string("global.TIMEZONEHIDE");
-          return msg.string("general.PROFILE_TIMEZONEHIDE_DESCRIPTION");
-        case "delete":
-          if (title) return msg.string("global.DELETE");
-          return msg.string("general.PROFILE_DELETE_DESCRIPTION");
-      }
-    }
-
     // Edits the embed with items
     const emojiArray = Object.keys(pronounEmojis);
     let reacting = false;
@@ -70,8 +50,8 @@ export class ProfileCommand extends Command {
           fields: (items as Record<string, any>)
             .concat([{ emoji: deleteEmoji, label: msg.string("global.DELETE"), type: "delete", id: "delete" }])
             .map((item: Record<string, string>) => ({
-              name: `${item.emoji} ${localizeItems(item.id, true)}`,
-              value: userconfig[item.id] || localizeItems(item.id),
+              name: `${item.emoji} ${localizeProfileItems(msg.string, item.id, true)}`,
+              value: userconfig[item.id] || localizeProfileItems(msg.string, item.id),
             })),
         },
       };

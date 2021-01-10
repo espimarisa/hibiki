@@ -118,33 +118,64 @@ window.addEventListener("load", async () => {
     if ((!element && p !== "disabledCategories") || typeof guildConfig[p] === "undefined") return;
     const type = fetchedItems.find((pr) => pr.id === p).type;
 
+    // Each type of item
     switch (type) {
-      case "bool":
+      // Booleans
+      case "bool": {
         if (guildConfig[p]) document.getElementById(`${p}_ON`).checked = true;
         else document.getElementById(`${p}_OFF`).checked = true;
         break;
-      case "number":
+      }
+
+      // Numbers
+      case "number": {
         document.getElementById(`${p}_Select`).value = guildConfig[p];
         break;
-      case "punishment":
-        console.log(guildConfig[p]);
+      }
+
+      // Punishments
+      case "punishment": {
         guildConfig[p].forEach((punishment) => {
           document.getElementById(`${p}_${punishment}`).checked = true;
         });
         break;
+      }
+
+      // Raid punishments
+      case "raidPunishment": {
+        const Ban = document.getElementById(`${p}_Ban`).checked;
+        const Kick = document.getElementById(`${p}_Kick`).checked;
+        const Mute = document.getElementById(`${p}_Mute`).checked;
+        guildConfig[p] = [];
+        if (Ban) guildConfig[p].push("Ban");
+        if (Kick) guildConfig[p].push("Kick");
+        if (Mute) guildConfig[p].push("Mute");
+        break;
+      }
+
+      // Channel & roles
       case "channelID":
-      case "roleID":
+      case "roleID": {
         const opt = Array.from(element.children[0].children).find((a) => a.id === guildConfig[p]);
         if (!opt) return;
         document.getElementById(p).children[0].value = opt.innerText;
         break;
-      case "string":
+      }
+
+      // Strings
+      case "string": {
         element.value = guildConfig[p];
         break;
-      case "emoji":
+      }
+
+      // Emojis
+      case "emoji": {
         element.innerHTML = guildConfig[p];
         break;
-      case "roleArray":
+      }
+
+      // Rolearrays
+      case "roleArray": {
         if (!multiRoleArrays[p]) return;
         if (typeof guildConfig[p] !== "object") guildConfig[p] = [guildConfig[p]];
 
@@ -152,8 +183,12 @@ window.addEventListener("load", async () => {
           const id = /.{1,32} \(([0-9]{16,19})\)/.exec(s.label)[1];
           if (guildConfig[p] && guildConfig[p].includes(id)) s.state = true;
         });
+
         break;
-      case "channelArray":
+      }
+
+      // Channelarrays
+      case "channelArray": {
         if (!multiChannelArrays[p]) return;
         if (typeof guildConfig[p] !== "object") guildConfig[p] = [guildConfig[p]];
 
@@ -162,6 +197,7 @@ window.addEventListener("load", async () => {
           if (guildConfig[p] && guildConfig[p].includes(id)) s.state = true;
         });
         break;
+      }
     }
 
     // Disabled command selector
@@ -169,10 +205,11 @@ window.addEventListener("load", async () => {
       multiCats.options.forEach((o) => {
         if (o.type === "group") {
           if (guildConfig.disabledCategories && guildConfig.disabledCategories.includes(o.label)) o.state = true;
-          else
+          else {
             o.children.forEach((c) => {
               if (guildConfig.disabledCmds && guildConfig.disabledCmds.includes(c.label)) c.state = true;
             });
+          }
         }
       });
     }
@@ -187,35 +224,57 @@ window.addEventListener("load", async () => {
       if (!element) return;
 
       switch (type) {
-        case "bool":
+        case "bool": {
           guildConfig[p] = document.getElementById(`${p}_ON`).checked;
           break;
-        case "number":
+        }
+
+        case "number": {
           guildConfig[p] = parseInt(document.getElementById(`${p}_Select`).value.split(" ")[0]);
           break;
-        case "punishment":
+        }
+
+        case "punishment": {
           const Purge = document.getElementById(`${p}_Purge`).checked;
           const Mute = document.getElementById(`${p}_Mute`).checked;
           const Warn = document.getElementById(`${p}_Warn`).checked;
-          console.log(Purge);
           guildConfig[p] = [];
           if (Purge) guildConfig[p].push("Purge");
           if (Mute) guildConfig[p].push("Mute");
           if (Warn) guildConfig[p].push("Warn");
           break;
+        }
+
+        case "raidPunishment": {
+          const Ban = document.getElementById(`${p}_Ban`).checked;
+          const Kick = document.getElementById(`${p}_Kick`).checked;
+          const Mute = document.getElementById(`${p}_Mute`).checked;
+          guildConfig[p] = [];
+          if (Ban) guildConfig[p].push("Ban");
+          if (Kick) guildConfig[p].push("Kick");
+          if (Mute) guildConfig[p].push("Mute");
+          break;
+        }
+
         case "channelID":
-        case "roleID":
+        case "roleID": {
           const r = Array.from(element.children[0].children).find((a) => a.innerText === element.children[0].value).id;
           if (!r || r.toLowerCase() === "none") return;
           guildConfig[p] = r;
           break;
-        case "string":
+        }
+
+        case "string": {
           const val = element.value;
           if (val.length) guildConfig[p] = element.value;
           break;
-        case "emoji":
+        }
+
+        case "emoji": {
           guildConfig[p] = element.innerHTML;
           break;
+        }
+
         case "roleArray": {
           if (!multiRoleArrays[p]) return;
           const values = multiRoleArrays[p].getSelected().map((s) => s.label);
@@ -226,15 +285,15 @@ window.addEventListener("load", async () => {
           guildConfig[p] = ids;
           break;
         }
+
         case "channelArray": {
           if (!multiChannelArrays[p]) return;
-          // this has already been declared (values)
-
           const values = multiChannelArrays[p].getSelected().map((s) => s.label);
           const ids = [];
           values.forEach((v) => {
             ids.push(/.{1,32} \(([0-9]{16,19})\)/.exec(v)[1]);
           });
+
           guildConfig[p] = ids;
           break;
         }

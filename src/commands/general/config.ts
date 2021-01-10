@@ -78,7 +78,6 @@ export class SetupCommand extends Command {
         title: `🔧 ${msg.string("general.CONFIG")}`,
         color: msg.convertHex("general"),
         fields: categories.concat([{ emoji: deleteEmoji, name: "delete", items: ["delete"] }]).map((cat) => {
-          if (!cat.emoji) console.log(cat);
           return {
             name: `${cat.emoji.length > 2 ? "<:" : ""}${cat.emoji}${cat.emoji.length > 2 ? ">" : ""} ${localizeCategories(cat.name)}`,
             value: `${cat.items.map((i: string) => `\`${localizeSetupItems(msg.string, i, true)}\``).join(", ")}`,

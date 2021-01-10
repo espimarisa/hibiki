@@ -64,6 +64,7 @@ export async function startDashboard(bot: HibikiClient) {
         path: "/",
         httpOnly: true,
         sameSite: "lax",
+        // if you're getting infinite redirects when trying to auth, either setup https or set this to false
         secure: process.env.NODE_ENV === "production",
       },
       resave: false,

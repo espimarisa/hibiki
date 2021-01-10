@@ -34,7 +34,7 @@ function loadCommands(path: string, bot: HibikiClient) {
         const importedCommand = require(`${path}/${file.name}`);
         command = importedCommand[Object.keys(importedCommand)[0]];
       } catch (err) {
-        console.log(err);
+        console.error(err);
         bot.log.error(`Command ${file.name} failed to load: ${err}`);
       }
 
@@ -79,6 +79,7 @@ function loadEvents(path: string, bot: HibikiClient, logger = false) {
         event = importedEvent[Object.keys(importedEvent)[0]];
         i++;
       } catch (err) {
+        console.error(err);
         bot.log.error(`Event ${file.name} failed to load: ${err}`);
       }
 

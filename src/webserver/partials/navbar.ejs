@@ -1,4 +1,3 @@
-<!-- If the user has JS disabled -->
 <noscript>
   <div class="notification">
     <p>
@@ -8,13 +7,12 @@
   </div>
 </noscript>
 
-<!-- Header -->
 <div class="hero-head">
   <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
     <div class="container">
       <div class="navbar-brand">
         <a href="/" class="navbar-item has-text-white">
-          <img src="<%= bot.user.dynamicAvatarURL(null, 64) %>" class="nav-logo is-rounded" alt="logo" />
+          <img src="<%= bot.user.dynamicAvatarURL(null, 32) %>" class="is-rounded" alt="<%= bot.user.username %>" width="28" height="28" />
           <span class="is-inline-block ml-2"><%= bot.user.username %> </span>
         </a>
         <a class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu" role="button">
@@ -25,22 +23,15 @@
       </div>
       <div class="navbar-menu" id="navMenu">
         <div class="navbar-start">
-          <!-- Index navbar -->
-          <% if (page === "/") { %>
-          <!-- Logged in -->
-          <% if (user) { %>
+          <% if (page === "/") { %> <% if (user) { %>
           <a href="/manage/servers" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-wrench"></em></span>
             <span>Dashboard</span>
           </a>
           <% } %>
-          <a href="/privacy/" class="navbar-item has-text-white">
-            <span class="icon"><em class="fas fa-shield-alt"></em></span>
-            <span>Privacy Policy</span>
-          </a>
-          <a href="/github/" class="navbar-item has-text-white">
-            <span class="icon"><em class="fab fa-github"></em></span>
-            <span>GitHub</span>
+          <a href="https://ko-fi.com/smolespi" class="navbar-item has-text-white">
+            <span class="icon"><em class="fas fa-heart"></em></span>
+            <span>Donate</span>
           </a>
           <a href="/support/" class="navbar-item has-text-white">
             <span class="icon"><em class="fab fa-discord"></em></span>
@@ -50,19 +41,16 @@
             <span class="icon"><em class="fas fa-globe"></em></span>
             <span>Translate</span>
           </a>
-          <!-- Server chooser -->
           <% } else if (page === "servers") { %>
           <a href="/login/" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-sync"></em></span>
             <span>Refresh</span>
           </a>
-          <!-- Server manager -->
           <% } else if (page === "manage") { %>
           <a href="/manage/servers" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-home"></em></span>
             <span>Servers</span>
           </a>
-          <!-- Profile editor -->
           <% } else if (page === "profile") { %>
           <a href="/manage/servers" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-home"></em></span>
@@ -70,18 +58,16 @@
           </a>
           <% } %>
         </div>
-        <!-- Logged in -->
         <% if (user) { %>
         <div class="navbar-end">
           <a href="/manage/profile" class="navbar-item has-text-white">
-            <img src="<%= user.avatar %>" class="nav-logo is-inline-block" alt="avatar" />
+            <img src="<%= user.avatar %>" class="is-rounded is-inline-block" alt="<%= user.username %>" />
             <span class="is-inline-block ml-2"><%= user.username %>#<%= user.discriminator %></span>
           </a>
           <a href="/logout/" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-sign-out-alt"></em></span>
             <span>Logout</span>
           </a>
-          <!-- Not logged in -->
           <% } else { %>
           <div class="navbar-end">
             <a href="/manage/servers/" class="navbar-item has-text-white">

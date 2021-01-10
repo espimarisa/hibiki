@@ -1,5 +1,5 @@
-<%# Stats %>
-<section class="hero is-black" id="stats">
+<%# Tagline %>
+<section class="hero is-black" id="features">
   <div class="hero-body">
     <div class="container has-text-centered">
       <p class="title is-size-2">The ultimate all-in-one Discord bot.</p>
@@ -8,6 +8,7 @@
   </div>
 </section>
 
+<%# Features %>
 <section class="hero is-medium" id="features">
   <div class="hero-body">
     <div class="container">
@@ -216,7 +217,10 @@
       <p class="title is-size-2">It's all <strong>free, forever</strong>.</p>
       <p class="subtitle is-size-4">We'll never lock features behind a paywall.</p>
       <p>We'll <strong>never</strong> make you donate or vote to unlock features - unlike bots that beg for premium.</p>
-      <p>Hibiki is a <strong>passion project</strong> built by our team of developers that ♥ free &amp; open-source software.</p>
+      <p>
+        <%= bot.user.username %> is a <strong>passion project</strong> built by our team of developers that ♥ free &amp; open-source
+        software.
+      </p>
       <p>The entire project's codebase is free and open-source software licensed under the GNU AGPLv3 or later.</p>
     </div>
   </div>
@@ -232,7 +236,8 @@
       <p>You can change your default language so every command returns in it.</p>
       <p>
         Additionally, anyone (even you) can help us
-        <a href="https://translate.hibiki.app" target="_blank" rel="noopener">translate</a> Hibiki to other languages!
+        <a href="https://translate.hibiki.app" target="_blank" rel="noopener noreferrer">translate</a> <%= bot.user.username %> to other
+        languages!
       </p>
     </div>
   </div>
@@ -243,7 +248,7 @@
   <div class="hero-body">
     <p class="is-size-3 has-text-weight-semibold">Ready to improve your server?</p>
     <p class="subtitle is-size-5">Join the <%= bot.users.size %> other users and never need to invite another bot.</p>
-    <a href="/github/" class="button is-medium" target="_blank" rel="noopener">
+    <a href="/github/" class="button is-medium" target="_blank" rel="noopener noreferrer">
       <span class="icon is-small">
         <em class="fab fa-github"></em>
       </span>
@@ -255,7 +260,7 @@
       </span>
       <span>Add to Server</span>
     </a>
-    <a href="/vote/" class="button is-medium" target="_blank" rel="noopener">
+    <a href="/vote/" class="button is-medium" target="_blank" rel="noopener noreferrer">
       <span class="icon is-small">
         <em class="fas fa-vote-yea"></em>
       </span>
@@ -275,17 +280,16 @@
           <div class="card">
             <div class="card-image">
               <figure class="image is-square">
-                <img src="https://avatars1.githubusercontent.com/u/49253425" alt="smolespi" />
+                <img src="https://avatars1.githubusercontent.com/u/49253425?v=2&s=450" alt="Espi" />
               </figure>
             </div>
             <div class="card-content">
-              <p class="title is-size-3">smolespi</p>
+              <p class="title is-size-3">Espi</p>
               <p class="subtitle is-size-5">Owner, Developer</p>
             </div>
             <footer class="card-footer">
-              <a href="https://github.com/smolespi" class="card-footer-item" target="_blank" rel="noopener">GitHub</a>
-              <a href="https://twitter.com/smolespi" class="card-footer-item" target="_blank" rel="noopener">Twitter</a>
-              <a href="https://espi.me" class="card-footer-item" target="_blank" rel="noopener">Website</a>
+              <a href="https://github.com/smolespi" class="card-footer-item" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://twitter.com/smolespi" class="card-footer-item" target="_blank" rel="noopener noreferrer">Twitter</a>
             </footer>
           </div>
         </div>
@@ -293,7 +297,7 @@
           <div class="card">
             <div class="card-image">
               <figure class="image is-square">
-                <img src="https://avatars1.githubusercontent.com/u/46578648" alt="resolved" />
+                <img src="https://avatars1.githubusercontent.com/u/46578648?v=2&s=450" alt="resolved" />
               </figure>
             </div>
             <div class="card-content">
@@ -301,8 +305,8 @@
               <p class="subtitle is-size-5">Owner, Developer</p>
             </div>
             <footer class="card-footer">
-              <a href="https://github.com/resolvedxd" class="card-footer-item" target="_blank" rel="noopener">GitHub</a>
-              <a href="https://twitter.com/resolvedxd" class="card-footer-item" target="_blank" rel="noopener">Twitter</a>
+              <a href="https://github.com/resolvedxd" class="card-footer-item" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://twitter.com/resolvedxd" class="card-footer-item" target="_blank" rel="noopener noreferrer">Twitter</a>
             </footer>
           </div>
         </div>
@@ -310,7 +314,7 @@
           <div class="card">
             <div class="card-image">
               <figure class="image is-square">
-                <img src="https://avatars1.githubusercontent.com/u/30247185" alt="cth103" />
+                <img src="https://avatars1.githubusercontent.com/u/30247185?v=2&s=450" alt="cth103" />
               </figure>
             </div>
             <div class="card-content">
@@ -318,8 +322,8 @@
               <p class="subtitle is-size-5">Developer</p>
             </div>
             <footer class="card-footer">
-              <a href="https://github.com/cthpw103" class="card-footer-item" target="_blank" rel="noopener">GitHub</a>
-              <a href="https://twitter.com/cth103" class="card-footer-item" target="_blank" rel="noopener">Twitter</a>
+              <a href="https://github.com/cthpw103" class="card-footer-item" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://twitter.com/cth103" class="card-footer-item" target="_blank" rel="noopener noreferrer">Twitter</a>
             </footer>
           </div>
         </div>
@@ -327,7 +331,7 @@
           <div class="card">
             <div class="card-image">
               <figure class="image is-square">
-                <img src="https://avatars1.githubusercontent.com/u/17570452" alt="tttie" />
+                <img src="https://avatars1.githubusercontent.com/u/17570452?v=2&s=450" alt="TTtie" />
               </figure>
             </div>
             <div class="card-content">
@@ -335,9 +339,8 @@
               <p class="subtitle is-size-5">Developer</p>
             </div>
             <footer class="card-footer">
-              <a href="https://github.com/TTtie" class="card-footer-item" target="_blank" rel="noopener">GitHub</a>
-              <a href="https://twitter.com/TTtie_TT" class="card-footer-item" target="_blank" rel="noopener">Twitter</a>
-              <a href="https://tttie.cz" class="card-footer-item">Website</a>
+              <a href="https://github.com/TTtie" class="card-footer-item" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://twitter.com/TTtie_TT" class="card-footer-item" target="_blank" rel="noopener noreferrer">Twitter</a>
             </footer>
           </div>
         </div>
