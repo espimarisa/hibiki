@@ -23,15 +23,16 @@
   },
   "scripts": {
     "build": "tsc",
-    "build:sass": "sass ./src/webserver/public/sass/:./src/webserver/public/css/",
-    "build:static": "copyfiles './src/webserver/**/**/*.{css,ejs}' './dist/'",
+    "build:sass": "cross-env sass ./src/webserver/public/sass/:./src/webserver/public/css/",
+    "build:static": "cross-env copyfiles './src/webserver/**/**/*.{css,ejs}' './dist/'",
     "dev": "npm run build:sass && npm run nodemon",
     "format": "cross-env prettier --config .prettierrc 'src/**/*.{css,htm,html,js,json,ts,tsx}' --write",
     "lint": "eslint --fix .",
-    "nodemon": "cross-env nodemon --ext 'ts' --watch 'src' --delay 5 --ignore 'rethinkdb_data/*' --exec 'cross-env NODE_ENV=development ts-node --files ./src/index.ts'",
+    "nodemon": "cross-env nodemon --ext 'ts,sass,scss' --watch 'src' --delay 5 --ignore 'rethinkdb_data/*' --exec 'cross-env NODE_ENV=development ts-node --files ./src/index.ts'",
+    "postbuild": "npm run build:sass && npm run build:static",
     "sass": "sass --watch ./src/webserver/public/sass/:./src/webserver/public/css/",
     "setup": "ts-node --files ./src/utils/setup.ts",
-    "start": "npm run build:sass && npm run build:static && tsc && cross-env NODE_ENV=production node dist/src/index.js",
+    "start": "npm run build && cross-env NODE_ENV=production node dist/src/index.js",
     "test": "eslint ."
   },
   "dependencies": {
@@ -63,6 +64,7 @@
     "@typescript-eslint/eslint-plugin": "^4.12.0",
     "@typescript-eslint/parser": "^4.12.0",
     "bulma": "^0.9.1",
+    "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.17.0",
     "eslint-config-prettier": "^7.1.0",

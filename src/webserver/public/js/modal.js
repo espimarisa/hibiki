@@ -11,7 +11,7 @@ document.querySelectorAll(".modal-button").forEach(function (el) {
   const target = document.querySelector(el.getAttribute("data-target"));
   const keyfunc = (key) => {
     if (key.key === "Escape") target.querySelector(".delete").click();
-    if (key.key === "Enter") target.querySelector("#delete").click();
+    // if (key.key === "Enter") target.querySelector("#delete").click();
   };
 
   // Key functionality on modals

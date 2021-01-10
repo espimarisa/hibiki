@@ -9,7 +9,8 @@
 <body>
 
   <%# TODO: Refactor this(?) %>
-  <% let managableGuilds =
+  <%# Gets managableGuilds and sorts them %>
+  <% const managableGuilds =
   user.guilds.filter(g => (g.permissions & 32) === 32 || (g.permissions & 8) === 8 && bot.guilds.has(g.id))
   .sort((a, b) => a.name > b.name ? 1 : -1)
   .sort((a, b) => bot.guilds.has(a.id) ? -1 : 0)

@@ -115,6 +115,27 @@ export function uptimeFormat(uptime: number) {
   return dateString;
 }
 
+// Localizes profile items in validItems
+export function localizeProfileItems(string: LocaleString, item: string, title = false) {
+  switch (item) {
+    case "bio":
+      if (title) return string("global.BIO");
+      return string("general.PROFILE_BIO_DESCRIPTION");
+    case "pronouns":
+      if (title) return string("global.PRONOUNS");
+      return string("general.PROFILE_PRONOUNS_DESCRIPTION");
+    case "timezone":
+      if (title) return string("global.TIMEZONE");
+      return string("general.PROFILE_TIMEZONE_DESCRIPTION");
+    case "timezoneHide":
+      if (title) return string("global.TIMEZONEHIDE");
+      return string("general.PROFILE_TIMEZONEHIDE_DESCRIPTION");
+    case "delete":
+      if (title) return string("global.DELETE");
+      return string("general.PROFILE_DELETE_DESCRIPTION");
+  }
+}
+
 /** Localizes setup items */
 export function localizeSetupItems(string: LocaleString, item: string, title = false, punishment = false) {
   switch (item) {
