@@ -19,6 +19,7 @@ Here's a pretty cohesive list of guidelines you should try and stick to (and ins
   - If you want to translate a language that isn't listed, file an issue on GitHub and it will be added ASAP.
   - When translating a string, don't change any values that are in `{}`.
     - To use plurals: { value:# string_for_more_than_one#! string_for_only_one!? optional_for_languages_with_multiple_pluralities? }
+    - Do not translate anything enclosed in {} or URLs enclosed in (). These will break output if touched.
   - When translating, copy and paste any emojis that are in the string. We aim to keep this at a minimum, but try and keep them there.
 
 ## Source Contributions
@@ -43,7 +44,7 @@ We probably won't outright reject a PR if it doesn't follow these guidelines, bu
 - When adding a new string, update it in `src/locales/en.json` **only**. Try and follow our naming scheme.
 
   - When referencing a string, put any emoji it may use before it. This makes translations easier as there's no extra copy-pasting required.
-    - Example: `❌ ${msg.string("global.ERROR)}`
+    - Example: `🐱 ${msg.string("image.CAT)}`
 
 - When referring to a member/user in code, follow the following guideline:
 
@@ -51,6 +52,8 @@ We probably won't outright reject a PR if it doesn't follow these guidelines, bu
   - If it's referring to someone influenced by the command, use `member`.
 
 - When using ParsedArgs as pargs[0].value, import the type it is.
+
+  - This isn't needed, but it helps intellisense.
 
   - Example: `pargs[0].value as Member;`
 

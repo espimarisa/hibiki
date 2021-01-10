@@ -3,8 +3,8 @@
   <head>
     <%- include("../partials/head") %>
     <meta name="csrf-token" content="<%= csrfToken %>" />
-    <!-- so cool bulmaselc -->
-    <script src="https://cdn.jsdelivr.net/npm/bulmaselect@1.0.5/dist/bulmaselect.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bulmaselect@1.0.12/dist/bulmaselect.min.js" crossorigin="anonymous"></script>
+    <script src="/public/js/navbar.js" crossorigin="anonymous"></script>
     <title>Manage - <%= guild.name %></title>
   </head>
 
@@ -16,16 +16,15 @@
         <div class="container has-text-centered">
           <figure class="image is-128x128 is-inline-block">
             <img src="<%= guild.icon ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128` :
-            "https://cdn.discordapp.com/embed/avatars/0.png" %>>"" class=" is-rounded" alt="icon">
+            "https://cdn.discordapp.com/embed/avatars/0.png" %>"" class=" is-rounded" alt="<%= guild.name %>">
           </figure>
           <p class="title is-size-3 has-text-white">Managing <%= guild.name %></p>
         </div>
       </div>
     </section>
 
-    <%# Main content %>
     <section class="section container">
-      <div class="columns">
+      <div class="columns is-sidebar">
         <div class="column">
           <%# Sidebar %>
           <div class="menu sticky">
@@ -40,57 +39,62 @@
             </ul>
           </div>
         </div>
+
         <%# Sticky buttons %>
         <div class="column is-10 content">
           <div class="sticky-buttons">
             <div class="buttons">
               <a href="#" class="button">
-                <span class="icon"><i class="fas fa-arrow-up"></i></span>
+                <span class="icon"><em class="fas fa-arrow-up"></em></span>
                 <span>Back to top</span>
               </a>
               <a class="button" id="submit">
                 <%# Handles csrf validation. %>
                 <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" />
-                <span class="icon"><i class="fas fa-check"></i></span>
+                <span class="icon"><em class="fas fa-check"></em></span>
                 <span id="saved">Save changes</span>
               </a>
               <a class="button modal-button" data-target="#modal" aria-haspopup="true">
-                <span class="icon"><i class="fas fa-trash"></i></span>
+                <span class="icon"><em class="fas fa-trash"></em></span>
                 <span>Reset config</span>
               </a>
             </div>
           </div>
 
+          <%# Gets validItems categories %>
           <% function getCategoryHTML(category) {
             switch(category) {
               case "features":
               %>
-<h2 class="title is-size-2" id="general"><i class="fas fa-cog mr-2"></i>General</h2>
-<p class="subtitle is-size-4">Basic options and functionality to configure.</p>
+              <h2 class="title is-size-2" id="general"><em class="fas fa-cog mr-2"></em>General</h2>
+              <p class="subtitle is-size-4">Basic options and functionality to configure.</p>
               <% break
               case "automod": %>
-<h2 class="title is-size-2" id="automod"><i class="fas fa-hammer mr-2"></i>Automod</h2>
-<p class="subtitle is-size-4">Configures how automod works.</p>
+              <h2 class="title is-size-2" id="automod"><em class="fas fa-hammer mr-2"></em>Automod</h2>
+              <p class="subtitle is-size-4">Configures how automod works.</p>
               <% break
               case "logging": %>
-<h2 class="title is-size-2" id="logging"><i class="fas fa-scroll mr-2"></i>Logging</h2>
-<p class="subtitle is-size-4">Sets what channels things log to and how logging works.</p>
+              <h2 class="title is-size-2" id="logging"><em class="fas fa-scroll mr-2"></em>Logging</h2>
+              <p class="subtitle is-size-4">Sets what channels things log to and how logging works.</p>
               <% break
               case "pinboard": %>
-<h2 class="title is-size-2" id="pinboard"><i class="fas fa-thumbtack mr-2"></i>Pinboard</h2>
-<p class="subtitle is-size-4">Configures and toggles Pinboard (aka Starboard) functionality.</p>
+              <h2 class="title is-size-2" id="pinboard"><em class="fas fa-thumbtack mr-2"></em>Pinboard</h2>
+              <p class="subtitle is-size-4">Configures and toggles Pinboard (aka Starboard) functionality.</p>
               <% break
               case "sniping": %>
-<h2 class="title is-size-2" id="sniping"><i class="fas fa-comment-slash mr-2"></i>Sniping</h2>
-<p class="subtitle is-size-4">Configures how message sniping works.</p>
+              <h2 class="title is-size-2" id="sniping"><em class="fas fa-comment-slash mr-2"></em>Sniping</h2>
+              <p class="subtitle is-size-4">Configures how message sniping works.</p>
               <% break
               case "roles": %>
-<h2 class="title is-size-2" id="roles"><i class="fas fa-user-tag mr-2"></i>Roles</h2>
-<p class="subtitle is-size-4">Configures role functions and their designated roles.</p>
+              <h2 class="title is-size-2" id="roles"><em class="fas fa-user-tag mr-2"></em>Roles</h2>
+              <p class="subtitle is-size-4">Configures role functions and their designated roles.</p>
               <% break
             }
 
           } %>
+
+
+          <%# Things to get %>
           <% let cats = {};
           let channels = bot.guilds.get(guild.id).channels.map(c => ({name: c.name, id: c.id, type: c.type}));
           channels = channels.filter(c => c.type === 0);
@@ -104,32 +108,43 @@
             if(cats[item.category]) cats[item.category].push(item);
             else cats[item.category] = [item];
           });
+
+          // Goes thru each item in a category
           Object.keys(cats).forEach(cat => {
             %>
             <%= getCategoryHTML(cat); %>
             <% cats[cat].forEach(item => { %>
+            <%# Booleans %>
             <% if (item.type === "bool") { %>
               <div class="field">
                 <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
                 <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
 
+                <%# Booleans %>
                 <div id="<%= item.id %>" class="control">
                   <label class="radio">
+                    <%# Enabled %>
                     <input id=<%= `${item.id}_ON` %> type="radio" name="<%= item.id %>"<%=cfg && (cfg[item.id] === true || (!cfg[item.id] && item.default === true)) ? " checked" : ""%>> Enabled </input>
                   </label>
+                  <%# Disabled %>
                   <label class="radio">
                     <input id=<%= `${item.id}_OFF` %> type="radio" name="<%= item.id %>"<%=cfg && (cfg[item.id] === false || (!cfg[item.id] && item.default === false)) ? " checked" : ""? " checked" : ""%>> Disabled </input>
                   </label>
                 </div>
               </div>
+
+              <%# Strings %>
               <% } else if (item.type === "string") { %>
                 <div class="field">
                   <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
                   <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
                   <div class="control">
-                    <input id="<%= item.id %>" <%=cfg && cfg[item.id] ? `value=${cfg[item.id]} ` : ""%>class="input" type="text" placeholder="<%= `${item.maximum}${item.maximum > 15 ? " characters maximum; will automatically be reduced." : " characters or less"}` %>">
+                    <input id="<%= item.id %>" value="<%= cfg && cfg[item.id] ? `${cfg[item.id]}` : ""%>"
+                    class="input" type="text" placeholder="<%= `${item.maximum}${item.maximum > 15 ? " characters maximum; will automatically be reduced." : " characters or less"}` %>">
                   </div>
                 </div>
+
+              <%# Channels %>
               <% } else if (item.type === "channelID") { %>
                 <div class="field">
                   <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
@@ -147,6 +162,8 @@
                     </div>
                   </div>
                 </div>
+
+              <%# Roles %>
               <% } else if(item.type === "roleID") { %>
                 <div class="field">
                   <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
@@ -164,6 +181,8 @@
                     </div>
                   </div>
                 </div>
+
+              <%# Numbers %>
               <% } else if (item.type === "number") { %>
                 <div class="field">
                   <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
@@ -178,6 +197,8 @@
                     </div>
                   </div>
                 </div>
+
+              <%# Punishments %>
               <% } else if (item.type === "punishment") { %>
                 <div class="field">
                   <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
@@ -190,6 +211,8 @@
                     </label>
                   </div>
                 </div>
+
+              <%# Raid Punishments %>
               <% } else if (item.type === "raidPunishment") { %>
                 <div class="field">
                   <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
@@ -203,12 +226,16 @@
                     </label>
                   </div>
                 </div>
+
+              <%# Emoji %>
               <% } else if (item.type === "emoji") { %>
                 <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
                 <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
                 <div id="twemoji-picker">
                   <button id="<%= item.id %>" class="trigger">📌</button>
                 </div>
+
+              <%# RoleArray %>
               <% } else if (item.type === "roleArray") { %>
                 <div class="field">
                   <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
@@ -224,6 +251,8 @@
                     </div>
                   </div>
                 </div>
+
+              <%# ChannelArray %>
               <% } else if (item.type === "channelArray") { %>
                 <div class="field">
                   <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
@@ -239,6 +268,8 @@
                     </div>
                   </div>
                 </div>
+
+              <%# Array %>
               <% } else if (item.type === "array") { %>
                 <div class="field">
                   <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
@@ -254,12 +285,12 @@
       </div>
     </section>
 
-    <%- include("../partials/footer") %>
+    <img src="/public/img/stare.png" id="stare" alt="👀">
     <%- include("../partials/modal") %>
+    <%- include("../partials/footer") %>
   </body>
 
   <script src="/public/js/manage.js"></script>
   <script src="/public/js/modal.js"></script>
-  <script src="/public/js/navbar.js"></script>
   <script src="/public/js/picker.js" type="module"></script>
 </html>

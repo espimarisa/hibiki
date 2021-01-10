@@ -4,7 +4,7 @@
     <%- include("../partials/head") %>
     <meta content="https://hibiki.app" property="og:url" />
     <meta content="<%= bot.user.username %>" property="og:title" />
-    <meta content="<%= bot.user.username %>" name="twittx1er:title" />
+    <meta content="<%= bot.user.username %>" name="twitter:title" />
     <meta content="An easy, customizable, and powerful Discord bot that does anything that your server needs." name="description" />
     <meta content="An easy, customizable, and powerful Discord bot that does anything that your server needs." property="og:description" />
     <meta content="An easy, customizable, and powerful Discord bot that does anything that your server needs." name="twitter:description" />
@@ -16,10 +16,11 @@
     <%- include("../partials/navbar") %>
     <div class="hero-body">
       <div class="container has-text-centered animate__animated animate__fadeIn animate__faster">
-        <img src="<%= bot.user.dynamicAvatarURL(null, 512) %>" class="logo" alt="logo" />
+        <img src="<%= bot.user.dynamicAvatarURL("jpeg", 512) %>" id="logo" alt="<%= bot.user.username %>" width="300" height="300" />
         <p class="is-size-2 has-text-weight-semibold has-text-light"><%= bot.user.username %></p>
         <p class="control has-text-centered">
-          <a href="/invite/" class="button is-large is-light">
+          <%# The button will look slightly off on phones. https://github.com/jgthms/bulma/issues/1572 %>
+          <a href="/invite/" class="button is-large is-rounded is-light is-size-4-desktop is-size-5-mobile">
             <span class="icon is-small">
               <em class="fa fa-plus"></em>
             </span>

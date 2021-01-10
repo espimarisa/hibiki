@@ -107,7 +107,6 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
 
   if (type === "roleArray") {
     const roles = bot.args.argtypes.roleArray(arg.split(/(?:\s{0,},\s{0,})|\s/), msg) as string[];
-    console.log(roles);
     if (!roles?.length) return "Invalid rolearray";
     return roles;
   }

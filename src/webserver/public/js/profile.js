@@ -104,8 +104,8 @@ window.addEventListener("load", async () => {
     // Sets string; emoji as content
     if (type === "string") element.value = profileConfig[p];
 
-    // Single string select
-    if (type === "selection") {
+    // Pronouns
+    if (type === "pronouns") {
       const opt = Array.from(element.children[0].children)[profileConfig[p]];
       if (!opt) return;
       document.getElementById(p).children[0].value = opt.innerText;
@@ -133,15 +133,15 @@ window.addEventListener("load", async () => {
       // Sets string; emoji in profileConfig
       if (type === "string") profileConfig[p] = element.value;
 
-      // Single string select
-      if (type === "selection") {
+      // Pronouns
+      if (type === "pronouns") {
         const pronouns = Array.from(element.children[0].children);
         const r = pronouns.indexOf(pronouns.find((a) => a.innerText === element.children[0].value));
         profileConfig[p] = r;
       }
 
       // Locale info
-      if (type === "autofill") {
+      if (type === "timezone") {
         profileConfig[p] = localeInfo.timeZone;
       }
     });
@@ -208,12 +208,12 @@ window.addEventListener("load", async () => {
   // Config changes
   function compareProfileConfig() {
     // Don't ask for confirmation on deletion
-    if (JSON.stringify(profileConfig === { id: id })) return;
+    if (profileConfig === { id: id }) return;
 
     refreshProfileConfig();
 
     // Compares objects; leave confirmation
-    if (JSON.stringify(oldcfg) !== JSON.stringify(guildConfig))
+    if (JSON.stringify(oldcfg) !== JSON.stringify(profileConfig))
       window.onbeforeunload = function () {
         return "Do you really want to leave?";
       };

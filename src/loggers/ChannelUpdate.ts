@@ -117,7 +117,6 @@ export class ChannelUpdate extends Logger {
      */
 
     if (event === "channelUpdate") {
-      console.log("hello");
       // Gets the logging channel
       const loggingChannel = await this.getChannel(channel.guild, TYPE, event);
       if (!loggingChannel) return;

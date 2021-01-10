@@ -7,7 +7,7 @@
 import type { HibikiClient } from "../../classes/Client";
 import type { NextFunction, Request, Response } from "express";
 import type { GuildInfo, Profile } from "passport-discord";
-import { localizeSetupItems } from "../../utils/format";
+import { localizeSetupItems, localizeProfileItems } from "../../utils/format";
 import { defaultAvatar } from "../../helpers/constants";
 import { validItems } from "../../utils/validItems";
 import express from "express";
@@ -38,7 +38,19 @@ export = (bot: HibikiClient) => {
   router.get("/profile/", checkAuth, async (req, res) => {
     const user = getAuthedUser(req.user as Profile);
     const userconfig = await bot.db.getUserConfig(user.id);
-    res.render("profile", { bot: bot, cfg: userconfig, page: req.url.split("/")[1], user: user, csrfToken: req.csrfToken() });
+    const localeString = bot.localeSystem.getLocaleFunction(userconfig?.locale || "en");
+    const localizeItem = (item: string, title = false) => localizeProfileItems(localeString, item, title);
+
+    res.render("profile", {
+      bot: bot,
+      cfg: userconfig,
+      items: validItems,
+      page: req.url.split("/")[1],
+      user: user,
+      csrfToken: req.csrfToken(),
+      localeString: localeString,
+      localizeItem: localizeItem,
+    });
   });
 
   // Server manager
