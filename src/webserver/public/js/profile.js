@@ -51,7 +51,7 @@ async function resetProfileConfig(id) {
   });
 }
 
-let oldcfg;
+// let oldcfg;
 
 // Listens on window load
 window.addEventListener("load", async () => {
@@ -66,7 +66,7 @@ window.addEventListener("load", async () => {
 
   if (!id) return;
   let profileConfig = await getProfileConfig(id);
-  oldcfg = { ...profileConfig };
+  // oldcfg = { ...profileConfig };
   if (!profileConfig) profileConfig = {};
 
   // Sets locale info
@@ -142,7 +142,14 @@ window.addEventListener("load", async () => {
         profileConfig[p] = r;
       }
 
-      // Locale info
+      // Locale
+      if (type === "locale") {
+        const pronouns = Array.from(element.children[0].children);
+        const r = pronouns.find((a) => a.innerText === element.children[0].value).id;
+        profileConfig[p] = r;
+      }
+
+      // Timezone info
       if (type === "timezone") {
         profileConfig[p] = localeInfo.timeZone;
       }
@@ -156,7 +163,7 @@ window.addEventListener("load", async () => {
     button.classList.add("is-loading");
     // Refreshes config
     refreshProfileConfig();
-    oldcfg = { ...profileConfig };
+    // oldcfg = { ...profileConfig };
     // Updates config
     updateProfileConfig(id, profileConfig).then((res) => {
       if (res.status === 200 || res.status === 204) {
@@ -182,7 +189,7 @@ window.addEventListener("load", async () => {
     const button = document.getElementById("delete");
     // Loading animation
     button.classList.add("is-loading");
-    oldcfg = { ...profileConfig };
+    // oldcfg = { ...profileConfig };
     // Updates config
     resetProfileConfig(id).then((res) => {
       if (res.status === 200) {

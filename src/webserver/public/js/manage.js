@@ -54,7 +54,7 @@ async function resetGuildConfig(id) {
   });
 }
 
-let oldcfg;
+// let oldcfg;
 let multiCats;
 
 // Listens on window load
@@ -99,7 +99,7 @@ window.addEventListener("load", async () => {
 
   if (!id) return;
   let guildConfig = await getGuildConfig(id);
-  oldcfg = { ...guildConfig };
+  // oldcfg = { ...guildConfig };
   if (!guildConfig) guildConfig = {};
 
   // Slices content
@@ -319,7 +319,7 @@ window.addEventListener("load", async () => {
     // Loading animation
     button.classList.add("is-loading");
     refreshGuildConfig();
-    oldcfg = { ...guildConfig };
+    // oldcfg = { ...guildConfig };
     // Updates config
     updateGuildConfig(id, guildConfig).then((res) => {
       if (res.status === 200 || res.status === 204) {
@@ -345,7 +345,7 @@ window.addEventListener("load", async () => {
     const button = document.getElementById("delete");
     // Loading animation
     button.classList.add("is-loading");
-    oldcfg = { ...guildConfig };
+    // oldcfg = { ...guildConfig };
     // Updates config
     resetGuildConfig(id).then((res) => {
       if (res.status === 200) {

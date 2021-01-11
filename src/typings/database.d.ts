@@ -57,7 +57,7 @@ interface GuildConfig {
 interface UserConfig {
   id?: string;
   bio?: string;
-  pronouns?: string;
+  pronouns?: any;
   timezone?: string;
   timezoneHide?: boolean;
   locale?: string;

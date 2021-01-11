@@ -323,6 +323,12 @@ export const validItems = [
     type: "pronouns",
   },
   {
+    emoji: "🌐",
+    category: "profile",
+    id: "locale",
+    type: "locale",
+  },
+  {
     emoji: "🕒",
     category: "profile",
     id: "timezone",

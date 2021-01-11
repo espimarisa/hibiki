@@ -7,7 +7,6 @@ import { timeoutHandler, waitFor } from "../../utils/waitFor";
 
 const deleteEmoji = "🗑";
 const items = validItems.filter((item) => item.category === "profile");
-let selectingPronouns = false;
 
 export class ProfileCommand extends Command {
   description = "Updates or views your profile's configuration.";
@@ -16,6 +15,12 @@ export class ProfileCommand extends Command {
   allowdisable = false;
 
   async run(msg: Message<TextChannel>) {
+    const localeEmojis = {};
+    const localeNames = {};
+    Object.keys(this.bot.localeSystem.locales).forEach((locale) => {
+      localeEmojis[this.bot.localeSystem.getLocale(locale, "EMOJI")] = this.bot.localeSystem.getLocale(locale, "NAME");
+      localeNames[this.bot.localeSystem.getLocale(locale, "EMOJI")] = locale;
+    });
     // Gets a user's config and updates it
     let userconfig = await this.bot.db.getUserConfig(msg.author.id);
     if (!userconfig) {
@@ -42,7 +47,16 @@ export class ProfileCommand extends Command {
     // Edits the embed with items
     const emojiArray = Object.keys(pronounEmojis);
     let reacting = false;
-    function editEmbed() {
+
+    function localizeLocale(item: any, localeSystem?: any) {
+      console.log(userconfig[item.id]);
+      if (item.type === "pronouns" && typeof userconfig[item.id] != "undefined") return pronouns[userconfig[item.id]];
+      else if (item.type === "locale" && userconfig[item.id] && localeSystem?.getLocale)
+        return localeSystem.getLocale(userconfig[item.id], "NAME");
+      else if (userconfig[item.id]) return userconfig[item.id];
+    }
+
+    function editEmbed(localeSystem?: any) {
       const primaryEmbed = {
         embed: {
           title: `👤 ${msg.string("general.PROFILE")}`,
@@ -51,7 +65,7 @@ export class ProfileCommand extends Command {
             .concat([{ emoji: deleteEmoji, label: msg.string("global.DELETE"), type: "delete", id: "delete" }])
             .map((item: Record<string, string>) => ({
               name: `${item.emoji} ${localizeProfileItems(msg.string, item.id, true)}`,
-              value: userconfig[item.id] || localizeProfileItems(msg.string, item.id),
+              value: localizeLocale(item, localeSystem) || localizeProfileItems(msg.string, item.id),
             })),
         },
       };
@@ -60,7 +74,7 @@ export class ProfileCommand extends Command {
     }
 
     // Adds the emojis to the items
-    const omsg = await msg.channel.createMessage(editEmbed());
+    const omsg = await msg.channel.createMessage(editEmbed(this.bot.localeSystem));
     async function addEmojis() {
       for await (const item of items) {
         if (!reacting) await omsg.addReaction(item.emoji);
@@ -78,7 +92,7 @@ export class ProfileCommand extends Command {
         if (m.id !== omsg.id) return;
         if (user.id !== msg.author.id) return;
         if (!emoji.name) return;
-        if (selectingPronouns) return;
+        if (reacting) return;
 
         // Deletes a user's config
         if (emoji.name === deleteEmoji) {
@@ -98,7 +112,7 @@ export class ProfileCommand extends Command {
           omsg.removeReaction(deleteEmoji, user.id);
           omsg.editEmbed(msg.string("global.SUCCESS"), msg.string("general.PROFILE_DELETED"), "success");
           setTimeout(() => {
-            omsg.edit(editEmbed());
+            omsg.edit(editEmbed(this.bot.localeSystem));
           }, 3000);
         }
 
@@ -110,7 +124,6 @@ export class ProfileCommand extends Command {
         // Handles pronoun selections
         if (setting.type === "pronouns") {
           reacting = true;
-          selectingPronouns = true;
           await omsg.removeReactions();
           emojiArray.forEach(async (emoji) => omsg.addReaction(emoji));
 
@@ -131,23 +144,63 @@ export class ProfileCommand extends Command {
               if (!emoji.name) return;
 
               // Gets the pronouns and updates the user's config
-              const pronouns = pronounEmojis[_emoji.name];
-              if (!pronouns) return;
-              userconfig.pronouns = pronouns;
+              const pronounss = pronouns.indexOf(pronounEmojis[_emoji.name]);
+              if (typeof pronounss === "undefined") return;
+              userconfig.pronouns = pronounss;
+              console.log(pronounss);
               this.bot.db.updateUserConfig(userconfig);
 
               // Cleans up afterwards
-              await omsg.edit(editEmbed());
+              await omsg.edit(editEmbed(this.bot.localeSystem));
               await omsg.removeReactions();
               reacting = false;
               addEmojis();
-              selectingPronouns = false;
               return true;
             },
 
             this.bot,
           ).catch((err) => {
-            selectingPronouns = false;
+            reacting = false;
+            if (err !== "timeout") throw err;
+          });
+        } else if (setting.type === "locale") {
+          reacting = true;
+          await omsg.removeReactions();
+          Object.keys(localeEmojis).forEach(async (emoji) => omsg.addReaction(emoji));
+
+          omsg.editEmbed(
+            "select locale bitch",
+            Object.entries(localeEmojis)
+              .map((p) => `${p[0]}: ${p[1]}`)
+              .join("\n"),
+          );
+
+          // Waits for message reactions for locale
+          await waitFor(
+            "messageReactionAdd",
+            10000,
+            async (_m: Message<TextChannel>, _emoji: Emoji, _user: Member) => {
+              if (_m.id !== omsg.id) return;
+              if (_user.id !== msg.author.id) return;
+              if (!emoji.name) return;
+
+              // Gets the locale and updates the user's config
+              const locale = localeNames[_emoji.name];
+              if (!locale) return;
+              userconfig.locale = locale;
+              this.bot.db.updateUserConfig(userconfig);
+
+              // Cleans up afterwards
+              await omsg.edit(editEmbed(this.bot.localeSystem));
+              await omsg.removeReactions();
+              reacting = false;
+              addEmojis();
+              return true;
+            },
+
+            this.bot,
+          ).catch((err) => {
+            reacting = false;
             if (err !== "timeout") throw err;
           });
         } else {
