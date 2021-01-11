@@ -5,6 +5,7 @@
 
 import { logger } from "../helpers/logger";
 import { r } from "rethinkdb-ts";
+import { setupRethink } from "../utils/setup";
 import config from "../../config.json";
 
 /** Starts RethinkDB */
@@ -20,10 +21,15 @@ export function startRethink() {
 }
 
 // Starts RethinkDB and catches any errors
-startRethink().catch((err) => {
-  logger.error(`RethinkDB failed to start. Be sure the config file is setup properly and that it's running. Exiting. (error: ${err})`);
-  process.exit(1);
-});
+startRethink()
+  .catch((err) => {
+    logger.error(`RethinkDB failed to start. Be sure the config file is setup properly and that it's running. Exiting. (error: ${err})`);
+    process.exit(1);
+  })
+
+  .then(async () => {
+    await setupRethink();
+  });
 
 export class RethinkProvider {
   db: typeof r;
