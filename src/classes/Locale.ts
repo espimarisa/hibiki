@@ -92,10 +92,11 @@ export class LocaleSystem {
   }
 
   private _findLocaleString(language: string, fieldName: string, category: string[]) {
+    if (!this.locales?.[language]) return;
     let output = "";
 
     // Attempts to find the string if the category isn't provided
-    if (!this.locales[language][category[0]] && !this.locales[fieldName]) {
+    if (!this.locales?.[language]?.[category[0]] && !this.locales?.[fieldName]) {
       Object.getOwnPropertyNames(this.locales[language]).forEach((cat) => {
         Object.getOwnPropertyNames(this.locales[language][cat]).forEach((locale) => {
           if (locale === fieldName) output = this.locales[language][cat][locale];
@@ -103,10 +104,10 @@ export class LocaleSystem {
       });
 
       // Sets the output if the category exists
-    } else if (this.locales[language][category[0]] && this.locales[language][category[0]][category[1]]) {
+    } else if (this.locales?.[language]?.[category[0]] && this.locales?.[language]?.[category[0]]?.[category[1]]) {
       output = this.locales[language][category[0]][category[1]];
       // Sets the locale if no category exists
-    } else if (this.locales[language][fieldName]) {
+    } else if (this.locales?.[language]?.[fieldName]) {
       output = this.locales[language][fieldName];
     }
 

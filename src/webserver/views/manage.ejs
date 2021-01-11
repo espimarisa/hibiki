@@ -3,9 +3,6 @@
   <head>
     <%- include("../partials/head") %>
     <meta name="csrf-token" content="<%= csrfToken %>" />
-    <script src="https://cdn.jsdelivr.net/npm/bulmaselect@1.0.12/dist/bulmaselect.min.js" crossorigin="anonymous"></script>
-    <script src="/public/js/navbar.js" crossorigin="anonymous"></script>
-    <script src="/public/js/imageClick.js" crossorigin="anonymous"></script>
     <title>Manage - <%= guild.name %></title>
   </head>
 
@@ -133,6 +130,7 @@
                   </label>
                 </div>
               </div>
+              <br>
 
               <%# Strings %>
               <% } else if (item.type === "string") { %>
@@ -144,6 +142,7 @@
                     class="input" type="text" placeholder="<%= `${item.maximum}${item.maximum > 15 ? " characters maximum; will automatically be reduced." : " characters or less"}` %>">
                   </div>
                 </div>
+                <br>
 
               <%# Channels %>
               <% } else if (item.type === "channelID") { %>
@@ -163,9 +162,10 @@
                     </div>
                   </div>
                 </div>
+                <br>
 
               <%# Roles %>
-              <% } else if(item.type === "roleID") { %>
+              <% } else if (item.type === "roleID") { %>
                 <div class="field">
                   <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
                   <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
@@ -176,12 +176,13 @@
                         <option id="none">None</option>
                         <% for (let i = 0; i < roles.length; i++) { %>
                         <% let role = roles[i] %>
-                        <option id=<%=role.id%>><%= role.name %></option>
+                        <option <%= `style=color:#${role.color}` %> id=<%=role.id%>><%= role.name %></option>
                         <% } %>
                       </select>
                     </div>
                   </div>
                 </div>
+                <br>
 
               <%# Numbers %>
               <% } else if (item.type === "number") { %>
@@ -198,6 +199,7 @@
                     </div>
                   </div>
                 </div>
+                <br>
 
               <%# Punishments %>
               <% } else if (item.type === "punishment") { %>
@@ -212,6 +214,7 @@
                     </label>
                   </div>
                 </div>
+                <br>
 
               <%# Raid Punishments %>
               <% } else if (item.type === "raidPunishment") { %>
@@ -227,14 +230,17 @@
                     </label>
                   </div>
                 </div>
+                <br>
 
               <%# Emoji %>
               <% } else if (item.type === "emoji") { %>
                 <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
                 <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
                 <div id="twemoji-picker">
+                  <%# TODO: Either make our own picker or style this. %>
                   <button id="<%= item.id %>" class="trigger">📌</button>
                 </div>
+                <br>
 
               <%# RoleArray %>
               <% } else if (item.type === "roleArray") { %>
@@ -252,6 +258,7 @@
                     </div>
                   </div>
                 </div>
+                <br>
 
               <%# ChannelArray %>
               <% } else if (item.type === "channelArray") { %>
@@ -269,6 +276,7 @@
                     </div>
                   </div>
                 </div>
+                <br>
 
               <%# Array %>
               <% } else if (item.type === "array") { %>
@@ -280,17 +288,22 @@
                     </div>
                   </div>
                 </div>
+                <br>
+
               <% } %>
           <% })}); %>
         </div>
       </div>
     </section>
 
-    <img src="/public/img/stare.png" id="stare" alt="👀">
+    <img src="/public/img/stare.png" id="stare" class="is-hidden-mobile" alt="👀">
     <%- include("../partials/modal") %>
     <%- include("../partials/footer") %>
   </body>
 
+  <script src="/public/js/navbar.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bulmaselect@1.0.12/dist/bulmaselect.min.js" crossorigin="anonymous"></script>
+  <script src="/public/js/imageClick.js"></script>
   <script src="/public/js/manage.js"></script>
   <script src="/public/js/modal.js"></script>
   <script src="/public/js/picker.js" type="module"></script>

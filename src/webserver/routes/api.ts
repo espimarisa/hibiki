@@ -8,7 +8,7 @@ import type { Channel, Role } from "eris";
 import type { Profile } from "passport-discord";
 import type { HibikiClient } from "../../classes/Client";
 import type { Command } from "../../classes/Command";
-import { defaultEmojiRegex } from "../../helpers/constants";
+import { defaultEmojiRegex, fullInviteRegex } from "../../helpers/constants";
 import { validItems } from "../../utils/validItems";
 import dayjs from "dayjs";
 import express from "express";
@@ -111,13 +111,23 @@ export = (bot: HibikiClient) => {
       if (item.type === "number") {
         if (typeof opt !== "number") delete guildConfig[c];
         if (item.maximum && opt > item.maximum) guildConfig[c] = item.maximum;
-        if (item.minimum && opt < item.minimum) guildConfig[c] = item.minimum
+        if (item.minimum && opt < item.minimum) guildConfig[c] = item.minimum;
       }
       // Punishments
-      else if (item.type === "punishment" && Array.isArray(guildConfig[c]) && guildConfig[c].length) guildConfig[c] = opt.filter((p: string) => ["Purge", "Warn", "Mute"].includes(p));
-      else if (item.type === "raidPunishment" && Array.isArray(guildConfig[c]) && guildConfig[c].length) guildConfig[c] = opt.filter((p: string) => ["Ban", "Kick", "Mute"].includes(p));
-      // Channel
-      else if (item.type === "channelID" && !bot.guilds.get(guild.id).channels.find((channel) => channel.id === opt)) guildConfig[c] = null;
+      else if (item.type === "punishment" && Array.isArray(guildConfig[c]) && guildConfig[c].length) {
+        guildConfig[c] = opt.filter((p: string) => ["Purge", "Warn", "Mute"].includes(p));
+      }
+
+      // Raid punishments
+      else if (item.type === "raidPunishment" && Array.isArray(guildConfig[c]) && guildConfig[c].length) {
+        guildConfig[c] = opt.filter((p: string) => ["Ban", "Kick", "Mute"].includes(p));
+      }
+
+      // Channel IDs
+      else if (item.type === "channelID" && !bot.guilds.get(guild.id).channels.find((channel) => channel.id === opt)) {
+        guildConfig[c] = null;
+      }
+
       // ChannelArray
       else if (item.type === "channelArray" && Array.isArray(guildConfig[c]) && guildConfig[c].length) {
         guildConfig[c] = opt.filter((c: Channel) => bot.guilds.get(guild.id).channels.find((channel) => channel.id === c.id));
@@ -130,18 +140,43 @@ export = (bot: HibikiClient) => {
       }
 
       // Role IDs
-      else if (item.type === "roleID" && !bot.guilds.get(guild.id).roles.find((r) => r.id === opt)) delete guildConfig[c];
+      else if (item.type === "roleID" && !bot.guilds.get(guild.id).roles.find((r) => r.id === opt)) {
+        delete guildConfig[c];
+      }
+
       // Booleans
-      else if (item.type === "bool" && typeof opt !== "boolean") delete guildConfig[c];
+      else if (item.type === "bool" && typeof opt !== "boolean") {
+        delete guildConfig[c];
+      }
+
       // Strings
       else if (item.type === "string") {
-        if (item.maximum) guildConfig[c] = opt.substring(0, item.maximum);
-        if (item.minimum && opt.length < item.minimum) delete guildConfig[c];
+        if (item.inviteFilter) guildConfig[c] = guildConfig[c].replace(fullInviteRegex, "");
+        if (item.maximum) guildConfig[c] = guildConfig[c].substring(0, item.maximum);
+        if (item.minimum && guildConfig[c].length < item.minimum) delete guildConfig[c];
       }
+
       // Emojis
-      else if (item.type === "emoji" && defaultEmojiRegex.test(guildConfig[c])) delete guildConfig[c];
-      else if (item.type === "punishment") guildConfig[c] = guildConfig[c].filter((punishment: string) => ["Purge", "Mute", "Warn"].includes(punishment));
-      else if (item.type === "raidPunishment") guildConfig[c] = guildConfig[c].filter((punishment: string) => ["Ban", "Kick", "Mute"].includes(punishment));
+      else if (item.type === "emoji" && defaultEmojiRegex.test(guildConfig[c])) {
+        delete guildConfig[c];
+      }
+
+      // Locales
+      else if (item.type === "locale") {
+        console.log(Object.keys(bot.localeSystem.locales));
+        console.log(guildConfig[c]);
+        delete guildConfig[c];
+      }
+
+      // Punishments
+      else if (item.type === "punishment") {
+        guildConfig[c] = guildConfig[c].filter((punishment: string) => ["Purge", "Mute", "Warn"].includes(punishment));
+      }
+
+      // Raid punishments
+      else if (item.type === "raidPunishment") {
+        guildConfig[c] = guildConfig[c].filter((punishment: string) => ["Ban", "Kick", "Mute"].includes(punishment));
+      }
 
       // Disabled categories
       if (c === "disabledCategories" && guildConfig[c]) {
@@ -160,13 +195,20 @@ export = (bot: HibikiClient) => {
       if (c === "disabledCmds" && guildConfig[c])
         guildConfig[c] = guildConfig[c].filter((cmd) => {
           const command = bot.commands.map((c) => c.name === cmd);
-          // @ts-expect-error
+          // @ts-ignore
           if (command?.allowDisable) return true;
           return false;
         });
 
       // Arrays
-      if ((item.type === "channelArray" || item.type === "roleArray" || item.type === "punishment" || item.type === "raidPunishment" || item.type === "array") && (!Array.isArray(guildConfig[c]) || !guildConfig[c].length)) {
+      if (
+        (item.type === "channelArray" ||
+          item.type === "roleArray" ||
+          item.type === "punishment" ||
+          item.type === "raidPunishment" ||
+          item.type === "array") &&
+        (!Array.isArray(guildConfig[c]) || !guildConfig[c].length)
+      ) {
         delete guildConfig[c];
       }
     });
@@ -233,7 +275,7 @@ export = (bot: HibikiClient) => {
     if (!req.body) return res.status(204).end();
     profileConfig = req.body;
 
-    if(profileConfig.id !== user.id) return res.status(403).end();
+    if (profileConfig.id !== user.id) return res.status(403).end();
 
     // Each profileConfig type/option
     Object.keys(profileConfig).forEach((c) => {
@@ -244,19 +286,19 @@ export = (bot: HibikiClient) => {
       // Finds the item
       const item = validItems.find((i) => i.id === c);
       if (!item || item.category !== "profile") delete profileConfig[c];
-
       // Numbers
       else if (item.type === "number") {
         if (typeof opt !== "number") return delete profileConfig[c];
         if (item.maximum && opt > item.maximum) profileConfig[c] = item.maximum;
-        if (item.minimum && opt < item.minimum) profileConfig[c] = item.minimum
+        if (item.minimum && opt < item.minimum) profileConfig[c] = item.minimum;
       }
       // Booleans
       else if (item.type === "bool" && typeof opt !== "boolean") delete profileConfig[c];
       // Strings
       else if (item.type === "string") {
-        if (item.maximum) profileConfig[c] = opt.substring(0, item.maximum);
-        if (item.minimum && opt.length < item.minimum) delete profileConfig[c];
+        if (item.inviteFilter) profileConfig[c] = profileConfig[c].replace(fullInviteRegex, "");
+        if (item.maximum) profileConfig[c] = profileConfig[c].substring(0, item.maximum);
+        if (item.minimum && profileConfig[c].length < item.minimum) delete profileConfig[c];
       }
       // Arrays
       else if (item.type === "array" && !Array.isArray(profileConfig[c])) delete profileConfig[c];

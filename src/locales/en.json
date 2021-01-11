@@ -1,4 +1,7 @@
 {
+  "NAME": "English",
+  "EMOJI": "🇺🇸",
+
   "fun": {
     "DICE": "Dice",
     "DICE_RESULT": "The **{sides}-sided** die landed on **{result}**.",
@@ -23,6 +26,12 @@
     "CONFIG_AGREECHANNEL_DESCRIPTION": "The channel where new members can run the agree command in.",
     "CONFIG_AGREEROLE": "Agree Role",
     "CONFIG_AGREEROLE_DESCRIPTION": "The role given to members after running the agree command.",
+    "CONFIG_DISABLEDCMDS": "Disabled Commands",
+    "CONFIG_DISABLEDCMDS_DESCRIPTION": "Commands to prevent from running in the server.",
+    "CONFIG_PREFIX": "Prefix",
+    "CONFIG_PREFIX_DESCRIPTION": "Text put before running a command.",
+    "CONFIG_ASSIGNABLEROLES": "Assignable Roles",
+    "CONFIG_ASSIGNABLEROLES_DESCRIPTION": "Roles that users can self-assign to themselves.",
     "CONFIG_ANTIINVITE": "AntiInvite",
     "CONFIG_ANTIINVITE_DESCRIPTION": "Enables or disables the AntiInvite module.",
     "CONFIG_ANTINEWLINES": "Anti New Lines",
@@ -142,6 +151,7 @@
     "PROFILE_REACT_PRONOUNS": "React with your preferred pronouns.",
     "PROFILE_TIMEZONE_DESCRIPTION": "Sets your timezone to show your current time on your profile.",
     "PROFILE_TIMEZONEHIDE_DESCRIPTION": "Toggles hiding your current time from your profile.",
+    "PROFILE_LOCALE_DESCRIPTION": "The language you prefer text and commands to be displayed in.",
     "PUNISHMENTS_FOR": "Punishments for {label}",
     "SPLASHBANNER_ERROR": "This server doesn't have a splash page banner."
   },
@@ -156,6 +166,7 @@
     "DELETE": "Delete",
     "DISABLED": "disabled",
     "ENABLED": "enabled",
+    "ENABLED2": "Enabled",
     "ERROR": "❌ Error",
     "ERROR_ALLOWDMS": "The **{command}** command can only be ran in a server.",
     "ERROR_CLIENTPERMS": "I need permission to **{perms}** to run that command.",
@@ -174,6 +185,7 @@
     "GREETINGS": "Member Greetings",
     "HAS_BEEN": "has been",
     "LATENCY": "Latency",
+    "LOCALE": "Locale",
     "LOGGING": "Logging",
     "MUSIC": "Music",
     "NO": "No",

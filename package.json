@@ -24,7 +24,7 @@
   "scripts": {
     "build": "tsc",
     "build:sass": "cross-env sass ./src/webserver/public/sass/:./src/webserver/public/css/",
-    "build:static": "cross-env copyfiles './src/webserver/**/**/*.{css,ejs}' './dist/'",
+    "build:static": "cross-env copyfiles './src/webserver/**/**/*.{css,jpg,png,ejs}' './dist/'",
     "dev": "npm run build:sass && npm run nodemon",
     "format": "cross-env prettier --config .prettierrc 'src/**/*.{css,htm,html,js,json,ts,tsx}' --write",
     "lint": "eslint --fix .",
