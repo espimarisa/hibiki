@@ -6,6 +6,8 @@
 
 import type { HibikiClient } from "../classes/Client";
 import type { NextFunction, Request, Response } from "express";
+import { readdirSync, readFileSync} from "fs";
+import { minify } from "terser";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import csurf from "csurf";
@@ -84,6 +86,34 @@ export async function startDashboard(bot: HibikiClient) {
   app.set("views", `${__dirname}/views`);
   app.set("partials", `${__dirname}/partials`);
   app.set("view engine", "ejs");
+
+  // Minifies files if running in production
+  if (process.env.NODE_ENV === "production") {
+    const files = readdirSync(`${__dirname}/public/js`, { withFileTypes: true });
+    for (const file of files) {
+      if (file.isDirectory()) return;
+      if (!file.name.endsWith(".js")) return;
+      const fileSource = readFileSync(`${__dirname}/public/js/${file.name}`, { encoding: "utf-8" });
+      const minifiedFile = await minify(fileSource);
+
+      // Falls back to using non-minified files
+      if (!minifiedFile.code) {
+        bot.log.error(`Error while minifying ${file.name}, the non-minified one will be served instead.`);
+        app.use(`/public/js/${file.name}`, (req, res) => {
+          res.send(fileSource);
+        });
+
+        return;
+      }
+
+      // Uses the minified files
+      app.use(`/public/js/${file.name}`, (req, res) => {
+        res.set("Content-Type", "application/javascript").send(minifiedFile.code);
+      });
+    }
+  }
+
+
   app.use("/public/", express.static(`${__dirname}/public`, { dotfiles: "allow" }));
 
   // Routes and APIs
