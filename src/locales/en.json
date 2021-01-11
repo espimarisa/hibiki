@@ -26,12 +26,6 @@
     "CONFIG_AGREECHANNEL_DESCRIPTION": "The channel where new members can run the agree command in.",
     "CONFIG_AGREEROLE": "Agree Role",
     "CONFIG_AGREEROLE_DESCRIPTION": "The role given to members after running the agree command.",
-    "CONFIG_DISABLEDCMDS": "Disabled Commands",
-    "CONFIG_DISABLEDCMDS_DESCRIPTION": "Commands to prevent from running in the server.",
-    "CONFIG_PREFIX": "Prefix",
-    "CONFIG_PREFIX_DESCRIPTION": "Text put before running a command.",
-    "CONFIG_ASSIGNABLEROLES": "Assignable Roles",
-    "CONFIG_ASSIGNABLEROLES_DESCRIPTION": "Roles that users can self-assign to themselves.",
     "CONFIG_ANTIINVITE": "AntiInvite",
     "CONFIG_ANTIINVITE_DESCRIPTION": "Enables or disables the AntiInvite module.",
     "CONFIG_ANTINEWLINES": "Anti New Lines",
@@ -46,6 +40,8 @@
     "CONFIG_ANTIRAIDTHRESHOLD_DESCRIPTION": "Number of members that can join within 5 seconds before AntiRaid runs.",
     "CONFIG_ANTISPAM": "AntiSpam",
     "CONFIG_ANTISPAM_DESCRIPTION": "Enables or disables the AntiSpam module.",
+    "CONFIG_ASSIGNABLEROLES": "Assignable Roles",
+    "CONFIG_ASSIGNABLEROLES_DESCRIPTION": "Roles that users can self-assign to themselves.",
     "CONFIG_ATTEMPTS_LEFT": "**{attempts}** attempts left before exiting.",
     "CONFIG_AUTOROLES": "Auto Roles",
     "CONFIG_AUTOROLES_DESCRIPTION": "Roles automatically assigned to new members.",
@@ -56,6 +52,8 @@
     "CONFIG_DELETE_DESCRIPTION": "Deletes and resets the server's config.",
     "CONFIG_DELETED": "Deleted and reset the server's config.",
     "CONFIG_DESCRIPTION": "To get more info about a command, run `{prefix}help`.",
+    "CONFIG_DISABLEDCMDS": "Disabled Commands",
+    "CONFIG_DISABLEDCMDS_DESCRIPTION": "Commands to prevent from running in the server.",
     "CONFIG_EASYTRANSLATE": "EasyTranslate",
     "CONFIG_EASYTRANSLATE_DESCRIPTION": "Auto translate messages reacted to with a flag.",
     "CONFIG_EVENTLOGGING": "Event Logging Channel",
@@ -100,6 +98,8 @@
     "CONFIG_PINEMOJI_DESCRIPTION": "The emoji to trigger the pinboard. Defaults to 📌.",
     "CONFIG_PINSELFPINNING": "Self Pinning",
     "CONFIG_PINSELFPINNING_DESCRIPTION": "Whether members can self pin their own messages.",
+    "CONFIG_PREFIX": "Prefix",
+    "CONFIG_PREFIX_DESCRIPTION": "Text put before running a command.",
     "CONFIG_ROLEARRAYTOOLONG": "The maximimum amount of roles is {maximum}. Try again with less.",
     "CONFIG_SNIPINGENABLE": "Message Sniping",
     "CONFIG_SNIPINGENABLE_DESCRIPTION": "Enables or disables message sniping",
@@ -147,11 +147,11 @@
     "PROFILE_DELETE_CONFIRMATION": "Are you sure you'd like to delete your profile data?",
     "PROFILE_DELETE_DESCRIPTION": "Deletes and resets your profile data.",
     "PROFILE_DELETED": "Deleted and cleared your profile data.",
+    "PROFILE_LOCALE_DESCRIPTION": "The language you prefer text and commands to be displayed in.",
     "PROFILE_PRONOUNS_DESCRIPTION": "Sets the preferred pronouns you go by.",
     "PROFILE_REACT_PRONOUNS": "React with your preferred pronouns.",
     "PROFILE_TIMEZONE_DESCRIPTION": "Sets your timezone to show your current time on your profile.",
     "PROFILE_TIMEZONEHIDE_DESCRIPTION": "Toggles hiding your current time from your profile.",
-    "PROFILE_LOCALE_DESCRIPTION": "The language you prefer text and commands to be displayed in.",
     "PUNISHMENTS_FOR": "Punishments for {label}",
     "SPLASHBANNER_ERROR": "This server doesn't have a splash page banner."
   },
@@ -224,7 +224,6 @@
     "LIZARD": "Lizard",
     "SPACEPHOTO": "Space Photo"
   },
-
   "moderation": {
     "KICK": "Kick",
     "KICK_CANCELLED": "Cancelled kicking **{member}**.",
@@ -236,7 +235,6 @@
     "KICKED_USER": "**{member}** was kicked by **{author}**.",
     "PURGE_DESCRIPTION": "purged {msgs:# messages#! message!}"
   },
-
   "music": {
     "ADDED": "Added",
     "ADDED_PLAYLIST": "Added playlist **{name}** to the queue.",

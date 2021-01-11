@@ -6,7 +6,7 @@
 
 import type { HibikiClient } from "../classes/Client";
 import type { NextFunction, Request, Response } from "express";
-import { readdirSync, readFileSync} from "fs";
+import { readFileSync, readdirSync } from "fs";
 import { minify } from "terser";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -112,7 +112,6 @@ export async function startDashboard(bot: HibikiClient) {
       });
     }
   }
-
 
   app.use("/public/", express.static(`${__dirname}/public`, { dotfiles: "allow" }));
 
