@@ -7,7 +7,7 @@
 import type { HibikiClient } from "../../classes/Client";
 import type { NextFunction, Request, Response } from "express";
 import type { GuildInfo, Profile } from "passport-discord";
-import { localizeSetupItems, localizeProfileItems } from "../../utils/format";
+import { localizeProfileItems, localizeSetupItems } from "../../utils/format";
 import { defaultAvatar } from "../../helpers/constants";
 import { validItems } from "../../utils/validItems";
 import express from "express";
@@ -18,6 +18,11 @@ export = (bot: HibikiClient) => {
     if (req.isAuthenticated()) return next();
     return res.redirect(301, "../../auth/");
   };
+
+  const localeNames = {};
+  Object.keys(bot.localeSystem.locales).forEach((locale) => {
+    localeNames[locale] = bot.localeSystem.getLocale(locale, "NAME");
+  });
 
   // Gets authed user's info
   const getAuthedUser = (user: Profile) => ({
@@ -50,6 +55,7 @@ export = (bot: HibikiClient) => {
       csrfToken: req.csrfToken(),
       localeString: localeString,
       localizeItem: localizeItem,
+      locales: localeNames,
     });
   });
 

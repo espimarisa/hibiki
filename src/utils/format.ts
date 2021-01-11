@@ -133,10 +133,16 @@ export function localizeProfileItems(string: LocaleString, item: string, title =
     case "delete":
       if (title) return string("global.DELETE");
       return string("general.PROFILE_DELETE_DESCRIPTION");
+    case "locale":
+      if (title) return string("global.LOCALE");
+      return string("general.PROFILE_LOCALE_DESCRIPTION");
+    case undefined:
+    default:
+      return item;
   }
 }
 
-/** Localizes setup items */
+// Localizes setup items
 export function localizeSetupItems(string: LocaleString, item: string, title = false, punishment = false) {
   switch (item) {
     case "agreeChannel":
@@ -257,6 +263,15 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
     case "greetingFooter":
       if (title) return string("general.CONFIG_GREETINGFOOTER");
       return string("general.CONFIG_GREETINGFOOTER_DESCRIPTION");
+    case "disabledCmds":
+      if (title) return string("general.CONFIG_DISABLEDCMDS");
+      return string("general.CONFIG_DISABLEDCMDS_DESCRIPTION");
+    case "prefix":
+      if (title) return string("general.CONFIG_PREFIX");
+      return string("general.CONFIG_PREFIX_DESCRIPTION");
+    case "assignableRoles":
+      if (title) return string("general.CONFIG_ASSIGNABLEROLES");
+      return string("general.CONFIG_ASSIGNABLEROLES_DESCRIPTION");
     case undefined:
     default:
       return item;

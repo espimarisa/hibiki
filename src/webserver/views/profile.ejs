@@ -42,6 +42,8 @@
       <br />
 
       <% items.forEach(item => { if(item.category !== "profile") return; %>
+
+      <%# Strings %>
       <% if (item.type === "string") { %>
         <div class="field">
           <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
@@ -51,6 +53,9 @@
             placeholder="<%= `${item.maximum}${item.maximum > 15 ? " characters maximum; will automatically be reduced." : " characters or less"}` %>" />
           </div>
         </div>
+        <br>
+
+      <%# Pronouns %>
       <% } else if (item.type === "pronouns") { %>
         <div class="field">
           <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
@@ -66,6 +71,26 @@
             </div>
           </div>
         </div>
+        <br>
+
+      <%# Locale %>
+      <% } else if (item.type === "locale") {%>
+        <div class="field">
+          <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
+          <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
+          <div class="control">
+            <div id="<%= item.id %>" class="select">
+              <select>
+                <% Object.keys(locales).forEach(locale => { %>
+                  <option <%= cfg && cfg[item.id] === locale ? "selected " : "" %>id="<%= locale %>"><%= locales[locale] %></option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
+        </div>
+        <br>
+
+      <%# Timezone %>
       <% } else if (item.type === "timezone") { %>
         <div class="field">
           <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
@@ -74,6 +99,9 @@
             <input class="input" id="<%= item.id %>" type="text" placeholder="Timezone not detected." disabled />
           </div>
         </div>
+        <br>
+
+      <%# Booleans %>
       <% } else if (item.type === "bool") {
         let switchName = `${item.id}Switch` %>
         <div class="field">
@@ -81,9 +109,11 @@
           <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
           <div class="field" id="<%= item.id %>" class="control">
             <input <%=cfg && cfg[item.id] ? "checked " : ""%>id="<%= switchName %>" type="checkbox" name="<%= switchName %>" class="switch is-rounded is-link" />
-            <label for="<%= switchName %>"><%= localeString("global.ENABLED") %></label>
+            <label for="<%= switchName %>"><%= localeString("global.ENABLED2") %></label>
           </div>
         </div>
+        <br>
+
       <% } %>
       <% }) %>
     </section>
@@ -92,6 +122,7 @@
   </body>
 
   <%# Imports scripts %>
+  <script src="/public/js/navbar.js"></script>
   <script src="/public/js/modal.js"></script>
   <script src="/public/js/profile.js"></script>
 </html>
