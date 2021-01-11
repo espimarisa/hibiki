@@ -370,21 +370,21 @@ window.addEventListener("load", async () => {
     });
   });
 
-  // Config changes
-  function compareGuildConfig() {
-    // Don't ask for confirmation on deletion
-    if (guildConfig === { id: id }) return;
-    refreshGuildConfig();
+  // // Config changes
+  // function compareGuildConfig() {
+  //   // Don't ask for confirmation on deletion
+  //   if (guildConfig === { id: id }) return;
+  //   refreshGuildConfig();
 
-    // Compares objects; leave confirmation
-    if (JSON.stringify(oldcfg) !== JSON.stringify(guildConfig))
-      window.onbeforeunload = function () {
-        return "Do you really want to leave?";
-      };
-    else window.onbeforeunload = null;
-  }
+  //   // Compares objects; leave confirmation
+  //   if (JSON.stringify(oldcfg) !== JSON.stringify(guildConfig))
+  //     window.onbeforeunload = function () {
+  //       return "Do you really want to leave?";
+  //     };
+  //   else window.onbeforeunload = null;
+  // }
 
-  // Event listeners
-  document.addEventListener("click", compareGuildConfig);
-  document.addEventListener("input", compareGuildConfig);
+  // // Event listeners
+  // document.addEventListener("click", compareGuildConfig);
+  // document.addEventListener("input", compareGuildConfig);
 });

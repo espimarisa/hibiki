@@ -77,8 +77,10 @@ window.addEventListener("load", async () => {
   [document.getElementById("bio")].forEach((d) => {
     d.addEventListener("input", (starget) => {
       const e = starget.target;
-      if (e.id === "bio" && e.value.length > 200) e.value = e.value.substring(0, 200);
-      // TODO: implement ad blocker here (view bio.js)
+      if (e.id === "bio") {
+        if (e.value.length > 200) e.value = e.value.substring(0, 200);
+        e.value = e.value.replace(/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|com)|discordapp\.com\/invite)\/.+\w/i, "");
+      }
     });
   });
 
@@ -205,22 +207,22 @@ window.addEventListener("load", async () => {
     });
   });
 
-  // Config changes
-  function compareProfileConfig() {
-    // Don't ask for confirmation on deletion
-    if (profileConfig === { id: id }) return;
+  // // Config changes
+  // function compareProfileConfig() {
+  //   // Don't ask for confirmation on deletion
+  //   if (profileConfig === { id: id }) return;
 
-    refreshProfileConfig();
+  //   refreshProfileConfig();
 
-    // Compares objects; leave confirmation
-    if (JSON.stringify(oldcfg) !== JSON.stringify(profileConfig))
-      window.onbeforeunload = function () {
-        return "Do you really want to leave?";
-      };
-    else window.onbeforeunload = null;
-  }
+  //   // Compares objects; leave confirmation
+  //   if (JSON.stringify(oldcfg) !== JSON.stringify(profileConfig))
+  //     window.onbeforeunload = function () {
+  //       return "Do you really want to leave?";
+  //     };
+  //   else window.onbeforeunload = null;
+  // }
 
-  // Event listeners
-  document.addEventListener("click", compareProfileConfig);
-  document.addEventListener("input", compareProfileConfig);
+  // // Event listeners
+  // document.addEventListener("click", compareProfileConfig);
+  // document.addEventListener("input", compareProfileConfig);
 });
