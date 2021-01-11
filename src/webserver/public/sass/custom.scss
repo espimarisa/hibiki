@@ -56,7 +56,7 @@ a.navbar-item,
 }
 
 .sticky-buttons {
-  background: $body-background-color;
+  background: #fff;
   position: sticky;
   position: -webkit-sticky;
   padding-top: 10px;
@@ -64,6 +64,13 @@ a.navbar-item,
   top: 0px;
   z-index: 35;
 }
+
+@media (prefers-color-scheme: dark) {
+  .sticky-buttons {
+    background: #17181c;
+  }
+}
+
 
 // Mixin for animations
 @mixin keyframes($name) {
