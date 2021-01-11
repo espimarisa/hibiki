@@ -25,7 +25,7 @@ const requiredtables = [
   "warnings",
 ];
 
-async function setupRethink() {
+export async function setupRethink() {
   await startRethink().catch((err) => {
     logger.error(`RethinkDB failed to start. Be sure the config file is setup properly and that it's running. Exiting. (error: ${err})`);
     process.exit(1);
