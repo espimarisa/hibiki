@@ -105,23 +105,26 @@ export = (bot: HibikiClient) => {
 
       // Finds the item
       const item = validItems.find((i) => i.id === c);
-      if (!item || item.category === "profile" || opt === null) return delete guildConfig[c];
+      if (!item || item.category === "profile" || opt === null) delete guildConfig[c];
+
       // Numbers
-      if (item.type === "number" && typeof opt !== "number") delete guildConfig[c];
-      else if (item.type === "number" && item.maximum && opt > item.maximum) guildConfig[c] = item.maximum;
-      else if (item.type === "number" && item.minimum && opt < item.minimum) guildConfig[c] = item.minimum;
+      if (item.type === "number") {
+        if (typeof opt !== "number") delete guildConfig[c];
+        if (item.maximum && opt > item.maximum) guildConfig[c] = item.maximum;
+        if (item.minimum && opt < item.minimum) guildConfig[c] = item.minimum
+      }
       // Punishments
-      else if (item.type === "punishment") guildConfig[c] = opt.filter((p: string) => ["Purge", "Warn", "Mute"].includes(p));
-      else if (item.type === "raidPunishment") guildConfig[c] = opt.filter((p: string) => ["Ban", "Kick", "Mute"].includes(p));
+      else if (item.type === "punishment" && Array.isArray(guildConfig[c]) && guildConfig[c].length) guildConfig[c] = opt.filter((p: string) => ["Purge", "Warn", "Mute"].includes(p));
+      else if (item.type === "raidPunishment" && Array.isArray(guildConfig[c]) && guildConfig[c].length) guildConfig[c] = opt.filter((p: string) => ["Ban", "Kick", "Mute"].includes(p));
       // Channel
       else if (item.type === "channelID" && !bot.guilds.get(guild.id).channels.find((channel) => channel.id === opt)) guildConfig[c] = null;
       // ChannelArray
-      else if (item.type === "channelArray") {
+      else if (item.type === "channelArray" && Array.isArray(guildConfig[c]) && guildConfig[c].length) {
         guildConfig[c] = opt.filter((c: Channel) => bot.guilds.get(guild.id).channels.find((channel) => channel.id === c.id));
       }
 
       // RoleArray
-      else if (item.type === "roleArray") {
+      else if (item.type === "roleArray" && Array.isArray(guildConfig[c]) && guildConfig[c].length) {
         guildConfig[c] = opt.filter((r: Role) => bot.guilds.get(guild.id).roles.find((rol) => rol.id === r.id));
         if (item.maximum && guildConfig[c].length > item.maximum) guildConfig[c].length = item.maximum;
       }
@@ -131,12 +134,14 @@ export = (bot: HibikiClient) => {
       // Booleans
       else if (item.type === "bool" && typeof opt !== "boolean") delete guildConfig[c];
       // Strings
-      else if (item.type === "string" && item.maximum) guildConfig[c] = opt.substring(0, item.maximum);
-      else if (item.type === "string" && item.minimum && opt.length < item.minimum) delete guildConfig[c];
-      // Arrays
-      else if (item.type === "array" && (!Array.isArray(guildConfig[c]) || !guildConfig[c].length)) delete guildConfig[c];
+      else if (item.type === "string") {
+        if (item.maximum) guildConfig[c] = opt.substring(0, item.maximum);
+        if (item.minimum && opt.length < item.minimum) delete guildConfig[c];
+      }
       // Emojis
       else if (item.type === "emoji" && defaultEmojiRegex.test(guildConfig[c])) delete guildConfig[c];
+      else if (item.type === "punishment") guildConfig[c] = guildConfig[c].filter((punishment: string) => ["Purge", "Mute", "Warn"].includes(punishment));
+      else if (item.type === "raidPunishment") guildConfig[c] = guildConfig[c].filter((punishment: string) => ["Ban", "Kick", "Mute"].includes(punishment));
 
       // Disabled categories
       if (c === "disabledCategories" && guildConfig[c]) {
@@ -159,6 +164,11 @@ export = (bot: HibikiClient) => {
           if (command?.allowDisable) return true;
           return false;
         });
+
+      // Arrays
+      if ((item.type === "channelArray" || item.type === "roleArray" || item.type === "punishment" || item.type === "raidPunishment" || item.type === "array") && (!Array.isArray(guildConfig[c]) || !guildConfig[c].length)) {
+        delete guildConfig[c];
+      }
     });
 
     // Updates the config
@@ -204,7 +214,6 @@ export = (bot: HibikiClient) => {
     res.send(profileConfig);
   });
 
-  let invalidTimezone = false;
   // Updates a profileConfig
   router.post("/updateUserConfig/:id", async (req, res) => {
     // Checks to see if the user has permission
@@ -234,28 +243,34 @@ export = (bot: HibikiClient) => {
 
       // Finds the item
       const item = validItems.find((i) => i.id === c);
-      if (!item || item.category !== "profile") return delete profileConfig[c];
+      if (!item || item.category !== "profile") delete profileConfig[c];
 
       // Numbers
-      if (item.type === "number" && typeof opt !== "number") delete profileConfig[c];
-      else if (item.type === "number" && item.maximum && opt > item.maximum) profileConfig[c] = item.maximum;
-      else if (item.type === "number" && item.minimum && opt < item.minimum) profileConfig[c] = item.minimum;
+      else if (item.type === "number") {
+        if (typeof opt !== "number") return delete profileConfig[c];
+        if (item.maximum && opt > item.maximum) profileConfig[c] = item.maximum;
+        if (item.minimum && opt < item.minimum) profileConfig[c] = item.minimum
+      }
       // Booleans
-      else if (item.type === "bool" && typeof opt !== "boolean") profileConfig[c] = null;
+      else if (item.type === "bool" && typeof opt !== "boolean") delete profileConfig[c];
       // Strings
-      else if (item.type === "string" && item.maximum) profileConfig[c] = opt.substring(0, item.maximum);
-      else if (item.type === "string" && item.minimum && opt.length < item.minimum) profileConfig[c] = null;
+      else if (item.type === "string") {
+        if (item.maximum) profileConfig[c] = opt.substring(0, item.maximum);
+        if (item.minimum && opt.length < item.minimum) delete profileConfig[c];
+      }
       // Arrays
-      else if (item.type === "array" && !Array.isArray(profileConfig[c])) return (profileConfig[c] = null);
+      else if (item.type === "array" && !Array.isArray(profileConfig[c])) delete profileConfig[c];
       // Timezone checking
       else if (item.id === "timezone") {
+        let invalidTimezone = false;
+
         try {
           dayjs(new Date()).tz(profileConfig[c]);
         } catch (err) {
           invalidTimezone = true;
         }
 
-        if (invalidTimezone) return (profileConfig[c] = null);
+        if (invalidTimezone) delete profileConfig[c];
       }
     });
     profileConfig.id = user.id;
