@@ -288,7 +288,26 @@
   },
 
   "roleplay": {
-    "BANGHEAD": "**{user}** is banging their head!"
+    "BANGHEAD": "**{user}** is banging their head!",
+    "BITE": "**{user}** bit **{member}**!",
+    "BLUSH": "**{user}** is being all blushy, how cute.",
+    "CRY": "**{user}** is crying, give them a hug.",
+    "CUDDLE": "**{user}** cuddled **{member}**, how cute!",
+    "HEADPAT": "**{user}** gave **{member}** a headpat!",
+    "HIGHFIVE": "**{user}** gave **{member}** a high five!",
+    "HOLDHANDS": "**{user}** is holding hands with **{member}**, how cute!",
+    "HUG": "**{user}** gave **{member}** a hug!",
+    "KISS": "**{user}** kissed **{member}**!",
+    "LEWD": "**{member}** is being too lewd!",
+    "LICK": "**{user}** licked **{member}**!",
+    "POKE": "**{user}** poked **{member}**.",
+    "POUT": "**{user}** is pouting, give them a hug!",
+    "PUNCH": "**{user}** punched **{member}**, that must have hurt!",
+    "SLAP": "**{user}** slapped **{member}**!",
+    "SLEEPY": "**{user}** is banging their head!",
+    "SMILE": "**{user}** is smiling at **{member}**, aww!",
+    "SMUG": "**{user}** is being smug towards **{member}**!",
+    "TICKLE": "**{user}** started tickling **{member}**!"
   },
 
   "utility": {
