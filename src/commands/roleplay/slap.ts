@@ -1,15 +1,17 @@
-import type { Message, TextChannel } from "eris";
+import type { Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import config from "../../../config.json";
 import axios from "axios";
 
-export class BangheadCommand extends Command {
-  description = "Bangs your head on something.";
-  aliases = ["headbang"];
+export class SlapCommand extends Command {
+  args = "<member:member>";
+  aliases = ["hit"];
+  description = "Slaps someone else.";
   cooldown = 3000;
 
-  async run(msg: Message<TextChannel>) {
-    const body = await axios.get("https://api.weeb.sh/images/random?type=banghead", {
+  async run(msg: Message<TextChannel>, pargs: ParsedArgs) {
+    const member = pargs[0].value as Member;
+    const body = await axios.get("https://api.weeb.sh/images/random?type=slap", {
       headers: {
         "Authorization": `Wolke ${config.keys.weebsh}`,
         "User-Agent": "hibiki",
@@ -17,12 +19,12 @@ export class BangheadCommand extends Command {
     });
 
     let image: string;
-    if (body.status !== 200) image = "https://cdn.weeb.sh/images/rJRepkXoW.gif";
+    if (body.status !== 200) image = "https://cdn.weeb.sh/images/HkJ6-e91z.gif";
     else if (body.status === 200) image = body.data.url;
 
     msg.channel.createMessage({
       embed: {
-        description: `💢 ${msg.string("roleplay.BANGHEAD", { user: msg.author.username })}`,
+        description: `💢 ${msg.string("roleplay.SLAP", { user: msg.author.username, member: member.user.username })}`,
         color: msg.convertHex("general"),
         image: {
           url: image,

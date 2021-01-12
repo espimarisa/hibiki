@@ -97,7 +97,7 @@ export class BotGuildUpdateEvent extends Event {
           "cache-control": "no-cache",
           "Content-Type": "application/json",
           "Authorization": config.botlists.topgg,
-          "User-Agent": "Hibiki",
+          "User-Agent": "hibiki",
         },
       }).catch((err) => {
         return this.bot.log.error(`An error occurred while updating the top.gg stats: ${err}`);
@@ -112,7 +112,7 @@ export class BotGuildUpdateEvent extends Event {
         headers: {
           "Content-Type": "application/json",
           "Authorization": config.botlists.dbots,
-          "User-Agent": "Hibiki",
+          "User-Agent": "hibiki",
         },
       }).catch((err) => {
         return this.bot.log.error(`An error occurred while updating the bots.gg stats: ${err}`);
