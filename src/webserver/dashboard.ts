@@ -7,6 +7,7 @@
 import type { HibikiClient } from "../classes/Client";
 import type { NextFunction, Request, Response } from "express";
 import { readFileSync, readdirSync } from "fs";
+import { RethinkDBStore } from "session-rethinkdb-ts";
 import { minify } from "terser";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
@@ -16,7 +17,6 @@ import expressSession from "express-session";
 import passport from "passport";
 import config from "../../config.json";
 
-const session = require("@geo1088/express-session-rethinkdb")(expressSession);
 const app = express();
 app.enable("trust proxy");
 
@@ -30,12 +30,12 @@ const noCache = (req: Request, res: Response, next: NextFunction) => {
 export async function startDashboard(bot: HibikiClient) {
   if (!config.dashboard.port || !config.dashboard.cookieSecret || !config.dashboard.redirectURI || !config.dashboard.secret) return;
 
-  // Configures session store
-  const sessionStore = new session({
+  // Creates a session RethinkDB store
+  const sessionStore = new RethinkDBStore({
     connectOptions: {
       db: config.database.db || undefined,
       password: config.database.password || undefined,
-      port: Number(config.database.port) || 28015,
+      port: parseInt(config.database.port) || 28015,
       host: config.database.host || undefined,
       user: config.database.user || undefined,
       silent: true,
@@ -129,7 +129,6 @@ export async function startDashboard(bot: HibikiClient) {
   });
 
   // Listens on the configured port
-  // TODO: Docker support. (ask @TTtie)
   app.listen(config.dashboard.port, async () => {
     bot.log.info(`Dashboard running on port ${config.dashboard.port}`);
   });
