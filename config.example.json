@@ -23,7 +23,6 @@
   },
 
   "database": {
-    "provider": "rethink",
     "db": "hibiki",
     "password": "",
     "port": 28015,
