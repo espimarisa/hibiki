@@ -1,63 +1,78 @@
 {
-  "token": "",
+  "defaultLocale": "en",
+  "homepage": "https://hibiki.app",
+  "intents": ["guildBans", "guildMembers", "guildMessageReactions", "guildMessages", "guildVoiceStates", "guilds"],
+  "logchannel": "",
   "owners": [""],
   "prefixes": [""],
-  "logchannel": "",
+  "sentry": "",
   "statuses": ["guilds", "help", "users", "version"],
-  "intents": ["guilds", "guildMembers", "guildBans", "guildVoiceStates", "guildMessages", "guildMessageReactions"],
-  "homepage": "https://hibiki.app",
-  "defaultLocale": "en",
+  "token": "",
 
   "colors": {
-    "general": "#8E94F2",
     "error": "#FF0048",
+    "general": "#8E94F2",
     "pinboard": "#3498DB",
     "success": "#41FF70"
   },
 
-  "options": {
-    "defaultImageFormat": "png",
-    "defaultImageSize": 512,
-    "maxShards": 1,
-    "compress": true
+  "dashboard": {
+    "botSecret": "",
+    "cookieSecret": "setThisToSomethingMoreSecure",
+    "port": 6000,
+    "redirectURI": ""
   },
 
   "database": {
     "db": "hibiki",
+    "host": "",
     "password": "",
     "port": 28015,
-    "host": "",
     "user": ""
   },
 
-  "dashboard": {
-    "redirectURI": "",
-    "secret": "",
-    "cookieSecret": "setThisToSomethingMoreSecure",
-    "port": 6000
+  "eris": {
+    "compress": true,
+    "defaultImageFormat": "png",
+    "defaultImageSize": 512,
+    "getAllUsers": false,
+    "maxShards": 1
   },
 
   "lavalink": {
-    "host": "localhost",
-    "password": "youshallnotpass",
     "enabled": true,
-    "port": 2333,
+    "host": "localhost",
     "maxlength": 720000,
+    "password": "youshallnotpass",
+    "port": 2333,
     "spotifyClientID": "",
     "spotifyClientSecret": ""
   },
 
   "keys": {
-    "sentry": "",
-    "weebsh": ""
-  },
+    "abuseipdb": "",
+    "dictionary": "",
+    "fortnite": "",
+    "github": "",
+    "ipinfo": "",
+    "maps": "",
+    "osu": "",
+    "steam": "",
+    "twitter": "",
+    "weather": "",
+    "weebsh": "",
 
-  "botlists": {
-    "botsfordiscord": "",
-    "botsondiscord": "",
-    "dboats": "",
-    "dbots": "",
-    "discordbotlist": "",
-    "topgg": ""
+    "botlists": {
+      "botsfordiscord": "",
+      "botsondiscord": "",
+      "dboats": "",
+      "dbots": "",
+      "discordbotlist": "",
+      "topgg": "",
+      "voting ": {
+        "auth": "",
+        "port": 7013
+      }
+    }
   }
 }

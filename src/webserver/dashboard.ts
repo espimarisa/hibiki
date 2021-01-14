@@ -28,14 +28,14 @@ const noCache = (req: Request, res: Response, next: NextFunction) => {
 
 /** Starts the dashboard */
 export async function startDashboard(bot: HibikiClient) {
-  if (!config.dashboard.port || !config.dashboard.cookieSecret || !config.dashboard.redirectURI || !config.dashboard.secret) return;
+  if (!config.dashboard.port || !config.dashboard.cookieSecret || !config.dashboard.redirectURI || !config.dashboard.botSecret) return;
 
   // Creates a session RethinkDB store
   const sessionStore = new RethinkDBStore({
     connectOptions: {
       db: config.database.db || undefined,
       password: config.database.password || undefined,
-      port: parseInt(config.database.port) || 28015,
+      port: Number(config.database.port) || 28015,
       host: config.database.host || undefined,
       user: config.database.user || undefined,
       silent: true,
