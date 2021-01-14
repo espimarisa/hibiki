@@ -7,4 +7,4 @@
 import { HibikiClient } from "./classes/Client";
 import config from "../config.json";
 
-new HibikiClient(config.token, config.options);
+new HibikiClient(config.token, config.eris);
