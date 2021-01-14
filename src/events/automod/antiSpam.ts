@@ -28,7 +28,7 @@ export async function automodAntiSpam(msg: Message<TextChannel>, bot: HibikiClie
     cfg.spamPunishments.forEach(async (punishment: string) => {
       switch (punishment) {
         case "Mute":
-          punishMute(msg, bot, cfg, spam as any);
+          punishMute(msg, bot, cfg, spam);
           break;
         case "Purge":
           await punishPurge(

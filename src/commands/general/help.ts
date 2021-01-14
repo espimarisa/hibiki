@@ -1,4 +1,4 @@
-import type { Message, TextChannel } from "eris";
+import type { EmbedOptions, Message, TextChannel } from "eris";
 import { PrivateChannel } from "eris";
 import { Command } from "../../classes/Command";
 import config from "../../../config.json";
@@ -61,7 +61,7 @@ export class HelpCommand extends Command {
 
     // If no command, send a list of commands
     if (!cmd) {
-      let db: any;
+      let db: GuildConfig;
       if (msg.channel.type !== 1) db = await this.bot.db.getGuildConfig(msg.channel.id);
       let categories: string[] = [];
 
@@ -247,7 +247,7 @@ export class HelpCommand extends Command {
         embed: {
           description: cmd.description,
           color: msg.convertHex("general"),
-          fields: construct as any,
+          fields: construct,
           author: {
             name: cmd.name,
             icon_url: this.bot.user.dynamicAvatarURL(),
@@ -259,7 +259,7 @@ export class HelpCommand extends Command {
               extra: msg.string("general.HELP_COMMANDS", { commands: this.bot.commands.length - owneramt }),
             }),
           },
-        },
+        } as EmbedOptions,
       });
     }
   }

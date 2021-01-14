@@ -24,7 +24,7 @@ interface GuildConfig {
   messageLogging?: string;
   memberLogging?: string;
   modLogging?: string;
-  ignoredLoggingChannels?: any[];
+  ignoredLoggingChannels?: Array<string, string>;
   msgOnPunishment?: boolean;
   mutedRole?: string;
   snipingEnable?: boolean;
@@ -57,7 +57,7 @@ interface GuildConfig {
 interface UserConfig {
   id?: string;
   bio?: string;
-  pronouns?: any;
+  pronouns?: string | number;
   timezone?: string;
   timezoneHide?: boolean;
   locale?: string;

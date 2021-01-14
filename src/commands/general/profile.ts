@@ -1,4 +1,5 @@
 import type { Emoji, Member, Message, TextChannel } from "eris";
+import type { LocaleSystem } from "../../classes/Locale";
 import { Command } from "../../classes/Command";
 import { askForValue, askYesNo } from "../../utils/ask";
 import { localizeProfileItems } from "../../utils/format";
@@ -21,6 +22,7 @@ export class ProfileCommand extends Command {
       localeEmojis[this.bot.localeSystem.getLocale(locale, "EMOJI")] = this.bot.localeSystem.getLocale(locale, "NAME");
       localeNames[this.bot.localeSystem.getLocale(locale, "EMOJI")] = locale;
     });
+
     // Gets a user's config and updates it
     let userconfig = await this.bot.db.getUserConfig(msg.author.id);
     if (!userconfig) {
@@ -48,15 +50,14 @@ export class ProfileCommand extends Command {
     const emojiArray = Object.keys(pronounEmojis);
     let reacting = false;
 
-    function localizeLocale(item: any, localeSystem?: any) {
-      console.log(userconfig[item.id]);
+    function localizeLocale(item: Record<string, string>, localeSystem?: LocaleSystem) {
       if (item.type === "pronouns" && typeof userconfig[item.id] != "undefined") return pronouns[userconfig[item.id]];
       else if (item.type === "locale" && userconfig[item.id] && localeSystem?.getLocale)
         return localeSystem.getLocale(userconfig[item.id], "NAME");
       else if (userconfig[item.id]) return userconfig[item.id];
     }
 
-    function editEmbed(localeSystem?: any) {
+    function editEmbed(localeSystem?: LocaleSystem) {
       const primaryEmbed = {
         embed: {
           title: `👤 ${msg.string("general.PROFILE")}`,
