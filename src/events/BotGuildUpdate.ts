@@ -89,14 +89,14 @@ export class BotGuildUpdateEvent extends Event {
     }
 
     // Updates stats on top.gg
-    if (config.botlists.topgg) {
+    if (config.keys.botlists.topgg) {
       await axios(`https://top.gg/api/bots/${this.bot.user.id}/stats`, {
         method: "POST",
         data: JSON.stringify({ server_count: this.bot.guilds.size, shard_count: this.bot.shards.size }),
         headers: {
           "cache-control": "no-cache",
           "Content-Type": "application/json",
-          "Authorization": config.botlists.topgg,
+          "Authorization": config.keys.botlists.topgg,
           "User-Agent": "hibiki",
         },
       }).catch((err) => {
@@ -105,13 +105,13 @@ export class BotGuildUpdateEvent extends Event {
     }
 
     // Updates stats on bots.gg
-    if (config.botlists.dbots) {
+    if (config.keys.botlists.dbots) {
       await axios(`https://discord.bots.gg/api/v1/bots/${this.bot.user.id}/stats`, {
         method: "POST",
         data: JSON.stringify({ guildCount: this.bot.guilds.size, shardCount: this.bot.shards.size, shardId: 0 }),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": config.botlists.dbots,
+          "Authorization": config.keys.botlists.dbots,
           "User-Agent": "hibiki",
         },
       }).catch((err) => {
@@ -120,12 +120,12 @@ export class BotGuildUpdateEvent extends Event {
     }
 
     // Updates stats on discord.boats
-    if (config.botlists.dboats) {
+    if (config.keys.botlists.dboats) {
       await axios(`https://discord.boats/api/bot/${this.bot.user.id}`, {
         method: "POST",
         data: JSON.stringify({ server_count: this.bot.guilds.size }),
         headers: {
-          Authorization: `${config.botlists.dboats}`,
+          Authorization: `${config.keys.botlists.dboats}`,
         },
       }).catch((err) => {
         return this.bot.log.error(`An error occurred while updating the discord.boats stats: ${err}`);
@@ -133,12 +133,12 @@ export class BotGuildUpdateEvent extends Event {
     }
 
     // Updates stats on botsfordiscord.com
-    if (config.botlists.botsfordiscord) {
+    if (config.keys.botlists.botsfordiscord) {
       await axios(`https://botsfordiscord.com/api/${this.bot.user.id}`, {
         method: "POST",
         data: JSON.stringify({ server_count: this.bot.guilds.size }),
         headers: {
-          "Authorization": `${config.botlists.botsfordiscord}`,
+          "Authorization": `${config.keys.botlists.botsfordiscord}`,
           "Content-Type": "application/json",
         },
       }).catch((err) => {
@@ -147,7 +147,7 @@ export class BotGuildUpdateEvent extends Event {
     }
 
     // Updates stats on discordbotlist.com
-    if (config.botlists.discordbotlist) {
+    if (config.keys.botlists.discordbotlist) {
       await axios(`https://discordbotlist.com/api/v1/bots/${this.bot.user.id}/stats`, {
         method: "POST",
         data: JSON.stringify({
@@ -156,7 +156,7 @@ export class BotGuildUpdateEvent extends Event {
           voice_connections: this.bot.voiceConnections.size,
         }),
         headers: {
-          Authorization: `${config.botlists.discordbotlist}`,
+          Authorization: `${config.keys.botlists.discordbotlist}`,
         },
       }).catch((err) => {
         return this.bot.log.error(`An error occurred while updating the discordbotlist.com: ${err}`);
@@ -164,12 +164,12 @@ export class BotGuildUpdateEvent extends Event {
     }
 
     // Updates stats on botsondiscord.xyz
-    if (config.botlists.botsondiscord) {
+    if (config.keys.botlists.botsondiscord) {
       await axios(`https://bots.ondiscord.xyz/bot-api/bots/${this.bot.user.id}/guilds`, {
         method: "POST",
         data: JSON.stringify({ guildCount: this.bot.guilds.size }),
         headers: {
-          "Authorization": `${config.botlists.botsondiscord}`,
+          "Authorization": `${config.keys.botlists.botsondiscord}`,
           "Content-Type": "application/json",
         },
       }).catch((err) => {

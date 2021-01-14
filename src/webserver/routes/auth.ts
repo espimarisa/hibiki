@@ -22,7 +22,7 @@ export = (bot: HibikiClient) => {
     new Strategy(
       {
         clientID: bot.user.id,
-        clientSecret: config.dashboard.secret,
+        clientSecret: config.dashboard.botSecret,
         callbackURL: config.dashboard.redirectURI,
         scope: scope,
       },

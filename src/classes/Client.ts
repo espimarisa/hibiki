@@ -72,7 +72,7 @@ export class HibikiClient extends Client {
   async readyListener() {
     await loadItems(this);
     statuses(this);
-    if (config.keys.sentry) await this.initializeSentry();
+    if (config.sentry) await this.initializeSentry();
     if (config.lavalink.enabled) await this.lavalink.manager.init(this.user.id);
     if (config.dashboard.port) await startDashboard(this);
     this.log.info(`Logged in as ${tagUser(this.user)} on ${this.guilds.size} guilds`);
@@ -82,7 +82,7 @@ export class HibikiClient extends Client {
   async initializeSentry() {
     try {
       Sentry.init({
-        dsn: config.keys.sentry,
+        dsn: config.sentry,
         environment: process.env.NODE_ENV,
         tracesSampleRate: 0.5,
       });
