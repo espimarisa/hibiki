@@ -229,8 +229,8 @@ export async function askForValue(
       config[setting.id] = result;
 
       // Updates configs
-      if (category === "profile") await bot.db.updateUserConfig(config);
-      else await bot.db.updateGuildConfig(config);
+      if (category === "profile") await bot.db.updateUserConfig(msg.author.id, config);
+      else await bot.db.updateGuildConfig(msg.channel.guild.id, config);
       m.delete();
 
       // Sends a success message

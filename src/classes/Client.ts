@@ -3,6 +3,7 @@
  * @description Connects to Discord and handles global functions
  */
 
+import type { ClientOptions } from "eris";
 import type { Command } from "./Command";
 import type { Event } from "./Event";
 import type { Logger } from "./Logger";
@@ -28,7 +29,7 @@ export class HibikiClient extends Client {
   commands: Array<Command> = [];
   events: Array<Event> = [];
   loggers: Array<Logger> = [];
-  cooldowns: Map<string, unknown>;
+  cooldowns: Map<string, Date>;
   lavalink: Lavalink;
   localeSystem: LocaleSystem;
   args: Args;
@@ -37,7 +38,7 @@ export class HibikiClient extends Client {
   logs: Record<string, any>[] = [];
   antiSpam: Record<string, any>[] = [];
 
-  constructor(token: string, options: Record<string, unknown>) {
+  constructor(token: string, options: ClientOptions) {
     super(token, options);
     // Prototype extensions
     Eris.Message.prototype.createEmbed = createEmbed;

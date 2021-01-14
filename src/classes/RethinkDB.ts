@@ -45,15 +45,15 @@ export class RethinkProvider {
    */
 
   // Gets a guild's config
-  async getGuildConfig(guild: string): Promise<GuildConfig> {
+  async getGuildConfig(guild: string) {
     await this.dblock;
     return this.db.table("guildconfig").get(guild).run() as Promise<GuildConfig>;
   }
 
   // Updates a guild's config
-  async updateGuildConfig(config: GuildConfig) {
+  async updateGuildConfig(guild: string, config: GuildConfig) {
     await this.dblock;
-    return this.db.table("guildconfig").update(config).run();
+    return this.db.table("guildconfig").get(guild).update(config).run();
   }
 
   // Deletes a guild's config
@@ -73,15 +73,15 @@ export class RethinkProvider {
    */
 
   // Gets a user's config
-  async getUserConfig(user: string): Promise<UserConfig> {
+  async getUserConfig(user: string) {
     await this.dblock;
     return this.db.table("userconfig").get(user).run() as Promise<UserConfig>;
   }
 
   // Updates a user's config
-  async updateUserConfig(config: UserConfig) {
+  async updateUserConfig(user: string, config: UserConfig) {
     await this.dblock;
-    return this.db.table("userconfig").update(config).run();
+    return this.db.table("userconfig").get(user).update(config).run();
   }
 
   // Deletes a user's config
@@ -116,6 +116,20 @@ export class RethinkProvider {
   async insertUserWarning(warning: UserWarning) {
     await this.dblock;
     return this.db.table("warnings").insert(warning).run();
+  }
+
+  /**
+   * Economy functions
+   */
+
+  async getUserCookies(user: string) {
+    await this.dblock;
+    return this.db.table("economy").get(user).run() as Promise<UserCookies>;
+  }
+
+  async updateUserCookies(user: string, cookies: UserCookies) {
+    await this.dblock;
+    return this.db.table("economy").get(user).update(cookies).run();
   }
 
   /**
