@@ -259,8 +259,8 @@ export class SetupCommand extends Command {
         // Handles punishment types
         else if (setting.type === "punishment" || setting.type === "raidPunishment") {
           selectingItem = true;
-          let punishments: any;
-          let punishmentDescription: any;
+          let punishments: Record<string, string>;
+          let punishmentDescription: Record<string, string>;
 
           // Raid punishments
           if (setting.type === "raidPunishment") {

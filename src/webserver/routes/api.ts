@@ -26,7 +26,7 @@ export = (bot: HibikiClient) => {
 
     // Sends loaded cmds
     if (req.query.commands) {
-      const cmds: any[] = [];
+      const cmds: Record<string, any>[] = [];
       bot.commands.forEach((cmd) => {
         if (!cmds.find((c) => c.label === cmd.category) && cmd.category !== "owner")
           cmds.push({ label: cmd.category, type: "group", children: [] });
@@ -45,7 +45,7 @@ export = (bot: HibikiClient) => {
 
     // Sends profile validItems
     if (req.query.profile) {
-      const profileItems: any[] = [];
+      const profileItems: UserConfig[] = [];
       validItems.forEach((i) => {
         if (i.category !== "profile") return;
         profileItems.push(i);
