@@ -35,5 +35,5 @@
     "typeRoots": ["./src/typings"]
   },
   "exclude": ["node_modules"],
-  "include": ["src/**/*", "src/**/*.json", "src/**/*.ejs", ]
+  "include": ["src/**/*", "src/**/*.json", "src/**/*.ejs"]
 }

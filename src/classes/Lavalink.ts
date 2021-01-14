@@ -1,4 +1,5 @@
 import type { Member, User, VoiceChannel } from "eris";
+import type { VoicePacket } from "erela.js";
 import type { HibikiClient } from "./Client";
 import { Manager } from "erela.js";
 import { convertHex } from "../helpers/embed";
@@ -107,7 +108,7 @@ export class Lavalink {
       });
 
     // Sends the actual websocket
-    bot.on("rawWS", (data: any) => bot.lavalink.manager.updateVoiceState(data));
+    bot.on("rawWS", (data: VoicePacket) => bot.lavalink.manager.updateVoiceState(data));
 
     // Leaves the voice channel and kills the queue if alone or moved in a channel
     this.eventHandler = (member: Member, channel: VoiceChannel, oldchannel: VoiceChannel) => {
