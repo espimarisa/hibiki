@@ -3,6 +3,12 @@
   "EMOJI": "🇺🇸",
 
   "fun": {
+    "COIN": "Coin",
+    "COIN_RESULT": "The coin landed on **{side}**.",
+    "COIN_HEADS": "heads",
+    "COIN_TAILS": "tails",
+    "COOLLEVEL": "Coolness Level",
+    "COOLLEVEL_LEVEL": "**{member}** is **{level}%** cool.",
     "DICE": "Dice",
     "DICE_RESULT": "The **{sides}-sided** die landed on **{result}**.",
     "GAYLEVEL": "Gay Level",
@@ -235,6 +241,7 @@
     "KICKED_USER": "**{member}** was kicked by **{author}**.",
     "PURGE_DESCRIPTION": "purged {msgs:# messages#! message!}"
   },
+
   "music": {
     "ADDED": "Added",
     "ADDED_PLAYLIST": "Added playlist **{name}** to the queue.",

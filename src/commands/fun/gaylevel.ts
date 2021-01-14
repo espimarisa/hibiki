@@ -2,7 +2,7 @@ import type { Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 
 export class GaylevelCommand extends Command {
-  description = "Calculates how gay you (or another member) is.";
+  description = "Calculates how gay you or another member is.";
   args = "[member:member&fallback]";
   aliases = ["gay", "gayness"];
 

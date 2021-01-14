@@ -245,7 +245,7 @@ export class SetupCommand extends Command {
           else guildconfig[setting.id] = true;
 
           // Updates the config
-          await this.bot.db.updateGuildConfig(guildconfig);
+          await this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);
           omsg.editEmbed(
             localizeSetupItems(msg.string, setting.id, true),
             `${setting.id} ${msg.string("global.HAS_BEEN")} **${
@@ -300,7 +300,7 @@ export class SetupCommand extends Command {
               // Handles submissions
               if (emoji.name === submit) {
                 await omsg.removeReactions();
-                await this.bot.db.updateGuildConfig(guildconfig);
+                await this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);
                 omsg.edit(itemsEmbed(category));
                 category.items.map((cat: string) => omsg.addReaction(validItems.find((s) => s.id === cat).emoji));
                 omsg.addReaction(back);
