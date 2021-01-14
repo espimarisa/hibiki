@@ -214,7 +214,7 @@ export = (bot: HibikiClient) => {
     });
 
     // Updates the config
-    await bot.db.updateGuildConfig(guildConfig);
+    await bot.db.updateGuildConfig(guild.id, guildConfig);
     res.sendStatus(200);
   });
 
@@ -234,7 +234,7 @@ export = (bot: HibikiClient) => {
     // Inserts guildConfig
     if (!guildConfig) {
       guildConfig = { id: guild.id };
-      await bot.db.updateGuildConfig(guildConfig);
+      await bot.db.insertBlankGuildConfig(guild.id);
     }
 
     guildConfig = { id: guild.id };
@@ -318,7 +318,7 @@ export = (bot: HibikiClient) => {
     profileConfig.id = user.id;
 
     // Updates the config
-    await bot.db.updateUserConfig(profileConfig);
+    await bot.db.updateUserConfig(user.id, profileConfig);
     res.sendStatus(200);
   });
 
@@ -340,8 +340,8 @@ export = (bot: HibikiClient) => {
     // Deletes the config
     await bot.db.deleteUserConfig(user.id);
 
-    // todo: stop doing this.
-    await bot.db.updateUserConfig({ id: user.id });
+    // // todo: stop doing this.
+    // await bot.db.updateUserConfig({ id: user.id });
     res.sendStatus(200);
   });
 

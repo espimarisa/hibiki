@@ -148,8 +148,7 @@ export class ProfileCommand extends Command {
               const pronounss = pronouns.indexOf(pronounEmojis[_emoji.name]);
               if (typeof pronounss === "undefined") return;
               userconfig.pronouns = pronounss;
-              console.log(pronounss);
-              this.bot.db.updateUserConfig(userconfig);
+              this.bot.db.updateUserConfig(msg.author.id, userconfig);
 
               // Cleans up afterwards
               await omsg.edit(editEmbed(this.bot.localeSystem));
@@ -189,7 +188,7 @@ export class ProfileCommand extends Command {
               const locale = localeNames[_emoji.name];
               if (!locale) return;
               userconfig.locale = locale;
-              this.bot.db.updateUserConfig(userconfig);
+              this.bot.db.updateUserConfig(msg.author.id, userconfig);
 
               // Cleans up afterwards
               await omsg.edit(editEmbed(this.bot.localeSystem));

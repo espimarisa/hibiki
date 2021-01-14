@@ -78,3 +78,10 @@ interface UserWarning {
   receiver?: string;
   guild?: string;
 }
+
+// Interface for cookie info
+interface UserCookies {
+  id?: string;
+  amount?: number;
+  lastclaim?: number | Date;
+}
