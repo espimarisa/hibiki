@@ -8,16 +8,17 @@ export class BlushCommand extends Command {
   cooldown = 3000;
 
   async run(msg: Message<TextChannel>) {
-    const body = await axios.get("https://api.weeb.sh/images/random?type=blush", {
-      headers: {
-        "Authorization": `Wolke ${config.keys.weebsh}`,
-        "User-Agent": "hibiki",
-      },
-    });
+    const body = await axios
+      .get("https://api.weeb.sh/images/random?type=blush", {
+        headers: {
+          Authorization: `Wolke ${config.keys.weebsh}`,
+        },
+      })
+      .catch(() => {});
 
     let image: string;
-    if (body.status !== 200) image = "https://cdn.weeb.sh/images/rJa-zUmv-.gif";
-    else if (body.status === 200) image = body.data.url;
+    if (!body || !body?.data?.url) image = "https://cdn.weeb.sh/images/rJa-zUmv-.gif";
+    else image = body.data.url;
 
     msg.channel.createMessage({
       embed: {
