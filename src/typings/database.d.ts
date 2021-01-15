@@ -85,3 +85,10 @@ interface UserCookies {
   amount?: number;
   lastclaim?: number | Date;
 }
+
+interface BlacklistInfo {
+  id?: string;
+  guild?: boolean;
+  user?: boolean;
+  reason?: string;
+}
