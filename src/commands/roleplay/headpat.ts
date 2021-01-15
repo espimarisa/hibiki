@@ -11,16 +11,17 @@ export class HeadpatCommand extends Command {
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs) {
     const member = pargs[0].value as Member;
-    const body = await axios.get("https://api.weeb.sh/images/random?type=pat", {
-      headers: {
-        "Authorization": `Wolke ${config.keys.weebsh}`,
-        "User-Agent": "hibiki",
-      },
-    });
+    const body = await axios
+      .get("https://api.weeb.sh/images/random?type=pat", {
+        headers: {
+          Authorization: `Wolke ${config.keys.weebsh}`,
+        },
+      })
+      .catch(() => {});
 
     let image: string;
-    if (body.status !== 200) image = "https://cdn.weeb.sh/images/SJmW1RKtb.gif";
-    else if (body.status === 200) image = body.data.url;
+    if (!body || !body?.data?.url) image = "https://cdn.weeb.sh/images/SJmW1RKtb.gif";
+    else image = body.data.url;
 
     msg.channel.createMessage({
       embed: {
