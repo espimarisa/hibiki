@@ -205,6 +205,7 @@
     "PRONOUNS_SHE": "She/Her",
     "PRONOUNS_THEY": "They/Them",
     "RAN_BY": "Ran by {author}{optional:poweredBy: | Powered by {poweredBy}{optional:extra: | {extra}}",
+    "RESERROR_ATTACHMENT": "Image is a video. You can view it [here]({url}).",
     "RESERROR_IMAGE": "Failed to send the image. Try again later.",
     "RESERROR_IMAGEQUERY": "No images found for your query.",
     "RESPOND_WITH": "Respond with the desired **{type}**.",
@@ -220,16 +221,23 @@
   },
 
   "image": {
+    "AWOO": "Awoo!",
     "CAT": "Cat",
     "CATGIRL": "Catgirl",
     "DOG": "Dog",
     "DUCK": "Duck",
     "FOX": "Fox",
     "FOXGIRL": "Foxgirl",
+    "GENETICALLY_ENGINEERED_CATGIRLS": "Genetically Engineered Catgirls",
     "GOOSE": "Goose",
     "LIZARD": "Lizard",
+    "MEGUMIN": "Megumin",
+    "MEME": "Meme",
+    "MIKU": "Hatsune Miku",
+    "REM": "Rem",
     "SPACEPHOTO": "Space Photo"
   },
+
   "moderation": {
     "KICK": "Kick",
     "KICK_CANCELLED": "Cancelled kicking **{member}**.",
