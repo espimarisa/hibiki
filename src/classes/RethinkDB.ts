@@ -133,12 +133,36 @@ export class RethinkProvider {
   }
 
   /**
-   * Other database functions
+   * Blacklist functions
    */
+
+  // Gets entire blacklist
+  async getBlacklist() {
+    await this.dblock;
+    return this.db.table("blacklist").run();
+  }
 
   // Gets a blacklisted guild
   async getBlacklistedGuild(guild: string) {
     await this.dblock;
-    return this.db.table("blacklist").get(guild).run();
+    return this.db.table("blacklist").filter({ id: guild, guild: true }).run();
+  }
+
+  // Gets a blacklisted user
+  async getBlacklistedUser(user: string) {
+    await this.dblock;
+    return this.db.table("blacklist").filter({ id: user, user: true }).run();
+  }
+
+  // Inserts a blacklisted item
+  async insertBlacklistedItem(id: BlacklistInfo) {
+    await this.dblock;
+    return this.db.table("blacklist").insert(id).run();
+  }
+
+  // Deletes a blacklisted item
+  async deleteBlacklistedItem(item: string) {
+    await this.dblock;
+    return this.db.table("blacklist").get(item).delete().run();
   }
 }
