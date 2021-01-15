@@ -88,7 +88,7 @@ window.addEventListener("load", async () => {
   };
 
   // Gets items and IDs
-  const id = /manage\/(userIDRegex)/.exec(document.URL)[1];
+  const id = /manage\/([\d]{17,19})/.exec(document.URL)[1];
   const fetchedItems = await fetch("/api/getItems", {
     credentials: "include",
     headers: {
