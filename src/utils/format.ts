@@ -351,3 +351,20 @@ export function afkTimeoutFormat(level: number) {
       return "No timeout";
   }
 }
+
+// Converts time to 24 hours
+export function to24Hours(string: LocaleString, time: number) {
+  let hours: number;
+  let minutes: number;
+  const seconds = Math.floor(time / 1000);
+  minutes = Math.floor(seconds / 60);
+  hours = Math.floor(minutes / 60);
+  minutes %= 60;
+  const day = Math.floor(hours / 24);
+  hours %= 24;
+  hours += day * 24;
+  return string("global.FORMAT_DAY", {
+    hours: hours,
+    minutes: minutes,
+  });
+}

@@ -122,14 +122,22 @@ export class RethinkProvider {
    * Economy functions
    */
 
+  // Gets user cookies
   async getUserCookies(user: string) {
     await this.dblock;
     return this.db.table("economy").get(user).run() as Promise<UserCookies>;
   }
 
+  // Updates user cookies
   async updateUserCookies(user: string, cookies: UserCookies) {
     await this.dblock;
     return this.db.table("economy").get(user).update(cookies).run();
+  }
+
+  // Inserts blank amount of user cookies
+  async insertBlankUserCookies(user: string) {
+    await this.dblock;
+    return this.db.table("economy").insert({ id: user, amount: 0, lastclaim: null }).run();
   }
 
   /**

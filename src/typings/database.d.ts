@@ -39,6 +39,7 @@ interface GuildConfig {
   prefix?: string;
   spamPunishments?: string[];
   spamThreshold?: number;
+  massMentionThreshold?: number;
   verifiedRole?: string;
   loggingChannel?: string;
   disabledEvents?: string[];
@@ -46,11 +47,13 @@ interface GuildConfig {
   antiNewLines?: boolean;
   newlineThreshold?: number;
   raidPunishments?: string;
+  antiMassMentionPunishments?: string[];
   antiRaid?: boolean;
   raidThreshold?: number;
   joinTitle?: string;
   leaveTitle?: string;
   greetingFooter?: string;
+  antiMassMention?: boolean;
 }
 
 // Interface for userConfigs
@@ -83,7 +86,7 @@ interface UserWarning {
 interface UserCookies {
   id?: string;
   amount?: number;
-  lastclaim?: number | Date;
+  lastclaim?: Date;
 }
 
 interface BlacklistInfo {
