@@ -11,7 +11,7 @@ const punishedUsers: string[] = [];
 
 export async function automodAntiSpam(msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig) {
   const userLocale = await bot.localeSystem.getUserLocale(msg.author.id, bot);
-  const string = bot.localeSystem.getLocaleFunction(userLocale) as LocaleString;
+  const string = bot.localeSystem.getLocaleFunction(userLocale);
 
   // Filters thru the antiSpam
   const spam = bot.antiSpam.filter(

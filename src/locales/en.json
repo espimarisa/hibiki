@@ -3,21 +3,26 @@
   "EMOJI": "🇺🇸",
 
   "fun": {
+    "COIN": "Coin",
+    "COIN_HEADS": "heads",
+    "COIN_RESULT": "The coin landed on **{side}**.",
+    "COIN_TAILS": "tails",
     "COOKIES": "Cookies",
     "COOKIES_AMOUNT": "**{member}** has **{amount}** cookies.",
-    "COIN": "Coin",
-    "COIN_RESULT": "The coin landed on **{side}**.",
-    "COIN_HEADS": "heads",
-    "COIN_TAILS": "tails",
     "COOLLEVEL": "Coolness Level",
     "COOLLEVEL_LEVEL": "**{member}** is **{level}%** cool.",
     "DAILY": "Daily Cookies",
-    "DAILY_COOLDOWN": "You can claim your daily cookies in {timeout}.",
     "DAILY_CLAIMED": "You have claimed your daily 100 cookies. Check back tomorrow!",
+    "DAILY_COOLDOWN": "You can claim your daily cookies in {timeout}.",
     "DICE": "Dice",
     "DICE_RESULT": "The **{sides}-sided** die landed on **{result}**.",
     "GAYLEVEL": "Gay Level",
-    "GAYLEVEL_LEVEL": "**{member}** is **{level}%** gay!"
+    "GAYLEVEL_LEVEL": "**{member}** is **{level}%** gay!",
+    "PAY": "Pay",
+    "PAY_BOT": "You can't give cookies to a bot.",
+    "PAY_INVALID": "You gave an invalid amount of cookies.",
+    "PAY_NOTENOUGH": "You don't have enough cookies for that transaction.",
+    "PAY_PAYED": "You gave **{amount}** {amount:# cookies#! cookie!} to **{receiver}**."
   },
 
   "general": {
@@ -39,6 +44,12 @@
     "CONFIG_AGREEROLE_DESCRIPTION": "The role given to members after running the agree command.",
     "CONFIG_ANTIINVITE": "AntiInvite",
     "CONFIG_ANTIINVITE_DESCRIPTION": "Enables or disables the AntiInvite module.",
+    "CONFIG_ANTIMASSMENTION": "Anti Mass-Mention",
+    "CONFIG_ANTIMASSMENTION_DESCRIPTION": "Enables or disables mass mention detection.",
+    "CONFIG_ANTIMASSMENTIONPUNISHMENTS": "Mass Mention Punishments",
+    "CONFIG_ANTIMASSMENTIONPUNISHMENTS_DESCRIPTION": "Punishments to apply to members that mass-mention.",
+    "CONFIG_ANTIMASSMENTIONTHRESHOLD": "Mass Mention Threshold",
+    "CONFIG_ANTIMASSMENTIONTHRESHOLD_DESCRIPTION": "The amount of unique mentions allowed before running antiMassMention.",
     "CONFIG_ANTINEWLINES": "Anti New Lines",
     "CONFIG_ANTINEWLINES_DESCRIPTION": "Enables or disables new line spam detection.",
     "CONFIG_ANTINEWLINESPUNISHMENT_DESCRIPTION": "Punishments given to a member when they spam new lines.",
@@ -174,6 +185,7 @@
     "BIO": "Bio",
     "CANCELLED": "❌ Cancelled",
     "CONFIRMATION": "Confirmation",
+    "DATE": "Date",
     "DELETE": "Delete",
     "DISABLED": "disabled",
     "ENABLED": "enabled",
@@ -184,6 +196,7 @@
     "ERROR_DISABLED": "The **{command}** command has been disabled in this server.",
     "ERROR_DISABLEDCATEGORY": "The category the **{command}** command is in has been disabled in this server.",
     "ERROR_EMBEDPERMS": "I don't have permission to **embed links** in {channel}.",
+    "ERROR_INVALIDID": "You provided an invalid ID.",
     "ERROR_MISSINGARGS": "You didn't provide a **{arg}**.",
     "ERROR_NSFW": "The **{command}** command can only be ran in a NSFW channel.",
     "ERROR_OUTPUT": "An error occurred and has been logged. \n ```js\n{error}\n```",
@@ -192,11 +205,12 @@
     "ERROR_STAFFCOMMAND": "The **{command}** can only be used by staff members.",
     "ERROR_VOICE": "You must be in a voice channel or in the same voice channel as me to use the **{command}** command.",
     "FEATURES": "Features",
-    "FORMAT_DAY": "**{hours}** hours and **{minutes}** minutes",
-    "FOR_SPAMMING": "for spamming.",
     "FOR_MASSMENTIONING": "for mass mentioning.",
+    "FOR_SPAMMING": "for spamming.",
+    "FORMAT_DAY": "**{hours}** hours and **{minutes}** minutes",
     "GREETINGS": "Member Greetings",
     "HAS_BEEN": "has been",
+    "ID": "ID",
     "LATENCY": "Latency",
     "LOCALE": "Locale",
     "LOGGING": "Logging",
@@ -296,7 +310,7 @@
     "VOLUME": "Volume",
     "VOLUME_CHANGED": "The volume was set to **{volume}%**."
   },
-
+  
   "nsfw": {
     "LEWDCATGIRL": "Lewd Catgirl"
   },
@@ -333,6 +347,15 @@
   },
 
   "utility": {
+    "REMINDER": "Reminder",
+    "REMINDER_INFO": "I'll remind you to {reminder} in **{time}**.",
+    "REMINDER_INVALIDTIME": "You provided an invalid amount of time.",
+    "REMINDER_NOTFOUND": "Reminder not found.",
+    "REMINDER_REMOVED": "Reminder removed.",
+    "REMINDER_SET": "Reminder Set",
+    "REMINDER_SETON": "Set on {date}",
+    "REMINDERS": "Reminders",
+    "REMINDERS_NONE": "You don't have any reminders currently set.",
     "WIKIPEDIA": "Wikipedia",
     "WIKIPEDIA_DISAMBIGUATION": "[Page]({page}) is a disambiguation page. Maybe be more specific?",
     "WIKIPEDIA_NOTFOUND": "Page not found. It may be case-sensitive."

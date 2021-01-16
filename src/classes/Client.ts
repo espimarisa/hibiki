@@ -19,6 +19,7 @@ import { loadItems } from "../helpers/loader";
 import { logger } from "../helpers/logger";
 import { statuses } from "../helpers/statuses";
 import { startDashboard } from "../webserver/dashboard";
+import { ReminderHandler } from "../scripts/reminders";
 import path from "path";
 import config from "../../config.json";
 import Sentry from "@sentry/node";
@@ -37,6 +38,7 @@ export class HibikiClient extends Client {
   log: typeof logger;
   logs: Record<string, any>[] = [];
   antiSpam: Record<string, any>[] = [];
+  reminderHandler: ReminderHandler;
 
   constructor(token: string, options: ClientOptions) {
     super(token, options);
@@ -63,6 +65,7 @@ export class HibikiClient extends Client {
     this.db = new RethinkProvider();
     this.lavalink = new Lavalink(this);
     this.localeSystem = new LocaleSystem(LOCALES_DIRECTORY);
+    this.reminderHandler = new ReminderHandler(this);
 
     this.connect();
     this.editStatus("idle");
@@ -74,7 +77,7 @@ export class HibikiClient extends Client {
     await loadItems(this);
     statuses(this);
     if (config.sentry) await this.initializeSentry();
-    if (config.lavalink.enabled) await this.lavalink.manager.init(this.user.id);
+    if (config.lavalink.enabled) this.lavalink.manager.init(this.user.id);
     if (config.dashboard.port) await startDashboard(this);
     this.log.info(`Logged in as ${tagUser(this.user)} on ${this.guilds.size} guilds`);
   }

@@ -95,3 +95,11 @@ interface BlacklistInfo {
   user?: boolean;
   reason?: string;
 }
+
+interface Reminder {
+  date?: number;
+  id?: string;
+  message?: string;
+  set?: Date;
+  user?: string;
+}

@@ -11,7 +11,7 @@ const reason = "Mass mention (Automod)";
 
 export async function automodAntiMassMention(msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig) {
   const userLocale = await bot.localeSystem.getUserLocale(msg.author.id, bot);
-  const string = bot.localeSystem.getLocaleFunction(userLocale) as LocaleString;
+  const string = bot.localeSystem.getLocaleFunction(userLocale);
 
   if (!cfg.massMentionThreshold) cfg.massMentionThreshold = 8;
   if (msg.mentions.length >= cfg.massMentionThreshold) {

@@ -6,5 +6,5 @@
 
 /** Generates a snowflake */
 export function generateSnowflake() {
-  return (Date.now() / 15).toString(36);
+  return Math.round(Date.now() / 15).toString(36);
 }

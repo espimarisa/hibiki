@@ -10,7 +10,7 @@ export async function automodAntiNewLine(msg: Message<TextChannel>, bot: HibikiC
   if (newLineAmt <= cfg.newlineThreshold) return;
 
   const userLocale = await bot.localeSystem.getUserLocale(msg.author.id, bot);
-  const string = bot.localeSystem.getLocaleFunction(userLocale) as LocaleString;
+  const string = bot.localeSystem.getLocaleFunction(userLocale);
 
   cfg?.antiNewLinesPunishments.forEach(async (punishment: string) => {
     switch (punishment) {
