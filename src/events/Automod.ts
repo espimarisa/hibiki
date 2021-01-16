@@ -10,6 +10,7 @@ import { automodAntiInvite } from "./automod/antiInvite";
 import { automodAntiNewLine } from "./automod/antiNewLines";
 import { automodAntiRaid } from "./automod/antiRaid";
 import { automodAntiSpam } from "./automod/antiSpam";
+import { automodAntiMassMention } from "./automod/antiMassMention";
 
 export class Automod extends Event {
   events = ["messageCreate", "guildMemberAdd"];
@@ -41,6 +42,7 @@ export class Automod extends Event {
       if (guildconfig?.antiSpam && guildconfig?.spamPunishments) await automodAntiSpam(msg, this.bot, guildconfig);
       if (guildconfig?.antiInvite && guildconfig?.invitePunishments) await automodAntiInvite(msg, this.bot, guildconfig);
       if (guildconfig?.antiNewLines && guildconfig?.antiNewLinesPunishments) await automodAntiNewLine(msg, this.bot, guildconfig);
+      if (guildconfig?.antiMassMention && guildconfig?.antiMassMentionPunishments) await automodAntiMassMention(msg, this.bot, guildconfig);
     }
 
     // AntiRaid functionality

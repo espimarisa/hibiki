@@ -26,7 +26,7 @@ export = (bot: HibikiClient) => {
         callbackURL: config.dashboard.redirectURI,
         scope: scope,
       },
-      (accessToken, refreshToken, profile, done) => {
+      (_accessToken, _refreshToken, profile, done) => {
         process.nextTick(() => {
           return done(null, profile);
         });
@@ -36,7 +36,7 @@ export = (bot: HibikiClient) => {
 
   // Authentication routes
   router.get("/", passport.authenticate("discord", { scope: scope }));
-  router.get("/callback/", passport.authenticate("discord", { failureRedirect: "/auth/fail/" }), (req, res) => {
+  router.get("/callback/", passport.authenticate("discord", { failureRedirect: "/auth/fail/" }), (_req, res) => {
     res.redirect(301, "../manage/servers/");
   });
 

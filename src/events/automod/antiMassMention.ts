@@ -6,23 +6,20 @@
 
 import type { Message, TextChannel } from "eris";
 import type { HibikiClient } from "../../classes/Client";
-import { fullInviteRegex } from "../../helpers/constants";
 import { punishMute, punishWarn } from "./punishments";
-const reason = "Sent an invite (Automod)";
+const reason = "Mass mention (Automod)";
 
-export async function automodAntiInvite(msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig) {
+export async function automodAntiMassMention(msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig) {
   const userLocale = await bot.localeSystem.getUserLocale(msg.author.id, bot);
   const string = bot.localeSystem.getLocaleFunction(userLocale) as LocaleString;
 
-  // Checks if an invite was posted
-  if (fullInviteRegex.test(msg.content)) {
-    let warning: string;
-
+  if (!cfg.massMentionThreshold) cfg.massMentionThreshold = 8;
+  if (msg.mentions.length >= cfg.massMentionThreshold) {
     // Handles each type of punishment
-    cfg.invitePunishments.forEach(async (punishment: string) => {
+    cfg.antiMassMentionPunishments.forEach(async (punishment: string) => {
       switch (punishment) {
         case "Warn":
-          warning = await punishWarn(msg, bot, reason);
+          await punishWarn(msg, bot, reason);
           break;
         case "Purge":
           msg.delete();
@@ -33,14 +30,18 @@ export async function automodAntiInvite(msg: Message<TextChannel>, bot: HibikiCl
       }
     });
 
-    // If msgOnPunishment is on
+    // Sends a message if msgOnPunishment is enabled
     if (cfg.msgOnPunishment) {
-      const pmsg = await msg.createEmbed(`⚠ ${string("global.AUTOMOD")}`, string("global.AUTOMOD_INVITES"), "error");
+      const pmsg = await msg.createEmbed(
+        `🔨 ${msg.author.username} ${string("global.HAS_BEEN")} ${cfg.spamPunishments
+          .map((p: string) => `${p.toLowerCase()}`)
+          .filter((p: string) => p !== "purged")
+          .join(` ${string("global.AND")} `)} ${string("global.FOR_MASSMENTIONING")}.`,
+        null,
+        "error",
+      );
+
       setTimeout(() => pmsg.delete("Automod message deletion").catch(() => {}), 5000);
     }
-
-    // Emits the event for logging
-    bot.emit("automodAntiInvite", msg.channel.guild, msg.member.user, msg.content, warning);
-    // await msg.member?.addRole(cfg.mutedRole, reason).catch(() => {});
   }
 }
