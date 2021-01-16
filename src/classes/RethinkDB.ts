@@ -173,4 +173,32 @@ export class RethinkProvider {
     await this.dblock;
     return this.db.table("blacklist").get(item).delete().run();
   }
+
+  /**
+   * Reminder functions
+   */
+
+  // Gets all reminders
+  async getAllReminders() {
+    await this.dblock;
+    return this.db.table("reminders").run();
+  }
+
+  // Gets a user's reminders
+  async getUserReminders(user: string) {
+    await this.dblock;
+    return (this.db.table("reminders").filter({ user: user }).run() as unknown) as Array<Reminder>;
+  }
+
+  // Creates a reminder
+  async insertUserReminder(reminder: Reminder) {
+    await this.dblock;
+    return this.db.table("reminders").insert(reminder).run();
+  }
+
+  // Deletes a user's reminder
+  async deleteUserReminder(reminder: string, user: string) {
+    await this.dblock;
+    return this.db.table("reminders").filter({ id: reminder, user: user }).delete().run();
+  }
 }

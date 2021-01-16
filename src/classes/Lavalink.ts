@@ -50,7 +50,7 @@ export class Lavalink {
       .on("trackStart", async (p, { title, author, thumbnail, requester, uri }) => {
         // Finds the locale
         const userLocale = await bot.localeSystem.getUserLocale(`${requester}`, bot);
-        const string = bot.localeSystem.getLocaleFunction(userLocale) as LocaleString;
+        const string = bot.localeSystem.getLocaleFunction(userLocale);
         if (p.trackRepeat) return;
 
         bot
@@ -90,7 +90,7 @@ export class Lavalink {
       .on("queueEnd", async (player, { requester }) => {
         // Finds the locale
         const userLocale = await bot.localeSystem.getUserLocale(`${requester}`, bot);
-        const string = bot.localeSystem.getLocaleFunction(userLocale) as LocaleString;
+        const string = bot.localeSystem.getLocaleFunction(userLocale);
 
         bot.createMessage(player.options.textChannel, {
           embed: {

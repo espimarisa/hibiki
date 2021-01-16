@@ -50,13 +50,16 @@ export class LocaleSystem {
     if (args) {
       Object.getOwnPropertyNames(args).forEach((arg) => {
         // Handles plurals/non-plural and arguments/optionals
-        const argumentRegex = new RegExp(`{${arg}:#(.+)#!(.+)!(?:\\?(.+)\\?)?}`);
+        const argumentRegex = new RegExp(`{${arg}}`);
+        const pluralRegex = new RegExp(`{${arg}:#(.+)#!(.+)!(?:\\?(.+)\\?)?}`);
         const optionalRegex = new RegExp(`({optional:${arg}:(.+)})`);
 
         // Replaces optional strings with content
         const optional = optionalRegex.exec(output);
         if (optional) output = output.replace(optional[1], args[arg] ? optional[2] : "");
-        const plurals = argumentRegex.exec(output);
+        output = output.replace(argumentRegex, args[arg]);
+
+        const plurals = pluralRegex.exec(output);
 
         // Sends the output with the correct grammar
         if (plurals) {
@@ -65,7 +68,7 @@ export class LocaleSystem {
           else if (plurals[3] && args[arg] >= 2 && args[arg] <= 4) plural = plurals[3];
           else plural = plurals[1];
 
-          output = output.replace(plurals[0], `${args[arg]}${plural}`);
+          output = output.replace(plurals[0], plural);
         } else if (!plurals) output = output.replace(`{${arg}}`, args[arg]);
       });
     }
@@ -77,7 +80,7 @@ export class LocaleSystem {
   }
 
   /** Runs the function to return a locale string */
-  getLocaleFunction(language: string) {
+  getLocaleFunction(language: string): LocaleString {
     return (fieldName: string, args?: Record<string, unknown>) => this.getLocale(language, fieldName, args);
   }
 

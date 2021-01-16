@@ -12,7 +12,7 @@ const reason = "Sent an invite (Automod)";
 
 export async function automodAntiInvite(msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig) {
   const userLocale = await bot.localeSystem.getUserLocale(msg.author.id, bot);
-  const string = bot.localeSystem.getLocaleFunction(userLocale) as LocaleString;
+  const string = bot.localeSystem.getLocaleFunction(userLocale);
 
   // Checks if an invite was posted
   if (fullInviteRegex.test(msg.content)) {

@@ -17,7 +17,7 @@ export class HandlerEvent extends Event {
 
     // Finds what locale to use
     const userLocale = await this.bot.localeSystem.getUserLocale(msg.author.id, this.bot);
-    const string = this.bot.localeSystem.getLocaleFunction(userLocale) as LocaleString;
+    const string = this.bot.localeSystem.getLocaleFunction(userLocale);
     msg.string = string;
 
     // Finds what prefix to use
