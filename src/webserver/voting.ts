@@ -29,8 +29,8 @@ export async function startVoting(bot: HibikiClient) {
     let cookies = await bot.db.getUserCookies(req.body.user);
 
     if (!cookies) {
-      cookies = { id: req.body.user, amount: 0, lastclaim: 9999 };
-      await bot.db.updateUserCookies(req.body.user, cookies);
+      await bot.db.insertBlankUserCookies(req.body.user);
+      cookies = { id: req.body.user, amount: 0, lastclaim: null };
     }
 
     // Sets amount; if weekend give 300

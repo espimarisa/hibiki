@@ -163,8 +163,6 @@ export = (bot: HibikiClient) => {
 
       // Locales
       else if (item.type === "locale") {
-        console.log(Object.keys(bot.localeSystem.locales));
-        console.log(guildConfig[c]);
         delete guildConfig[c];
       }
 
@@ -229,15 +227,12 @@ export = (bot: HibikiClient) => {
     if (!guild) return res.status(401).send({ error: "Unauthorized to manage guild" });
 
     // Gets config
-    let guildConfig = await bot.db.getGuildConfig(guild.id);
+    const guildConfig = await bot.db.getGuildConfig(guild.id);
 
     // Inserts guildConfig
     if (!guildConfig) {
-      guildConfig = { id: guild.id };
       await bot.db.insertBlankGuildConfig(guild.id);
     }
-
-    guildConfig = { id: guild.id };
 
     // Deletes the config
     await bot.db.deleteGuildConfig(guild.id);
@@ -327,15 +322,12 @@ export = (bot: HibikiClient) => {
     // Checks to see if the user has permission
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     const user = req.user as Profile;
-    let userConfig = await bot.db.getUserConfig(user.id);
+    const userConfig = await bot.db.getUserConfig(user.id);
 
     // Inserts guildConfig
     if (!userConfig) {
       await bot.db.insertBlankUserConfig(user.id);
-      userConfig = { id: user.id };
     }
-
-    userConfig = { id: user.id };
 
     // Deletes the config
     await bot.db.deleteUserConfig(user.id);
