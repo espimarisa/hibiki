@@ -43,14 +43,19 @@ export async function startVoting(bot: HibikiClient) {
 
     // DMs the voter
     if (user) {
-      const dmChannel = await user.getDMChannel();
+      const dmChannel = await user.getDMChannel().catch(() => {});
       if (!dmChannel) return;
+
+      // Gets the user's locale
+      const userLocale = await bot.localeSystem.getUserLocale(`${user}`, bot);
+      const string = bot.localeSystem.getLocaleFunction(userLocale);
+
       dmChannel
         .createMessage({
           embed: {
             // TODO: Localise
-            title: "✨ Thanks for voting!",
-            description: `**${req.body.isWeekend ? "300" : "150"} cookies** have been added to your account.`,
+            title: `✨ ${string("global.THANKS_FOR_VOTING")}`,
+            description: string("global.VOTING_COOKIES_ADDED", { amount: req.body.isWeekend ? "300" : "150" }),
             color: convertHex("general"),
           },
         })

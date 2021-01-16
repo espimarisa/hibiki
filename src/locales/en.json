@@ -235,9 +235,11 @@
     "SET_TO": "has been set to",
     "SNIPING": "Sniping",
     "SUCCESS": "✅ Success",
+    "THANKS_FOR_VOTING": "Thanks for voting!",
     "TIMEOUT_REACHED": "The timeout for input has been reached.",
     "TIMEZONE": "Timezone",
     "TIMEZONEHIDE": "Hide Timezone",
+    "VOTING_COOKIES_ADDED": "**{amount}** cookies have been added to your account.",
     "YES": "Yes"
   },
 
@@ -310,7 +312,7 @@
     "VOLUME": "Volume",
     "VOLUME_CHANGED": "The volume was set to **{volume}%**."
   },
-  
+
   "nsfw": {
     "LEWDCATGIRL": "Lewd Catgirl"
   },
