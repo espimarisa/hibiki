@@ -226,6 +226,13 @@ export const validItems = [
   },
   {
     category: "automod",
+    emoji: "🏓",
+    id: "antiMassMention",
+    type: "bool",
+    default: false,
+  },
+  {
+    category: "automod",
     emoji: "😶",
     id: "antiNewLines",
     type: "bool",
@@ -255,6 +262,12 @@ export const validItems = [
     category: "automod",
     emoji: "⚒",
     id: "invitePunishments",
+    type: "punishment",
+  },
+  {
+    category: "automod",
+    emoji: "🧨",
+    id: "antiMassMentionPunishments",
     type: "punishment",
   },
   {
@@ -300,6 +313,15 @@ export const validItems = [
     minimum: 5,
     maximum: 10,
     default: 7,
+    type: "number",
+  },
+  {
+    category: "automod",
+    emoji: "*️⃣",
+    id: "massMentionThreshold",
+    minimum: 6,
+    maximum: 20,
+    default: 8,
     type: "number",
   },
 

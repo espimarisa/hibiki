@@ -272,11 +272,31 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
     case "assignableRoles":
       if (title) return string("general.CONFIG_ASSIGNABLEROLES");
       return string("general.CONFIG_ASSIGNABLEROLES_DESCRIPTION");
+    case "antiMassMention":
+      if (title) return string("general.CONFIG_ANTIMASSMENTION");
+      return string("general.CONFIG_ANTIMASSMENTION_DESCRIPTION");
+    case "antiMassMentionPunishments":
+      if (title) return string("general.CONFIG_ANTIMASSMENTIONPUNISHMENTS");
+      return string("general.CONFIG_ANTIMASSMENTIONPUNISHMENTS_DESCRIPTION");
+    case "massMentionThreshold":
+      if (title) return string("general.CONFIG_ANTIMASSMENTIONTHRESHOLD");
+      return string("general.CONFIG_ANTIMASSMENTIONTHRESHOLD_DESCRIPTION");
     case undefined:
     default:
       return item;
   }
 }
+
+/**
+ *
+ * @param level     "CONFIG_ANTIMASSMENTION": "Anti Mass-Mention",
+    "CONFIG_ANTIMASSMENTION_DESCRIPTION": "Enables or disables mass mention detection.",
+    "CONFIG_ANTIMASSMENTIONTHRESHOLD": "Mass Mention Threshold",
+    "CONFIG_ANTIMASSMENTIONTHRESHOLD_DESCRIPTION": "The amount of unique mentions allowed before running antiMassMention.",
+    "CONFIG_ANTIMASSMENTIONPUNISHMENTS": "Mass Mention Punishments",
+    "CONFIG_ANTIMASSMENTIONPUNISHMENTS_DESCRIPTIONS": "Punishments to apply to members that mass-mention.",
+
+ */
 
 /** Formats guild verification level */
 export function verificationLevelFormat(level: number) {
