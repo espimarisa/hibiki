@@ -109,7 +109,10 @@
           <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
           <div class="field" id="<%= item.id %>" class="control">
             <input <%=cfg && cfg[item.id] ? "checked " : ""%>id="<%= switchName %>" type="checkbox" name="<%= switchName %>" class="switch is-rounded is-link" />
-            <label for="<%= switchName %>"><%= localeString("global.ENABLED2") %></label>
+            <label for="<%= switchName %>"><%
+              let stringy = localeString("global.ENABLED") %>
+              <%= stringy.charAt(0).toUpperCase() + stringy.substring(1); %>
+            </label>
           </div>
         </div>
         <br>

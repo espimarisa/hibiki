@@ -50,6 +50,6 @@ export class ReminderHandler {
           }
         });
       }, 1000);
-    }, 1000);
+    }, 10000);
   }
 }

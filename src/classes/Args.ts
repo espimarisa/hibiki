@@ -22,7 +22,7 @@ export class Args {
       // Looks for a channel
       channel: (a: string, msg: Message<TextChannel>, flag: string) => {
         const channel = msg.channel.guild.channels.find((c) => c.id === a || a.startsWith(`<#${c.id}>`) || c.name.startsWith(a));
-        if (channel?.type === 4 || channel?.type === 2) return;
+        if (channel?.type === 4 || (channel?.type === 2 && flag !== "allowVoice")) return;
         if (!channel && flag === "fallback") return msg.channel;
         return channel;
       },
