@@ -269,14 +269,19 @@
   },
 
   "moderation": {
+    "BAN": "Ban",
+    "BANNED": "banned",
+    "BANNING": "banning",
     "KICK": "Kick",
-    "KICK_CANCELLED": "Cancelled kicking **{member}**.",
-    "KICK_CONFIRMATION": "Are you sure you'd like to kick **{member}**?",
-    "KICK_FAILED": "Failed to kick **{member}**.",
-    "KICK_TOOLOWROLE": "My role isn't high enough to kick **{member}**.",
-    "KICKED_FOR": "You were kicked for `{reason}`.",
-    "KICKED_FROM": "🚪 Kicked from {guild}",
-    "KICKED_USER": "**{member}** was kicked by **{author}**.",
+    "KICKED": "kicked",
+    "KICKING": "kicking",
+    "PUNISHMENT_CANCELLED": "Cancelled {type} **{member}**.",
+    "PUNISHMENT_CONFIRMATION": "Are you sure you'd like to {type} **{member}**?",
+    "PUNISHMENT_DM": "You were **{type}** for {reason}.",
+    "PUNISHMENT_DM_TITLE": "🚪 {type} from {guild}",
+    "PUNISHMENT_FAILED": "Failed to {type} **{member}**.",
+    "PUNISHMENT_SUCCESS": "**{member}** was {type} by **{author}**.",
+    "PUNISHMENT_TOOLOWROLE": "My role isn't high enough to {type} **{member}**.",
     "PURGE_DESCRIPTION": "purged {msgs:# messages#! message!}"
   },
 

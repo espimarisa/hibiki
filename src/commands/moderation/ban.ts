@@ -3,12 +3,12 @@ import { Command } from "../../classes/Command";
 import { askYesNo } from "../../utils/ask";
 import { roleHierarchy } from "../../utils/hierarchy";
 
-export class KickCommand extends Command {
-  description = "Kicks a member from the server.";
-  clientperms = ["kickMembers"];
-  requiredperms = ["kickMembers"];
+export class BanCommand extends Command {
+  description = "Bans a member from the server.";
+  clientperms = ["banMembers"];
+  requiredperms = ["banMembers"];
   args = "<member:member&strict> [reason:string]";
-  aliases = ["getout", "k"];
+  aliases = ["b"];
   staff = true;
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs, args: string[]) {
@@ -24,7 +24,7 @@ export class KickCommand extends Command {
         msg.string("global.ERROR"),
         msg.string("moderation.PUNISHMENT_TOOLOWROLE", {
           member: msg.tagUser(member.user),
-          type: msg.string("moderation.KICK").toLowerCase(),
+          type: msg.string("moderation.BAN").toLowerCase(),
         }),
         "error",
       );
@@ -32,43 +32,43 @@ export class KickCommand extends Command {
 
     // Compares author roles to target
     if (roleHierarchy(msg.member, member)) {
-      const kickmsg = await msg.createEmbed(
-        `🔨 ${msg.string("moderation.KICK")}`,
+      const banmsg = await msg.createEmbed(
+        `🔨 ${msg.string("moderation.BAN")}`,
         msg.string("moderation.PUNISHMENT_CONFIRMATION", {
           member: msg.tagUser(member.user),
-          type: msg.string("moderation.KICK").toLowerCase(),
+          type: msg.string("moderation.BAN").toLowerCase(),
         }),
       );
 
       const { response } = await askYesNo(this.bot, msg).catch(() => {
         // Waits for response
-        return kickmsg.editEmbed(msg.string("global.ERROR"), msg.string("global.TIMEOUT_REACHED"), "error");
+        return banmsg.editEmbed(msg.string("global.ERROR"), msg.string("global.TIMEOUT_REACHED"), "error");
       });
 
       if (typeof response != "boolean") return;
 
-      // If the kick was cancelled
+      // If the ban was cancelled
       if (response === false)
-        return kickmsg.editEmbed(
+        return banmsg.editEmbed(
           msg.string("global.CANCELLED"),
-          msg.string("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.string("moderation.KICKED") }),
+          msg.string("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.string("moderation.BANNED") }),
           "error",
         );
 
       try {
-        await member.kick(`${reason} (${msg.tagUser(msg.author, true)})`);
+        await member.ban(1, `${reason} (${msg.tagUser(msg.author, true)})`);
       } catch (err) {
-        await kickmsg.editEmbed(
-          `🔨 ${msg.string("moderation.KICK")}`,
+        await banmsg.editEmbed(
+          `🔨 ${msg.string("moderation.BAN")}`,
           msg.string("moderation.PUNISHMENT_FAILED", {
             member: msg.tagUser(member.user),
-            type: msg.string("moderation.KICK").toLowerCase(),
+            type: msg.string("moderation.BAN").toLowerCase(),
           }),
           "error",
         );
       }
 
-      // Gets the kicked member's locale and DMs them on kick
+      // Gets the banned member's locale and DMs them on ban
       const victimLocale = await this.bot.localeSystem.getUserLocale(member.id, this.bot);
       const dmchannel = await member.user.getDMChannel();
       if (dmchannel) {
@@ -76,21 +76,21 @@ export class KickCommand extends Command {
           embed: {
             title: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.PUNISHMENT_DM_TITLE", {
               guild: msg.channel.guild.name,
-              type: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.KICKED"),
+              type: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.BANNED"),
             }),
             description: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.PUNISHMENT_DM", {
-              type: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.KICKED"),
+              type: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.BANNED"),
               reason: reason,
             }),
             color: msg.convertHex("error"),
           },
         });
 
-        await kickmsg.editEmbed(
-          `🔨 ${msg.string("moderation.KICK")}`,
+        await banmsg.editEmbed(
+          `🔨 ${msg.string("moderation.BAN")}`,
           msg.string("moderation.PUNISHMENT_SUCCESS", {
             member: msg.tagUser(member.user),
-            type: msg.string("moderation.KICKED"),
+            type: msg.string("moderation.BANNED"),
             author: msg.author.username,
           }),
         );
