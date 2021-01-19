@@ -5,8 +5,8 @@
  */
 
 import type { Guild, Message, TextChannel } from "eris";
-import { Member } from "eris";
 import type { HibikiClient } from "../../classes/Client";
+import { Member } from "eris";
 import { generateSnowflake } from "../../utils/snowflake";
 
 // Mute punishment
@@ -19,11 +19,11 @@ export const punishMute = async (
 ) => {
   const member = msg instanceof Member ? msg : msg.member;
   const guild = msg instanceof Member ? g : msg.channel.guild;
-  if (member.roles && member.roles.includes(cfg.mutedRole)) return;
+  if (member?.roles?.includes?.(cfg.mutedRole)) return;
 
   // Updates the mute cache
   await bot.db.insertMuteCache({
-    role: "",
+    role: null,
     member: member.id,
     guild: guild.id,
   });

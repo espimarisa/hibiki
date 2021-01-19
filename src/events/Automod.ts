@@ -31,7 +31,7 @@ export class Automod extends Event {
 
       if (
         // Ignores privelaged users from automod
-        (member?.roles && guildconfig?.staffRole && member.roles?.includes(guildconfig?.staffRole)) ||
+        (member?.roles && member.roles?.includes?.(guildconfig?.staffRole)) ||
         member.permissions.has("administrator") ||
         member.permissions.has("manageGuild") ||
         member.permissions.has("manageMessages")
@@ -39,10 +39,10 @@ export class Automod extends Event {
         return;
 
       // Runs each automod event if it's configured to do so
-      if (guildconfig?.antiSpam && guildconfig?.spamPunishments) await automodAntiSpam(msg, this.bot, guildconfig);
-      if (guildconfig?.antiInvite && guildconfig?.invitePunishments) await automodAntiInvite(msg, this.bot, guildconfig);
-      if (guildconfig?.antiNewLines && guildconfig?.antiNewLinesPunishments) await automodAntiNewLine(msg, this.bot, guildconfig);
-      if (guildconfig?.antiMassMention && guildconfig?.antiMassMentionPunishments) await automodAntiMassMention(msg, this.bot, guildconfig);
+      if (guildconfig.antiSpam && guildconfig.spamPunishments) await automodAntiSpam(msg, this.bot, guildconfig);
+      if (guildconfig.antiInvite && guildconfig.invitePunishments) await automodAntiInvite(msg, this.bot, guildconfig);
+      if (guildconfig.antiNewLines && guildconfig.antiNewLinesPunishments) await automodAntiNewLine(msg, this.bot, guildconfig);
+      if (guildconfig.antiMassMention && guildconfig.antiMassMentionPunishments) await automodAntiMassMention(msg, this.bot, guildconfig);
     }
 
     // AntiRaid functionality

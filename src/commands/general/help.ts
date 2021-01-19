@@ -126,7 +126,7 @@ export class HelpCommand extends Command {
               name: sortedcategories[categories.indexOf(category)],
               value: this.bot.commands
                 .map((c) => {
-                  if (db && db.disabledCmds && db.disabledCmds.includes(c.name)) return;
+                  if (db?.disabledCmds?.includes?.(c.name)) return;
                   if (c.category !== category) return;
                   return `\`${c.name}\``;
                 })

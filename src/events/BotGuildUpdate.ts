@@ -16,6 +16,7 @@ export class BotGuildUpdateEvent extends Event {
 
   async run(event: string, guild: Guild) {
     if (event === "guildCreate") {
+      if (!guild) return;
       // Checks to see if the bot was added to a blacklisted guild
       const blacklist = await this.bot.db.getBlacklistedGuild(guild.id);
       if (blacklist) {
@@ -25,7 +26,7 @@ export class BotGuildUpdateEvent extends Event {
 
       // DMs the owner their welcome message
       const owner = this.bot.users.get(guild.ownerID);
-      if (owner && owner.id) {
+      if (owner?.id) {
         const ownerDM = await owner.getDMChannel();
         ownerDM.createMessage({
           embed: {

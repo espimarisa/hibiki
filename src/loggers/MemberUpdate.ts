@@ -30,7 +30,7 @@ export class MemberUpdate extends Logger {
       const muted = (await this.bot.db.getMuteCache()) as MuteCache[];
       // Re-adds any muted roles if the member tried to evade mute
       const mute = muted.find((m: MuteCache) => m.member === member.id && m.guild === guild.id);
-      if (mute && guildconfig.mutedRole) await member.addRole(guildconfig.mutedRole, "Rejoined after being muted").catch(() => {});
+      if (mute && guildconfig?.mutedRole) await member.addRole(guildconfig.mutedRole, "Rejoined after being muted").catch(() => {});
       if (!guildconfig?.leaveJoin) return;
       const leavejoinchannel = guild.channels.find((c) => c.id === guildconfig?.leaveJoin) as TextChannel;
       if (!leavejoinchannel) return;
