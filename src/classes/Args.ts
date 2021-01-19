@@ -57,12 +57,12 @@ export class Args {
               m.id === a ||
               a.startsWith(`<@!${m.id}>`) ||
               a.startsWith(`<@${m.id}>`) ||
-              (m.nick && m.nick.toLowerCase() === a)
+              m.nick?.toLowerCase() === a
             : m.user.username.startsWith(a) || m.id === a || a.startsWith(`<@!${m.id}>`) || a.startsWith(`<@${m.id}>`),
         );
 
         if ((!a || !member) && flag === "fallback") return msg.channel.guild.members.get(msg.author.id);
-        if (!flag && member && member.id === msg.author.id) return;
+        if (!flag && member?.id === msg.author.id) return;
         return member;
       },
 

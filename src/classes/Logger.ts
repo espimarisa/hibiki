@@ -22,7 +22,7 @@ export abstract class Logger extends Event {
     if (!guildconfig) return null;
 
     // Ignores channels set to be ignored
-    if (channel.constructor === TextChannel && guildconfig.ignoredLoggingChannels && guildconfig.ignoredLoggingChannels.includes(channel)) {
+    if (channel.constructor === TextChannel && guildconfig?.ignoredLoggingChannels?.includes?.(channel)) {
       return null;
     }
 
