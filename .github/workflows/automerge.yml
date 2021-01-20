@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: "Wait for status checks"
         id: waitforstatuschecks
-        uses: WyriHaximus/github-action-wait-for-status@v1.2.0
+        uses: WyriHaximus/github-action-wait-for-status@v1.3.0
         with:
           ignoreActions: worker,WIP
           checkInterval: 300

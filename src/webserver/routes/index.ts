@@ -4,7 +4,7 @@
  * @module dashboard/routes/index
  */
 
-import type { HibikiClient } from "classes/Client";
+import type { HibikiClient } from "../../classes/Client";
 import type { Profile } from "passport-discord";
 import { defaultAvatar } from "../../helpers/constants";
 import { uptimeFormat } from "../../utils/format";
@@ -38,6 +38,11 @@ export = (bot: HibikiClient) => {
   // Logout redirection
   router.get("/logout/", (req, res) => {
     res.redirect(301, "/auth/logout");
+  });
+
+  // Donate redirection
+  router.get("/donate/", (req, res) => {
+    res.redirect(301, `https://ko-fi.com/smolespi`);
   });
 
   // Invite redirection
