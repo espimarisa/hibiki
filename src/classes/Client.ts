@@ -22,7 +22,7 @@ import { startDashboard } from "../webserver/dashboard";
 import { ReminderHandler } from "../scripts/reminders";
 import path from "path";
 import config from "../../config.json";
-import Sentry from "@sentry/node";
+import * as Sentry from "@sentry/node";
 
 const LOCALES_DIRECTORY = path.join(__dirname, "../locales");
 
