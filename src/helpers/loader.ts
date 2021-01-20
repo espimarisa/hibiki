@@ -5,9 +5,9 @@
  */
 
 import type { HibikiClient } from "../classes/Client";
+import type { Event } from "../classes/Event";
 import { readdir } from "fs";
 import { join } from "path";
-import type { Event } from "classes/Event";
 
 const COMMANDS_DIRECTORY = join(__dirname, "../commands");
 const EVENTS_DIRECTORY = join(__dirname, "../events");

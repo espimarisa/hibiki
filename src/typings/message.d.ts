@@ -4,7 +4,7 @@
  * @typedef message
  */
 
-import type { tagUser } from "utils/format";
+import type { tagUser } from "../utils/format";
 import type { convertHex, createEmbed, editEmbed } from "../helpers/embed";
 
 declare module "eris" {
