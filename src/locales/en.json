@@ -22,7 +22,7 @@
     "PAY_BOT": "You can't give cookies to a bot.",
     "PAY_INVALID": "You gave an invalid amount of cookies.",
     "PAY_NOTENOUGH": "You don't have enough cookies for that transaction.",
-    "PAY_PAYED": "You gave **{amount}** {amount:# cookies#! cookie!} to **{receiver}**."
+    "PAY_PAYED": "You gave **{amount}** {amount:#cookies#!cookie!} to **{receiver}**."
   },
 
   "general": {
@@ -139,6 +139,8 @@
     "CONFIG_STAFFROLE_DESCRIPTION": "The role that designates whether a member is staff or not.",
     "CONFIG_VERIFIEDROLE": "Verified Role",
     "CONFIG_VERIFIEDROLE_DESCRIPTION": "The role given to a member when they're verified with the command.",
+    "INVITE": "Invite",
+    "INVITE_INFO": "[Bot Invite]({bot}) • [Support]({support})",
     "HELP": "Help",
     "HELP_ALIASES": "Aliases",
     "HELP_ALLOWDISABLE": "Allow Disable",
@@ -175,7 +177,22 @@
     "PROFILE_TIMEZONE_DESCRIPTION": "Sets your timezone to show your current time on your profile.",
     "PROFILE_TIMEZONEHIDE_DESCRIPTION": "Toggles hiding your current time from your profile.",
     "PUNISHMENTS_FOR": "Punishments for {label}",
-    "SPLASHBANNER_ERROR": "This server doesn't have a splash page banner."
+    "SPLASHBANNER_ERROR": "This server doesn't have a splash page banner.",
+    "VOTE": "Vote",
+    "VOTE_INFO": "Vote for **{username}** on top.gg [here]({link}). Each vote gives you cookies!",
+    "DISABLE": "Disable",
+    "ENABLE": "Enable",
+    "DISABLE_COMMAND_NOTFOUND": "That command doesn't exist.",
+    "DISABLE_COMMAND_DISABLED": "The **{command}** command has been disabled.",
+    "DISABLE_CATEGORY_DISABLED": "The **{category}** category has been disabled.",
+    "DISABLE_CATEGORY_ALREADYDISABLED": "That category is already disabled.",
+    "DISABLE_CATEGORY_NOTALLOWED": "That category isn't allowed to be disabled.",
+    "DISABLE_ALREADYDISABLED": "That's already disabled.",
+
+    "ENABLE_COMMAND_ENABLED": "The **{command}** command has been enabled.",
+    "ENABLE_CATEGORY_ENABLED": "The **{category}** category has been enabled.",
+    "ENABLE_CATEGORY_ALREADYENABLED": "That category is already enabled.",
+    "ENABLE_ALREADYENABLED": "That's already enabled."
   },
 
   "global": {
@@ -361,7 +378,7 @@
   },
 
   "utility": {
-    "CHANNELINFO_TEXT": "The channel {nsfw:# is#! isn't!} NSFW and it's in position **{position}**.",
+    "CHANNELINFO_TEXT": "The channel {nsfw:#is#!isn't!} NSFW and it's in position **{position}**.",
     "CHANNELINFO_VOICE": "The channel's bitreate is {bitrate}kbps and it's limited to {limit} users.",
     "REMINDER": "Reminder",
     "REMINDER_INFO": "I'll remind you to {reminder} in **{time}**.",
@@ -373,7 +390,7 @@
     "REMINDERS": "Reminders",
     "REMINDERS_NONE": "You don't have any reminders currently set.",
     "ROLEINFO_HOISTED": "Hoisted",
-    "ROLEINFO_INFO": "**{members}** {members:# members#! member!} have the role and it's in position **{position}**.",
+    "ROLEINFO_INFO": "**{members}** {members:#members#!member!} have the role and it's in position **{position}**.",
     "ROLEINFO_MANAGED": "Managed by an integration",
     "ROLEINFO_MENTIONABLE": "Mentionable",
     "WIKIPEDIA": "Wikipedia",
