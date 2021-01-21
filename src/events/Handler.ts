@@ -48,12 +48,6 @@ export class HandlerEvent extends Event {
       return;
     }
 
-    // Handles NSFW commands
-    if (command.nsfw && !msg.channel.nsfw && msg.channel.guild) {
-      msg.createEmbed(string("global.ERROR"), string("global.ERROR_NSFW", { command: command.name }), "error");
-      return;
-    }
-
     // Handles disabled categories and commands
     if (command.allowdisable !== false) {
       // Disabled categories
@@ -65,6 +59,12 @@ export class HandlerEvent extends Event {
       if (guildconfig?.disabledCmds?.includes(command.name)) {
         return msg.createEmbed(string("global.ERROR"), string("global.ERROR_DISABLED", { command: command.name }), "error");
       }
+    }
+
+    // Handles NSFW commands
+    if (command.nsfw && !msg.channel.nsfw && msg.channel.guild) {
+      msg.createEmbed(string("global.ERROR"), string("global.ERROR_NSFW", { command: command.name }), "error");
+      return;
     }
 
     // Handles voice-only commands
