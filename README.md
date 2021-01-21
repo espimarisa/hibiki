@@ -10,7 +10,7 @@
 
 [Hibiki][hibiki] is an easy, versatile, and all-in-one Discord bot that does anything that your server needs.
 
-Written in [TypeScript][typescript] and powered by [Eris][eris] and [Node.js][nodejs], Hibiki is designed to have the perfect blend of customizability, ease-of-use, and stability. Unlike most Discord bots, Hibiki (and her features) are both very simple to use but also extremely tweakable.
+Written in [TypeScript][typescript] and powered by [Eris][eris] and [Node.js][nodejs], Hibiki is designed to have the perfect blend of customizability, ease-of-use, and stability. Unlike most Discord bots, Hibiki is both simple to use but also very tweakable.
 
 ## Invite
 
@@ -69,6 +69,7 @@ Hibiki is licensed under the [GNU AGPL-v3][license] or later.
 ## Donating
 
 Hibiki (and all of her features) will always be completely free. However, hosting isn't cheap.
+
 You can donate through [Ko-fi][donate] and all donations will go directly towards hosting, domain renewals, and other expenses.
 
 [contributing]: .github/CONTRIBUTING.md "Contributing guidelines file."
@@ -87,11 +88,11 @@ You can donate through [Ko-fi][donate] and all donations will go directly toward
 [translation]: https://translate.hibiki.app/project/hibiki "Total progress of translations."
 [typescript]: https://www.typescriptlang.org/ "TypeScript's official website."
 [wiki]: https://github.com/smolespi/hibiki/wiki "A guide on how to self-host and configure Hibiki."
-[workflow]: https://github.com/smolespi/hibiki/actions?query=workflow%3Ahibiki "Main GitHub workflow action."
+[workflow]: https://github.com/smolespi/hibiki/actions?query=workflow%3Apush "Main GitHub workflow action."
 
 <!-- Badge URLs -->
 
-[badge-workflow]: https://img.shields.io/github/workflow/status/smolespi/hibiki/hibiki "Shields.io badge for workflow status."
+[badge-workflow]: https://img.shields.io/github/workflow/status/smolespi/hibiki/Push "Shields.io badge for workflow status."
 [badge-crowdin]: https://badges.crowdin.net/hibiki/localized.svg "Crowdin badge for total localization progress."
 [badge-license]: https://img.shields.io/badge/license-AGPL%20v3-orange.svg "Shields.io badge for the GNU AGPLv3."
 [badge-stable]: https://img.shields.io/github/v/release/smolespi/hibiki?label=stable "Shields.io badge for the latest stable Hibiki release."
