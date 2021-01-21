@@ -12,7 +12,7 @@ declare module "eris" {
     createEmbed: typeof createEmbed;
     editEmbed: typeof editEmbed;
     convertHex: typeof convertHex;
-    string: typeof string;
+    string: LocaleString;
     tagUser: typeof tagUser;
   }
 }

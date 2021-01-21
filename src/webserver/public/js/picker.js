@@ -12,6 +12,7 @@ import { EmojiButton } from "https://cdn.jsdelivr.net/npm/@joeattardi/emoji-butt
 window.addEventListener("DOMContentLoaded", () => {
   const button = document.getElementById("pinEmoji");
   const picker = new EmojiButton({
+    zIndex: 100,
     emojiSize: "1.5em",
     showRecents: false,
     showPreview: false,

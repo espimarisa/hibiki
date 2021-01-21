@@ -14,6 +14,7 @@ import cookieParser from "cookie-parser";
 import csurf from "csurf";
 import express from "express";
 import expressSession from "express-session";
+import helmet from "helmet";
 import passport from "passport";
 import config from "../../config.json";
 
@@ -21,10 +22,24 @@ const app = express();
 app.enable("trust proxy");
 
 // Disables cache-control on specified routes
-const noCache = (req: Request, res: Response, next: NextFunction) => {
+const noCache = (_req: Request, res: Response, next: NextFunction) => {
   res.header("Cache-Control", "no-cache");
   next();
 };
+
+app.use(helmet({ contentSecurityPolicy: false }));
+
+// Sets securityPolicy
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'", "cdn.jsdelivr.net"],
+      imgSrc: ["'self'", "cdn.discordapp.com"],
+      scriptSrc: ["'self'", "cdn.jsdelivr.net"],
+      styleSrc: ["'self'", "'unsafe-inline'", "cdn.jsdelivr.net"],
+    },
+  }),
+);
 
 /** Starts the dashboard */
 export async function startDashboard(bot: HibikiClient) {
