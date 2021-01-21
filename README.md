@@ -1,20 +1,22 @@
 # Hibiki
 
-[![Build](https://img.shields.io/github/workflow/status/smolespi/hibiki/hibiki)][workflow]
-[![Crowdin](https://badges.crowdin.net/hibiki/localized.svg)][translation]
-[![License](https://img.shields.io/badge/license-AGPL%20v3-orange.svg)][license]
-[![Stable](https://img.shields.io/github/v/release/smolespi/hibiki?label=stable)][stable]
-[![Latest](https://img.shields.io/github/package-json/v/smolespi/hibiki/next?color=red&label=latest)][latest]
-[![Support](https://img.shields.io/discord/620287077778587651?color=purple&label=support)][support]
-[![Website](https://img.shields.io/website?down_color=critical&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fhibiki.app)][hibiki]
+[![Build][badge-workflow]][workflow]
+[![Crowdin][badge-crowdin]][translation]
+[![License][badge-license]][license]
+[![Stable][badge-stable]][stable]
+[![Latest][badge-latest]][latest]
+[![Support][badge-support]][support]
+[![Website][badge-website]][hibiki]
 
-[Hibiki][hibiki] is an an easy, versatile, and all-in-one Discord bot written in TypeScript that can do anything that your server needs.
+[Hibiki][hibiki] is an easy, versatile, and all-in-one Discord bot that does anything that your server needs.
+
+Written in [TypeScript][typescript] and powered by [Eris][eris] and [Node.js][nodejs], Hibiki is designed to have the perfect blend of customizability, ease-of-use, and stability. Unlike most Discord bots, Hibiki (and her features) are both very simple to use but also extremely tweakable.
 
 ## Invite
 
-Hibiki can be invited [here][invite]. Any other instances of Hibiki are **unofficial** and could carry privacy or security concerns. You can view our privacy policy [here][privacy].
+You can invite Hibiki using [this Discord link][invite].
 
-The only official bot application is `Hibiki#1448` `(493904957523623936)`.
+Any other instances of Hibiki are **unofficial** and could carry privacy or security concerns. You can view our official privacy policy [here][privacy]. The only official instance is `Hibiki#1448` `(493904957523623936)`.
 
 ## Features
 
@@ -46,36 +48,53 @@ All features are completely **free** with no paywalls in place.
 
 ## Hosting
 
-If you're just looking to use Hibiki, [invite][invite] the bot here.
+You should have some **Node.js**, **RethinkDB**, and **general sysadmin knowledge** before doing so, though. We **will not answer self-hosting questions** and any issues regarding such will be closed - unless it's a bug report.
 
-If you really want to self-host Hibiki, refer to the [wiki][wiki] for a guide.
-
-You should have some **Node.js**, **RethinkDB**, and **general sysadmin knowledge** before doing so, though. We **will not** answer self-hosting questions and any issues regarding such will be closed - unless it's a bug report.
+If you still really want to self-host Hibiki, refer to the [wiki][wiki] for a guide.
 
 ## License
 
 Hibiki is licensed under the [GNU AGPL-v3][license] or later.
 
+- You must disclose your application's source code
+- You must preserve the original copyright/license info
+- You must state any signifigant changes to the source code
+
 ## Contributing
 
-View the [contributing][contributing] file for details and guidelines on how to contribute. If you're looking to help us translate Hibiki into other languages, view our [Crowdin][translating] page. If you have a security concern of vulnerability to report to us, read out [security][security] file before filing an issue.
+- View the [contributing][contributing] file for details and guidelines on how to contribute to the source code.
+- If you're looking to help us translate Hibiki into other languages, you can do so via [Crowdin][translating].
+- If you believe you've found a security concern or vulnerability, view our [security guidelines][security] file.
 
 ## Donating
 
-Hibiki is, and always will be, completely free. However, hosting isn't cheap.
-You can donate through [Ko-Fi][donate] and all donations will go directly towards hosting, domain renewals, and other expenses.
+Hibiki (and all of her features) will always be completely free. However, hosting isn't cheap.
+You can donate through [Ko-fi][donate] and all donations will go directly towards hosting, domain renewals, and other expenses.
 
-[donate]: https://ko-fi.com/smolespi "Donate to help cover Hibiki's expenses"
+[contributing]: .github/CONTRIBUTING.md "Contributing guidelines file."
+[donate]: https://ko-fi.com/smolespi "Donate thru Ko-fi to help cover Hibiki's expenses."
+[eris]: https://abal.moe/eris "Eris's documentation website."
 [hibiki]: https://hibiki.app "Hibiki's official website and dashboard."
 [invite]: https://discordapp.com/oauth2/authorize?&client_id=493904957523623936&scope=bot&permissions=506850534 "A Discord invite for the official Hibiki instance."
-[wiki]: https://github.com/smolespi/hibiki/wiki "A guide on how to self-host and configure Hibiki."
-[license]: LICENSE "Hibiki is licensed under the GNU AGPLv3 or later."
-[contributing]: .github/CONTRIBUTING.md "Contributing guidelines file."
-[security]: .github/SECURITY.md "Security guidelines file."
-[support]: https://discord.gg/gZEj4sM "A Discord invite to the bot's support server."
 [latest]: https://github.com/smolespi/hibiki/tree/next "The latest bot version (on the next branch)."
+[license]: LICENSE "Hibiki is licensed under the GNU AGPLv3 or later."
+[nodejs]: https://nodejs.org "Node.js's official website."
+[privacy]: .github/PRIVACY_POLICY.md "Our Privacy Policy."
+[security]: .github/SECURITY.md "Security guidelines file."
 [stable]: https://github.com/smolespi/hibiki/releases/latest "Latest stable GitHub release."
-[workflow]: https://github.com/smolespi/hibiki/actions?query=workflow%3AHibiki "Main GitHub workflow action."
-[translating]: https://translate.hibiki.app "Translations are handled by Crowdin."
-[translation]: https://translate.hibiki.app/project/hibiki "Progress of translations."
-[privacy]: .github/PRIVACY_POLICY.md "Privacy Policy"
+[support]: https://discord.gg/gZEj4sM "A Discord invite to the bot's support server."
+[translating]: https://translate.hibiki.app "Hibiki translations on Crowdin."
+[translation]: https://translate.hibiki.app/project/hibiki "Total progress of translations."
+[typescript]: https://www.typescriptlang.org/ "TypeScript's official website."
+[wiki]: https://github.com/smolespi/hibiki/wiki "A guide on how to self-host and configure Hibiki."
+[workflow]: https://github.com/smolespi/hibiki/actions?query=workflow%3Ahibiki "Main GitHub workflow action."
+
+<!-- Badge URLs -->
+
+[badge-workflow]: https://img.shields.io/github/workflow/status/smolespi/hibiki/hibiki "Shields.io badge for workflow status."
+[badge-crowdin]: https://badges.crowdin.net/hibiki/localized.svg "Crowdin badge for total localization progress."
+[badge-license]: https://img.shields.io/badge/license-AGPL%20v3-orange.svg "Shields.io badge for the GNU AGPLv3."
+[badge-stable]: https://img.shields.io/github/v/release/smolespi/hibiki?label=stable "Shields.io badge for the latest stable Hibiki release."
+[badge-latest]: https://img.shields.io/github/package-json/v/smolespi/hibiki/next?color=red&label=latest "Shields.io badge for the latest Hibiki release."
+[badge-support]: https://img.shields.io/discord/620287077778587651?color=purple&label=support "Shields.io badge for the Discord support server information."
+[badge-website]: https://img.shields.io/website?down_color=critical&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fhibiki.app "Shields.io badge to indicate whether hibiki.app is online or not."
