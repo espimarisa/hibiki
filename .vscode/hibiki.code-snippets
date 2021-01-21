@@ -10,10 +10,12 @@
       "  description = \"$2\";",
       "  clientperms = [\"\"];",
       "  requiredperms = [\"\"];",
+      "  requiredkeys = [\"\"];",
       "  args = \"$3\";",
       "  aliases = [\"$4\"];",
       "  cooldown = 0;",
       "  allowdms = false;",
+      "  allowdisable = true;",
       "  nsfw = false;",
       "  staff = false;",
       "  owner = false;",
@@ -27,5 +29,25 @@
       ""
     ],
     "description": "Template for a new Hibiki command."
+  },
+
+  "Event": {
+    "scope": "typescript",
+    "prefix": ["hibiki-event"],
+    "body": [
+      "import type { Message, TextChannel } from \"eris\";",
+      "import { Event } from \"../../classes/Command\";",
+      "",
+      "export class $1Event extends Event {",
+      "  events = [\"$2\"];",
+      "",
+      "  async run(event: string, msg: Message<TextChannel>) {",
+      "    $5",
+      "  }",
+      "}",
+      "",
+      ""
+    ],
+    "description": "Template for a new Hibiki event."
   }
 }

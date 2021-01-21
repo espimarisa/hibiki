@@ -12,7 +12,7 @@ import { automodAntiRaid } from "./automod/antiRaid";
 import { automodAntiSpam } from "./automod/antiSpam";
 import { automodAntiMassMention } from "./automod/antiMassMention";
 
-export class Automod extends Event {
+export class AutomodEvent extends Event {
   events = ["messageCreate", "guildMemberAdd"];
 
   async run(event: string, msg: Message<TextChannel>, member: Member) {
