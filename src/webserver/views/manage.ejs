@@ -176,7 +176,7 @@
                         <option id="none">None</option>
                         <% for (let i = 0; i < roles.length; i++) { %>
                         <% let role = roles[i] %>
-                        <option id=<%=role.id%>><%= role.name %></option>
+                        <option <%= `style=color:#${role.color}` %> id=<%=role.id%>><%= role.name %></option>
                         <% } %>
                       </select>
                     </div>
