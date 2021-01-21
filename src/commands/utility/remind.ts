@@ -62,11 +62,14 @@ export class RemindCommand extends Command {
       let value = timeArg[i + 1].toLowerCase();
       if (!isNaN(parseInt(timeArg[i + 1])) && !isNaN(parseInt(char))) return;
       if (!isNaN(parseInt(char)) && !isNaN(parseInt(timeArg[i - 1]))) char = `${timeArg[i - 1]}${char}`;
-      if (timeArg[i + 2] && (value === " " || value === ",") && /[wdhms]/.exec(timeArg[i + 2].toLowerCase())) value = timeArg[i + 2];
+      if (timeArg[i + 2] && (value === " " || value === ",") && /[ywdhms]/.exec(timeArg[i + 2].toLowerCase())) value = timeArg[i + 2];
 
       // Gets exact time given
       if (isNaN(parseInt(value))) {
         switch (value) {
+          case "y":
+            time += parseInt(char) * 31556736000;
+            break;
           case "w":
             time += parseInt(char) * 604800000;
             break;
