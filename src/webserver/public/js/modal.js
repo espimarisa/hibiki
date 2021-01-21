@@ -7,6 +7,14 @@
 "use strict";
 
 // Modal functionality
+
+// Cancel button support
+document.getElementById("cancel-button").addEventListener("click", toggleButton);
+
+function toggleButton() {
+  document.querySelector("#modal > div.modal-card > header > button").click();
+}
+
 document.querySelectorAll(".modal-button").forEach(function (el) {
   const target = document.querySelector(el.getAttribute("data-target"));
   const keyfunc = (key) => {
