@@ -53,7 +53,6 @@ export async function startVoting(bot: HibikiClient) {
       dmChannel
         .createMessage({
           embed: {
-            // TODO: Localise
             title: `✨ ${string("global.THANKS_FOR_VOTING")}`,
             description: string("global.VOTING_COOKIES_ADDED", { amount: req.body.isWeekend ? "300" : "150" }),
             color: convertHex("general"),

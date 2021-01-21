@@ -21,7 +21,7 @@ export class LewdcatgirlCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        title: `🐱 ${msg.string("nsfw.LEWDCATGIRL_TITLE")}`,
+        title: `🐱 ${msg.string("nsfw.LEWDCATGIRL")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data.message,

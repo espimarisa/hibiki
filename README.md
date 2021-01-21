@@ -10,7 +10,9 @@
 
 [Hibiki][hibiki] is an an easy, versatile, and all-in-one Discord bot written in TypeScript that can do anything that your server needs.
 
-Hibiki can be invited [here][invite]. Any other instances of Hibiki are **unofficial** and could carry privacy or security concerns.
+## Invite
+
+Hibiki can be invited [here][invite]. Any other instances of Hibiki are **unofficial** and could carry privacy or security concerns. You can view our privacy policy [here][privacy].
 
 The only official bot application is `Hibiki#1448` `(493904957523623936)`.
 
@@ -38,17 +40,17 @@ All features are completely **free** with no paywalls in place.
 - 💬 Server, role, and channel info commands
 - 🔨 Useful and powerful moderation commands
 - 📜 Powerful and tweakable server event loggers
-- 🤖 Automod system with anti-spam and anti-invite
+- 🤖 Automod with antiSpam, antiInvite, antiRaid, etc.
 
 ... and many more!
 
 ## Hosting
 
-Hibiki is easily self-hostable, but we don't provide any official support for doing so.
-
 If you're just looking to use Hibiki, [invite][invite] the bot here.
 
 If you really want to self-host Hibiki, refer to the [wiki][wiki] for a guide.
+
+You should have some **Node.js**, **RethinkDB**, and **general sysadmin knowledge** before doing so, though. We **will not** answer self-hosting questions and any issues regarding such will be closed - unless it's a bug report.
 
 ## License
 
@@ -58,6 +60,12 @@ Hibiki is licensed under the [GNU AGPL-v3][license] or later.
 
 View the [contributing][contributing] file for details and guidelines on how to contribute. If you're looking to help us translate Hibiki into other languages, view our [Crowdin][translating] page. If you have a security concern of vulnerability to report to us, read out [security][security] file before filing an issue.
 
+## Donating
+
+Hibiki is, and always will be, completely free. However, hosting isn't cheap.
+You can donate through [Ko-Fi][donate] and all donations will go directly towards hosting, domain renewals, and other expenses.
+
+[donate]: https://ko-fi.com/smolespi "Donate to help cover Hibiki's expenses"
 [hibiki]: https://hibiki.app "Hibiki's official website and dashboard."
 [invite]: https://discordapp.com/oauth2/authorize?&client_id=493904957523623936&scope=bot&permissions=506850534 "A Discord invite for the official Hibiki instance."
 [wiki]: https://github.com/smolespi/hibiki/wiki "A guide on how to self-host and configure Hibiki."
@@ -70,3 +78,4 @@ View the [contributing][contributing] file for details and guidelines on how to 
 [workflow]: https://github.com/smolespi/hibiki/actions?query=workflow%3AHibiki "Main GitHub workflow action."
 [translating]: https://translate.hibiki.app "Translations are handled by Crowdin."
 [translation]: https://translate.hibiki.app/project/hibiki "Progress of translations."
+[privacy]: .github/PRIVACY_POLICY.md "Privacy Policy"
