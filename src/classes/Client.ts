@@ -18,8 +18,9 @@ import { tagUser } from "../utils/format";
 import { loadItems } from "../helpers/loader";
 import { logger } from "../helpers/logger";
 import { statuses } from "../helpers/statuses";
-import { startDashboard } from "../webserver/dashboard";
 import { ReminderHandler } from "../scripts/reminders";
+import { startDashboard } from "../webserver/dashboard";
+import { startVoting } from "../webserver/voting";
 import path from "path";
 import config from "../../config.json";
 import * as Sentry from "@sentry/node";
@@ -78,7 +79,13 @@ export class HibikiClient extends Client {
     statuses(this);
     if (config.sentry) await this.initializeSentry();
     if (config.lavalink.enabled) this.lavalink.manager.init(this.user.id);
-    if (config.dashboard.port) await startDashboard(this);
+
+    // Starts webservers at first boot
+    if (process.uptime() < 20) {
+      if (config.dashboard.port) await startDashboard(this);
+      if (config.keys.botlists.voting.auth && config.keys.botlists.voting.port) await startVoting(this);
+    }
+
     this.log.info(`Logged in as ${tagUser(this.user)} on ${this.guilds.size} guilds`);
   }
 

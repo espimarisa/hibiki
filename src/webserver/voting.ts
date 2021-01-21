@@ -7,10 +7,12 @@
 import type { HibikiClient } from "../classes/Client";
 import { convertHex } from "../helpers/embed";
 import express from "express";
+import helmet from "helmet";
 import config from "../../config.json";
 
 const app = express();
 app.use(express.json());
+app.use(helmet());
 
 export async function startVoting(bot: HibikiClient) {
   if (!config.keys.botlists.voting.auth || !config.keys.botlists.voting.port) return;
