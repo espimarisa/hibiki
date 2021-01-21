@@ -58,7 +58,7 @@ Hibiki is licensed under the [GNU AGPL-v3][license] or later.
 
 - You must disclose your application's source code
 - You must preserve the original copyright/license info
-- You must state any signifigant changes to the source code
+- You must state any significant changes to the source code
 
 ## Contributing
 
