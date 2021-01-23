@@ -1,4 +1,4 @@
-import type { EmbedOptions, Message, TextChannel } from "eris";
+import { EmbedOptions, GuildChannel, Message, TextChannel } from "eris";
 import { PrivateChannel } from "eris";
 import { Command } from "../../classes/Command";
 import config from "../../../config.json";
@@ -10,7 +10,7 @@ export class HelpCommand extends Command {
   allowdisable = false;
   allowdms = true;
 
-  async run(msg: Message<TextChannel | PrivateChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
     // Localizes command categories
     function formatCategory(category: string) {
       let label = "";
@@ -62,11 +62,12 @@ export class HelpCommand extends Command {
     // If no command, send a list of commands
     if (!cmd) {
       let db: GuildConfig;
-      if (msg.channel.type !== 1) db = await this.bot.db.getGuildConfig(msg.channel.id);
+      if (msg.channel instanceof GuildChannel) db = await this.bot.db.getGuildConfig(msg.channel.id);
       let categories: string[] = [];
 
       // Hides owner & disabled cmds
       this.bot.commands.forEach((c) => {
+        if (!categories.includes(c.category) && c.nsfw === true && msg.channel.guild && !msg.channel.nsfw) return;
         if (!categories.includes(c.category) && c.category !== "owner") categories.push(c.category);
       });
 
