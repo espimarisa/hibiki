@@ -3,15 +3,15 @@ import { Command } from "../../classes/Command";
 import { resError } from "../../utils/exception";
 import axios from "axios";
 
-export class LewdcatgirlCommand extends Command {
-  description = "Send a NSFW image of a catgirl.";
-  aliases = ["catgirlhentai", "nekohentai", "lewdneko"];
+export class LewdnekoCommand extends Command {
+  description = "Sends a ecchi/hentai midriff picture.";
+  aliases = ["midriff"];
   cooldown = 4000;
   allowdms = true;
   nsfw = true;
 
   async run(msg: Message<TextChannel>) {
-    const body = await axios.get("https://nekobot.xyz/api/image?type=hneko").catch((err) => {
+    const body = await axios.get("https://nekobot.xyz/api/image?type=hmidriff").catch((err) => {
       resError(err);
     });
 
@@ -21,7 +21,7 @@ export class LewdcatgirlCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        title: `🐱 ${msg.string("nsfw.LEWDCATGIRL")}`,
+        title: `🔞 ${msg.string("nsfw.MIDRIFF_HENTAI")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data.message,

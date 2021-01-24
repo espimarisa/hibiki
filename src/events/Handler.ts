@@ -13,7 +13,7 @@ export class HandlerEvent extends Event {
 
   async run(_event: string, msg: Message<TextChannel>) {
     if (!msg || !msg.content || msg.author.bot || !msg.channel || !msg.author) return;
-    let prefix;
+    let prefix: string;
 
     // Finds what locale to use
     const userLocale = await this.bot.localeSystem.getUserLocale(msg.author.id, this.bot);
@@ -62,7 +62,7 @@ export class HandlerEvent extends Event {
     }
 
     // Handles NSFW commands
-    if (command.nsfw && !msg.channel.nsfw && msg.channel.guild) {
+    if (command.nsfw && msg.channel.guild && !msg.channel.nsfw) {
       msg.createEmbed(string("global.ERROR"), string("global.ERROR_NSFW", { command: command.name }), "error");
       return;
     }

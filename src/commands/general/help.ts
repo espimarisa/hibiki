@@ -1,5 +1,4 @@
-import { EmbedOptions, GuildChannel, Message, TextChannel } from "eris";
-import { PrivateChannel } from "eris";
+import { EmbedOptions, GuildChannel, Message, PrivateChannel, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import config from "../../../config.json";
 
@@ -49,8 +48,7 @@ export class HelpCommand extends Command {
     }
 
     // Finds a command
-    let cmd;
-    // Gets command amount
+    let cmd: Command;
     let owneramt = 0;
     this.bot.commands.forEach((c) => (c.category === "owner" ? owneramt++ : null));
 

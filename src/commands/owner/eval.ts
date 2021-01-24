@@ -30,14 +30,18 @@ export class EvalCommand extends Command {
         });
 
         await dmchannel.createMessage(`https://hastebin.com/${body.data.key}`);
+      } else if (evalstring === "true") {
+        return msg.channel.createMessage("true!");
       } else {
         msg.createEmbed(
           msg.string("global.SUCCESS"),
+          // todo: replace anything in config.json keys or token
           `\`\`\`js\n${evalstring.replace(config.token, "Bot token hidden.")}\n\`\`\``,
           "success",
         );
       }
     } catch (err) {
+      console.error(err);
       msg.createEmbed(msg.string("global.ERROR"), `\`\`\`js\n${err.stack}\n\`\`\``, "error");
     }
   }
