@@ -343,7 +343,20 @@
   },
 
   "nsfw": {
-    "LEWDCATGIRL": "Lewd Catgirl"
+    "ASS": "Ass",
+    "ASS_HENTAI": "Ass Hentai",
+    "FEET_HENTAI": "Feet Hentai",
+    "FEMBOY": "Femboy",
+    "FEMDOM": "Femdom",
+    "LEWDNEKO": "Lewd Neko",
+    "LEWDFOXGIRL": "Lewd Foxgirl",
+    "MIDRIFF_HENTAI": "Midriff Hentai",
+    "THIGH_HENTAI": "Thigh Hentai",
+    "YURI": "Yuri",
+    "PUSSY": "Pussy",
+    "FUTA": "Futa",
+    "THIGHS": "Thighs",
+    "HENTAI": "Hentai"
   },
 
   "owner": {
@@ -378,6 +391,11 @@
   },
 
   "utility": {
+    "CRYPTO_TO": "{base} to {to}",
+    "CRYPTO_EQUALSTO": "**1** {base} is equal to **{value}** {to}.",
+    "CRYPTO_UPDATEDAT": "Updated at **{time}**.",
+    "CRYPTO_ERROR": "Either an invalid coin was given or an error occurred.",
+    "CRYPTO_24HRCHANGE": "24 Hour Change",
     "CHANNELINFO_TEXT": "The channel {nsfw:#is#!isn't!} NSFW and it's in position **{position}**.",
     "CHANNELINFO_VOICE": "The channel's bitreate is {bitrate}kbps and it's limited to {limit} users.",
     "REMINDER": "Reminder",
