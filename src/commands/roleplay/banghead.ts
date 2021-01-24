@@ -12,7 +12,8 @@ export class BangheadCommand extends Command {
     const body = await axios
       .get("https://api.weeb.sh/images/random?type=banghead", {
         headers: {
-          Authorization: `Wolke ${config.keys.weebsh}`,
+          "Authorization": `Wolke ${config.keys.weebsh}`,
+          "User-Agent": "hibiki",
         },
       })
       .catch(() => {});
