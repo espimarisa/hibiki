@@ -14,7 +14,8 @@ export class CuddleCommand extends Command {
     const body = await axios
       .get("https://api.weeb.sh/images/random?type=cuddle", {
         headers: {
-          Authorization: `Wolke ${config.keys.weebsh}`,
+          "Authorization": `Wolke ${config.keys.weebsh}`,
+          "User-Agent": "hibiki",
         },
       })
       .catch(() => {});
