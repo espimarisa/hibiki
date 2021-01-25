@@ -200,7 +200,7 @@ export class HelpCommand extends Command {
       if (cmd.cooldown) {
         construct.push({
           name: msg.string("general.HELP_COOLDOWN"),
-          value: `${cmd.cooldown} ${msg.string("global.SECONDS")}`,
+          value: `${cmd.cooldown / 1000} ${msg.string("global.SECONDS")}`,
           inline: true,
         });
       }
