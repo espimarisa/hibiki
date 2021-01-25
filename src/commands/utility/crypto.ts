@@ -1,9 +1,11 @@
 import type { Message, TextChannel } from "eris";
-// import { createCanvas } from "canvas";
+import { createCanvas } from "canvas";
 import { Command } from "../../classes/Command";
 import { resError } from "../../utils/exception";
 import { dateFormat } from "../../utils/format";
+import config from "../../../config.json";
 import axios from "axios";
+
 let currencies: any = undefined;
 
 export class CryptoCommand extends Command {
@@ -24,7 +26,7 @@ export class CryptoCommand extends Command {
     const to = pargs[1].value?.toLowerCase();
 
     // Request options
-    const options = `vs_currencies=${to},usd,eur,gbp,cad,aud,rub&include_24hr_change=true&include_last_updated_at=true&include_market_cap=true`;
+    const options = `vs_currencies=${to},usd,eur,gbp,cad,aud,rub,jpy,czk,chf&include_24hr_change=true&include_last_updated_at=true&include_market_cap=true`;
 
     // Finds the valid currency, defaults to Bitcoin
     let currency = currencies.find((c: Record<string, string>) => c.id === coin || c.symbol === coin || c.name.toLowerCase() === coin);
@@ -48,39 +50,52 @@ export class CryptoCommand extends Command {
 
       // Sends conversion info
       return msg.createEmbed(
-        `💰 ${msg.string("utility.CRYPTO_TO", {
-          base: currency.name,
-          to: toCurrency.name,
-        })}`,
-        msg.string("utility.CRYPTO_EQUALSTO", {
-          base: currency.name,
-          value: data[to],
-          to: toCurrency.name,
-        }),
+        `💰 ${msg.string("utility.CRYPTO_TO", { base: currency.name, to: toCurrency.name })}`,
+        msg.string("utility.CRYPTO_EQUALSTO", { base: currency.name, value: data[to], to: toCurrency.name }),
       );
     }
 
-    // // Creates a price history graph
-    // const priceHistoryData = await axios.get(`https://api.coingecko.com/api/v3/coins/${currency.id}/market_chart?vs_currency=usd&days=1`);
-    // const priceHistory = priceHistoryData.data.prices;
-    // const size = [200, 50];
-    // const canvas = createCanvas(size[0], size[1]);
-    // const ctx = canvas.getContext("2d");
-    // const prices = priceHistory.map((price: number[]) => price[1]);
-    // const thing = size[0] / priceHistory.length;
-    // const highestPrice = Math.max(...prices);
-    // // let oldPos;
-    // priceHistory.forEach((price: number[], i: number) => {
-    //   ctx.beginPath();
-    //   ctx.moveTo(thing * i - thing, prices[i === 0 ? 0 : i - 1] * (size[1] / highestPrice));
-    //   ctx.lineTo(thing * i, price[1] * (size[1] / highestPrice));
-    //   console.log(price[1] * (size[1] / highestPrice));
-    //   ctx.stroke();
-    //   // price: e
-    // });
-    // const buf = canvas.toBuffer();
+    // Formats decimals
+    const decimalFormat = (a: number) => (a % 1 === 0 ? a : a.toFixed(3));
 
-    // // console.log(priceHistory);
+    // Gets price history data
+    const priceHistoryData = await axios.get(`https://api.coingecko.com/api/v3/coins/${currency.id}/market_chart?vs_currency=usd&days=1`);
+    const priceHistory = priceHistoryData.data.prices;
+
+    // Creates the canvas and calculates min/max
+    const size = [350, 100];
+    const canvas = createCanvas(size[0], size[1]);
+    const ctx = canvas.getContext("2d");
+    const prices = priceHistory.map((price: number[]) => price[1]);
+    const average = size[0] / priceHistory.length;
+    const highestPrice = Math.max(...prices);
+    const lowestPrice = Math.min(...prices);
+
+    // Draws the graph using the data
+    priceHistory.forEach((price: number[], i: number) => {
+      ctx.beginPath();
+
+      // Calculates move and line info
+      const moveCalc = ((size[1] - 0) * (price[1] - lowestPrice)) / (highestPrice - lowestPrice);
+      const lineCalc = ((size[1] - 0) * (prices[i === 0 ? 0 : i - 1] - lowestPrice)) / (highestPrice - lowestPrice);
+
+      ctx.moveTo(average * i - average, Math.abs(lineCalc - size[1]));
+      ctx.lineTo(average * i, Math.abs(moveCalc - size[1]));
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = config.colors.general;
+      ctx.stroke();
+
+      // Creates a gradient below the graph
+      const gradient = ctx.createLinearGradient(average * i, Math.abs(moveCalc - size[1]), average * i, size[1]);
+      gradient.addColorStop(0, `${config.colors.general}77`);
+      gradient.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.lineTo(average * i, size[1]);
+      ctx.strokeStyle = gradient;
+      ctx.stroke();
+    });
+
+    // Convets canvas to a Buffer
+    const buf = canvas.toBuffer();
 
     // Sends price info
     msg.channel.createMessage(
@@ -92,52 +107,68 @@ export class CryptoCommand extends Command {
           fields: [
             {
               name: "USD",
-              value: `${data.usd.toFixed(3)}`,
+              value: decimalFormat(data.usd).toString(),
               inline: true,
             },
             {
               name: "EUR",
-              value: `${data.eur.toFixed(3)}`,
+              value: decimalFormat(data.eur).toString(),
               inline: true,
             },
             {
               name: "GBP",
-              value: `${data.gbp.toFixed(3)}`,
+              value: decimalFormat(data.gbp).toString(),
               inline: true,
             },
             {
               name: "CAD",
-              value: `${data.cad.toFixed(3)}`,
+              value: decimalFormat(data.cad).toString(),
               inline: true,
             },
             {
               name: "AUD",
-              value: `${data.aud.toFixed(3)}`,
+              value: decimalFormat(data.aud).toString(),
+              inline: true,
+            },
+            {
+              name: "CHF",
+              value: decimalFormat(data.chf).toString(),
+              inline: true,
+            },
+            {
+              name: "JPY",
+              value: decimalFormat(data.jpy).toString(),
+              inline: true,
+            },
+            {
+              name: "CZK",
+              value: decimalFormat(data.czk).toString(),
               inline: true,
             },
             {
               name: "RUB",
-              value: `${data.rub.toFixed(3)}`,
+              value: decimalFormat(data.rub).toString(),
               inline: true,
             },
             {
               name: msg.string("utility.CRYPTO_24HRCHANGE"),
               value: `${data.usd_24h_change ? data.usd_24h_change.toFixed(3) : 0}%`,
+              inline: true,
             },
           ],
-          // image: {
-          // url: "attachment://graph.png",
-          // },
+          image: {
+            url: "attachment://graph.png",
+          },
           footer: {
             text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
             icon_url: msg.author.dynamicAvatarURL(),
           },
         },
       },
-      // {
-      //   file: buf,
-      //   name: "graph.png",
-      // },
+      {
+        file: buf,
+        name: "graph.png",
+      },
     );
   }
 }
