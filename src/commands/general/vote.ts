@@ -6,7 +6,7 @@ export class VoteCommand extends Command {
   allowdms = true;
   requiredkeys = ["topgg"];
 
-  run(msg: Message<TextChannel>) {
+  async run(msg: Message<TextChannel>) {
     msg.createEmbed(
       `🗳 ${msg.string("general.VOTE")}`,
       msg.string("general.VOTE_INFO", {

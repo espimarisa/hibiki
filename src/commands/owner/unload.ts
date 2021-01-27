@@ -8,7 +8,7 @@ export class UnloadCommand extends Command {
   allowdisable = false;
   owner = true;
 
-  run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
     const query = args.join(" ").toLowerCase();
     const command = this.bot.commands.find((c) => c.name === query || c.aliases.includes(query));
     if (!command) return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.LOGS_NOTFOUND"), "error");

@@ -13,10 +13,10 @@ import { Lavalink } from "./Lavalink";
 import { LocaleSystem } from "./Locale";
 import { RethinkProvider } from "./RethinkDB";
 import { convertHex, createEmbed, editEmbed } from "../helpers/embed";
-import { botCount } from "../helpers/botcount";
+import { botCount, memberOnlyCount } from "../helpers/botcount";
+import { loadItems } from "../scripts/loader";
 import { tagUser } from "../utils/format";
-import { loadItems } from "../helpers/loader";
-import { logger } from "../helpers/logger";
+import { logger } from "../utils/logger";
 import { statuses } from "../helpers/statuses";
 import { ReminderHandler } from "../scripts/reminders";
 import { startDashboard } from "../webserver/dashboard";
@@ -48,9 +48,8 @@ export class HibikiClient extends Client {
     Eris.Message.prototype.editEmbed = editEmbed;
     Eris.Message.prototype.convertHex = convertHex;
     Eris.Message.prototype.tagUser = tagUser;
-    Object.defineProperty(Eris.Guild.prototype, "botCount", {
-      get: botCount,
-    });
+    Object.defineProperty(Eris.Guild.prototype, "botCount", { get: botCount });
+    Object.defineProperty(Eris.Guild.prototype, "memberOnlyCount", { get: memberOnlyCount });
 
     // Collections
     this.antiSpam = [];

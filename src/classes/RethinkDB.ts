@@ -3,9 +3,9 @@
  * @description Handles all RethinkDB functionality and functions
  */
 
-import { logger } from "../helpers/logger";
 import { r } from "rethinkdb-ts";
-import { setupRethink } from "../utils/setup";
+import { setupRethink } from "../scripts/setup";
+import { logger } from "../utils/logger";
 import config from "../../config.json";
 
 /** Starts RethinkDB */

@@ -6,7 +6,7 @@ export class IconCommand extends Command {
   aliases = ["guildicon", "servericon"];
   description = "Sends the server's icon.";
 
-  run(msg: Message<TextChannel>) {
+  async run(msg: Message<TextChannel>) {
     msg.channel.createMessage({
       embed: {
         color: msg.convertHex("general"),

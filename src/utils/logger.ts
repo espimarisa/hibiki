@@ -1,7 +1,7 @@
 /**
  * @file Bot logger
  * @description Creates and manages winston loggers
- * @module helpers/logger
+ * @module utils/logger
  */
 
 import { createLogger, format, transports } from "winston";
