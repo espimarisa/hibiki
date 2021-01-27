@@ -287,17 +287,6 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
   }
 }
 
-/**
- *
- * @param level     "CONFIG_ANTIMASSMENTION": "Anti Mass-Mention",
-    "CONFIG_ANTIMASSMENTION_DESCRIPTION": "Enables or disables mass mention detection.",
-    "CONFIG_ANTIMASSMENTIONTHRESHOLD": "Mass Mention Threshold",
-    "CONFIG_ANTIMASSMENTIONTHRESHOLD_DESCRIPTION": "The amount of unique mentions allowed before running antiMassMention.",
-    "CONFIG_ANTIMASSMENTIONPUNISHMENTS": "Mass Mention Punishments",
-    "CONFIG_ANTIMASSMENTIONPUNISHMENTS_DESCRIPTIONS": "Punishments to apply to members that mass-mention.",
-
- */
-
 /** Formats guild verification level */
 export function verificationLevelFormat(level: number) {
   switch (level) {

@@ -32,13 +32,13 @@
     "nodemon": "cross-env nodemon --ext 'json,ts,sass,scss' --watch 'src' --delay 5 --ignore 'rethinkdb_data/*' --exec 'cross-env NODE_ENV=development ts-node --files ./src/index.ts'",
     "postbuild": "npm run build:sass && npm run build:static",
     "sass": "sass --watch ./src/webserver/public/sass/:./src/webserver/public/css/",
-    "setup": "ts-node --files ./src/utils/setup.ts",
+    "setup": "ts-node --files ./src/scripts/setup.ts",
     "start": "npm run build && cross-env NODE_ENV=production node dist/src/index.js",
     "pm2": "npm run build:all && pm2 start pm2.config.json",
     "test": "tsc && eslint ."
   },
   "dependencies": {
-    "@sentry/node": "^6.0.1",
+    "@sentry/node": "^6.0.2",
     "axios": "^0.21.1",
     "canvas": "^2.6.1",
     "cookie-parser": "^1.4.5",
@@ -59,16 +59,16 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "@sentry/types": "^6.0.1",
+    "@sentry/types": "^6.0.2",
     "@types/cookie-parser": "^1.4.2",
     "@types/csurf": "^1.11.0",
     "@types/express": "4.17.11",
     "@types/express-session": "^1.17.3",
     "@types/node": "^14.14.22",
     "@types/passport-discord": "^0.1.3",
-    "@typescript-eslint/eslint-plugin": "^4.14.0",
-    "@typescript-eslint/parser": "^4.14.0",
-    "bulma": "^0.9.1",
+    "@typescript-eslint/eslint-plugin": "^4.14.1",
+    "@typescript-eslint/parser": "^4.14.1",
+    "bulma": "^0.9.2",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.18.0",
@@ -82,7 +82,7 @@
     "typescript": "^4.1.3"
   },
   "optionalDependencies": {
-    "@discordjs/opus": "^0.3.3",
+    "@discordjs/opus": "^0.4.0",
     "bufferutil": "^4.0.3",
     "erlpack": "^0.1.3",
     "eventemitter3": "^4.0.7",

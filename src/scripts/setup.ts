@@ -1,12 +1,12 @@
 /**
  * @file Setup
  * @description Sets up RethinkDB
- * @module utils/setup
+ * @module scripts/setup
  */
 
 import { r } from "rethinkdb-ts";
 import { startRethink } from "../classes/RethinkDB";
-import { logger } from "../helpers/logger";
+import { logger } from "../utils/logger";
 import config from "../../config.json";
 
 // Tables to create

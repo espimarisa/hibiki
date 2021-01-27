@@ -4,7 +4,7 @@ import { Command } from "../../classes/Command";
 export class BannerCommand extends Command {
   description = "Sends the server's banner.";
 
-  run(msg: Message<TextChannel>) {
+  async run(msg: Message<TextChannel>) {
     // Sends if a guild has no banner
     if (!msg.channel.guild.banner) {
       return msg.channel.createMessage({
