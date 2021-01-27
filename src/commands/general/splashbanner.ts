@@ -5,7 +5,7 @@ export class SplashBannerCommand extends Command {
   aliases = ["splash"];
   description = "Sends the server's splash page banner.";
 
-  run(msg: Message<TextChannel>) {
+  async run(msg: Message<TextChannel>) {
     // Sends if a guild has no splash banner
     if (!msg.channel.guild.splashURL) {
       return msg.channel.createMessage({

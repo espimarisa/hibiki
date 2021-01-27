@@ -6,7 +6,7 @@ export class InviteCommand extends Command {
   aliases = ["support"];
   allowdms = true;
 
-  run(msg: Message<TextChannel>) {
+  async run(msg: Message<TextChannel>) {
     msg.createEmbed(
       `📌 ${msg.string("general.INVITE")}`,
       msg.string("general.INVITE_INFO", {

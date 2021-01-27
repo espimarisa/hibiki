@@ -51,8 +51,8 @@ export class LocaleSystem {
       Object.getOwnPropertyNames(args).forEach((arg) => {
         // Handles plurals/non-plural and arguments/optionals
         const argumentRegex = new RegExp(`{${arg}}`);
-        const pluralRegex = new RegExp(`{${arg}:#(.+)#!(.+)!(?:\\?(.+)\\?)?}`);
-        const optionalRegex = new RegExp(`({optional:${arg}:(.+)})`);
+        const pluralRegex = new RegExp(`{${arg}:#([^{}]+)#!([^{}]+)!(?:\\?([^{}]+)\\?)?}`);
+        const optionalRegex = new RegExp(`({optional:${arg}:([^{}]+)})`);
 
         // Replaces optional strings with content
         const optional = optionalRegex.exec(output);
@@ -89,7 +89,7 @@ export class LocaleSystem {
     let locale = "";
     const userConfig = await bot.db.getUserConfig(user);
     if (userConfig?.locale) locale = userConfig.locale;
-    else if (!userConfig?.locale) locale = "en";
+    else if (!userConfig?.locale) locale = config.defaultLocale ? config.defaultLocale : "en";
 
     return locale;
   }

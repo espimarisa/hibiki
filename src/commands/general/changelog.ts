@@ -6,7 +6,7 @@ export class ChangelogCommand extends Command {
   description = "Sends the latest version's changelog.";
   allowdms = true;
 
-  run(msg: Message<TextChannel>) {
+  async run(msg: Message<TextChannel>) {
     msg.channel.createMessage({
       embed: {
         title: `📚 ${msg.string("general.CHANGELOG")}`,

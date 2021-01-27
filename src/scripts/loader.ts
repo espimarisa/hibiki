@@ -1,7 +1,7 @@
 /**
  * @file Loader
  * @description Loads commands, events, and other modules
- * @module helpers/loader
+ * @module scripts/loader
  */
 
 import type { HibikiClient } from "../classes/Client";

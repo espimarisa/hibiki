@@ -15,3 +15,13 @@ export function botCount(this: Guild) {
 
   return bots;
 }
+
+export function memberOnlyCount(this: Guild) {
+  let mems = 0;
+  this.members.forEach((member) => {
+    if (member.bot) return;
+    else mems++;
+  });
+
+  return mems;
+}
