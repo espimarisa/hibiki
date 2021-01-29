@@ -1,4 +1,5 @@
-import { EmbedOptions, GuildChannel, Message, PrivateChannel, TextChannel } from "eris";
+import type { EmbedOptions, Message, TextChannel } from "eris";
+import { GuildChannel, PrivateChannel } from "eris";
 import { Command } from "../../classes/Command";
 import config from "../../../config.json";
 
@@ -60,7 +61,7 @@ export class HelpCommand extends Command {
     // If no command, send a list of commands
     if (!cmd) {
       let db: GuildConfig;
-      if (msg.channel instanceof GuildChannel) db = await this.bot.db.getGuildConfig(msg.channel.id);
+      if (msg.channel instanceof GuildChannel) db = await this.bot.db.getGuildConfig(msg.channel.guild.id);
       let categories: string[] = [];
 
       // Hides owner & disabled cmds
@@ -69,7 +70,11 @@ export class HelpCommand extends Command {
         if (!categories.includes(c.category) && c.category !== "owner") categories.push(c.category);
       });
 
-      if (db?.disabledCategories) categories = categories.filter((c) => !db.disabledCategories.includes(c));
+      if (db?.disabledCategories)
+        categories = categories.filter((c) => {
+          return !db.disabledCategories.includes(c);
+        });
+
       const sortedcategories: string[] = [];
 
       // Sorts categories
