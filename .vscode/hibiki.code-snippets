@@ -21,7 +21,7 @@
       "  owner = false;",
       "  voice = false;",
       "",
-      "  async run(msg: Message<TextChannel>, pargs: ParsedArgs, args: string[]) {",
+      "  async run(msg: Message<TextChannel>, pargs: ParsedArgs[], args: string[]) {",
       "    $5",
       "  }",
       "}",

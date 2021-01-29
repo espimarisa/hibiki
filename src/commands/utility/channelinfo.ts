@@ -8,7 +8,7 @@ export class ChannelinfoCommand extends Command {
   args = "<channel:channel&allowVoice>";
   aliases = ["cinfo"];
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs) {
+  async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     const channel = pargs[0].value as TextChannel;
     const fields = [];
 

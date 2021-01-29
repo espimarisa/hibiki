@@ -8,7 +8,7 @@ export class LogsCommand extends Command {
   allowdisable = false;
   owner = true;
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // If no logs exist
     if (!this.bot.logs) return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.LOGS_NOLOGS"), "error");
 
@@ -27,7 +27,7 @@ export class LogsCommand extends Command {
       // Filters through the logs
       if (!cmd) return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.LOGS_NOTFOUND"), "error");
       let cmdlogs = [];
-      cmdlogs = this.bot.logs.filter((l: Record<string, string>) => l.cmdName === cmd.name);
+      cmdlogs = this.bot.logs.filter((l) => l.cmdName === cmd.name);
 
       return msg.createEmbed(
         `📜 ${msg.string("owner.LOGS")}`,
@@ -41,7 +41,7 @@ export class LogsCommand extends Command {
     // Formats last 20 logs to human readable ones
     const humanReadableLogs = this.bot.logs
       .slice(this.bot.logs.length - 20, this.bot.logs.length)
-      .map((log: Record<string, any>) => {
+      .map((log) => {
         const logTime =
           // Formats log time
           msg.timestamp / 1000 - log.date / 1000 > 60

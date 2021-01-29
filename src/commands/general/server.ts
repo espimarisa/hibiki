@@ -1,14 +1,14 @@
 import type { EmbedField, Guild, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { defaultAvatar } from "../../helpers/constants";
-import { dateFormat, regionFormat } from "../../utils/format";
+import { dateFormat, featureFormat, regionFormat } from "../../utils/format";
 import config from "../../../config.json";
 
 export class ServerCommand extends Command {
   description = "Returns info about the server.";
   aliases = ["g", "guild", "guildinfo", "serverinfo"];
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs) {
+  async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     let guild: Guild;
 
     // Lets bot owners return info about other guilds
@@ -117,6 +117,13 @@ export class ServerCommand extends Command {
         name: msg.string("general.SERVER_BOOSTLEVEL"),
         value: `${guild.premiumTier}`,
         inline: true,
+      });
+
+    if (guild.features.length)
+      fields.push({
+        name: msg.string("general.SERVER_FEATURES"),
+        value: featureFormat(msg.string, guild.features).join(", "),
+        inline: false,
       });
 
     msg.channel.createMessage({

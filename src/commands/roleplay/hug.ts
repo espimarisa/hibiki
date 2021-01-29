@@ -9,7 +9,7 @@ export class HugCommand extends Command {
   description = "Gives someeone a hug.";
   cooldown = 3000;
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs) {
+  async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     const member = pargs[0].value as Member;
     const body = await axios
       .get("https://api.weeb.sh/images/random?type=hug", {
@@ -20,7 +20,7 @@ export class HugCommand extends Command {
       })
       .catch(() => {});
 
-    let image: string;
+    let image = "";
     if (!body || !body?.data?.url) image = "https://cdn.weeb.sh/images/SJfEks3Rb.gif";
     else image = body.data.url;
 

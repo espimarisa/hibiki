@@ -5,20 +5,22 @@
  */
 
 import type { HibikiClient } from "../classes/Client";
-import type { Channel, Message, Role, TextChannel, VoiceChannel } from "eris";
+import type { Channel, Emoji, Member, Message, Role, TextChannel, VoiceChannel } from "eris";
 import { defaultEmojiRegex, fullInviteRegex } from "../helpers/constants";
 import { localizeSetupItems } from "../utils/format";
 import { timeoutHandler, waitFor } from "./waitFor";
 
-import dayjs from "dayjs";
-
 // Dayjs plugins
+import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-/** Asks a user for a yes or no response */
+const localeEmojis = {};
+const localeNames = {};
+
+// Asks a user for yes or no
 export async function askYesNo(bot: HibikiClient, msg: Message) {
   if (!msg.content) return;
   let response: Promise<any> | Record<string, unknown>;
@@ -51,7 +53,7 @@ export async function askYesNo(bot: HibikiClient, msg: Message) {
   return response;
 }
 
-/** Asks for a specific type of input */
+// Asks for a specific type of input
 export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: string, arg: any) {
   if (!type) return "No type";
   if (!arg) return "No arg";
@@ -85,14 +87,14 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
 
   // Looks for a number
   if (type === "number") {
-    const number = bot.args.argtypes.number(arg, msg) as number | undefined;
+    const number = bot.args.argtypes.number(arg, msg);
     if (!number) return "No number";
     return number;
   }
 
   // Looks for a string
   if (type === "string") {
-    const string = bot.args.argtypes.string(arg) as string;
+    const string = bot.args.argtypes.string(arg);
     if (clear) return "clear";
     if (!string) return "No string";
     return string;
@@ -100,29 +102,33 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
 
   // Looks for a boolean
   if (type === "bool") {
-    const boolean = bot.args.argtypes.boolean(arg, undefined, arg) as boolean;
+    const boolean = bot.args.argtypes.boolean(arg, undefined, arg);
     if (!boolean) return "No boolean";
     return boolean;
   }
 
+  // Looks for a roleArray
   if (type === "roleArray") {
-    const roles = bot.args.argtypes.roleArray(arg.split(/(?:\s{0,},\s{0,})|\s/), msg) as string[];
+    const roles = bot.args.argtypes.roleArray(arg.split(/(?:\s{0,},\s{0,})|\s/), msg);
     if (!roles?.length) return "Invalid rolearray";
     return roles;
   }
 
+  // Looks for a channelArray
   if (type === "channelArray") {
-    const channels = bot.args.argtypes.channelArray(arg.split(/(?:\s{0,},\s{0,})|\s/), msg) as string[];
+    const channels = bot.args.argtypes.channelArray(arg.split(/(?:\s{0,},\s{0,})|\s/), msg);
     if (!channels?.length) return "Invalid channelArray";
     return channels;
   }
 
+  // Looks for an emoji
   if (type === "emoji") {
     const emoji = defaultEmojiRegex.exec(arg);
     if (!emoji) return "No emoji";
     return emoji[0];
   }
 
+  // Looks for a timezone
   if (type === "timezone") {
     let invalidTimezone = false;
     try {
@@ -144,7 +150,7 @@ export async function askForValue(
   category: string,
   config: GuildConfig | UserConfig,
   editFunction: any,
-  setting: Record<string, any>,
+  setting: ValidItem,
 ) {
   let cooldown = 0;
 
@@ -193,7 +199,7 @@ export async function askForValue(
       //
 
       // If an invalid repsonse was given
-      let error: string | undefined;
+      let error = "";
       Object.keys(invalidChecks).forEach((checkKey) => {
         if (error) return;
         const check = invalidChecks[checkKey];
@@ -252,4 +258,59 @@ export async function askForValue(
 
     bot,
   ).catch((err) => timeoutHandler(err, omsg, msg.string));
+}
+
+// Asks for a locale
+export async function askForLocale(
+  omsg: Message,
+  msg: Message<TextChannel>,
+  bot: HibikiClient,
+  userconfig: UserConfig | GuildConfig,
+  editFunction: any,
+  category?: string,
+  isGuildConfig?: boolean,
+) {
+  // Locale emojis
+  Object.keys(bot.localeSystem.locales).forEach((locale) => {
+    localeEmojis[bot.localeSystem.getLocale(locale, "EMOJI")] = bot.localeSystem.getLocale(locale, "NAME");
+    localeNames[bot.localeSystem.getLocale(locale, "EMOJI")] = locale;
+  });
+
+  await omsg.removeReactions();
+  Object.keys(localeEmojis).forEach(async (emoji) => omsg.addReaction(emoji));
+
+  // Asks for input
+  omsg.editEmbed(
+    "select locale bitch",
+    Object.entries(localeEmojis)
+      .map((p) => `${p[0]}: ${p[1]}`)
+      .join("\n"),
+  );
+
+  // Waits for message reactions for locale
+  return waitFor(
+    "messageReactionAdd",
+    10000,
+    async (m: Message<TextChannel>, emoji: Emoji, user: Member) => {
+      if (m.id !== omsg.id) return;
+      if (user.id !== msg.author.id) return;
+      if (!emoji.name) return;
+
+      // Gets the locale and updates config
+      const locale = localeNames[emoji.name];
+      if (!locale) return;
+      userconfig.locale = locale;
+      if (isGuildConfig) bot.db.updateGuildConfig(msg.channel.guild.id, userconfig);
+      else bot.db.updateUserConfig(msg.author.id, userconfig);
+
+      // Cleans up afterwards
+      await omsg.edit(isGuildConfig ? editFunction(category, bot) : editFunction(bot.localeSystem));
+      await omsg.removeReactions();
+      return true;
+    },
+
+    bot,
+  ).catch((err) => {
+    if (err !== "timeout") throw err;
+  });
 }

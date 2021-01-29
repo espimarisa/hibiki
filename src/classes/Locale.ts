@@ -85,12 +85,12 @@ export class LocaleSystem {
   }
 
   /** Returns what locale a user uses */
-  async getUserLocale(user: string, bot: HibikiClient) {
+  async getUserLocale(user: string, bot: HibikiClient, handler = false) {
     let locale = "";
     const userConfig = await bot.db.getUserConfig(user);
     if (userConfig?.locale) locale = userConfig.locale;
-    else if (!userConfig?.locale) locale = config.defaultLocale ? config.defaultLocale : "en";
-
+    else if (!userConfig?.locale && handler === false) locale = config.defaultLocale ? config.defaultLocale : "en";
+    // k just added a param to handle our woes
     return locale;
   }
 

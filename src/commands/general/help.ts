@@ -9,7 +9,7 @@ export class HelpCommand extends Command {
   allowdisable = false;
   allowdms = true;
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Localizes command categories
     function formatCategory(category: string) {
       let label = "";

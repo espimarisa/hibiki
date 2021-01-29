@@ -16,7 +16,7 @@ export async function automodAntiInvite(msg: Message<TextChannel>, bot: HibikiCl
 
   // Checks if an invite was posted
   if (fullInviteRegex.test(msg.content)) {
-    let warning: string;
+    let warning = "";
 
     // Handles each type of punishment
     cfg.invitePunishments.forEach(async (punishment: string) => {

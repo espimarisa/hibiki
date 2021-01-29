@@ -6,12 +6,11 @@ export class CookiesCommand extends Command {
   args = "<member:member&fallback>";
   aliases = ["bal", "balance"];
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs) {
-    let cookieAmount: number;
+  async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
+    let cookieAmount = 0;
     const member = pargs[0].value as Member;
     const cookies = await this.bot.db.getUserCookies(member.id);
-    if (!cookies) cookieAmount = 0;
-    else cookieAmount = cookies.amount;
+    if (cookies?.amount) cookieAmount = cookies.amount;
 
     msg.createEmbed(
       `🍪 ${msg.string("fun.COOKIES")}`,

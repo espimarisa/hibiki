@@ -3,24 +3,24 @@
  * @description Handles and parses command arguments
  */
 
-import type { Member, Message, Role, TextChannel } from "eris";
+import type { Message, TextChannel } from "eris";
 import type { HibikiClient } from "./Client";
 
 export class Args {
-  argtypes: Record<string, any>;
+  argtypes: ArgTypes;
   bot: HibikiClient;
 
   constructor(bot: HibikiClient) {
     this.bot = bot;
     this.argtypes = {
       // Looks for a boolean
-      boolean: (a: string, _msg: Message, flag: string) => {
+      boolean: (a, _msg, flag) => {
         if (a === "on" || a === "true" || a === "enable" || (flag === "strict" ? a === "yes" : a.startsWith("y"))) return true;
         if (a === "off" || a === "false" || a === "disable" || (flag === "strict" ? a === "no" : a.startsWith("n"))) return false;
       },
 
       // Looks for a channel
-      channel: (a: string, msg: Message<TextChannel>, flag: string) => {
+      channel: (a, msg: Message<TextChannel>, flag) => {
         const channel = msg.channel.guild.channels.find((c) => c.id === a || a.startsWith(`<#${c.id}>`) || c.name.startsWith(a));
         if (channel?.type === 4 || (channel?.type === 2 && flag !== "allowVoice")) return;
         if (!channel && flag === "fallback") return msg.channel;
@@ -28,7 +28,7 @@ export class Args {
       },
 
       // Looks for a channelArray
-      channelArray: (a: string[], msg: Message<TextChannel>) => {
+      channelArray: (a, msg: Message<TextChannel>) => {
         const channels: string[] = [];
         a.forEach((i: string) => {
           const channel = msg.channel.guild.channels.find(
@@ -45,13 +45,13 @@ export class Args {
       },
 
       // Looks for a guild
-      guild: (a: string, _msg: Message, flag: string, b: HibikiClient) => {
+      guild: (a, _msg, flag, b: HibikiClient) => {
         return b.guilds.find((g) => g.id === a || (flag === "strict" ? g.name === a : g.name.startsWith(a)));
       },
 
       // Looks for a member
-      member: (a: string, msg: Message<TextChannel>, flag: string) => {
-        const member = msg.channel.guild.members.find((m: Member) =>
+      member: (a, msg: Message<TextChannel>, flag) => {
+        const member = msg.channel.guild.members.find((m) =>
           flag !== "strict"
             ? m.user.username.toLowerCase() === a ||
               m.id === a ||
@@ -66,7 +66,7 @@ export class Args {
         return member;
       },
 
-      number: (a: number, _m: Message<TextChannel>, flag: string) => {
+      number: (a, _msg, flag) => {
         if (isNaN(a)) return;
         if (flag === "negative") return a;
         if (a < 0) return;
@@ -74,7 +74,7 @@ export class Args {
       },
 
       // Looks for a role
-      role: (a: string, msg: Message<TextChannel>) => {
+      role: (a, msg: Message<TextChannel>) => {
         const role = msg.channel.guild.roles.find(
           (r) => r.id === a || a.startsWith(`<@&${r.id}>`) || r.name.toLowerCase().startsWith(a.toLowerCase()),
         );
@@ -83,12 +83,12 @@ export class Args {
       },
 
       // Looks for a roleArray
-      roleArray: (a: string[], msg: Message<TextChannel>) => {
+      roleArray: (a, msg: Message<TextChannel>) => {
         const roles: string[] = [];
 
-        a.forEach((i: string) => {
+        a.forEach((i) => {
           const role = msg.channel.guild.roles.find(
-            (r: Role) => r.name.toLowerCase().startsWith(i.toLowerCase()) || r.id === i || i === `<@&${r.id}>`,
+            (r) => r.name.toLowerCase().startsWith(i.toLowerCase()) || r.id === i || i === `<@&${r.id}>`,
           );
 
           if (!role) return;
@@ -99,18 +99,18 @@ export class Args {
       },
 
       // Looks for a string
-      string: (a: string) => {
+      string: (a) => {
         return a;
       },
 
       // Looks for a user ID
-      user: (a: string) => {
+      user: (a) => {
         const user = bot.users.get(a);
         if (!user || !user.id) return;
         return user;
       },
 
-      voiceChannel: (a: string, msg: Message<TextChannel>) => {
+      voiceChannel: (a, msg: Message<TextChannel>) => {
         const channel = msg.channel.guild.channels.find((c) => c.id === a || a.startsWith(`<#${c.id}>`) || c.name.startsWith(a));
         if (!channel || channel?.type !== 2) return;
         return channel;
@@ -118,8 +118,8 @@ export class Args {
     };
   }
 
-  parse(argString: string, args: string, msg: Message): any {
-    const argObj: Record<string, any>[] = [];
+  parse(argString: string, args: string, msg: Message): ParsedArgs[] {
+    const argObj: ParsedArgs[] = [];
 
     argString.split(" ").forEach((arg) => {
       const argumentRegex = /(<|\[)(\w{1,}):(\w{1,})&?([\w=*]{1,})?(>|\])/.exec(arg);

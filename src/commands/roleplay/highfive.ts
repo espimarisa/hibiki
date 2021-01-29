@@ -8,7 +8,7 @@ export class HighfiveCommand extends Command {
   description = "Gives someeone a high five.";
   cooldown = 3000;
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs) {
+  async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     const member = pargs[0].value as Member;
     const body = await axios
       .get("https://api.weeb.sh/images/random?type=highfive", {
@@ -19,7 +19,7 @@ export class HighfiveCommand extends Command {
       })
       .catch(() => {});
 
-    let image: string;
+    let image = "";
     if (!body || !body?.data?.url) image = "https://cdn.weeb.sh/images/B1-7KkQsZ.gif";
     else image = body.data.url;
 
