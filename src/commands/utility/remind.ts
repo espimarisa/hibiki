@@ -10,7 +10,6 @@ export class RemindCommand extends Command {
   aliases = ["remindme", "reminder", "reminders"];
   cooldown = 3000;
   allowdms = true;
-  timeoutHandles: TimeoutHandles[];
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Reminder list functionality
@@ -41,11 +40,8 @@ export class RemindCommand extends Command {
       // Deletes the reminder
       const reminder = await this.bot.db.deleteUserReminder(args[1], msg.author.id);
       if (!reminder.deleted) return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.REMINDER_NOTFOUND"), "error");
-
-      // Clears the timeout
-      // TODO: Use the actual reminder handler instead of this
-      const handle = this.timeoutHandles.find((h) => h.id === args[1]);
-      if (handle) clearTimeout(handle);
+      const foundReminder = this.bot.reminderHandler.reminders.find((reminder) => reminder.id === args[1]);
+      this.bot.reminderHandler.reminders.splice(this.bot.reminderHandler.reminders.indexOf(foundReminder), 1);
       return msg.createEmbed(`⏰ ${msg.string("utility.REMINDER")}`, msg.string("utility.REMINDER_REMOVED"));
     }
 
