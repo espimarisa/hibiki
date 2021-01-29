@@ -20,7 +20,6 @@ const requiredtables = [
   "points",
   "reminders",
   "session",
-  "steammonitor",
   "userconfig",
   "warnings",
 ];
