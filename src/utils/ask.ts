@@ -142,7 +142,7 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
   }
 }
 
-/** Asks for input for a specific setting */
+// Asks for input for a specific setting
 export async function askForValue(
   msg: Message<TextChannel>,
   omsg: Message<TextChannel>,

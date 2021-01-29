@@ -38,11 +38,6 @@ interface AntiSpam {
   msgid: string;
 }
 
-/** @deprecated */
-interface TimeoutHandles extends NodeJS.Timeout {
-  id: string;
-}
-
 interface ValidItem {
   category?: string;
   name?: string;
