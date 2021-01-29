@@ -20,16 +20,8 @@ export class EvalCommand extends Command {
       // Uploads if over embed limit; DMs author
       const dmchannel = await msg.author.getDMChannel();
       if (evalstring.length > 2000) {
-        const body = await axios.post("https://hastebin.com/documents", {
-          headers: {
-            referrer: "https://hastebin.com/",
-            body: evalstring,
-            method: "POST",
-            mode: "cors",
-          },
-        });
-
-        await dmchannel.createMessage(`https://hastebin.com/${body.data.key}`);
+        const body = await axios.post("https://pastie.io/documents", evalstring);
+        await dmchannel.createMessage(`https://pastie.io/${body.data.key}`);
       } else if (evalstring === "true") {
         return msg.channel.createMessage("true!");
       } else {

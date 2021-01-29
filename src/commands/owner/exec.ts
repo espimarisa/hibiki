@@ -11,24 +11,16 @@ export class ExecCommand extends Command {
   owner = true;
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
-    child.exec(args.join(" "), async (error, stdout, stderr) => {
-      if (stdout?.length < 1000) return msg.createEmbed(msg.string("global.SUCCESS"), `\`\`\`\n${stdout}\n\`\`\``, "success");
+    child.exec(args.join(" "), async (error, stderr, stdout) => {
+      if (stdout?.length < 1000) return msg.createEmbed(msg.string("global.SUCCESS"), `\`\`\`\n${stdout || stderr}\n\`\`\``, "success");
 
       // Uploads if over embed limit; DMs author
       const dmchannel = await msg.author.getDMChannel();
-      if (stdout.length > 1000) {
-        const body = await axios.post("https://hastebin.com/documents", {
-          headers: {
-            referrer: "https://hastebin.com/",
-            body: stdout,
-            method: "POST",
-            mode: "cors",
-          },
-        });
-
-        await dmchannel.createMessage(`https://hastebin.com/${body.data.key}`);
+      if (stdout?.length > 2000 || stderr?.length > 2000) {
+        const body = await axios.post("https://pastie.io/documents", stdout || stderr);
+        await dmchannel.createMessage(`https://pastie.io/${body.data.key}`);
       } else if (stderr?.length < 2000) {
-        msg.createEmbed(msg.string("global.ERROR"), `\`\`\`\n${stderr}\n\`\`\``, "error");
+        msg.createEmbed(msg.string("global.ERROR"), `\`\`\`\n${stdout || stderr}\n\`\`\``, "error");
       }
     });
   }
