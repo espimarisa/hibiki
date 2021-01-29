@@ -26,6 +26,13 @@
   },
 
   "general": {
+    "GDPR_DATA": "Attached is a JSON dump of any data associated with you.",
+    "GDPR_DATA_SERVER": "Attached is a JSON dump of any data associated with your server.",
+    "GDPR": "GDPR Data Dump",
+    "GDPR_NOTSERVER": "In order to dump server data, you must run the command in a server you own.",
+    "GDPR_NOPERMS": "You must be the owner of the guild to dump its data.",
+    "GDPR_NODMS": "In order to send you the data, your DMs must be open and I must be able to send you messages. Be sure your server and DM privacy settings are set correctly, and try again.",
+    "GDPR_ERROR": "An error occurred while sending you your data. Be sure that you have your DMs open, and try again later.",
     "ABOUT": "About",
     "ABOUT_DESCRIPTION": "{username}, by [smolespi](https://espi.me), [resolved](https://github.com/resolvedxd), and [contributors](https://github.com/smolespi/hibiki).",
     "ABOUT_HOST": "Host",

@@ -170,7 +170,7 @@ export class HandlerEvent extends Event {
     this.bot.logs.push({
       cmdName: command.name,
       authorID: msg.author.id,
-      guildID: msg.channel.guild.id,
+      guildID: msg.channel.guild ? msg.channel.guild.id : msg.author.id,
       args: args,
       date: msg.timestamp,
     });
