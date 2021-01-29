@@ -331,9 +331,6 @@ export = (bot: HibikiClient) => {
 
     // Deletes the config
     await bot.db.deleteUserConfig(user.id);
-
-    // // todo: stop doing this.
-    // await bot.db.updateUserConfig({ id: user.id });
     res.sendStatus(200);
   });
 

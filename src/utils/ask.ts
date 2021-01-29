@@ -19,6 +19,8 @@ dayjs.extend(timezone);
 
 const localeEmojis = {};
 const localeNames = {};
+const cmdCategories: string[] = [];
+const categoryREMSEX = ["general", "owner"];
 
 // Asks a user for yes or no
 export async function askYesNo(bot: HibikiClient, msg: Message) {
@@ -140,6 +142,32 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
     if (invalidTimezone) return "No valid timezone";
     return arg;
   }
+
+  // Disabled commands
+  if (type === "disabledCmds") {
+    const cmds = arg
+      .split(/(?:\s{0,},\s{0,})|\s/)
+      .map(
+        (cmd: string) =>
+          bot.commands.find((c) => {
+            return c.allowdisable && (c.name === cmd || c.aliases.includes(cmd));
+          })?.name,
+      )
+      .filter((c: string | undefined) => c !== undefined);
+
+    console.log(cmds);
+    return cmds.length ? cmds : "No cmds";
+  }
+
+  // Disabled categories
+  if (type === "disabledCategories") {
+    if (!cmdCategories.length)
+      bot.commands.forEach((cmd) => {
+        if (!cmdCategories.includes(cmd.category) && !categoryREMSEX.includes(cmd.category)) cmdCategories.push(cmd.category);
+      });
+    const cats = arg.split(/(?:\s{0,},\s{0,})|\s/).filter((cat: string) => cmdCategories.includes(cat));
+    return cats.length ? cats : "No cats";
+  }
 }
 
 // Asks for input for a specific setting
@@ -159,7 +187,12 @@ export async function askForValue(
     60000,
     async (m: Message) => {
       if (m.author.id !== msg.author.id || m.channel.id !== msg.channel.id || !msg.content) return;
-      let result = askFor(bot, m as Message<TextChannel>, setting.type, m.content);
+      let result = askFor(
+        bot,
+        m as Message<TextChannel>,
+        setting.id === "disabledCmds" || setting.id === "disabledCategories" ? setting.id : setting.type,
+        m.content,
+      );
 
       const invalidChecks = {
         notBoolean: {
