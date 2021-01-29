@@ -2,7 +2,7 @@ import type { Emoji, Member, Message, TextChannel } from "eris";
 import type { HibikiClient } from "../../classes/Client";
 import { Command } from "../../classes/Command";
 import { localizeSetupItems } from "../../utils/format";
-import { askForValue, askYesNo } from "../../utils/ask";
+import { askForLocale, askForValue, askYesNo } from "../../utils/ask";
 import { validItems } from "../../utils/validItems";
 import { timeoutHandler, waitFor } from "../../utils/waitFor";
 
@@ -18,7 +18,7 @@ const categoryEmojis = {
   automod: "🔨",
 };
 
-const categories: Record<string, any>[] = [];
+const categories: ValidItemsCategory[] = [];
 const back = "⬅️";
 const submit = "☑";
 const deleteEmoji = "🗑";
@@ -41,6 +41,13 @@ export class SetupCommand extends Command {
   cooldown = 5000;
 
   async run(msg: Message<TextChannel>): Promise<void> {
+    const localeEmojis = {};
+    const localeNames = {};
+    Object.keys(this.bot.localeSystem.locales).forEach((locale) => {
+      localeEmojis[this.bot.localeSystem.getLocale(locale, "EMOJI")] = this.bot.localeSystem.getLocale(locale, "NAME");
+      localeNames[this.bot.localeSystem.getLocale(locale, "EMOJI")] = locale;
+    });
+
     // Gets the guildconfig and inserts a blank one if needed
     let guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
     if (!guildconfig) {
@@ -128,7 +135,7 @@ export class SetupCommand extends Command {
 
       addCategoryEmojis();
 
-      let category: any;
+      let category: ValidItem;
 
       // Handles deleting a config
       await waitFor(
@@ -170,7 +177,7 @@ export class SetupCommand extends Command {
     }
 
     // Returns the category items
-    function itemsEmbed(category: Record<string, any>) {
+    function itemsEmbed(category: ValidItemsCategory) {
       return {
         embed: {
           title: `🔧 ${msg.string("general.CONFIG")}`,
@@ -192,7 +199,7 @@ export class SetupCommand extends Command {
     }
 
     // Gets the category and handles category timeouts
-    let category = await getCategory(omsg, this.bot, false);
+    let category = (await getCategory(omsg, this.bot, false)) as any;
     selectingCategory = true;
     if (!category || category?.error === "timeout") {
       omsg.editEmbed(msg.string("global.ERROR"), msg.string("global.TIMEOUT_REACHED"), "error");
@@ -223,6 +230,7 @@ export class SetupCommand extends Command {
         if (user.id !== msg.author.id) return;
         if (m.id !== omsg.id) return;
         if (!emoji.name) return;
+        if (selectingItem) return;
         if (emoji.name === back) {
           category = { repeat: true };
           return true;
@@ -336,6 +344,11 @@ export class SetupCommand extends Command {
             },
             this.bot,
           ).catch((err) => timeoutHandler(err, omsg, msg.string));
+        } else if (setting.type === "locale") {
+          selectingItem = true;
+          await askForLocale(omsg, msg, this.bot, guildconfig, itemsEmbed, category, true);
+          selectingItem = false;
+          addItemsEmojis();
         }
 
         // Asks for a response if it's anything else

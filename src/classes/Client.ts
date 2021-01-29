@@ -37,12 +37,13 @@ export class HibikiClient extends Client {
   args: Args;
   db: RethinkProvider;
   log: typeof logger;
-  logs: Record<string, any>[] = [];
-  antiSpam: Record<string, any>[] = [];
   reminderHandler: ReminderHandler;
+  antiSpam: AntiSpam[];
+  logs: BotLogs[];
 
   constructor(token: string, options: ClientOptions) {
     super(token, options);
+
     // Prototype extensions
     Eris.Message.prototype.createEmbed = createEmbed;
     Eris.Message.prototype.editEmbed = editEmbed;

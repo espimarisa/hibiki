@@ -10,9 +10,9 @@ export class RemindCommand extends Command {
   aliases = ["remindme", "reminder", "reminders"];
   cooldown = 3000;
   allowdms = true;
-  timeoutHandles: any[] = [];
+  timeoutHandles: TimeoutHandles[];
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Reminder list functionality
     if (!args[0] || args?.[0]?.toLowerCase() === "list") {
       const reminders = await this.bot.db.getUserReminders(msg.author.id);
@@ -43,6 +43,7 @@ export class RemindCommand extends Command {
       if (!reminder.deleted) return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.REMINDER_NOTFOUND"), "error");
 
       // Clears the timeout
+      // TODO: Use the actual reminder handler instead of this
       const handle = this.timeoutHandles.find((h) => h.id === args[1]);
       if (handle) clearTimeout(handle);
       return msg.createEmbed(`⏰ ${msg.string("utility.REMINDER")}`, msg.string("utility.REMINDER_REMOVED"));

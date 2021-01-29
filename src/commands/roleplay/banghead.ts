@@ -18,7 +18,7 @@ export class BangheadCommand extends Command {
       })
       .catch(() => {});
 
-    let image: string;
+    let image = "";
     if (!body || !body?.data?.url) image = "https://cdn.weeb.sh/images/rJRepkXoW.gif";
     else image = body.data.url;
 

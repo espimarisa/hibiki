@@ -53,7 +53,7 @@
     "helmet": "^4.4.1",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
-    "rethinkdb-ts": "^2.4.5",
+    "rethinkdb-ts": "^2.4.6",
     "session-rethinkdb-ts": "^1.0.5",
     "terser": "^5.5.1",
     "winston": "^3.3.3"

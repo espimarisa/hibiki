@@ -18,7 +18,7 @@ export class AwooCommand extends Command {
       })
       .catch(() => {});
 
-    let image: string;
+    let image = "";
     if (!body || !body?.data?.url) image = "https://cdn.weeb.sh/images/H1Kvalk9W.png";
     else image = body.data.url;
 

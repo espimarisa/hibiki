@@ -6,8 +6,8 @@ export class DiceCommand extends Command {
   args = "[sides:string]";
   aliases = ["die", "rolldice", "rolldice"];
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
-    let sides;
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
+    let sides: number;
 
     // Calculates the amount of sides to use. Default to 6, clamps to 120.
     if (!parseInt(args.join(" "))) sides = 6;

@@ -6,7 +6,7 @@ export class PayCommand extends Command {
   aliases = ["give", "givecookies"];
   args = "<member:member> <amount:number>";
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs) {
+  async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     const member = pargs[0].value as Member;
     const amount = parseInt(pargs[1].value);
 

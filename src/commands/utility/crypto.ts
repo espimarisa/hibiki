@@ -15,7 +15,7 @@ export class CryptoCommand extends Command {
   cooldown = 3000;
   allowdms = true;
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs) {
+  async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     if (!currencies) {
       currencies = await axios.get("https://api.coingecko.com/api/v3/coins/list");
       currencies = currencies.data;
@@ -71,27 +71,27 @@ export class CryptoCommand extends Command {
     const highestPrice = Math.max(...prices);
     const lowestPrice = Math.min(...prices);
 
-    ctx.beginPath();
     // Draws the graph using the data
     priceHistory.forEach((price: number[], i: number) => {
+      ctx.beginPath();
       // Calculates move and line info
       const moveCalc = ((size[1] - 0) * (price[1] - lowestPrice)) / (highestPrice - lowestPrice);
       const lineCalc = ((size[1] - 0) * (prices[i === 0 ? 0 : i - 1] - lowestPrice)) / (highestPrice - lowestPrice);
 
       ctx.moveTo(average * i - average, Math.abs(lineCalc - size[1]));
       ctx.lineTo(average * i, Math.abs(moveCalc - size[1]));
-      // Creates a gradient below the graph
-      // const gradient = ctx.createLinearGradient(average * i, Math.abs(moveCalc - size[1]), average * i, size[1]);
-      // gradient.addColorStop(0, `${config.colors.general}77`);
-      // gradient.addColorStop(1, "rgba(0,0,0,0)");
-      // ctx.lineTo(average * i, size[1]);
-      // ctx.strokeStyle = gradient;
-      // ctx.stroke();
-    });
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = config.colors.general;
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = config.colors.general;
+      ctx.stroke();
 
-    ctx.stroke();
+      // Creates a gradient below the graph
+      const gradient = ctx.createLinearGradient(average * i, Math.abs(moveCalc - size[1]), average * i, size[1]);
+      gradient.addColorStop(0, `${config.colors.general}77`);
+      gradient.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.lineTo(average * i, size[1]);
+      ctx.strokeStyle = gradient;
+      ctx.stroke();
+    });
 
     // Convets canvas to a Buffer
     const buf = canvas.toBuffer();

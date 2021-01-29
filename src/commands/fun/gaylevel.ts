@@ -6,7 +6,7 @@ export class GaylevelCommand extends Command {
   args = "[member:member&fallback]";
   aliases = ["gay", "gayness"];
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs) {
+  async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     const member = pargs[0].value as Member;
     const random = Math.floor(Math.random() * 99) + 1;
 

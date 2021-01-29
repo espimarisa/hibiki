@@ -7,17 +7,8 @@
 import type { EmbedOptions, Guild } from "eris";
 import { Logger } from "../classes/Logger";
 import { convertHex } from "../helpers/embed";
-
-// Formatters
-import {
-  afkTimeoutFormat,
-  contentFilterFormat,
-  mfaLevelFormat,
-  notificationLevelFormat,
-  regionFormat,
-  verificationLevelFormat,
-} from "../utils/format";
-
+import * as format from "../utils/format";
+import config from "../../config.json";
 const TYPE = "eventLogging";
 
 export class GuildUpdate extends Logger {
@@ -26,6 +17,12 @@ export class GuildUpdate extends Logger {
   async run(event: string, guild: Guild, oldguild: Guild) {
     const channel = await this.getChannel(guild, TYPE, event);
     if (!channel) return;
+
+    // Gets locales
+    const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+    const string = this.bot.localeSystem.getLocaleFunction(guildconfig.locale ? guildconfig.locale : config.defaultLocale);
+
+    console.log(string("global.ERROR"));
 
     // Embed construct
     const embed = {
@@ -59,7 +56,7 @@ export class GuildUpdate extends Logger {
     if (guild.region !== oldguild.region) {
       embed.fields.push({
         name: "Region",
-        value: `${regionFormat(oldguild.region) || "Unknown"} ➜ ${regionFormat(guild.region) || "Unknown"}`,
+        value: `${format.regionFormat(oldguild.region) || "Unknown"} ➜ ${format.regionFormat(guild.region) || "Unknown"}`,
         inline: true,
       });
     }
@@ -68,7 +65,7 @@ export class GuildUpdate extends Logger {
     if (guild.mfaLevel !== oldguild.mfaLevel) {
       embed.fields.push({
         name: "2FA Level",
-        value: `${mfaLevelFormat(oldguild.mfaLevel)} ➜ ${mfaLevelFormat(guild.mfaLevel)}`,
+        value: `${format.mfaLevelFormat(oldguild.mfaLevel)} ➜ ${format.mfaLevelFormat(guild.mfaLevel)}`,
         inline: true,
       });
     }
@@ -77,7 +74,7 @@ export class GuildUpdate extends Logger {
     if (guild.verificationLevel !== oldguild.verificationLevel) {
       embed.fields.push({
         name: "Verification Level",
-        value: `${verificationLevelFormat(oldguild.verificationLevel)} ➜ ${verificationLevelFormat(guild.verificationLevel)}`,
+        value: `${format.verificationLevelFormat(oldguild.verificationLevel)} ➜ ${format.verificationLevelFormat(guild.verificationLevel)}`,
       });
     }
 
@@ -85,7 +82,7 @@ export class GuildUpdate extends Logger {
     if (guild.explicitContentFilter !== oldguild.explicitContentFilter) {
       embed.fields.push({
         name: "Content Filter",
-        value: `${contentFilterFormat(oldguild.explicitContentFilter)} ➜ ${contentFilterFormat(guild.explicitContentFilter)}`,
+        value: `${format.contentFilterFormat(oldguild.explicitContentFilter)} ➜ ${format.contentFilterFormat(guild.explicitContentFilter)}`,
       });
     }
 
@@ -93,7 +90,9 @@ export class GuildUpdate extends Logger {
     if (guild.defaultNotifications !== oldguild.defaultNotifications) {
       embed.fields.push({
         name: "Content Filter",
-        value: `${notificationLevelFormat(oldguild.defaultNotifications)} ➜ ${notificationLevelFormat(guild.defaultNotifications)}`,
+        value: `${format.notificationLevelFormat(oldguild.defaultNotifications)} ➜ ${format.notificationLevelFormat(
+          guild.defaultNotifications,
+        )}`,
       });
     }
 
@@ -157,7 +156,7 @@ export class GuildUpdate extends Logger {
     if (guild.afkTimeout !== oldguild.afkTimeout) {
       embed.fields.push({
         name: "AFK Timeout",
-        value: `${afkTimeoutFormat(oldguild.afkTimeout)} ➜ ${afkTimeoutFormat(guild.afkTimeout)}`,
+        value: `${format.afkTimeoutFormat(oldguild.afkTimeout)} ➜ ${format.afkTimeoutFormat(guild.afkTimeout)}`,
       });
     }
 

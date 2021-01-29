@@ -11,7 +11,7 @@ export class WikipediaCommand extends Command {
   allowdms = true;
 
   // TODO: Search with a user's locale instead of only EN
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     const query = encodeURIComponent(args.join(" "));
 
     const body = await axios.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${query}`).catch((err) => {

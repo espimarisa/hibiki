@@ -6,7 +6,7 @@ export class AvatarCommand extends Command {
   aliases = ["pfp", "profilepic", "profilepicture", "uicon", "usericon"];
   description = "Sends a member's profile picture.";
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs) {
+  async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     const member = pargs[0].value as Member;
 
     msg.channel.createMessage({

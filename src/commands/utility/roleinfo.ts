@@ -8,7 +8,7 @@ export class RoleinfoCommand extends Command {
   args = "<role:role>";
   aliases = ["rinfo"];
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs) {
+  async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     const role = pargs[0].value as Role;
     const fields = [];
     let membersWithRole = 0;

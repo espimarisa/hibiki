@@ -1,7 +1,7 @@
 import type { Emoji, Member, Message, TextChannel } from "eris";
 import type { LocaleSystem } from "../../classes/Locale";
 import { Command } from "../../classes/Command";
-import { askForValue, askYesNo } from "../../utils/ask";
+import { askForLocale, askForValue, askYesNo } from "../../utils/ask";
 import { localizeProfileItems } from "../../utils/format";
 import { validItems } from "../../utils/validItems";
 import { timeoutHandler, waitFor } from "../../utils/waitFor";
@@ -50,7 +50,7 @@ export class ProfileCommand extends Command {
     const emojiArray = Object.keys(pronounEmojis);
     let reacting = false;
 
-    function localizeLocale(item: Record<string, string>, localeSystem?: LocaleSystem) {
+    function localizeLocale(item: ValidItem, localeSystem?: LocaleSystem) {
       if (item.type === "pronouns" && typeof userconfig[item.id] != "undefined") return pronouns[userconfig[item.id]];
       else if (item.type === "locale" && userconfig[item.id] && localeSystem?.getLocale)
         return localeSystem.getLocale(userconfig[item.id], "NAME");
@@ -62,12 +62,10 @@ export class ProfileCommand extends Command {
         embed: {
           title: `👤 ${msg.string("general.PROFILE")}`,
           color: msg.convertHex("general"),
-          fields: (items as Record<string, any>)
-            .concat([{ emoji: deleteEmoji, label: msg.string("global.DELETE"), type: "delete", id: "delete" }])
-            .map((item: Record<string, string>) => ({
-              name: `${item.emoji} ${localizeProfileItems(msg.string, item.id, true)}`,
-              value: localizeLocale(item, localeSystem) || localizeProfileItems(msg.string, item.id),
-            })),
+          fields: items.concat([{ emoji: deleteEmoji, label: msg.string("global.DELETE"), type: "delete", id: "delete" }]).map((item) => ({
+            name: `${item.emoji} ${localizeProfileItems(msg.string, item.id, true)}`,
+            value: localizeLocale(item, localeSystem) || localizeProfileItems(msg.string, item.id),
+          })),
         },
       };
 
@@ -165,44 +163,9 @@ export class ProfileCommand extends Command {
           });
         } else if (setting.type === "locale") {
           reacting = true;
-          await omsg.removeReactions();
-          Object.keys(localeEmojis).forEach(async (emoji) => omsg.addReaction(emoji));
-
-          omsg.editEmbed(
-            "select locale bitch",
-            Object.entries(localeEmojis)
-              .map((p) => `${p[0]}: ${p[1]}`)
-              .join("\n"),
-          );
-
-          // Waits for message reactions for locale
-          await waitFor(
-            "messageReactionAdd",
-            10000,
-            async (_m: Message<TextChannel>, _emoji: Emoji, _user: Member) => {
-              if (_m.id !== omsg.id) return;
-              if (_user.id !== msg.author.id) return;
-              if (!emoji.name) return;
-
-              // Gets the locale and updates the user's config
-              const locale = localeNames[_emoji.name];
-              if (!locale) return;
-              userconfig.locale = locale;
-              this.bot.db.updateUserConfig(msg.author.id, userconfig);
-
-              // Cleans up afterwards
-              await omsg.edit(editEmbed(this.bot.localeSystem));
-              await omsg.removeReactions();
-              reacting = false;
-              addEmojis();
-              return true;
-            },
-
-            this.bot,
-          ).catch((err) => {
-            reacting = false;
-            if (err !== "timeout") throw err;
-          });
+          await askForLocale(omsg, msg, this.bot, userconfig, editEmbed);
+          reacting = false;
+          addEmojis();
         } else {
           omsg.editEmbed(`👤 ${msg.string("general.PROFILE")}`, msg.string("global.RESPOND_WITH", { type: setting.type }));
           await askForValue(msg, omsg, this.bot, "profile", userconfig, editEmbed, setting);

@@ -8,7 +8,7 @@ export class SayCommand extends Command {
   allowdisable = false;
   owner = true;
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     await msg.channel.createMessage(args.join(" ")).then(() => {
       msg.delete();
     });

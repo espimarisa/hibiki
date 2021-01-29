@@ -8,7 +8,7 @@ export class WhitelistCommand extends Command {
   allowdisable = false;
   owner = true;
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     const target = args[0];
     if (isNaN(parseInt(target))) return msg.createEmbed(msg.string("global.ERROR"), "Invalid target.", "error");
     await this.bot.db.deleteBlacklistedItem(target);

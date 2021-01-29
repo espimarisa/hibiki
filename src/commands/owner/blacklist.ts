@@ -8,7 +8,7 @@ export class BlacklistCommand extends Command {
   allowdisable = false;
   owner = true;
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // List of blacklisted users/guilds if no args given
     if (!args?.[0]) {
       const blacklist = await this.bot.db.getBlacklist();

@@ -3,7 +3,8 @@
  * @description Handles and executes commands
  */
 
-import { Message, PrivateChannel, TextChannel } from "eris";
+import type { Message, TextChannel } from "eris";
+import { PrivateChannel } from "eris";
 import { Event } from "../classes/Event";
 import config from "../../config.json";
 import * as Sentry from "@sentry/node";
@@ -13,22 +14,24 @@ export class HandlerEvent extends Event {
 
   async run(_event: string, msg: Message<TextChannel>) {
     if (!msg || !msg.content || msg.author.bot || !msg.channel || !msg.author) return;
-    let prefix: string;
+    let prefix = "";
+    let localeString = "";
 
     // Finds what locale to use
-    const userLocale = await this.bot.localeSystem.getUserLocale(msg.author.id, this.bot);
-    const string = this.bot.localeSystem.getLocaleFunction(userLocale);
+    const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild ? msg.channel.guild.id : "");
+    const userLocale = await this.bot.localeSystem.getUserLocale(msg.author.id, this.bot, true);
+    if (userLocale) localeString = userLocale;
+    else if (guildconfig?.locale && !userLocale) localeString = guildconfig.locale;
+    const string = this.bot.localeSystem.getLocaleFunction(localeString);
     msg.string = string;
 
     // Finds what prefix to use
+    const mentionRegex = new RegExp(`<@!?${this.bot.user.id}> ?`);
+    const mentionPrefix = mentionRegex.exec(msg.content);
     const prefixes = config.prefixes.map((p: string) => msg.content.toLowerCase().startsWith(p)).indexOf(true);
-    const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild ? msg.channel.guild.id : "");
-    if (guildconfig && guildconfig.prefix && msg.content.toLowerCase().startsWith(guildconfig.prefix)) prefix = guildconfig.prefix;
+    if (mentionPrefix) prefix = mentionPrefix[0];
+    else if (guildconfig && guildconfig.prefix && msg.content.toLowerCase().startsWith(guildconfig.prefix)) prefix = guildconfig.prefix;
     else if ((!guildconfig || !guildconfig.prefix) && config.prefixes && prefixes !== -1) prefix = config.prefixes[prefixes];
-    else if (msg.content.startsWith(`<@!${this.bot.user.id}> `)) prefix = `<@!${this.bot.user.id}> `;
-    else if (msg.content.startsWith(`<@${this.bot.user.id}> `)) prefix = `<@${this.bot.user.id}> `;
-    else if (msg.content.startsWith(`<@${this.bot.user.id}>`)) prefix = `<@${this.bot.user.id}>`;
-    else if (msg.content.startsWith(`<@!${this.bot.user.id}>`)) prefix = `<@!${this.bot.user.id}>`;
     if (!prefix) return;
 
     // Finds the command to run
@@ -147,16 +150,16 @@ export class HandlerEvent extends Event {
     }
 
     // Handles command arguments
-    let parsedArgs;
+    let parsedArgs: ParsedArgs[];
     if (command.args) {
       // Parses arguments and sends if missing any
       parsedArgs = this.bot.args.parse(command.args, args.join(" "), msg);
-      const missingargs = parsedArgs.filter((a: Record<string, unknown>) => typeof a.value == "undefined" && !a.optional);
+      const missingargs = parsedArgs.filter((a) => typeof a.value == "undefined" && !a.optional);
 
       if (missingargs.length) {
         return msg.createEmbed(
           string("global.ERROR"),
-          string("global.ERROR_MISSINGARGS", { arg: `${missingargs.map((a: ParsedArgs) => a.name).join(` ${string("global.OR")} `)}` }),
+          string("global.ERROR_MISSINGARGS", { arg: `${missingargs.map((a) => a.name).join(` ${string("global.OR")} `)}` }),
           "error",
         );
       }

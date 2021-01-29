@@ -11,7 +11,7 @@ export class KickCommand extends Command {
   aliases = ["getout", "k"];
   staff = true;
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, pargs: ParsedArgs[], args: string[]) {
     // Gets the member and reason
     const member = pargs[0].value as Member;
     let reason = args.slice(1).join(" ");
