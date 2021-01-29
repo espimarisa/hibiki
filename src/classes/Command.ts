@@ -6,7 +6,7 @@
 import type { Message } from "eris";
 import type { HibikiClient } from "./Client";
 
-/** Main command class */
+// Main command class
 export abstract class Command {
   aliases: string[] = [];
   args?: string;
@@ -25,5 +25,5 @@ export abstract class Command {
 
   constructor(protected bot: HibikiClient, public name: string, public category: string) {}
 
-  abstract run(msg: Message, pargs?: ParsedArgs[], args?: string[]): Promise<unknown> | void;
+  abstract run(msg: Message, pargs?: ParsedArgs[], args?: string[]): Promise<unknown>;
 }

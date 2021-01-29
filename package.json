@@ -45,7 +45,7 @@
     "csurf": "^1.11.0",
     "dayjs": "^1.10.4",
     "ejs": "^3.1.5",
-    "erela.js": "^2.3.1",
+    "erela.js": "^2.3.2",
     "erela.js-spotify": "^1.2.0",
     "eris": "^0.14.0",
     "express": "^4.17.1",
