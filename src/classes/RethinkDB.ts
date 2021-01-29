@@ -100,12 +100,13 @@ export class RethinkProvider {
    * Punishment functions
    */
 
-  // Gets the mute cache
-  async getMuteCache() {
+  // Gets user mute cache
+  async getUserMuteCache(member: string) {
     await this.dblock;
-    return this.db.table("mutecache").run() as Promise<MuteCache>;
+    return this.db.table("mutecache").filter({ member: member }).run() as Promise<MuteCache>;
   }
 
+  // Gets guild muteCache
   async getGuildMuteCache(guild: string) {
     await this.dblock;
     return this.db.table("mutecache").filter({ guild: guild }).run() as Promise<MuteCache>;
@@ -129,6 +130,7 @@ export class RethinkProvider {
     return this.db.table("warnings").filter({ guild: guild }).run() as Promise<UserWarning>;
   }
 
+  // Gets user's warnings
   async getUserWarnings(user: string) {
     await this.dblock;
     return this.db.table("warnings").filter({ receiver: user }).run();
