@@ -8,7 +8,7 @@ export class VolumeCommand extends Command {
   cooldown = 10000;
   voice = true;
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     const player = this.bot.lavalink.manager.get(msg.channel.guild.id);
     if (!player) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_PLAYING"), "error");
 

@@ -6,7 +6,7 @@ export class PrefixCommand extends Command {
   description = "Views or changes the bot's prefix.";
   args = "[prefix:string]";
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Looks for custom prefix
     const prefix = args.join(" ").trim();
     const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);

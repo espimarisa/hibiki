@@ -12,7 +12,7 @@ export class PlayCommand extends Command {
   cooldown = 3000;
   voice = true;
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Creates a player
     const query = args.join(" ");
     const voiceChannel = msg.channel.guild.members.get(msg.author.id)?.voiceState.channelID;

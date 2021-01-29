@@ -26,7 +26,7 @@ export = (bot: HibikiClient) => {
 
     // Sends loaded cmds
     if (req.query.commands) {
-      const cmds: Record<string, any>[] = [];
+      const cmds: Bulmaselect[] = [];
       bot.commands.forEach((cmd) => {
         if (!cmds.find((c) => c.label === cmd.category) && cmd.category !== "owner")
           cmds.push({ label: cmd.category, type: "group", children: [] });

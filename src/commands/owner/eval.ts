@@ -11,7 +11,7 @@ export class EvalCommand extends Command {
   allowdisable = false;
   owner = true;
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     try {
       const evaluated = await eval(`(async () => {\n${args.join(" ")}\n})()`);
       const evalstring = typeof evaluated === "string" ? evaluated : inspect(evaluated);

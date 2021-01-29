@@ -22,6 +22,38 @@ export const validItems = [
     type: "bool",
     default: false,
   },
+  {
+    category: "features",
+    id: "locale",
+    emoji: "🌐",
+    type: "locale",
+  },
+  {
+    id: "assignableRoles",
+    category: "roles",
+    type: "roleArray",
+    emoji: "📝",
+  },
+  {
+    id: "disabledCategories",
+    category: "features",
+    type: "array",
+    emoji: "🛑",
+  },
+  {
+    id: "disabledCmds",
+    category: "features",
+    type: "array",
+    emoji: "🚫",
+  },
+  {
+    id: "prefix",
+    category: "features",
+    type: "string",
+    emoji: "🤖",
+    minimum: 1,
+    maximum: 15,
+  },
 
   /**
    * Greeting options
@@ -363,31 +395,4 @@ export const validItems = [
     type: "bool",
     default: false,
   },
-
-  /**
-   * Other items not in config.ts
-   */
-
-  {
-    id: "assignableRoles",
-    category: "roles",
-    type: "roleArray",
-  },
-  {
-    id: "disabledCategories",
-    category: "features",
-    type: "array",
-  },
-  {
-    id: "disabledCmds",
-    category: "features",
-    type: "array",
-  },
-  {
-    id: "prefix",
-    category: "features",
-    type: "string",
-    minimum: 1,
-    maximum: 15,
-  },
-];
+] as ValidItem[];

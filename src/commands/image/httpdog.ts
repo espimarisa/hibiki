@@ -65,7 +65,7 @@ export class HTTPDogCommand extends Command {
   cooldown = 3000;
   allowdms = true;
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     let code;
     const codeToFind = statusCodes.filter((code) => code === `${args.join("")}`);
     if (!codeToFind?.length) code = statusCodes[Math.floor(Math.random() * statusCodes.length)];

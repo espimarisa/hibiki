@@ -14,7 +14,7 @@ export const punishMute = async (
   msg: Message<TextChannel> | Member,
   bot: HibikiClient,
   cfg: GuildConfig,
-  reason: string | Record<string, any>[] = [],
+  reason: string | AntiSpam[],
   g: Guild = undefined,
 ) => {
   const member = msg instanceof Member ? msg : msg.member;

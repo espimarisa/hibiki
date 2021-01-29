@@ -18,7 +18,7 @@ export class MeguminCommand extends Command {
       })
       .catch(() => {});
 
-    let image: string;
+    let image = "";
     if (!body || !body?.data?.url) image = "https://cdn.weeb.sh/images/ry8LxA_wZ.gif";
     else image = body.data.url;
 

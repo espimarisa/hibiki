@@ -10,7 +10,7 @@ export class SpacephotoCommand extends Command {
   cooldown = 3000;
   allowdms = true;
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, pargs: ParsedArgs[], args: string[]) {
     const query = encodeURIComponent(args.join(" "));
     const omsg = await msg.createEmbed(`${msg.string("image.SPACEPHOTO")}`, msg.string("global.PLEASE_WAIT"));
 

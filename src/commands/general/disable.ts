@@ -8,7 +8,7 @@ export class DisableCommand extends Command {
   allowdisable = false;
   staff = true;
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs, args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Finds the command
     const command = args.join(" ").toLowerCase();
     let guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);

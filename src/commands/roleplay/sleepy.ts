@@ -17,7 +17,7 @@ export class SleepyCommand extends Command {
       })
       .catch(() => {});
 
-    let image: string;
+    let image = "";
     if (!body || !body?.data?.url) image = "https://cdn.weeb.sh/images/SJYxNJKDZ.gif";
     else image = body.data.url;
 

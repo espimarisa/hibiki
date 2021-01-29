@@ -281,6 +281,12 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
     case "massMentionThreshold":
       if (title) return string("general.CONFIG_ANTIMASSMENTIONTHRESHOLD");
       return string("general.CONFIG_ANTIMASSMENTIONTHRESHOLD_DESCRIPTION");
+    case "locale":
+      if (title) return string("general.CONFIG_DEFAULTLOCALE");
+      return string("general.CONFIG_DEFAULTLOCALE_DESCRIPTION");
+    case "disabledCategories":
+      if (title) return string("general.CONFIG_DISABLEDCATEGORIES");
+      return string("general.CONFIG_DISABLEDCATEGORIES_DESCRIPTION");
     case undefined:
     default:
       return item;
@@ -375,5 +381,50 @@ export function to24Hours(string: LocaleString, time: number) {
   return string("global.FORMAT_DAY", {
     hours: hours,
     minutes: minutes,
+  });
+}
+
+// Localizes guild features
+export function featureFormat(string: LocaleString, features: string[]) {
+  if (!features) return undefined;
+  return features.map((feature: string) => {
+    switch (feature) {
+      case "COMMUNITY":
+        return string("general.SERVER_FEATURE_COMMUNITY");
+      case "WELCOME_SCREEN_ENABLED":
+        return string("general.SERVER_FEATURE_WELCOME");
+      case "INVITE_SPLASH":
+        return string("general.SERVER_FEATURE_SPLASH");
+      case "VANITY_URL":
+        return string("general.SERVER_FEATURE_VANITY");
+      case "ANIMATED_ICON":
+        return string("general.SERVER_FEATURE_ANIMATED");
+      case "PARTNERED":
+        return string("general.SERVER_FEATURE_PARTNERED");
+      case "VERIFIED":
+        return string("general.SERVER_FEATURE_VERIFIED");
+      case "VIP_REGIONS":
+        return string("general.SERVER_FEATURE_VIPREGIONS");
+      case "PUBLIC":
+        return string("general.SERVER_FEATURE_PUBLIC");
+      case "LURKABLE":
+        return string("general.SERVER_FEATURE_LURKABLE");
+      case "COMMERCE":
+        return string("general.SERVER_FEATURE_COMMERCE");
+      case "NEWS":
+        return string("general.SERVER_FEATURE_NEWS");
+      case "DISCOVERABLE":
+        return string("general.SERVER_FEATURE_DISCOVERABLE");
+      case "FEATURABLE":
+        return string("general.SERVER_FEATURE_FEATURABLE");
+      case "BANNER":
+        return string("general.SERVER_FEATURE_BANNER");
+      case "PREVIEW_ENABLED":
+        return string("general.SERVER_FEATURE_PREVIEW");
+      case "MEMBER_VERIFICATION_GATE_ENABLED":
+        return string("general.SERVER_FEATURE_GATE");
+      default:
+        return feature;
+    }
   });
 }
