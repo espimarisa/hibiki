@@ -82,7 +82,7 @@ export class GDPRCommand extends Command {
       userconfig: await this.bot.db.getUserConfig(msg.author.id),
       economy: await this.bot.db.getUserCookies(msg.author.id),
       marriages: await this.bot.db.getUserMarriage(msg.author.id),
-      mutecache: await this.bot.db.getMuteCache(),
+      mutecache: await this.bot.db.getUserMuteCache(msg.author.id),
       points: await this.bot.db.getUserPoints(msg.author.id),
       reminders: await this.bot.db.getUserReminders(msg.author.id),
       monitoring: await this.bot.db.getUserMonitoring(msg.author.id),
