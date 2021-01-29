@@ -106,6 +106,11 @@ export class RethinkProvider {
     return this.db.table("mutecache").run() as Promise<MuteCache>;
   }
 
+  async getGuildMuteCache(guild: string) {
+    await this.dblock;
+    return this.db.table("mutecache").filter({ guild: guild }).run() as Promise<MuteCache>;
+  }
+
   // Inserts a muteCache
   async insertMuteCache(config: MuteCache) {
     await this.dblock;
@@ -116,6 +121,31 @@ export class RethinkProvider {
   async insertUserWarning(warning: UserWarning) {
     await this.dblock;
     return this.db.table("warnings").insert(warning).run();
+  }
+
+  // Gets guild warnings
+  async getGuildWarnings(guild: string) {
+    await this.dblock;
+    return this.db.table("warnings").filter({ guild: guild }).run() as Promise<UserWarning>;
+  }
+
+  async getUserWarnings(user: string) {
+    await this.dblock;
+    return this.db.table("warnings").filter({ receiver: user }).run();
+  }
+
+  /**
+   * Point functions
+   */
+
+  async getGuildPoints(guild: string) {
+    await this.dblock;
+    return this.db.table("points").filter({ guild: guild }).run();
+  }
+
+  async getUserPoints(user: string) {
+    await this.dblock;
+    return this.db.table("points").filter({ receiver: user }).run();
   }
 
   /**
@@ -200,5 +230,24 @@ export class RethinkProvider {
   async deleteUserReminder(reminder: string, user: string) {
     await this.dblock;
     return this.db.table("reminders").filter({ id: reminder, user: user }).delete().run();
+  }
+
+  /**
+   * Marriage functions
+   */
+
+  async getUserMarriage(user: string) {
+    await this.dblock;
+    // no fucking clue but this should work!
+    await this.db.table("marriages").getAll(user, { index: "marriages" }).run();
+  }
+
+  /**
+   * Monitoring functions
+   */
+
+  async getUserMonitoring(user: string) {
+    await this.dblock;
+    return this.db.table("monitoring").filter({ user: user }).run();
   }
 }
