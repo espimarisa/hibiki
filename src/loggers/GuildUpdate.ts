@@ -22,14 +22,12 @@ export class GuildUpdate extends Logger {
     const guildconfig = await this.bot.db.getGuildConfig(guild.id);
     const string = this.bot.localeSystem.getLocaleFunction(guildconfig.locale ? guildconfig.locale : config.defaultLocale);
 
-    console.log(string("global.ERROR"));
-
     // Embed construct
     const embed = {
       color: convertHex("general"),
       author: {
         icon_url: this.bot.user.dynamicAvatarURL(),
-        name: "The server was edited.",
+        name: string("guild.GUILD_EDITED"),
       },
       fields: [],
     } as EmbedOptions;
@@ -37,15 +35,15 @@ export class GuildUpdate extends Logger {
     // Compares names
     if (guild.name !== oldguild.name) {
       embed.fields.push({
-        name: "Name",
-        value: `${oldguild.name || "Unknown"} ➜ ${guild.name || "Unknown"}`,
+        name: string("global.NAME"),
+        value: `${oldguild.name} ➜ ${guild.name}`,
       });
     }
 
     // Owner differences
     if (guild.ownerID !== oldguild.ownerID) {
       embed.fields.push({
-        name: "Owner",
+        name: string("global.OWNER"),
         value: `${this.tagUser(this.bot.users.find((m) => m.id === oldguild.ownerID))} ➜ ${this.tagUser(
           this.bot.users.find((m) => m.id === guild.ownerID),
         )}`,
@@ -55,7 +53,7 @@ export class GuildUpdate extends Logger {
     // Region differences
     if (guild.region !== oldguild.region) {
       embed.fields.push({
-        name: "Region",
+        name: string("global.REGION"),
         value: `${format.regionFormat(oldguild.region) || "Unknown"} ➜ ${format.regionFormat(guild.region) || "Unknown"}`,
         inline: true,
       });
@@ -64,7 +62,7 @@ export class GuildUpdate extends Logger {
     // MFA Level
     if (guild.mfaLevel !== oldguild.mfaLevel) {
       embed.fields.push({
-        name: "2FA Level",
+        name: string("general.SERVER_2FA"),
         value: `${format.mfaLevelFormat(oldguild.mfaLevel)} ➜ ${format.mfaLevelFormat(guild.mfaLevel)}`,
         inline: true,
       });
@@ -73,7 +71,7 @@ export class GuildUpdate extends Logger {
     // Verification level
     if (guild.verificationLevel !== oldguild.verificationLevel) {
       embed.fields.push({
-        name: "Verification Level",
+        name: string("general.SERVER_VERIFICATION"),
         value: `${format.verificationLevelFormat(oldguild.verificationLevel)} ➜ ${format.verificationLevelFormat(guild.verificationLevel)}`,
       });
     }
@@ -81,7 +79,7 @@ export class GuildUpdate extends Logger {
     // Explicit content filter
     if (guild.explicitContentFilter !== oldguild.explicitContentFilter) {
       embed.fields.push({
-        name: "Content Filter",
+        name: string("general.SERVER_CONTENT_FILTER"),
         value: `${format.contentFilterFormat(oldguild.explicitContentFilter)} ➜ ${format.contentFilterFormat(guild.explicitContentFilter)}`,
       });
     }
@@ -89,7 +87,7 @@ export class GuildUpdate extends Logger {
     // Notification settings
     if (guild.defaultNotifications !== oldguild.defaultNotifications) {
       embed.fields.push({
-        name: "Content Filter",
+        name: string("general.SERVER_NOTIFICATION_LEVEL"),
         value: `${format.notificationLevelFormat(oldguild.defaultNotifications)} ➜ ${format.notificationLevelFormat(
           guild.defaultNotifications,
         )}`,
@@ -99,9 +97,9 @@ export class GuildUpdate extends Logger {
     // AFK channels
     if (guild.afkChannelID !== oldguild.afkChannelID) {
       embed.fields.push({
-        name: "AFK Channel",
-        value: `${oldguild.afkChannelID ? guild.channels.get(oldguild.afkChannelID).mention : "None"} ➜ ${
-          guild.afkChannelID ? guild.channels.get(guild.afkChannelID).mention : "None"
+        name: string("general.SERVER_AFK_CHANNEL"),
+        value: `${oldguild.afkChannelID ? guild.channels.get(oldguild.afkChannelID).mention : string("global.NONE")} ➜ ${
+          guild.afkChannelID ? guild.channels.get(guild.afkChannelID).mention : string("global.NONE")
         }`,
       });
     }
@@ -109,9 +107,9 @@ export class GuildUpdate extends Logger {
     // System channel changes
     if (guild.systemChannelID !== oldguild.systemChannelID) {
       embed.fields.push({
-        name: "System Message Channel",
-        value: `${oldguild.systemChannelID ? guild.channels.get(oldguild.systemChannelID).mention : "None"} ➜ ${
-          guild.systemChannelID ? guild.channels.get(guild.systemChannelID).mention : "None"
+        name: string("general.SERVER_SYSTEMMESSAGE_CHANNEL"),
+        value: `${oldguild.systemChannelID ? guild.channels.get(oldguild.systemChannelID).mention : string("global.NONE")} ➜ ${
+          guild.systemChannelID ? guild.channels.get(guild.systemChannelID).mention : string("global.NONE")
         }`,
       });
     }
@@ -119,10 +117,10 @@ export class GuildUpdate extends Logger {
     // Public updates channel
     if (guild.publicUpdatesChannelID !== oldguild.publicUpdatesChannelID) {
       embed.fields.push({
-        name: "Updates Channel",
-        value: `${oldguild.publicUpdatesChannelID ? guild.channels.get(oldguild.publicUpdatesChannelID).mention : "None"} ➜ ${
-          guild.publicUpdatesChannelID ? guild.channels.get(guild.publicUpdatesChannelID).mention : "None"
-        }`,
+        name: string("general.SERVER_UPDATES_CHANNEL"),
+        value: `${
+          oldguild.publicUpdatesChannelID ? guild.channels.get(oldguild.publicUpdatesChannelID).mention : string("global.NONE")
+        } ➜ ${guild.publicUpdatesChannelID ? guild.channels.get(guild.publicUpdatesChannelID).mention : string("global.NONE")}`,
       });
     }
 
@@ -139,15 +137,15 @@ export class GuildUpdate extends Logger {
     // Public description
     if (guild.description !== oldguild.description) {
       embed.fields.push({
-        name: "Description",
-        value: `${oldguild.description || "No description"} ➜ ${guild.description || "No description"}`,
+        name: string("global.DESCRIPTION"),
+        value: `${oldguild.description || string("global.NONE")} ➜ ${guild.description || string("global.NONE")}`,
       });
     }
 
     // Preferred locales
     if (guild.preferredLocale !== oldguild.preferredLocale) {
       embed.fields.push({
-        name: "Preferred Language",
+        name: string("general.SERVER_PREFERRED_LANGUAGE"),
         value: `${oldguild.preferredLocale || "en-US"} ➜ ${guild.preferredLocale || "en-US"}`,
       });
     }
@@ -155,7 +153,7 @@ export class GuildUpdate extends Logger {
     // AFK timeouts
     if (guild.afkTimeout !== oldguild.afkTimeout) {
       embed.fields.push({
-        name: "AFK Timeout",
+        name: string("general.SERVER_AFK_TIMEOUT"),
         value: `${format.afkTimeoutFormat(oldguild.afkTimeout)} ➜ ${format.afkTimeoutFormat(guild.afkTimeout)}`,
       });
     }
@@ -167,7 +165,7 @@ export class GuildUpdate extends Logger {
       const log = logs.entries[0];
       const user = logs.users[0];
       if (log && new Date().getTime() - new Date(parseInt(log.id) / 4194304 + 1420070400000).getTime() < 3000) {
-        embed.author.name = `${this.tagUser(user)} edited the server.`;
+        embed.author.name = `${string("logger.GUILD_EDITEDBY", { user: this.tagUser(user) })}`;
         embed.author.icon_url = user.dynamicAvatarURL();
       }
 

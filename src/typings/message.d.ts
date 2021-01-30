@@ -1,6 +1,6 @@
 /**
  * @file Message typings
- * @description Extensions for Eris.Message
+ * @description Typings and extensions for Eris.Message
  * @typedef message
  */
 
@@ -9,9 +9,9 @@ import type { convertHex, createEmbed, editEmbed } from "../helpers/embed";
 
 declare module "eris" {
   declare interface Message {
+    convertHex: typeof convertHex;
     createEmbed: typeof createEmbed;
     editEmbed: typeof editEmbed;
-    convertHex: typeof convertHex;
     string: LocaleString;
     tagUser: typeof tagUser;
   }

@@ -6,7 +6,7 @@
 
 import type { AxiosError } from "axios";
 
-/** Wraps around axios errors */
+// Wraps around and handles Axios errors
 export async function resError(err: AxiosError) {
   if (err.response) {
     throw new Error(`${err.response.status} \n\n Headers: ${err.response.headers} \n\n Data: ${err.response?.data}`);

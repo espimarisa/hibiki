@@ -40,7 +40,7 @@ export class BanCommand extends Command {
         }),
       );
 
-      const { response } = await askYesNo(this.bot, msg).catch(() => {
+      const { response } = await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch(() => {
         // Waits for response
         return banmsg.editEmbed(msg.string("global.ERROR"), msg.string("global.TIMEOUT_REACHED"), "error");
       });

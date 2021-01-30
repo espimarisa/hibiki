@@ -4,103 +4,132 @@
  * @typedef database
  */
 
-// Interface for guildConfigs
+// Guildconfig data
 interface GuildConfig {
-  id?: string;
   agreeChannel?: string;
   agreeRole?: string;
   antiInvite?: boolean;
+  antiMassMention?: boolean;
+  antiMassMentionPunishments?: string[];
+  antiNewLines?: boolean;
+  antiNewLinesPunishments?: string[];
+  antiRaid?: boolean;
   antiSpam?: boolean;
   assignableRoles?: string[];
   autoRoles?: string[];
   disabledCategories?: string[];
   disabledCmds?: string[];
+  disabledEvents?: string[];
   easyTranslate?: boolean;
-  invitePunishments?: string[];
-  leaveJoin?: string;
-  joinMessage?: string;
-  leaveMessage?: string;
   eventLogging?: string;
-  messageLogging?: string;
-  memberLogging?: string;
-  modLogging?: string;
+  greetingFooter?: string;
+  id?: string;
   ignoredLoggingChannels?: string[];
+  invitePunishments?: string[];
+  joinMessage?: string;
+  joinTitle?: string;
+  leaveJoin?: string;
+  leaveMessage?: string;
+  leaveTitle?: string;
+  locale?: string;
+  loggingChannel?: string;
+  massMentionThreshold?: number;
+  memberLogging?: string;
+  messageLogging?: string;
+  modLogging?: string;
   msgOnPunishment?: boolean;
+  musicChannel?: string;
+  musicRole?: string;
   mutedRole?: string;
-  snipingEnable?: boolean;
-  snipingIgnore?: string[];
-  snipingInvites?: boolean;
-  snipingPermission?: boolean;
-  staffRole?: string;
+  newlineThreshold?: number;
+  onlyRequesterCanControl?: boolean;
   pinAmount?: number;
   pinChannel?: string;
   pinEmoji?: string;
   pinSelfPinning?: boolean;
   prefix?: string;
+  raidPunishments?: string;
+  raidThreshold?: number;
+  snipingEnable?: boolean;
+  snipingIgnore?: string[];
+  snipingInvites?: boolean;
+  snipingPermission?: boolean;
   spamPunishments?: string[];
   spamThreshold?: number;
-  massMentionThreshold?: number;
+  staffRole?: string;
   verifiedRole?: string;
-  loggingChannel?: string;
-  disabledEvents?: string[];
-  antiNewLinesPunishments?: string[];
-  antiNewLines?: boolean;
-  newlineThreshold?: number;
-  raidPunishments?: string;
-  antiMassMentionPunishments?: string[];
-  antiRaid?: boolean;
-  raidThreshold?: number;
-  joinTitle?: string;
-  leaveTitle?: string;
-  greetingFooter?: string;
-  antiMassMention?: boolean;
-  locale?: string;
 }
 
-// Interface for userConfigs
+// Userconfig data
 interface UserConfig {
-  id?: string;
   bio?: string;
+  id?: string;
+  locale?: string;
   pronouns?: string | number;
   timezone?: string;
   timezoneHide?: boolean;
-  locale?: string;
 }
 
-// Interface for MuteCache
+// Mutecache data
 interface MuteCache {
-  role?: string;
-  member?: string;
   guild?: string;
+  member?: string;
+  role?: string;
 }
 
-// Interface for UserWarning
+// User warning data
 interface UserWarning {
+  giver?: string;
+  guild?: string;
   id?: string;
   reason?: string;
-  giver?: string;
   receiver?: string;
-  guild?: string;
 }
 
-// Interface for cookie info
-interface UserCookies {
+// User point data
+interface UserPoint {
+  giver?: string;
+  guild?: string;
   id?: string;
+  reason?: string;
+  receiver?: string;
+}
+
+// Economy data
+interface UserCookies {
   amount?: number;
+  id?: string;
   lastclaim?: Date;
 }
 
+// Blacklist data
 interface BlacklistInfo {
-  id?: string;
   guild?: boolean;
-  user?: boolean;
+  id?: string;
   reason?: string;
+  user?: boolean;
 }
 
+// Reminder data
 interface Reminder {
   date?: number;
   id?: string;
   message?: string;
   set?: Date;
   user?: string;
+}
+
+// Marriage data
+interface UserMarriage {
+  id?: string;
+  spouse?: string;
+}
+
+// Steammonitor data
+interface SteamMonitor {
+  date?: Date;
+  id?: string;
+  pfp?: string;
+  user?: string;
+  username?: string;
 }

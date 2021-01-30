@@ -6,7 +6,7 @@
 
 import type { Member } from "eris";
 
-/** Checks to see if the author is above the target in role hierarchy */
+// Checks to see if the author is above the target in role hierarchy
 export function roleHierarchy(author: Member, target: Member) {
   if (author.guild !== target.guild) return;
   if (author.guild.ownerID === target.id) return true;

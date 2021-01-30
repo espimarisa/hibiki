@@ -20,15 +20,14 @@ dayjs.extend(timezone);
 const localeEmojis = {};
 const localeNames = {};
 const cmdCategories: string[] = [];
-const categoryREMSEX = ["general", "owner"];
+const blacklistedCategories = ["general", "owner"];
 
-// Asks a user for yes or no
-export async function askYesNo(bot: HibikiClient, msg: Message) {
-  if (!msg.content) return;
+// Asks a user for yes or no response
+export async function askYesNo(bot: HibikiClient, string: LocaleString, member: string, channel: string) {
   let response: Promise<any> | Record<string, unknown>;
 
-  const no = msg.string("global.NO").toLowerCase();
-  const yes = msg.string("global.YES").toLowerCase();
+  const no = string("global.NO").toLowerCase();
+  const yes = string("global.YES").toLowerCase();
   const sameStartingChar = no[0] === yes[0];
 
   await waitFor(
@@ -36,8 +35,8 @@ export async function askYesNo(bot: HibikiClient, msg: Message) {
     15000,
     (m: Message) => {
       if (!m.content) return;
-      if (m.author.id !== msg.author.id) return;
-      if (m.channel?.id !== msg?.channel.id) return;
+      if (m.author.id !== member) return;
+      if (m.channel?.id !== channel) return;
 
       // If two locales start with the same y/n chars
       if (sameStartingChar) {
@@ -163,7 +162,7 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
   if (type === "disabledCategories") {
     if (!cmdCategories.length)
       bot.commands.forEach((cmd) => {
-        if (!cmdCategories.includes(cmd.category) && !categoryREMSEX.includes(cmd.category)) cmdCategories.push(cmd.category);
+        if (!cmdCategories.includes(cmd.category) && !blacklistedCategories.includes(cmd.category)) cmdCategories.push(cmd.category);
       });
     const cats = arg.split(/(?:\s{0,},\s{0,})|\s/).filter((cat: string) => cmdCategories.includes(cat));
     return cats.length ? cats : "No cats";

@@ -7,7 +7,7 @@
 import type { User } from "eris";
 import { auditLogRegex } from "../helpers/constants";
 
-/** Tags a user by username#discriminator */
+// Tags a user by username#discriminator
 export function tagUser(user: User, emojiFilter = false) {
   if (emojiFilter && user) {
     return `${auditLogRegex.exec(user.username) !== null ? auditLogRegex.exec(user.username)[0] : user.id}#${user.discriminator}`;
@@ -26,7 +26,7 @@ const logColors = {
   yellow: "\x1b[33m",
 };
 
-/** Formats a timestamp to a human-readable one */
+// Formats a timestamp to a human-readable one
 export function dateFormat(timestamp: Date | number, colors = false) {
   const date = new Date(timestamp);
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -37,7 +37,7 @@ export function dateFormat(timestamp: Date | number, colors = false) {
   return `${colors ? `${logColors.cyan}[` : ""}${month} ${day} ${year} ${time}${colors ? `]${logColors.reset}` : ""}`;
 }
 
-/** Formats seconds to a HH:MM:SS timestamp */
+// Formats seconds to a HH:MM:SS timestamp
 export function toHHMMSS(seconds: number) {
   let hours = Math.floor(seconds / 3600);
   let minutes = Math.floor((seconds - hours * 3600) / 60);
@@ -52,7 +52,7 @@ export function toHHMMSS(seconds: number) {
   return time;
 }
 
-/** Formats guild regions */
+// Formats guild regions
 export function regionFormat(region: string) {
   switch (region) {
     case "amsterdam":
@@ -100,7 +100,7 @@ export function regionFormat(region: string) {
   }
 }
 
-/** Formats uptime */
+// Formats uptime
 export function uptimeFormat(uptime: number) {
   const date = new Date(uptime * 1000);
   const days = date.getUTCDate() - 1;
@@ -287,13 +287,22 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
     case "disabledCategories":
       if (title) return string("general.CONFIG_DISABLEDCATEGORIES");
       return string("general.CONFIG_DISABLEDCATEGORIES_DESCRIPTION");
+    case "musicRole":
+      if (title) return string("general.CONFIG_MUSICROLE");
+      return string("general.CONFIG_MUSICROLE_DESCRIPTION");
+    case "musicChannel":
+      if (title) return string("general.CONFIG_MUSICCHANNEL");
+      return string("general.CONFIG_MUSICCHANNEL_DESCRIPTION");
+    case "onlyRequesterCanControl":
+      if (title) return string("general.CONFIG_ORCC");
+      return string("general.CONFIG_ORCC_DESCRIPTION");
     case undefined:
     default:
       return item;
   }
 }
 
-/** Formats guild verification level */
+// Formats guild verification level
 export function verificationLevelFormat(level: number) {
   switch (level) {
     case 0:
@@ -311,7 +320,7 @@ export function verificationLevelFormat(level: number) {
   }
 }
 
-/** Formats MFA/2FA level */
+// Formats MFA/2FA level
 export function mfaLevelFormat(level: number) {
   switch (level) {
     case 0:
@@ -323,7 +332,7 @@ export function mfaLevelFormat(level: number) {
   }
 }
 
-/** Formats notification settings */
+// Formats notification settings
 export function notificationLevelFormat(level: number) {
   switch (level) {
     case 0:
@@ -335,7 +344,7 @@ export function notificationLevelFormat(level: number) {
   }
 }
 
-/** Formats explicit content filter */
+// Formats explicit content filter
 export function contentFilterFormat(level: number) {
   switch (level) {
     case 0:
@@ -349,7 +358,7 @@ export function contentFilterFormat(level: number) {
   }
 }
 
-/** Formats AFK channel timeouts */
+// Formats AFK channel timeouts
 export function afkTimeoutFormat(level: number) {
   switch (level) {
     case 60:

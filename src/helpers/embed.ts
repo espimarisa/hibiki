@@ -7,7 +7,7 @@
 import type { Message } from "eris";
 import config from "../../config.json";
 
-/** Creates a new oneliner embed */
+// Creates a new oneliner embed
 export async function createEmbed(this: Message, title: string, desc?: string, colortype?: string) {
   if (this && !this.channel) return;
   let embedTitle;
@@ -45,7 +45,7 @@ export async function createEmbed(this: Message, title: string, desc?: string, c
   return this.channel.createMessage(embedConstruct);
 }
 
-/** Edits a oneliner embed */
+// Edits a oneliner embed
 export async function editEmbed(this: Message, title: string, desc?: string, colortype?: string) {
   if (!this) throw new Error("No message object was provided");
   if (this && !this.channel) return;
@@ -79,7 +79,7 @@ export async function editEmbed(this: Message, title: string, desc?: string, col
   return this.edit(embedConstruct);
 }
 
-/** Converts a hex color in the config to decimal */
+// Converts a hex color in the config
 export function convertHex(colortype: string) {
   return parseInt(config.colors[colortype].replace(/#/g, "0x"));
 }
