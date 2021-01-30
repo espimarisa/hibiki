@@ -3,7 +3,7 @@
  * @description Handles and executes commands
  */
 
-import type { Message, TextChannel } from "eris";
+import type { Message, TextChannel, User } from "eris";
 import { PrivateChannel } from "eris";
 import { Event } from "../classes/Event";
 import config from "../../config.json";
@@ -79,6 +79,31 @@ export class HandlerEvent extends Event {
       if (!uservoice || (botvoice && uservoice !== botvoice)) {
         msg.createEmbed(string("global.ERROR"), string("global.ERROR_VOICE", { command: command.name }), "error");
         return;
+      }
+
+      // Checks to see if a member has specific roles
+      const isStaff =
+        msg.member?.permissions.has("administrator") || (guildconfig?.staffRole && msg.member?.roles.includes(guildconfig.staffRole));
+      const hasMusicRole = guildconfig?.musicRole && msg.member?.roles.includes(guildconfig.musicRole);
+
+      // If the guild has musicRole set and the user doesn't have proper roles
+      if (!hasMusicRole || (!hasMusicRole && !isStaff)) {
+        return msg.createEmbed(string("global.ERROR"), string("global.ERROR_MUSICROLE"), "error");
+      }
+
+      // If the musicChannel is set and my brain is dying rn
+      if (guildconfig?.musicChannel && uservoice !== guildconfig?.musicChannel) {
+        msg.createEmbed(string("global.ERROR"), string("global.ERROR_MUSICCHANNEL"), "error");
+        return;
+      }
+
+      // If onlyRQCC is set and the author isn't the same as the requester
+      if (guildconfig?.onlyRequesterCanControl && this.bot.lavalink.manager.players.get(msg.channel.guild.id)) {
+        const requester = this.bot.lavalink.manager.players.get(msg.channel.guild.id)?.queue?.current?.requester as User;
+
+        if ((!isStaff || !hasMusicRole) && requester.id !== msg.author.id) {
+          return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ERROR_MUSICREQUESTER"));
+        }
       }
     }
 
