@@ -35,8 +35,8 @@ export class GDPRCommand extends Command {
       const tables = {
         guildconfig: await this.bot.db.getGuildConfig(msg.channel.guild.id),
         mutecache: await this.bot.db.getGuildMuteCache(msg.channel.guild.id),
-        points: await this.bot.db.getGuildPoints(msg.channel.guild.id),
-        warnings: await this.bot.db.getGuildWarnings(msg.channel.guild.id),
+        points: await this.bot.db.getAllGuildPoints(msg.channel.guild.id),
+        warnings: await this.bot.db.getAllGuildWarnings(msg.channel.guild.id),
       };
 
       // Removes junk
@@ -83,10 +83,10 @@ export class GDPRCommand extends Command {
       economy: await this.bot.db.getUserCookies(msg.author.id),
       marriages: await this.bot.db.getUserMarriage(msg.author.id),
       mutecache: await this.bot.db.getUserMuteCache(msg.author.id),
-      points: await this.bot.db.getUserPoints(msg.author.id),
-      reminders: await this.bot.db.getUserReminders(msg.author.id),
-      monitoring: await this.bot.db.getUserMonitoring(msg.author.id),
-      warnings: await this.bot.db.getUserWarnings(msg.author.id),
+      points: await this.bot.db.getAllUserPoints(msg.author.id),
+      reminders: await this.bot.db.getAllUserReminders(msg.author.id),
+      monitoring: await this.bot.db.getAllUserMonitoring(msg.author.id),
+      warnings: await this.bot.db.getAllUserWarnings(msg.author.id),
     };
 
     // Removes junk

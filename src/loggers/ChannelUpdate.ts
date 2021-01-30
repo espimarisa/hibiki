@@ -8,12 +8,15 @@ import type { EmbedOptions, TextChannel, VoiceChannel } from "eris";
 import { convertHex } from "../helpers/embed";
 import { Logger } from "../classes/Logger";
 import { dateFormat } from "../utils/format";
+import config from "../../config.json";
 const TYPE = "eventLogging";
 
 export class ChannelUpdate extends Logger {
   events = ["channelCreate", "channelDelete", "channelUpdate"];
 
   async run(event: string, channel: TextChannel, oldchannel: TextChannel) {
+    if (!channel) return;
+
     /**
      * Logs channel creations
      */
@@ -21,26 +24,28 @@ export class ChannelUpdate extends Logger {
     if (event === "channelCreate") {
       const loggingChannel = await this.getChannel(channel.guild, TYPE, event);
       if (!loggingChannel) return;
+      const guildconfig = await this.bot.db.getGuildConfig(channel.guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       const embed = {
         color: convertHex("general"),
         author: {
           icon_url: this.bot.user.dynamicAvatarURL(),
-          name: `The ${channel.name} channel was created.`,
+          name: string("logger.CHANNEL_CREATED", { channel: channel.name }),
         },
         fields: [
           {
-            name: "Name",
+            name: string("global.NAME"),
             value: channel.name,
             inline: false,
           },
           {
-            name: "ID",
+            name: string("global.ID"),
             value: channel.id,
             inline: true,
           },
           {
-            name: "Created",
+            name: string("global.CREATED"),
             value: `${dateFormat(channel.createdAt)}`,
             inline: true,
           },
@@ -55,7 +60,7 @@ export class ChannelUpdate extends Logger {
 
         // Adds log info to the embed
         if (log && new Date().getTime() - new Date(parseInt(log.id) / 4194304 + 1420070400000).getTime() < 3000) {
-          embed.author.name = `${this.tagUser(user)} created a channel.`;
+          embed.author.name = string("logger.CHANNEL_CREATEDBY", { user: this.tagUser(user) });
           embed.author.icon_url = user?.dynamicAvatarURL();
         }
       }
@@ -70,27 +75,29 @@ export class ChannelUpdate extends Logger {
     if (event === "channelDelete") {
       const loggingChannel = await this.getChannel(channel.guild, TYPE, event);
       if (!loggingChannel) return;
+      const guildconfig = await this.bot.db.getGuildConfig(channel.guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       const embed = {
         color: convertHex("error"),
         author: {
           icon_url: this.bot.user.dynamicAvatarURL(),
-          name: `The ${channel.name} channel was deleted.`,
+          name: string("logger.CHANNEL_DELETED", { channel: channel.name }),
         },
         fields: [
           {
-            name: "Name",
-            value: `${channel.name || "Unknown"}`,
+            name: string("global.NAME"),
+            value: `${channel.name || string("global.UNKNOWN")}`,
             inline: false,
           },
           {
-            name: "ID",
+            name: string("global.ID"),
             value: channel.id,
             inline: true,
           },
           {
-            name: "Created",
-            value: `${dateFormat(channel.createdAt) || "Unknown"}`,
+            name: string("global.CREATED"),
+            value: `${dateFormat(channel.createdAt) || string("global.UNKNOWN")}`,
             inline: true,
           },
         ],
@@ -104,7 +111,7 @@ export class ChannelUpdate extends Logger {
 
         // Adds log info to the embed
         if (log && new Date().getTime() - new Date(parseInt(log.id) / 4194304 + 1420070400000).getTime() < 3000) {
-          embed.author.name = `${this.tagUser(user)} deleted a channel.`;
+          embed.author.name = string("logger.CHANNEL_DELETEDBY", { user: this.tagUser(user) });
           embed.author.icon_url = user?.dynamicAvatarURL();
         }
       }
@@ -118,22 +125,25 @@ export class ChannelUpdate extends Logger {
 
     if (event === "channelUpdate") {
       // Gets the logging channel
+      if (!oldchannel) return;
       const loggingChannel = await this.getChannel(channel.guild, TYPE, event);
       if (!loggingChannel) return;
+      const guildconfig = await this.bot.db.getGuildConfig(channel.guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       const embed = {
         color: convertHex("general"),
         fields: [],
         author: {
           icon_url: this.bot.user.dynamicAvatarURL(),
-          name: `#${oldchannel.name} edited`,
+          name: string("logger.CHANNEL_EDITED", { channel: oldchannel.name }),
         },
       } as EmbedOptions;
 
       // Channel name differences
       if (channel.name !== oldchannel.name) {
         embed.fields.push({
-          name: "Name",
+          name: string("global.NAME"),
           value: `${oldchannel.name || "No name"} ➜ ${channel.name || "No name"}`,
         });
       }
@@ -141,7 +151,7 @@ export class ChannelUpdate extends Logger {
       // Topic differences
       if (channel.topic !== oldchannel.topic) {
         embed.fields.push({
-          name: "Topic",
+          name: string("global.TOPIC"),
           value: `${oldchannel.topic || "No topic"} ➜ ${channel.topic || "No topic"}`,
         });
       }
@@ -149,15 +159,17 @@ export class ChannelUpdate extends Logger {
       // NSFW differences
       if (channel.nsfw !== oldchannel.nsfw) {
         embed.fields.push({
-          name: "NSFW",
-          value: `${channel.nsfw ? "Enabled" : "Disabled"} ➜ ${oldchannel.nsfw ? "Enabled" : "Disabled"}`,
+          name: string("global.NSFW"),
+          value: `${channel.nsfw ? string("logger.ENABLED") : string("logger.DISABLED")} ➜ ${
+            oldchannel.nsfw ? string("logger.ENABLED") : string("logger.DISABLED")
+          }`,
         });
       }
 
       // Bitrate differences
       if (((channel as unknown) as VoiceChannel)?.bitrate !== ((oldchannel as unknown) as VoiceChannel)?.bitrate) {
         embed.fields.push({
-          name: "Bitrate",
+          name: string("global.BITRATE"),
           value: `${((oldchannel as unknown) as VoiceChannel)?.bitrate} ➜ ${((channel as unknown) as VoiceChannel)?.bitrate}`,
         });
       }
@@ -165,10 +177,10 @@ export class ChannelUpdate extends Logger {
       // Slowmode differences
       if (channel.rateLimitPerUser !== oldchannel.rateLimitPerUser) {
         embed.fields.push({
-          name: "Slowmode",
-          value: `${oldchannel.rateLimitPerUser === 0 ? "No cooldown" : `${oldchannel.rateLimitPerUser} seconds`} ➜ ${
-            channel.rateLimitPerUser === 0 ? "No cooldown" : `${channel.rateLimitPerUser} seconds`
-          }`,
+          name: string("global.SLOWMODE"),
+          value: `${
+            oldchannel.rateLimitPerUser === 0 ? string("global.NONE") : `${oldchannel.rateLimitPerUser} ${string("global.SECONDS")}`
+          } ➜ ${channel.rateLimitPerUser === 0 ? string("global.NONE") : `${channel.rateLimitPerUser} ${string("global.SECONDS")}`}`,
         });
       }
 
@@ -181,7 +193,7 @@ export class ChannelUpdate extends Logger {
         const user = logs?.users?.[0];
 
         if (log && new Date().getTime() - new Date(parseInt(log.id) / 4194304 + 1420070400000).getTime() < 3000) {
-          embed.author.name = `${this.tagUser(user)} edited #${oldchannel.name}.`;
+          embed.author.name = string("logger.CHANNEL_EDITEDBY", { user: this.tagUser(user), channel: oldchannel.name });
           embed.author.icon_url = user?.dynamicAvatarURL();
         }
       }

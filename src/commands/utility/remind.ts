@@ -14,7 +14,7 @@ export class RemindCommand extends Command {
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Reminder list functionality
     if (!args[0] || args?.[0]?.toLowerCase() === "list") {
-      const reminders = await this.bot.db.getUserReminders(msg.author.id);
+      const reminders = await this.bot.db.getAllUserReminders(msg.author.id);
       if (!reminders?.length) return msg.createEmbed(`⏰ ${msg.string("utility.REMINDERS")}`, msg.string("utility.REMINDERS_NONE"));
 
       return msg.channel.createMessage({
@@ -38,7 +38,7 @@ export class RemindCommand extends Command {
       if (!args?.[1]?.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ERROR_INVALIDID"), "error");
 
       // Deletes the reminder
-      const reminder = await this.bot.db.deleteUserReminder(args[1], msg.author.id);
+      const reminder = await this.bot.db.deleteUserReminder(msg.author.id, args[1]);
       if (!reminder.deleted) return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.REMINDER_NOTFOUND"), "error");
       const foundReminder = this.bot.reminderHandler.reminders.find((reminder) => reminder.id === args[1]);
       this.bot.reminderHandler.reminders.splice(this.bot.reminderHandler.reminders.indexOf(foundReminder), 1);

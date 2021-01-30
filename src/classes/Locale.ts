@@ -9,8 +9,6 @@ import config from "../../config.json";
 
 export class LocaleSystem {
   locales: Record<string, string>;
-
-  /** Creates a new locale system */
   constructor(path: string) {
     this.locales = {};
     if (path) this.updateLocales(path);
@@ -34,7 +32,7 @@ export class LocaleSystem {
     });
   }
 
-  /** Returns a string from a specific locale */
+  // Returns a string from a specific locale
   getLocale(language: string, fieldName: string, args?: { [x: string]: any } | undefined) {
     // Gets the string category
     const category = fieldName.split(".");
@@ -44,7 +42,7 @@ export class LocaleSystem {
     if (!output) output = this._findLocaleString(config.defaultLocale ? config.defaultLocale : "en", fieldName, category);
 
     // Sends an error if the string doesn't exist
-    if (!output) throw new Error(`${fieldName} is missing in the string table for ${language}`);
+    if (!output) throw new Error(`${fieldName} is missing in the string table for ${language || config.defaultLocale}`);
 
     // Passes arguments to the string
     if (args) {
@@ -59,6 +57,7 @@ export class LocaleSystem {
         if (optional) output = output.replace(optional[1], args[arg] ? optional[2] : "");
         output = output.replace(argumentRegex, args[arg]);
 
+        // Handles plurals
         const plurals = pluralRegex.exec(output);
 
         // Sends the output with the correct grammar
@@ -73,24 +72,24 @@ export class LocaleSystem {
       });
     }
 
+    // Handles optional input
     const optionalRegex = new RegExp(`({optional:.+:(.+)})`);
     const optional = optionalRegex.exec(output);
     if (optional) output = output.replace(optional[1], "");
     return output;
   }
 
-  /** Runs the function to return a locale string */
+  // Runs the function to return a locale string
   getLocaleFunction(language: string): LocaleString {
     return (fieldName: string, args?: Record<string, unknown>) => this.getLocale(language, fieldName, args);
   }
 
-  /** Returns what locale a user uses */
+  // Returns what locale a user uses
   async getUserLocale(user: string, bot: HibikiClient, handler = false) {
     let locale = "";
     const userConfig = await bot.db.getUserConfig(user);
     if (userConfig?.locale) locale = userConfig.locale;
     else if (!userConfig?.locale && handler === false) locale = config.defaultLocale ? config.defaultLocale : "en";
-    // k just added a param to handle our woes
     return locale;
   }
 

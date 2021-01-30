@@ -45,7 +45,7 @@ export class ReminderHandler {
               .catch(() => {});
 
             // Deletes the reminder
-            bot.db.deleteUserReminder(reminder.id, reminder.user);
+            bot.db.deleteUserReminder(reminder.user, reminder.id);
             this.reminders.splice(i);
           }
         });
