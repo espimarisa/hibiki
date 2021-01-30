@@ -146,7 +146,9 @@ export class SetupCommand extends Command {
           if (emoji.name === deleteEmoji) {
             omsg.editEmbed(`❓ ${msg.string("global.CONFIRMATION")}`, msg.string("general.CONFIG_DELETE_CONFIRMATION"));
             // Waits for response
-            const { response } = await askYesNo(bot, msg).catch((err) => timeoutHandler(err, omsg, msg.string));
+            const { response } = await askYesNo(bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
+              timeoutHandler(err, msg, msg.string),
+            );
             if (typeof response != "boolean") return;
 
             // If the user cancels deleting

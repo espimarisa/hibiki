@@ -41,7 +41,7 @@ app.use(
   }),
 );
 
-/** Starts the dashboard */
+// Starts the dashboard
 export async function startDashboard(bot: HibikiClient) {
   if (!config.dashboard.port || !config.dashboard.cookieSecret || !config.dashboard.redirectURI || !config.dashboard.botSecret) return;
 

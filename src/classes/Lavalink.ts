@@ -22,7 +22,7 @@ export class Lavalink {
   manager: Manager;
   eventHandler: (m: Member, channel: VoiceChannel, oldchannel: VoiceChannel) => void;
 
-  /** Creates a new Lavalink manager */
+  // Creates a new lavalink manager
   constructor(bot: HibikiClient) {
     this.manager = new Manager({
       plugins: plugins,
@@ -37,7 +37,7 @@ export class Lavalink {
         },
       ],
 
-      /** Sends payload data to a guild */
+      // Sends payload data to a guild
       send(id, payload) {
         const guild = bot.guilds.get(id);
         if (guild) guild.shard.sendWS(payload.op, payload.d);

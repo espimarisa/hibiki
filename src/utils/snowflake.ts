@@ -4,7 +4,7 @@
  * @module utils/snowflake
  */
 
-/** Generates a snowflake */
+// Generates a snowflake ID
 export function generateSnowflake() {
   return Math.round(Date.now() / 15).toString(36);
 }

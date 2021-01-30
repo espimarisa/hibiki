@@ -40,7 +40,7 @@ export function waitFor(event: string, timeout: number, check: any, bot: HibikiC
   });
 }
 
-/** Handles timeout errors */
+// Handles timeout errors
 export function timeoutHandler(err: string, omsg: Message, stringFunc: LocaleString, removeReactions = true) {
   if (err === "timeout") {
     omsg

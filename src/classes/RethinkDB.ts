@@ -8,7 +8,7 @@ import { setupRethink } from "../scripts/setup";
 import { logger } from "../utils/logger";
 import config from "../../config.json";
 
-/** Starts RethinkDB */
+// Starts RethinkDB
 export function startRethink() {
   return r.connectPool({
     db: config.database.db || undefined,
@@ -20,7 +20,6 @@ export function startRethink() {
   });
 }
 
-// Starts RethinkDB and catches any errors
 startRethink()
   .catch((err) => {
     logger.error(`RethinkDB failed to start. Be sure the config file is setup properly and that it's running. Exiting. (error: ${err})`);
@@ -97,25 +96,25 @@ export class RethinkProvider {
   }
 
   /**
-   * Punishment functions
+   * Warning functions
    */
 
-  // Gets user mute cache
-  async getUserMuteCache(member: string) {
+  // Gets guild warnings
+  async getAllGuildWarnings(guild: string) {
     await this.dblock;
-    return this.db.table("mutecache").filter({ member: member }).run() as Promise<MuteCache>;
+    return this.db.table("warnings").filter({ guild: guild }).run() as Promise<UserWarning[]>;
   }
 
-  // Gets guild muteCache
-  async getGuildMuteCache(guild: string) {
+  // Gets a warning
+  async getUserWarning(warning: string) {
     await this.dblock;
-    return this.db.table("mutecache").filter({ guild: guild }).run() as Promise<MuteCache>;
+    return this.db.table("warnings").get(warning).run() as Promise<UserWarning>;
   }
 
-  // Inserts a muteCache
-  async insertMuteCache(config: MuteCache) {
+  // Gets user's warnings
+  async getAllUserWarnings(user: string) {
     await this.dblock;
-    return this.db.table("mutecache").insert(config).run();
+    return this.db.table("warnings").filter({ receiver: user }).run() as Promise<UserWarning[]>;
   }
 
   // Inserts a user warning
@@ -124,30 +123,38 @@ export class RethinkProvider {
     return this.db.table("warnings").insert(warning).run();
   }
 
-  // Gets guild warnings
-  async getGuildWarnings(guild: string) {
+  // Deletes a user warning
+  async deleteUserWarning(user: string, warning: string) {
     await this.dblock;
-    return this.db.table("warnings").filter({ guild: guild }).run() as Promise<UserWarning>;
-  }
-
-  // Gets user's warnings
-  async getUserWarnings(user: string) {
-    await this.dblock;
-    return this.db.table("warnings").filter({ receiver: user }).run();
+    return this.db.table("warnings").filter({ receiver: user, warning: warning }).delete().run();
   }
 
   /**
    * Point functions
    */
 
-  async getGuildPoints(guild: string) {
+  // Gets all points from a guild
+  async getAllGuildPoints(guild: string) {
     await this.dblock;
-    return this.db.table("points").filter({ guild: guild }).run();
+    return this.db.table("points").filter({ guild: guild }).run() as Promise<UserPoint[]>;
   }
 
-  async getUserPoints(user: string) {
+  // Gets all points from a user
+  async getAllUserPoints(user: string) {
     await this.dblock;
-    return this.db.table("points").filter({ receiver: user }).run();
+    return this.db.table("points").filter({ receiver: user }).run() as Promise<UserPoint[]>;
+  }
+
+  // Inserts a user warning
+  async insertUserPoint(point: UserPoint) {
+    await this.dblock;
+    return this.db.table("points").insert(point).run();
+  }
+
+  // Deletes a user warning
+  async deleteUserPoint(point: UserPoint) {
+    await this.dblock;
+    return this.db.table("points").get(point).delete().run();
   }
 
   /**
@@ -173,6 +180,112 @@ export class RethinkProvider {
   }
 
   /**
+   * Reminder functions
+   */
+
+  // Gets all reminders
+  async getAllReminders() {
+    await this.dblock;
+    return this.db.table("reminders").run();
+  }
+
+  // Gets a user's reminders
+  async getAllUserReminders(user: string) {
+    await this.dblock;
+    return this.db.table("reminders").filter({ user: user }).run() as Promise<Reminder[]>;
+  }
+
+  // Creates a reminder
+  async insertUserReminder(reminder: Reminder) {
+    await this.dblock;
+    return this.db.table("reminders").insert(reminder).run();
+  }
+
+  // Deletes a user's reminder
+  async deleteUserReminder(user: string, reminder: string) {
+    await this.dblock;
+    return this.db.table("reminders").filter({ id: reminder, user: user }).delete().run();
+  }
+
+  /**
+   * Marriage functions
+   */
+
+  // Gets full marriage state
+  async getMarriageState(user: string, member: string) {
+    await this.dblock;
+    return this.db.table("marriages").getAll(user, member, { index: "marriages" }).run() as Promise<UserMarriage[]>;
+  }
+
+  // Gets a single user's marriage state
+  async getUserMarriage(user: string) {
+    await this.dblock;
+    return this.db.table("marriages").getAll(user, { index: "marriages" }).run() as Promise<UserMarriage[]>;
+  }
+
+  // Inserts a marriage
+  async insertUserMarriage(user: string, member: string) {
+    await this.dblock;
+    return this.db.table("marriages").insert({ id: user, spouse: member }).run();
+  }
+
+  // Deletes a marriage
+  async deleteUserMarriage(user: string) {
+    await this.dblock;
+    return this.db.table("marriages").get(user).delete().run();
+  }
+
+  /**
+   * Monitoring functions
+   */
+
+  // Gets all monitored accounts from a user
+  async getAllUserMonitoring(user: string) {
+    await this.dblock;
+    return this.db.table("monitoring").filter({ user: user }).run() as Promise<SteamMonitor[]>;
+  }
+
+  // Gets a monitor
+  async getUserMonitoring(user: string, id: string) {
+    await this.dblock;
+    return this.db.table("monitoring").filter({ user: user, id: id }).run() as Promise<SteamMonitor>;
+  }
+
+  // Deletes a monitor
+  async deleteUserMonitoring(user: string, id: string) {
+    await this.dblock;
+    return this.db.table("monitoring").filter({ id: id, user: user }).delete().run();
+  }
+
+  // Inserts a monitor
+  async insertUserMonitoring(user: string, data: SteamMonitor) {
+    await this.dblock;
+    return this.db.table("monitoring").insert({ user: user, data }).run();
+  }
+
+  /**
+   * Mute cache functions
+   */
+
+  // Gets all muteCache data from a guild
+  async getGuildMuteCache(guild: string) {
+    await this.dblock;
+    return this.db.table("mutecache").filter({ guild: guild }).run() as Promise<MuteCache>;
+  }
+
+  // Gets mutecache data that includes a user
+  async getUserMuteCache(user: string) {
+    await this.dblock;
+    return this.db.table("mutecache").filter({ member: user }).run() as Promise<MuteCache>;
+  }
+
+  // Inserts muteCache
+  async insertMuteCache(config: MuteCache) {
+    await this.dblock;
+    return this.db.table("mutecache").insert(config).run();
+  }
+
+  /**
    * Blacklist functions
    */
 
@@ -195,61 +308,14 @@ export class RethinkProvider {
   }
 
   // Inserts a blacklisted item
-  async insertBlacklistedItem(id: BlacklistInfo) {
+  async insertBlacklistedItem(item: BlacklistInfo) {
     await this.dblock;
-    return this.db.table("blacklist").insert(id).run();
+    return this.db.table("blacklist").insert(item).run();
   }
 
   // Deletes a blacklisted item
   async deleteBlacklistedItem(item: string) {
     await this.dblock;
     return this.db.table("blacklist").get(item).delete().run();
-  }
-
-  /**
-   * Reminder functions
-   */
-
-  // Gets all reminders
-  async getAllReminders() {
-    await this.dblock;
-    return this.db.table("reminders").run();
-  }
-
-  // Gets a user's reminders
-  async getUserReminders(user: string) {
-    await this.dblock;
-    return (this.db.table("reminders").filter({ user: user }).run() as unknown) as Array<Reminder>;
-  }
-
-  // Creates a reminder
-  async insertUserReminder(reminder: Reminder) {
-    await this.dblock;
-    return this.db.table("reminders").insert(reminder).run();
-  }
-
-  // Deletes a user's reminder
-  async deleteUserReminder(reminder: string, user: string) {
-    await this.dblock;
-    return this.db.table("reminders").filter({ id: reminder, user: user }).delete().run();
-  }
-
-  /**
-   * Marriage functions
-   */
-
-  async getUserMarriage(user: string) {
-    await this.dblock;
-    // no fucking clue but this should work!
-    await this.db.table("marriages").getAll(user, { index: "marriages" }).run();
-  }
-
-  /**
-   * Monitoring functions
-   */
-
-  async getUserMonitoring(user: string) {
-    await this.dblock;
-    return this.db.table("monitoring").filter({ user: user }).run();
   }
 }

@@ -97,12 +97,14 @@ export class ProfileCommand extends Command {
         if (emoji.name === deleteEmoji) {
           omsg.editEmbed(`❓ ${msg.string("global.CONFIRMATION")}`, msg.string("general.PROFILE_DELETE_CONFIRMATION"));
           // Waits for response
-          const { response } = await askYesNo(this.bot, msg).catch((err) => timeoutHandler(err, omsg, msg.string));
+          const { response } = await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
+            timeoutHandler(err, msg, msg.string),
+          );
           if (typeof response != "boolean") return;
 
           // If the user cancels deleting
           if (response === false) {
-            return omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.PROFILE_CANCEWLLED_DELETE"), "error");
+            return omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.PROFILE_CANCELLED_DELETE"), "error");
           }
 
           // Deletes the config and the askYesNo message

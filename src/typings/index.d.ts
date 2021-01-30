@@ -4,66 +4,75 @@
  * @typedef index
  */
 
+// LocalString function
 interface LocaleString {
   (string: string, args?: Record<string, unknown> | undefined): string;
 }
 
+// Parsed arguments
 interface ParsedArgs {
-  name: string;
-  type: string;
   flag: string | undefined;
+  name: string;
   optional: boolean;
+  type: string;
   value?: any;
 }
 
+// Fixed Eris messageReactions typing
 interface MessageReactions {
   [s: string]: unknown;
   count: number;
   me: boolean;
 }
 
+// Bot log data
 interface BotLogs {
-  cmdName: string;
-  authorID: string;
-  guildID: string;
   args: string[];
+  authorID: string;
+  cmdName: string;
   date: number;
+  guildID: string;
 }
 
+// Antispam data
 interface AntiSpam {
-  date: number;
-  id: string;
-  guild: string;
   content: string;
+  date: number;
+  guild: string;
+  id: string;
   msgid: string;
 }
 
+// Item in validItems.ts
 interface ValidItem {
   category?: string;
-  name?: string;
-  label?: string;
-  type?: string;
+  default?: boolean | string | number;
   emoji?: string;
   id?: string;
-  minimum?: number;
-  maximum?: number;
   inviteFilter?: boolean;
-  default?: boolean | string | number;
+  label?: string;
+  maximum?: number;
+  minimum?: number;
+  name?: string;
+  type?: string;
 }
 
+// Valid item category
 interface ValidItemsCategory {
-  name: string;
   emoji: string;
-  items: string[];
   id?: string;
+  items: string[];
+  name: string;
 }
 
+// Bulmaselect options
 interface Bulmaselect {
+  children?: Record<string, string>[];
   label?: string;
   type?: string;
-  children?: Record<string, string>[];
 }
 
+// Argument types
 interface ArgTypes {
   boolean: {
     (a: string, msg: Message, flag?: string): boolean;
