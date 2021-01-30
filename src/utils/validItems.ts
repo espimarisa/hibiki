@@ -143,12 +143,31 @@ export const validItems = [
 
   /**
    * Music options
-   * TODO: Add these
    */
+
+  {
+    category: "music",
+    id: "musicRole",
+    type: "roleID",
+    emoji: "🎧",
+  },
+  {
+    category: "music",
+    id: "musicChannel",
+    type: "voiceChannel",
+    emoji: "🎶",
+  },
+  {
+    category: "music",
+    id: "onlyRequesterCanControl",
+    type: "bool",
+    emoji: "🎛",
+  },
 
   /**
    * Pinboard options
    */
+
   {
     category: "pinboard",
     emoji: "📍",
