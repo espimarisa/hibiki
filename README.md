@@ -1,4 +1,5 @@
 [![Hibiki][hibiki-logo]][hibiki]
+
 [![Build][badge-workflow]][workflow]
 [![Crowdin][badge-crowdin]][translation]
 [![License][badge-license]][license]
