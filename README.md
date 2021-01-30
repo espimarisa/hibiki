@@ -1,5 +1,4 @@
 [![Hibiki][hibiki-logo]][hibiki]
-
 [![Build][badge-workflow]][workflow]
 [![Crowdin][badge-crowdin]][translation]
 [![License][badge-license]][license]
@@ -99,4 +98,4 @@ You can donate through [Ko-fi][donate] and all donations will go directly toward
 [badge-latest]: https://img.shields.io/github/package-json/v/smolespi/hibiki/next?color=red&label=latest "Shields.io badge for the latest Hibiki release."
 [badge-support]: https://img.shields.io/discord/620287077778587651?color=purple&label=support "Shields.io badge for the Discord support server information."
 [badge-website]: https://img.shields.io/website?down_color=critical&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fhibiki.app "Shields.io badge to indicate whether hibiki.app is online or not."
-[hibiki-logo]: https://user-images.githubusercontent.com/49253425/106350081-28480f80-62a1-11eb-90eb-53f53699b6d7.png "Hibiki's Logotype."
+[hibiki-logo]: https://user-images.githubusercontent.com/49253425/106350318-abb63080-62a2-11eb-821a-3752a77d0692.png "Hibiki's Logo."
