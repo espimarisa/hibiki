@@ -17,11 +17,12 @@ export class AutomodPunish extends Logger {
     /**
      * Logs when a member is muted by automod
      */
+    const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+    const channel = await this.getChannel(guild, TYPE, event, guildconfig);
+    if (!channel) return;
+
 
     if (event === "automodMemberMute") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
-      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
@@ -51,9 +52,6 @@ export class AutomodPunish extends Logger {
      */
 
     if (event === "automodAntiInvite") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
-      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
