@@ -32,6 +32,7 @@ interface GuildConfig {
   leaveMessage?: string;
   leaveTitle?: string;
   locale?: string;
+  logBotMessages?: boolean;
   loggingChannel?: string;
   massMentionThreshold?: number;
   memberLogging?: string;
@@ -68,6 +69,7 @@ interface UserConfig {
   pronouns?: string | number;
   timezone?: string;
   timezoneHide?: boolean;
+  gayLevel?: number;
 }
 
 // Mutecache data

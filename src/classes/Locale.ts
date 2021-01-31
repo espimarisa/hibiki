@@ -54,7 +54,7 @@ export class LocaleSystem {
 
         // Replaces optional strings with content
         const optional = optionalRegex.exec(output);
-        if (optional) output = output.replace(optional[1], args[arg] ? optional[2] : "");
+        if (optional) output = output.replace(optional[1], typeof args[arg] != "undefined" ? optional[2] : "");
         output = output.replace(argumentRegex, args[arg]);
 
         // Handles plurals

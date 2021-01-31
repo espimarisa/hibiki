@@ -8,6 +8,7 @@ import type { Message, TextChannel } from "eris";
 import { dateFormat } from "../utils/format";
 import { Logger } from "../classes/Logger";
 import { urlRegex } from "../helpers/constants";
+import config from "../../config.json";
 const TYPE = "messageLogging";
 
 export class MessageUpdate extends Logger {
@@ -18,10 +19,11 @@ export class MessageUpdate extends Logger {
     if (msg.author.id === this.bot.user.id) return;
     const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
     if (!guildconfig?.logBotMessages && msg.author.bot) return;
+    const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
     // Sets what message content to use
-    let messageContent = "No content";
-    let oldMessageContent = "No content";
+    let messageContent = string("global.NO_CONTENT");
+    let oldMessageContent = string("global.NO_CONTENT");
     if (msg.content) messageContent = msg.content;
     else if (msg.embeds && msg.embeds[0]) {
       if (msg.embeds[0].title !== null) messageContent = msg.embeds[0].title;
@@ -45,7 +47,6 @@ export class MessageUpdate extends Logger {
 
     if (event === "messageDelete") {
       if (!msg || !msg.author) return;
-
       const channel = await this.getChannel(msg.channel, TYPE, event, guildconfig);
       if (!channel) return;
 
@@ -62,27 +63,27 @@ export class MessageUpdate extends Logger {
         embed: {
           color: msg.convertHex("error"),
           author: {
-            name: `${this.tagUser(msg.author)}'s message was deleted.`,
+            name: string("logger.MESSAGE_DELETED", { member: this.tagUser(msg.author) }),
             icon_url: msg.author.dynamicAvatarURL(),
           },
           fields: [
             {
-              name: "Content",
+              name: string("global.CONTENT"),
               value: `\`\`\`${messageContent}\`\`\``,
               inline: false,
             },
             {
-              name: "Channel",
-              value: msg.channel.mention || "Unknown",
+              name: string("global.CHANNEL"),
+              value: msg.channel.mention || string("global.UNKNOWN"),
               inline: true,
             },
             {
-              name: "ID",
+              name: string("global.ID"),
               value: msg.id,
               inline: true,
             },
             {
-              name: "Sent On",
+              name: string("SENT_ON"),
               value: dateFormat(msg.timestamp),
               inline: false,
             },
@@ -99,40 +100,41 @@ export class MessageUpdate extends Logger {
      */
 
     if (event === "messageUpdate") {
+      const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
+      if (!guildconfig?.logBotMessages && msg.author.bot) return;
       const channel = await this.getChannel(msg.channel, TYPE, event, guildconfig);
-      if (!channel) return;
       if (messageContent === oldMessageContent) return;
 
       this.bot.createMessage(channel, {
         embed: {
           color: msg.convertHex("error"),
           author: {
-            name: `${this.tagUser(msg.author)}'s message was updated.`,
+            name: string("logger.MESSAGE_UPDATED", { member: this.tagUser(msg.author) }),
             icon_url: msg.author.dynamicAvatarURL(),
           },
           fields: [
             {
-              name: "Old Content",
+              name: string("global.OLD_CONTENT"),
               value: `\`\`\`${oldMessageContent}\`\`\``,
               inline: false,
             },
             {
-              name: "New Content",
+              name: string("global.NEW_CONTENT"),
               value: `\`\`\`${messageContent}\`\`\``,
               inline: false,
             },
             {
-              name: "Channel",
-              value: msg.channel.mention || "Unknown",
+              name: string("global.CHANNEL"),
+              value: msg.channel.mention || msg.string("global.UNKNOWN"),
               inline: true,
             },
             {
-              name: "Message",
-              value: `[Jump to](${msg.jumpLink})`,
+              name: string("global.MESSAGE"),
+              value: `[${string("global.JUMP_TO")}](${msg.jumpLink})`,
               inline: true,
             },
             {
-              name: "Sent On",
+              name: string("global.SENT_ON"),
               value: dateFormat(msg.timestamp),
               inline: false,
             },
