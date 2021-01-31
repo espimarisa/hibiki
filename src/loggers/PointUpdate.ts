@@ -7,6 +7,7 @@
 import type { Guild, User } from "eris";
 import { Logger } from "../classes/Logger";
 import { convertHex } from "../helpers/embed";
+import config from "../../config.json";
 const TYPE = "modLogging";
 
 export class PointUpdate extends Logger {
@@ -20,22 +21,24 @@ export class PointUpdate extends Logger {
     if (event === "reputationPointAdd") {
       const channel = await this.getChannel(guild, TYPE, event);
       if (!channel) return;
+      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
           color: convertHex("general"),
           author: {
-            name: `${this.tagUser(giver)} gave ${this.tagUser(member)} a reputation point.`,
+            name: string("logger.POINT_GIVEN", { giver: this.tagUser(giver), member: this.tagUser(member) }),
             icon_url: member.dynamicAvatarURL(),
           },
           fields: [
             {
-              name: "Reason",
+              name: string("global.REASON"),
               value: `${reason}`,
               inline: false,
             },
             {
-              name: "ID",
+              name: string("global.ID"),
               value: `${ids}`,
               inline: false,
             },
@@ -51,17 +54,19 @@ export class PointUpdate extends Logger {
     if (event === "reputationPointRemove") {
       const channel = await this.getChannel(guild, TYPE, event);
       if (!channel) return;
+      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
           color: convertHex("general"),
           author: {
-            name: `${this.tagUser(giver)} removed reputation points.`,
+            name: string("logger.POINT_REMOVED", { giver: this.tagUser(giver) }),
             icon_url: member.dynamicAvatarURL(),
           },
           fields: [
             {
-              name: "Point IDs",
+              name: string("logger.POINT_IDS"),
               value: ids.map((i) => `\`${i}\``).join(", "),
               inline: false,
             },

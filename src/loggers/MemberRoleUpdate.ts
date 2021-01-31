@@ -7,6 +7,7 @@
 import type { Guild, Role, User } from "eris";
 import { Logger } from "../classes/Logger";
 import { convertHex } from "../helpers/embed";
+import config from "../../config.json";
 const TYPE = "modLogging";
 
 export class MemberRoleUpdate extends Logger {
@@ -20,17 +21,19 @@ export class MemberRoleUpdate extends Logger {
     if (event === "memberVerify") {
       const channel = await this.getChannel(guild, TYPE, event);
       if (!channel) return;
+      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
           color: convertHex("general"),
           author: {
-            name: `${this.tagUser(giver)} verified ${this.tagUser(member)}`,
+            name: string("logger.MEMBER_VERIFIED", { user: this.tagUser(giver), member: this.tagUser(member) }),
             icon_url: member.dynamicAvatarURL(),
           },
           fields: [
             {
-              name: "Reason",
+              name: string("global.REASON"),
               value: `${reason}`,
               inline: false,
             },
@@ -46,17 +49,19 @@ export class MemberRoleUpdate extends Logger {
     if (event === "memberUnverify") {
       const channel = await this.getChannel(guild, TYPE, event);
       if (!channel) return;
+      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
           color: convertHex("error"),
           author: {
-            name: `${this.tagUser(giver)} unverified ${this.tagUser(member)}`,
+            name: string("logger.MEMBER_UNVERIFIED", { user: this.tagUser(giver), member: this.tagUser(member) }),
             icon_url: member.dynamicAvatarURL(),
           },
           fields: [
             {
-              name: "Reason",
+              name: string("global.REASON"),
               value: `${reason}`,
               inline: false,
             },
@@ -72,12 +77,14 @@ export class MemberRoleUpdate extends Logger {
     if (event === "roleAssign") {
       const channel = await this.getChannel(guild, TYPE, event);
       if (!channel) return;
+      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
           color: convertHex("general"),
           author: {
-            name: `${this.tagUser(member)} self-assigned the ${role.name} role.`,
+            name: string("logger.MEMBER_SELFASSIGNED", { user: this.tagUser(member), role: role.name }),
             icon_url: member.dynamicAvatarURL(),
           },
         },
@@ -91,12 +98,14 @@ export class MemberRoleUpdate extends Logger {
     if (event === "roleUnassign") {
       const channel = await this.getChannel(guild, TYPE, event);
       if (!channel) return;
+      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
           color: convertHex("general"),
           author: {
-            name: `${this.tagUser(member)} unassigned the ${role.name} role.`,
+            name: string("logger.MEMBER_UNASSIGNED", { user: this.tagUser(member), role: role.name }),
             icon_url: member.dynamicAvatarURL(),
           },
         },

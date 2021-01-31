@@ -13,10 +13,11 @@ const TYPE = "messageLogging";
 export class MessageUpdate extends Logger {
   events = ["messageUpdate", "messageDelete"];
 
-  // TODO: Add a guildconfig option for logging messages from bots. Set it to "off" by default.
   async run(event: string, msg: Message<TextChannel>, oldmsg: Message<TextChannel>) {
     if (!msg || !msg.author) return;
     if (msg.author.id === this.bot.user.id) return;
+    const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
+    if (!guildconfig?.logBotMessages && msg.author.bot) return;
 
     // Sets what message content to use
     let messageContent = "No content";
@@ -45,7 +46,7 @@ export class MessageUpdate extends Logger {
     if (event === "messageDelete") {
       if (!msg || !msg.author) return;
 
-      const channel = await this.getChannel(msg.channel, TYPE, event);
+      const channel = await this.getChannel(msg.channel, TYPE, event, guildconfig);
       if (!channel) return;
 
       let image;
@@ -98,7 +99,7 @@ export class MessageUpdate extends Logger {
      */
 
     if (event === "messageUpdate") {
-      const channel = await this.getChannel(msg.channel, TYPE, event);
+      const channel = await this.getChannel(msg.channel, TYPE, event, guildconfig);
       if (!channel) return;
       if (messageContent === oldMessageContent) return;
 
