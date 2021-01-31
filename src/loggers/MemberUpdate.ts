@@ -60,7 +60,7 @@ export class MemberUpdate extends Logger {
       }
 
       // Sets the greetingFooter
-      if (guildconfig?.greetingFooter?.length < 256) {
+      if (guildconfig?.greetingFooter?.length < 64) {
         greetingFooter = guildconfig.greetingFooter;
         greetingFooter = greetingFooter.replace("{member}", `${member.user.username}`);
         greetingFooter = greetingFooter.replace("{membercount}", `${guild.memberCount}`);
@@ -146,9 +146,9 @@ export class MemberUpdate extends Logger {
      */
 
     if (event === "loggingMemberAdd") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
       const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const channel = await this.getChannel(guild, TYPE, event, guildconfig);
+      if (!channel) return;
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
@@ -192,10 +192,9 @@ export class MemberUpdate extends Logger {
      */
 
     if (event === "loggingMemberRemove") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
-
       const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const channel = await this.getChannel(guild, TYPE, event, guildconfig);
+      if (!channel) return;
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {

@@ -20,10 +20,10 @@ export class GuildRoleUpdate extends Logger {
      */
 
     if (event === "guildRoleCreate") {
-      const loggingChannel = await this.getChannel(guild, TYPE, event);
-      if (!loggingChannel) return;
       if (role.managed) return;
       const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const loggingChannel = await this.getChannel(guild, TYPE, event, guildconfig);
+      if (!loggingChannel) return;
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       const embed = {
@@ -80,10 +80,10 @@ export class GuildRoleUpdate extends Logger {
      */
 
     if (event === "guildRoleDelete") {
-      const loggingChannel = await this.getChannel(guild, TYPE, event);
-      if (!loggingChannel) return;
       if (role.managed) return;
       const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const loggingChannel = await this.getChannel(guild, TYPE, event, guildconfig);
+      if (!loggingChannel) return;
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       const embed = {
@@ -140,9 +140,9 @@ export class GuildRoleUpdate extends Logger {
      */
 
     if (event === "guildRoleUpdate") {
-      const loggingChannel = await this.getChannel(guild, TYPE, event);
-      if (!loggingChannel) return;
       const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const loggingChannel = await this.getChannel(guild, TYPE, event, guildconfig);
+      if (!loggingChannel) return;
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       const embed = {
