@@ -9,7 +9,7 @@ import { Event } from "./Event";
 
 export abstract class Logger extends Event {
   // Gets the channel to try to send a log event to
-  async getChannel(channel: Guild | TextChannel, type: string, event: string) {
+  async getChannel(channel: Guild | TextChannel, type: string, event: string, cfg?: GuildConfig) {
     let guild: Guild;
 
     // Gets the type of logger and whether it's a guild or channel
@@ -18,7 +18,7 @@ export abstract class Logger extends Event {
     else guild = (channel as GuildChannel)?.guild;
     if (!guild) return;
 
-    const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+    const guildconfig = cfg || (await this.bot.db.getGuildConfig(guild.id));
     if (!guildconfig) return null;
 
     // Ignores channels set to be ignored

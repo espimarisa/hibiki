@@ -136,6 +136,9 @@ export function localizeProfileItems(string: LocaleString, item: string, title =
     case "locale":
       if (title) return string("global.LOCALE");
       return string("general.PROFILE_LOCALE_DESCRIPTION");
+    case "gayLevel":
+      if (title) return string("general.PROFILE_GAYLEVEL");
+      return string("general.PROFILE_GAYLEVEL_DESCRIPTION");
     case undefined:
     default:
       return item;
@@ -296,6 +299,9 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
     case "onlyRequesterCanControl":
       if (title) return string("general.CONFIG_ORCC");
       return string("general.CONFIG_ORCC_DESCRIPTION");
+    case "logBotMessages":
+      if (title) return string("general.CONFIG_LOGBOTMESSAGES");
+      return string("general.CONFIG_LOGBOTMESSAGES_DESCRIPTION");
     case undefined:
     default:
       return item;

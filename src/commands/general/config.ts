@@ -6,7 +6,6 @@ import { askForLocale, askForValue, askYesNo } from "../../utils/ask";
 import { validItems } from "../../utils/validItems";
 import { timeoutHandler, waitFor } from "../../utils/waitFor";
 
-// TODO: Maybe alphabetically sort stuff. At least categories.
 const categoryEmojis = {
   features: "✨",
   greeting: "👋",

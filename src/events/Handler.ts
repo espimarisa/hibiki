@@ -28,11 +28,12 @@ export class HandlerEvent extends Event {
     // Finds what prefix to use
     const mentionRegex = new RegExp(`<@!?${this.bot.user.id}> ?`);
     const mentionPrefix = mentionRegex.exec(msg.content);
-    const prefixes = config.prefixes.map((p: string) => msg.content.toLowerCase().startsWith(p)).indexOf(true);
-    if (mentionPrefix) prefix = mentionPrefix[0];
+    const prefixes = config.prefixes.map((p) => msg.content.toLowerCase().startsWith(p)).indexOf(true);
+    if (mentionPrefix && mentionPrefix.index === 0) prefix = mentionPrefix[0];
     else if (guildconfig && guildconfig.prefix && msg.content.toLowerCase().startsWith(guildconfig.prefix)) prefix = guildconfig.prefix;
     else if ((!guildconfig || !guildconfig.prefix) && config.prefixes && prefixes !== -1) prefix = config.prefixes[prefixes];
     if (!prefix) return;
+    msg.prefix = prefix;
 
     // Finds the command to run
     const [commandName, ...args] = msg.content.trim().slice(prefix.length).split(/ +/g);

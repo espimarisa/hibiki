@@ -1,4 +1,3 @@
-// TODO: MusicRole, musicChannel, and onlyRequesterCanControl. Add them to validItems.ts.
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { timeoutHandler, waitFor } from "../../utils/waitFor";
