@@ -54,6 +54,7 @@ export class ProfileCommand extends Command {
       if (item.type === "pronouns" && typeof userconfig[item.id] != "undefined") return pronouns[userconfig[item.id]];
       else if (item.type === "locale" && userconfig[item.id] && localeSystem?.getLocale)
         return localeSystem.getLocale(userconfig[item.id], "NAME");
+      else if (item.id === "gayLevel" && userconfig[item.id]) return `${userconfig[item.id]}%`;
       else if (userconfig[item.id]) return userconfig[item.id];
     }
 
@@ -66,6 +67,10 @@ export class ProfileCommand extends Command {
             name: `${item.emoji} ${localizeProfileItems(msg.string, item.id, true)}`,
             value: localizeLocale(item, localeSystem) || localizeProfileItems(msg.string, item.id),
           })),
+          footer: {
+            text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
         },
       };
 

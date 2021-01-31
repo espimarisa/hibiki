@@ -12,7 +12,8 @@ declare module "eris" {
     convertHex: typeof convertHex;
     createEmbed: typeof createEmbed;
     editEmbed: typeof editEmbed;
-    string: LocaleString;
+    prefix?: string;
+    string?: LocaleString;
     tagUser: typeof tagUser;
   }
 }
