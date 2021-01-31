@@ -140,6 +140,13 @@ export const validItems = [
     id: "ignoredLoggingChannels",
     type: "channelArray",
   },
+  {
+    category: "logging",
+    emoji: "🤖",
+    id: "logBotMessages",
+    type: "bool",
+    default: false,
+  },
 
   /**
    * Music options
@@ -413,5 +420,13 @@ export const validItems = [
     id: "timezoneHide",
     type: "bool",
     default: false,
+  },
+  {
+    emoji: "🏳️‍🌈",
+    category: "profile",
+    id: "gayLevel",
+    type: "number",
+    minimum: 0,
+    maximum: 100,
   },
 ] as ValidItem[];
