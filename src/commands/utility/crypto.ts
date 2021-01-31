@@ -11,7 +11,7 @@ let currencies: any = undefined;
 export class CryptoCommand extends Command {
   description = "Gets current cryptocurrency prices or converts between two coins.";
   args = "[coin:string] | [from:string] [to:string]";
-  aliases = ["btc", "bitcoin", "cryptocurrency", "eth", "ethereum", "stellar", "xlm"];
+  aliases = ["btc", "bitcoin", "cryptocurrency", "dogecoin", "eth", "ethereum", "ripple", "stellar", "xlm", "xrp"];
   cooldown = 3000;
   allowdms = true;
 
@@ -22,7 +22,7 @@ export class CryptoCommand extends Command {
     }
 
     // Gets the coins
-    const coin = pargs[0].value?.toLowerCase();
+    const coin = pargs[0].value?.toLowerCase() || this.aliases.find((alias) => msg.content.startsWith(`${msg.prefix}${alias}`));
     const to = pargs[1].value?.toLowerCase();
 
     // Request options
