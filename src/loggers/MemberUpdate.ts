@@ -9,6 +9,7 @@ import { convertHex } from "../helpers/embed";
 import { Logger } from "../classes/Logger";
 import { defaultAvatar } from "../helpers/constants";
 import { dateFormat } from "../utils/format";
+import config from "../../config.json";
 const TYPE = "memberLogging";
 
 export class MemberUpdate extends Logger {
@@ -27,18 +28,20 @@ export class MemberUpdate extends Logger {
 
       // Gets the leavejoin channel
       const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+
       const muted = (await this.bot.db.getGuildMuteCache(guild.id)) as MuteCache[];
       // Re-adds any muted roles if the member tried to evade mute
       const mute = muted.find((m: MuteCache) => m.member === member.id && m.guild === guild.id);
-      if (mute && guildconfig?.mutedRole) await member.addRole(guildconfig.mutedRole, "Rejoined after being muted").catch(() => {});
+      if (mute && guildconfig?.mutedRole) await member.addRole(guildconfig.mutedRole, string("JOINED_AFTER_MUTED")).catch(() => {});
       if (!guildconfig?.leaveJoin) return;
       const leavejoinchannel = guild.channels.find((c) => c.id === guildconfig?.leaveJoin) as TextChannel;
       if (!leavejoinchannel) return;
 
       // Default fields
-      let joinMessage = `Welcome to **${guild.name}, **${member.user.username}.`;
-      let joinTitle = "🎉 New Member";
-      let greetingFooter = `${guild.name} now has ${guild.memberCount} members.`;
+      let joinMessage = string("JOIN_MESSAGE", { guild: guild.name, member: member.user.username });
+      let joinTitle = `🎉 ${string("logger.NEW_MEMBER")}`;
+      let greetingFooter = string("MEMBER_COUNT", { guild: guild.name, members: guild.memberCount });
 
       // Sets the joinMessage
       if (guildconfig?.joinMessage?.length < 256) {
@@ -93,11 +96,12 @@ export class MemberUpdate extends Logger {
       if (!guildconfig?.leaveJoin) return;
       const leavejoinchannel = guild.channels.find((c) => c.id === guildconfig?.leaveJoin) as TextChannel;
       if (!leavejoinchannel) return;
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       // Sets default fields
-      let leaveMessage = `We'll miss you, ${member.user.username}.`;
-      let leaveTitle = "👋 Member Left";
-      let greetingFooter = `${guild.name} now has ${guild.memberCount} members.`;
+      let leaveMessage = string("logger.LEAVE_MESSAGE", { member: member.user.username });
+      let leaveTitle = `👋 ${string("logger.MEMBER_LEFT")} `;
+      let greetingFooter = string("MEMBER_COUNT", { guild: guild.name, members: guild.memberCount });
 
       // Sets the leaveMessage
       if (guildconfig?.leaveMessage?.length < 256) {
@@ -144,12 +148,14 @@ export class MemberUpdate extends Logger {
     if (event === "loggingMemberAdd") {
       const channel = await this.getChannel(guild, TYPE, event);
       if (!channel) return;
+      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
           color: convertHex("success"),
           author: {
-            name: `${this.tagUser(member.user)} joined`,
+            name: `${this.tagUser(member.user)} ${string("global.JOINED")}`,
             icon_url: member.user.dynamicAvatarURL(),
           },
           thumbnail: {
@@ -157,25 +163,25 @@ export class MemberUpdate extends Logger {
           },
           fields: [
             {
-              name: "ID",
+              name: string("global.ID"),
               value: member.id,
             },
             {
-              name: "Created",
+              name: string("global.CREATED"),
               value: dateFormat(member.user.createdAt),
             },
             {
-              name: "Joined At",
+              name: string("global.JOINED_ON"),
               value: dateFormat(member.joinedAt),
             },
             {
-              name: "Account Age",
-              value: `**${Math.floor((Date.now() - member.user.createdAt) / 86400000)}** days old`,
+              name: string("global.ACCOUNT_AGE"),
+              value: `**${Math.floor((Date.now() - member.user.createdAt) / 86400000)}** ${string("global.DAYS_OLD")}`,
             },
           ],
           footer: {
             icon_url: guild.iconURL || defaultAvatar,
-            text: `${guild.name} now has ${guild.memberCount} members.`,
+            text: string("MEMBER_COUNT", { guild: guild.name, members: guild.memberCount }),
           },
         },
       });
@@ -189,11 +195,14 @@ export class MemberUpdate extends Logger {
       const channel = await this.getChannel(guild, TYPE, event);
       if (!channel) return;
 
+      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+
       this.bot.createMessage(channel, {
         embed: {
           color: convertHex("error"),
           author: {
-            name: `${this.tagUser(member.user)} left`,
+            name: `${this.tagUser(member.user)} ${string("global.LEFT")}`,
             icon_url: member.user.dynamicAvatarURL(),
           },
           thumbnail: {
@@ -201,25 +210,25 @@ export class MemberUpdate extends Logger {
           },
           fields: [
             {
-              name: "ID",
+              name: string("global.ID"),
               value: member.id,
             },
             {
-              name: "Created",
+              name: string("global.CREATED_AT"),
               value: dateFormat(member.user.createdAt),
             },
             {
-              name: "Joined At",
+              name: string("global.JOINED_ON"),
               value: dateFormat(member.joinedAt),
             },
             {
-              name: "Account Age",
-              value: `**${Math.floor((Date.now() - member.user.createdAt) / 86400000)}** days old`,
+              name: string("global.ACCOUNT_AGE"),
+              value: `**${Math.floor((Date.now() - member.user.createdAt) / 86400000)}** ${string("global.DAYS_OLD")}`,
             },
           ],
           footer: {
             icon_url: guild.iconURL || defaultAvatar,
-            text: `${guild.name} now has ${guild.memberCount} members.`,
+            text: string("MEMBER_COUNT", { guild: guild.name, members: guild.memberCount }),
           },
         },
       });

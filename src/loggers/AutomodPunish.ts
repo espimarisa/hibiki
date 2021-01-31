@@ -7,6 +7,7 @@
 import type { Guild, Message, User } from "eris";
 import { Logger } from "../classes/Logger";
 import { convertHex } from "../helpers/embed";
+import config from "../../config.json";
 const TYPE = "modLogging";
 
 export class AutomodPunish extends Logger {
@@ -20,19 +21,23 @@ export class AutomodPunish extends Logger {
     if (event === "automodMemberMute") {
       const channel = await this.getChannel(guild, TYPE, event);
       if (!channel) return;
+      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
           color: convertHex("error"),
           author: {
-            name: `${this.tagUser(member)} was automatically muted by Automod.`,
+            name: string("logger.AUTOMOD_MUTED", { member: this.tagUser(member) }),
             icon_url: member.dynamicAvatarURL(),
           },
           fields: [
             {
-              name: "Cause of Mute",
+              name: string("logger.CAUSE_OF_MUTE"),
               value: `${
-                messages ? messages.map((m: Message) => `**${member.username}:** ${m.content.substring(0, 128)}`).join("\n") : "Auto punish"
+                messages
+                  ? messages.map((m: Message) => `**${member.username}:** ${m.content.substring(0, 128)}`).join("\n")
+                  : string("logger.AUTO_PUNISH")
               }`,
               inline: false,
             },
@@ -48,22 +53,25 @@ export class AutomodPunish extends Logger {
     if (event === "automodAntiInvite") {
       const channel = await this.getChannel(guild, TYPE, event);
       if (!channel) return;
+      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+
       this.bot.createMessage(channel, {
         embed: {
           color: convertHex("error"),
           author: {
-            name: `${this.tagUser(member)} sent an invite.`,
+            name: string("logger.AUTOMOD_INVITESENT", { member: this.tagUser(member) }),
             icon_url: member.dynamicAvatarURL(),
           },
           fields: [
             {
-              name: "Content",
-              value: messages.length > 100 ? `${messages.substring(0, 100)}..` : messages || "No content",
+              name: string("global.CONTENT"),
+              value: messages.length > 100 ? `${messages.substring(0, 100)}..` : messages || string("global.NO_CONTENT"),
               inline: false,
             },
             {
-              name: "Warning ID",
-              value: warning ? warning : "Not warned",
+              name: string("global.ID"),
+              value: warning ? warning : string("logger.NOT_WARNED"),
               inline: false,
             },
           ],

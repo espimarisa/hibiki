@@ -8,6 +8,7 @@ import type { EmbedOptions, Guild, Role } from "eris";
 import { convertHex } from "../helpers/embed";
 import { Logger } from "../classes/Logger";
 import { dateFormat } from "../utils/format";
+import config from "../../config.json";
 const TYPE = "eventLogging";
 
 export class GuildRoleUpdate extends Logger {
@@ -22,35 +23,37 @@ export class GuildRoleUpdate extends Logger {
       const loggingChannel = await this.getChannel(guild, TYPE, event);
       if (!loggingChannel) return;
       if (role.managed) return;
+      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       const embed = {
         color: convertHex("general"),
         author: {
           icon_url: this.bot.user.dynamicAvatarURL(),
-          name: `The ${role.name} role was created.`,
+          name: string("logger.ROLE_CREATED", { role: role.name }),
         },
         fields: [
           {
-            name: "Name",
-            value: `${role.name || "Unknown"}`,
+            name: string("global.NAME"),
+            value: `${role.name || string("global.UNKNOWN")}`,
             inline: false,
           },
           {
-            name: "ID",
+            name: string("global.ID"),
             value: role.id,
             inline: true,
           },
           {
-            name: "Created",
-            value: `${dateFormat(role.createdAt) || "Unknown"}`,
+            name: string("global.CREATED"),
+            value: `${dateFormat(role.createdAt) || string("global.UNKNOWN")}`,
             inline: true,
           },
           {
-            name: "Permissions",
+            name: string("global.PERMISSIONS"),
             value: `${
               Object.keys(role.json)
                 .map((p) => `\`${p}\``)
-                .join(" ") || "Unknown"
+                .join(" ") || string("global.UNKNOWN")
             }`,
           },
         ],
@@ -64,7 +67,7 @@ export class GuildRoleUpdate extends Logger {
 
         // Adds log info to the embed
         if (log && new Date().getTime() - new Date(parseInt(log.id) / 4194304 + 1420070400000).getTime() < 3000) {
-          embed.author.name = `${this.tagUser(user)} created a role.`;
+          embed.author.name = string("logger.ROLE_CREATEDBY", { user: this.tagUser(user) });
           embed.author.icon_url = user?.dynamicAvatarURL();
         }
       }
@@ -80,35 +83,37 @@ export class GuildRoleUpdate extends Logger {
       const loggingChannel = await this.getChannel(guild, TYPE, event);
       if (!loggingChannel) return;
       if (role.managed) return;
+      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       const embed = {
         color: convertHex("error"),
         author: {
           icon_url: this.bot.user.dynamicAvatarURL(),
-          name: `The ${role.name} role was deleted.`,
+          name: string("logger.ROLE_DELETED", { role: role.name }),
         },
         fields: [
           {
-            name: "Name",
-            value: `${role.name || "Unknown"}`,
+            name: string("global.NAME"),
+            value: `${role.name || string("global.UNKNOWN")}`,
             inline: false,
           },
           {
-            name: "ID",
+            name: string("global.ID"),
             value: role.id,
             inline: true,
           },
           {
-            name: "Created",
-            value: `${dateFormat(role.createdAt) || "Unknown"}`,
+            name: string("global.CREATED"),
+            value: `${dateFormat(role.createdAt) || string("global.UNKNOWN")}`,
             inline: true,
           },
           {
-            name: "Permissions",
+            name: string("global.PERMISSIONS"),
             value: `${
               Object.keys(role.json)
                 .map((p) => `\`${p}\``)
-                .join(" ") || "Unknown"
+                .join(" ") || string("global.UNKNOWN")
             }`,
           },
         ],
@@ -122,7 +127,7 @@ export class GuildRoleUpdate extends Logger {
 
         // Adds log info to the embed
         if (log && new Date().getTime() - new Date(parseInt(log.id) / 4194304 + 1420070400000).getTime() < 3000) {
-          embed.author.name = `${this.tagUser(user)} deleted a role.`;
+          embed.author.name = string("logger.ROLE_DELETEDBY", { user: this.tagUser(user) });
           embed.author.icon_url = user?.dynamicAvatarURL();
         }
       }
@@ -137,28 +142,30 @@ export class GuildRoleUpdate extends Logger {
     if (event === "guildRoleUpdate") {
       const loggingChannel = await this.getChannel(guild, TYPE, event);
       if (!loggingChannel) return;
+      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       const embed = {
         color: convertHex("general"),
         fields: [],
         author: {
           icon_url: this.bot.user.dynamicAvatarURL(),
-          name: `The ${oldrole.name} role was edited.`,
+          name: string("logger.ROLE_EDITED", { role: oldrole.name }),
         },
       } as EmbedOptions;
 
       // Name difference
       if (role.name !== oldrole.name) {
         embed.fields.push({
-          name: "Name",
-          value: `${oldrole.name || "No name"} ➜ ${role.name || "No name"}`,
+          name: string("global.NAME"),
+          value: `${oldrole.name || string("global.NONE")} ➜ ${role.name || string("global.NONE")}`,
         });
       }
 
       // Color difference
       if (role.color !== oldrole.color) {
         embed.fields.push({
-          name: "Color",
+          name: string("global.COLOR"),
           value: `${oldrole.color ? `${oldrole.color.toString(16)}` : "000000"} ➜ ${role.color ? `${role.color.toString(16)}` : "000000"}`,
         });
 
@@ -168,16 +175,20 @@ export class GuildRoleUpdate extends Logger {
       // Hoist difference
       if (role.hoist && oldrole.hoist && role.hoist !== oldrole.hoist) {
         embed.fields.push({
-          name: "Visibility",
-          value: role.hoist ? "Not Showing Separately ➜ Showing Separately" : "Showing Separately ➜ Not Showing Seperately",
+          name: string("logger.VISIBILITY"),
+          value: role.hoist
+            ? `${string("logger.NOT_SHOWING_SEPARATELY")} ➜ ${string("logger.SHOWING_SEPARATELY")}`
+            : `${string("logger.SHOWING_SEPARATELY")} ➜ ${string("logger.logger.NOT_SHOWING_SEPARATELY")}`,
         });
       }
 
       // Mentionability difference
       if (role.mentionable !== oldrole.mentionable) {
         embed.fields.push({
-          name: "Mentionability",
-          value: role.mentionable ? "Unmentionable ➜ Mentionable" : "Mentionable ➜ Unmentionable",
+          name: string("logger.MENTIONABILITY"),
+          value: role.mentionable
+            ? `${string("logger.UNMENTIONABLE")} ➜ ${string("logger.MENTIONABLE")}`
+            : `${string("logger.MENTIONABLE")} ➜ ${string("logger.UNMENTIONABLE")}`,
         });
       }
 
@@ -190,7 +201,7 @@ export class GuildRoleUpdate extends Logger {
 
         // Adds log info to the embed
         if (log && new Date().getTime() - new Date(parseInt(log.id) / 4194304 + 1420070400000).getTime() < 3000) {
-          embed.author.name = `${this.tagUser(user)} updated the ${role.name} role.`;
+          embed.author.name = string("logger.ROLE_EDITEDBY", { user: this.tagUser(user), role: oldrole.name });
           embed.author.icon_url = user.dynamicAvatarURL();
         }
       }
