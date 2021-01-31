@@ -8,6 +8,7 @@ import type { EmbedOptions, Emoji, Message, TextChannel } from "eris";
 import { Logger } from "../classes/Logger";
 import { urlRegex } from "../helpers/constants";
 import { dateFormat } from "../utils/format";
+import config from "../../config.json";
 const TYPE = "pinChannel";
 
 export class MessagePinboard extends Logger {
@@ -37,6 +38,7 @@ export class MessagePinboard extends Logger {
       let pinboardEmbed;
       const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
       if (!guildconfig) return;
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       // Gets the pin emoji
       const pin = guildconfig.pinEmoji ? guildconfig.pinEmoji : "📌";
@@ -52,7 +54,7 @@ export class MessagePinboard extends Logger {
       // Sends the pinboard message
       if (pinReactions?.count) {
         // Sets what message content to use
-        let messageContent = "No content";
+        let messageContent = string("global.NO_CONTENT");
         if (msg.content) messageContent = msg.content;
         else if (msg?.embeds?.[0]) {
           if (msg.embeds[0].title !== null) messageContent = msg.embeds[0].title;
@@ -77,22 +79,22 @@ export class MessagePinboard extends Logger {
           },
           fields: [
             {
-              name: "Content",
+              name: string("global.CONTENT"),
               value: `\`\`\`${messageContent}\`\`\``,
               inline: false,
             },
             {
-              name: "Channel",
+              name: string("global.CHANNEL"),
               value: msg.channel.mention,
               inline: true,
             },
             {
-              name: "Message",
-              value: `[Jump to](${msg.jumpLink})`,
+              name: string("global.MESSAGE"),
+              value: `[${string("global.JUMP_TO")}](${msg.jumpLink})`,
               inline: true,
             },
             {
-              name: "Sent On",
+              name: string("global.SENT_ON"),
               value: dateFormat(msg.timestamp),
               inline: false,
             },

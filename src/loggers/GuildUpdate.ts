@@ -54,7 +54,9 @@ export class GuildUpdate extends Logger {
     if (guild.region !== oldguild.region) {
       embed.fields.push({
         name: string("global.REGION"),
-        value: `${format.regionFormat(oldguild.region) || "Unknown"} ➜ ${format.regionFormat(guild.region) || "Unknown"}`,
+        value: `${format.regionFormat(oldguild.region) || string("global.UNKNOWN")} ➜ ${
+          format.regionFormat(guild.region) || string("global.UNKNOWN")
+        }`,
         inline: true,
       });
     }
@@ -127,9 +129,9 @@ export class GuildUpdate extends Logger {
     // Rule channel changes
     if (guild.rulesChannelID !== oldguild.rulesChannelID) {
       embed.fields.push({
-        name: "Rules Channel",
-        value: `${oldguild.rulesChannelID ? guild.channels.get(oldguild.rulesChannelID).mention : "None"} ➜ ${
-          guild.rulesChannelID ? guild.channels.get(guild.rulesChannelID).mention : "None"
+        name: string("general.SERVER_RULES_CHANNEL"),
+        value: `${oldguild.rulesChannelID ? guild.channels.get(oldguild.rulesChannelID).mention : string("global.NONE")} ➜ ${
+          guild.rulesChannelID ? guild.channels.get(guild.rulesChannelID).mention : string("global.NONE")
         }`,
       });
     }
