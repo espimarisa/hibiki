@@ -18,10 +18,11 @@ export class PointUpdate extends Logger {
      * Logs when reputation points are added
      */
 
+    const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+    const channel = await this.getChannel(guild, TYPE, event, guildconfig);
+    if (!channel) return;
+
     if (event === "reputationPointAdd") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
-      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
@@ -52,9 +53,6 @@ export class PointUpdate extends Logger {
      */
 
     if (event === "reputationPointRemove") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
-      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {

@@ -18,10 +18,11 @@ export class PunishUpdate extends Logger {
      * Logs when a member is muted
      */
 
+    const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+    const channel = await this.getChannel(guild, TYPE, event, guildconfig);
+    if (!channel) return;
+
     if (event === "memberMute") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
-      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
@@ -47,9 +48,6 @@ export class PunishUpdate extends Logger {
      */
 
     if (event === "memberUnmute") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
-      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
@@ -75,9 +73,6 @@ export class PunishUpdate extends Logger {
      */
 
     if (event === "memberWarn") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
-      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
@@ -108,9 +103,6 @@ export class PunishUpdate extends Logger {
      */
 
     if (event === "memberWarnRemove") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
-      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {

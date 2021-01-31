@@ -15,11 +15,10 @@ export class GuildUpdate extends Logger {
   events = ["guildUpdate"];
 
   async run(event: string, guild: Guild, oldguild: Guild) {
-    const channel = await this.getChannel(guild, TYPE, event);
-    if (!channel) return;
-
     // Gets locales
     const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+    const channel = await this.getChannel(guild, TYPE, event, guildconfig);
+    if (!channel) return;
     const string = this.bot.localeSystem.getLocaleFunction(guildconfig.locale ? guildconfig.locale : config.defaultLocale);
 
     // Embed construct

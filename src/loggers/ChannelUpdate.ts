@@ -15,16 +15,16 @@ export class ChannelUpdate extends Logger {
   events = ["channelCreate", "channelDelete", "channelUpdate"];
 
   async run(event: string, channel: TextChannel, oldchannel: TextChannel) {
-    if (!channel) return;
+    if (!channel || !channel.guild) return;
 
     /**
      * Logs channel creations
      */
 
     if (event === "channelCreate") {
-      const loggingChannel = await this.getChannel(channel.guild, TYPE, event);
-      if (!loggingChannel) return;
       const guildconfig = await this.bot.db.getGuildConfig(channel.guild.id);
+      const loggingChannel = await this.getChannel(channel.guild, TYPE, event, guildconfig);
+      if (!loggingChannel) return;
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       const embed = {
@@ -73,9 +73,9 @@ export class ChannelUpdate extends Logger {
      */
 
     if (event === "channelDelete") {
-      const loggingChannel = await this.getChannel(channel.guild, TYPE, event);
-      if (!loggingChannel) return;
       const guildconfig = await this.bot.db.getGuildConfig(channel.guild.id);
+      const loggingChannel = await this.getChannel(channel.guild, TYPE, event, guildconfig);
+      if (!loggingChannel) return;
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       const embed = {
@@ -126,9 +126,9 @@ export class ChannelUpdate extends Logger {
     if (event === "channelUpdate") {
       // Gets the logging channel
       if (!oldchannel) return;
-      const loggingChannel = await this.getChannel(channel.guild, TYPE, event);
-      if (!loggingChannel) return;
       const guildconfig = await this.bot.db.getGuildConfig(channel.guild.id);
+      const loggingChannel = await this.getChannel(channel.guild, TYPE, event, guildconfig);
+      if (!loggingChannel) return;
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       const embed = {

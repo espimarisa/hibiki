@@ -31,13 +31,13 @@ export class MessagePinboard extends Logger {
      */
 
     if (event === "messageReactionAdd") {
-      const pinChannel = await this.getChannel(msg.channel.guild, TYPE, event);
-      if (!pinChannel) return;
-
       // Gets the server's config
       let pinboardEmbed;
       const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
       if (!guildconfig) return;
+
+      const pinChannel = await this.getChannel(msg.channel.guild, TYPE, event, guildconfig);
+      if (!pinChannel) return;
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       // Gets the pin emoji
@@ -128,12 +128,12 @@ export class MessagePinboard extends Logger {
      */
 
     if (event === "messageReactionRemove") {
-      const pinChannel = await this.getChannel(msg.channel.guild, TYPE, event);
-      if (!pinChannel) return;
-
       // Gets the guild's config and what channel to send to
       const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
       if (!guildconfig) return;
+
+      const pinChannel = await this.getChannel(msg.channel.guild, TYPE, event, guildconfig);
+      if (!pinChannel) return;
 
       // Gets the pin emoji
       const pin = guildconfig.pinEmoji ? guildconfig.pinEmoji : "📌";

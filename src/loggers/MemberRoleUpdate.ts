@@ -18,10 +18,11 @@ export class MemberRoleUpdate extends Logger {
      * Logs when a member is verified
      */
 
+    const guildconfig = await this.bot.db.getGuildConfig(guild.id);
+    const channel = await this.getChannel(guild, TYPE, event, guildconfig);
+    if (!channel) return;
+
     if (event === "memberVerify") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
-      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
@@ -47,9 +48,6 @@ export class MemberRoleUpdate extends Logger {
      */
 
     if (event === "memberUnverify") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
-      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
@@ -75,9 +73,6 @@ export class MemberRoleUpdate extends Logger {
      */
 
     if (event === "roleAssign") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
-      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
@@ -96,9 +91,6 @@ export class MemberRoleUpdate extends Logger {
      */
 
     if (event === "roleUnassign") {
-      const channel = await this.getChannel(guild, TYPE, event);
-      if (!channel) return;
-      const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 
       this.bot.createMessage(channel, {
