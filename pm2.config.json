@@ -5,8 +5,7 @@
   "error_file": "./logs/pm2-errors.log",
   "out_file": "./logs/pm2-output.log",
   "max_memory_restart": "512M",
-  "mode": "cluster",
-  "instances": "max",
+  "mode": "fork",
   "env": {
     "NODE_ENV": "production"
   }
