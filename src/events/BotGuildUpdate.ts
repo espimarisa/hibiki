@@ -61,7 +61,7 @@ export class BotGuildUpdateEvent extends Event {
             },
             {
               name: "Owner",
-              value: `${this.tagUser(owner)} (${owner.id})`,
+              value: `${this.tagUser(owner) || owner.id} (${owner.id})`,
             },
             {
               name: "Members",

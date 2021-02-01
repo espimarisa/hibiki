@@ -1,8 +1,18 @@
 import type { EmbedField, Guild, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { defaultAvatar } from "../../helpers/constants";
-import { dateFormat, featureFormat, regionFormat, verificationLevelFormat } from "../../utils/format";
 import config from "../../../config.json";
+
+import {
+  afkTimeoutFormat,
+  contentFilterFormat,
+  dateFormat,
+  featureFormat,
+  mfaLevelFormat,
+  notificationLevelFormat,
+  regionFormat,
+  verificationLevelFormat,
+} from "../../utils/format";
 
 export class ServerCommand extends Command {
   description = "Returns info about the server.";
@@ -19,9 +29,34 @@ export class ServerCommand extends Command {
 
     // Embed fields
     const fields: EmbedField[] = [];
-
+    const communityChannels: EmbedField[] = [];
     let voice = 0;
     let text = 0;
+
+    // Community rules channel
+    if (guild.rulesChannelID) {
+      communityChannels.push({
+        name: msg.string("general.SERVER_RULES_CHANNEL"),
+        value: `${msg.channel.guild.channels.get(guild.rulesChannelID).mention}`,
+      });
+    }
+
+    // Community system channel
+    if (guild.systemChannelID) {
+      communityChannels.push({
+        name: msg.string("general.SERVER_SYSTEMMESSAGE_CHANNEL"),
+        value: msg.channel.guild.channels.get(guild.systemChannelID).mention,
+      });
+    }
+
+    // Community updates channel
+    if (guild.publicUpdatesChannelID) {
+      communityChannels.push({
+        name: msg.string("general.SERVER_UPDATES_CHANNEL"),
+        value: msg.channel.guild.channels.get(guild.publicUpdatesChannelID).mention,
+      });
+    }
+
     // Seperates voice & text
     guild.channels.forEach((channel) => {
       if (channel.type === 0) text++;
@@ -34,41 +69,48 @@ export class ServerCommand extends Command {
       value: guild.id,
     });
 
+    // Creation date
     fields.push({
       name: msg.string("global.CREATED"),
       value: `${dateFormat(guild.createdAt)}`,
     });
 
+    // Guild owner
     fields.push({
       name: msg.string("global.OWNER"),
-      value: `${msg.tagUser(this.bot.users.get(guild.ownerID))}`,
+      value: `${msg.tagUser(this.bot.users.get(guild.ownerID)) || guild.ownerID}`,
       inline: true,
     });
 
+    // Guild region
     fields.push({
       name: msg.string("global.REGION"),
       value: `${regionFormat(guild.region)}`,
       inline: true,
     });
 
+    // Member & bot count
     fields.push({
       name: msg.string("global.MEMBERS"),
       value: msg.string("general.SERVER_MEMBERS", { members: msg.channel.guild.memberOnlyCount, bots: msg.channel.guild.botCount }),
       inline: true,
     });
 
+    // Role amount
     fields.push({
       name: msg.string("global.ROLES"),
       value: `${guild.roles.size}`,
       inline: true,
     });
 
+    // Channel amount
     fields.push({
       name: msg.string("global.CHANNELS"),
       value: msg.string("general.SERVER_CHANNELINFO", { text: text, voice: voice }),
       inline: true,
     });
 
+    // Emoji amount
     if (guild.emojis.length > 0) {
       fields.push({
         name: msg.string("global.EMOJIS"),
@@ -77,34 +119,53 @@ export class ServerCommand extends Command {
       });
     }
 
-    if (guild.explicitContentFilter > 0)
+    // Message filter options
+    fields.push({
+      name: msg.string("general.SERVER_MESSAGEFILTER"),
+      value: `${contentFilterFormat(msg.string, guild.explicitContentFilter)}`,
+      inline: true,
+    });
+
+    // Verification level
+    fields.push({
+      name: msg.string("general.SERVER_VERIFICATION"),
+      value: verificationLevelFormat(msg.string, guild.verificationLevel),
+      inline: true,
+    });
+
+    // Notification level
+    fields.push({
+      name: msg.string("general.SERVER_NOTIFICATIONS"),
+      value: notificationLevelFormat(msg.string, guild.defaultNotifications),
+      inline: true,
+    });
+
+    // MFA level
+    fields.push({
+      name: msg.string("general.SERVER_2FA"),
+      value: mfaLevelFormat(msg.string, guild.mfaLevel),
+      inline: true,
+    });
+
+    // AFK channel
+    if (guild.afkChannelID) {
       fields.push({
-        name: msg.string("general.SERVER_MESSAGEFILTER"),
-        value: `Level ${guild.explicitContentFilter}`,
+        name: msg.string("general.SERVER_AFK_CHANNEL"),
+        value: msg.channel.guild.channels.get(guild.afkChannelID).mention,
         inline: true,
       });
 
-    if (guild.verificationLevel > 0)
-      fields.push({
-        name: msg.string("general.SERVER_VERIFICATION"),
-        value: verificationLevelFormat(msg.string, guild.verificationLevel),
-        inline: true,
-      });
+      // AFK timeout
+      if (guild.afkTimeout !== 0) {
+        fields.push({
+          name: msg.string("general.SERVER_AFK_TIMEOUT"),
+          value: afkTimeoutFormat(msg.string, guild.afkTimeout),
+          inline: true,
+        });
+      }
+    }
 
-    if (guild.mfaLevel === 1)
-      fields.push({
-        name: msg.string("general.SERVER_2FA"),
-        value: msg.string("global.TRUE"),
-        inline: true,
-      });
-
-    if (guild.defaultNotifications === 0)
-      fields.push({
-        name: msg.string("general.SERVER_NOTIFICATIONS"),
-        value: "All messages",
-        inline: true,
-      });
-
+    // Nitro boosters
     if (guild.premiumSubscriptionCount > 0)
       fields.push({
         name: msg.string("general.SERVER_BOOSTERS"),
@@ -112,6 +173,7 @@ export class ServerCommand extends Command {
         inline: true,
       });
 
+    // Nitro boost tier
     if (guild.premiumTier > 0)
       fields.push({
         name: msg.string("general.SERVER_BOOSTLEVEL"),
@@ -119,6 +181,24 @@ export class ServerCommand extends Command {
         inline: true,
       });
 
+    // Community locale option
+    if (guild.preferredLocale && guild.preferredLocale !== "en-US")
+      fields.push({
+        name: msg.string("general.SERVER_PREFERRED_LANGUAGE"),
+        value: guild.preferredLocale,
+        inline: true,
+      });
+
+    // Community channels
+    if (communityChannels.length) {
+      fields.push({
+        name: msg.string("general.SERVER_COMMUNITY_CHANNELS"),
+        value: `${communityChannels.map((c) => `${c.value}: ${c.name}`).join("\n")}`,
+        inline: false,
+      });
+    }
+
+    // Guild boost/community features
     if (guild.features.length)
       fields.push({
         name: msg.string("general.SERVER_FEATURES"),
@@ -128,6 +208,7 @@ export class ServerCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
+        description: `${guild.description ?? ""}`,
         color: msg.convertHex("general"),
         fields: fields,
         author: {
