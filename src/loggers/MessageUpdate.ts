@@ -83,7 +83,7 @@ export class MessageUpdate extends Logger {
               inline: true,
             },
             {
-              name: string("SENT_ON"),
+              name: string("global.SENT_ON"),
               value: dateFormat(msg.timestamp),
               inline: false,
             },
@@ -100,10 +100,11 @@ export class MessageUpdate extends Logger {
      */
 
     if (event === "messageUpdate") {
+      if (messageContent === oldMessageContent) return;
       const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
       if (!guildconfig?.logBotMessages && msg.author.bot) return;
       const channel = await this.getChannel(msg.channel, TYPE, event, guildconfig);
-      if (messageContent === oldMessageContent) return;
+      if (!channel) return;
 
       this.bot.createMessage(channel, {
         embed: {

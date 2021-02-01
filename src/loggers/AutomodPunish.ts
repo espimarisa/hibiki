@@ -21,7 +21,6 @@ export class AutomodPunish extends Logger {
     const channel = await this.getChannel(guild, TYPE, event, guildconfig);
     if (!channel) return;
 
-
     if (event === "automodMemberMute") {
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
 

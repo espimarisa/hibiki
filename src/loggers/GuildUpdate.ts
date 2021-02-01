@@ -26,7 +26,7 @@ export class GuildUpdate extends Logger {
       color: convertHex("general"),
       author: {
         icon_url: this.bot.user.dynamicAvatarURL(),
-        name: string("guild.GUILD_EDITED"),
+        name: string("logger.GUILD_EDITED"),
       },
       fields: [],
     } as EmbedOptions;
@@ -64,7 +64,7 @@ export class GuildUpdate extends Logger {
     if (guild.mfaLevel !== oldguild.mfaLevel) {
       embed.fields.push({
         name: string("general.SERVER_2FA"),
-        value: `${format.mfaLevelFormat(oldguild.mfaLevel)} ➜ ${format.mfaLevelFormat(guild.mfaLevel)}`,
+        value: `${format.mfaLevelFormat(string, oldguild.mfaLevel)} ➜ ${format.mfaLevelFormat(string, guild.mfaLevel)}`,
         inline: true,
       });
     }
@@ -73,7 +73,10 @@ export class GuildUpdate extends Logger {
     if (guild.verificationLevel !== oldguild.verificationLevel) {
       embed.fields.push({
         name: string("general.SERVER_VERIFICATION"),
-        value: `${format.verificationLevelFormat(oldguild.verificationLevel)} ➜ ${format.verificationLevelFormat(guild.verificationLevel)}`,
+        value: `${format.verificationLevelFormat(string, oldguild.verificationLevel)} ➜ ${format.verificationLevelFormat(
+          string,
+          guild.verificationLevel,
+        )}`,
       });
     }
 
@@ -81,7 +84,10 @@ export class GuildUpdate extends Logger {
     if (guild.explicitContentFilter !== oldguild.explicitContentFilter) {
       embed.fields.push({
         name: string("general.SERVER_CONTENT_FILTER"),
-        value: `${format.contentFilterFormat(oldguild.explicitContentFilter)} ➜ ${format.contentFilterFormat(guild.explicitContentFilter)}`,
+        value: `${format.contentFilterFormat(string, oldguild.explicitContentFilter)} ➜ ${format.contentFilterFormat(
+          string,
+          guild.explicitContentFilter,
+        )}`,
       });
     }
 
@@ -89,7 +95,8 @@ export class GuildUpdate extends Logger {
     if (guild.defaultNotifications !== oldguild.defaultNotifications) {
       embed.fields.push({
         name: string("general.SERVER_NOTIFICATION_LEVEL"),
-        value: `${format.notificationLevelFormat(oldguild.defaultNotifications)} ➜ ${format.notificationLevelFormat(
+        value: `${format.notificationLevelFormat(string, oldguild.defaultNotifications)} ➜ ${format.notificationLevelFormat(
+          string,
           guild.defaultNotifications,
         )}`,
       });
@@ -155,7 +162,7 @@ export class GuildUpdate extends Logger {
     if (guild.afkTimeout !== oldguild.afkTimeout) {
       embed.fields.push({
         name: string("general.SERVER_AFK_TIMEOUT"),
-        value: `${format.afkTimeoutFormat(oldguild.afkTimeout)} ➜ ${format.afkTimeoutFormat(guild.afkTimeout)}`,
+        value: `${format.afkTimeoutFormat(string, oldguild.afkTimeout)} ➜ ${format.afkTimeoutFormat(string, guild.afkTimeout)}`,
       });
     }
 

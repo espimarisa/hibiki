@@ -6,6 +6,7 @@
 
 import type { User } from "eris";
 import { auditLogRegex } from "../helpers/constants";
+import type { LocaleString } from "../typings/locales";
 
 // Tags a user by username#discriminator
 export function tagUser(user: User, emojiFilter = false) {
@@ -302,6 +303,9 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
     case "logBotMessages":
       if (title) return string("general.CONFIG_LOGBOTMESSAGES");
       return string("general.CONFIG_LOGBOTMESSAGES_DESCRIPTION");
+    case "agreeBlockCommands":
+      if (title) return string("general.CONFIG_AGREEBLOCKCOMMANDS");
+      return string("general.CONFIG_AGREEBLOCKCOMMANDS_DESCRIPTION");
     case undefined:
     default:
       return item;
@@ -309,76 +313,76 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
 }
 
 // Formats guild verification level
-export function verificationLevelFormat(level: number) {
+export function verificationLevelFormat(string: LocaleString, level: number) {
   switch (level) {
     case 0:
-      return "None";
+      return string("global.NONE");
     case 1:
-      return "Low";
+      return string("global.LOW");
     case 2:
-      return "Medium";
+      return string("global.MEDIUM");
     case 3:
-      return "High";
+      return string("global.HIGH");
     case 4:
-      return "Highest";
+      return string("global.HIGHEST");
     default:
       return "Unknown";
   }
 }
 
 // Formats MFA/2FA level
-export function mfaLevelFormat(level: number) {
+export function mfaLevelFormat(string: LocaleString, level: number) {
   switch (level) {
     case 0:
-      return "Disabled";
+      return string("global.DISABLED");
     case 1:
-      return "Enabled";
+      return string("global.DISABLED");
     default:
-      return "Unknown";
+      return string("global.UNKNOWN");
   }
 }
 
 // Formats notification settings
-export function notificationLevelFormat(level: number) {
+export function notificationLevelFormat(string: LocaleString, level: number) {
   switch (level) {
     case 0:
-      return "All Messages";
+      return string("general.SERVER_NOTIFICATIONLEVEL_0");
     case 1:
-      return "Only @mentions";
+      return string("general.SERVER_NOTIFICATIONLEVEL_1");
     default:
-      return "Unknown";
+      return string("global.UNKNOWN");
   }
 }
 
 // Formats explicit content filter
-export function contentFilterFormat(level: number) {
+export function contentFilterFormat(string: LocaleString, level: number) {
   switch (level) {
     case 0:
-      return "Off";
+      return string("global.OFF");
     case 1:
-      return "Only Roleless Members";
+      return string("general.SERVER_CONTENTLEVEL_1");
     case 2:
-      return "All Members";
+      return string("general.SERVER_CONTENTLEVEL_2");
     default:
-      return "Unknown";
+      return string("global.UNKNOWN");
   }
 }
 
 // Formats AFK channel timeouts
-export function afkTimeoutFormat(level: number) {
+export function afkTimeoutFormat(string: LocaleString, level: number) {
   switch (level) {
     case 60:
-      return "1 minute";
+      return string("global.MINUTES", { minutes: "1" });
     case 300:
-      return "5 minutes";
+      return string("global.MINUTES", { minutes: "5" });
     case 900:
-      return "15 minutes";
+      return string("global.MINUTES", { minutes: "15" });
     case 1800:
-      return "30 minutes";
+      return string("global.MINUTES", { minutes: "30" });
     case 3600:
-      return "1 hour";
+      return string("global.HOURS", { hours: "1" });
     default:
-      return "No timeout";
+      return string("global.NONE");
   }
 }
 
@@ -402,7 +406,7 @@ export function to24Hours(string: LocaleString, time: number) {
 // Localizes guild features
 export function featureFormat(string: LocaleString, features: string[]) {
   if (!features) return undefined;
-  return features.map((feature: string) => {
+  return features.map((feature) => {
     switch (feature) {
       case "COMMUNITY":
         return string("general.SERVER_FEATURE_COMMUNITY");

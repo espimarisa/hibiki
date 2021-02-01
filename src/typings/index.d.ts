@@ -4,11 +4,6 @@
  * @typedef index
  */
 
-// LocalString function
-interface LocaleString {
-  (string: string, args?: Record<string, unknown> | undefined): string;
-}
-
 // Parsed arguments
 interface ParsedArgs {
   flag: string | undefined;
