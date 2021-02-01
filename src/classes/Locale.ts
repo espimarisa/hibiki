@@ -4,7 +4,7 @@
  */
 
 import type { HibikiClient } from "./Client";
-import type { LocaleString } from "../typings/locales";
+import type { LocaleString, LocaleStrings } from "../typings/locales";
 import { readFile, readdir } from "fs";
 import config from "../../config.json";
 
@@ -34,7 +34,7 @@ export class LocaleSystem {
   }
 
   // Returns a string from a specific locale
-  getLocale(language: string, fieldName: string, args?: { [x: string]: any } | undefined) {
+  getLocale(language: string, fieldName: LocaleStrings, args?: { [x: string]: any } | undefined) {
     // Gets the string category
     const category = fieldName.split(".");
     let output = "";
@@ -82,7 +82,7 @@ export class LocaleSystem {
 
   // Runs the function to return a locale string
   getLocaleFunction(language: string): LocaleString {
-    return (fieldName: string, args?: Record<string, unknown>) => this.getLocale(language, fieldName, args);
+    return (fieldName: LocaleStrings, args?: Record<string, unknown>) => this.getLocale(language, fieldName, args);
   }
 
   // Returns what locale a user uses

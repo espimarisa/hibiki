@@ -47,7 +47,7 @@ export class ChannelinfoCommand extends Command {
     if (((channel as unknown) as VoiceChannel).type === 2)
       fields.push({
         name: msg.string("global.INFO"),
-        value: `${msg.string("utiility.CHANNELINFO_VOICE", {
+        value: `${msg.string("utility.CHANNELINFO_VOICE", {
           bitrate: ((channel as unknown) as VoiceChannel).bitrate / 1000,
           limit: ((channel as unknown) as VoiceChannel).userLimit,
         })}`,

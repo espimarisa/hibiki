@@ -9,6 +9,8 @@ import type * as en from "../locales/en.json";
 
 // Valid JSON items
 export type LocaleStrings =
+  | "EMOJI"
+  | "NAME"
   | `fun.${keyof typeof en.fun}`
   | `general.${keyof typeof en.general}`
   | `global.${keyof typeof en.global}`

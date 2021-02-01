@@ -1,7 +1,7 @@
 import type { EmbedField, Guild, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { defaultAvatar } from "../../helpers/constants";
-import { dateFormat, featureFormat, regionFormat } from "../../utils/format";
+import { dateFormat, featureFormat, regionFormat, verificationLevelFormat } from "../../utils/format";
 import config from "../../../config.json";
 
 export class ServerCommand extends Command {
@@ -87,7 +87,7 @@ export class ServerCommand extends Command {
     if (guild.verificationLevel > 0)
       fields.push({
         name: msg.string("general.SERVER_VERIFICATION"),
-        value: `Level ${guild.verificationLevel}`,
+        value: verificationLevelFormat(msg.string, guild.verificationLevel),
         inline: true,
       });
 

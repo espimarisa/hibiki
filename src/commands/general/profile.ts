@@ -109,7 +109,7 @@ export class ProfileCommand extends Command {
 
           // If the user cancels deleting
           if (response === false) {
-            return omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.PROFILE_CANCELLED_DELETE"), "error");
+            return omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.PROFILE_CANCELLED_DELETING"), "error");
           }
 
           // Deletes the config and the askYesNo message
