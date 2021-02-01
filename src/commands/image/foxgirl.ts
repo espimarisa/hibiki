@@ -20,7 +20,7 @@ export class FoxgirlCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        title: `🦊 ${msg.string("image.FOXGIRL_TITLE")}`,
+        title: `🦊 ${msg.string("image.FOXGIRL")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data.url,

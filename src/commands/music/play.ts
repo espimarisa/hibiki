@@ -105,7 +105,7 @@ export class PlayCommand extends Command {
 
       // If something failed to load
       case "LOAD_FAILED": {
-        msg.createEmbed(msg.string("global.ERROR"), msg.string("music.LOAD_FAILED"), "error");
+        msg.createEmbed(msg.string("global.ERROR"), msg.string("music.LOADFAILED"), "error");
         break;
       }
 
