@@ -4,6 +4,7 @@
  */
 
 import type { HibikiClient } from "./Client";
+import type { LocaleString } from "../typings/locales";
 import { readFile, readdir } from "fs";
 import config from "../../config.json";
 

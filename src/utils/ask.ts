@@ -6,6 +6,7 @@
 
 import type { HibikiClient } from "../classes/Client";
 import type { Channel, Emoji, Member, Message, Role, TextChannel, VoiceChannel } from "eris";
+import type { LocaleString } from "../typings/locales";
 import { defaultEmojiRegex, fullInviteRegex } from "../helpers/constants";
 import { localizeSetupItems } from "../utils/format";
 import { timeoutHandler, waitFor } from "./waitFor";
@@ -211,18 +212,19 @@ export async function askForValue(
           errorMsg: msg.string("general.CONFIG_CONTAINSINVITE"),
         },
 
-        // role arrayyyy
+        // Checks role array length
         roleArrayTooLong: {
           check: setting.type === "roleArray" && setting.maximum && result.length > setting.maximum,
           errorMsg: msg.string("general.CONFIG_ROLEARRAYTOOLONG", { maximum: setting.maximum }),
         },
 
-        // chanenlewlewlplp
+        // Checks channel array length
         channelArrayTooLong: {
           check: setting.type === "channelArray" && setting.maximum && result.length > setting.maximum,
           errorMsg: msg.string("general.CONFIG_CHANNELARRAYTOOLONG", { maximum: setting.maximum }),
         },
 
+        // Checks number size
         invalidNumberSize: {
           check: setting.type === "number" && setting.maximum && (setting.minimum > result || setting.maximum < result),
           errorMsg: msg.string("general.CONFIG_INVALIDNUMBERSIZE"),
@@ -230,7 +232,7 @@ export async function askForValue(
       };
       //
 
-      // If an invalid repsonse was given
+      // If an invalid response was given
       let error = "";
       Object.keys(invalidChecks).forEach((checkKey) => {
         if (error) return;

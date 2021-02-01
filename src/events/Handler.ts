@@ -6,6 +6,7 @@
 import type { Message, TextChannel, User } from "eris";
 import { PrivateChannel } from "eris";
 import { Event } from "../classes/Event";
+import { inviteRegex } from "../helpers/constants";
 import config from "../../config.json";
 import * as Sentry from "@sentry/node";
 
@@ -24,6 +25,17 @@ export class HandlerEvent extends Event {
     else if (guildconfig?.locale && !userLocale) localeString = guildconfig.locale;
     const string = this.bot.localeSystem.getLocaleFunction(localeString);
     msg.string = string;
+
+    // Tells people how to invite the bot if they send an invite
+    if (msg.channel instanceof PrivateChannel && inviteRegex.test(msg.content)) {
+      return msg.createEmbed(
+        `📌 ${string("general.INVITE")}`,
+        string("general.INVITE_INFO", {
+          bot: `https://discord.com/oauth2/authorize?&client_id=${this.bot.user.id}&scope=bot&permissions=506850534`,
+          support: "https://discord.gg/gZEj4sM",
+        }),
+      );
+    }
 
     // Finds what prefix to use
     const mentionRegex = new RegExp(`<@!?${this.bot.user.id}> ?`);
@@ -71,6 +83,10 @@ export class HandlerEvent extends Event {
       return;
     }
 
+    // Checks to see if a member is staff
+    const isStaff =
+      msg.member?.permissions.has("administrator") || (guildconfig?.staffRole && msg.member?.roles.includes(guildconfig.staffRole));
+
     // Handles voice-only commands
     if (command.voice) {
       const uservoice = msg.channel.guild.members.get(msg.author.id)?.voiceState?.channelID;
@@ -83,8 +99,6 @@ export class HandlerEvent extends Event {
       }
 
       // Checks to see if a member has specific roles
-      const isStaff =
-        msg.member?.permissions.has("administrator") || (guildconfig?.staffRole && msg.member?.roles.includes(guildconfig.staffRole));
       const hasMusicRole = guildconfig?.musicRole && msg.member?.roles.includes(guildconfig.musicRole);
 
       // If the guild has musicRole set and the user doesn't have proper roles
@@ -112,6 +126,14 @@ export class HandlerEvent extends Event {
     if (msg.channel.guild) {
       const dmChannel = await msg.author.getDMChannel();
       const botPerms = msg.channel.guild.members.get(this.bot.user.id)?.permissions;
+
+      // Handles agree channel commands
+      if (command.name !== "agree") {
+        if (guildconfig?.agreeChannel === msg.channel.id && guildconfig?.agreeBlockCommands !== false && !isStaff) {
+          await msg.delete().catch(() => {});
+          return;
+        }
+      }
 
       // Sends if the bot can't send messages in a channel or guild
       if (!msg.channel.permissionsOf(this.bot.user.id).has("sendMessages") || !botPerms?.has("sendMessages")) {

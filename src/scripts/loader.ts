@@ -94,6 +94,8 @@ function loadEvents(path: string, bot: HibikiClient, logger = false) {
         bot.log.error(`Event ${file.name} failed to load: ${err}`);
       }
 
+      if (!event) return;
+
       // Pushes the events and runs them
       (logger ? bot.loggers : bot.events).push(new event(bot, file.name.split(fileTypes)[0]));
       if (i === files.length - 1) {
