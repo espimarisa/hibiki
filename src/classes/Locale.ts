@@ -51,7 +51,7 @@ export class LocaleSystem {
         // Handles plurals/non-plural and arguments/optionals
         const argumentRegex = new RegExp(`{${arg}}`);
         const pluralRegex = new RegExp(`{${arg}:#([^{}]+)#!([^{}]+)!(?:\\?([^{}]+)\\?)?}`);
-        const optionalRegex = new RegExp(`({optional:${arg}:([^{}]+)})`);
+        const optionalRegex = new RegExp(`({optional:${arg}:(.+)(?:{\\w})?})`);
 
         // Replaces optional strings with content
         const optional = optionalRegex.exec(output);
