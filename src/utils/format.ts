@@ -334,9 +334,9 @@ export function verificationLevelFormat(string: LocaleString, level: number) {
 export function mfaLevelFormat(string: LocaleString, level: number) {
   switch (level) {
     case 0:
-      return string("global.DISABLED");
+      return string("logger.DISABLED");
     case 1:
-      return string("global.DISABLED");
+      return string("logger.ENABLED");
     default:
       return string("global.UNKNOWN");
   }

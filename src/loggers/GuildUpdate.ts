@@ -43,9 +43,9 @@ export class GuildUpdate extends Logger {
     if (guild.ownerID !== oldguild.ownerID) {
       embed.fields.push({
         name: string("global.OWNER"),
-        value: `${this.tagUser(this.bot.users.find((m) => m.id === oldguild.ownerID))} ➜ ${this.tagUser(
-          this.bot.users.find((m) => m.id === guild.ownerID),
-        )}`,
+        value: `${this.tagUser(this.bot.users.find((m) => m.id === oldguild.ownerID))} ➜ ${
+          this.tagUser(this.bot.users.find((m) => m.id === guild.ownerID)) || guild.ownerID
+        }`,
       });
     }
 
