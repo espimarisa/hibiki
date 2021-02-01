@@ -230,6 +230,7 @@
     "SERVER_BOOSTLEVEL": "Boost Level",
     "SERVER_CHANNELINFO": "{text} text, {voice} voice",
     "SERVER_CONTENT_FILTER": "Content Filter",
+    "SERVER_COMMUNITY_CHANNELS": "Community Channels",
     "SERVER_CONTENTLEVEL_0": "No Content Filter",
     "SERVER_CONTENTLEVEL_1": "Only Roleless Members",
     "SERVER_CONTENTLEVEL_2": "All Members",
