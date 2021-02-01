@@ -11,7 +11,6 @@ export class GaylevelCommand extends Command {
     const usercfg = await this.bot.db.getUserConfig(member.id);
     const gayLevel = usercfg?.gayLevel || Math.round(Math.random() * 100);
 
-    // TODO: allow people to set gaylevel in configuser
     msg.createEmbed(
       `🏳️‍🌈 ${msg.string("fun.GAYLEVEL")}`,
       msg.string("fun.GAYLEVEL_LEVEL", { member: member.user.username, level: gayLevel }),

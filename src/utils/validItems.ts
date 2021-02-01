@@ -17,6 +17,13 @@ export const validItems = [
   },
   {
     category: "features",
+    id: "agreeBlockCommands",
+    emoji: "⛔",
+    type: "bool",
+    default: true,
+  },
+  {
+    category: "features",
     id: "easyTranslate",
     emoji: "🌍",
     type: "bool",
