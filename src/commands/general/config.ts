@@ -250,8 +250,8 @@ export class SetupCommand extends Command {
 
         // Handles booleans
         if (setting.type === "bool") {
-          if (guildconfig[setting.id]) guildconfig[setting.id] = !guildconfig[setting.id];
-          else guildconfig[setting.id] = true;
+          if (typeof guildconfig[setting.id] === "boolean") guildconfig[setting.id] = !guildconfig[setting.id];
+          else guildconfig[setting.id] = typeof setting.default === "undefined" ? true : !setting.default;
 
           // Updates the config
           await this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);
