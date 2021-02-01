@@ -2,8 +2,6 @@
   "NAME": "English",
   "EMOJI": "🇺🇸",
 
-  "format": {},
-
   "fun": {
     "COIN": "Coin",
     "COIN_HEADS": "heads",
@@ -51,6 +49,8 @@
     "CHANGELOG": "Changelog",
     "CHANGELOG_DESCRIPTION": "The latest changelog can be viewed [here](https://github.com/smolespi/hibiki/releases/latest).",
     "CONFIG": "Config",
+    "CONFIG_AGREEBLOCKCOMMANDS": "Allow Commands in Agree",
+    "CONFIG_AGREEBLOCKCOMMANDS_DESCRIPTION": "Whether or not members can run other commands in the agree channel. Default: false",
     "CONFIG_AGREECHANNEL": "Agree Channel",
     "CONFIG_AGREECHANNEL_DESCRIPTION": "The channel where new members can run the agree command in.",
     "CONFIG_AGREEROLE": "Agree Role",
@@ -271,6 +271,10 @@
   },
 
   "global": {
+    "LOW": "Low",
+    "MEDIUM": "Medium",
+    "HIGH": "High",
+    "HIGHEST": "Highest",
     "ACCOUNT_AGE": "Account Age",
     "AND": "and",
     "AUTOMOD": "Automod",
@@ -286,6 +290,7 @@
     "CONFIRMATION": "Confirmation",
     "CONTENT": "Content",
     "CREATED": "Created",
+    "CREATED_AT": "Created At",
     "DATE": "Date",
     "DAYS_OLD": "days old",
     "DELETE": "Delete",
@@ -337,6 +342,9 @@
     "NO_REASON": "No reason provided.",
     "NONE": "None",
     "NSFW": "NSFW",
+    "OFF": "Off",
+    "MINUTES": "{minutes} {minutes:#minute#!minutes!}",
+    "HOURS": "{hours} {hours:#hour#!hours!}",
     "OLD_CONTENT": "Old Content",
     "OR": "or",
     "OWNER": "Owner",
@@ -392,6 +400,9 @@
   },
 
   "logger": {
+    "MEMBER_UNASSIGNED": "{user} self-assigned the {role} role.",
+    "MEMBER_UNVERIFIED": "{user} unverified {member}.",
+    "NOT_SHOWING_SEPARATELY": "Not Showing Separately",
     "AUTO_PUNISH": "Automatic punishment",
     "AUTOMOD_INVITESENT": "{member} sent an invite.",
     "AUTOMOD_MUTED": "{member} was automatically muted by Automod.",

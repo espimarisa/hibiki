@@ -33,15 +33,15 @@ export class MemberUpdate extends Logger {
       const muted = (await this.bot.db.getGuildMuteCache(guild.id)) as MuteCache[];
       // Re-adds any muted roles if the member tried to evade mute
       const mute = muted.find((m: MuteCache) => m.member === member.id && m.guild === guild.id);
-      if (mute && guildconfig?.mutedRole) await member.addRole(guildconfig.mutedRole, string("JOINED_AFTER_MUTED")).catch(() => {});
+      if (mute && guildconfig?.mutedRole) await member.addRole(guildconfig.mutedRole, string("logger.JOINED_AFTER_MUTED")).catch(() => {});
       if (!guildconfig?.leaveJoin) return;
       const leavejoinchannel = guild.channels.find((c) => c.id === guildconfig?.leaveJoin) as TextChannel;
       if (!leavejoinchannel) return;
 
       // Default fields
-      let joinMessage = string("JOIN_MESSAGE", { guild: guild.name, member: member.user.username });
+      let joinMessage = string("logger.JOIN_MESSAGE", { guild: guild.name, member: member.user.username });
       let joinTitle = `🎉 ${string("logger.NEW_MEMBER")}`;
-      let greetingFooter = string("MEMBER_COUNT", { guild: guild.name, members: guild.memberCount });
+      let greetingFooter = string("logger.MEMBER_COUNT", { guild: guild.name, members: guild.memberCount });
 
       // Sets the joinMessage
       if (guildconfig?.joinMessage?.length < 256) {
@@ -101,7 +101,7 @@ export class MemberUpdate extends Logger {
       // Sets default fields
       let leaveMessage = string("logger.LEAVE_MESSAGE", { member: member.user.username });
       let leaveTitle = `👋 ${string("logger.MEMBER_LEFT")} `;
-      let greetingFooter = string("MEMBER_COUNT", { guild: guild.name, members: guild.memberCount });
+      let greetingFooter = string("logger.MEMBER_COUNT", { guild: guild.name, members: guild.memberCount });
 
       // Sets the leaveMessage
       if (guildconfig?.leaveMessage?.length < 256) {
@@ -181,7 +181,7 @@ export class MemberUpdate extends Logger {
           ],
           footer: {
             icon_url: guild.iconURL || defaultAvatar,
-            text: string("MEMBER_COUNT", { guild: guild.name, members: guild.memberCount }),
+            text: string("logger.MEMBER_COUNT", { guild: guild.name, members: guild.memberCount }),
           },
         },
       });
@@ -227,7 +227,7 @@ export class MemberUpdate extends Logger {
           ],
           footer: {
             icon_url: guild.iconURL || defaultAvatar,
-            text: string("MEMBER_COUNT", { guild: guild.name, members: guild.memberCount }),
+            text: string("logger.MEMBER_COUNT", { guild: guild.name, members: guild.memberCount }),
           },
         },
       });
