@@ -4,6 +4,7 @@
  * @typedef message
  */
 
+import type { LocaleString } from "./locales";
 import type { tagUser } from "../utils/format";
 import type { convertHex, createEmbed, editEmbed } from "../helpers/embed";
 
