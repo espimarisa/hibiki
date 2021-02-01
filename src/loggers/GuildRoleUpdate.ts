@@ -178,7 +178,7 @@ export class GuildRoleUpdate extends Logger {
           name: string("logger.VISIBILITY"),
           value: role.hoist
             ? `${string("logger.NOT_SHOWING_SEPARATELY")} ➜ ${string("logger.SHOWING_SEPARATELY")}`
-            : `${string("logger.SHOWING_SEPARATELY")} ➜ ${string("logger.logger.NOT_SHOWING_SEPARATELY")}`,
+            : `${string("logger.SHOWING_SEPARATELY")} ➜ ${string("logger.NOT_SHOWING_SEPARATELY")}`,
         });
       }
 

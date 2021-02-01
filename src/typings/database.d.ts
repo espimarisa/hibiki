@@ -6,6 +6,7 @@
 
 // Guildconfig data
 interface GuildConfig {
+  agreeBlockCommands?: boolean;
   agreeChannel?: string;
   agreeRole?: string;
   antiInvite?: boolean;
@@ -22,6 +23,7 @@ interface GuildConfig {
   disabledEvents?: string[];
   easyTranslate?: boolean;
   eventLogging?: string;
+  filteredWords?: string[];
   greetingFooter?: string;
   id?: string;
   ignoredLoggingChannels?: string[];
