@@ -1,7 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { timeoutHandler, waitFor } from "../../utils/waitFor";
-import config from "../../../config.json";
 const maxResults = 5;
 
 export class PlayCommand extends Command {
@@ -36,8 +35,8 @@ export class PlayCommand extends Command {
         let tracks;
 
         // Removes tracks longer than maxlength
-        if (config.lavalink.maxlength) {
-          tracks = res.tracks.filter((track) => track.duration < config.lavalink.maxlength);
+        if (this.bot.config.lavalink.maxlength) {
+          tracks = res.tracks.filter((track) => track.duration < this.bot.config.lavalink.maxlength);
         } else {
           tracks = res.tracks;
         }
@@ -77,10 +76,10 @@ export class PlayCommand extends Command {
         if (!tracks[song]) return;
 
         // Prevents songs that are over the max length from playing
-        if (!!config.lavalink.maxlength && tracks[song - 1].duration > Number(config.lavalink.maxlength)) {
+        if (!!this.bot.config.lavalink.maxlength && tracks[song - 1].duration > Number(this.bot.config.lavalink.maxlength)) {
           return msg.createEmbed(
             msg.string("global.ERROR"),
-            msg.string("music.TOO_LONG", { limit: config.lavalink.maxlength / 60000 }),
+            msg.string("music.TOO_LONG", { limit: this.bot.config.lavalink.maxlength / 60000 }),
             "error",
           );
         }
@@ -112,10 +111,10 @@ export class PlayCommand extends Command {
       // Handles track loading
       case "TRACK_LOADED": {
         // Prevents songs that are over the max length from playing
-        if (!!config.lavalink.maxlength && res.tracks[0].duration > Number(config.lavalink.maxlength)) {
+        if (!!this.bot.config.lavalink.maxlength && res.tracks[0].duration > Number(this.bot.config.lavalink.maxlength)) {
           return msg.createEmbed(
             msg.string("global.ERROR"),
-            msg.string("music.TOO_LONG", { limit: config.lavalink.maxlength / 60000 }),
+            msg.string("music.TOO_LONG", { limit: this.bot.config.lavalink.maxlength / 60000 }),
             "error",
           );
         }
@@ -135,7 +134,7 @@ export class PlayCommand extends Command {
       case "PLAYLIST_LOADED": {
         let songsRemoved = 0;
         const songsToQueue = res.tracks.filter((track, i) => {
-          if (player.queue.size + i >= 100 || track.duration > Number(config.lavalink.maxlength)) {
+          if (player.queue.size + i >= 100 || track.duration > Number(this.bot.config.lavalink.maxlength)) {
             songsRemoved++;
             return false;
           }

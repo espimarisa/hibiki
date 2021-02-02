@@ -2,7 +2,7 @@ import type { Emoji, Member, Message, TextChannel } from "eris";
 import type { LocaleSystem } from "../../classes/Locale";
 import { Command } from "../../classes/Command";
 import { askForLocale, askForValue, askYesNo } from "../../utils/ask";
-import { localizeProfileItems } from "../../utils/format";
+import { localizeItemTypes, localizeProfileItems } from "../../utils/format";
 import { validItems } from "../../utils/validItems";
 import { timeoutHandler, waitFor } from "../../utils/waitFor";
 
@@ -127,8 +127,29 @@ export class ProfileCommand extends Command {
         if (!setting) return;
         await omsg.removeReaction(setting.emoji, user.id);
 
+        // Handles booleans
+        if (setting.type === "bool") {
+          if (typeof userconfig[setting.id] === "boolean") userconfig[setting.id] = !userconfig[setting.id];
+          else userconfig[setting.id] = typeof setting.default === "undefined" ? true : !setting.default;
+
+          // Updates the config
+          await this.bot.db.updateUserConfig(msg.author.id, userconfig);
+          omsg.editEmbed(
+            localizeProfileItems(msg.string, setting.id, true),
+            `${setting.id} ${msg.string("global.HAS_BEEN")} **${
+              userconfig[setting.id] ? `${msg.string("global.ENABLED")}` : `${msg.string("global.DISABLED")}`
+            }**.`,
+            "success",
+          );
+          reacting = false;
+          addEmojis();
+          setTimeout(() => {
+            omsg.edit(editEmbed(this.bot.localeSystem));
+          }, 3000);
+        }
+
         // Handles pronoun selections
-        if (setting.type === "pronouns") {
+        else if (setting.type === "pronouns") {
           reacting = true;
           await omsg.removeReactions();
           emojiArray.forEach(async (emoji) => omsg.addReaction(emoji));
@@ -174,7 +195,7 @@ export class ProfileCommand extends Command {
           reacting = false;
           addEmojis();
         } else {
-          omsg.editEmbed(`👤 ${msg.string("general.PROFILE")}`, msg.string("global.RESPOND_WITH", { type: setting.type }));
+          omsg.editEmbed(`👤 ${msg.string("general.PROFILE")}`, localizeItemTypes(msg.string, setting.type));
           await askForValue(msg, omsg, this.bot, "profile", userconfig, editEmbed, setting);
         }
       },

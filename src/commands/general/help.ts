@@ -1,7 +1,6 @@
 import type { EmbedOptions, Message, TextChannel } from "eris";
 import { GuildChannel, PrivateChannel } from "eris";
 import { Command } from "../../classes/Command";
-import config from "../../../config.json";
 
 export class HelpCommand extends Command {
   description = "Sends a list of commands or info about a specific command.";
@@ -94,7 +93,7 @@ export class HelpCommand extends Command {
         return msg.channel.createMessage({
           embed: {
             title: `📚 ${msg.string("general.HELP")}`,
-            description: msg.string("general.HELP_DESCRIPTION", { prefix: db?.prefix ? db.prefix : config.prefixes[0] }),
+            description: msg.string("general.HELP_DESCRIPTION", { prefix: db?.prefix ? db.prefix : this.bot.config.prefixes[0] }),
             color: msg.convertHex("general"),
             fields: categories.map((category) => ({
               name: sortedcategories[categories.indexOf(category)],
@@ -124,7 +123,7 @@ export class HelpCommand extends Command {
         .createMessage({
           embed: {
             title: `📚 ${msg.string("general.HELP")}`,
-            description: msg.string("general.HELP_DESCRIPTION", { prefix: db?.prefix ? db.prefix : config.prefixes[0] }),
+            description: msg.string("general.HELP_DESCRIPTION", { prefix: db?.prefix ? db.prefix : this.bot.config.prefixes[0] }),
             color: msg.convertHex("general"),
             fields: categories.map((category) => ({
               name: sortedcategories[categories.indexOf(category)],
@@ -150,7 +149,7 @@ export class HelpCommand extends Command {
           msg.channel.createMessage({
             embed: {
               title: `📚 ${msg.string("general.HELP")}`,
-              description: msg.string("general.HELP_DESCRIPTION", { prefix: db?.prefix ? db.prefix : config.prefixes[0] }),
+              description: msg.string("general.HELP_DESCRIPTION", { prefix: db?.prefix ? db.prefix : this.bot.config.prefixes[0] }),
               color: msg.convertHex("general"),
               fields: categories.map((category) => ({
                 name: sortedcategories[categories.indexOf(category)],

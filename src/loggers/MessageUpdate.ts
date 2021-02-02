@@ -8,7 +8,6 @@ import type { Message, TextChannel } from "eris";
 import { dateFormat } from "../utils/format";
 import { Logger } from "../classes/Logger";
 import { urlRegex } from "../helpers/constants";
-import config from "../../config.json";
 const TYPE = "messageLogging";
 
 export class MessageUpdate extends Logger {
@@ -19,7 +18,7 @@ export class MessageUpdate extends Logger {
     if (msg.author.id === this.bot.user.id) return;
     const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
     if (!guildconfig?.logBotMessages && msg.author.bot) return;
-    const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+    const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
     // Sets what message content to use
     let messageContent = string("global.NO_CONTENT");
