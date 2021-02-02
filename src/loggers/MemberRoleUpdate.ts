@@ -7,7 +7,6 @@
 import type { Guild, Role, User } from "eris";
 import { Logger } from "../classes/Logger";
 import { convertHex } from "../helpers/embed";
-import config from "../../config.json";
 const TYPE = "modLogging";
 
 export class MemberRoleUpdate extends Logger {
@@ -23,7 +22,7 @@ export class MemberRoleUpdate extends Logger {
     if (!channel) return;
 
     if (event === "memberVerify") {
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
@@ -48,7 +47,7 @@ export class MemberRoleUpdate extends Logger {
      */
 
     if (event === "memberUnverify") {
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
@@ -73,7 +72,7 @@ export class MemberRoleUpdate extends Logger {
      */
 
     if (event === "roleAssign") {
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
@@ -91,7 +90,7 @@ export class MemberRoleUpdate extends Logger {
      */
 
     if (event === "roleUnassign") {
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {

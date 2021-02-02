@@ -1,7 +1,7 @@
 import type { Emoji, Member, Message, TextChannel } from "eris";
 import type { HibikiClient } from "../../classes/Client";
 import { Command } from "../../classes/Command";
-import { localizeSetupItems } from "../../utils/format";
+import { localizeItemTypes, localizeSetupItems } from "../../utils/format";
 import { askForLocale, askForValue, askYesNo } from "../../utils/ask";
 import { validItems } from "../../utils/validItems";
 import { timeoutHandler, waitFor } from "../../utils/waitFor";
@@ -232,7 +232,7 @@ export class SetupCommand extends Command {
         if (m.id !== omsg.id) return;
         if (!emoji.name) return;
         if (selectingItem) return;
-        if (emoji.name === back) {
+        if (emoji.name === back && !selectingCategory) {
           category = { repeat: true };
           return true;
         }
@@ -269,18 +269,27 @@ export class SetupCommand extends Command {
         else if (setting.type === "punishment" || setting.type === "raidPunishment") {
           selectingItem = true;
           let punishments: Record<string, string>;
+          let punishmentLabels: Record<string, string>;
           let punishmentDescription: Record<string, string>;
+          // Gets punishment labels
+          const banLabel = msg.string("moderation.BAN");
+          const kickLabel = msg.string("moderation.KICK");
+          const muteLabel = msg.string("moderation.MUTE");
+          const purgeLabel = msg.string("moderation.PURGE");
+          const warnLabel = msg.string("moderation.WARN");
 
           // Raid punishments
           if (setting.type === "raidPunishment") {
             punishments = { Ban: "1️⃣", Kick: "2️⃣", Mute: "3️⃣" };
-            punishmentDescription = { Ban: null as null, Kick: null as null, Mute: null as null };
+            punishmentLabels = { Ban: banLabel, Kick: kickLabel, Mute: muteLabel };
+            punishmentDescription = { Ban: null, Kick: null, Mute: null };
           } else {
             punishments = { Mute: "1️⃣", Purge: "2️⃣", Warn: "3️⃣" };
-            punishmentDescription = { Mute: null as null, Purge: null as null, Warn: null as null };
+            punishmentLabels = { Mute: muteLabel, Purge: purgeLabel, Warn: warnLabel };
+            punishmentDescription = { Mute: null, Purge: null, Warn: null };
           }
 
-          const validpunishments = Object.getOwnPropertyNames(punishments);
+          const validpunishments = Object.keys(punishments);
           await omsg.removeReactions();
 
           omsg.editEmbed(
@@ -288,7 +297,7 @@ export class SetupCommand extends Command {
             validpunishments
               .map(
                 (p) =>
-                  `${punishments[p]} ${p}${punishmentDescription[p] ? punishmentDescription[p] : ""}:` +
+                  `${punishments[p]} ${punishmentLabels[p]}${punishmentDescription[p] ? punishmentDescription[p] : ""}:` +
                   ` **${guildconfig[setting.id]?.includes(p) ? `${msg.string("global.ENABLED")}` : `${msg.string("global.DISABLED")}`}**`,
               )
               .join("\n"),
@@ -336,7 +345,7 @@ export class SetupCommand extends Command {
                 validpunishments
                   .map(
                     (p) =>
-                      `${punishments[p]} ${p}${punishmentDescription[p] ? punishmentDescription[p] : ""}: **${
+                      `${punishments[p]} ${punishmentLabels[p]}${punishmentDescription[p] ? punishmentDescription[p] : ""}: **${
                         guildconfig[setting.id].includes(p) ? `${msg.string("global.ENABLED")}` : `${msg.string("global.DISABLED")}`
                       }**`,
                   )
@@ -354,7 +363,7 @@ export class SetupCommand extends Command {
 
         // Asks for a response if it's anything else
         else {
-          omsg.editEmbed(`🔧 ${msg.string("general.CONFIG")}`, `${msg.string("global.RESPOND_WITH", { type: setting.type })}`);
+          omsg.editEmbed(`🔧 ${msg.string("general.CONFIG")}`, localizeItemTypes(msg.string, setting.type));
           askForValue(msg, omsg, this.bot, category, guildconfig, itemsEmbed, setting);
         }
       },

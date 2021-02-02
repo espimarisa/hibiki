@@ -9,7 +9,6 @@ import type { Request } from "express";
 import { Strategy } from "passport-discord";
 import express from "express";
 import passport from "passport";
-import config from "../../../config.json";
 const router = express.Router();
 const scope = ["identify", "guilds"];
 
@@ -22,8 +21,8 @@ export = (bot: HibikiClient) => {
     new Strategy(
       {
         clientID: bot.user.id,
-        clientSecret: config.dashboard.botSecret,
-        callbackURL: config.dashboard.redirectURI,
+        clientSecret: bot.config.dashboard.botSecret,
+        callbackURL: bot.config.dashboard.redirectURI,
         scope: scope,
       },
       (_accessToken, _refreshToken, profile, done) => {

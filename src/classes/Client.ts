@@ -40,9 +40,11 @@ export class HibikiClient extends Client {
   reminderHandler: ReminderHandler;
   antiSpam: AntiSpam[];
   logs: BotLogs[];
+  config: typeof config;
 
   constructor(token: string, options: ClientOptions) {
     super(token, options);
+    this.config = config;
 
     // Prototype extensions
     Eris.Message.prototype.createEmbed = createEmbed;

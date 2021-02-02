@@ -8,7 +8,6 @@ import type { EmbedOptions, TextChannel, VoiceChannel } from "eris";
 import { convertHex } from "../helpers/embed";
 import { Logger } from "../classes/Logger";
 import { dateFormat } from "../utils/format";
-import config from "../../config.json";
 const TYPE = "eventLogging";
 
 export class ChannelUpdate extends Logger {
@@ -25,7 +24,7 @@ export class ChannelUpdate extends Logger {
       const guildconfig = await this.bot.db.getGuildConfig(channel.guild.id);
       const loggingChannel = await this.getChannel(channel.guild, TYPE, event, guildconfig);
       if (!loggingChannel) return;
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       const embed = {
         color: convertHex("general"),
@@ -76,7 +75,7 @@ export class ChannelUpdate extends Logger {
       const guildconfig = await this.bot.db.getGuildConfig(channel.guild.id);
       const loggingChannel = await this.getChannel(channel.guild, TYPE, event, guildconfig);
       if (!loggingChannel) return;
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       const embed = {
         color: convertHex("error"),
@@ -129,7 +128,7 @@ export class ChannelUpdate extends Logger {
       const guildconfig = await this.bot.db.getGuildConfig(channel.guild.id);
       const loggingChannel = await this.getChannel(channel.guild, TYPE, event, guildconfig);
       if (!loggingChannel) return;
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       const embed = {
         color: convertHex("general"),

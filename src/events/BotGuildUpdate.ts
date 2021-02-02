@@ -8,7 +8,6 @@ import { Event } from "../classes/Event";
 import { convertHex } from "../helpers/embed";
 import { defaultAvatar } from "../helpers/constants";
 import { dateFormat, regionFormat } from "../utils/format";
-import config from "../../config.json";
 import axios from "axios";
 
 export class BotGuildUpdateEvent extends Event {
@@ -32,9 +31,9 @@ export class BotGuildUpdateEvent extends Event {
           embed: {
             title: `✨ I was added to a server you own (${guild.name}).`,
             description:
-              `To get a list of commands, run \`${config.prefixes[0]}help\`. \n` +
-              `You can configure my options by running \`${config.prefixes[0]}config\` or by using the [web dashboard](${config.homepage}). \n` +
-              `By using ${this.bot.user.username}, you agree to our [privacy policy](${config.homepage}/privacy/) and Discord's Terms of Service`,
+              `To get a list of commands, run \`${this.bot.config.prefixes[0]}help\`. \n` +
+              `You can configure my options by running \`${this.bot.config.prefixes[0]}config\` or by using the [web dashboard](${this.bot.config.homepage}). \n` +
+              `By using ${this.bot.user.username}, you agree to our [privacy policy](${this.bot.config.homepage}/privacy/) and Discord's Terms of Service`,
             color: convertHex("general"),
           },
         });
@@ -44,10 +43,10 @@ export class BotGuildUpdateEvent extends Event {
     // Logs when added or removed to a guild
     const guildCreate = event === "guildCreate";
     this.bot.log.info(`${guildCreate ? "Added to" : "Removed from"} guild: ${guild.name} (${guild.id})`);
-    if (config.logchannel) {
+    if (this.bot.config.logchannel) {
       const botCount = guild.botCount;
       const owner = this.bot.users.get(guild.ownerID);
-      this.bot.createMessage(config.logchannel, {
+      this.bot.createMessage(this.bot.config.logchannel, {
         embed: {
           color: convertHex(guildCreate ? "success" : "error"),
           fields: [
@@ -90,14 +89,14 @@ export class BotGuildUpdateEvent extends Event {
     }
 
     // Updates stats on top.gg
-    if (config.keys.botlists.topgg) {
+    if (this.bot.config.keys.botlists.topgg) {
       await axios(`https://top.gg/api/bots/${this.bot.user.id}/stats`, {
         method: "POST",
         data: JSON.stringify({ server_count: this.bot.guilds.size, shard_count: this.bot.shards.size }),
         headers: {
           "cache-control": "no-cache",
           "Content-Type": "application/json",
-          "Authorization": config.keys.botlists.topgg,
+          "Authorization": this.bot.config.keys.botlists.topgg,
           "User-Agent": "hibiki",
         },
       }).catch((err) => {
@@ -106,13 +105,13 @@ export class BotGuildUpdateEvent extends Event {
     }
 
     // Updates stats on bots.gg
-    if (config.keys.botlists.dbots) {
+    if (this.bot.config.keys.botlists.dbots) {
       await axios(`https://discord.bots.gg/api/v1/bots/${this.bot.user.id}/stats`, {
         method: "POST",
         data: JSON.stringify({ guildCount: this.bot.guilds.size, shardCount: this.bot.shards.size, shardId: 0 }),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": config.keys.botlists.dbots,
+          "Authorization": this.bot.config.keys.botlists.dbots,
           "User-Agent": "hibiki",
         },
       }).catch((err) => {
@@ -121,12 +120,12 @@ export class BotGuildUpdateEvent extends Event {
     }
 
     // Updates stats on discord.boats
-    if (config.keys.botlists.dboats) {
+    if (this.bot.config.keys.botlists.dboats) {
       await axios(`https://discord.boats/api/bot/${this.bot.user.id}`, {
         method: "POST",
         data: JSON.stringify({ server_count: this.bot.guilds.size }),
         headers: {
-          Authorization: `${config.keys.botlists.dboats}`,
+          Authorization: `${this.bot.config.keys.botlists.dboats}`,
         },
       }).catch((err) => {
         return this.bot.log.error(`An error occurred while updating the discord.boats stats: ${err}`);
@@ -134,12 +133,12 @@ export class BotGuildUpdateEvent extends Event {
     }
 
     // Updates stats on botsfordiscord.com
-    if (config.keys.botlists.botsfordiscord) {
+    if (this.bot.config.keys.botlists.botsfordiscord) {
       await axios(`https://botsfordiscord.com/api/${this.bot.user.id}`, {
         method: "POST",
         data: JSON.stringify({ server_count: this.bot.guilds.size }),
         headers: {
-          "Authorization": `${config.keys.botlists.botsfordiscord}`,
+          "Authorization": `${this.bot.config.keys.botlists.botsfordiscord}`,
           "Content-Type": "application/json",
         },
       }).catch((err) => {
@@ -148,7 +147,7 @@ export class BotGuildUpdateEvent extends Event {
     }
 
     // Updates stats on discordbotlist.com
-    if (config.keys.botlists.discordbotlist) {
+    if (this.bot.config.keys.botlists.discordbotlist) {
       await axios(`https://discordbotlist.com/api/v1/bots/${this.bot.user.id}/stats`, {
         method: "POST",
         data: JSON.stringify({
@@ -157,7 +156,7 @@ export class BotGuildUpdateEvent extends Event {
           voice_connections: this.bot.voiceConnections.size,
         }),
         headers: {
-          Authorization: `${config.keys.botlists.discordbotlist}`,
+          Authorization: `${this.bot.config.keys.botlists.discordbotlist}`,
         },
       }).catch((err) => {
         return this.bot.log.error(`An error occurred while updating the discordbotlist.com: ${err}`);
@@ -165,12 +164,12 @@ export class BotGuildUpdateEvent extends Event {
     }
 
     // Updates stats on botsondiscord.xyz
-    if (config.keys.botlists.botsondiscord) {
+    if (this.bot.config.keys.botlists.botsondiscord) {
       await axios(`https://bots.ondiscord.xyz/bot-api/bots/${this.bot.user.id}/guilds`, {
         method: "POST",
         data: JSON.stringify({ guildCount: this.bot.guilds.size }),
         headers: {
-          "Authorization": `${config.keys.botlists.botsondiscord}`,
+          "Authorization": `${this.bot.config.keys.botlists.botsondiscord}`,
           "Content-Type": "application/json",
         },
       }).catch((err) => {

@@ -1,7 +1,6 @@
 import type { EmbedField, Guild, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { defaultAvatar } from "../../helpers/constants";
-import config from "../../../config.json";
 
 import {
   afkTimeoutFormat,
@@ -22,7 +21,7 @@ export class ServerCommand extends Command {
     let guild: Guild;
 
     // Lets bot owners return info about other guilds
-    pargs?.[0].value && config.owners.includes(msg.author.id)
+    pargs?.[0].value && this.bot.config.owners.includes(msg.author.id)
       ? (guild = this.bot.guilds.find((g) => g.name.toLowerCase().startsWith(pargs?.[0].value) || g.id === pargs?.[0].value))
       : (guild = msg.channel.guild);
     if (!guild) return msg.channel.guild;
@@ -129,14 +128,14 @@ export class ServerCommand extends Command {
     // Verification level
     fields.push({
       name: msg.string("general.SERVER_VERIFICATION"),
-      value: verificationLevelFormat(msg.string, guild.verificationLevel),
+      value: `${verificationLevelFormat(msg.string, guild.verificationLevel)}`,
       inline: true,
     });
 
     // Notification level
     fields.push({
       name: msg.string("general.SERVER_NOTIFICATIONS"),
-      value: notificationLevelFormat(msg.string, guild.defaultNotifications),
+      value: `${notificationLevelFormat(msg.string, guild.defaultNotifications)}`,
       inline: true,
     });
 
@@ -159,7 +158,7 @@ export class ServerCommand extends Command {
       if (guild.afkTimeout !== 0) {
         fields.push({
           name: msg.string("general.SERVER_AFK_TIMEOUT"),
-          value: afkTimeoutFormat(msg.string, guild.afkTimeout),
+          value: `${afkTimeoutFormat(msg.string, guild.afkTimeout)}`,
           inline: true,
         });
       }

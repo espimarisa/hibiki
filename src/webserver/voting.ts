@@ -8,18 +8,17 @@ import type { HibikiClient } from "../classes/Client";
 import { convertHex } from "../helpers/embed";
 import express from "express";
 import helmet from "helmet";
-import config from "../../config.json";
 
 const app = express();
 app.use(express.json());
 app.use(helmet());
 
 export async function startVoting(bot: HibikiClient) {
-  if (!config.keys.botlists.voting.auth || !config.keys.botlists.voting.port) return;
+  if (!bot.config.keys.botlists.voting.auth || !bot.config.keys.botlists.voting.port) return;
 
   app.post("/voteReceive", async (req, res) => {
     // Sends if unauthorized
-    if (req.headers.authorization !== config.keys.botlists.voting.auth) {
+    if (req.headers.authorization !== bot.config.keys.botlists.voting.auth) {
       if (req.headers.authorization?.length || !req.headers.authorization) {
         bot.log.warn(`${req.socket.remoteAddress} tried to make a request with the wrong auth key.`);
         return res.sendStatus(401);
@@ -64,7 +63,7 @@ export async function startVoting(bot: HibikiClient) {
     }
 
     // Sends msg of who voted
-    bot.createMessage(config.logchannel, {
+    bot.createMessage(bot.config.logchannel, {
       embed: {
         title: "🗳 User Voted",
         description: `**${user ? user.username : req.body.user}** has voted.`,
@@ -78,6 +77,6 @@ export async function startVoting(bot: HibikiClient) {
   });
 
   // Listens on port
-  app.listen(config.keys.botlists.voting.port, "0.0.0.0");
-  bot.log.info(`Voting handler listening on port ${config.keys.botlists.voting.port}`);
+  app.listen(bot.config.keys.botlists.voting.port, "0.0.0.0");
+  bot.log.info(`Voting handler listening on port ${bot.config.keys.botlists.voting.port}`);
 }

@@ -8,7 +8,6 @@ import type { EmbedOptions, Emoji, Message, TextChannel } from "eris";
 import { Logger } from "../classes/Logger";
 import { urlRegex } from "../helpers/constants";
 import { dateFormat } from "../utils/format";
-import config from "../../config.json";
 const TYPE = "pinChannel";
 
 export class MessagePinboard extends Logger {
@@ -38,7 +37,7 @@ export class MessagePinboard extends Logger {
 
       const pinChannel = await this.getChannel(msg.channel.guild, TYPE, event, guildconfig);
       if (!pinChannel) return;
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       // Gets the pin emoji
       const pin = guildconfig.pinEmoji ? guildconfig.pinEmoji : "📌";

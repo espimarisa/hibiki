@@ -11,7 +11,6 @@ import { localizeProfileItems, localizeSetupItems } from "../../utils/format";
 import { defaultAvatar } from "../../helpers/constants";
 import { validItems } from "../../utils/validItems";
 import express from "express";
-import config from "../../../config.json";
 const router = express.Router();
 
 export = (bot: HibikiClient) => {
@@ -44,7 +43,7 @@ export = (bot: HibikiClient) => {
   router.get("/profile/", checkAuth, async (req, res) => {
     const user = getAuthedUser(req.user as Profile);
     const userconfig = await bot.db.getUserConfig(user.id);
-    const localeString = bot.localeSystem.getLocaleFunction(userconfig?.locale || config.defaultLocale ? config.defaultLocale : "en");
+    const localeString = bot.localeSystem.getLocaleFunction(userconfig?.locale ? userconfig?.locale : bot.config.defaultLocale);
     const localizeItem = (item: string, title = false) => localizeProfileItems(localeString, item, title);
 
     res.render("profile", {
@@ -75,8 +74,9 @@ export = (bot: HibikiClient) => {
 
     // Renders the dashboard and sends the config
     if (!guild) return res.status(401).render("401");
+    const userConfig = await bot.db.getUserConfig(user.id);
 
-    const localeString = bot.localeSystem.getLocaleFunction(config.defaultLocale ? config.defaultLocale : "en");
+    const localeString = bot.localeSystem.getLocaleFunction(userConfig?.locale ? userConfig.locale : bot.config.defaultLocale);
     const localizeItem = (item: string, title = false, punishment = false) => localizeSetupItems(localeString, item, title, punishment);
     const cfg = await bot.db.getGuildConfig(guild.id);
     res.render("manage", {
