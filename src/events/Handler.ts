@@ -7,7 +7,7 @@ import type { Message, TextChannel, User } from "eris";
 import { PrivateChannel } from "eris";
 import { Event } from "../classes/Event";
 import { inviteRegex } from "../helpers/constants";
-import config from "../../config.json";
+import { wordFilter } from "../scripts/wordFilter";
 import * as Sentry from "@sentry/node";
 
 export class HandlerEvent extends Event {
@@ -40,11 +40,19 @@ export class HandlerEvent extends Event {
     // Finds what prefix to use
     const mentionRegex = new RegExp(`<@!?${this.bot.user.id}> ?`);
     const mentionPrefix = mentionRegex.exec(msg.content);
-    const prefixes = config.prefixes.map((p) => msg.content.toLowerCase().startsWith(p)).indexOf(true);
+    const prefixes = this.bot.config.prefixes.map((p) => msg.content.toLowerCase().startsWith(p)).indexOf(true);
     if (mentionPrefix && mentionPrefix.index === 0) prefix = mentionPrefix[0];
     else if (guildconfig && guildconfig.prefix && msg.content.toLowerCase().startsWith(guildconfig.prefix)) prefix = guildconfig.prefix;
-    else if ((!guildconfig || !guildconfig.prefix) && config.prefixes && prefixes !== -1) prefix = config.prefixes[prefixes];
-    if (!prefix) return;
+    else if ((!guildconfig || !guildconfig.prefix) && this.bot.config.prefixes && prefixes !== -1) {
+      prefix = this.bot.config.prefixes[prefixes];
+    }
+
+    // Checks to see if a member is staff
+    const isStaff =
+      msg.member?.permissions.has("administrator") || (guildconfig?.staffRole && msg.member?.roles.includes(guildconfig.staffRole));
+
+    // Checks staff perms and wordFilter
+    if (!prefix) return isStaff && !(msg.channel instanceof PrivateChannel) && wordFilter(guildconfig, msg);
     msg.prefix = prefix;
 
     // Finds the command to run
@@ -53,10 +61,10 @@ export class HandlerEvent extends Event {
       (cmd) => cmd?.name === commandName.toLowerCase() || cmd?.aliases.includes(commandName.toLowerCase()),
     );
 
-    if (!command) return;
+    if (!command) return isStaff && !(msg.channel instanceof PrivateChannel) && wordFilter(guildconfig, msg);
 
     // Handles owner commands
-    if (command.owner && !config.owners.includes(msg.author.id)) return;
+    if (command.owner && !this.bot.config.owners.includes(msg.author.id)) return;
 
     // Handles commands in DMs
     if (!command.allowdms && msg.channel instanceof PrivateChannel) {
@@ -82,10 +90,6 @@ export class HandlerEvent extends Event {
       msg.createEmbed(string("global.ERROR"), string("global.ERROR_NSFW", { command: command.name }), "error");
       return;
     }
-
-    // Checks to see if a member is staff
-    const isStaff =
-      msg.member?.permissions.has("administrator") || (guildconfig?.staffRole && msg.member?.roles.includes(guildconfig.staffRole));
 
     // Handles voice-only commands
     if (command.voice) {
@@ -188,7 +192,7 @@ export class HandlerEvent extends Event {
     }
 
     // Handles command cooldowns
-    if (command.cooldown && !config.owners.includes(msg.author.id)) {
+    if (command.cooldown && !this.bot.config.owners.includes(msg.author.id)) {
       const cooldown = this.bot.cooldowns.get(command.name + msg.author.id);
       if (cooldown) return msg.addReaction("⌛");
       this.bot.cooldowns.set(command.name + msg.author.id, new Date());
