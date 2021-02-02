@@ -1,16 +1,14 @@
 import type { Message, TextChannel } from "eris";
 import type { HibikiClient } from "../../classes/Client";
+import { localizePunishments, tagUser } from "../../utils/format";
 import { punishMute, punishWarn } from "./punishments";
 const reason = "Newline spam (Automod)";
 
 export async function automodAntiNewLine(msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig) {
   if (!cfg.newlineThreshold) cfg.newlineThreshold = 10;
-
   const newLineAmt = msg.content.split("\n").length;
   if (newLineAmt <= cfg.newlineThreshold) return;
-
-  const userLocale = await bot.localeSystem.getUserLocale(msg.author.id, bot);
-  const string = bot.localeSystem.getLocaleFunction(userLocale);
+  const string = bot.localeSystem.getLocaleFunction(cfg?.locale ? cfg?.locale : bot.config.defaultLocale);
 
   cfg?.antiNewLinesPunishments.forEach(async (punishment: string) => {
     switch (punishment) {
@@ -26,13 +24,21 @@ export async function automodAntiNewLine(msg: Message<TextChannel>, bot: HibikiC
     }
   });
 
+  // Localizes punishments
+  const localizedPunishments: string[] = [];
+  cfg.spamPunishments.forEach((p) => {
+    const punishment = localizePunishments(string, p);
+    localizedPunishments.push(punishment);
+  });
+
   // Sends a message if msgOnPunishment is enabled
   if (cfg.msgOnPunishment) {
     const pmsg = await msg.createEmbed(
-      `🔨 ${msg.author.username} ${string("global.HAS_BEEN")} ${cfg.spamPunishments
-        .map((p: string) => `${p.toLowerCase()}`)
-        .filter((p: string) => p !== "purged")
-        .join(` ${string("global.AND")} `)} ${string("global.FOR_SPAMMING")}.`,
+      `🔨 ${string("global.AUTOMOD_PUNISHED", {
+        member: tagUser(msg.author),
+        reason: string("global.NEWLINE_SPAM"),
+        punishments: `${localizedPunishments.filter((p) => p !== string("moderation.PURGED")).join(` ${string("global.AND")} `)}`,
+      })}`,
       null,
       "error",
     );

@@ -8,6 +8,7 @@ import type { Message } from "eris";
 import type { HibikiClient } from "../classes/Client";
 import type { LocaleString } from "../typings/locales";
 import { convertHex } from "../helpers/embed";
+import { tagUser } from "../utils/format";
 
 // Waits for an event to happen and rejects or resolves it
 export function waitFor(event: string, timeout: number, check: any, bot: HibikiClient) {
@@ -42,19 +43,23 @@ export function waitFor(event: string, timeout: number, check: any, bot: HibikiC
 }
 
 // Handles timeout errors
-export function timeoutHandler(err: string, omsg: Message, stringFunc: LocaleString, removeReactions = true) {
+export function timeoutHandler(err: string, msg: Message, string: LocaleString, removeReactions = true) {
   if (err === "timeout") {
-    omsg
+    msg
       .edit({
         embed: {
-          title: stringFunc("global.ERROR"),
-          description: stringFunc("global.TIMEOUT_REACHED"),
+          title: string("global.ERROR"),
+          description: string("global.TIMEOUT_REACHED"),
           color: convertHex("error"),
+          footer: {
+            text: string("global.RAN_BY", { author: tagUser(msg.author) }),
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
         },
       })
       .catch(() => {});
 
     // Removes leftover reactions
-    if (removeReactions) omsg.removeReactions().catch(() => {});
+    if (removeReactions) msg.removeReactions().catch(() => {});
   } else throw err;
 }
