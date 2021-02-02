@@ -1,6 +1,5 @@
 import type { Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import config from "../../../config.json";
 import axios from "axios";
 
 export class HeadpatCommand extends Command {
@@ -14,7 +13,7 @@ export class HeadpatCommand extends Command {
     const body = await axios
       .get("https://api.weeb.sh/images/random?type=pat", {
         headers: {
-          "Authorization": `Wolke ${config.keys.weebsh}`,
+          "Authorization": `Wolke ${this.bot.config.keys.weebsh}`,
           "User-Agent": "hibiki",
         },
       })

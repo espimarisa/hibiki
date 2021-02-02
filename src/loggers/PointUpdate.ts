@@ -7,7 +7,6 @@
 import type { Guild, User } from "eris";
 import { Logger } from "../classes/Logger";
 import { convertHex } from "../helpers/embed";
-import config from "../../config.json";
 const TYPE = "modLogging";
 
 export class PointUpdate extends Logger {
@@ -23,7 +22,7 @@ export class PointUpdate extends Logger {
     if (!channel) return;
 
     if (event === "reputationPointAdd") {
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
@@ -53,7 +52,7 @@ export class PointUpdate extends Logger {
      */
 
     if (event === "reputationPointRemove") {
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {

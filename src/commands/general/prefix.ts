@@ -1,6 +1,5 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import config from "../../../config.json";
 
 export class PrefixCommand extends Command {
   description = "Views or changes the bot's prefix.";
@@ -12,7 +11,7 @@ export class PrefixCommand extends Command {
     const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
 
     if (!args.length && !guildconfig?.prefix) {
-      return msg.createEmbed("🤖 Prefix", `The prefix in this server is \`${config.prefixes[0]}\`.`);
+      return msg.createEmbed("🤖 Prefix", `The prefix in this server is \`${this.bot.config.prefixes[0]}\`.`);
     }
 
     // If there's a prefix & no args

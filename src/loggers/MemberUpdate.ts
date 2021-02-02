@@ -9,7 +9,6 @@ import { convertHex } from "../helpers/embed";
 import { Logger } from "../classes/Logger";
 import { defaultAvatar } from "../helpers/constants";
 import { dateFormat } from "../utils/format";
-import config from "../../config.json";
 const TYPE = "memberLogging";
 
 export class MemberUpdate extends Logger {
@@ -28,7 +27,7 @@ export class MemberUpdate extends Logger {
 
       // Gets the leavejoin channel
       const guildconfig = await this.bot.db.getGuildConfig(guild.id);
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       const muted = (await this.bot.db.getGuildMuteCache(guild.id)) as MuteCache[];
       // Re-adds any muted roles if the member tried to evade mute
@@ -96,7 +95,7 @@ export class MemberUpdate extends Logger {
       if (!guildconfig?.leaveJoin) return;
       const leavejoinchannel = guild.channels.find((c) => c.id === guildconfig?.leaveJoin) as TextChannel;
       if (!leavejoinchannel) return;
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       // Sets default fields
       let leaveMessage = string("logger.LEAVE_MESSAGE", { member: member.user.username });
@@ -149,7 +148,7 @@ export class MemberUpdate extends Logger {
       const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const channel = await this.getChannel(guild, TYPE, event, guildconfig);
       if (!channel) return;
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
@@ -195,7 +194,7 @@ export class MemberUpdate extends Logger {
       const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const channel = await this.getChannel(guild, TYPE, event, guildconfig);
       if (!channel) return;
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {

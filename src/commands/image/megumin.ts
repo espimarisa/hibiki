@@ -1,6 +1,5 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import config from "../../../config.json";
 import axios from "axios";
 
 export class MeguminCommand extends Command {
@@ -12,7 +11,7 @@ export class MeguminCommand extends Command {
     const body = await axios
       .get("https://api.weeb.sh/images/random?type=megumin", {
         headers: {
-          "Authorization": `Wolke ${config.keys.weebsh}`,
+          "Authorization": `Wolke ${this.bot.config.keys.weebsh}`,
           "User-Agent": "hibiki",
         },
       })

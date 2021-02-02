@@ -16,7 +16,6 @@ import express from "express";
 import expressSession from "express-session";
 import helmet from "helmet";
 import passport from "passport";
-import config from "../../config.json";
 
 const app = express();
 app.enable("trust proxy");
@@ -43,16 +42,16 @@ app.use(
 
 // Starts the dashboard
 export async function startDashboard(bot: HibikiClient) {
-  if (!config.dashboard.port || !config.dashboard.cookieSecret || !config.dashboard.redirectURI || !config.dashboard.botSecret) return;
+  if (!bot.config.dashboard.port || !bot.config.dashboard.redirectURI || !bot.config.dashboard.botSecret) return;
 
   // Creates a session RethinkDB store
   const sessionStore = new RethinkDBStore({
     connectOptions: {
-      db: config.database.db || undefined,
-      password: config.database.password || undefined,
-      port: Number(config.database.port) || 28015,
-      host: config.database.host || undefined,
-      user: config.database.user || undefined,
+      db: bot.config.database.db || undefined,
+      password: bot.config.database.password || undefined,
+      port: Number(bot.config.database.port) || 28015,
+      host: bot.config.database.host || undefined,
+      user: bot.config.database.user || undefined,
       silent: true,
     },
   });
@@ -72,7 +71,7 @@ export async function startDashboard(bot: HibikiClient) {
   // Enables expressSession
   app.use(
     expressSession({
-      secret: config.dashboard.cookieSecret,
+      secret: bot.config.dashboard.cookieSecret || "thisIsNotVerySecureAndYouShouldChangeIt",
       store: sessionStore,
       name: bot.user.username,
       cookie: {
@@ -90,7 +89,7 @@ export async function startDashboard(bot: HibikiClient) {
   );
 
   // Enables cookieParser and csurf
-  app.use(cookieParser(config.dashboard.cookieSecret));
+  app.use(cookieParser(bot.config.dashboard.cookieSecret));
   app.use(csurf({ cookie: true }));
 
   // Enables passport
@@ -144,7 +143,7 @@ export async function startDashboard(bot: HibikiClient) {
   });
 
   // Listens on the configured port
-  app.listen(config.dashboard.port, async () => {
-    bot.log.info(`Dashboard running on port ${config.dashboard.port}`);
+  app.listen(bot.config.dashboard.port, async () => {
+    bot.log.info(`Dashboard running on port ${bot.config.dashboard.port}`);
   });
 }

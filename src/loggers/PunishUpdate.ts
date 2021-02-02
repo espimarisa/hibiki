@@ -7,7 +7,6 @@
 import type { Guild, User } from "eris";
 import { Logger } from "../classes/Logger";
 import { convertHex } from "../helpers/embed";
-import config from "../../config.json";
 const TYPE = "modLogging";
 
 export class PunishUpdate extends Logger {
@@ -23,7 +22,7 @@ export class PunishUpdate extends Logger {
     if (!channel) return;
 
     if (event === "memberMute") {
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
@@ -48,7 +47,7 @@ export class PunishUpdate extends Logger {
      */
 
     if (event === "memberUnmute") {
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
@@ -73,7 +72,7 @@ export class PunishUpdate extends Logger {
      */
 
     if (event === "memberWarn") {
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {
@@ -103,7 +102,7 @@ export class PunishUpdate extends Logger {
      */
 
     if (event === "memberWarnRemove") {
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       this.bot.createMessage(channel, {
         embed: {

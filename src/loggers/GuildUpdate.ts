@@ -8,7 +8,6 @@ import type { EmbedOptions, Guild } from "eris";
 import { Logger } from "../classes/Logger";
 import { convertHex } from "../helpers/embed";
 import * as format from "../utils/format";
-import config from "../../config.json";
 const TYPE = "eventLogging";
 
 export class GuildUpdate extends Logger {
@@ -19,7 +18,7 @@ export class GuildUpdate extends Logger {
     const guildconfig = await this.bot.db.getGuildConfig(guild.id);
     const channel = await this.getChannel(guild, TYPE, event, guildconfig);
     if (!channel) return;
-    const string = this.bot.localeSystem.getLocaleFunction(guildconfig.locale ? guildconfig.locale : config.defaultLocale);
+    const string = this.bot.localeSystem.getLocaleFunction(guildconfig.locale ? guildconfig.locale : this.bot.config.defaultLocale);
 
     // Embed construct
     const embed = {
