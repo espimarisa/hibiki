@@ -6,12 +6,12 @@
 
 import type { Message, TextChannel } from "eris";
 import type { HibikiClient } from "../../classes/Client";
+import { localizePunishments, tagUser } from "../../utils/format";
 import { punishMute, punishPurge, punishWarn } from "./punishments";
 const punishedUsers: string[] = [];
 
 export async function automodAntiSpam(msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig) {
-  const userLocale = await bot.localeSystem.getUserLocale(msg.author.id, bot);
-  const string = bot.localeSystem.getLocaleFunction(userLocale);
+  const string = bot.localeSystem.getLocaleFunction(cfg?.locale ? cfg?.locale : bot.config.defaultLocale);
 
   // Filters thru the antiSpam
   const spam = bot.antiSpam.filter(
@@ -23,8 +23,11 @@ export async function automodAntiSpam(msg: Message<TextChannel>, bot: HibikiClie
 
   // If the spam threshold is met
   if (spam.length >= cfg.spamThreshold) {
-    // Handles each type of spam punishment
+    // Pushes to punished users to avoid repeated messages
+    punishedUsers.push(msg.author.id);
+    setTimeout(() => punishedUsers.splice(punishedUsers.indexOf(msg.author.id), 1), 5000);
 
+    // Handles each type of spam punishment
     cfg.spamPunishments.forEach(async (punishment: string) => {
       switch (punishment) {
         case "Mute":
@@ -44,23 +47,27 @@ export async function automodAntiSpam(msg: Message<TextChannel>, bot: HibikiClie
       }
     });
 
+    // Localizes punishments
+    const localizedPunishments: string[] = [];
+    cfg.spamPunishments.forEach((p) => {
+      const punishment = localizePunishments(string, p);
+      localizedPunishments.push(punishment);
+    });
+
     // Sends a message if msgOnPunishment is enabled
     if (cfg.msgOnPunishment) {
       const pmsg = await msg.createEmbed(
-        `🔨 ${msg.author.username} ${string("global.HAS_BEEN")} ${cfg.spamPunishments
-          .map((p: string) => `${p.toLowerCase()}`)
-          .filter((p: string) => p !== "purged")
-          .join(` ${string("global.AND")} `)} ${string("global.FOR_SPAMMING")}.`,
+        `🔨 ${string("global.AUTOMOD_PUNISHED", {
+          member: tagUser(msg.author),
+          reason: string("global.SPAMMING"),
+          punishments: `${localizedPunishments.filter((p) => p !== string("moderation.PURGED")).join(` ${string("global.AND")} `)}`,
+        })}`,
         null,
         "error",
       );
 
       setTimeout(() => pmsg.delete("Automod message deletion").catch(() => {}), 5000);
     }
-
-    // Pushes to punished users to avoid repeated messages
-    punishedUsers.push(msg.author.id);
-    setTimeout(() => punishedUsers.splice(punishedUsers.indexOf(msg.author.id), 1), 5000);
 
     // Waits a second between each
     bot.antiSpam.forEach((a) => {

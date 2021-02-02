@@ -6,12 +6,12 @@
 
 import type { Message, TextChannel } from "eris";
 import type { HibikiClient } from "../../classes/Client";
+import { localizePunishments, tagUser } from "../../utils/format";
 import { punishMute, punishWarn } from "./punishments";
 const reason = "Mass mention (Automod)";
 
 export async function automodAntiMassMention(msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig) {
-  const userLocale = await bot.localeSystem.getUserLocale(msg.author.id, bot);
-  const string = bot.localeSystem.getLocaleFunction(userLocale);
+  const string = bot.localeSystem.getLocaleFunction(cfg?.locale ? cfg?.locale : bot.config.defaultLocale);
 
   if (!cfg.massMentionThreshold) cfg.massMentionThreshold = 8;
   if (msg.mentions.length >= cfg.massMentionThreshold) {
@@ -30,13 +30,21 @@ export async function automodAntiMassMention(msg: Message<TextChannel>, bot: Hib
       }
     });
 
+    // Localizes punishments
+    const localizedPunishments: string[] = [];
+    cfg.spamPunishments.forEach((p) => {
+      const punishment = localizePunishments(string, p);
+      localizedPunishments.push(punishment);
+    });
+
     // Sends a message if msgOnPunishment is enabled
     if (cfg.msgOnPunishment) {
       const pmsg = await msg.createEmbed(
-        `🔨 ${msg.author.username} ${string("global.HAS_BEEN")} ${cfg.spamPunishments
-          .map((p: string) => `${p.toLowerCase()}`)
-          .filter((p: string) => p !== "purged")
-          .join(` ${string("global.AND")} `)} ${string("global.FOR_MASSMENTIONING")}.`,
+        `🔨 ${string("global.AUTOMOD_PUNISHED", {
+          member: tagUser(msg.author),
+          reason: string("global.MASS_MENTIONING"),
+          punishments: `${localizedPunishments.filter((p) => p !== string("moderation.PURGED")).join(` ${string("global.AND")} `)}`,
+        })}`,
         null,
         "error",
       );

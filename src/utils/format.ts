@@ -96,6 +96,7 @@ export function regionFormat(region: string) {
       return "US South";
     case "us-west":
       return "US West";
+    case undefined:
     default:
       return region;
   }
@@ -312,6 +313,52 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
   }
 }
 
+// Localizes askfor item types
+export function localizeItemTypes(string: LocaleString, item: string) {
+  switch (item) {
+    case "channelID":
+      return string("global.ASKFOR_CHANNEL");
+    case "roleID":
+      return string("global.ASKFOR_ROLE");
+    case "voiceChannel":
+      return string("global.ASKFOR_VOICECHANNEL");
+    case "number":
+      return string("global.ASKFOR_NUMBER");
+    case "string":
+      return string("global.ASKFOR_STRING");
+    case "bool":
+      return string("global.ASKFOR_BOOL");
+    case "roleArray":
+      return string("global.ASKFOR_ROLEARRAY");
+    case "channelArray":
+      return string("global.ASKFOR_CHANNELARRAY");
+    case "emoji":
+      return string("global.ASKFOR_EMOJI");
+    case "timezone":
+      return string("global.ASKFOR_TIMEZONE");
+    case "array":
+      return string("global.ASKFOR_ARRAY");
+    case "bio":
+      return string("global.ASKFOR_BIO");
+  }
+}
+
+// Formats punishments
+export function localizePunishments(string: LocaleString, item: string) {
+  switch (item) {
+    case "Mute":
+      return string("moderation.MUTED");
+    case "Purge":
+      return string("moderation.PURGED");
+    case "Warn":
+      return string("moderation.WARNED");
+    case "Ban":
+      return string("moderation.BAN");
+    case "Kick":
+      return string("moderation.KICK");
+  }
+}
+
 // Formats guild verification level
 export function verificationLevelFormat(string: LocaleString, level: number) {
   switch (level) {
@@ -325,8 +372,9 @@ export function verificationLevelFormat(string: LocaleString, level: number) {
       return string("global.HIGH");
     case 4:
       return string("global.HIGHEST");
+    case undefined:
     default:
-      return "Unknown";
+      return level;
   }
 }
 
@@ -349,8 +397,9 @@ export function notificationLevelFormat(string: LocaleString, level: number) {
       return string("general.SERVER_NOTIFICATIONLEVEL_0");
     case 1:
       return string("general.SERVER_NOTIFICATIONLEVEL_1");
+    case undefined:
     default:
-      return string("global.UNKNOWN");
+      return level;
   }
 }
 
@@ -363,8 +412,9 @@ export function contentFilterFormat(string: LocaleString, level: number) {
       return string("general.SERVER_CONTENTLEVEL_1");
     case 2:
       return string("general.SERVER_CONTENTLEVEL_2");
+    case undefined:
     default:
-      return string("global.UNKNOWN");
+      return level;
   }
 }
 
@@ -381,8 +431,9 @@ export function afkTimeoutFormat(string: LocaleString, level: number) {
       return string("global.MINUTES", { minutes: "30" });
     case 3600:
       return string("global.HOURS", { hours: "1" });
+    case undefined:
     default:
-      return string("global.NONE");
+      return level;
   }
 }
 
@@ -442,8 +493,9 @@ export function featureFormat(string: LocaleString, features: string[]) {
         return string("general.SERVER_FEATURE_PREVIEW");
       case "MEMBER_VERIFICATION_GATE_ENABLED":
         return string("general.SERVER_FEATURE_GATE");
+      case undefined:
       default:
-        return feature;
+        return features;
     }
   });
 }

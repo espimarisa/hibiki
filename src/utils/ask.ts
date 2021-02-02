@@ -61,11 +61,11 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
   if (!arg) return "No arg";
   if (!msg.channel.guild) return "No guild";
   const clear = arg.toLowerCase() === "clear" || arg.toLowerCase() === "off" || arg.toLowerCase() === "null";
+  if (clear) return "clear";
 
   // Looks for a role
   if (type === "roleID") {
     const role = bot.args.argtypes.role(arg, msg, undefined) as Role | undefined;
-    if (clear) return "clear";
     if (!role || role?.managed) return "No role";
     return role.id;
   }
@@ -73,7 +73,6 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
   // Looks for a channel
   if (type === "channelID") {
     const channel = bot.args.argtypes.channel(arg, msg, undefined) as Channel | undefined;
-    if (clear) return "clear";
     if (!channel) return;
     return channel.id;
   }
@@ -81,7 +80,6 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
   // Looks for a voice Channel
   if (type === "voiceChannel") {
     const channel = bot.args.argtypes.voiceChannel(arg, msg, undefined) as VoiceChannel | undefined;
-    if (clear) return "clear";
     if (channel.type !== 2) return "Invalid channel type";
     if (!channel) return;
     return channel.id;
@@ -97,7 +95,6 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
   // Looks for a string
   if (type === "string") {
     const string = bot.args.argtypes.string(arg);
-    if (clear) return "clear";
     if (!string) return "No string";
     return string;
   }
@@ -112,14 +109,14 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
   // Looks for a roleArray
   if (type === "roleArray") {
     const roles = bot.args.argtypes.roleArray(arg.split(/(?:\s{0,},\s{0,})|\s/), msg);
-    if (!roles?.length) return "Invalid rolearray";
+    if (!roles?.length) return "No rolearray";
     return roles;
   }
 
   // Looks for a channelArray
   if (type === "channelArray") {
     const channels = bot.args.argtypes.channelArray(arg.split(/(?:\s{0,},\s{0,})|\s/), msg);
-    if (!channels?.length) return "Invalid channelArray";
+    if (!channels?.length) return "No channelArray";
     return channels;
   }
 
@@ -153,9 +150,8 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
             return c.allowdisable && (c.name === cmd || c.aliases.includes(cmd));
           })?.name,
       )
-      .filter((c: string | undefined) => c !== undefined);
+      .filter((c: string) => c !== undefined);
 
-    console.log(cmds);
     return cmds.length ? cmds : "No cmds";
   }
 
@@ -185,11 +181,11 @@ export async function askForValue(
   await waitFor(
     "messageCreate",
     60000,
-    async (m: Message) => {
+    async (m: Message<TextChannel>) => {
       if (m.author.id !== msg.author.id || m.channel.id !== msg.channel.id || !msg.content) return;
       let result = askFor(
         bot,
-        m as Message<TextChannel>,
+        m,
         setting.id === "disabledCmds" || setting.id === "disabledCategories" ? setting.id : setting.type,
         m.content,
       );
@@ -265,6 +261,7 @@ export async function askForValue(
       }
 
       // Clears or sets the result
+      let resultName: string;
       if (result === "clear") result = null;
       config[setting.id] = result;
 
@@ -273,12 +270,38 @@ export async function askForValue(
       else await bot.db.updateGuildConfig(msg.channel.guild.id, config);
       m.delete();
 
-      // Sends a success message
+      // Formats result names
+      if (setting.type === "roleID") resultName = msg.channel.guild.roles.get(result)?.name || result;
+      else if (setting.type === "channelID") resultName = msg.channel.guild.channels.get(result)?.mention || result;
+      // Role array tagging
+      else if (setting.type === "roleArray") {
+        const roleNames: string[] = [];
+        await result.forEach((r: string) => {
+          const role = msg.channel.guild.roles.get(r)?.name;
+          if (role) roleNames.push(role);
+          else roleNames.push(r);
+        });
+
+        resultName = roleNames.join(", ");
+      }
+
+      // Channelarray tagging
+      else if (setting.type === "channelArray") {
+        const channelNames: string[] = [];
+        await result.forEach((c: string) => {
+          const channel = msg.channel.guild.channels.get(c)?.mention;
+          if (channel) channelNames.push(channel);
+          else channelNames.push(c);
+        });
+
+        resultName = channelNames.join(", ");
+      }
+
       const setmsg = await msg.createEmbed(
         msg.string("global.SUCCESS"),
-        // TODO: Localize result types.
-        // TODO: Localize setting return (i.e channelID)
-        `**${localizeSetupItems(msg.string, setting.id, true)}** ${msg.string("global.SET_TO")} **${result}**.`,
+        `**${localizeSetupItems(msg.string, setting.id, true)}** ${msg.string("global.SET_TO")} **${
+          resultName || (result ?? msg.string("global.NOTHING"))
+        }**.`,
         "success",
       );
       setTimeout(() => {
@@ -312,10 +335,11 @@ export async function askForLocale(
 
   await omsg.removeReactions();
   Object.keys(localeEmojis).forEach(async (emoji) => omsg.addReaction(emoji));
+  const string = bot.localeSystem.getLocaleFunction(userconfig?.locale ? userconfig?.locale : bot.config.defaultLocale);
 
   // Asks for input
   omsg.editEmbed(
-    "select locale bitch",
+    string("global.ASKFOR_LOCALE"),
     Object.entries(localeEmojis)
       .map((p) => `${p[0]}: ${p[1]}`)
       .join("\n"),
