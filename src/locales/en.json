@@ -47,6 +47,7 @@
     "USER_ACCOUNT": "Account",
     "USER_CREATED": "Created on",
     "USER_JOINED": "Joined on",
+    "USER_NOTINGUILD": "User not in the server.",
     "USER_TIME": "Current Time",
     "USER_PLAYING": "Playing",
     "USER_STREAMING": "Streaming",
