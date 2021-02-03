@@ -28,29 +28,32 @@ export class WordFilterCommand extends Command {
     }
 
     // Removal support
-    else if (args[0] === "remove") {
+    else if (args[0] === "remove" || args[0] === "delete") {
       args.shift();
       const word = args.join(" ");
       const wordIndex = guildconfig.filteredWords.indexOf(word);
       if (wordIndex === -1) return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.FILTER_NOTFILTERED"), "error");
-      else guildconfig.filteredWords.splice(wordIndex, 1);
+      guildconfig.filteredWords.splice(wordIndex, 1);
+      msg.createEmbed("fag", `word ${word} has beenn removed`);
+    } else {
+      // Adds the word
+      const word = args.join(" ");
+
+      // Minimum & maximum
+      if (word.length < 3 || word.length > 32) {
+        return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.FILTER_THRESHOLD"), "error");
+      }
+
+      // If the word already exists
+      if (guildconfig.filteredWords.includes(word)) {
+        return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.FILTER_ALREADYFILTERED"), "error");
+      }
+
+      // Updates the DB
+      guildconfig.filteredWords.push(word);
+      msg.createEmbed("fag", `word ${word} has beenn blacklisted`);
     }
 
-    // Adds the word
-    const word = args.join(" ");
-
-    // Minimum & maximum
-    if (word.length < 3 || word.length > 32) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.FILTER_THRESHOLD"), "error");
-    }
-
-    // If the word already exists
-    if (guildconfig.filteredWords.includes(word)) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.FILTER_ALREADYFILTERED"), "error");
-    }
-
-    // Updates the DB
-    guildconfig.filteredWords.push(word);
     await this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);
   }
 }
