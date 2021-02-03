@@ -6,7 +6,6 @@
 
 import type { Guild, User } from "eris";
 import { Logger } from "../classes/Logger";
-import { convertHex } from "../helpers/embed";
 const TYPE = "modLogging";
 
 export class PunishUpdate extends Logger {
@@ -26,7 +25,7 @@ export class PunishUpdate extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("error"),
+          color: this.convertHex("error"),
           author: {
             name: string("logger.MEMBER_MUTED", { giver: this.tagUser(giver), member: this.tagUser(member) }),
             icon_url: member.dynamicAvatarURL(),
@@ -51,7 +50,7 @@ export class PunishUpdate extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("success"),
+          color: this.convertHex("success"),
           author: {
             name: string("logger.MEMBER_UNMUTED", { giver: this.tagUser(giver), member: this.tagUser(member) }),
             icon_url: member.dynamicAvatarURL(),
@@ -76,7 +75,7 @@ export class PunishUpdate extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("error"),
+          color: this.convertHex("error"),
           author: {
             name: string("logger.MEMBER_WARNED", { giver: this.tagUser(giver), member: this.tagUser(member) }),
             icon_url: member.dynamicAvatarURL(),
@@ -106,7 +105,7 @@ export class PunishUpdate extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("success"),
+          color: this.convertHex("success"),
           author: {
             name: string("logger.WARNING_REMOVED", { giver: this.tagUser(giver) }),
             icon_url: member.dynamicAvatarURL(),
