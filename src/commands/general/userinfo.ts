@@ -256,7 +256,10 @@ export class UserinfoCommand extends Command {
           url: fallbackAvatar ?? (member.user.dynamicAvatarURL() || defaultAvatar),
         },
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", {
+            author: msg.tagUser(msg.author),
+            extra: user ? msg.string("general.USER_NOTINGUILD") : undefined,
+          }),
           icon_url: msg.author.dynamicAvatarURL() || defaultAvatar,
         },
       },
