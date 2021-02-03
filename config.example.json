@@ -49,7 +49,10 @@
     "spotifyClientSecret": ""
   },
   
-  "customEmojis": {},
+  "customEmojis": {
+    "jiktim": "",
+    "jiktimID": ""
+  },
 
   "keys": {
     "abuseipdb": "",
