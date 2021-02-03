@@ -6,7 +6,7 @@
 
 // Parsed arguments
 interface ParsedArgs {
-  flag: string | undefined;
+  flag: string | string[] | undefined;
   name: string;
   optional: boolean;
   type: string;
@@ -65,51 +65,4 @@ interface Bulmaselect {
   children?: Record<string, string>[];
   label?: string;
   type?: string;
-}
-
-// Argument types
-interface ArgTypes {
-  boolean: {
-    (a: string, msg: Message, flag?: string): boolean;
-  };
-
-  channel: {
-    (a: string, msg: Message<TextChannel>, flag?: string): AnyChannel | undefined;
-  };
-
-  channelArray: {
-    (a: string[], msg: Message<TextChannel>): string[] | "No channels";
-  };
-
-  guild: {
-    (a: string, msg: Message<TextChannel>, flag?: string, b: HibikiClient): Guild;
-  };
-
-  member: {
-    (a: string, msg: Message<TextChannel>, flag?: string): Member | undefined;
-  };
-
-  number: {
-    (a: number, msg: Message<TextChannel>, flag?: string): number;
-  };
-
-  role: {
-    (a: string, msg: Message<TextChannel>, flag?: string): Role | undefined;
-  };
-
-  roleArray: {
-    (a: string[], msg: Message<TextChannel>): string[] | undefined;
-  };
-
-  string: {
-    (a: string): string;
-  };
-
-  user: {
-    (a: string): User | undefined;
-  };
-
-  voiceChannel: {
-    (a: string, msg: Message<TextChannel>, flag?: string): VoiceChannel | undefined;
-  };
 }

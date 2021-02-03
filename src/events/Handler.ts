@@ -205,8 +205,10 @@ export class HandlerEvent extends Event {
     let parsedArgs: ParsedArgs[];
     if (command.args) {
       // Parses arguments and sends if missing any
-      parsedArgs = this.bot.args.parse(command.args, args.join(" "), msg);
-      const missingargs = parsedArgs.filter((a) => typeof a.value == "undefined" && !a.optional);
+      parsedArgs = await this.bot.args.parse(command.args, args.join(" "), msg);
+      const missingargs = parsedArgs.filter((a) => {
+        return typeof a.value == "undefined" && !a.optional;
+      });
 
       if (missingargs.length) {
         return msg.createEmbed(

@@ -12,7 +12,7 @@ export const validTimeRegex = /\d{1,2}( )?(?:(y(?= )|y(ear(s)?)?)|(w(?= )|w(eek(
 // Validate emojis
 export const defaultEmojiRegex = /\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/;
 export const animatedEmojiRegex = /<a:[^\s]+:\d{17,18}>/;
-export const emojiIDRegex = /:[^\s]+:\d{17,18}>/;
+export const emojiIDRegex = /<:[^\s]+:\d{17,18}>/;
 export const emojiNameRegex = /(?<=:)[^\s]+(?=:)/;
 
 // Invite regexes
