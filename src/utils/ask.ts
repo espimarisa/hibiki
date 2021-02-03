@@ -7,7 +7,7 @@
 import type { HibikiClient } from "../classes/Client";
 import type { Channel, Emoji, Member, Message, Role, TextChannel, VoiceChannel } from "eris";
 import type { LocaleString } from "../typings/locales";
-import { defaultEmojiRegex, fullInviteRegex } from "../helpers/constants";
+import { defaultEmojiRegex, emojiIDRegex, fullInviteRegex } from "../helpers/constants";
 import { localizeSetupItems } from "../utils/format";
 import { timeoutHandler, waitFor } from "./waitFor";
 
@@ -94,8 +94,9 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
 
   // Looks for a string
   if (type === "string") {
-    const string = bot.args.argtypes.string(arg);
+    let string = bot.args.argtypes.string(arg);
     if (!string) return "No string";
+    string = string.replace(emojiIDRegex, "");
     return string;
   }
 
