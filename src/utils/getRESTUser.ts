@@ -16,7 +16,7 @@ import { User } from "eris";
 const erisEndpoints = require("eris/lib/rest/Endpoints");
 
 export async function getRESTUser(user: string, bot: HibikiClient) {
-  const RESTUser = await bot.requestHandler.request?.("GET", erisEndpoints.USER(user, true), true).catch(() => {});
+  const RESTUser = await bot.requestHandler.request("GET", erisEndpoints.USER(user, true), true).catch(() => {});
   if (!RESTUser) return;
   return new User(RESTUser as BaseData, bot);
 }
