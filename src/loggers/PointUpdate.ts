@@ -6,7 +6,6 @@
 
 import type { Guild, User } from "eris";
 import { Logger } from "../classes/Logger";
-import { convertHex } from "../helpers/embed";
 const TYPE = "modLogging";
 
 export class PointUpdate extends Logger {
@@ -26,7 +25,7 @@ export class PointUpdate extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("general"),
+          color: this.convertHex("general"),
           author: {
             name: string("logger.POINT_GIVEN", { giver: this.tagUser(giver), member: this.tagUser(member) }),
             icon_url: member.dynamicAvatarURL(),
@@ -56,7 +55,7 @@ export class PointUpdate extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("general"),
+          color: this.convertHex("general"),
           author: {
             name: string("logger.POINT_REMOVED", { giver: this.tagUser(giver) }),
             icon_url: member.dynamicAvatarURL(),

@@ -5,7 +5,6 @@
  */
 
 import type { EmbedOptions, TextChannel, VoiceChannel } from "eris";
-import { convertHex } from "../helpers/embed";
 import { Logger } from "../classes/Logger";
 import { dateFormat } from "../utils/format";
 const TYPE = "eventLogging";
@@ -27,7 +26,7 @@ export class ChannelUpdate extends Logger {
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       const embed = {
-        color: convertHex("general"),
+        color: this.convertHex("general"),
         author: {
           icon_url: this.bot.user.dynamicAvatarURL(),
           name: string("logger.CHANNEL_CREATED", { channel: channel.name }),
@@ -78,7 +77,7 @@ export class ChannelUpdate extends Logger {
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       const embed = {
-        color: convertHex("error"),
+        color: this.convertHex("error"),
         author: {
           icon_url: this.bot.user.dynamicAvatarURL(),
           name: string("logger.CHANNEL_DELETED", { channel: channel.name }),
@@ -131,7 +130,7 @@ export class ChannelUpdate extends Logger {
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       const embed = {
-        color: convertHex("general"),
+        color: this.convertHex("general"),
         fields: [],
         author: {
           icon_url: this.bot.user.dynamicAvatarURL(),

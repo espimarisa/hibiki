@@ -6,7 +6,6 @@
 
 import type { Guild, Role, User } from "eris";
 import { Logger } from "../classes/Logger";
-import { convertHex } from "../helpers/embed";
 const TYPE = "modLogging";
 
 export class MemberRoleUpdate extends Logger {
@@ -26,7 +25,7 @@ export class MemberRoleUpdate extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("general"),
+          color: this.convertHex("general"),
           author: {
             name: string("logger.MEMBER_VERIFIED", { user: this.tagUser(giver), member: this.tagUser(member) }),
             icon_url: member.dynamicAvatarURL(),
@@ -51,7 +50,7 @@ export class MemberRoleUpdate extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("error"),
+          color: this.convertHex("error"),
           author: {
             name: string("logger.MEMBER_UNVERIFIED", { user: this.tagUser(giver), member: this.tagUser(member) }),
             icon_url: member.dynamicAvatarURL(),
@@ -76,7 +75,7 @@ export class MemberRoleUpdate extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("general"),
+          color: this.convertHex("general"),
           author: {
             name: string("logger.MEMBER_SELFASSIGNED", { user: this.tagUser(member), role: role.name }),
             icon_url: member.dynamicAvatarURL(),
@@ -94,7 +93,7 @@ export class MemberRoleUpdate extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("general"),
+          color: this.convertHex("general"),
           author: {
             name: string("logger.MEMBER_UNASSIGNED", { user: this.tagUser(member), role: role.name }),
             icon_url: member.dynamicAvatarURL(),

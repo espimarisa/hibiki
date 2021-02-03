@@ -5,7 +5,6 @@
 
 import type { Guild } from "eris";
 import { Event } from "../classes/Event";
-import { convertHex } from "../helpers/embed";
 import { defaultAvatar } from "../helpers/constants";
 import { dateFormat, regionFormat } from "../utils/format";
 import axios from "axios";
@@ -34,7 +33,7 @@ export class BotGuildUpdateEvent extends Event {
               `To get a list of commands, run \`${this.bot.config.prefixes[0]}help\`. \n` +
               `You can configure my options by running \`${this.bot.config.prefixes[0]}config\` or by using the [web dashboard](${this.bot.config.homepage}). \n` +
               `By using ${this.bot.user.username}, you agree to our [privacy policy](${this.bot.config.homepage}/privacy/) and Discord's Terms of Service`,
-            color: convertHex("general"),
+            color: this.convertHex("general"),
           },
         });
       }
@@ -48,7 +47,7 @@ export class BotGuildUpdateEvent extends Event {
       const owner = this.bot.users.get(guild.ownerID);
       this.bot.createMessage(this.bot.config.logchannel, {
         embed: {
-          color: convertHex(guildCreate ? "success" : "error"),
+          color: this.convertHex(guildCreate ? "success" : "error"),
           fields: [
             {
               name: "ID",
