@@ -95,7 +95,7 @@ export class UserinfoCommand extends Command {
       const jikGuild = this.bot.guilds.get(this.bot.config.customEmojis.jiktimID);
       if (jikGuild) {
         const isJikMember = jikGuild.members?.get(member.id);
-        if (isJikMember) badges += this.bot.config.customEmojis.jiktim;
+        if (isJikMember) badges += this.bot.config.customEmojis?.jiktim;
       }
     }
 
