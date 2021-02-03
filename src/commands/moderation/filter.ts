@@ -34,7 +34,7 @@ export class WordFilterCommand extends Command {
       const wordIndex = guildconfig.filteredWords.indexOf(word);
       if (wordIndex === -1) return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.FILTER_NOTFILTERED"), "error");
       guildconfig.filteredWords.splice(wordIndex, 1);
-      msg.createEmbed("fag", `word ${word} has beenn removed`);
+      msg.createEmbed(`🛑 ${msg.string("moderation.FILTER")}`, msg.string("moderation.FILTER_REMOVED", { word: word }));
     } else {
       // Adds the word
       const word = args.join(" ");

@@ -117,6 +117,12 @@ export class RethinkProvider {
     return this.db.table("warnings").filter({ receiver: user }).run() as Promise<UserWarning[]>;
   }
 
+  // Gets user's guild warnings
+  async getAllUserGuildWarnings(user: string, guild: string) {
+    await this.dblock;
+    return this.db.table("warnings").filter({ receiver: user, guild: guild }).run() as Promise<UserWarning[]>;
+  }
+
   // Inserts a user warning
   async insertUserWarning(warning: UserWarning) {
     await this.dblock;
@@ -145,7 +151,13 @@ export class RethinkProvider {
     return this.db.table("points").filter({ receiver: user }).run() as Promise<UserPoint[]>;
   }
 
-  // Inserts a user warning
+  // Gets user's points
+  async getAllUserGuildPoints(user: string, guild: string) {
+    await this.dblock;
+    return this.db.table("points").filter({ receiver: user, guild: guild }).run() as Promise<UserPoint[]>;
+  }
+
+  // Inserts a user point
   async insertUserPoint(point: UserPoint) {
     await this.dblock;
     return this.db.table("points").insert(point).run();

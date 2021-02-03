@@ -3,6 +3,7 @@
  * @description Connects to Discord and handles global functions
  */
 
+// holy mother of imports lool
 import type { ClientOptions } from "eris";
 import type { Command } from "./Command";
 import type { Event } from "./Event";
@@ -69,6 +70,7 @@ export class HibikiClient extends Client {
     this.lavalink = new Lavalink(this);
     this.localeSystem = new LocaleSystem(LOCALES_DIRECTORY);
     this.reminderHandler = new ReminderHandler(this);
+    this.requestHandler = new Eris.RequestHandler(this);
 
     this.connect();
     this.editStatus("idle");

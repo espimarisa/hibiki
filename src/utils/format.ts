@@ -4,9 +4,9 @@
  * @module utils/format
  */
 
-import type { User } from "eris";
-import { auditLogRegex } from "../helpers/constants";
+import type { ActivityType, Status, User } from "eris";
 import type { LocaleString } from "../typings/locales";
+import { auditLogRegex } from "../helpers/constants";
 
 // Tags a user by username#discriminator
 export function tagUser(user: User, emojiFilter = false) {
@@ -51,6 +51,43 @@ export function toHHMMSS(seconds: number) {
     seconds < 10 ? "0" : ""
   }${seconds}`;
   return time;
+}
+
+// Formats user statusTypes
+export function statusTypeFormat(string: LocaleString, type: ActivityType, listening = false) {
+  switch (type) {
+    case 0:
+      return string("general.USER_PLAYING");
+    case 1:
+      return string("general.USER_STREAMING");
+    case 2:
+      return string("general.USER_LISTENING");
+    case 3:
+      return string("general.USER_WATCHING");
+    case 4:
+      if (listening) return string("general.USER_LISTENING");
+      return string("general.USER_CUSTOMSTATUS");
+    // UNDOCUMENTED: There is a 5th type, but this isn't in Eris yet.
+    // case 5:
+    //   return string("general.USER_COMPETING");
+    case undefined:
+    default:
+      return type;
+  }
+}
+
+// Formats user statuses
+export function statusFormat(string: LocaleString, type: Status) {
+  switch (type) {
+    case "online":
+      return string("global.ONLINE");
+    case "idle":
+      return string("global.IDLE");
+    case "dnd":
+      return string("global.DND");
+    case "offline":
+      return string("global.OFFLINE");
+  }
 }
 
 // Formats guild regions

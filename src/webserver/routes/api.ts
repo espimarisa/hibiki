@@ -8,7 +8,7 @@ import type { Channel, Role } from "eris";
 import type { Profile } from "passport-discord";
 import type { HibikiClient } from "../../classes/Client";
 import type { Command } from "../../classes/Command";
-import { defaultEmojiRegex, fullInviteRegex } from "../../helpers/constants";
+import { defaultEmojiRegex, emojiIDRegex, fullInviteRegex } from "../../helpers/constants";
 import { validItems } from "../../utils/validItems";
 import dayjs from "dayjs";
 import express from "express";
@@ -152,6 +152,7 @@ export = (bot: HibikiClient) => {
       // Strings
       else if (item.type === "string") {
         if (item.inviteFilter) guildConfig[c] = guildConfig[c].replace(fullInviteRegex, "");
+        guildConfig[c] = guildConfig[c].replace(emojiIDRegex, "");
         if (item.maximum) guildConfig[c] = guildConfig[c].substring(0, item.maximum);
         if (item.minimum && guildConfig[c].length < item.minimum) delete guildConfig[c];
       }
@@ -291,7 +292,10 @@ export = (bot: HibikiClient) => {
       else if (item.type === "bool" && typeof opt !== "boolean") delete profileConfig[c];
       // Strings
       else if (item.type === "string") {
-        if (item.inviteFilter) profileConfig[c] = profileConfig[c].replace(fullInviteRegex, "");
+        if (item.inviteFilter)
+          (profileConfig[c] = profileConfig[c].replace(fullInviteRegex, "")) &&
+            (profileConfig[c] = profileConfig[c].replace(emojiIDRegex, ""));
+
         if (item.maximum) profileConfig[c] = profileConfig[c].substring(0, item.maximum);
         if (item.minimum && profileConfig[c].length < item.minimum) delete profileConfig[c];
       }
