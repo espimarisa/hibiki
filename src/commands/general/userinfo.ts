@@ -245,7 +245,7 @@ export class UserinfoCommand extends Command {
     // Sends userinfo embed
     msg.channel.createMessage({
       embed: {
-        description: `${badges.length ? `${badges}\n` : ""} ${userconfig?.bio ?? ""}`,
+        description: `${badges.length ? `${badges}\n` : ""}${userconfig?.bio ?? ""}`,
         color: msg.convertHex("general"),
         fields: fields,
         author: {
