@@ -13,7 +13,7 @@ export function wordFilter(guildconfig: GuildConfig, msg: Message<TextChannel>) 
   const filteredWord = guildconfig?.filteredWords.every((word) => {
     let regex = regexCache[word];
     if (!regex) {
-      regexCache[word] = new RegExp(`\\b${word}\\b`);
+      regexCache[word] = new RegExp(`\\b${word}\\b`, "i");
       regex = regexCache[word];
     }
 
