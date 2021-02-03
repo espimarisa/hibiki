@@ -92,7 +92,7 @@ export class UserinfoCommand extends Command {
     // Custom badges (if running on production)
     // TODO: Better logic for lots of custom emojis when we add them cus this will be very ugly
     if (this.bot.config.customEmojis?.jiktim && this.bot.config.customEmojis?.jiktimID) {
-      const jikGuild = this.bot.guilds.get(this.bot.config.customEmojis.jiktimID);
+      const jikGuild = this.bot.guilds.get(this.bot.config.customEmojis?.jiktimID);
       if (jikGuild) {
         const isJikMember = jikGuild.members?.get(member.id);
         if (isJikMember) badges += this.bot.config.customEmojis?.jiktim;
