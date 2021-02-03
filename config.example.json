@@ -48,6 +48,8 @@
     "spotifyClientID": "",
     "spotifyClientSecret": ""
   },
+  
+  "customEmojis": {},
 
   "keys": {
     "abuseipdb": "",
