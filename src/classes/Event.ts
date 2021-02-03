@@ -4,13 +4,16 @@
  */
 
 import type { HibikiClient } from "./Client";
+import { convertHex } from "../helpers/embed";
 import { tagUser } from "../utils/format";
 
 export abstract class Event {
+  convertHex: typeof convertHex;
   tagUser: typeof tagUser;
   abstract events: string[];
 
   constructor(protected bot: HibikiClient, public name: string) {
+    this.convertHex = convertHex;
     this.tagUser = tagUser;
   }
 

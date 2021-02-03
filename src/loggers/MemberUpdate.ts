@@ -5,7 +5,6 @@
  */
 
 import type { Guild, Member, TextChannel } from "eris";
-import { convertHex } from "../helpers/embed";
 import { Logger } from "../classes/Logger";
 import { defaultAvatar } from "../helpers/constants";
 import { dateFormat } from "../utils/format";
@@ -71,7 +70,7 @@ export class MemberUpdate extends Logger {
         embed: {
           title: joinTitle,
           description: joinMessage,
-          color: convertHex("success"),
+          color: this.convertHex("success"),
           footer: {
             text: greetingFooter,
             icon_url: this.bot.user.dynamicAvatarURL(),
@@ -131,7 +130,7 @@ export class MemberUpdate extends Logger {
         embed: {
           title: leaveTitle,
           description: leaveMessage,
-          color: convertHex("error"),
+          color: this.convertHex("error"),
           footer: {
             text: greetingFooter,
             icon_url: this.bot.user.dynamicAvatarURL(),
@@ -152,7 +151,7 @@ export class MemberUpdate extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("success"),
+          color: this.convertHex("success"),
           author: {
             name: `${this.tagUser(member.user)} ${string("global.JOINED")}`,
             icon_url: member.user.dynamicAvatarURL(),
@@ -198,7 +197,7 @@ export class MemberUpdate extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("error"),
+          color: this.convertHex("error"),
           author: {
             name: `${this.tagUser(member.user)} ${string("global.LEFT")}`,
             icon_url: member.user.dynamicAvatarURL(),

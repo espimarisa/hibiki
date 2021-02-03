@@ -5,7 +5,6 @@
  */
 
 import type { EmbedOptions, Guild, Role } from "eris";
-import { convertHex } from "../helpers/embed";
 import { Logger } from "../classes/Logger";
 import { dateFormat } from "../utils/format";
 const TYPE = "eventLogging";
@@ -26,7 +25,7 @@ export class GuildRoleUpdate extends Logger {
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       const embed = {
-        color: convertHex("general"),
+        color: this.convertHex("general"),
         author: {
           icon_url: this.bot.user.dynamicAvatarURL(),
           name: string("logger.ROLE_CREATED", { role: role.name }),
@@ -86,7 +85,7 @@ export class GuildRoleUpdate extends Logger {
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       const embed = {
-        color: convertHex("error"),
+        color: this.convertHex("error"),
         author: {
           icon_url: this.bot.user.dynamicAvatarURL(),
           name: string("logger.ROLE_DELETED", { role: role.name }),
@@ -145,7 +144,7 @@ export class GuildRoleUpdate extends Logger {
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       const embed = {
-        color: convertHex("general"),
+        color: this.convertHex("general"),
         fields: [],
         author: {
           icon_url: this.bot.user.dynamicAvatarURL(),

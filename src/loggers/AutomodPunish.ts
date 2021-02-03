@@ -6,7 +6,6 @@
 
 import type { Guild, Message, User } from "eris";
 import { Logger } from "../classes/Logger";
-import { convertHex } from "../helpers/embed";
 const TYPE = "modLogging";
 
 export class AutomodPunish extends Logger {
@@ -25,7 +24,7 @@ export class AutomodPunish extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("error"),
+          color: this.convertHex("error"),
           author: {
             name: string("logger.AUTOMOD_MUTED", { member: this.tagUser(member) }),
             icon_url: member.dynamicAvatarURL(),
@@ -54,7 +53,7 @@ export class AutomodPunish extends Logger {
 
       this.bot.createMessage(channel, {
         embed: {
-          color: convertHex("error"),
+          color: this.convertHex("error"),
           author: {
             name: string("logger.AUTOMOD_INVITESENT", { member: this.tagUser(member) }),
             icon_url: member.dynamicAvatarURL(),
