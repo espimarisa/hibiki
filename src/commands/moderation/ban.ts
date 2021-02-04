@@ -74,7 +74,7 @@ export class BanCommand extends Command {
         // Gets the victim's locale and strings to use
         const victimLocale = await this.bot.localeSystem.getUserLocale(member.id, this.bot);
         const NO_REASON = this.bot.localeSystem.getLocale(`${victimLocale}`, "global.NO_REASON");
-        const TYPE = this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.BANNED")
+        const TYPE = this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.BANNED");
 
         const DM_TITLE = this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.PUNISHMENT_DM_TITLE", {
           guild: msg.channel.guild.name,
