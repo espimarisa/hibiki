@@ -35,7 +35,7 @@
     "compress": true,
     "defaultImageFormat": "png",
     "defaultImageSize": 512,
-    "getAllUsers": false,
+    "getAllUsers": true,
     "maxShards": 1
   },
 
@@ -48,7 +48,7 @@
     "spotifyClientID": "",
     "spotifyClientSecret": ""
   },
-  
+
   "customEmojis": {
     "jiktim": "",
     "jiktimID": ""
@@ -62,6 +62,7 @@
     "ipinfo": "",
     "maps": "",
     "osu": "",
+    "saucenao": "",
     "steam": "",
     "twitter": "",
     "weather": "",

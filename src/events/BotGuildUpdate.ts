@@ -28,6 +28,7 @@ export class BotGuildUpdateEvent extends Event {
         const ownerDM = await owner.getDMChannel();
         ownerDM.createMessage({
           embed: {
+            // TODO @smolespi Localize this and havea better description telling people basic stuff (how to disable; automod, etc.)
             title: `✨ I was added to a server you own (${guild.name}).`,
             description:
               `To get a list of commands, run \`${this.bot.config.prefixes[0]}help\`. \n` +
@@ -40,6 +41,7 @@ export class BotGuildUpdateEvent extends Event {
     }
 
     // Logs when added or removed to a guild
+    // TODO: Localize
     const guildCreate = event === "guildCreate";
     this.bot.log.info(`${guildCreate ? "Added to" : "Removed from"} guild: ${guild.name} (${guild.id})`);
     if (this.bot.config.logchannel) {

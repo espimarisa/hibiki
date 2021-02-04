@@ -1,6 +1,7 @@
 /**
  * @file Status switcher
  * @description Cycles between configured bot statuses
+ * @module helpers/statuses
  */
 
 import type { HibikiClient } from "../classes/Client";
