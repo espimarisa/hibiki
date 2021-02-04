@@ -15,8 +15,7 @@ export class KickCommand extends Command {
     // Gets the member and reason
     const member = pargs[0].value as Member;
     let reason = args.slice(1).join(" ");
-    if (!reason.length) reason = msg.string("global.NO_REASON");
-    else if (reason.length > 512) reason = reason.slice(0, 512);
+    if (reason.length > 512) reason = reason.slice(0, 512);
 
     // Compares bot roles to target's roles
     if (!roleHierarchy(msg.channel.guild.members.get(this.bot.user.id), member)) {
@@ -69,30 +68,51 @@ export class KickCommand extends Command {
       }
 
       // Gets the kicked member's locale and DMs them on kick
-      const victimLocale = await this.bot.localeSystem.getUserLocale(member.id, this.bot);
-      const dmchannel = await member.user.getDMChannel();
+      const dmchannel = await member.user.getDMChannel().catch(() => {});
       if (dmchannel) {
-        dmchannel.createMessage({
-          embed: {
-            title: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.PUNISHMENT_DM_TITLE", {
-              guild: msg.channel.guild.name,
-              type: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.KICKED"),
-            }),
-            description: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.PUNISHMENT_DM", {
-              type: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.KICKED"),
-              reason: reason,
-            }),
-            color: msg.convertHex("error"),
-          },
+        // Gets the victim's locale and strings to use
+        const victimLocale = await this.bot.localeSystem.getUserLocale(member.id, this.bot);
+        const NO_REASON = this.bot.localeSystem.getLocale(`${victimLocale}`, "global.NO_REASON");
+        const TYPE = this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.KICKED");
+
+        const DM_TITLE = this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.PUNISHMENT_DM_TITLE", {
+          guild: msg.channel.guild.name,
+          type: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.KICKED"),
         });
 
+        const DM_DESCRIPTION = this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.PUNISHMENT_DM", {
+          type: TYPE.toLowerCase(),
+          reason: reason || NO_REASON.toLowerCase(),
+        });
+
+        const DM_FOOTER = this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.PUNISHMENT_FOOTER", {
+          member: msg.tagUser(msg.author),
+          type: TYPE,
+        });
+
+        // Sends the DM
+        dmchannel
+          .createMessage({
+            embed: {
+              title: `${DM_TITLE}`,
+              description: DM_DESCRIPTION,
+              color: msg.convertHex("error"),
+              footer: {
+                icon_url: msg.author.dynamicAvatarURL(),
+                text: DM_FOOTER,
+              },
+            },
+          })
+          .catch(() => {});
+
         await kickmsg.editEmbed(
-          `🔨 ${msg.string("moderation.KICK")}`,
+          msg.string("global.SUCCESS"),
           msg.string("moderation.PUNISHMENT_SUCCESS", {
             member: msg.tagUser(member.user),
-            type: msg.string("moderation.KICKED"),
+            type: msg.string("moderation.KICKED").toLowerCase(),
             author: msg.author.username,
           }),
+          "success",
         );
       }
     }
