@@ -27,7 +27,7 @@ export class RemovewarnCommand extends Command {
     );
 
     // Removed and failed warnings
-    let failedField: EmbedField[] = [];
+    const failedField: EmbedField[] = [];
     const removed = warnings.filter((w) => w.removed);
     const failed = warnings.filter((w) => !w.removed);
     if (!removed.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.WARNINGS_ALLFAILED"), "error");
