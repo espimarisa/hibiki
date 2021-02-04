@@ -33,7 +33,7 @@ export class PunishUpdate extends Logger {
           fields: [
             {
               name: string("global.REASON"),
-              value: `${reason}`,
+              value: `${reason || string("global.NO_REASON")}`,
               inline: false,
             },
           ],
@@ -58,7 +58,7 @@ export class PunishUpdate extends Logger {
           fields: [
             {
               name: string("global.REASON"),
-              value: `${reason}`,
+              value: `${reason || string("global.NO_REASON")}`,
               inline: false,
             },
           ],
@@ -83,7 +83,7 @@ export class PunishUpdate extends Logger {
           fields: [
             {
               name: string("global.REASON"),
-              value: `${reason}`,
+              value: `${reason || string("global.NO_REASON")}`,
               inline: false,
             },
             {

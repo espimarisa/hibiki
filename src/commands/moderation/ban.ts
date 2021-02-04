@@ -68,33 +68,54 @@ export class BanCommand extends Command {
         );
       }
 
-      // Gets the banned member's locale and DMs them on ban
-      const victimLocale = await this.bot.localeSystem.getUserLocale(member.id, this.bot);
-      const dmchannel = await member.user.getDMChannel();
+      // Gets the kicked member's locale and DMs them on ban
+      const dmchannel = await member.user.getDMChannel().catch(() => {});
       if (dmchannel) {
-        dmchannel.createMessage({
-          embed: {
-            title: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.PUNISHMENT_DM_TITLE", {
-              guild: msg.channel.guild.name,
-              type: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.BANNED"),
-            }),
-            description: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.PUNISHMENT_DM", {
-              type: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.BANNED"),
-              reason: reason,
-            }),
-            color: msg.convertHex("error"),
-          },
+        // Gets the victim's locale and strings to use
+        const victimLocale = await this.bot.localeSystem.getUserLocale(member.id, this.bot);
+        const NO_REASON = this.bot.localeSystem.getLocale(`${victimLocale}`, "global.NO_REASON");
+        const TYPE = this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.BANNED")
+
+        const DM_TITLE = this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.PUNISHMENT_DM_TITLE", {
+          guild: msg.channel.guild.name,
+          type: this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.BANNED"),
         });
 
-        await banmsg.editEmbed(
-          `🔨 ${msg.string("moderation.BAN")}`,
-          msg.string("moderation.PUNISHMENT_SUCCESS", {
-            member: msg.tagUser(member.user),
-            type: msg.string("moderation.BANNED"),
-            author: msg.author.username,
-          }),
-        );
+        const DM_DESCRIPTION = this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.PUNISHMENT_DM", {
+          type: TYPE.toLowerCase(),
+          reason: reason || NO_REASON.toLowerCase(),
+        });
+
+        const DM_FOOTER = this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.PUNISHMENT_FOOTER", {
+          member: msg.tagUser(msg.author),
+          type: TYPE,
+        });
+
+        // Sends the DM
+        dmchannel
+          .createMessage({
+            embed: {
+              title: `${DM_TITLE}`,
+              description: DM_DESCRIPTION,
+              color: msg.convertHex("error"),
+              footer: {
+                icon_url: msg.author.dynamicAvatarURL(),
+                text: DM_FOOTER,
+              },
+            },
+          })
+          .catch(() => {});
       }
+
+      await banmsg.editEmbed(
+        msg.string("global.SUCCESS"),
+        msg.string("moderation.PUNISHMENT_SUCCESS", {
+          member: msg.tagUser(member.user),
+          type: msg.string("moderation.BANNED").toLowerCase(),
+          author: msg.author.username,
+        }),
+        "success",
+      );
     }
   }
 }

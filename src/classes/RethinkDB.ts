@@ -130,9 +130,9 @@ export class RethinkProvider {
   }
 
   // Deletes a user warning
-  async deleteUserWarning(user: string, warning: string) {
+  async deleteUserWarning(user: string, id: string) {
     await this.dblock;
-    return this.db.table("warnings").filter({ receiver: user, warning: warning }).delete().run();
+    return this.db.table("warnings").filter({ receiver: user, id: id }).delete().run();
   }
 
   /**
@@ -143,6 +143,12 @@ export class RethinkProvider {
   async getAllGuildPoints(guild: string) {
     await this.dblock;
     return this.db.table("points").filter({ guild: guild }).run() as Promise<UserPoint[]>;
+  }
+
+  // Gets a point
+  async getUserPoint(point: string) {
+    await this.dblock;
+    return this.db.table("points").get(point).run() as Promise<UserPoint>;
   }
 
   // Gets all points from a user
@@ -164,9 +170,9 @@ export class RethinkProvider {
   }
 
   // Deletes a user warning
-  async deleteUserPoint(point: UserPoint) {
+  async deleteUserPoint(user: string, id: string) {
     await this.dblock;
-    return this.db.table("points").get(point).delete().run();
+    return this.db.table("points").filter({ receiver: user, id: id }).delete().run();
   }
 
   /**
@@ -282,13 +288,13 @@ export class RethinkProvider {
   // Gets all muteCache data from a guild
   async getGuildMuteCache(guild: string) {
     await this.dblock;
-    return this.db.table("mutecache").filter({ guild: guild }).run() as Promise<MuteCache>;
+    return this.db.table("mutecache").filter({ guild: guild }).run() as Promise<MuteCache[]>;
   }
 
   // Gets mutecache data that includes a user
   async getUserMuteCache(user: string) {
     await this.dblock;
-    return this.db.table("mutecache").filter({ member: user }).run() as Promise<MuteCache>;
+    return this.db.table("mutecache").filter({ member: user }).run() as Promise<MuteCache[]>;
   }
 
   // Inserts muteCache
