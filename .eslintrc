@@ -106,8 +106,6 @@
           { "selector": "parameter", "format": ["camelCase"], "leadingUnderscore": "allow" },
           { "selector": "memberLike", "format": ["camelCase"] },
           { "selector": "memberLike", "modifiers": ["private"], "format": ["camelCase"], "leadingUnderscore": "require" },
-          { "selector": "typeLike", "format": ["PascalCase"] },
-          { "selector": "typeParameter", "format": [null], "prefix": ["T"] },
           { "selector": "interface", "format": ["PascalCase"], "custom": { "regex": "^I[A-Z]", "match": false } },
           { "selector": "objectLiteralProperty", "format": null },
           { "selector": "enumMember", "format": ["UPPER_CASE"] }
