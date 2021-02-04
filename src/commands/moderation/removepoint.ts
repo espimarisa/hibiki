@@ -27,7 +27,7 @@ export class RemovepointCommand extends Command {
     );
 
     // Removed and failed points
-    let failedField: EmbedField[] = [];
+    const failedField: EmbedField[] = [];
     const removed = points.filter((p) => p.removed);
     const failed = points.filter((p) => !p.removed);
     if (!removed.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.POINTS_ALLFAILED"), "error");
