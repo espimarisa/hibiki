@@ -33,7 +33,7 @@ export class MemberRoleUpdate extends Logger {
           fields: [
             {
               name: string("global.REASON"),
-              value: `${reason}`,
+              value: `${reason || string("global.NO_REASON")}`,
               inline: false,
             },
           ],
@@ -58,7 +58,7 @@ export class MemberRoleUpdate extends Logger {
           fields: [
             {
               name: string("global.REASON"),
-              value: `${reason}`,
+              value: `${reason || string("global.NO_REASON")}`,
               inline: false,
             },
           ],
