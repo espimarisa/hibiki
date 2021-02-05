@@ -27,7 +27,7 @@
     "build:sass": "cross-env sass ./src/webserver/public/sass/:./src/webserver/public/css/",
     "build:static": "cross-env copyfiles './src/webserver/**/**/*.{css,jpg,png,ejs}' './dist/'",
     "dev": "npm run build:sass && npm run nodemon",
-    "format": "cross-env prettier --config .prettierrc 'src/**/*.{css,htm,html,js,json,ts,tsx}' --write",
+    "format": "cross-env prettier --config .prettierrc 'src/**/*.{sass,scss,htm,html,js,json,ts,tsx}' --write",
     "lint": "eslint --fix .",
     "nodemon": "cross-env nodemon --ext 'json,ts,sass,scss' --watch 'src' --delay 5 --ignore 'rethinkdb_data/*' --exec 'cross-env NODE_ENV=development ts-node --files ./src/index.ts'",
     "postbuild": "npm run build:sass && npm run build:static",
