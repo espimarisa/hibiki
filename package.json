@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@geo1088/express-session-rethinkdb": "^0.4.2",
-    "@sentry/node": "^6.0.3",
+    "@sentry/node": "^6.1.0",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
@@ -48,7 +48,7 @@
     "node-fetch": "^2.6.1",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
-    "rethinkdb-ts": "^2.4.6",
+    "rethinkdb-ts": "^2.4.8",
     "terser": "^5.5.1"
   },
   "optionalDependencies": {
@@ -60,6 +60,6 @@
     "beautify-proj": "^1.0.0",
     "nodemon": "^2.0.7",
     "eslint": "^7.19.0",
-    "pm2": "^4.5.2"
+    "pm2": "^4.5.4"
   }
 }
