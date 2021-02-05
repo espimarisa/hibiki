@@ -1,13 +1,14 @@
 import type { AxiosResponse } from "axios";
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
+import { urlRegex } from "../../helpers/constants";
 import axios from "axios";
 type saucenaoData = { header: { similarity: string; thumbnail: string; index_id: number; index_name: string; dupes: number } };
 
 export class SauceNaoCommand extends Command {
   description = "Gets a source for an image from Saucenao.";
   args = "[url:string]";
-  requiredkeys = ["saucenao"];
+  requiredkeys = ["sauce"];
   aliases = ["sauce", "saucenoa"];
   cooldown = 3000;
   allowdms = true;
@@ -37,11 +38,9 @@ export class SauceNaoCommand extends Command {
     let imgUrls: string[] = [];
     body.data.results.forEach((img: AxiosResponse) => {
       if (img.data?.ext_urls && imgUrls.length < 3) {
-        imgUrls = imgUrls.concat(img.data?.ext_urls);
+        imgUrls = imgUrls.concat(img.data?.ext_urls.map((url: string) => `[${urlRegex.exec(url)[1]}](${url})`));
       }
     });
-
-    console.log(body.data.results[0].header);
 
     // Sends the source embed
     msg.channel.createMessage({

@@ -34,7 +34,7 @@ export abstract class Logger extends Event {
     if (channel instanceof Guild || channel.id !== channelID) {
       if (!guild.channels.get(channelID)) {
         delete guildconfig[type || "loggingChannel"];
-        this.bot.db.updateGuildConfig(guild.id, guildconfig);
+        this.bot.db.replaceGuildConfig(guild.id, guildconfig);
         channelID = undefined;
       }
     }

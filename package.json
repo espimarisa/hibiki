@@ -46,7 +46,7 @@
     "ejs": "^3.1.5",
     "erela.js": "^2.3.2",
     "erela.js-spotify": "^1.2.0",
-    "eris": "^0.14.0",
+    "eris": "github:abalabahaha/eris#dev",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "helmet": "^4.4.1",

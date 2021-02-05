@@ -6,7 +6,7 @@
 
 export const userIDRegex = /\d{17,18}/;
 export const auditLogRegex = /[,.\-_a-zA-Z0-9]{1,32}/;
-export const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
+export const urlRegex = /https?:\/\/(?:www\.)?([-a-zA-Z0-9@:%._+~#=]{1,256})\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 export const validTimeRegex = /\d{1,2}( )?(?:(y(?= )|y(ear(s)?)?)|(w(?= )|w(eek(s)?)?)|(d(?= )|d(ay(s)?)?)|(h(?= )|h(our(s)?)?(r(s)?)?)|(m(?= )|m(inute(s)?)?(in(s)?)?)|(s(?= )|s(econd(s)?)?(ec(s)?)?))( and( )?)?([, ]{1,2})?/gi;
 
 // Validate emojis

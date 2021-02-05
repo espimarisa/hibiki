@@ -51,7 +51,7 @@ export class WordFilterCommand extends Command {
 
       // Updates the DB
       guildconfig.filteredWords.push(word);
-      msg.createEmbed("fag", `word ${word} has beenn blacklisted`);
+      msg.createEmbed(msg.string("global.SUCCESS"), msg.string("moderation.FILTER_ADDED", { word: word }));
     }
 
     await this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);
