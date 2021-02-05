@@ -55,6 +55,12 @@ export class RethinkProvider {
     return this.db.table("guildconfig").get(guild).update(config).run();
   }
 
+  // Replaces a guild's config
+  async replaceGuildConfig(guild: string, config: GuildConfig) {
+    await this.dblock;
+    return this.db.table("guildconfig").get(guild).replace(config).run();
+  }
+
   // Deletes a guild's config
   async deleteGuildConfig(guild: string) {
     await this.dblock;
@@ -81,6 +87,12 @@ export class RethinkProvider {
   async updateUserConfig(user: string, config: UserConfig) {
     await this.dblock;
     return this.db.table("userconfig").get(user).update(config).run();
+  }
+
+  // Replaces a user's config
+  async replaceUserConfig(user: string, config: UserConfig) {
+    await this.dblock;
+    return this.db.table("userconfig").get(user).replace(config).run();
   }
 
   // Deletes a user's config

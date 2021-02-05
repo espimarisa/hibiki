@@ -95,7 +95,7 @@ export class GitHubCommand extends Command {
       // License
       if (body.data.license?.spdx_id && body.data.license?.spdx_id !== "NOASSERTION")
         fields.push({
-          name: msg.string("utility.GITHUB_LICENSE"),
+          name: msg.string("utility.LICENSE"),
           value: `${body.data.license.spdx_id}`,
           inline: true,
         });
@@ -139,7 +139,7 @@ export class GitHubCommand extends Command {
       // Homepage
       if (body.data.homepage) {
         fields.push({
-          name: msg.string("utility.GITHUB_HOMEPAGE"),
+          name: msg.string("utility.HOMEPAGE"),
           value: `${body.data.homepage}`,
           inline: true,
         });
