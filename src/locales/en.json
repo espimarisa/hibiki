@@ -3,6 +3,13 @@
   "EMOJI": "🇺🇸",
 
   "fun": {
+    "COWSAY": "Cowsay",
+    "COWSAY_USAGE": "Usage: <text> cow=type \n Types: {types}",
+    "XKCD_ERROR": "Comic not found.",
+    "FACT_ERROR": "Couldn't send the fact. Try again later.",
+    "FACT_CAT": "Cat Fact",
+    "FACT_DOG": "Dog Fact",
+    "FACT_USELESS": "Useless Fact",
     "COIN": "Coin",
     "COIN_HEADS": "heads",
     "COIN_RESULT": "The coin landed on **{side}**.",
