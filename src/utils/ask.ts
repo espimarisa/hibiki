@@ -5,7 +5,7 @@
  */
 
 import type { HibikiClient } from "../classes/Client";
-import type { Channel, Emoji, Member, Message, Role, TextChannel, VoiceChannel } from "eris";
+import type { Emoji, Member, Message, TextChannel } from "eris";
 import type { LocaleString } from "../typings/locales";
 import { defaultEmojiRegex, emojiIDRegex, fullInviteRegex } from "../helpers/constants";
 import { localizeSetupItems } from "../utils/format";
@@ -65,21 +65,21 @@ export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: strin
 
   // Looks for a role
   if (type === "roleID") {
-    const role = bot.args.argtypes.role(arg, msg, undefined) as Role | undefined;
+    const role = bot.args.argtypes.role(arg, msg, undefined);
     if (!role || role?.managed) return "No role";
     return role.id;
   }
 
   // Looks for a channel
   if (type === "channelID") {
-    const channel = bot.args.argtypes.channel(arg, msg, undefined) as Channel | undefined;
+    const channel = bot.args.argtypes.channel(arg, msg, undefined);
     if (!channel) return;
     return channel.id;
   }
 
   // Looks for a voice Channel
   if (type === "voiceChannel") {
-    const channel = bot.args.argtypes.voiceChannel(arg, msg, undefined) as VoiceChannel | undefined;
+    const channel = bot.args.argtypes.voiceChannel(arg, msg, undefined);
     if (channel.type !== 2) return "Invalid channel type";
     if (!channel) return;
     return channel.id;

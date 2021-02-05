@@ -18,7 +18,7 @@ export class WordFilterCommand extends Command {
     // Shows filtered words if no args
     if (!args.length) {
       if (!guildconfig.filteredWords.length) {
-        return msg.createEmbed((msg.string("global.ERROR"), msg.string("moderation.FILTER_NOWORDS"), "error"));
+        return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.FILTER_NOWORDS"), "error");
       }
 
       return msg.createEmbed(
