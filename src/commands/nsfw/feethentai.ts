@@ -1,4 +1,5 @@
 import type { Message, TextChannel } from "eris";
+import type { NekosLifeImage } from "../../typings/endpoints";
 import { Command } from "../../classes/Command";
 import { resError } from "../../utils/exception";
 import axios from "axios";
@@ -11,9 +12,9 @@ export class FeethentaiCommand extends Command {
   nsfw = true;
 
   async run(msg: Message<TextChannel>) {
-    const body = await axios.get("https://nekos.life/api/v2/img/feet").catch((err) => {
+    const body = (await axios.get("https://nekos.life/api/v2/img/feet").catch((err) => {
       resError(err);
-    });
+    })) as NekosLifeImage;
 
     if (!body || !body.data?.url) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");

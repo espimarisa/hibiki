@@ -1,3 +1,4 @@
+import type { NekobotImage } from "../../typings/endpoints";
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { resError } from "../../utils/exception";
@@ -10,9 +11,9 @@ export class CatgirlCommand extends Command {
   allowdms = true;
 
   async run(msg: Message<TextChannel>) {
-    const body = await axios.get("https://nekobot.xyz/api/image?type=neko").catch((err) => {
+    const body = (await axios.get("https://nekobot.xyz/api/image?type=neko").catch((err) => {
       resError(err);
-    });
+    })) as NekobotImage;
 
     if (!body || !body.data?.message) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");

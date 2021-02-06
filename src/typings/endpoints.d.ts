@@ -27,10 +27,29 @@ export interface AURPackageData {
   num: number;
 }
 
+// Nekobot.xyz images
+export interface NekobotImage extends AxiosResponse {
+  data: {
+    success: boolean;
+    message: string;
+    version: string;
+  };
+}
+
+// Nekos.life images
+export interface NekosLifeImage extends AxiosResponse {
+  data: {
+    url: string;
+    msg?: string;
+  };
+}
+
 // Weeb.sh images
 export interface WeebSHImage extends AxiosResponse {
-  url: string;
-  message?: string;
+  data: {
+    url: string;
+    message?: string;
+  };
 }
 
 // Urban dictionary word
@@ -46,4 +65,15 @@ export interface UrbanWord {
   written_on: Date;
   example: string;
   thumbs_down: number;
+}
+
+// SauceNAO image data
+export interface SauceNAOData {
+  header: {
+    similarity: string;
+    thumbnail: string;
+    index_id: number;
+    index_name: string;
+    dupes: number;
+  };
 }
