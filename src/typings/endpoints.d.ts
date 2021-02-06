@@ -4,6 +4,8 @@
  * @typedef endpoints
  */
 
+import type { AxiosResponse } from "axios";
+
 // Individual AUR package data
 export interface AURPackageData {
   ID: number;
@@ -23,4 +25,25 @@ export interface AURPackageData {
   MakeDepends: string[];
   Depends: string[];
   num: number;
+}
+
+// Weeb.sh images
+export interface WeebSHImage extends AxiosResponse {
+  url: string;
+  message?: string;
+}
+
+// Urban dictionary word
+export interface UrbanWord {
+  definition: string;
+  permalink: string;
+  thumbs_up: number;
+  sound_urls: string[];
+  author: string;
+  word: string;
+  defid: number;
+  current_vote: string;
+  written_on: Date;
+  example: string;
+  thumbs_down: number;
 }
