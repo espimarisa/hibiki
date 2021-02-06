@@ -1,4 +1,5 @@
 import type { Message, TextChannel } from "eris";
+import type { WeebSHImage } from "../../typings/endpoints";
 import { Command } from "../../classes/Command";
 import axios from "axios";
 
@@ -8,16 +9,17 @@ export class BangheadCommand extends Command {
   cooldown = 3000;
 
   async run(msg: Message<TextChannel>) {
-    const body = await axios
+    const body = (await axios
       .get("https://api.weeb.sh/images/random?type=banghead", {
         headers: {
           "Authorization": `Wolke ${this.bot.config.keys.weebsh}`,
           "User-Agent": "hibiki",
         },
       })
-      .catch(() => {});
+      .catch(() => {})) as WeebSHImage;
 
     let image = "";
+
     if (!body || !body?.data?.url) image = "https://cdn.weeb.sh/images/rJRepkXoW.gif";
     else image = body.data.url;
 

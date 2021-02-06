@@ -1,4 +1,5 @@
 import type { Member, Message, TextChannel } from "eris";
+import type { WeebSHImage } from "../../typings/endpoints";
 import { Command } from "../../classes/Command";
 import axios from "axios";
 
@@ -10,14 +11,14 @@ export class HeadpatCommand extends Command {
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     const member = pargs[0].value as Member;
-    const body = await axios
+    const body = (await axios
       .get("https://api.weeb.sh/images/random?type=pat", {
         headers: {
           "Authorization": `Wolke ${this.bot.config.keys.weebsh}`,
           "User-Agent": "hibiki",
         },
       })
-      .catch(() => {});
+      .catch(() => {})) as WeebSHImage;
 
     let image = "";
     if (!body || !body?.data?.url) image = "https://cdn.weeb.sh/images/SJmW1RKtb.gif";
