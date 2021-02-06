@@ -4,14 +4,14 @@
  * @module logger/MemberRoleUpdate
  */
 
-import type { Guild, Role, User } from "eris";
+import type { Guild, User } from "eris";
 import { Logger } from "../classes/Logger";
 const TYPE = "modLogging";
 
 export class MemberRoleUpdate extends Logger {
   events = ["memberVerify", "memberUnverify", "roleAssign", "roleUnassign"];
 
-  async run(event: string, guild: Guild, member: User, giver?: User, reason?: string[], role?: Role) {
+  async run(event: string, guild: Guild, member: User, giver?: User, reason?: string[], role?: string[]) {
     /**
      * Logs when a member is verified
      */
@@ -77,7 +77,11 @@ export class MemberRoleUpdate extends Logger {
         embed: {
           color: this.convertHex("general"),
           author: {
-            name: string("logger.MEMBER_SELFASSIGNED", { user: this.tagUser(member), role: role.name }),
+            name: string("logger.MEMBER_SELFASSIGNED", {
+              user: this.tagUser(member),
+              role: role.join(", "),
+              amount: role.length,
+            }),
             icon_url: member.dynamicAvatarURL(),
           },
         },
@@ -95,7 +99,11 @@ export class MemberRoleUpdate extends Logger {
         embed: {
           color: this.convertHex("general"),
           author: {
-            name: string("logger.MEMBER_UNASSIGNED", { user: this.tagUser(member), role: role.name }),
+            name: string("logger.MEMBER_UNASSIGNED", {
+              user: this.tagUser(member),
+              role: role.join(", "),
+              amount: role.length,
+            }),
             icon_url: member.dynamicAvatarURL(),
           },
         },

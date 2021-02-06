@@ -4,7 +4,6 @@
  * @module dashboard/routes/api
  */
 
-import type { Channel, Role } from "eris";
 import type { Profile } from "passport-discord";
 import type { HibikiClient } from "../../classes/Client";
 import type { Command } from "../../classes/Command";
@@ -130,12 +129,12 @@ export = (bot: HibikiClient) => {
 
       // ChannelArray
       else if (item?.type === "channelArray" && Array.isArray(guildConfig[c]) && guildConfig[c].length) {
-        guildConfig[c] = opt.filter((c: Channel) => bot.guilds.get(guild.id).channels.find((channel) => channel.id === c.id));
+        guildConfig[c] = opt.filter((c: string) => bot.guilds.get(guild.id).channels.find((channel) => channel.id === c));
       }
 
       // RoleArray
       else if (item?.type === "roleArray" && Array.isArray(guildConfig[c]) && guildConfig[c].length) {
-        guildConfig[c] = opt.filter((r: Role) => bot.guilds.get(guild.id).roles.find((rol) => rol.id === r.id));
+        guildConfig[c] = opt.filter((r: string) => bot.guilds.get(guild.id).roles.find((rol) => rol.id === r));
         if (item?.maximum && guildConfig[c].length > item?.maximum) guildConfig[c].length = item?.maximum;
       }
 
@@ -193,9 +192,8 @@ export = (bot: HibikiClient) => {
       // Disabled commands
       if (c === "disabledCmds" && guildConfig[c])
         guildConfig[c] = guildConfig[c].filter((cmd) => {
-          const command = bot.commands.map((c) => c.name === cmd);
-          // @ts-ignore
-          if (command?.allowDisable) return true;
+          const command = bot.commands.find((c) => c.name === cmd);
+          if (command?.allowdisable) return true;
           return false;
         });
 

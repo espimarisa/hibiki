@@ -51,7 +51,7 @@ export class BanCommand extends Command {
       if (response === false)
         return banmsg.editEmbed(
           msg.string("global.CANCELLED"),
-          msg.string("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.string("moderation.BANNED") }),
+          msg.string("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.string("moderation.BANNING") }),
           "error",
         );
 

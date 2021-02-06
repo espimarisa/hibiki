@@ -309,7 +309,7 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
       if (title) return string("general.CONFIG_DISABLEDCMDS");
       return string("general.CONFIG_DISABLEDCMDS_DESCRIPTION");
     case "prefix":
-      if (title) return string("general.CONFIG_PREFIX");
+      if (title) return string("global.PREFIX");
       return string("general.CONFIG_PREFIX_DESCRIPTION");
     case "assignableRoles":
       if (title) return string("general.CONFIG_ASSIGNABLEROLES");

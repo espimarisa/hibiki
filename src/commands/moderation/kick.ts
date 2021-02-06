@@ -50,7 +50,7 @@ export class KickCommand extends Command {
       if (response === false)
         return kickmsg.editEmbed(
           msg.string("global.CANCELLED"),
-          msg.string("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.string("moderation.KICKED") }),
+          msg.string("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.string("moderation.KICKING") }),
           "error",
         );
 
