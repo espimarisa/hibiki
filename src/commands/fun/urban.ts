@@ -44,14 +44,15 @@ export class UrbanCommand extends Command {
     // Example
     if (word.example) {
       fields.push({
-        name: "Example",
+        name: msg.string("fun.URBAN_EXAMPLE"),
         value: `${word.example}`,
+        inline: false,
       });
     }
 
     if (word.written_on) {
       fields.push({
-        name: "Written On",
+        name: msg.string("fun.URBAN_WRITTENON"),
         value: dateFormat(word.written_on),
         inline: false,
       });
@@ -60,7 +61,7 @@ export class UrbanCommand extends Command {
     // Thumbs up
     if (word.thumbs_up) {
       fields.push({
-        name: "Upvotes",
+        name: msg.string("global.UPVOTES"),
         value: `${word.thumbs_up}`,
         inline: true,
       });
@@ -69,7 +70,7 @@ export class UrbanCommand extends Command {
     // Thumbs down
     if (word.thumbs_down) {
       fields.push({
-        name: "Downvotes",
+        name: msg.string("global.DOWNVOTES"),
         value: `${word.thumbs_down}`,
         inline: true,
       });
