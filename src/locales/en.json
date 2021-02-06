@@ -3,12 +3,15 @@
   "EMOJI": "🇺🇸",
 
   "fun": {
+    "URBAN_EXAMPLE": "Example",
+    "URBAN_WRITTENON": "Written On",
     "COIN": "Coin",
     "COIN_HEADS": "heads",
     "COIN_RESULT": "The coin landed on **{side}**.",
     "COIN_TAILS": "tails",
     "COOKIE_TOTAL": "{amount:#cookies#!cookie!}",
     "COOKIES": "Cookies",
+    "URBAN_NOTFOUND": "No definition found.",
     "COOKIES_AMOUNT": "**{member}** has **{amount}** cookies.",
     "COOLLEVEL": "Coolness Level",
     "COOLLEVEL_LEVEL": "**{member}** is **{level}%** cool.",
@@ -307,6 +310,8 @@
   },
 
   "global": {
+    "UPVOTES": "Upvotes",
+    "DOWNVOTES": "Downvotes",
     "ACCOUNT_AGE": "Account Age",
     "AND": "and",
     "ASKFOR_ARRAY": "Respond with the desired values (seperated by a comma).",
