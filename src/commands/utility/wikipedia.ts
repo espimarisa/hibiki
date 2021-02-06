@@ -10,7 +10,6 @@ export class WikipediaCommand extends Command {
   cooldown = 3000;
   allowdms = true;
 
-  // TODO: Search with a user's locale instead of only EN
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     const query = encodeURIComponent(args.join(" "));
 

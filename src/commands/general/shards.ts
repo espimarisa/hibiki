@@ -7,6 +7,8 @@ export class ShardsCommand extends Command {
   async run(msg: Message<TextChannel>) {
     const shardGuilds = {};
     const shardMembers = {};
+
+    // Pushes guilds in each shard
     this.bot.guilds.forEach((guild) => {
       if (!shardGuilds[guild.shard.id]) {
         shardGuilds[guild.shard.id] = 1;
@@ -17,6 +19,7 @@ export class ShardsCommand extends Command {
       }
     });
 
+    // Sends shard info
     msg.channel.createMessage({
       embed: {
         title: `🌐 ${msg.string("general.SHARDS")}`,

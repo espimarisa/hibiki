@@ -3,7 +3,6 @@
  * @description Connects to Discord and handles global functions
  */
 
-// holy mother of imports lool
 import type { ClientOptions } from "eris";
 import type { Command } from "./Command";
 import type { Event } from "./Event";

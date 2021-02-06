@@ -1,6 +1,7 @@
 import type { Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { roleHierarchy } from "../../utils/hierarchy";
+import { itemExists } from "../../utils/itemExists";
 
 export class VerifyCommand extends Command {
   description = "Gives the verified role to a member.";
@@ -22,9 +23,8 @@ export class VerifyCommand extends Command {
     }
 
     // Deletes the role in the guildconfig if it doesn't exist anymore
-    if (!msg.channel.guild.roles.has(guildconfig.verifiedRole)) {
-      delete guildconfig.verifiedRole;
-      await this.bot.db.replaceGuildConfig(msg.channel.guild.id, guildconfig);
+    const roleCheck = await itemExists(msg.channel.guild, "role", guildconfig.verifiedRole, this.bot.db, "verifiedRole");
+    if (!roleCheck) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.VERIFY_NOTSET"), "error");
     }
 
