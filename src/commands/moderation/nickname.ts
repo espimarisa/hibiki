@@ -17,7 +17,6 @@ export class NicknameCommand extends Command {
     // Nickname changes
     if (nickname) {
       // If the bot's role isn't high enough to update the member's role
-      console.log(!roleHierarchy(msg.channel.guild.members.get(this.bot.user.id), member));
       if (!roleHierarchy(msg.channel.guild.members.get(this.bot.user.id), member)) {
         return msg.createEmbed(
           msg.string("global.ERROR"),

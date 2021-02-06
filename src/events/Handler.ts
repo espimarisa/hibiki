@@ -49,7 +49,7 @@ export class HandlerEvent extends Event {
 
     // Checks to see if a member is staff
     const isStaff =
-      msg.member?.permissions.has("administrator") || (guildconfig?.staffRole && msg.member?.roles.includes(guildconfig.staffRole));
+      msg.member?.permissions.has("administrator") || (guildconfig?.staffRole && msg.member?.roles?.includes(guildconfig.staffRole));
 
     // Checks staff perms and wordFilter
     if (!prefix) return isStaff && !(msg.channel instanceof PrivateChannel) && wordFilter(guildconfig, msg);

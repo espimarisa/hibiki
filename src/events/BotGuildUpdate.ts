@@ -76,10 +76,10 @@ export class BotGuildUpdateEvent extends Event {
           ],
           author: {
             name: `${guildCreate ? "Added to" : "Removed from"} ${guild.name}`,
-            icon_url: `${guild.dynamicIconURL() ?? defaultAvatar}`,
+            icon_url: `${guild.dynamicIconURL() || defaultAvatar}`,
           },
           thumbnail: {
-            url: `${guild.dynamicIconURL() ?? defaultAvatar}`,
+            url: `${guild.dynamicIconURL() || defaultAvatar}`,
           },
           footer: {
             text: `${this.bot.user.username} is now in ${this.bot.guilds.size} guilds.`,

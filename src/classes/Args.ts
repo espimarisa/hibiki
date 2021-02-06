@@ -83,7 +83,7 @@ export class Args {
       // Looks for a role
       role: (a, msg) => {
         const role = msg.channel.guild.roles.find(
-          (r) => r.id === a || a.startsWith(`<@&${r.id}>`) || r.name.toLowerCase().startsWith(a.toLowerCase()),
+          (r) => (r.id === a || a.startsWith(`<@&${r.id}>`) || r.name.toLowerCase().startsWith(a.toLowerCase())) && !r.managed,
         );
 
         return role;
@@ -95,7 +95,7 @@ export class Args {
 
         a.forEach((i) => {
           const role = msg.channel.guild.roles.find(
-            (r) => r.name.toLowerCase().startsWith(i.toLowerCase()) || r.id === i || i === `<@&${r.id}>`,
+            (r) => (r.name.toLowerCase().startsWith(i.toLowerCase()) || r.id === i || i === `<@&${r.id}>`) && !r.managed,
           );
 
           if (!role) return;
