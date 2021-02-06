@@ -1,9 +1,9 @@
+import type { SauceNAOData } from "../../typings/endpoints";
 import type { AxiosResponse } from "axios";
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { urlRegex } from "../../helpers/constants";
 import axios from "axios";
-type saucenaoData = { header: { similarity: string; thumbnail: string; index_id: number; index_name: string; dupes: number } };
 
 export class SauceNaoCommand extends Command {
   description = "Gets a source for an image from Saucenao.";
@@ -30,7 +30,7 @@ export class SauceNaoCommand extends Command {
     }
 
     // Sorts the data
-    body.data.results = body.data.results.sort((a: saucenaoData, b: saucenaoData) =>
+    body.data.results = body.data.results.sort((a: SauceNAOData, b: SauceNAOData) =>
       parseFloat(a.header.similarity) > parseFloat(b.header.similarity) ? -1 : 1,
     );
 
