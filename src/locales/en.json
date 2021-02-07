@@ -684,6 +684,14 @@
   },
 
   "utility": {
+    "IPINFO_ABUSEIPDB": "{total} reports, {confidence}% confidence",
+    "IPINFO_ABUSEINFO": "Abuse Info",
+    "IPINFO_INVALID": "Invalid IP address.",
+    "IPINFO_HOSTNAME": "Hostname",
+    "IPINFO_DESCRIPTION": "Information may be slightly innacurate.",
+    "IPINFO_ORG": "Org",
+    "IPINFO_COUNTRY": "Country",
+    "IPINFO_CITY": "City",
     "TWITTER_LATESTTWEET": "Latest Tweet",
     "TWITTER_NOTES": "Notes",
     "TWITTER_PRIVATEVERIFIED": "This account is private and verified.",
