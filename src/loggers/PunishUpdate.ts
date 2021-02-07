@@ -22,7 +22,6 @@ export class PunishUpdate extends Logger {
 
     if (event === "memberMute") {
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
-
       this.bot.createMessage(channel, {
         embed: {
           color: this.convertHex("error"),

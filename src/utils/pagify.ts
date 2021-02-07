@@ -17,7 +17,7 @@ export async function pagify(
   msg: Message,
   bot: HibikiClient,
   user: string | null = null,
-  exitEmbed = { title: "❌ Exited", color: msg.convertHex("general") },
+  exitEmbed: any = { title: "❌ Exited", color: msg.convertHex("error") },
   edit = true,
   footerText = "%c/%a",
   initialPage = 0,
