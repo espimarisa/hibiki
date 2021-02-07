@@ -75,19 +75,9 @@ export class CryptoCommand extends Command {
     priceHistory.forEach((price: number[], i: number) => {
       // Calculates move and line info
       const moveCalc = ((size[1] - 0) * (price[1] - lowestPrice)) / (highestPrice - lowestPrice);
-      // const lineCalc = ((size[1] - 0) * (prices[i === 0 ? 0 : i - 1] - lowestPrice)) / (highestPrice - lowestPrice);
-
-      // ctx.moveTo(average * i - average, Math.abs(lineCalc - size[1]));
       ctx.lineTo(average * i, Math.abs(moveCalc - size[1]));
-
-      // Creates a gradient below the graph
-      // const gradient = ctx.createLinearGradient(average * i, Math.abs(moveCalc - size[1]), average * i, size[1]);
-      // gradient.addColorStop(0, `${this.bot.config.colors.general}77`);
-      // gradient.addColorStop(1, "rgba(0,0,0,0)");
-      // ctx.lineTo(average * i, size[1]);
-      // ctx.strokeStyle = gradient;
-      // ctx.stroke();
     });
+
     ctx.lineWidth = 2;
     ctx.strokeStyle = this.bot.config.colors.general;
     ctx.stroke();
