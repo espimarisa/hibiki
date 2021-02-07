@@ -684,7 +684,18 @@
   },
 
   "utility": {
+    "TWITTER_LATESTTWEET": "Latest Tweet",
+    "TWITTER_NOTES": "Notes",
+    "TWITTER_PRIVATEVERIFIED": "This account is private and verified.",
+    "TWITTER_VERIFIED": "This account is verified.",
+    "TWITTER_PRIVATE": "This account is private.",
+    "ACCOUNT_NOTFOUND": "Account not found.",
+    "TWITTER_TWEETS": "Tweets",
+    "TWITTER_LIKES": "Likes",
+    "WORD_STEMS": "Stems",
+    "WORD_DEFINITION": "Definition",
     "AMOUNT_ONLINE": "{amount} currently online",
+    "WORD_NOTFOUND": "Word or definition not found.",
     "CHANNELINFO_TEXT": "The channel {nsfw:#is#!isn't!} NSFW and it's in position **{position}**.",
     "CHANNELINFO_VOICE": "The channel's bitreate is {bitrate}kbps and it's limited to {limit} users.",
     "CREATED_AT": "Created at",

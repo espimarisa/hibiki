@@ -1,6 +1,7 @@
 import type { EmbedField, Message, TextChannel } from "eris";
 import type { AURPackageData } from "../../typings/endpoints";
 import { Command } from "../../classes/Command";
+import { resError } from "../../utils/exception";
 import { dateFormat } from "../../utils/format";
 import { timeoutHandler, waitFor } from "../../utils/waitFor";
 import axios from "axios";
@@ -14,7 +15,10 @@ export class aurCommand extends Command {
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[], args: string[]) {
     const query = encodeURIComponent(args.join(" ").toLowerCase());
-    const body = await axios.get(`https://aur.archlinux.org/rpc/?v=5&type=search&arg=${query}`);
+    const body = await axios.get(`https://aur.archlinux.org/rpc/?v=5&type=search&arg=${query}`).catch((err) => {
+      resError(err);
+    });
+
     let pkg: AURPackageData;
 
     // Sends if nothing is found
