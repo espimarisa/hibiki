@@ -310,6 +310,8 @@
   },
 
   "global": {
+    "EXITED": "❌ Exited",
+    "UPLOADED": "Uploaded",
     "UPVOTES": "Upvotes",
     "DOWNVOTES": "Downvotes",
     "ACCOUNT_AGE": "Account Age",
@@ -454,6 +456,7 @@
   },
 
   "image": {
+    "GARFIELD_PUBLISHEDON": "Published on {date}",
     "AWOO": "Awoo!",
     "CAT": "Cat",
     "CATGIRL": "Catgirl",
@@ -575,7 +578,16 @@
     "UNVERIFY_SUCCESS": "Successfully removed the verified role from **{member}**.",
     "VERIFY_ALREADYHAS": "**{member}** already has the verified role.",
     "VERIFY_FAILED": "Failed to add the verified role. Be sure that I have the proper permissions.",
-    "VERIFY_NOTSET": "The verified role isn't set yet. Configure it using the config command.",
+    "UNMUTE_FAILED": "Failed to add the muted role. Be sure that i have the proper permissions.",
+    "MUTE_FAILED": "Failed to add the muted role. Be sure that i have the proper permissions.",
+    "UNMUTE_DOESNTHAVE": "**{member}** isn't currently muted.",
+    "MUTE_ALREADYHAS": "**{member}** is already muted. To unmute them, run the unmute command.",
+    "MUTE_NOTSET": "The muted role isn't set yet. Configure it by using the config command.",
+    "VERIFY_NOTSET": "The verified role isn't set yet. Configure it by using the config command.",
+    "MUTE_SUCCESS": "Successfully muted **{member}**.",
+    "UNMUTE_SUCCESS": "Successfully unmuted **{member}**.",
+    "UNMUTE_FAILEDROLES": "Failed to add some of **{member}**'s roles back in the unmuting process.",
+    "MUTE_FAILEDROLES": "Failed to remove some of **{member}**'s roles in the muting process.",
     "VERIFY_SUCCESS": "Successfully added the verified role to **{member}**.",
     "WARN": "Warn",
     "WARN_ADDED": "**{member}** was given a warning.",
@@ -631,6 +643,10 @@
   },
 
   "nsfw": {
+    "NHENTAI_OVERFLOW": "and {length} more",
+    "NHENTAI_FAVORITES": "Favorites",
+    "NHENTAI_TAGS": "Tags",
+    "NHENTAI_TOTALPAGES": "Total Pages",
     "ASS": "Ass",
     "ASS_HENTAI": "Ass Hentai",
     "FEET_HENTAI": "Feet Hentai",

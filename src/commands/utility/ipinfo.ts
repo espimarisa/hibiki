@@ -104,8 +104,7 @@ export class IPInfoCommand extends Command {
       image = `https://maps.googleapis.com/maps/api/staticmap?center=${body.data.loc}&zoom=10&size=250x150&sensor=false&key=${this.bot.config.keys.maps}`;
     }
 
-    console.log(image);
-
+    // Sends ip information
     msg.channel.createMessage({
       embed: {
         title: `🌐 ${body.data.ip}`,
@@ -116,7 +115,10 @@ export class IPInfoCommand extends Command {
         },
         fields: fields,
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", {
+            author: msg.tagUser(msg.author),
+            poweredBy: "ipinfo.io",
+          }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
