@@ -98,7 +98,9 @@ function loadEvents(path: string, bot: HibikiClient, logger = false) {
 
       // Pushes the events and runs them
       (logger ? bot.loggers : bot.events).push(new event(bot, file.name.split(fileTypes)[0]));
-      if (i === files.length - 1) {
+      // TODO: Stop holding critical production code together
+      // with what is the equivalent to duct tape and glue
+      if (i === (logger ? files.length : files.length - 1)) {
         subscribeEvents(logger ? bot.loggers : bot.events);
         bot.log.info(logger ? `${bot.loggers.length} loggers loaded` : `${bot.events.length} events loaded`);
       }

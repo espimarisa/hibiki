@@ -89,6 +89,7 @@ export class CryptoCommand extends Command {
     ctx.lineTo(0, size[1]);
     ctx.fillStyle = gradient;
     ctx.fill();
+
     // Convets canvas to a Buffer
     const buf = canvas.toBuffer();
 
@@ -155,7 +156,10 @@ export class CryptoCommand extends Command {
             url: "attachment://graph.png",
           },
           footer: {
-            text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+            text: msg.string("global.RAN_BY", {
+              author: msg.tagUser(msg.author),
+              poweredBy: "coingecko.com",
+            }),
             icon_url: msg.author.dynamicAvatarURL(),
           },
         },
