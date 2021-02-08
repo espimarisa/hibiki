@@ -24,12 +24,13 @@ export class EmojiUpdate extends Logger {
       .filter((oldEmoji) => !emojis.some((newEmoji) => JSON.stringify(newEmoji) === JSON.stringify(oldEmoji)))
       .concat(emojis.filter((newEmoji) => !oldEmojis.some((oldEmoji) => JSON.stringify(newEmoji) === JSON.stringify(oldEmoji))));
 
+    if (!changes.length) return;
+
     // Finds duplicates; ids
     const duplicates: string[] = [];
     const changesIds = changes.map((c) => c.id);
     const emojisIds = emojis.map((c) => c.id);
     const changesString: string[] = [];
-
     changes.forEach((change, i) => {
       const lastIndex = changesIds.lastIndexOf(change.id);
       if (lastIndex !== i) {
@@ -41,6 +42,8 @@ export class EmojiUpdate extends Logger {
       // Emoji additions
       else if (!duplicates.includes(change.id)) changesString.push(string("logger.EMOJI_CREATED", { emoji: change.name }));
     });
+
+    if (!changesString.length) return;
 
     // Sends the embed
     const embed = {
