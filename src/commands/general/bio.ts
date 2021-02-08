@@ -8,15 +8,17 @@ export class bioCommand extends Command {
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[], args: string[]) {
     // Shows other member's bios
-    const member = this.bot.args.argtypes.member(args.join(" "), msg) as Member;
-    if (member) {
-      const userconfig = await this.bot.db.getUserConfig(member.id);
-      return userconfig?.bio
-        ? msg.createEmbed(
-            `👤 ${msg.string("global.BIO")}`,
-            msg.string("general.BIO_MEMBER", { member: member.username, bio: userconfig.bio }),
-          )
-        : msg.createEmbed(msg.string("global.ERROR"), msg.string("general.BIO_MEMBER_DOESNTHAVE", { member: member.username }), "error");
+    if (args.join(" ").length) {
+      const member = this.bot.args.argtypes.member(args.join(" "), msg, ["strict"]) as Member;
+      if (member) {
+        const userconfig = await this.bot.db.getUserConfig(member.id);
+        return userconfig?.bio
+          ? msg.createEmbed(
+              `👤 ${msg.string("global.BIO")}`,
+              msg.string("general.BIO_MEMBER", { member: member.username, bio: userconfig.bio }),
+            )
+          : msg.createEmbed(msg.string("global.ERROR"), msg.string("general.BIO_MEMBER_DOESNTHAVE", { member: member.username }), "error");
+      }
     }
 
     // Bio limit
