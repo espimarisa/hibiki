@@ -41,6 +41,7 @@ export class HibikiClient extends Client {
   antiSpam: AntiSpam[];
   logs: BotLogs[];
   config: typeof config;
+  snipeData: Record<string, any>;
 
   constructor(token: string, options: ClientOptions) {
     super(token, options);
@@ -60,6 +61,7 @@ export class HibikiClient extends Client {
     this.events = [];
     this.loggers = [];
     this.logs = [];
+    this.snipeData = {};
     this.cooldowns = new Map();
 
     // Handlers & functions

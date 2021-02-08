@@ -66,16 +66,19 @@ export class CryptoCommand extends Command {
     const canvas = createCanvas(size[0], size[1]);
     const ctx = canvas.getContext("2d");
     const prices = priceHistory.map((price: number[]) => price[1]);
-    const average = size[0] / priceHistory.length;
+    const dates = priceHistory.map((price: number[]) => price[0]);
     const highestPrice = Math.max(...prices);
     const lowestPrice = Math.min(...prices);
+    const highestDate = Math.max(...dates);
+    const lowestDate = Math.min(...dates);
 
     ctx.beginPath();
     // Draws the graph using the data
-    priceHistory.forEach((price: number[], i: number) => {
+    priceHistory.forEach((price: number[]) => {
       // Calculates move and line info
-      const moveCalc = ((size[1] - 0) * (price[1] - lowestPrice)) / (highestPrice - lowestPrice);
-      ctx.lineTo(average * i, Math.abs(moveCalc - size[1]));
+      const x = (size[0] * (price[0] - lowestDate)) / (highestDate - lowestDate);
+      const y = ((size[1] - 0) * (price[1] - lowestPrice)) / (highestPrice - lowestPrice);
+      ctx.lineTo(x, Math.abs(y - size[1]));
     });
 
     ctx.lineWidth = 2;
