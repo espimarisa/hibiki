@@ -1,4 +1,5 @@
 import type { EmbedField, Member, Message, Role, TextChannel } from "eris";
+import { Constants } from "eris";
 import type { Dayjs } from "dayjs";
 import { User } from "eris";
 import { Command } from "../../classes/Command";
@@ -98,6 +99,10 @@ export class UserinfoCommand extends Command {
         if (isJikMember) badges += this.bot.config.customEmojis?.jiktim;
       }
     }
+    const flags = member?.user?.publicFlags || ((member as any) as User).publicFlags;
+    Object.keys(Constants.UserFlags).forEach((flag) => {
+      if (this.bot.config.customEmojis?.[flag]?.length && flags & Constants.UserFlags[flag]) badges += this.bot.config.customEmojis[flag];
+    });
 
     // Embed fields
     const fields: EmbedField[] = [];

@@ -61,7 +61,7 @@ export class Args {
               a.startsWith(`<@${m.id}>`) ||
               m.nick?.toLowerCase() === a ||
               m.user.username.startsWith(a)
-            : m.user.username.startsWith(a) || m.id === a || a.startsWith(`<@!${m.id}>`) || a.startsWith(`<@${m.id}>`),
+            : m.id === a || a.startsWith(`<@!${m.id}>`) || a.startsWith(`<@${m.id}>`),
         );
 
         // If no member found, try to use REST mode
