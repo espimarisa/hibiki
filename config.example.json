@@ -51,7 +51,17 @@
 
   "customEmojis": {
     "jiktim": "",
-    "jiktimID": ""
+    "jiktimID": "",
+    "VERIFIED_BOT_DEVELOPER": "",
+    "DISCORD_EMPLOYEE": "",
+    "DISCORD_PARTNER": "",
+    "HYPESQUAD_EVENTS": "",
+    "BUG_HUNTER_LEVEL_1": "",
+    "HOUSE_BRAVERY": "",
+    "HOUSE_BRILLIANCE": "",
+    "HOUSE_BALANCE": "",
+    "EARLY_SUPPORTER": "",
+    "BUG_HUNTER_LEVEL_2": ""
   },
 
   "keys": {

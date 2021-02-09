@@ -92,6 +92,12 @@ export class UserinfoCommand extends Command {
     // Custom badges (if running on production)
     let badges = "";
     // TODO: Better logic for lots of custom emojis when we add them cus this will be very ugly
+
+    const flags = member?.user?.publicFlags || ((member as any) as User).publicFlags;
+    Object.keys(Constants.UserFlags).forEach((flag) => {
+      if (this.bot.config.customEmojis?.[flag]?.length && flags & Constants.UserFlags[flag]) badges += this.bot.config.customEmojis[flag];
+    });
+
     if (this.bot.config.customEmojis?.jiktim && this.bot.config.customEmojis?.jiktimID) {
       const jikGuild = this.bot.guilds.get(this.bot.config.customEmojis?.jiktimID);
       if (jikGuild) {
@@ -99,10 +105,6 @@ export class UserinfoCommand extends Command {
         if (isJikMember) badges += this.bot.config.customEmojis?.jiktim;
       }
     }
-    const flags = member?.user?.publicFlags || ((member as any) as User).publicFlags;
-    Object.keys(Constants.UserFlags).forEach((flag) => {
-      if (this.bot.config.customEmojis?.[flag]?.length && flags & Constants.UserFlags[flag]) badges += this.bot.config.customEmojis[flag];
-    });
 
     // Embed fields
     const fields: EmbedField[] = [];
