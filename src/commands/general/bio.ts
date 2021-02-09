@@ -26,12 +26,13 @@ export class bioCommand extends Command {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.BIO_TOOLONG"), "error");
     }
 
-    const userconfig = await this.bot.db.getUserConfig(msg.author.id);
+    let userconfig = await this.bot.db.getUserConfig(msg.author.id);
 
     // No bio set; no args
     if (!args.length && !userconfig?.bio) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.BIO_DIDNTPROVIDE"), "error");
     }
+
     // Shows the bio
     else if (!args.length && userconfig?.bio) {
       return msg.createEmbed(`👤 ${msg.string("global.BIO")}`, msg.string("general.BIO_SHOW", { bio: userconfig.bio }));
@@ -42,6 +43,11 @@ export class bioCommand extends Command {
       delete userconfig.bio;
       await this.bot.db.replaceUserConfig(msg.author.id, userconfig);
       return msg.createEmbed(msg.string("global.SUCCESS"), msg.string("general.BIO_CLEARED"), "success");
+    }
+
+    if (!userconfig?.bio) {
+      userconfig = { id: msg.author.id };
+      await this.bot.db.insertBlankUserConfig(msg.author.id);
     }
 
     // Sets bio; blocks ads
