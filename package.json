@@ -49,7 +49,7 @@
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "rethinkdb-ts": "^2.4.8",
-    "terser": "^5.5.1"
+    "terser": "^5.6.0"
   },
   "optionalDependencies": {
     "erlpack": "^0.1.3",
