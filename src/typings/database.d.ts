@@ -18,6 +18,7 @@ interface GuildConfig {
   antiSpam?: boolean;
   assignableRoles?: string[];
   autoRoles?: string[];
+  customCommands?: Record<string, string>[];
   disabledCategories?: string[];
   disabledCmds?: string[];
   disabledEvents?: string[];
@@ -131,9 +132,9 @@ interface UserMarriage {
 
 // Steammonitor data
 interface SteamMonitor {
+  avatar?: string;
   date?: Date;
   id?: string;
-  pfp?: string;
   user?: string;
   username?: string;
 }

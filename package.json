@@ -54,7 +54,7 @@
     "passport-discord": "^0.1.4",
     "rethinkdb-ts": "^2.4.8",
     "session-rethinkdb-ts": "^1.0.5",
-    "terser": "^5.5.1",
+    "terser": "^5.6.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
@@ -63,22 +63,22 @@
     "@types/csurf": "^1.11.0",
     "@types/express": "4.17.11",
     "@types/express-session": "^1.17.3",
-    "@types/node": "^14.14.25",
+    "@types/node": "^14.14.28",
     "@types/passport-discord": "^0.1.3",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
     "bulma": "^0.9.2",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
-    "eslint": "^7.19.0",
+    "eslint": "^7.20.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^3.3.1",
     "nodemon": "^2.0.7",
     "pm2": "^4.5.4",
     "prettier": "^2.2.1",
-    "sass": "^1.32.6",
+    "sass": "^1.32.7",
     "ts-node": "^9.1.1",
-    "typescript": "^4.1.3"
+    "typescript": "^4.1.5"
   },
   "optionalDependencies": {
     "@discordjs/opus": "^0.4.0",
