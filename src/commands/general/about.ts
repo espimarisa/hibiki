@@ -77,7 +77,7 @@ export class AboutCommand extends Command {
     msg.channel.createMessage({
       embed: {
         title: `🤖 ${msg.string("general.ABOUT")}`,
-        description: `${msg.string("general.ABOUT_DESCRIPTION", { username: this.bot.user.username })} 💜`,
+        description: `${msg.string("general.ABOUT_DESCRIPTION", { username: this.bot.user.username })}`,
         color: msg.convertHex("general"),
         fields: [
           {

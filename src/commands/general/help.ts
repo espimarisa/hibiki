@@ -1,4 +1,4 @@
-import type { EmbedOptions, Message, TextChannel } from "eris";
+import type { EmbedField, Message, TextChannel } from "eris";
 import { GuildChannel, PrivateChannel } from "eris";
 import { Command } from "../../classes/Command";
 
@@ -177,20 +177,26 @@ export class HelpCommand extends Command {
       if (msg.channel instanceof PrivateChannel) return;
       if (dmson) return msg.addReaction("📬").catch(() => {});
     } else {
-      const construct = [];
+      const fields: EmbedField[] = [];
+      let aliases: string[] = [];
+      aliases = [...cmd.aliases].sort((a, b) => {
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
+      });
 
       // Command aliases
       if (cmd.aliases.length) {
-        construct.push({
+        fields.push({
           name: msg.string("general.HELP_ALIASES"),
-          value: `${cmd.aliases.map((alias) => `\`${alias}\``).join(" ")}`,
+          value: aliases.map((alias) => `\`${alias}\``).join(", "),
           inline: false,
         });
       }
 
       // Command usage
       if (cmd.args) {
-        construct.push({
+        fields.push({
           name: msg.string("general.HELP_USAGE"),
           value: cmd.args
             .split(" ")
@@ -202,7 +208,7 @@ export class HelpCommand extends Command {
 
       // Command cooldown
       if (cmd.cooldown) {
-        construct.push({
+        fields.push({
           name: msg.string("general.HELP_COOLDOWN"),
           value: `${cmd.cooldown / 1000} ${msg.string("global.SECONDS")}`,
           inline: true,
@@ -211,7 +217,7 @@ export class HelpCommand extends Command {
 
       // Command clientperms
       if (cmd.clientperms?.length && cmd.clientperms !== ["embedLinks"]) {
-        construct.push({
+        fields.push({
           name: msg.string("general.HELP_BOTPERMS"),
           value: cmd.clientperms.join(", "),
           inline: false,
@@ -220,7 +226,7 @@ export class HelpCommand extends Command {
 
       // Command requiredperms
       if (cmd?.requiredperms.length) {
-        construct.push({
+        fields.push({
           name: msg.string("general.HELP_REQUIREDPERMS"),
           value: cmd.requiredperms.join(", "),
           inline: false,
@@ -229,18 +235,18 @@ export class HelpCommand extends Command {
 
       // If a command isn't toggleable
       if (!cmd.allowdisable) {
-        construct.push({
+        fields.push({
           name: msg.string("general.HELP_ALLOWDISABLE"),
-          value: cmd.allowdisable,
+          value: `${cmd.allowdisable}`,
           inline: true,
         });
       }
 
       // If a command is staff restricted
       if (cmd.staff) {
-        construct.push({
+        fields.push({
           name: msg.string("general.HELP_STAFF"),
-          value: cmd.staff,
+          value: `${cmd.staff}`,
           inline: true,
         });
       }
@@ -250,7 +256,7 @@ export class HelpCommand extends Command {
         embed: {
           description: cmd.description,
           color: msg.convertHex("general"),
-          fields: construct,
+          fields: fields,
           author: {
             name: cmd.name,
             icon_url: this.bot.user.dynamicAvatarURL(),
@@ -262,7 +268,7 @@ export class HelpCommand extends Command {
               extra: msg.string("general.HELP_COMMANDS", { commands: this.bot.commands.length - owneramt }),
             }),
           },
-        } as EmbedOptions,
+        },
       });
     }
   }

@@ -14,9 +14,8 @@ export const hexColorRegex = /[#]?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/;
 
 // Validate emojis
 export const defaultEmojiRegex = /\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/;
-export const animatedEmojiRegex = /<a:[^\s]+:\d{17,18}>/;
+export const emojiIDArgRegex = /(?<=<a?:.*:)\d*(?=>)/;
 export const emojiIDRegex = /<:[^\s]+:\d{17,18}>/;
-export const emojiNameRegex = /(?<=:)[^\s]+(?=:)/;
 
 // Invite regexes
 export const inviteRegex = /(https?:\/\/)?discord.(gg)\/[a-z0-9]+/i;

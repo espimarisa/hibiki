@@ -51,7 +51,7 @@ export class LogsCommand extends Command {
         // Returns human readable logs
         return `${logTime}: **${msg.tagUser(this.bot.users.get(log.authorID))}** ran **${log.cmdName}** in **${
           this.bot.guilds.get(log.guildID).name
-        }** (${log.guildID}) ${log.args.length ? `with args:\`${log.args.join(" ")}\`` : ""}`;
+        }** (${log.guildID}) ${log.args.length ? `:\`${log.args.join(" ")}\`` : ""}`;
       })
       .join("\n");
 

@@ -13,8 +13,15 @@ export class BlacklistCommand extends Command {
     if (!args?.[0]) {
       const blacklist = await this.bot.db.getBlacklist();
       return msg.createEmbed(
-        "❌ Blacklist",
-        blacklist.map((i) => `**ID**: \`${i.id}\`\n**Type**: \`${i.user ? "User" : "Guild"}\`\n**Reason**: \`${i.reason}\``).join("\n\n"),
+        `❌ ${msg.string("owner.BLACKLIST")}`,
+        blacklist
+          .map(
+            (i) =>
+              `**${msg.string("global.ID")}*: \`${i.id}\`\n**${msg.string("owner.TYPE")}**: \`${
+                i.user ? msg.string("global.USER") : msg.string("global.GUILD")
+              }\`\n**${msg.string("global.REASON")}**: \`${i.reason}\``,
+          )
+          .join("\n\n"),
         "error",
       );
     }
@@ -22,7 +29,7 @@ export class BlacklistCommand extends Command {
     // Gets the type and target
     const type = args[0];
     const target = args[1];
-    if (isNaN(parseInt(target))) return msg.createEmbed(msg.string("global.ERROR"), "Invalid target.", "error");
+    if (isNaN(parseInt(target))) return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.BLACKLIST_INVALID"), "error");
 
     // Gets the reason
     let reason = args.slice(2).join(" ");
@@ -32,16 +39,24 @@ export class BlacklistCommand extends Command {
     // Blacklists guilds
     if (type === "guild" || type === "server") {
       const guild = this.bot.guilds.find((guild) => guild.id === target);
-      if (guild) guild.leave().catch(() => {});
+      if (guild) await guild.leave().catch(() => {});
       await this.bot.db.insertBlacklistedItem({ id: target, reason: reason, guild: true });
-      msg.createEmbed(msg.string("global.SUCCESS"), `Blacklisted guild **${guild?.name ? guild.name : target}**.`, "success");
+      msg.createEmbed(
+        msg.string("global.SUCCESS"),
+        msg.string("owner.BLACKLISTED_GUILD", { guild: guild?.name ? guild.name : target }),
+        "success",
+      );
     }
 
     // Blacklists users; fallback to blacklisting users if no type is given
     else if (type === "user") {
       const user = this.bot.users.get(target);
       await this.bot.db.insertBlacklistedItem({ id: target, reason: reason, user: true });
-      msg.createEmbed(msg.string("global.SUCCESS"), `Blacklisted user **${user?.username ? user.username : target}**.`, "success");
+      msg.createEmbed(
+        msg.string("global.SUCCESS"),
+        msg.string("owner.BLACKLISTED_USER", { user: user?.username ? user.username : target }),
+        "success",
+      );
     }
   }
 }
