@@ -1,6 +1,6 @@
 /**
  * @file RethinkDB
- * @description Handles all RethinkDB functionality and functions
+ * @description Handles all RethinkDB functionality
  */
 
 import { r } from "rethinkdb-ts";
@@ -13,7 +13,7 @@ export function startRethink() {
   return r.connectPool({
     db: config.database.db || undefined,
     password: config.database.password || undefined,
-    port: Number(config.database.port) || 28015,
+    port: config.database.port || 28015,
     host: config.database.host || undefined,
     user: config.database.user || undefined,
     silent: true,
@@ -334,7 +334,7 @@ export class RethinkProvider {
   // Gets entire blacklist
   async getBlacklist() {
     await this.dblock;
-    return this.db.table("blacklist").run();
+    return this.db.table("blacklist").run() as Promise<BlacklistInfo[]>;
   }
 
   // Gets a blacklisted guild

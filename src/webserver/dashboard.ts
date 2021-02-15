@@ -49,7 +49,7 @@ export async function startDashboard(bot: HibikiClient) {
     connectOptions: {
       db: bot.config.database.db || undefined,
       password: bot.config.database.password || undefined,
-      port: Number(bot.config.database.port) || 28015,
+      port: bot.config.database.port || 28015,
       host: bot.config.database.host || undefined,
       user: bot.config.database.user || undefined,
       silent: true,
