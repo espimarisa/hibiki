@@ -8,7 +8,7 @@ export class PrefixCommand extends Command {
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Looks for custom prefix
     const prefix = args.join(" ").trim();
-    const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
+    let guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
 
     if (!args.length && !guildconfig?.prefix) {
       return msg.createEmbed(
@@ -30,9 +30,15 @@ export class PrefixCommand extends Command {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.PREFIX_NOPERMISSIONS"), "error");
     }
 
-    // Updates DB
-    await this.bot.db.updateGuildConfig(msg.channel.guild.id, { id: msg.channel.guild.id, prefix: prefix });
+    // If no guildconfig
+    if (!guildconfig) {
+      await this.bot.db.insertBlankGuildConfig(msg.channel.guild.id);
+      guildconfig = { id: msg.channel.guild.id, prefix: prefix };
+    }
 
+    // Updates the prefix
+    guildconfig.prefix = prefix;
+    await this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);
     this.bot.emit("prefixUpdate", msg.channel.guild, msg.member, prefix);
     msg.createEmbed(msg.string("global.SUCCESS"), msg.string("general.PREFIX_SET", { prefix: prefix }), "success");
   }

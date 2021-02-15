@@ -11,7 +11,7 @@
 
   "colors": {
     "error": "#FF0048",
-    "general": "#8E94F2",
+    "general": "#DAB6FC",
     "pinboard": "#3498DB",
     "success": "#41FF70"
   },

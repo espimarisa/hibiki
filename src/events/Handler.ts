@@ -41,11 +41,9 @@ export class HandlerEvent extends Event {
     const mentionRegex = new RegExp(`<@!?${this.bot.user.id}> ?`);
     const mentionPrefix = mentionRegex.exec(msg.content);
     const prefixes = this.bot.config.prefixes.map((p) => msg.content.toLowerCase().startsWith(p)).indexOf(true);
-    if (mentionPrefix && mentionPrefix.index === 0) prefix = mentionPrefix[0];
-    else if (guildconfig && guildconfig.prefix && msg.content.toLowerCase().startsWith(guildconfig.prefix)) prefix = guildconfig.prefix;
-    else if ((!guildconfig || !guildconfig.prefix) && this.bot.config.prefixes && prefixes !== -1) {
-      prefix = this.bot.config.prefixes[prefixes];
-    }
+    if (mentionPrefix?.index === 0) prefix = mentionPrefix?.[0];
+    else if (guildconfig?.prefix && msg.content.toLowerCase().startsWith(guildconfig?.prefix)) prefix = guildconfig?.prefix;
+    else if (!guildconfig?.prefix && prefixes !== -1) prefix = this.bot.config.prefixes[prefixes];
 
     // Checks to see if a member is staff
     const isStaff =
@@ -61,6 +59,39 @@ export class HandlerEvent extends Event {
       (cmd) => cmd?.name === commandName.toLowerCase() || cmd?.aliases.includes(commandName.toLowerCase()),
     );
 
+    // Custom command support
+    if (msg.channel.guild && guildconfig?.customCommands?.length && !command) {
+      const customcmd = guildconfig.customCommands.find((c) => c.name === commandName);
+      if (!customcmd) return;
+
+      // Replaces {author}, {random}, {guild}, and {mentioner}
+      if (msg.mentions?.[0]) customcmd.content = customcmd.content.replace(/{mentioner}/g, `<@${msg.mentions?.[0]?.id}>`);
+      else customcmd.content = customcmd.content.replace(/{mentioner}/g, `<@${msg.author.id}>`);
+      customcmd.content = customcmd.content.replace(/{author}/g, `<@${msg.author.id}>`);
+      customcmd.content = customcmd.content.replace(/{random}/g, Math.round(Math.random() * 100).toString());
+      customcmd.content = customcmd.content.replace(/{guild}/g, msg.channel.guild.name);
+
+      // Sends the command
+      return msg.channel.createMessage({
+        embed: {
+          title: `✨ ${customcmd.name}`,
+          description: customcmd.content.substring(0, 2048),
+          color: msg.convertHex("general"),
+          image: {
+            url: customcmd.image,
+          },
+          footer: {
+            text: string("global.CUSTOMCOMMAND_RANBY", {
+              author: msg.tagUser(msg.author),
+              creator: msg.tagUser(msg.channel.guild.members?.get(customcmd.createdBy)?.user),
+            }),
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
+        },
+      });
+    }
+
+    // Word filtering
     if (!command) return isStaff && !(msg.channel instanceof PrivateChannel) && wordFilter(guildconfig, msg);
 
     // Handles owner commands
@@ -72,64 +103,64 @@ export class HandlerEvent extends Event {
       return;
     }
 
-    // Handles disabled categories and commands
-    if (command.allowdisable !== false) {
-      // Disabled categories
-      if (guildconfig?.disabledCategories?.includes(command.category)) {
-        return msg.createEmbed(string("global.ERROR"), string("global.ERROR_DISABLEDCATEGORY", { command: command.name }), "error");
-      }
+    // Handles guild options
+    if (msg.channel.guild) {
+      if (command.allowdisable !== false) {
+        // Disabled categories
+        if (guildconfig?.disabledCategories?.includes(command.category)) {
+          return msg.createEmbed(string("global.ERROR"), string("global.ERROR_DISABLEDCATEGORY", { command: command.name }), "error");
+        }
 
-      // Disabled commands
-      if (guildconfig?.disabledCmds?.includes(command.name)) {
-        return msg.createEmbed(string("global.ERROR"), string("global.ERROR_DISABLED", { command: command.name }), "error");
-      }
-    }
-
-    // Handles NSFW commands
-    if (command.nsfw && msg.channel.guild && !msg.channel.nsfw) {
-      msg.createEmbed(string("global.ERROR"), string("global.ERROR_NSFW", { command: command.name }), "error");
-      return;
-    }
-
-    // Handles voice-only commands
-    if (command.voice) {
-      const uservoice = msg.channel.guild.members.get(msg.author.id)?.voiceState?.channelID;
-      const botvoice = msg.channel.guild.members.get(this.bot.user.id)?.voiceState?.channelID;
-
-      // If the user isn't in a voice channel or if the user isn't in the same channel as the bot
-      if (!uservoice || (botvoice && uservoice !== botvoice)) {
-        msg.createEmbed(string("global.ERROR"), string("global.ERROR_VOICE", { command: command.name }), "error");
-        return;
-      }
-
-      // Checks to see if a member has specific roles
-      const hasMusicRole = guildconfig?.musicRole && msg.member?.roles.includes(guildconfig.musicRole);
-
-      // If the guild has musicRole set and the user doesn't have proper roles
-      if (!hasMusicRole || (!hasMusicRole && !isStaff)) {
-        return msg.createEmbed(string("global.ERROR"), string("global.ERROR_MUSICROLE"), "error");
-      }
-
-      // If the musicChannel is set and my brain is dying rn
-      if (guildconfig?.musicChannel && uservoice !== guildconfig?.musicChannel) {
-        msg.createEmbed(string("global.ERROR"), string("global.ERROR_MUSICCHANNEL"), "error");
-        return;
-      }
-
-      // If onlyRQCC is set and the author isn't the same as the requester
-      if (guildconfig?.onlyRequesterCanControl && this.bot.lavalink.manager.players.get(msg.channel.guild.id)) {
-        const requester = this.bot.lavalink.manager.players.get(msg.channel.guild.id)?.queue?.current?.requester as User;
-
-        if ((!isStaff || !hasMusicRole) && requester.id !== msg.author.id) {
-          return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ERROR_MUSICREQUESTER"));
+        // Disabled commands
+        if (guildconfig?.disabledCmds?.includes(command.name)) {
+          return msg.createEmbed(string("global.ERROR"), string("global.ERROR_DISABLED", { command: command.name }), "error");
         }
       }
-    }
 
-    // Handles clientPerms, botPerms, requiredPerms, and staff commands
-    if (msg.channel.guild) {
-      const dmChannel = await msg.author.getDMChannel();
-      const botPerms = msg.channel.guild.members.get(this.bot.user.id)?.permissions;
+      // Handles staff commands
+      if (command.staff) {
+        if (!msg.member?.permissions.has("administrator") && guildconfig?.staffRole && !msg.member?.roles.includes(guildconfig.staffRole)) {
+          return msg.createEmbed(string("global.ERROR"), string("global.ERROR_STAFFCOMMAND"), "error");
+        }
+      }
+
+      // Handles NSFW commands
+      if (command.nsfw && !msg.channel.nsfw) {
+        return msg.createEmbed(string("global.ERROR"), string("global.ERROR_NSFW", { command: command.name }), "error");
+      }
+
+      // Handles voice-only commands
+      if (command.voice) {
+        const uservoice = msg.channel.guild.members?.get(msg.author.id)?.voiceState?.channelID;
+        const botvoice = msg.channel.guild.members?.get(this.bot.user.id)?.voiceState?.channelID;
+
+        // If the user isn't in a voice channel or if the user isn't in the same channel as the bot
+        if (!uservoice || (botvoice && uservoice !== botvoice)) {
+          return msg.createEmbed(string("global.ERROR"), string("global.ERROR_VOICE", { command: command.name }), "error");
+        }
+
+        // Checks to see if a member has specific roles
+        const hasMusicRole = guildconfig?.musicRole && msg.member?.roles?.includes(guildconfig.musicRole);
+
+        // If the guild has musicRole set and the user doesn't have proper roles
+        if (!hasMusicRole || (!hasMusicRole && !isStaff)) {
+          return msg.createEmbed(string("global.ERROR"), string("global.ERROR_MUSICROLE"), "error");
+        }
+
+        // If the musicChannel is set
+        if (guildconfig?.musicChannel && uservoice !== guildconfig?.musicChannel) {
+          return msg.createEmbed(string("global.ERROR"), string("global.ERROR_MUSICCHANNEL"), "error");
+        }
+
+        // If onlyRQCC is set and the author isn't the same as the requester
+        if (guildconfig?.onlyRequesterCanControl && this.bot.lavalink.manager.players?.get(msg.channel.guild.id)) {
+          const requester = this.bot.lavalink.manager.players.get(msg.channel.guild.id)?.queue?.current?.requester as User;
+
+          if ((!isStaff || !hasMusicRole) && requester.id !== msg.author.id) {
+            return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ERROR_MUSICREQUESTER"));
+          }
+        }
+      }
 
       // Handles agree channel commands
       if (command.name !== "agree") {
@@ -138,6 +169,9 @@ export class HandlerEvent extends Event {
           return;
         }
       }
+
+      const dmChannel = await msg.author.getDMChannel();
+      const botPerms = msg.channel.guild.members.get(this.bot.user.id)?.permissions;
 
       // Sends if the bot can't send messages in a channel or guild
       if (!msg.channel.permissionsOf(this.bot.user.id).has("sendMessages") || !botPerms?.has("sendMessages")) {
@@ -163,13 +197,6 @@ export class HandlerEvent extends Event {
             string("global.ERROR_CLIENTPERMS", { perms: missingPerms.map((mperm) => `\`${mperm}\``).join(",") }),
             "error",
           );
-        }
-      }
-
-      // Handles staff commands
-      if (command.staff) {
-        if (!msg.member?.permissions.has("administrator") && guildconfig?.staffRole && !msg.member?.roles.includes(guildconfig.staffRole)) {
-          return msg.createEmbed(string("global.ERROR"), string("global.ERROR_STAFFCOMMAND"), "error");
         }
       }
 
