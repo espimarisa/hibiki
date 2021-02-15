@@ -1,19 +1,25 @@
 import type { Message, TextChannel } from "eris";
+import { defaultEmojiRegex, emojiIDArgRegex } from "../../helpers/constants";
 import { Command } from "../../classes/Command";
 
-export abstract class emojiCommand extends Command {
+export abstract class EmojiCommand extends Command {
   aliases = ["emote", "enlarge"];
   args = "<emoji:string>";
   description = "Enlarges an emoji.";
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Finds the emoji and if it's animated or not
-    const emoji = args.join("").match(/(?<=<a?:.*:)\d*(?=>)/);
+    const emoji = args.join("").match(emojiIDArgRegex);
     const animated = /<[a]:/g.test(args.join(""));
 
-    // Unicode to emoji
+    // If no emoji exists
+    if (!emoji && !defaultEmojiRegex.test(args[0])) {
+      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.EMOJI_NOEMOJI"), "error");
+    }
+
+    // Unicode to emoji conversion
     function toEmoji(string: string) {
-      const characters = [];
+      const characters: string[] = [];
       let charCode = 0;
       let sgFix = 0;
 
@@ -33,36 +39,34 @@ export abstract class emojiCommand extends Command {
     }
 
     // Default unicode emojis
-    if (!emoji || isNaN(emoji as any)) {
-      if (/\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/.test(args[0])) {
+    if (!emoji) {
+      if (defaultEmojiRegex.test(args[0])) {
         return msg.channel.createMessage({
           embed: {
-            title: "😄 Emoji",
+            title: `${args[0]}`,
             color: msg.convertHex("general"),
             image: {
               url: `https://twemoji.maxcdn.com/v/13.0.0/72x72/${toEmoji(args[0])}.png`,
             },
             footer: {
-              text: `Ran by ${msg.tagUser(msg.author)}`,
+              text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
               icon_url: msg.author.dynamicAvatarURL(),
             },
           },
         });
       }
-
-      return msg.createEmbed("❌ Error", "No **emoji** was provided.", "error");
     }
 
     // Custom emoji
     msg.channel.createMessage({
       embed: {
-        title: "😄 Emoji",
+        title: `${args[0]}`,
         color: msg.convertHex("general"),
         image: {
           url: `https://cdn.discordapp.com/emojis/${emoji}.${animated ? "gif" : "png"}`,
         },
         footer: {
-          text: `Ran by ${msg.tagUser(msg.author)}`,
+          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

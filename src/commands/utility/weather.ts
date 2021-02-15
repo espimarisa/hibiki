@@ -101,7 +101,10 @@ export class WeatherCommand extends Command {
           url: `http://openweathermap.org/img/wn/${body.data.current?.weather?.[0]?.icon}@2x.png`,
         },
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.string("global.RAN_BY", {
+            author: msg.tagUser(msg.author),
+            poweredBy: "openweathermap.org",
+          }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
