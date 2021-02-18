@@ -57,7 +57,7 @@ export function toHHMMSS(seconds: number) {
 export function statusTypeFormat(string: LocaleString, type: ActivityType, listening = false) {
   switch (type) {
     case 0:
-      return string("general.USER_PLAYING");
+      return string("global.PLAYING");
     case 1:
       return string("general.USER_STREAMING");
     case 2:

@@ -84,20 +84,20 @@ interface MuteCache {
 
 // User warning data
 interface UserWarning {
-  giver?: string;
-  guild?: string;
-  id?: string;
-  reason?: string;
-  receiver?: string;
+  giver: string;
+  guild: string;
+  id: string;
+  reason: string;
+  receiver: string;
 }
 
 // User point data
 interface UserPoint {
-  giver?: string;
-  guild?: string;
-  id?: string;
-  reason?: string;
-  receiver?: string;
+  giver: string;
+  guild: string;
+  id: string;
+  reason: string;
+  receiver: string;
 }
 
 // Economy data
