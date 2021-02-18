@@ -2,7 +2,7 @@ import type { Message, TextChannel } from "eris";
 import { defaultEmojiRegex, emojiIDArgRegex } from "../../helpers/constants";
 import { Command } from "../../classes/Command";
 
-export abstract class EmojiCommand extends Command {
+export class EmojiCommand extends Command {
   aliases = ["emote", "enlarge"];
   args = "<emoji:string>";
   description = "Enlarges an emoji.";

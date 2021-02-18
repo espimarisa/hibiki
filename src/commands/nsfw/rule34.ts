@@ -3,7 +3,7 @@ import { Command } from "../../classes/Command";
 import { videoFileRegex } from "../../helpers/constants";
 import axios from "axios";
 
-export abstract class Rule34Command extends Command {
+export class Rule34Command extends Command {
   aliases = ["paheal", "r34"];
   args = "[tags:string]";
   description = "Searches for an image from Rule 34 or sends a random one.";

@@ -3,7 +3,7 @@ import { Command } from "../../classes/Command";
 import { videoFileRegex } from "../../helpers/constants";
 import axios from "axios";
 
-export abstract class HypnohubCommand extends Command {
+export class HypnohubCommand extends Command {
   aliases = ["hypno"];
   args = "[tags:string]";
   description = "Searches for an image from Hypnohub or sends a random one.";
