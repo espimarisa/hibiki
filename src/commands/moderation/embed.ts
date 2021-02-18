@@ -33,10 +33,10 @@ export class EmbedCommand extends Command {
       "description": msg.string("global.DESCRIPTION"),
       "image.url": msg.string("global.IMAGE"),
       "thumbnail.url": msg.string("global.THUMBNAIL"),
-      "author.name": msg.string("utility.EMBED_AUTHORTEXT"),
-      "author.icon_url": msg.string("utility.EMBED_AUTHORICON"),
-      "footer.text": msg.string("utility.EMBED_FOOTERTEXT"),
-      "footer.icon_url": msg.string("utility.EMBED_FOOTERICON"),
+      "author.name": msg.string("moderation.EMBED_AUTHORTEXT"),
+      "author.icon_url": msg.string("moderation.EMBED_AUTHORICON"),
+      "footer.text": msg.string("moderation.EMBED_FOOTERTEXT"),
+      "footer.icon_url": msg.string("moderation.EMBED_FOOTERICON"),
       "color": msg.string("global.COLOR"),
       "timestamp": msg.string("global.TIMESTAMP"),
       "hibiki:done": msg.string("global.DONE"),
@@ -45,18 +45,18 @@ export class EmbedCommand extends Command {
 
     // Descriptions
     const emojidescriptions = {
-      "title": msg.string("utility.EMBED_TITLE"),
-      "description": msg.string("utility.EMBED_DESCRIPTION"),
-      "image.url": msg.string("utility.EMBED_IMAGEURL_DESCRIPTION"),
-      "thumbnail.url": msg.string("utility.EMBED_THUMBNAIL_DESCRIPTION"),
-      "author.name": msg.string("utility.EMBED_AUTHORNAME_DESCRIPTION"),
-      "author.icon_url": msg.string("utility.EMBED_AUTHORICON_DESCRIPTION"),
-      "footer.text": msg.string("utility.EMBED_FOOTERTEXT_DESCRIPTION"),
-      "footer.icon_url": msg.string("utility.EMBED_FOOTERICON_DESCRIPTION"),
-      "color": msg.string("utility.EMBED_COLOR_DESCRIPTION"),
-      "timestamp": msg.string("utility.EMBED_TIMESTAMP"),
-      "hibiki:done": msg.string("utility.EMBED_SEND"),
-      "hibiki:cancel": msg.string("utility.EMBED_CANCEL"),
+      "title": msg.string("moderation.EMBED_TITLE"),
+      "description": msg.string("moderation.EMBED_DESCRIPTION"),
+      "image.url": msg.string("moderation.EMBED_IMAGEURL_DESCRIPTION"),
+      "thumbnail.url": msg.string("moderation.EMBED_THUMBNAIL_DESCRIPTION"),
+      "author.name": msg.string("moderation.EMBED_AUTHORNAME_DESCRIPTION"),
+      "author.icon_url": msg.string("moderation.EMBED_AUTHORICON_DESCRIPTION"),
+      "footer.text": msg.string("moderation.EMBED_FOOTERTEXT_DESCRIPTION"),
+      "footer.icon_url": msg.string("moderation.EMBED_FOOTERICON_DESCRIPTION"),
+      "color": msg.string("moderation.EMBED_COLOR_DESCRIPTION"),
+      "timestamp": msg.string("moderation.EMBED_TIMESTAMP"),
+      "hibiki:done": msg.string("moderation.EMBED_SEND"),
+      "hibiki:cancel": msg.string("moderation.EMBED_CANCEL"),
     };
 
     let embed: Record<string, any> = {};
@@ -195,7 +195,7 @@ export class EmbedCommand extends Command {
 
     // Invalid embed handler
     if (!Object.keys(embed).length || Object.keys(embed).includes("error")) {
-      return embedmsg.editEmbed(msg.string("global.ERROR"), embed.error ? embed.error : msg.string("utility.EMBED_INVALID"), "error");
+      return embedmsg.editEmbed(msg.string("global.ERROR"), embed.error ? embed.error : msg.string("moderation.EMBED_INVALID"), "error");
     }
 
     // Sends the final embed

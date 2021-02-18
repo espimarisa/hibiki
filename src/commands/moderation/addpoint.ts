@@ -19,6 +19,7 @@ export class AddpointCommand extends Command {
     await this.bot.db.insertUserPoint({
       id: id,
       receiver: member.id,
+      giver: msg.author.id,
       guild: msg.channel.guild.id,
       reason: reason || null,
     });

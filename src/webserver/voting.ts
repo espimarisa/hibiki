@@ -51,7 +51,7 @@ export async function startVoting(bot: HibikiClient) {
       const userLocale = await bot.localeSystem.getUserLocale(`${user}`, bot);
       const string = bot.localeSystem.getLocaleFunction(userLocale);
 
-      dmChannel
+      await dmChannel
         .createMessage({
           embed: {
             title: `✨ ${string("global.THANKS_FOR_VOTING")}`,
@@ -63,7 +63,7 @@ export async function startVoting(bot: HibikiClient) {
     }
 
     // Sends msg of who voted
-    bot.createMessage(bot.config.logchannel, {
+    await bot.createMessage(bot.config.logchannel, {
       embed: {
         title: "🗳 User Voted",
         description: `**${user ? user.username : req.body.user}** has voted.`,
@@ -77,6 +77,7 @@ export async function startVoting(bot: HibikiClient) {
   });
 
   // Listens on port
-  app.listen(bot.config.keys.botlists.voting.port, "0.0.0.0");
-  bot.log.info(`Voting handler listening on port ${bot.config.keys.botlists.voting.port}`);
+  app.listen(bot.config.keys.botlists.voting.port, "0.0.0.0", async () => {
+    bot.log.info(`Voting handler listening on port ${bot.config.keys.botlists.voting.port}`);
+  });
 }
