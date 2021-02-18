@@ -151,7 +151,7 @@ export class UserinfoCommand extends Command {
     // Playing
     if (member.status !== undefined) {
       fields.push({
-        name: msg.string("general.USER_STATUS"),
+        name: msg.string("global.STATUS"),
         value: `${statusFormat(msg.string, member.status)}`,
         inline: false,
       });

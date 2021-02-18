@@ -66,7 +66,6 @@ export class GDPRCommand extends Command {
         });
     }
 
-    // User data
     // Gets user's DM channel
     const userDM = await this.bot.users
       .get(msg.author.id)

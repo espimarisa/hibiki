@@ -65,7 +65,7 @@ export class HelpCommand extends Command {
 
       // Hides owner & disabled cmds
       this.bot.commands.forEach((c) => {
-        if (!categories.includes(c.category) && c.nsfw === true && msg.channel.guild && !msg.channel.nsfw) return;
+        if (!categories.includes(c.category) && c.nsfw === true && msg.channel.guild && msg.channel.nsfw !== true) return;
         if (!categories.includes(c.category) && c.category !== "owner") categories.push(c.category);
       });
 
@@ -101,6 +101,7 @@ export class HelpCommand extends Command {
               value: this.bot.commands
                 .map((c) => {
                   if (db?.disabledCmds?.includes?.(c.name) && c.allowdisable !== false) return;
+                  if (c.nsfw === true && msg.channel.guild && msg.channel.nsfw !== true) return;
                   if (c.category !== category) return;
                   return `\`${c.name}\``;
                 })
@@ -155,6 +156,8 @@ export class HelpCommand extends Command {
                 name: sortedcategories[categories.indexOf(category)],
                 value: this.bot.commands
                   .map((c) => {
+                    if (db?.disabledCmds?.includes?.(c.name)) return;
+                    if (c.nsfw === true && msg.channel.nsfw !== true) return;
                     if (c.category !== category) return;
                     return `\`${c.name}\``;
                   })

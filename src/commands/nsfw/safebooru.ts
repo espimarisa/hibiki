@@ -8,6 +8,7 @@ export abstract class SafebooruCommand extends Command {
   args = "[tags:string]";
   description = "Searches for an image from Safebooru or sends a random one.";
   cooldown = 3000;
+  nsfw = true;
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     const query = encodeURIComponent(args.join(" ").toLowerCase());

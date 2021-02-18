@@ -21,6 +21,7 @@ export class WarnCommand extends Command {
       receiver: member.id,
       guild: msg.channel.guild.id,
       reason: reason || null,
+      giver: msg.author.id,
     });
 
     // Gets the warned member's locale and DMs them
