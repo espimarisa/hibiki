@@ -3,7 +3,7 @@ import { Command } from "../../classes/Command";
 import { videoFileRegex } from "../../helpers/constants";
 import axios from "axios";
 
-export abstract class YandereCommand extends Command {
+export class YandereCommand extends Command {
   aliases = ["yande", "yd"];
   args = "[tags:string]";
   description = "Sends an image from Yande.re.";
