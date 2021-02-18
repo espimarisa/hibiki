@@ -3,7 +3,7 @@ import { Command } from "../../classes/Command";
 import { videoFileRegex } from "../../helpers/constants";
 import axios from "axios";
 
-export abstract class SafebooruCommand extends Command {
+export class SafebooruCommand extends Command {
   aliases = ["sb"];
   args = "[tags:string]";
   description = "Searches for an image from Safebooru or sends a random one.";
