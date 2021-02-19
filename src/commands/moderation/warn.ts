@@ -1,4 +1,4 @@
-import type { Member, Message, TextChannel } from "eris";
+import type { EmbedField, Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { generateSnowflake } from "../../utils/snowflake";
 
@@ -58,8 +58,45 @@ export class WarnCommand extends Command {
 
     // Emits the event
     this.bot.emit("memberWarn", msg.channel.guild, member.user, msg.author, reason, id);
+    const warnings = await this.bot.db.getAllUserGuildWarnings(member.id, msg.channel.guild.id);
+    const fields: EmbedField[] = [];
 
-    // Sends the embed
-    msg.createEmbed(msg.string("global.SUCCESS"), msg.string("moderation.WARN_ADDED", { member: member.user.username }), "success");
+    // ID
+    fields.push({
+      name: msg.string("global.ID"),
+      value: `${id}`,
+      inline: true,
+    });
+
+    // Total if over 1
+    if (warnings.length > 1) {
+      fields.push({
+        name: msg.string("moderation.WARN_TOTAL"),
+        value: `${warnings.length}`,
+        inline: true,
+      });
+    }
+
+    // Reason
+    if (reason) {
+      fields.push({
+        name: msg.string("global.REASON"),
+        value: `${reason}`,
+      });
+    }
+
+    // Sends warning success
+    msg.channel.createMessage({
+      embed: {
+        title: msg.string("global.SUCCESS"),
+        description: msg.string("moderation.WARN_ADDED", { member: member.user.username }),
+        color: msg.convertHex("success"),
+        fields: fields,
+        footer: {
+          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
+      },
+    });
   }
 }

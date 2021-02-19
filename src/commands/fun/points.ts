@@ -50,7 +50,7 @@ export class PointsCommand extends Command {
             id: p.id,
             giver: msg.channel.guild.members.get?.(p.giver)?.user ? msg.channel.guild.members.get(p.giver)?.user.username : p.giver,
           })}`,
-          value: `${p.reason.slice(0, 150) || msg.string("global.NO_REASON")}`,
+          value: `${p.reason?.slice(0, 150) || msg.string("global.NO_REASON")}`,
         })),
         footer: {
           text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),

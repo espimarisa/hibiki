@@ -3,12 +3,12 @@ import { Command } from "../../classes/Command";
 import { askYesNo } from "../../utils/ask";
 import { roleHierarchy } from "../../utils/hierarchy";
 
-export class BanCommand extends Command {
-  description = "Bans a member from the server.";
+export class SoftbanCommand extends Command {
+  description = "Bans a member from the server without deleting their messages.";
   clientperms = ["banMembers"];
   requiredperms = ["banMembers"];
   args = "<member:member&strict> [reason:string]";
-  aliases = ["b"];
+  aliases = ["sb"];
   staff = true;
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[], args: string[]) {
@@ -55,7 +55,7 @@ export class BanCommand extends Command {
         );
 
       try {
-        await member.ban(1, `${reason} (${msg.tagUser(msg.author, true)})`);
+        await member.ban(0, `${reason} (${msg.tagUser(msg.author, true)})`);
       } catch (err) {
         await banmsg.editEmbed(
           `🔨 ${msg.string("moderation.BAN")}`,
@@ -67,7 +67,7 @@ export class BanCommand extends Command {
         );
       }
 
-      // Gets the kicked member's locale and DMs them on ban
+      // Gets the banned member's locale and DMs them on ban
       const dmchannel = await member.user.getDMChannel().catch(() => {});
       if (dmchannel) {
         // Gets the victim's locale and strings to use

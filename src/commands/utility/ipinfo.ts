@@ -34,6 +34,14 @@ export class IPInfoCommand extends Command {
     // Embed fields
     const fields: EmbedField[] = [];
 
+    // Region/city/country string
+    let regionString = "";
+    if (body.data.country) regionString = body.data.country;
+    if (body.data.country && body.data.region) regionString = `${body.data.region}, ${body.data.country}`;
+    if (body.data.city && body.data.region && body.data.country) {
+      regionString = `${body.data.city}, ${body.data.region}, ${body.data.country}`;
+    }
+
     // Hostname
     if (body.data.hostname) {
       fields.push({
@@ -52,39 +60,21 @@ export class IPInfoCommand extends Command {
       });
     }
 
-    // Location
+    // Geolocation
     if (body.data.loc) {
       fields.push({
-        name: msg.string("utility.LOCATION"),
+        name: msg.string("utility.IPINFO_GEOLOCATION"),
         value: body.data.loc,
         inline: true,
       });
     }
 
-    // Country
-    if (body.data.country) {
-      fields.push({
-        name: msg.string("utility.IPINFO_COUNTRY"),
-        value: body.data.country,
-        inline: true,
-      });
-    }
-
-    // City
-    if (body.data.city) {
-      fields.push({
-        name: msg.string("utility.IPINFO_CITY"),
-        value: body.data.city,
-        inline: true,
-      });
-    }
-
     // Region
-    if (body.data.region) {
+    if (regionString) {
       fields.push({
-        name: msg.string("global.REGION"),
-        value: body.data.region,
-        inline: true,
+        name: msg.string("utility.LOCATION"),
+        value: `${regionString}`,
+        inline: false,
       });
     }
 
@@ -92,8 +82,11 @@ export class IPInfoCommand extends Command {
     if (abuseinfo && abuseinfo.data?.data) {
       if (!abuseinfo.data.data.errors) {
         fields.push({
-          name: "Abuse Info",
-          value: `${abuseinfo.data.data.totalReports} reports; ${abuseinfo.data.data.abuseConfidenceScore}% confidence`,
+          name: msg.string("utility.IPINFO_ABUSEINFO"),
+          value: msg.string("utility.IPINFO_ABUSEDATA", {
+            reports: abuseinfo.data.data.totalReports,
+            confidence: abuseinfo.data.data.abuseConfidenceScore,
+          }),
         });
       }
     }

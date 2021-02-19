@@ -105,9 +105,9 @@ export class ProfileCommand extends Command {
           const { response } = await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
             timeoutHandler(err, msg, msg.string),
           );
-          if (typeof response != "boolean") return;
 
           // If the user cancels deleting
+          if (typeof response != "boolean") return;
           if (response === false) {
             return omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.PROFILE_CANCELLED_DELETING"), "error");
           }

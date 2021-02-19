@@ -31,7 +31,7 @@ export class WarningsCommand extends Command {
             id: w.id,
             giver: msg.channel.guild.members.get?.(w.giver)?.user ? msg.channel.guild.members.get(w.giver)?.user.username : w.giver,
           })}`,
-          value: `${w.reason.slice(0, 150) || msg.string("global.NO_REASON")}`,
+          value: `${w.reason?.slice(0, 150) || msg.string("global.NO_REASON")}`,
         })),
         footer: {
           text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),

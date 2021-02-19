@@ -19,6 +19,7 @@ export class DivorceCommand extends Command {
     );
 
     // If divorce is cancelled
+    if (typeof response != "boolean") return;
     if (response === false) {
       return divorcemsg.editEmbed(`💔 ${msg.string("fun.DIVORCE")}`, msg.string("fun.DIVORCE_CANCELLED"));
     }

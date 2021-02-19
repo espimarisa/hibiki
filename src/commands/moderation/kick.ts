@@ -44,9 +44,8 @@ export class KickCommand extends Command {
         return kickmsg.editEmbed(msg.string("global.ERROR"), msg.string("global.TIMEOUT_REACHED"), "error");
       });
 
-      if (typeof response != "boolean") return;
-
       // If the kick was cancelled
+      if (typeof response != "boolean") return;
       if (response === false)
         return kickmsg.editEmbed(
           msg.string("global.CANCELLED"),

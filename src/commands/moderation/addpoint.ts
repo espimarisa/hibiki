@@ -1,4 +1,4 @@
-import type { Member, Message, TextChannel } from "eris";
+import type { EmbedField, Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { generateSnowflake } from "../../utils/snowflake";
 
@@ -28,6 +28,45 @@ export class AddpointCommand extends Command {
     this.bot.emit("reputationPointAdd", msg.channel.guild, member.user, msg.author, reason, id);
 
     // Sends the embed
-    msg.createEmbed(`✨ ${msg.string("moderation.POINT")}`, msg.string("moderation.POINT_ADDED", { member: member.user.username }));
+    const points = await this.bot.db.getAllUserGuildPoints(member.id, msg.channel.guild.id);
+    const fields: EmbedField[] = [];
+
+    // ID
+    fields.push({
+      name: msg.string("global.ID"),
+      value: `${id}`,
+      inline: true,
+    });
+
+    // Total if over 1
+    if (points.length > 1) {
+      fields.push({
+        name: msg.string("moderation.POINT_TOTAL"),
+        value: `${points.length}`,
+        inline: true,
+      });
+    }
+
+    // Reason
+    if (reason) {
+      fields.push({
+        name: msg.string("global.REASON"),
+        value: `${reason}`,
+      });
+    }
+
+    // Sends point success
+    msg.channel.createMessage({
+      embed: {
+        title: msg.string("global.SUCCESS"),
+        description: msg.string("moderation.POINT_ADDED", { member: member.user.username }),
+        color: msg.convertHex("success"),
+        fields: fields,
+        footer: {
+          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          icon_url: msg.author.dynamicAvatarURL(),
+        },
+      },
+    });
   }
 }
