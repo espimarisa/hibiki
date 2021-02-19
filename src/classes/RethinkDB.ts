@@ -272,34 +272,6 @@ export class RethinkProvider {
   }
 
   /**
-   * Monitoring functions
-   */
-
-  // Gets all monitored accounts from a user
-  async getAllUserMonitoring(user: string) {
-    await this.dblock;
-    return this.db.table("monitoring").filter({ user: user }).run() as Promise<SteamMonitor[]>;
-  }
-
-  // Gets a monitor
-  async getUserMonitoring(user: string, id: string) {
-    await this.dblock;
-    return this.db.table("monitoring").filter({ user: user, id: id }).run() as Promise<SteamMonitor>;
-  }
-
-  // Deletes a monitor
-  async deleteUserMonitoring(user: string, id: string) {
-    await this.dblock;
-    return this.db.table("monitoring").filter({ id: id, user: user }).delete().run();
-  }
-
-  // Inserts a monitor
-  async insertUserMonitoring(user: string, data: SteamMonitor) {
-    await this.dblock;
-    return this.db.table("monitoring").insert({ user: user, data }).run();
-  }
-
-  /**
    * Mute cache functions
    */
 
@@ -331,6 +303,34 @@ export class RethinkProvider {
   async insertMuteCache(config: MuteCache) {
     await this.dblock;
     return this.db.table("mutecache").insert(config).run();
+  }
+
+  /**
+   * Steam monitoring functions
+   */
+
+  // Gets all monitors
+  async getAllMonitors() {
+    await this.dblock;
+    return this.db.table("monitoring").run() as Promise<SteamMonitor[]>;
+  }
+
+  // Gets all monitored accounts from a user
+  async getAllUserMonitors(user: string) {
+    await this.dblock;
+    return this.db.table("monitoring").filter({ user: user }).run() as Promise<SteamMonitor[]>;
+  }
+
+  // Deletes a monitor
+  async deleteUserMonitor(user: string, id: string) {
+    await this.dblock;
+    return this.db.table("monitoring").filter({ id: id, user: user }).delete().run();
+  }
+
+  // Inserts a monitor
+  async insertUserMonitor(monitor: SteamMonitor) {
+    await this.dblock;
+    return this.db.table("monitoring").insert(monitor).run();
   }
 
   /**

@@ -84,7 +84,7 @@ export class GDPRCommand extends Command {
       mutecache: await this.bot.db.getUserMuteCache(msg.author.id),
       points: await this.bot.db.getAllUserPoints(msg.author.id),
       reminders: await this.bot.db.getAllUserReminders(msg.author.id),
-      monitoring: await this.bot.db.getAllUserMonitoring(msg.author.id),
+      monitoring: await this.bot.db.getAllUserMonitors(msg.author.id),
       warnings: await this.bot.db.getAllUserWarnings(msg.author.id),
     };
 
