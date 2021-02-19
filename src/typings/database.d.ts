@@ -132,9 +132,8 @@ interface UserMarriage {
 
 // Steammonitor data
 interface SteamMonitor {
-  avatar?: string;
-  date?: Date;
-  id?: string;
+  date?: number;
+  id: string;
   user?: string;
   username?: string;
 }
