@@ -18,16 +18,16 @@ export class nhentaiCommand extends Command {
     const query = encodeURIComponent(args.join(" "));
     if (args.length && /\d{1,6}/.test(args.join(" "))) {
       const body = await axios.get(`https://nhentai.net/api/gallery/${query}`).catch(() => {});
-      if (!body || !body?.data) return msg.createEmbed(msg.string("global.ERROR"), msg.string("nsfw.NHENTIA_NOTFOUND"), "error");
+      if (!body || !body?.data) return msg.createEmbed(msg.string("global.ERROR"), msg.string("nsfw.NHENTAI_NOTFOUND"), "error");
       book = body.data;
     } else {
       // Searches for a doujin
       const id = await axios.get(`https://nhentai.net/api/galleries/search?query=${query}`).catch(() => {});
-      if (!id || !id.data?.result?.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("nsfw.NHENTIA_NOTFOUND"), "error");
+      if (!id || !id.data?.result?.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("nsfw.NHENTAI_NOTFOUND"), "error");
 
       // Gets individual book data
       const body = await axios.get(`https://nhentai.net/api/gallery/${id.data.result[0].id}`).catch(() => {});
-      if (!body || !body.data) return msg.createEmbed(msg.string("global.ERROR"), msg.string("nsfw.NHENTIA_NOTFOUND"), "error");
+      if (!body || !body.data) return msg.createEmbed(msg.string("global.ERROR"), msg.string("nsfw.NHENTAI_NOTFOUND"), "error");
       book = body.data;
     }
 
