@@ -39,7 +39,7 @@ export class bioCommand extends Command {
     }
 
     // Bio deletion
-    if (["clear", "delete", "remove"].includes(args.join(" ").toLowerCase())) {
+    if (["clear", "delete", "remove"].includes(args?.[0]?.toLowerCase())) {
       delete userconfig.bio;
       await this.bot.db.replaceUserConfig(msg.author.id, userconfig);
       return msg.createEmbed(msg.string("global.SUCCESS"), msg.string("general.BIO_CLEARED"), "success");

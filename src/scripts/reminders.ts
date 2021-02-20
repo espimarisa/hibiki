@@ -15,7 +15,7 @@ export class ReminderHandler {
   constructor(bot: HibikiClient) {
     this.bot = bot;
     setTimeout(() => {
-      bot.db.getAllReminders().then((reminders) => (this.reminders = reminders));
+      this.bot.db.getAllReminders().then((reminders) => (this.reminders = reminders));
 
       setInterval(async () => {
         this.reminders.forEach(async (reminder: Reminder, i: number) => {

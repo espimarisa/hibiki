@@ -28,7 +28,7 @@ export class WordFilterCommand extends Command {
     }
 
     // Removal support
-    else if (args[0] === "remove" || args[0] === "delete") {
+    else if (["remove", "delete", msg.string("global.REMOVE"), msg.string("global.DELETE")].includes(args?.[0]?.toLowerCase())) {
       args.shift();
       const word = args.join(" ");
       const wordIndex = guildconfig.filteredWords.indexOf(word);

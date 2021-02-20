@@ -32,7 +32,6 @@
     "nodemon": "cross-env nodemon --ext 'json,ts,sass,scss' --watch 'src' --delay 5 --ignore 'rethinkdb_data/*' --exec 'cross-env NODE_ENV=development ts-node --files ./src/index.ts'",
     "postbuild": "npm run build:sass && npm run build:static",
     "sass": "sass --watch ./src/webserver/public/sass/:./src/webserver/public/css/",
-    "setup": "ts-node --files ./src/scripts/setup.ts",
     "start": "npm run build && cross-env NODE_ENV=production node dist/src/index.js",
     "pm2": "npm run build:all && pm2 start pm2.config.json",
     "test": "tsc && eslint ."
@@ -63,7 +62,7 @@
     "@types/csurf": "^1.11.0",
     "@types/express": "4.17.11",
     "@types/express-session": "^1.17.3",
-    "@types/node": "^14.14.30",
+    "@types/node": "^14.14.31",
     "@types/passport-discord": "^0.1.3",
     "@typescript-eslint/eslint-plugin": "^4.15.1",
     "@typescript-eslint/parser": "^4.15.1",

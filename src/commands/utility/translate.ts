@@ -14,13 +14,16 @@ export class TranslateCommand extends Command {
     let locale = "en";
 
     // Adjusts some locales
-    if (args[0].toLowerCase().startsWith("se ")) {
+    if (args[0].toLowerCase().startsWith("se")) {
       locale = "sv";
       args.shift();
-    } else if (args[0].toLowerCase().startsWith("jp ")) {
+    } else if (args[0].toLowerCase().startsWith("cz")) {
+      locale = "cs";
+      args.shift();
+    } else if (args[0].toLowerCase().startsWith("jp")) {
       locale = "ja";
       args.shift();
-    } else if (args[0].toLowerCase().startsWith("br ")) {
+    } else if (args[0].toLowerCase().startsWith("br")) {
       locale = "pt";
       args.shift();
     }
@@ -33,7 +36,7 @@ export class TranslateCommand extends Command {
     // Gets translation
     const query = encodeURIComponent(args.join(" "));
     const body = await axios
-      .get("https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto" + `&tl=${locale}&dt=t&q=${query}`)
+      .get(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${locale}&dt=t&q=${query}`)
       .catch(() => {});
 
     // If nothing was found

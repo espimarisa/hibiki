@@ -14,7 +14,7 @@ export class RepeatCommand extends Command {
     if (!player) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_PLAYING"), "error");
 
     // Allows looping queues
-    if (args.join(" ") === "queue" || args.join(" ") === "all") {
+    if (["queue", "all", msg.string("global.ALL"), msg.string("music.QUEUE")].includes(args?.[0]?.toLowerCase())) {
       msg.createEmbed(
         `🔁 ${msg.string("music.REPEATING")}`,
         msg.string("music.QUEUE_REPEAT", { option: player.queueRepeat ? "Disabled" : "Enabled" }),
