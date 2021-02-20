@@ -8,7 +8,7 @@
 [![Support][badge-support]][support]
 [![Website][badge-website]][hibiki]
 
-[Hibiki][hibiki] is an easy, versatile, and all-in-one Discord bot that does anything that your server needs.
+[Hibiki][hibiki] is an easy, customizable, and powerful all-in-one Discord bot that does anything that your server needs.
 
 Written in [TypeScript][typescript] and powered by [Eris][eris] and [Node.js][nodejs], Hibiki is designed to have the perfect blend of customizability, ease-of-use, and stability. Unlike most Discord bots, Hibiki is both simple to use but also very tweakable.
 
