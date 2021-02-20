@@ -7,6 +7,7 @@ import type { Guild } from "eris";
 import { Event } from "../classes/Event";
 import { defaultAvatar } from "../helpers/constants";
 import { dateFormat, regionFormat } from "../utils/format";
+import { getRESTUser } from "../utils/getRESTUser";
 import axios from "axios";
 
 export class BotGuildUpdateEvent extends Event {
@@ -17,7 +18,7 @@ export class BotGuildUpdateEvent extends Event {
       if (!guild) return;
       // Checks to see if the bot was added to a blacklisted guild
       const blacklist = await this.bot.db.getBlacklistedGuild(guild.id);
-      if (blacklist) {
+      if (blacklist?.length) {
         this.bot.log.warn(`Added to blacklisted guild, leaving: ${guild.name} (${guild.id})`);
         return guild.leave();
       }
@@ -25,64 +26,90 @@ export class BotGuildUpdateEvent extends Event {
       // DMs the owner their welcome message
       const owner = this.bot.users.get(guild.ownerID);
       if (owner?.id) {
-        const ownerDM = await owner.getDMChannel();
-        ownerDM.createMessage({
-          embed: {
-            // TODO @smolespi Localize this and havea better description telling people basic stuff (how to disable; automod, etc.)
-            title: `✨ I was added to a server you own (${guild.name}).`,
-            description:
-              `To get a list of commands, run \`${this.bot.config.prefixes[0]}help\`. \n` +
-              `You can configure my options by running \`${this.bot.config.prefixes[0]}config\` or by using the [web dashboard](${this.bot.config.homepage}). \n` +
-              `By using ${this.bot.user.username}, you agree to our [privacy policy](${this.bot.config.homepage}/privacy/) and Discord's Terms of Service`,
-            color: this.convertHex("general"),
-          },
-        });
+        const ownerDM = await owner.getDMChannel().catch(() => {});
+        if (ownerDM) {
+          // Looks to see if the guild already has a config
+          const db = await this.bot.db.getGuildConfig(guild.id);
+
+          // Gets owners's locale
+          const ownerLocale = await this.bot.localeSystem.getUserLocale(owner.id, this.bot);
+          const string = this.bot.localeSystem.getLocaleFunction(ownerLocale || this.bot.config.defaultLocale);
+          const prefix = db?.prefix ? db.prefix : this.bot.config.prefixes[0];
+
+          // Gets strings
+          const ADDED_TITLE = string("global.BOTADDED_TITLE", { guild: guild.name });
+          const ADDED_TAGLINE = string("global.BOTADDED_TAGLINE", { username: this.bot.user.username });
+          const ADDED_PRIVACY = string("global.BOTADDED_PRIVACY");
+          const ADDED_HELP = string("global.BOTADDED_HELP", { prefix: prefix });
+          const ADDED_CMD = string("global.BOTADDED_DISABLECMD", { prefix: prefix });
+          const ADDED_CATEGORY = string("global.BOTADDED_DISABLECATEGORY", { prefix: prefix });
+          const ADDED_PROFILE = string("global.BOTADDED_PROFILE", { prefix: prefix });
+          const ADDED_MODULES = string("global.BOTADDED_MODULES", { prefix: prefix });
+          const ADDED_DASHBOARD = string("global.BOTADDED_DASHBOARD", { homepage: this.bot.config.homepage });
+          const ADDED_SUPPORT = string("global.BOTADDED_SUPPORT");
+
+          const ADDED_DESCRIPTION =
+            `${ADDED_TAGLINE}\n${ADDED_PRIVACY}` +
+            `\n\n${ADDED_HELP}` +
+            `\n${ADDED_CMD}\n${ADDED_CATEGORY}\n${ADDED_PROFILE}` +
+            `\n\n${ADDED_MODULES}\n${ADDED_DASHBOARD}` +
+            `\n\n${ADDED_SUPPORT}`;
+
+          await ownerDM.createMessage({
+            embed: {
+              title: `✨ ${ADDED_TITLE}`,
+              description: ADDED_DESCRIPTION,
+              color: this.convertHex("general"),
+            },
+          });
+        }
       }
     }
 
     // Logs when added or removed to a guild
-    // TODO: Localize
     const guildCreate = event === "guildCreate";
     this.bot.log.info(`${guildCreate ? "Added to" : "Removed from"} guild: ${guild.name} (${guild.id})`);
     if (this.bot.config.logchannel) {
-      const botCount = guild.botCount;
-      const owner = this.bot.users.get(guild.ownerID);
+      let owner = this.bot.users.get(guild.ownerID);
+      if (!owner) owner = await getRESTUser(guild.ownerID, this.bot);
+      const string = this.bot.localeSystem.getLocaleFunction(this.bot.config.defaultLocale);
+
       this.bot.createMessage(this.bot.config.logchannel, {
         embed: {
           color: this.convertHex(guildCreate ? "success" : "error"),
           fields: [
             {
-              name: "ID",
+              name: string("global.ID"),
               value: guild.id,
             },
             {
-              name: "Created",
+              name: string("global.CREATED_AT"),
               value: dateFormat(guild.createdAt),
             },
             {
-              name: "Owner",
-              value: `${this.tagUser(owner) || owner.id} (${owner.id})`,
+              name: string("global.OWNER"),
+              value: `${this.tagUser(owner) || owner?.id} (${owner?.id})`,
             },
             {
-              name: "Members",
-              value: `${guild.memberCount - botCount} members, ${botCount} bots`,
+              name: string("global.MEMBERS"),
+              value: string("general.SERVER_MEMBERS", { members: guild.memberOnlyCount, bots: guild.botCount }),
               inline: true,
             },
             {
-              name: "Region",
+              name: string("global.REGION"),
               value: regionFormat(guild.region),
               inline: true,
             },
           ],
           author: {
-            name: `${guildCreate ? "Added to" : "Removed from"} ${guild.name}`,
+            name: string("global.BOTADDED_AUTHOR", { type: guildCreate ? 0 : 1, guild: guild.name }),
             icon_url: `${guild.dynamicIconURL() || defaultAvatar}`,
           },
           thumbnail: {
             url: `${guild.dynamicIconURL() || defaultAvatar}`,
           },
           footer: {
-            text: `${this.bot.user.username} is now in ${this.bot.guilds.size} guilds.`,
+            text: string("global.BOTADDED_FOOTER", { username: this.bot.user.username, amount: this.bot.guilds.size }),
             icon_url: this.bot.user.dynamicAvatarURL(),
           },
         },
