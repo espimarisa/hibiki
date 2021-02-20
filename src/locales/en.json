@@ -472,6 +472,7 @@
     "ROLES": "Roles",
     "SECONDS": "Seconds",
     "SENT_ON": "Sent On",
+    "SERVER": "Server",
     "SERVER_PREFIX": "The prefix in this server is `{prefix}`.",
     "SET_TO": "has been set to",
     "SETTINGS": "Settings",

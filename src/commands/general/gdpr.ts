@@ -9,16 +9,14 @@ export class GDPRCommand extends Command {
   allowdms = true;
   allowdisable = false;
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
-    const type = pargs?.[0]?.value?.toLowerCase();
-
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Server data dumping
-    if (type === "server" || type === "guild") {
+    if (["server", "guild", msg.string("global.SERVER"), msg.string("global.GUILD")].includes(args?.[0]?.toLowerCase())) {
       if (!msg.channel.guild) {
         return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.GDPR_NOTSERVER"), "error");
       }
 
-      if (msg.channel.guild.ownerID !== msg.author.id) {
+      if (msg.channel.guild.ownerID !== msg.author.id && !msg.channel.guild.members?.get(msg.author.id)?.permissions.has("administrator")) {
         return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.GDPR_NOPERMS"), "error");
       }
 
