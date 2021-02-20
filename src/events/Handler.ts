@@ -140,7 +140,7 @@ export class HandlerEvent extends Event {
         }
 
         // Checks to see if a member has specific roles
-        const hasMusicRole = guildconfig?.musicRole && msg.member?.roles?.includes(guildconfig.musicRole);
+        const hasMusicRole = !guildconfig?.musicRole || msg.member?.roles?.includes(guildconfig.musicRole) || isStaff;
 
         // If the guild has musicRole set and the user doesn't have proper roles
         if (!hasMusicRole || (!hasMusicRole && !isStaff)) {

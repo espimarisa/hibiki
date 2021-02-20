@@ -1,5 +1,6 @@
-import type { Member, Message, TextChannel } from "eris";
+import type { EmbedOptions, Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
+import { pagify } from "../../utils/pagify";
 
 export class WarningsCommand extends Command {
   description = "Shows what warnings you (or another member) has.";
@@ -16,9 +17,47 @@ export class WarningsCommand extends Command {
     }
 
     // If more than 20 points
-    // TODO: Pagify and implement this
     if (warnings.length > 20) {
-      return msg.createEmbed("not implemented yet");
+      const pages: EmbedOptions[] = [];
+      warnings.forEach((w) => {
+        // Makes pages out of points
+        if (!pages[pages.length - 1] || pages[pages.length - 1].fields.length > 10) {
+          pages.push({
+            title: `🔨 ${msg.string("moderation.WARNINGS_TOTAL", { member: member.user.username, total: warnings.length })}`,
+            color: msg.convertHex("general"),
+            fields: [
+              {
+                name: `${msg.string("moderation.WARNING_DESCRIPTION", {
+                  id: w.id,
+                  giver: msg.channel.guild.members.get?.(w.giver)?.user ? msg.channel.guild.members.get(w.giver)?.user.username : w.giver,
+                })}`,
+                value: `${w.reason?.slice(0, 150) || msg.string("global.NO_REASON")}`,
+              },
+            ],
+          });
+        } else {
+          // Adds to already existing pages
+          pages[pages.length - 1].fields.push({
+            name: `${msg.string("moderation.WARNING_DESCRIPTION", {
+              id: w.id,
+              giver: msg.channel.guild.members.get?.(w.giver)?.user ? msg.channel.guild.members.get(w.giver)?.user.username : w.giver,
+            })}`,
+            value: `${w.reason?.slice(0, 150) || msg.string("global.NO_REASON")}`,
+          });
+        }
+      });
+
+      // Pagifies points
+      return pagify(
+        pages,
+        msg.channel,
+        this.bot,
+        msg.author.id,
+        { title: msg.string("global.EXITED"), color: msg.convertHex("error") },
+        false,
+        msg.string("global.RAN_BY", { author: msg.tagUser(msg.author), extra: "%c/%a" }),
+        msg.author.dynamicAvatarURL(),
+      );
     }
 
     // Sends points

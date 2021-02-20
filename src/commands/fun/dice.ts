@@ -5,6 +5,7 @@ export class DiceCommand extends Command {
   description = "Rolls an x sided die (defaults to 6; maximum is 120).";
   args = "[sides:string]";
   aliases = ["die", "rolldice", "rolldice"];
+  allowdms = true;
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     let sides: number;

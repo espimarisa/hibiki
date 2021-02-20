@@ -28,8 +28,7 @@ export class ColorCommand extends Command {
     else if (namecheck) color = this.hexToRGB(namecheck[0]);
     else if (!color) return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.COLOR_INVALID"), "error");
 
-    // todo fix error
-    const hex = this.rgbToHex(color.r, color.g, color.b);
+    const hex = this.rgbToHex(color?.r, color.g, color.b);
     const hsv = this.rgbToHSV(color.r / 255, color.g / 255, color.b / 255);
     const lab = rgbToLAB([color.r, color.g, color.b]);
 

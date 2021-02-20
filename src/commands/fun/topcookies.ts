@@ -4,18 +4,18 @@ import { Command } from "../../classes/Command";
 export class TopcookiesCommand extends Command {
   description = "Shows the 10 members with the most cookies.";
   aliases = ["cookieleaderboard", "leaderboard"];
+  allowdms = true;
 
   async run(msg: Message<TextChannel>) {
     const cookies = await this.bot.db.getAllCookies();
 
-    // TODO: Less shit type
-    const leaderboardcookies: any[] = [];
+    const leaderboardcookies: (string | number)[][] = [];
     Object.values(cookies).forEach((cookie) => {
       leaderboardcookies.push([cookie.amount, cookie.id]);
     });
 
     // Sorts the top 10 users
-    leaderboardcookies.sort((a, b) => b[0] - a[0]);
+    leaderboardcookies.sort((a, b) => (b[0] as number) - (a[0] as number));
     let content = "";
     let place = 1;
 
@@ -27,7 +27,7 @@ export class TopcookiesCommand extends Command {
       const user = this.bot.users.find((u) => u?.id === leaderboard[1]);
       if (!user) return;
       // Sets the message content
-      content = `${content}\n**${place}.** ${user.username} **(${Math.floor(leaderboard[0])})**`;
+      content = `${content}\n**${place}.** ${user.username} **(${Math.floor(leaderboard[0] as number)})**`;
       place += 1;
     });
 
