@@ -13,7 +13,7 @@ export class LogsCommand extends Command {
     if (!this.bot.logs) return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.LOGS_NOLOGS"), "error");
 
     // Handler for log clearing
-    if (args[0]?.toLowerCase() === "clear") {
+    if (["clear", msg.string("global.CLEAR")].includes(args?.[0]?.toLowerCase())) {
       this.bot.logs = [];
       return msg.createEmbed(`📜 ${msg.string("owner.LOGS")}`, msg.string("owner.LOGS_CLEARED"), "success");
     }
