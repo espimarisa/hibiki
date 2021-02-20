@@ -3,7 +3,6 @@ import { Command } from "../../classes/Command";
 import { dateFormat } from "../../utils/format";
 import { pagify } from "../../utils/pagify";
 import { waitFor } from "../../utils/waitFor";
-
 import axios from "axios";
 const readEmoji = "📖";
 
@@ -11,7 +10,6 @@ export class nhentaiCommand extends Command {
   description = "sends nhentai..bro";
   args = "<query:string>";
   cooldown = 4000;
-  allowdms = false;
   nsfw = true;
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[], args: string[]) {
@@ -20,21 +18,21 @@ export class nhentaiCommand extends Command {
     const query = encodeURIComponent(args.join(" "));
     if (args.length && /\d{1,6}/.test(args.join(" "))) {
       const body = await axios.get(`https://nhentai.net/api/gallery/${query}`).catch(() => {});
-      if (!body || !body?.data) return msg.createEmbed(msg.string("global.ERROR"), "Doujin not found.", "error");
+      if (!body || !body?.data) return msg.createEmbed(msg.string("global.ERROR"), msg.string("nsfw.NHENTIA_NOTFOUND"), "error");
       book = body.data;
     } else {
       // Searches for a doujin
       const id = await axios.get(`https://nhentai.net/api/galleries/search?query=${query}`).catch(() => {});
-      if (!id || !id.data?.result?.length) return msg.createEmbed(msg.string("global.ERROR"), "Doujin not found.", "error");
+      if (!id || !id.data?.result?.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("nsfw.NHENTIA_NOTFOUND"), "error");
 
       // Gets individual book data
       const body = await axios.get(`https://nhentai.net/api/gallery/${id.data.result[0].id}`).catch(() => {});
-      if (!body || !body.data) return msg.createEmbed(msg.string("global.ERROR"), "No doujin found. Try again later.", "error");
+      if (!body || !body.data) return msg.createEmbed(msg.string("global.ERROR"), msg.string("nsfw.NHENTIA_NOTFOUND"), "error");
       book = body.data;
     }
 
     // Sorts the tags
-    if (book && book.tags && book.tags.length) {
+    if (book?.tags?.length) {
       book.tags = book.tags.sort((a: Record<string, string>, b: Record<string, string>) => {
         if (a.name < b.name) return -1;
         if (a.name > b.name) return 1;
@@ -60,21 +58,22 @@ export class nhentaiCommand extends Command {
     });
 
     // Favourites
-    if (book.num_favorites?.length)
+    if (book.num_favorites?.length) {
       fields.push({
         name: msg.string("nsfw.NHENTAI_FAVORITES"),
         value: `${book.num_favorites}`,
         inline: true,
       });
+    }
 
     // Upload date
-    if (book.upload_date)
+    if (book.upload_date) {
       fields.push({
         name: msg.string("global.UPLOADED"),
         value: dateFormat(book.upload_date * 1000),
         inline: false,
       });
-
+    }
     // Tags
     if (book.tags?.length) {
       fields.push({
@@ -90,7 +89,7 @@ export class nhentaiCommand extends Command {
     // Sends the info embed
     const omsg = await msg.channel.createMessage({
       embed: {
-        color: 0xec2854,
+        color: msg.convertHex("general"),
         fields: fields,
         author: {
           name: book.title.pretty || book.title.english || msg.string("global.UNKNOWN"),
@@ -103,7 +102,7 @@ export class nhentaiCommand extends Command {
         footer: {
           text: msg.string("global.RAN_BY", {
             author: msg.tagUser(msg.author),
-            poweredBy: "nhentai.net",
+            extra: msg.string("nsfw.NHENTAI_STARTREADING"),
           }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
@@ -132,7 +131,7 @@ export class nhentaiCommand extends Command {
 
     pagify(
       book.images.pages.map((_p: number, i: number) => ({
-        color: 0xec2854,
+        color: msg.convertHex("general"),
         title: `📖 ${book.title.pretty || book.title.english || msg.string("global.UNKNOWN")}`,
         image: {
           url: `https://i.nhentai.net/galleries/${book.media_id}/${i + 1}.jpg`,
@@ -142,6 +141,9 @@ export class nhentaiCommand extends Command {
       this.bot,
       msg.author.id,
       { title: msg.string("global.EXITED"), color: msg.convertHex("error") },
+      true,
+      msg.string("global.RAN_BY", { author: msg.tagUser(msg.author), extra: `%c/%a` }),
+      msg.author.dynamicAvatarURL(),
     );
   }
 }

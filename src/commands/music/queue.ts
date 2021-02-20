@@ -1,7 +1,7 @@
-import type { Message, TextChannel } from "eris";
+import type { EmbedOptions, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { pagify } from "../../utils/pagify";
-const pageSize = 10;
+const pageSize = 2;
 
 export class QueueCommand extends Command {
   description = "Returns the next 10 queued songs.";
@@ -15,31 +15,28 @@ export class QueueCommand extends Command {
 
     // Pagifies if the queue length is bigger than the page size
     if (player.queue.length > pageSize) {
-      const pages = [];
+      const pages: EmbedOptions[] = [];
       for (let i = 0; i < player.queue.length / pageSize; i++) {
         pages.push({
-          title: msg.string("music.QUEUE"),
+          title: `🎶 ${msg.string("music.QUEUE")}`,
           description: player.queue
             .slice(i * pageSize, pageSize + i * pageSize)
             .map((t) => t.title)
             .join("\n"),
           color: msg.convertHex("general"),
-          footer: {
-            text: `1/${Math.round(player.queue.length / pageSize)}`,
-            image_urL: msg.author.dynamicAvatarURL(),
-          },
         });
       }
 
       // Sends the original message and pagifies it
-      const omsg = await msg.channel.createMessage({ embed: pages[0] });
       pagify(
         pages,
-        omsg,
+        msg.channel,
         this.bot,
         msg.author.id,
         { title: `⏹ ${msg.string("music.EXITED_QUEUE")}`, color: msg.convertHex("general") },
         false,
+        msg.string("global.RAN_BY", { author: msg.tagUser(msg.author), extra: `%c/%a` }),
+        msg.author.dynamicAvatarURL(),
       );
     } else if (player.queue.length === 0) {
       // Runs the nowplaying command if queue length is 0

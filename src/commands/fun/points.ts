@@ -1,6 +1,6 @@
-import type { Member, Message, TextChannel } from "eris";
+import type { EmbedOptions, Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-// import { pagify } from "../../utils/pagify";
+import { pagify } from "../../utils/pagify";
 
 export class PointsCommand extends Command {
   description = "Shows what reputation points you (or another member) has.";
@@ -17,28 +17,49 @@ export class PointsCommand extends Command {
     }
 
     // If more than 20 points
-    // TODO: Pagify and implement this
-    // if (points.length > 20) {
-    //   const omsg = await msg.createEmbed("pagify");
-    //   const pages: { fields: { name: string; value: string }[] }[] = [];
+    if (points.length > 20) {
+      const pages: EmbedOptions[] = [];
 
-    //   points.forEach((point) => {
-    //     if (!pages[pages.length] || pages[pages.length].fields.length > 15) {
-    //       pages.push({
-    //         fields: [
-    //           {
-    //             name: `${point.id}`,
-    //             value: `${point.reason.slice(0, 150) || msg.string("global.NO_REASON")}`,
-    //           },
-    //         ],
-    //       });
-    //     } else {
-    //       pages[pages.length].fields.push({ name: point.id, value: point.reason });
-    //     }
-    //   });
+      points.forEach((p) => {
+        // Makes pages out of points
+        if (!pages[pages.length - 1] || pages[pages.length - 1].fields.length > 10) {
+          pages.push({
+            title: `✨ ${msg.string("fun.POINTS_TOTAL", { member: member.user.username, total: points.length })}`,
+            color: msg.convertHex("general"),
+            fields: [
+              {
+                name: `${msg.string("fun.POINT_DESCRIPTION", {
+                  id: p.id,
+                  giver: msg.channel.guild.members.get?.(p.giver)?.user ? msg.channel.guild.members.get(p.giver)?.user.username : p.giver,
+                })}`,
+                value: `${p.reason?.slice(0, 150) || msg.string("global.NO_REASON")}`,
+              },
+            ],
+          });
+        } else {
+          // Adds to already existing pages
+          pages[pages.length - 1].fields.push({
+            name: `${msg.string("fun.POINT_DESCRIPTION", {
+              id: p.id,
+              giver: msg.channel.guild.members.get?.(p.giver)?.user ? msg.channel.guild.members.get(p.giver)?.user.username : p.giver,
+            })}`,
+            value: `${p.reason?.slice(0, 150) || msg.string("global.NO_REASON")}`,
+          });
+        }
+      });
 
-    //   pagify(pages, omsg, this.bot, msg.author.id, { title: "idk", color: msg.convertHex("general") }, false);
-    // }
+      // Pagifies points
+      return pagify(
+        pages,
+        msg.channel,
+        this.bot,
+        msg.author.id,
+        { title: msg.string("global.EXITED"), color: msg.convertHex("error") },
+        false,
+        msg.string("global.RAN_BY", { author: msg.tagUser(msg.author), extra: "%c/%a" }),
+        msg.author.dynamicAvatarURL(),
+      );
+    }
 
     // Sends points
     msg.channel.createMessage({

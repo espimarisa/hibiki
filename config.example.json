@@ -1,7 +1,6 @@
 {
   "defaultLocale": "en",
   "homepage": "https://hibiki.app",
-  "intents": ["guildBans", "guildMembers", "guildMessageReactions", "guildMessages", "guildVoiceStates", "guilds"],
   "logchannel": "",
   "owners": [""],
   "prefixes": [""],
@@ -20,7 +19,7 @@
     "botSecret": "",
     "cookieSecret": "setThisToSomethingMoreSecure",
     "port": 6000,
-    "redirectURI": ""
+    "redirectURI": "http://localhost:6000/auth/callback"
   },
 
   "database": {
@@ -36,32 +35,16 @@
     "defaultImageFormat": "png",
     "defaultImageSize": 512,
     "getAllUsers": true,
-    "maxShards": 1
-  },
-
-  "lavalink": {
-    "enabled": true,
-    "host": "localhost",
-    "maxlength": 720000,
-    "password": "youshallnotpass",
-    "port": 2333,
-    "spotifyClientID": "",
-    "spotifyClientSecret": ""
-  },
-
-  "customEmojis": {
-    "jiktim": "",
-    "jiktimID": "",
-    "VERIFIED_BOT_DEVELOPER": "",
-    "DISCORD_EMPLOYEE": "",
-    "DISCORD_PARTNER": "",
-    "HYPESQUAD_EVENTS": "",
-    "BUG_HUNTER_LEVEL_1": "",
-    "HOUSE_BRAVERY": "",
-    "HOUSE_BRILLIANCE": "",
-    "HOUSE_BALANCE": "",
-    "EARLY_SUPPORTER": "",
-    "BUG_HUNTER_LEVEL_2": ""
+    "maxShards": 1,
+    "intents": [
+      "directMessageReactions",
+      "directMessages",
+      "guildBans",
+      "guildMessageReactions",
+      "guildMessages",
+      "guildVoiceStates",
+      "guilds"
+    ]
   },
 
   "keys": {
@@ -77,7 +60,6 @@
     "twitter": "",
     "weather": "",
     "weebsh": "",
-
     "botlists": {
       "botsfordiscord": "",
       "botsondiscord": "",
@@ -87,8 +69,33 @@
       "topgg": "",
       "voting": {
         "auth": "",
-        "port": 7013
+        "port": 6001
       }
     }
+  },
+
+  "lavalink": {
+    "enabled": true,
+    "host": "localhost",
+    "maxlength": 720000,
+    "password": "youshallnotpass",
+    "port": 2333,
+    "spotifyClientID": "",
+    "spotifyClientSecret": ""
+  },
+
+  "customEmojis": {
+    "BUG_HUNTER_LEVEL_1": "",
+    "BUG_HUNTER_LEVEL_2": "",
+    "DISCORD_EMPLOYEE": "",
+    "DISCORD_PARTNER": "",
+    "EARLY_SUPPORTER": "",
+    "HOUSE_BALANCE": "",
+    "HOUSE_BRAVERY": "",
+    "HOUSE_BRILLIANCE": "",
+    "HYPESQUAD_EVENTS": "",
+    "jiktim": "",
+    "jiktimID": "",
+    "VERIFIED_BOT_DEVELOPER": ""
   }
 }

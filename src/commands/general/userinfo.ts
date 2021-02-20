@@ -1,11 +1,11 @@
+import type { Dayjs } from "dayjs";
 import type { EmbedField, Member, Message, Role, TextChannel } from "eris";
 import { Constants } from "eris";
-import type { Dayjs } from "dayjs";
 import { User } from "eris";
 import { Command } from "../../classes/Command";
 import { defaultAvatar } from "../../helpers/constants";
-import { getRESTUser } from "../../utils/getRESTUser";
 import { dateFormat, statusFormat, statusTypeFormat } from "../../utils/format";
+import { getRESTUser } from "../../utils/getRESTUser";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
@@ -18,7 +18,6 @@ export class UserinfoCommand extends Command {
   args = "<member:member&fallback,userFallback>";
   aliases = ["profileinfo", "member", "minfo", "memberinfo", "uinfo", "user"];
   allowdms = true;
-  allowdisable = true;
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     let member = (await pargs[0].value) as Member;
@@ -91,8 +90,6 @@ export class UserinfoCommand extends Command {
 
     // Custom badges (if running on production)
     let badges = "";
-    // TODO: Better logic for lots of custom emojis when we add them cus this will be very ugly
-
     const flags = member?.user?.publicFlags || ((member as any) as User).publicFlags;
     Object.keys(Constants.UserFlags).forEach((flag) => {
       if (this.bot.config.customEmojis?.[flag]?.length && flags & Constants.UserFlags[flag]) badges += this.bot.config.customEmojis[flag];

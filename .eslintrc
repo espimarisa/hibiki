@@ -30,7 +30,6 @@
     "lines-around-comment": [1, { "beforeBlockComment": false }],
     "max-depth": [1, 8],
     "max-nested-callbacks": [1, 8],
-    "max-params": [1, 8],
     "new-parens": 1,
     "no-array-constructor": 1,
     "no-lonely-if": 1,
