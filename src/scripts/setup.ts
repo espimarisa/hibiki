@@ -61,7 +61,3 @@ export async function setupRethink() {
 
   logger.info("RethinkDB is setup properly");
 }
-
-if (require.main === module) {
-  setupRethink().then(() => process.exit(0));
-}

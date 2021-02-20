@@ -13,7 +13,7 @@ export class RemindCommand extends Command {
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Reminder list functionality
-    if (!args[0] || args?.[0]?.toLowerCase() === "list") {
+    if (!args.length || ["list", msg.string("global.LIST")].includes(args?.[0]?.toLowerCase())) {
       const reminders = await this.bot.db.getAllUserReminders(msg.author.id);
       if (!reminders?.length) return msg.createEmbed(`⏰ ${msg.string("utility.REMINDERS")}`, msg.string("utility.REMINDERS_NONE"));
 
@@ -34,7 +34,7 @@ export class RemindCommand extends Command {
     }
 
     // Reminder removal functionality
-    if (args?.[0]?.toLowerCase() === "remove" || args?.[0]?.toLowerCase() === "delete") {
+    if (["delete", "remove", msg.string("global.REMOVE"), msg.string("global.DELETE")].includes(args?.[0]?.toLowerCase())) {
       if (!args?.[1]?.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ERROR_INVALIDID"), "error");
 
       // Deletes the reminder

@@ -28,7 +28,7 @@ export class CowsayCommand extends Command {
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[], args: string[]) {
     // Lists animals that you can use
-    if (!args.length || args.join(" ") === "list") {
+    if (!args.length || ["list", msg.string("global.LIST")].includes(args?.[0]?.toLowerCase())) {
       return msg.createEmbed(
         `🐮 ${msg.string("fun.COWSAY")}`,
         msg.string("fun.COWSAY_USAGE", {
