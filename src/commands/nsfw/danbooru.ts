@@ -16,7 +16,6 @@ export class DanbooruCommand extends Command {
     const query = encodeURIComponent(args.join(" ").toLowerCase());
 
     // Finds the posts
-    // TODO: Filter TOS breaking stuff thru a regex. Block direct queries and also tags. i.e block loli
     const body = await axios.get(`https://danbooru.donmai.us/posts.json?&tags=${query}`).catch(() => {});
 
     // Sends if no posts
@@ -28,7 +27,7 @@ export class DanbooruCommand extends Command {
     const random = Math.floor(Math.random() * body.data.length);
 
     // Blacklists bad posts
-    if (!blacklistedTags.every((t) => !body.data[random]?.tag_string?.split(" ")?.includes(t))) {
+    if (body.data[random].rating !== "s" && !blacklistedTags.every((t) => !body.data[random]?.tag_string?.split(" ")?.includes(t))) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
     }
 
