@@ -11,7 +11,7 @@ export class RepeatCommand extends Command {
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     const player = this.bot.lavalink.manager.players.get(msg.channel.guild.id);
-    if (!player) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_PLAYING"), "error");
+    if (!player?.queue) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_QUEUED"), "error");
 
     // Allows looping queues
     if (["queue", "all", msg.string("global.ALL"), msg.string("music.QUEUE")].includes(args?.[0]?.toLowerCase())) {

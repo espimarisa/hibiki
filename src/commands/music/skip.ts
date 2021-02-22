@@ -13,11 +13,9 @@ export class SkipCommand extends Command {
     // HACK: Stop repeating if the song was being repeated
     player.setTrackRepeat(false);
     player.setQueueRepeat(queueRepeat);
-
     player.stop();
 
-    // The stop handler handles this; no need to send an extra embed
-    if (player.queue.length === 0) return;
+    if (player.queue?.length === 0) return;
 
     // Sends when the track is skipped
     msg
