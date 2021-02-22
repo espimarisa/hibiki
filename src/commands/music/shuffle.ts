@@ -8,7 +8,7 @@ export class ShuffleCommand extends Command {
 
   async run(msg: Message<TextChannel>) {
     const player = this.bot.lavalink.manager.players.get(msg.channel.guild.id);
-    if (!player) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_PLAYING"), "error");
+    if (!player?.queue?.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_QUEUED"), "error");
     player.queue.shuffle();
 
     msg.createEmbed(`🔀 ${msg.string("music.SHUFFLE")}`, msg.string("music.QUEUE_SHUFFLED"));

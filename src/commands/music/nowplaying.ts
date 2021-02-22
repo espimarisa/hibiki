@@ -10,7 +10,7 @@ export class NowplayingCommand extends Command {
 
   async run(msg: Message<TextChannel>) {
     const player = this.bot.lavalink.manager.players.get(msg.channel.guild.id);
-    if (!player) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_PLAYING"), "error");
+    if (!player?.queue?.current) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_PLAYING"), "error");
 
     msg.channel.createMessage({
       embed: {

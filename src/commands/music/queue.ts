@@ -11,7 +11,7 @@ export class QueueCommand extends Command {
 
   async run(msg: Message<TextChannel>) {
     const player = this.bot.lavalink.manager.get(msg.channel.guild.id);
-    if (!player) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_PLAYING"), "error");
+    if (!player?.queue?.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_QUEUED"), "error");
 
     // Pagifies if the queue length is bigger than the page size
     if (player.queue.length > pageSize) {
