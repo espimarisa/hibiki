@@ -25,6 +25,24 @@ export const fullInviteRegex = /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|com
 // Strings, URLs
 export const defaultAvatar = "https://cdn.discordapp.com/embed/avatars/0.png";
 
+// Tags to block. God kill me.
+export const blacklistedTags = [
+  "loli",
+  "child",
+  "rape",
+  "shota",
+  "lolicon",
+  "shotacon",
+  "child_on_child",
+  "guro",
+  "gore",
+  "scat",
+  "piss",
+  "pee",
+  "urine",
+  "urination",
+];
+
 // Other stuff
 export const ISOcodes = [
   "auto",

@@ -18,7 +18,7 @@ export class UrbanCommand extends Command {
     const body = await axios.get(`http://api.urbandictionary.com/v0/define?term=${query}`).catch(() => {});
 
     // If no word is found
-    if (!body || !body.data || !body.data.list || body?.data?.error) {
+    if (!body || !body.data || !body.data?.list || body?.data?.error) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("fun.URBAN_NOTFOUND"), "error");
     }
 
