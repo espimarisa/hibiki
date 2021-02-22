@@ -9,9 +9,12 @@ export class PauseCommand extends Command {
   voice = true;
 
   async run(msg: Message<TextChannel>) {
-    // Gets the player
     const player = this.bot.lavalink.manager.players.get(msg.channel.guild.id);
-    if (!player) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_PLAYING"), "error");
+
+    // If nothing is playing
+    if (!player?.queue?.current) {
+      return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_PLAYING"), "error");
+    }
 
     // Resumes if paused
     if (player.paused) {
