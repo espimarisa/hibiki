@@ -18,7 +18,7 @@ Here's a pretty cohesive list of guidelines you should try and stick to (and ins
     - You need an account to do this. It's easier to sign up thru GitHub.
   - If you want to translate a language that isn't listed, file an issue on GitHub and it will be added ASAP.
   - When translating a string, don't change any values that are in `{}`.
-    - To use plurals: { value:# string_for_more_than_one#! string_for_only_one!? optional_for_languages_with_multiple_pluralities? }
+    - To use plurals: { value:# string_for_more_than_one#! string_for_only_one!? }
     - Do not translate anything enclosed in {} or URLs enclosed in (). These will break output if touched.
   - When translating, copy and paste any emojis that are in the string. We aim to keep this at a minimum, but try and keep them there.
 
