@@ -25,9 +25,7 @@ export const fullInviteRegex = /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|com
 // Strings, URLs
 export const defaultAvatar = "https://cdn.discordapp.com/embed/avatars/0.png";
 
-// Tags to block. No, this won't block everything
-// But it will prevent retards from top.gg being mad over nothing
-// Sue me bitch i am unhackable
+// Tags to block from being displayed
 export const blacklistedTags = [
   "loli",
   "child",
