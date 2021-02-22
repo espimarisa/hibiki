@@ -18,6 +18,7 @@ import { loadItems } from "../scripts/loader";
 import { tagUser } from "../utils/format";
 import { logger } from "../utils/logger";
 import { statuses } from "../helpers/statuses";
+import { InviteHandler } from "../scripts/invites";
 import { MonitorHandler } from "../scripts/monitors";
 import { ReminderHandler } from "../scripts/reminders";
 import { startDashboard } from "../webserver/dashboard";
@@ -38,6 +39,7 @@ export class HibikiClient extends Client {
   args: Args;
   db: RethinkProvider;
   log: typeof logger;
+  inviteHandler: InviteHandler;
   monitorHandler: MonitorHandler;
   reminderHandler: ReminderHandler;
   antiSpam: AntiSpam[];
@@ -72,6 +74,7 @@ export class HibikiClient extends Client {
     this.db = new RethinkProvider();
     this.lavalink = new Lavalink(this);
     this.localeSystem = new LocaleSystem(LOCALES_DIRECTORY);
+    this.inviteHandler = new InviteHandler(this);
     this.monitorHandler = new MonitorHandler(this);
     this.reminderHandler = new ReminderHandler(this);
     this.requestHandler = new Eris.RequestHandler(this);

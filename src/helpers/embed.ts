@@ -23,7 +23,7 @@ export async function createEmbed(this: Message, title: string, desc?: string, c
   if (desc) embedDescription = desc.length > 2048 ? `${desc.substring(0, 2048)}...` : desc;
 
   if (typeof this === "object" && this.author) {
-    embedFooter.text = `Ran by ${this.author.username}#${this.author.discriminator}`;
+    embedFooter.text = `${this.string("global.RAN_BY", { author: this.tagUser(this.author) })}`;
     embedFooter.icon_url = this.author.dynamicAvatarURL();
   }
 
