@@ -1,6 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { videoFileRegex } from "../../helpers/constants";
+import { blacklistedTags, videoFileRegex } from "../../helpers/constants";
 import axios from "axios";
 
 export class GelbooruCommand extends Command {
@@ -23,6 +23,12 @@ export class GelbooruCommand extends Command {
 
     // Gets post and handles videos
     const random = Math.floor(Math.random() * body.data.length);
+
+    // Blacklists bad posts
+    if (!blacklistedTags.every((t) => !body.data[random]?.tags?.split(" ")?.includes(t))) {
+      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
+    }
+
     if (videoFileRegex.test(body.data[random].file_url)) {
       return msg.createEmbed(
         msg.string("global.ERROR"),
