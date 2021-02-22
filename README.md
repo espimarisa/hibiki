@@ -10,13 +10,13 @@
 
 [Hibiki][hibiki] is an easy, customizable, and powerful all-in-one Discord bot that does anything that your server needs.
 
-Written in [TypeScript][typescript] and powered by [Eris][eris] and [Node.js][nodejs], Hibiki is designed to have the perfect blend of customizability, ease-of-use, and stability. Unlike most Discord bots, Hibiki is both simple to use but also very tweakable.
+Written in [TypeScript][typescript] and powered by [Eris][eris] and [Node.js][nodejs], Hibiki is designed to have the perfect blend of customizability, ease-of-use, and stability. Unlike most Discord bots, Hibiki is both simple to use but also very tweakable and powerful.
 
 ## Invite
 
-You can invite Hibiki using [this Discord link][invite].
+You can invite Hibiki using [this Discord link][invite]. The only official instance of Hibiki is `Hibiki#1448 (493904957523623936)`. By inviting Hibiki, you agree to our [privacy policy][privacy].
 
-Any other instances of Hibiki are **unofficial** and could carry privacy or security concerns. You can view our official privacy policy [here][privacy]. The only official instance is `Hibiki#1448` `(493904957523623936)`.
+Additionally, we don't support self-hosting or give support/answer questions for doing such. However, the bot is easily self hostable with some basic knowledge.
 
 ## Features
 
@@ -27,7 +27,6 @@ All features are completely **free** with no paywalls in place.
 - ❌ User warning/strike system
 - 🌍 Multilingual and translatable
 - ✨ User reputation point system
-- 💱 Unit and currency converters
 - 📃 Assignable and automatic roles
 - 📌 Customizable pinboard/starboard
 - 🐶 Random anime and animal images
@@ -41,20 +40,15 @@ All features are completely **free** with no paywalls in place.
 - 👤 User and member information commands
 - 💬 Server, role, and channel info commands
 - 🔨 Useful and powerful moderation commands
-- 📜 Powerful and tweakable server event loggers
+- 👥 Member leave, join, and used invite logging
+- 📜 Informative and tweakable server event loggers
 - 🤖 Automod with antiSpam, antiInvite, antiRaid, etc.
 
 ... and many more!
 
-## Hosting
-
-You should have some **Node.js**, **RethinkDB**, and **general sysadmin knowledge** before doing so, though. We **will not answer self-hosting questions** and any issues regarding such will be closed - unless it's a bug report.
-
-If you still really want to self-host Hibiki, refer to the [wiki][wiki] for a guide.
-
 ## License
 
-Hibiki is licensed under the [GNU AGPL-v3][license] or later.
+Hibiki is licensed under the [GNU AGPL-v3][license] or later. This means that:
 
 - You must disclose your application's source code
 - You must preserve the original copyright/license info
@@ -68,9 +62,9 @@ Hibiki is licensed under the [GNU AGPL-v3][license] or later.
 
 ## Donating
 
-Hibiki (and all of her features) will always be completely free. However, hosting isn't cheap.
+Hibiki (and all of its features) will always be completely free. However, if you really like and appreciate our work, you can donate through [Ko-fi][donate].
 
-You can donate through [Ko-fi][donate] and all donations will go directly towards hosting, domain renewals, and other expenses.
+All donations will go directly towards hosting, domain renewals, and API keys.
 
 [contributing]: .github/CONTRIBUTING.md "Contributing guidelines file."
 [donate]: https://ko-fi.com/smolespi "Donate thru Ko-fi to help cover Hibiki's expenses."
@@ -87,7 +81,6 @@ You can donate through [Ko-fi][donate] and all donations will go directly toward
 [translating]: https://translate.hibiki.app "Hibiki translations on Crowdin."
 [translation]: https://translate.hibiki.app/project/hibiki "Total progress of translations."
 [typescript]: https://www.typescriptlang.org/ "TypeScript's official website."
-[wiki]: https://github.com/smolespi/hibiki/wiki "A guide on how to self-host and configure Hibiki."
 [workflow]: https://github.com/smolespi/hibiki/actions?query=workflow%3Apush "Main GitHub workflow action."
 
 <!-- Badge URLs -->
