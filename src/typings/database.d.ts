@@ -31,6 +31,7 @@ interface GuildConfig {
   invitePunishments?: string[];
   joinMessage?: string;
   joinTitle?: string;
+  inviteOptOut?: boolean;
   leaveJoin?: string;
   leaveMessage?: string;
   leaveTitle?: string;

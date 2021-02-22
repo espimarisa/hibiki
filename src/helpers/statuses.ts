@@ -8,17 +8,31 @@ import type { HibikiClient } from "../classes/Client";
 
 // Rotates bot statuses
 export function statuses(bot: HibikiClient) {
-  const statuses = bot.config.statuses.map((status) => {
-    if (status === "help") status = `${bot.config.prefixes[0]}help | hibiki.app`;
-    else if (status === "guilds") status = `${bot.guilds.size} guilds`;
-    else if (status === "users") status = `${bot.users.size} users`;
-    else if (status === "version") status = `v${process.env.npm_package_version} | hibiki.app`;
+  const string = bot.localeSystem.getLocaleFunction(bot.config.defaultLocale);
+
+  function getStatus(num: number) {
+    let status = bot.config.statuses[num];
+    switch (status) {
+      case "help":
+        status = string("global.BOTSTATUS_HELP", { prefix: bot.config.prefixes[0] });
+        break;
+      case "guilds":
+        status = string("global.BOTSTATUS_GUILDS", { guilds: bot.guilds.size });
+        break;
+      case "users":
+        status = string("global.BOTSTATUS_USERS", { users: bot.users.size });
+        break;
+      case "version":
+        status = string("global.BOTSTATUS_VERSION", { version: process.env.npm_package_version });
+        break;
+    }
+
     return status;
-  });
+  }
 
   // Sets the initial status
   bot.editStatus("online", {
-    name: statuses[Math.floor(statuses.length * Math.random())],
+    name: getStatus(Math.floor(statuses.length * Math.random())),
     type: 3,
     url: "https://twitch.tv/",
   });
@@ -26,9 +40,9 @@ export function statuses(bot: HibikiClient) {
   // Timeout for switching
   setInterval(() => {
     bot.editStatus("online", {
-      name: statuses[Math.floor(statuses.length * Math.random())],
+      name: getStatus(Math.floor(statuses.length * Math.random())),
       type: 3,
-      url: "https://twitch.tv/.",
+      url: "https://twitch.tv/ifyouarereadingthisyoushouldgetalife",
     });
   }, 60000);
 }
