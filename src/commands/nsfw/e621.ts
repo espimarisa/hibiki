@@ -1,6 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { videoFileRegex } from "../../helpers/constants";
+import { blacklistedTags, videoFileRegex } from "../../helpers/constants";
 import axios from "axios";
 
 export class e621Command extends Command {
@@ -27,8 +27,18 @@ export class e621Command extends Command {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
     }
 
-    // Gets post and handles videos
+    // Gets post
     const random = Math.floor(Math.random() * body.data.posts.length);
+
+    // Blacklists bad posts
+    const tags = Object.values(body.data.posts[random]?.tags).flat();
+    if (body.data.posts[random].rating !== "s" && !blacklistedTags.every((t) => !tags?.includes(t))) {
+      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
+    }
+
+    console.log(body.data.posts[random]);
+
+    // Handles videos
     if (videoFileRegex.test(body?.data?.posts?.[random]?.file?.url)) {
       return msg.createEmbed(
         msg.string("global.ERROR"),
