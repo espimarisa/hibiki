@@ -4,7 +4,7 @@
  * @module logger/MemberUpdate
  */
 
-import type { Guild, Member, TextChannel } from "eris";
+import type { EmbedOptions, Guild, Invite, Member, TextChannel } from "eris";
 import { Logger } from "../classes/Logger";
 import { defaultAvatar } from "../helpers/constants";
 import { dateFormat } from "../utils/format";
@@ -14,6 +14,15 @@ export class MemberUpdate extends Logger {
   events = ["guildMemberAdd", "guildMemberRemove", "loggingMemberAdd", "loggingMemberRemove"];
 
   async run(event: string, guild: Guild, member: Member) {
+    // Compares current guild invites and cached invites
+    function compareInvites(current: Invite[], saved: Invite[]) {
+      for (let i = 0; i < current.length; i++) {
+        if (current[i] !== saved[i]) return current[i];
+      }
+
+      return null;
+    }
+
     /**
      * Logs to the leavejoin channel when a member joins
      */
@@ -28,8 +37,8 @@ export class MemberUpdate extends Logger {
       const guildconfig = await this.bot.db.getGuildConfig(guild.id);
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
-      const muted = (await this.bot.db.getGuildMuteCache(guild.id)) as MuteCache[];
       // Re-adds any muted roles if the member tried to evade mute
+      const muted = await this.bot.db.getGuildMuteCache(guild.id);
       const mute = muted.find((m: MuteCache) => m.member === member.id && m.guild === guild.id);
       if (mute && guildconfig?.mutedRole) await member.addRole(guildconfig.mutedRole, string("logger.JOINED_AFTER_MUTED")).catch(() => {});
       if (!guildconfig?.leaveJoin) return;
@@ -44,6 +53,7 @@ export class MemberUpdate extends Logger {
       // Sets the joinMessage
       if (guildconfig?.joinMessage?.length < 256) {
         joinMessage = guildconfig.joinMessage;
+        // TODO: Use a switch case? Isn't replace... slow? This is shit code!!!! @resolvedxd what do?
         joinMessage = joinMessage.replace("{member}", `${member.user.username}`);
         joinMessage = joinMessage.replace("{membercount}", `${guild.memberCount}`);
         joinMessage = joinMessage.replace("{servername}", `${guild.name}`);
@@ -104,6 +114,7 @@ export class MemberUpdate extends Logger {
       // Sets the leaveMessage
       if (guildconfig?.leaveMessage?.length < 256) {
         leaveMessage = guildconfig.leaveMessage;
+        // TODO: Read above TODO. Shit code.
         leaveMessage = leaveMessage.replace("{member}", `**${member.user.username}**`);
         leaveMessage = leaveMessage.replace("{membercount}", `**${guild.memberCount}**`);
         leaveMessage = leaveMessage.replace("{servername}", `**${guild.name}**`);
@@ -149,40 +160,107 @@ export class MemberUpdate extends Logger {
       if (!channel) return;
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
-      this.bot.createMessage(channel, {
-        embed: {
-          color: this.convertHex("success"),
-          author: {
-            name: `${this.tagUser(member.user)} ${string("global.JOINED")}`,
-            icon_url: member.user.dynamicAvatarURL(),
+      // Main embed
+      const embed = {
+        color: this.convertHex("success"),
+        fields: [
+          {
+            name: string("global.ID"),
+            value: member.id,
+            inline: false,
           },
-          thumbnail: {
-            url: member.user ? member.user.dynamicAvatarURL(null, 1024) : defaultAvatar,
+          {
+            name: string("global.CREATED"),
+            value: dateFormat(member.user.createdAt),
+            inline: true,
           },
-          fields: [
-            {
-              name: string("global.ID"),
-              value: member.id,
-            },
-            {
-              name: string("global.CREATED"),
-              value: dateFormat(member.user.createdAt),
-            },
-            {
-              name: string("global.JOINED_ON"),
-              value: dateFormat(member.joinedAt),
-            },
-            {
-              name: string("global.ACCOUNT_AGE"),
-              value: `**${Math.floor((Date.now() - member.user.createdAt) / 86400000)}** ${string("global.DAYS_OLD")}`,
-            },
-          ],
-          footer: {
-            icon_url: guild.iconURL || defaultAvatar,
-            text: string("logger.MEMBER_COUNT", { guild: guild.name, members: guild.memberCount }),
+          {
+            name: string("global.JOINED_ON"),
+            value: dateFormat(member.joinedAt),
+            inline: true,
           },
+          {
+            name: string("global.ACCOUNT_AGE"),
+            value: `**${Math.floor((Date.now() - member.user.createdAt) / 86400000)}** ${string("global.DAYS_OLD")}`,
+            inline: true,
+          },
+        ],
+        author: {
+          name: `${this.tagUser(member.user)} ${string("global.JOINED")}`,
+          icon_url: member.user.dynamicAvatarURL(),
         },
-      });
+        thumbnail: {
+          url: member.user ? member.user.dynamicAvatarURL(null, 1024) : defaultAvatar,
+        },
+        footer: {
+          icon_url: guild.iconURL || defaultAvatar,
+          text: string("logger.MEMBER_COUNT", { guild: guild.name, members: guild.memberCount }),
+        },
+      } as EmbedOptions;
+
+      setTimeout(async () => {
+        if (this.bot.config.inviteLogs && guildconfig?.inviteOptOut !== true) {
+          const guildInvites = await guild.getInvites().catch(() => {});
+          const cachedInvites = this.bot.inviteHandler.inviteCache[guild.id];
+
+          if (guildInvites && cachedInvites) {
+            // Finds the invite
+            const invite = compareInvites(guildInvites, cachedInvites);
+
+            if (!invite) {
+              if (guild.features.includes("VANITY_URL")) {
+                embed.fields.push({
+                  name: string("logger.INVITE_USED"),
+                  value: string("general.SERVER_FEATURE_VANITY"),
+                  inline: true,
+                });
+              }
+            }
+
+            // Invite code
+            if (invite) {
+              embed.fields.push({
+                name: string("logger.INVITE_USED"),
+                value: `${member.bot ? string("logger.INVITE_OAUTH") : invite.code || string("global.UNKNOWN")}`,
+                inline: true,
+              });
+
+              // Uses & max uses
+              if (invite.uses) {
+                embed.fields.push({
+                  name: string("logger.INVITE_USES"),
+                  // TODO: Add max age with dateParse()
+                  value: `${invite.maxUses ? `${invite.uses}/${invite.maxUses}` : invite.uses}`,
+                  inline: true,
+                });
+              }
+
+              // Invite channel
+              if (invite.channel) {
+                embed.fields.push({
+                  name: string("global.CHANNEL"),
+                  value: guild.channels.get(invite.channel.id) ? guild.channels.get(invite.channel.id).mention : invite.channel.name,
+                  inline: true,
+                });
+              }
+
+              // Inviter
+              if (invite.inviter) {
+                embed.fields.push({
+                  name: string("utility.INVITER"),
+                  value: `${this.tagUser(invite.inviter)} (${invite.inviter.id})`,
+                  inline: false,
+                });
+              }
+            }
+
+            // Caches the new invites
+            this.bot.inviteHandler.inviteCache[guild.id] = guildInvites;
+          }
+        }
+
+        this.bot.createMessage(channel, { embed: embed });
+      }, 5000);
     }
 
     /**

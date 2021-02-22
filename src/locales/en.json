@@ -115,6 +115,8 @@
     "CONFIG_CHANNELARRAYTOOLONG": "The maximum amount of channels is {maximum}.",
     "CONFIG_CONTAINSINVITE": "Invites aren't allowed in this type of response.",
     "CONFIG_DEFAULTLOCALE": "Default Locale",
+    "CONFIG_INVITEOPTOUT": "Invite Caching Opt-Out",
+    "CONFIG_INVITEOPTOUT_DESCRIPTION": "Disables logging invite data to your log channel on member join.",
     "CONFIG_DEFAULTLOCALE_DESCRIPTION": "The default locale bot text will be in for server members.",
     "CONFIG_DELETE_CONFIRMATION": "Are you sure you'd like to delete the server's config?",
     "CONFIG_DELETE_DESCRIPTION": "Deletes and resets the server's config.",
@@ -321,6 +323,10 @@
   },
 
   "global": {
+    "BOTSTATUS_VERSION": "v{version} | hibiki.app",
+    "BOTSTATUS_USERS": "{users} users",
+    "BOTSTATUS_GUILDS": "{guilds} guilds",
+    "BOTSTATUS_HELP": "{prefix}help | hibiki.app",
     "BOTADDED_FOOTER": "{username} is now in {amount} {amount:#guilds#!guild!}.",
     "BOTADDED_AUTHOR": "{type:#Added to#!Removed from!} {guild}",
     "BOTADDED_TAGLINE": "Hi there! I'm **{username}**, the best all-in-one Discord bot!",
@@ -519,6 +525,10 @@
   },
 
   "logger": {
+    "INVITE_USED": "Invite Used",
+    "INVITE_USES": "Invite Uses",
+    "INVITE_USESLEFT": "Invite Uses Left",
+    "INVITE_OAUTH": "OAuth (Bot)",
     "AUTO_PUNISH": "Automatic punishment",
     "AUTOMOD_INVITESENT": "{member} sent an invite.",
     "AUTOMOD_MUTED": "{member} was automatically muted by Automod.",

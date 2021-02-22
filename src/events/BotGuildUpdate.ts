@@ -23,14 +23,20 @@ export class BotGuildUpdateEvent extends Event {
         return guild.leave();
       }
 
+      // Looks to see if the guild already has a config
+      const db = await this.bot.db.getGuildConfig(guild.id);
+
+      // Caches invites
+      if (this.bot.config.inviteLogs === true && db?.inviteOptOut !== true) {
+        const invites = await guild.getInvites().catch(() => {});
+        if (invites) this.bot.inviteHandler.inviteCache[guild.id] = invites;
+      }
+
       // DMs the owner their welcome message
       const owner = this.bot.users.get(guild.ownerID);
       if (owner?.id) {
         const ownerDM = await owner.getDMChannel().catch(() => {});
         if (ownerDM) {
-          // Looks to see if the guild already has a config
-          const db = await this.bot.db.getGuildConfig(guild.id);
-
           // Gets owners's locale
           const ownerLocale = await this.bot.localeSystem.getUserLocale(owner.id, this.bot);
           const string = this.bot.localeSystem.getLocaleFunction(ownerLocale || this.bot.config.defaultLocale);

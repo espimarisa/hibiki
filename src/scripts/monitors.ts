@@ -1,7 +1,7 @@
 /**
- * @file Reminder handler
- * @description Checks every second to see if a reminder should send
- * @module scripts/reminders
+ * @file Steam monitor handler
+ * @description Checks to see if monitored steam accounts have been banned
+ * @module scripts/monitors
  */
 
 import type { HibikiClient } from "../classes/Client";

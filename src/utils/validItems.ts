@@ -154,6 +154,13 @@ export const validItems = [
     type: "bool",
     default: false,
   },
+  {
+    category: "logging",
+    emoji: "🔗",
+    id: "inviteOptOut",
+    type: "bool",
+    default: false,
+  },
 
   /**
    * Music options
