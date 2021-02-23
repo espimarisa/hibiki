@@ -24,6 +24,7 @@ export const fullInviteRegex = /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|com
 
 // Strings, URLs
 export const defaultAvatar = "https://cdn.discordapp.com/embed/avatars/0.png";
+export const imageFileTypes = ["png", "jpg", "jpeg", "webp", "gif", "bmp"];
 
 // Tags to block from being displayed
 export const blacklistedTags = [

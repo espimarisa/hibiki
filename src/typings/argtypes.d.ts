@@ -13,7 +13,7 @@ interface ArgTypes {
   };
 
   channel: {
-    (a: string, msg: Message<TextChannel>, flag?: ["fallback" | "allowVoice"]): AnyChannel | undefined;
+    (a: string, msg: Message<TextChannel>, flag?: ("fallback" | "allowVoice")[]): AnyChannel | undefined;
   };
 
   channelArray: {
@@ -25,7 +25,7 @@ interface ArgTypes {
   };
 
   member: {
-    (a: string, msg: Message<TextChannel>, flag?: ["fallback" | "userFallback" | "strict"]): Member | Promise<User> | User | undefined;
+    (a: string, msg: Message<TextChannel>, flag?: ("fallback" | "userFallback" | "strict")[]): Member | Promise<User> | User | undefined;
   };
 
   number: {

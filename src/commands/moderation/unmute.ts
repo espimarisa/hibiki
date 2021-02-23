@@ -37,12 +37,13 @@ export class UnmuteCommand extends Command {
     // If member has roles
     const mutecache = await this.bot.db.getUserGuildMuteCache(msg.channel.guild.id, member.id);
     const failed: string[] = [];
-    if (mutecache.length) {
-      mutecache.forEach(async (role) => {
+
+    if (mutecache) {
+      mutecache.roles.forEach(async (role) => {
         try {
-          await msg.channel.guild.addMemberRole(member.id, role.role, `Unmuted by ${msg.tagUser(msg.author, true)}`);
+          await msg.channel.guild.addMemberRole(member.id, role, `Unmuted by ${msg.tagUser(msg.author, true)}`);
         } catch (err) {
-          failed.push(msg.channel.guild.roles?.get(role.role).name || msg.string("global.UNKNOWN"));
+          failed.push(msg.channel.guild.roles?.get(role).name || msg.string("global.UNKNOWN"));
         }
       });
 

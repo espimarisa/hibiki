@@ -57,11 +57,11 @@ export class Args {
           !flag?.includes("strict")
             ? m.user.username.toLowerCase() === a ||
               m.id === a ||
-              a.startsWith(`<@!${m.id}>`) ||
-              a.startsWith(`<@${m.id}>`) ||
+              a?.startsWith(`<@!${m.id}>`) ||
+              a?.startsWith(`<@${m.id}>`) ||
               m.nick?.toLowerCase() === a ||
               m.user.username.startsWith(a)
-            : m.id === a || a.startsWith(`<@!${m.id}>`) || a.startsWith(`<@${m.id}>`),
+            : m.id === a || a?.startsWith(`<@!${m.id}>`) || a?.startsWith(`<@${m.id}>`),
         );
 
         // If no member found, try to use REST mode
@@ -110,9 +110,9 @@ export class Args {
         return a;
       },
 
-      user: async (a, msg, flag) => {
+      user: async (a, _msg, flag) => {
         // Attempt to find cached
-        let user = this.bot.users.find((u) => u.id === a || a.startsWith(`<@!${u.id}>`) || a.startsWith(`<@${u.id}>`));
+        let user = this.bot.users.find((u) => u.id === a || a?.startsWith(`<@!${u.id}>`) || a?.startsWith(`<@${u.id}>`));
 
         // Tries to find the member via REST mode
         if (!user?.id && flag?.includes("REST")) user = await getRESTUser(a, this.bot);

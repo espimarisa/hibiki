@@ -21,24 +21,15 @@ export const punishMute = async (
   const guild = msg instanceof Member ? g : msg.channel.guild;
   if (member?.roles?.includes?.(cfg.mutedRole)) return;
 
-  // Updates the mute cache
-  await bot.db.insertMuteCache({
-    role: null,
-    member: member.id,
-    guild: guild.id,
-  });
-
-  // Adds each role to the muteCache
+  // Tries to remove their previous roles
+  const roles: string[] = [];
   member.roles.forEach(async (role) => {
-    await bot.db.insertMuteCache({
-      role: role,
-      member: member.id,
-      guild: guild.id,
-    });
-
-    // Tries to remove their previous roles
+    roles.push(role);
     await guild.removeMemberRole(member.id, role, "Automod").catch(() => {});
   });
+
+  // Updates the mute cache
+  await bot.db.insertMuteCache({ roles: roles, member: member.id, guild: guild.id });
 
   // Adds the muted role to the user
   await member.addRole(cfg.mutedRole, "Automod").catch(() => {});
