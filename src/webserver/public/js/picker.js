@@ -1,10 +1,10 @@
-"use strict";
-
 /**
  * @fileoverview Emoji picker
  * @description Handles the emoji picker on the frontend
- * @module webserver/picker
+ * @module webserver/public/picker
  */
+
+"use strict";
 
 import { EmojiButton } from "https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button/dist/index.min.js";
 
@@ -12,6 +12,7 @@ import { EmojiButton } from "https://cdn.jsdelivr.net/npm/@joeattardi/emoji-butt
 window.addEventListener("DOMContentLoaded", () => {
   const button = document.getElementById("pinEmoji");
   const picker = new EmojiButton({
+    zIndex: 100,
     emojiSize: "1.5em",
     showRecents: false,
     showPreview: false,
@@ -25,7 +26,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   // Sets content
-  picker.on("emoji", selection => {
+  picker.on("emoji", (selection) => {
     document.getElementById("pinEmoji").innerHTML = selection.emoji;
   });
 

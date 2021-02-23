@@ -1,66 +1,103 @@
 {
-  "bot": {
-    "logchannel": "",
-    "homepage": "https://hibiki.app",
-    "owners": [""],
-    "prefixes": [""],
-    "status": "online",
-    "statuses": ["help", "guilds", "users", "version"],
-    "statustype": 3,
-    "token": ""
-  },
+  "defaultLocale": "en",
+  "homepage": "https://hibiki.app",
+  "logchannel": "",
+  "owners": [""],
+  "prefixes": [""],
+  "sentry": "",
+  "statuses": ["guilds", "help", "users", "version"],
+  "token": "",
+  "inviteLogs": true,
+  "dmLogs": true,
 
   "colors": {
-    "general": "#6fcbf2",
     "error": "#FF0048",
+    "general": "#DAB6FC",
     "pinboard": "#3498DB",
     "success": "#41FF70"
   },
 
   "dashboard": {
-    "cookiesecret": "",
-    "secret": "",
-    "port": 7012,
-    "redirect_uri": "http://localhost:port/auth/callback"
+    "botSecret": "",
+    "cookieSecret": "setThisToSomethingMoreSecure",
+    "port": 6000,
+    "redirectURI": "http://localhost:6000/auth/callback"
   },
 
-  "options": {
+  "database": {
+    "db": "hibiki",
+    "host": "",
+    "password": "",
+    "port": 28015,
+    "user": ""
+  },
+
+  "eris": {
+    "compress": true,
     "defaultImageFormat": "png",
     "defaultImageSize": 512,
-    "maxShards": 1
+    "getAllUsers": true,
+    "maxShards": 1,
+    "intents": [
+      "directMessageReactions",
+      "directMessages",
+      "guildBans",
+      "guildMessageReactions",
+      "guildMessages",
+      "guildVoiceStates",
+      "guilds"
+    ]
   },
 
   "keys": {
     "abuseipdb": "",
     "dictionary": "",
-    "dbots": "",
     "fortnite": "",
     "github": "",
     "ipinfo": "",
     "maps": "",
     "osu": "",
-    "sentry": "",
+    "saucenao": "",
     "steam": "",
-    "topgg": "",
     "twitter": "",
     "weather": "",
-    "weebsh": ""
+    "weebsh": "",
+    "botlists": {
+      "botsfordiscord": "",
+      "botsondiscord": "",
+      "dboats": "",
+      "dbots": "",
+      "discordbotlist": "",
+      "topgg": "",
+      "voting": {
+        "auth": "",
+        "port": 6001
+      }
+    }
   },
 
-  "rethink": {
-    "db": "hibiki",
-    "host": "",
-    "password": "",
-    "port": "",
-    "user": "",
-    "tables": [
-      "blacklist", "economy", "guildconfig", "marriages", "monitoring", "mutecache",
-      "points", "reminders", "session", "steammonitor", "userconfig", "warnings"
-    ]
+  "lavalink": {
+    "enabled": true,
+    "host": "localhost",
+    "maxlength": 720000,
+    "password": "youshallnotpass",
+    "port": 2333,
+    "spotifyClientID": "",
+    "spotifyClientSecret": ""
   },
 
-  "voting": {
-    "auth": "",
-    "port": 7013
+  "customEmojis": {
+    "BUG_HUNTER_LEVEL_1": "",
+    "BUG_HUNTER_LEVEL_2": "",
+    "DISCORD_EMPLOYEE": "",
+    "DISCORD_PARTNER": "",
+    "EARLY_SUPPORTER": "",
+    "HOUSE_BALANCE": "",
+    "HOUSE_BRAVERY": "",
+    "HOUSE_BRILLIANCE": "",
+    "HYPESQUAD_EVENTS": "",
+    "jiktim": "",
+    "jiktimID": "",
+    "VERIFIED_BOT_DEVELOPER": ""
   }
 }

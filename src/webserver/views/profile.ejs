@@ -1,97 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <%- include("../partials/head") %>
+    <meta name="user-id" content="<%= user.id %>" />
+    <meta name="csrf-token" content="<%= csrfToken %>" />
+    <title>Profile - <%= bot.user.username %></title>
+  </head>
 
-<head>
-  <%- include("../partials/head") %>
-  <meta name="user-id" content="<%= user.id %>">
-  <meta name="csrf-token" content="<%= csrfToken %>">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-switch/dist/css/bulma-switch.min.css">
-  <title>Profile - <%= bot.user.username %></title>
-</head>
-
-<body>
-  <section class="hero gradient">
-    <%- include("../partials/navbar") %>
-    <div class="hero-body">
-      <div class="container has-text-centered">
-        <figure class="image is-128x128 is-inline-block">
-          <img src="<%= user.avatar %>" class="is-rounded" alt="user">
-        </figure>
-        <p class="title is-size-3 has-text-white">Editing Profile</p>
-      </div>
-    </div>
-  </section>
-
-  <%# Main content %>
-  <section class="section container">
-    <div class="sticky-buttons">
-      <div class="buttons">
-        <a href="#" class="button">
-          <span class="icon"><i class="fas fa-arrow-up"></i></span>
-          <span>Back to top</span>
-        </a>
-        <a class="button" id="submit">
-          <%# Handles csrf validation. Don't remove this, or shit will break. %>
-          <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>">
-          <span class="icon"><i class="fas fa-check"></i></span>
-          <span id="saved">Save changes</span>
-        </a>
-        <a class="button modal-button" data-target="#modal" aria-haspopup="true">
-          <span class="icon"><i class="fas fa-trash"></i></span>
-          <span>Reset profile</span>
-        </a>
-      </div>
-    </div>
-
-    <br>
-
-    <div class="field">
-      <p class="title is-size-4">Bio</p>
-      <p class="subtitle is-size-5">A short amount of info about yourself. Will show on your profile.</p>
-      <div class="control">
-        <input class="input" id="bio" type="text" placeholder="Your desired bio, will be trimmed to 200 characters.">
-      </div>
-    </div>
-
-    <div class="field">
-      <p class="title is-size-4">Preferred Pronouns</p>
-      <p class="subtitle is-size-5">The pronouns you prefer to go by.</p>
-      <div class="control">
-        <div id="pronouns" class="select">
-          <select>
-            <option selected>No preference</option>
-            <option id="He/Him">He/Him</option>
-            <option id="She/Her">She/Her</option>
-            <option id="They/Them">They/Them</option>
-          </select>
+  <body>
+    <section class="hero gradient">
+      <%- include("../partials/navbar") %>
+      <div class="hero-body">
+        <div class="container">
+          <p class="title has-text-white is-size-3">Welcome to your profile, <%= user.username %>.</p>
+          <p class="subtitle has-text-white is-size-5">You can modify or clear your profile data here.</p>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="field">
-      <p class="title is-size-4">Timezone</p>
-      <p class="subtitle is-size-5">Your current timezone, used to tell you what time it is. Automatically set from your browser.</p>
-      <div class="control">
-        <input class="input" id="timezone" type="text" placeholder="Timezone not detected." disabled>
+    <%# Main content %>
+    <section class="section container">
+      <div class="sticky-buttons">
+        <div class="buttons">
+          <a href="#" class="button">
+            <span class="icon"><em class="fas fa-arrow-up"></em></span>
+            <span>Back to top</span>
+          </a>
+          <a class="button" id="submit">
+            <%# Handles csrf validation. Don't remove this line. %>
+            <input type="hidden" id="_csrf" name="_csrf" value="<%= csrfToken %>" />
+            <span class="icon"><em class="fas fa-check"></em></span>
+            <span id="saved">Save changes</span>
+          </a>
+          <a class="button modal-button" data-target="#modal" aria-haspopup="true">
+            <span class="icon"><em class="fas fa-trash"></em></span>
+            <span>Reset profile</span>
+          </a>
+        </div>
       </div>
-    </div>
 
-    <div class="field">
-      <p class="title is-size-4">Time Visibility</p>
-      <p class="subtitle is-size-5">Toggle if you want to hide your current time.</p>
-      <div class="field" id="timezoneHide" class="control">
-        <input id="timezoneHideSwitch" type="checkbox" name="timezoneHideSwitch" class="switch is-rounded is-link">
-        <label for="timezoneHideSwitch">Hide time on my profile</label>
-      </div>
-    </div>
-  </section>
+      <br />
 
-  <%- include("../partials/modal") %>
-  <%- include("../partials/footer") %>
-</body>
+      <% items.forEach(item => { if(item.category !== "profile") return; %>
 
-<%# Imports scripts %>
-<script src="/public/js/modal.js"></script>
-<script src="/public/js/profile.js"></script>
+      <%# Strings %>
+      <% if (item.type === "string") { %>
+        <div class="field">
+          <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
+          <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
+          <div class="control">
+            <input class="input" id="<%= item.id %>" type="text" value="<%= cfg && cfg[item.id] ? `${cfg[item.id]}` : ""%>"
+            placeholder="<%= `${item.maximum}${item.maximum > 15 ? " characters maximum; will automatically be reduced." : " characters or less"}` %>" />
+          </div>
+        </div>
+        <br>
 
+      <%# Pronouns %>
+      <% } else if (item.type === "pronouns") { %>
+        <div class="field">
+          <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
+          <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
+          <div class="control">
+            <div id="<%= item.id %>" class="select">
+              <select>
+                <option <%= cfg && cfg[item.id] === 0 ? "selected" : "" %>>No preference</option>
+                <option <%= cfg && cfg[item.id] === 1 ? "selected " : "" %>id="He/Him">He/Him</option>
+                <option <%= cfg && cfg[item.id] === 2 ? "selected " : "" %>id="She/Her">She/Her</option>
+                <option <%= cfg && cfg[item.id] === 3 ? "selected " : "" %>id="They/Them">They/Them</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <br>
+
+      <%# Locale %>
+      <% } else if (item.type === "locale") {%>
+        <div class="field">
+          <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
+          <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
+          <div class="control">
+            <div id="<%= item.id %>" class="select">
+              <select>
+                <% Object.keys(locales).forEach(locale => { %>
+                  <option <%= cfg && cfg[item.id] === locale ? "selected " : "" %>id="<%= locale %>"><%= locales[locale] %></option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
+        </div>
+        <br>
+
+      <%# Timezone %>
+      <% } else if (item.type === "timezone") { %>
+        <div class="field">
+          <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
+          <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
+          <div class="control">
+            <input class="input" id="<%= item.id %>" type="text" placeholder="Timezone not detected." disabled />
+          </div>
+        </div>
+        <br>
+
+      <%# Booleans %>
+      <% } else if (item.type === "bool") {
+        let switchName = `${item.id}Switch` %>
+        <div class="field">
+          <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
+          <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
+          <div class="field" id="<%= item.id %>" class="control">
+            <input <%=cfg && cfg[item.id] ? "checked " : ""%>id="<%= switchName %>" type="checkbox" name="<%= switchName %>" class="switch is-rounded is-link" />
+            <label for="<%= switchName %>"><%
+              let stringy = localeString("global.ENABLED") %>
+              <%= stringy.charAt(0).toUpperCase() + stringy.substring(1); %>
+            </label>
+          </div>
+        </div>
+        <br>
+
+      <% } %>
+      <% }) %>
+    </section>
+
+    <%- include("../partials/modal") %> <%- include("../partials/footer") %>
+  </body>
+
+  <%# Imports scripts %>
+  <script src="/public/js/navbar.js"></script>
+  <script src="/public/js/modal.js"></script>
+  <script src="/public/js/profile.js"></script>
 </html>

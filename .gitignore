@@ -3,6 +3,7 @@ cfg.js
 cfg.json
 config.js
 config.json
+application.yml
 
 # Binaries
 ffmpeg
@@ -17,6 +18,7 @@ Lavalink
 Lavalink.jar
 
 # Modules
+src/webserver/public/css*
 .sass-cache
 dist/
 docs/

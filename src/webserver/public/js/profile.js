@@ -1,11 +1,10 @@
-"use strict";
-
 /**
  * @fileoverview Profile manager
  * @description Manages a profile via the API
- * @param {string} id The profile ID to fetch
- * @module webserver/profile
+ * @module webserver/public/profile
  */
+
+"use strict";
 
 // Gets the csrf token and user ID
 const token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
@@ -13,12 +12,12 @@ const id = document.querySelector('meta[name="user-id"]').getAttribute("content"
 
 // Gets a profile config
 async function getProfileConfig(id) {
-  const body = await fetch(`/api/getProfileConfig/${id}`, {
+  const body = await fetch(`/api/getUserConfig/${id}`, {
     credentials: "include",
     headers: {
       "CSRF-Token": token,
     },
-  }).then(res => {
+  }).then((res) => {
     if (res.status === 204) return {};
     return res.json().catch(() => {});
   });
@@ -27,7 +26,7 @@ async function getProfileConfig(id) {
 
 // Updates a config
 async function updateProfileConfig(id, cfg) {
-  return fetch(`/api/updateProfileConfig/${id}`, {
+  return fetch(`/api/updateUserConfig/${id}`, {
     method: "post",
     credentials: "include",
     body: JSON.stringify(cfg),
@@ -41,7 +40,7 @@ async function updateProfileConfig(id, cfg) {
 
 // Resets a config
 async function resetProfileConfig(id) {
-  return fetch(`/api/resetProfileConfig/${id}`, {
+  return fetch(`/api/resetUserConfig/${id}`, {
     method: "post",
     credentials: "include",
     headers: {
@@ -52,7 +51,7 @@ async function resetProfileConfig(id) {
   });
 }
 
-let oldcfg;
+// let oldcfg;
 
 // Listens on window load
 window.addEventListener("load", async () => {
@@ -62,12 +61,12 @@ window.addEventListener("load", async () => {
     headers: {
       "CSRF-Token": token,
     },
-  }).then(res => res.json());
-  const configItems = fetchedItems.map(p => p.id);
+  }).then((res) => res.json());
+  const configItems = fetchedItems.map((p) => p.id);
 
   if (!id) return;
   let profileConfig = await getProfileConfig(id);
-  oldcfg = { ...profileConfig };
+  // oldcfg = { ...profileConfig };
   if (!profileConfig) profileConfig = {};
 
   // Sets locale info
@@ -75,19 +74,21 @@ window.addEventListener("load", async () => {
   document.getElementById("timezone").value = localeInfo.timeZone;
 
   // Slices content
-  [document.getElementById("bio")].forEach(d => {
-    d.addEventListener("input", starget => {
+  [document.getElementById("bio")].forEach((d) => {
+    d.addEventListener("input", (starget) => {
       const e = starget.target;
-      if (e.id === "bio" && e.value.length > 200) e.value = e.value.substring(0, 200);
-      // TODO: implement ad blocker here (view bio.js)
+      if (e.id === "bio") {
+        if (e.value.length > 200) e.value = e.value.substring(0, 200);
+        e.value = e.value.replace(/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|com)|discordapp\.com\/invite)\/.+\w/i, "");
+      }
     });
   });
 
   // Gets each element
-  Object.keys(profileConfig).forEach(p => {
+  Object.keys(profileConfig).forEach((p) => {
     const element = document.getElementById(p);
     if (!element && p !== "disabledCategories") return;
-    const type = fetchedItems.find(pr => pr.id === p).type;
+    const type = fetchedItems.find((pr) => pr.id === p).type;
 
     // Boolean checker
     if (type === "bool") {
@@ -97,15 +98,16 @@ window.addEventListener("load", async () => {
 
     // Checks number content
     if (type === "number") {
-      document.getElementById(p).children[0].value = Array.from(document.getElementById(p).children[0].children).find(n => n.innerText.split(" ")[0] === `${profileConfig[p]}`)
-        .innerText;
+      document.getElementById(p).children[0].value = Array.from(document.getElementById(p).children[0].children).find(
+        (n) => n.innerText.split(" ")[0] === `${profileConfig[p]}`,
+      ).innerText;
     }
 
     // Sets string; emoji as content
     if (type === "string") element.value = profileConfig[p];
 
-    // Single string select
-    if (type === "selection") {
+    // Pronouns
+    if (type === "pronouns") {
       const opt = Array.from(element.children[0].children)[profileConfig[p]];
       if (!opt) return;
       document.getElementById(p).children[0].value = opt.innerText;
@@ -114,9 +116,9 @@ window.addEventListener("load", async () => {
 
   // Refreshes local profileConfig
   function refreshProfileConfig() {
-    configItems.forEach(p => {
+    configItems.forEach((p) => {
       // Gets the items
-      const type = fetchedItems.find(c => c.id === p).type;
+      const type = fetchedItems.find((c) => c.id === p).type;
       const element = document.getElementById(p);
       if (!element) return;
 
@@ -133,15 +135,22 @@ window.addEventListener("load", async () => {
       // Sets string; emoji in profileConfig
       if (type === "string") profileConfig[p] = element.value;
 
-      // Single string select
-      if (type === "selection") {
+      // Pronouns
+      if (type === "pronouns") {
         const pronouns = Array.from(element.children[0].children);
-        const r = pronouns.indexOf(pronouns.find(a => a.innerText === element.children[0].value));
+        const r = pronouns.indexOf(pronouns.find((a) => a.innerText === element.children[0].value));
         profileConfig[p] = r;
       }
 
-      // Locale info
-      if (type === "autofill") {
+      // Locale
+      if (type === "locale") {
+        const pronouns = Array.from(element.children[0].children);
+        const r = pronouns.find((a) => a.innerText === element.children[0].value).id;
+        profileConfig[p] = r;
+      }
+
+      // Timezone info
+      if (type === "timezone") {
         profileConfig[p] = localeInfo.timeZone;
       }
     });
@@ -154,9 +163,9 @@ window.addEventListener("load", async () => {
     button.classList.add("is-loading");
     // Refreshes config
     refreshProfileConfig();
-    oldcfg = { ...profileConfig };
+    // oldcfg = { ...profileConfig };
     // Updates config
-    updateProfileConfig(id, profileConfig).then(res => {
+    updateProfileConfig(id, profileConfig).then((res) => {
       if (res.status === 200 || res.status === 204) {
         // Button animation & changes
         button.classList.remove("is-loading");
@@ -180,9 +189,9 @@ window.addEventListener("load", async () => {
     const button = document.getElementById("delete");
     // Loading animation
     button.classList.add("is-loading");
-    oldcfg = { ...profileConfig };
+    // oldcfg = { ...profileConfig };
     // Updates config
-    resetProfileConfig(id).then(res => {
+    resetProfileConfig(id).then((res) => {
       if (res.status === 200) {
         // Button animation & changes
         button.classList.remove("is-loading");
@@ -205,22 +214,22 @@ window.addEventListener("load", async () => {
     });
   });
 
-  // Config changes
-  function compareProfileConfig() {
-    // Don't ask for confirmation on deletion
-    if (JSON.stringify(profileConfig === { id: id })) return;
+  // // Config changes
+  // function compareProfileConfig() {
+  //   // Don't ask for confirmation on deletion
+  //   if (profileConfig === { id: id }) return;
 
-    refreshProfileConfig();
+  //   refreshProfileConfig();
 
-    // Compares objects; leave confirmation
-    if (JSON.stringify(oldcfg) !== JSON.stringify(guildConfig)) window.onbeforeunload = function() {
-      return "Do you really want to leave?";
-    };
+  //   // Compares objects; leave confirmation
+  //   if (JSON.stringify(oldcfg) !== JSON.stringify(profileConfig))
+  //     window.onbeforeunload = function () {
+  //       return "Do you really want to leave?";
+  //     };
+  //   else window.onbeforeunload = null;
+  // }
 
-    else window.onbeforeunload = null;
-  }
-
-  // Event listeners
-  document.addEventListener("click", compareProfileConfig);
-  document.addEventListener("input", compareProfileConfig);
+  // // Event listeners
+  // document.addEventListener("click", compareProfileConfig);
+  // document.addEventListener("input", compareProfileConfig);
 });

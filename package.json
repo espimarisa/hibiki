@@ -1,65 +1,89 @@
 {
+  "private": "true",
   "name": "hibiki",
-  "version": "3.2.10",
+  "version": "3.3.0-rc.1",
   "description": "An easy, customizable, and powerful Discord bot that does anything that your server needs.",
-  "author": "smolespi <espi@lesbian.codes> (https://lesbian.codes)",
+  "author": "Espi <espi@riseup.net> (https://espi.me)",
   "contributors": [
-    "resolved <resolvedxd@gmail.com> (https://github.com/resolvedxd)",
-    "cth103 <cthdev@email.com> (https://github.com/cthpw103)",
-    "TTtie <me@tttie.cz> (https://tttie.cz)"
+    "resolved <resolvedxd@gmail.com> (https://github.com/resolvedxd)"
   ],
   "license": "AGPL-3.0-or-later",
   "homepage": "https://hibiki.app",
-  "main": "src/index.js",
+  "main": "dist/src/index.js",
   "bugs": {
-    "url": "https://github.com/smolespi/Hibiki/issues"
+    "url": "https://github.com/smolespi/hibiki/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/smolespi/Hibiki.git"
+    "url": "git+https://github.com/smolespi/hibiki.git"
   },
   "engines": {
     "npm": ">=6.9.0",
-    "node": ">=12.0.0"
+    "node": ">=14.0.0"
   },
   "scripts": {
-    "beautify": "beautify-proj -i . -o ../ -c .jsbeautifyrc -e ./node_modules",
-    "dev": "nodemon",
+    "build": "tsc",
+    "build:all": "npm run build && npm run build:sass && npm run build:static",
+    "build:sass": "cross-env sass ./src/webserver/public/sass/:./src/webserver/public/css/",
+    "build:static": "cross-env copyfiles './src/webserver/**/**/*.{css,jpg,png,ejs}' './dist/'",
+    "dev": "npm run build:sass && npm run nodemon",
+    "format": "cross-env prettier --config .prettierrc 'src/**/*.{sass,scss,htm,html,js,json,ts,tsx}' --write",
     "lint": "eslint --fix .",
-    "setup": "node src/scripts/setup.js",
-    "start": "pm2 start pm2.config.json && pm2 logs",
-    "test": "eslint ."
+    "nodemon": "cross-env nodemon --ext 'json,ts,sass,scss' --watch 'src' --delay 5 --ignore 'rethinkdb_data/*' --exec 'cross-env NODE_ENV=development ts-node --files ./src/index.ts'",
+    "postbuild": "npm run build:sass && npm run build:static",
+    "sass": "sass --watch ./src/webserver/public/sass/:./src/webserver/public/css/",
+    "start": "npm run build && cross-env NODE_ENV=production node dist/src/index.js",
+    "pm2": "npm run build:all && pm2 start pm2.config.json",
+    "test": "tsc && eslint ."
   },
   "dependencies": {
-    "@geo1088/express-session-rethinkdb": "^0.4.2",
     "@sentry/node": "^6.2.0",
-    "body-parser": "^1.19.0",
-    "compression": "^1.7.4",
+    "canvas": "^2.6.1",
     "cookie-parser": "^1.4.5",
     "csurf": "^1.11.0",
     "dayjs": "^1.10.4",
     "ejs": "^3.1.6",
-    "eris": "^0.14.0",
-    "eris-additions": "^1.4.1",
+    "erela.js": "^2.3.2",
+    "erela.js-spotify": "^1.2.0",
+    "eris": "github:abalabahaha/eris#dev",
     "express": "^4.17.1",
-    "express-robots-txt": "^0.5.0",
     "express-session": "^1.17.1",
     "helmet": "^4.4.1",
-    "node-fetch": "^2.6.1",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "rethinkdb-ts": "^2.4.8",
-    "terser": "^5.6.0"
+    "session-rethinkdb-ts": "^1.0.5",
+    "terser": "^5.6.0",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@sentry/types": "^6.2.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/csurf": "^1.11.0",
+    "@types/express": "4.17.11",
+    "@types/express-session": "^1.17.3",
+    "@types/node": "^14.14.31",
+    "@types/passport-discord": "^0.1.3",
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
+    "@typescript-eslint/parser": "^4.15.2",
+    "bulma": "^0.9.2",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^8.0.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "nodemon": "^2.0.7",
+    "pm2": "^4.5.4",
+    "prettier": "^2.2.1",
+    "sass": "^1.32.8",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.2"
   },
   "optionalDependencies": {
+    "@discordjs/opus": "^0.4.0",
+    "bufferutil": "^4.0.3",
     "erlpack": "^0.1.3",
     "eventemitter3": "^4.0.7",
     "zlib-sync": "^0.1.7"
-  },
-  "devDependencies": {
-    "beautify-proj": "^1.0.0",
-    "nodemon": "^2.0.7",
-    "eslint": "^7.20.0",
-    "pm2": "^4.5.4"
   }
 }

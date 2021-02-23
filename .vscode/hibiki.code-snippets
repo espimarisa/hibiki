@@ -1,41 +1,53 @@
 {
   "Command": {
-    "scope": "javascript",
+    "scope": "typescript",
     "prefix": ["hibiki-command"],
     "body": [
-      "const Command = require(\"../../structures/Command\");\n",
-      "class $1Command extends Command {",
-      "  constructor(...args) {",
-      "    super(...args, {",
-      "      description: \"$2\",",
-      "    });",
-      "  }",
+      "import type { Message, TextChannel } from \"eris\";",
+      "import { Command } from \"../../classes/Command\";",
       "",
-      "  async run(msg, args) {",
+      "export class $1Command extends Command {",
+      "  description = \"$2\";",
+      "  clientperms = [\"\"];",
+      "  requiredperms = [\"\"];",
+      "  requiredkeys = [\"\"];",
+      "  args = \"$3\";",
+      "  aliases = [\"$4\"];",
+      "  cooldown = 0;",
+      "  allowdms = false;",
+      "  allowdisable = true;",
+      "  nsfw = false;",
+      "  staff = false;",
+      "  owner = false;",
+      "  voice = false;",
+      "",
+      "  async run(msg: Message<TextChannel>, pargs: ParsedArgs[], args: string[]) {",
+      "    $5",
       "  }",
       "}",
-      "\nmodule.exports = $1Command;\n"
+      "",
+      ""
     ],
-    "description": "Creates a Hibiki command."
+    "description": "Template for a new Hibiki command."
   },
 
   "Event": {
-    "scope": "javascript",
+    "scope": "typescript",
     "prefix": ["hibiki-event"],
     "body": [
-      "const Event = require(\"../structures/Event\");\n",
-      "class $1 extends Event {",
-      "  constructor(...args) {",
-      "    super(...args, {",
-      "      name: \"$2\",",
-      "    });",
-      "  }",
+      "import type { Message, TextChannel } from \"eris\";",
+      "import { Event } from \"../classes/Event\";",
       "",
-      "  async run($3) {",
+      "export class $1Event extends Event {",
+      "  events = [\"$2\"];",
+      "",
+      "  async run(event: string, msg: Message<TextChannel>) {",
+      "    $5",
       "  }",
       "}",
-      "\nmodule.exports = $1;\n"
+      "",
+      ""
     ],
-    "description": "Creates a Hibiki event."
+    "description": "Template for a new Hibiki event."
   }
 }

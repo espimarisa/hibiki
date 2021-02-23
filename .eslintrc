@@ -1,5 +1,4 @@
 {
-
   "env": {
     "es6": true,
     "amd": true
@@ -13,12 +12,10 @@
     "ecmaVersion": 2020
   },
 
-  "extends": [
-    "eslint:recommended"
-  ],
+  "extends": ["eslint:recommended", "prettier"],
 
   "rules": {
-    "arrow-parens": [1, "as-needed"],
+    "arrow-parens": [1, "always"],
     "block-spacing": [1, "always"],
     "brace-style": [1, "1tbs", { "allowSingleLine": true }],
     "comma-dangle": [1, "always-multiline"],
@@ -33,7 +30,6 @@
     "lines-around-comment": [1, { "beforeBlockComment": false }],
     "max-depth": [1, 8],
     "max-nested-callbacks": [1, 8],
-    "max-params": [1, 8],
     "new-parens": 1,
     "no-array-constructor": 1,
     "no-lonely-if": 1,
@@ -50,6 +46,7 @@
     "operator-linebreak": [1, "after"],
     "padded-blocks": [1, "never"],
     "prefer-const": ["error", { "destructuring": "any", "ignoreReadBeforeAssign": false }],
+    "prettier/prettier": 1,
     "quotes": [1, "double", { "avoidEscape": true, "allowTemplateLiterals": false }],
     "quote-props": [1, "consistent-as-needed"],
     "semi": [1, "always"],
@@ -57,6 +54,66 @@
     "space-before-blocks": [1, "always"],
     "space-in-parens": [1, "never"],
     "space-infix-ops": [1, { "int32Hint": true }],
-    "spaced-comment": [1, "always"]
-  }
+    "spaced-comment": [1, "always"],
+    "sort-imports": [
+      "warn",
+      {
+        "ignoreCase": false,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
+        "allowSeparatedGroups": false
+      }
+    ]
+  },
+
+  // Typescript overrides
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint", "prettier"],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
+      ],
+
+      // Enable if you need jsx support
+      // "parserOptions": {
+      // "ecmaFeatures": { "jsx": true }
+      // },
+
+      "rules": {
+        "semi": "off",
+        "@typescript-eslint/no-unused-vars": "error",
+        "@typescript-eslint/member-delimiter-style": "error",
+        "@typescript-eslint/member-ordering": "error",
+        "@typescript-eslint/type-annotation-spacing": "error",
+        "@typescript-eslint/semi": [1, "always"],
+        "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/no-var-requires": 0,
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/naming-convention": [
+          "warn",
+          { "selector": "default", "format": ["camelCase"] },
+          { "selector": "variableLike", "format": ["camelCase"] },
+          { "selector": "variable", "format": ["camelCase", "UPPER_CASE", "PascalCase"] },
+          { "selector": "parameter", "format": ["camelCase"], "leadingUnderscore": "allow" },
+          { "selector": "memberLike", "format": ["camelCase"] },
+          { "selector": "memberLike", "modifiers": ["private"], "format": ["camelCase"], "leadingUnderscore": "require" },
+          { "selector": "typeLike", "format": null },
+          { "selector": "typeAlias", "format": null },
+          { "selector": "typeProperty", "format": null },
+          { "selector": "typeParameter", "format": ["PascalCase"], "prefix": ["T"] },
+          { "selector": "interface", "format": ["PascalCase"], "custom": { "regex": "^I[A-Z]", "match": false } },
+          { "selector": "objectLiteralProperty", "format": null },
+          { "selector": "enumMember", "format": ["UPPER_CASE"] }
+        ]
+      }
+    }
+  ]
 }

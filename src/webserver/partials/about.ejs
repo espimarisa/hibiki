@@ -1,35 +1,14 @@
-<%# Stats %>
-<% let useramnt = 0; bot.guilds.forEach(g => { useramnt += g.memberCount; }); %>
-<section class="hero is-black is-bold" id="stats">
+<%# Tagline %>
+<section class="hero is-black" id="features">
   <div class="hero-body">
-    <div class="container">
-      <div class="columns has-text-centered">
-        <div class="column">
-          <span class="icon is-large"><i class="fas fa-comment-alt fa-3x"></i></span>
-          <p class="subtitle"><%= bot.guilds.size %> servers</p>
-        </div>
-        <div class="column">
-          <span class="icon is-large"><i class="fas fa-users fa-3x"></i></span>
-          <p class="subtitle"><%= useramnt %> users</p>
-        </div>
-        <div class="column">
-          <span class="icon is-large"><i class="fas fa-stream fa-3x"></i></span>
-          <p class="subtitle"><%= bot.commands.length %> commands</p>
-        </div>
-        <div class="column">
-          <span class="icon is-large"><i class="fas fa-clock fa-3x"></i></span>
-          <p class="subtitle"><%= format.uptime(process.uptime()); %></p>
-        </div>
-        <div class="column">
-          <span class="icon is-large"><i class="fas fa-wifi fa-3x"></i></span>
-          <p class="subtitle"><%= bot.shards.get(0).latency %> ms</p>
-        </div>
-      </div>
+    <div class="container has-text-centered">
+      <p class="title is-size-2">The ultimate all-in-one Discord bot.</p>
+      <p class="subtitle is-size-4"><%= bot.user.username %> can do everything that your server needs - and then some.</p>
     </div>
   </div>
 </section>
 
-<%# Fun %>
+<%# Features %>
 <section class="hero is-medium" id="features">
   <div class="hero-body">
     <div class="container">
@@ -38,50 +17,50 @@
           <div class="tile is-parent">
             <div class="tile is-child">
               <p class="title is-size-2">Make your server more fun.</p>
-              <p class="subtitle is-size-4"><%= bot.user.username %> has lots of fun commands. Here are just a few!</p>
+              <p class="subtitle is-size-4"><%= bot.user.username %> comes with with many fun and image commands.</p>
             </div>
           </div>
           <div class="tile has-text-centered">
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-cat fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fa fa-cat fa-3x"></em></span>
                 <p class="title is-size-4">Get pictures of various animals</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-comment fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fa fa-comment fa-3x"></em></span>
                 <p class="title is-size-4">View XKCD and Garfield comics</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-paw fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fa fa-paw fa-3x"></em></span>
                 <p class="title is-size-4">Get pictures of cute catgirls and foxgirls</p>
               </div>
             </div>
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-heart fa-3x"></i></span>
-                <p class="title is-size-4">Roleplay with users with anime gifs</p>
+                <span class="icon is-large"><em class="floating fa fa-heart fa-3x"></em></span>
+                <p class="title is-size-4">Roleplay with other server members</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-book fa-3x"></i></span>
-                <p class="title is-size-4">Define from the Urban Dictionary</p>
+                <span class="icon is-large"><em class="floating fa fa-music fa-3x"></em></span>
+                <p class="title is-size-4">Play high quality music/videos</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-image fa-3x"></i></span>
-                <p class="title is-size-4">View images from boorus and NSFW</p>
+                <span class="icon is-large"><em class="floating fa fa-image fa-3x"></em></span>
+                <p class="title is-size-4">Get images from boorus and NSFW</p>
               </div>
             </div>
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-paint-brush fa-3x"></i></span>
-                <p class="title is-size-4">Get cat, dog, and useless facts</p>
+                <span class="icon is-large"><em class="floating fas fa-dollar-sign fa-3x"></em></span>
+                <p class="title is-size-4">Compete in the cookie economy</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-question-circle fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fas fa-question-circle fa-3x"></em></span>
                 <p class="title is-size-4">Get answers from a magic 8-ball</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-percent fa-3x"></i></span>
-                <p class="title is-size-4">Calculate coolness and gayness levels</p>
+                <span class="icon is-large"><em class="floating fas fa-star fa-3x"></em></span>
+                <p class="title is-size-4">Customizable pinboard/starboard</p>
               </div>
             </div>
           </div>
@@ -97,56 +76,55 @@
     <div class="container">
       <div class="tile is-ancestor">
         <div class="tile is-parent">
-          <div class="tile is-child">
-          </div>
+          <div class="tile is-child"></div>
         </div>
         <div class="tile is-vertical is-7">
           <div class="tile is-parent">
             <div class="tile is-child">
               <p class="title is-size-2">Increase your server's productivity.</p>
-              <p class="subtitle is-size-4"><%= bot.user.username %> has tons of useful utilities to enhance your chat.</p>
+              <p class="subtitle is-size-4"><%= bot.user.username %> provides useful utilities to boost your productivity.</p>
             </div>
           </div>
           <div class="tile has-text-centered">
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-book fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fas fa-book fa-3x"></em></span>
                 <p class="title is-size-4">Define a word from the dictionary</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-shopping-bag fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fas fa-shopping-bag fa-3x"></em></span>
                 <p class="title is-size-4">Search for packages on npm and AUR</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-sort fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fas fa-sort fa-3x"></em></span>
                 <p class="title is-size-4">Convert currencies between each other</p>
               </div>
             </div>
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-globe fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fas fa-globe fa-3x"></em></span>
                 <p class="title is-size-4">Return info about an IP address</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fab fa-github fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fab fa-github fa-3x"></em></span>
                 <p class="title is-size-4">Get info about a GitHub user or repo</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fab fa-steam fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fab fa-steam fa-3x"></em></span>
                 <p class="title is-size-4">Get info of a Steam profile and its bans</p>
               </div>
             </div>
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-palette fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fas fa-palette fa-3x"></em></span>
                 <p class="title is-size-4">Get RGB, HSV, and hex for a color</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fab fa-twitter fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fab fa-twitter fa-3x"></em></span>
                 <p class="title is-size-4">Get Twitter profile info and stats</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fa fa-globe fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fa fa-globe fa-3x"></em></span>
                 <p class="title is-size-4">Translate text between languages</p>
               </div>
             </div>
@@ -172,43 +150,43 @@
           <div class="tile has-text-centered">
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-scroll fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fas fa-scroll fa-3x"></em></span>
                 <p class="title is-size-4">Log message and user updates</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-sticky-note fa-3x"></i></span>
-                <p class="title is-size-4">Log when a role or channel is changed</p>
+                <span class="icon is-large"><em class="floating fas fa-sticky-note fa-3x"></em></span>
+                <p class="title is-size-4">Log any creation, edit, and deletion events</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-sign-language fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fas fa-sign-language fa-3x"></em></span>
                 <p class="title is-size-4">Send custom leave/join messages</p>
               </div>
             </div>
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-exclamation-triangle fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fas fa-exclamation-triangle fa-3x"></em></span>
                 <p class="title is-size-4">Give members warnings/strikes</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-star fa-3x"></i></span>
-                <p class="title is-size-4">Give members repuation points</p>
+                <span class="icon is-large"><em class="floating fas fa-radiation fa-3x"></em></span>
+                <p class="title is-size-4">Antiraid preventing member bombing</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-gavel fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fas fa-gavel fa-3x"></em></span>
                 <p class="title is-size-4">Forceban users that aren't present</p>
               </div>
             </div>
             <div class="tile is-parent is-vertical">
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-robot fa-3x"></i></span>
-                <p class="title is-size-4">Auto moderate spam and invites</p>
+                <span class="icon is-large"><em class="floating fas fa-robot fa-3x"></em></span>
+                <p class="title is-size-4">Automod various spam and invites</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-eye fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fas fa-eye fa-3x"></em></span>
                 <p class="title is-size-4">Sniping of deleted messages</p>
               </div>
               <div class="tile is-child">
-                <span class="icon is-large"><i class="floating fas fa-bomb fa-3x"></i></span>
+                <span class="icon is-large"><em class="floating fas fa-bomb fa-3x"></em></span>
                 <p class="title is-size-4">Purge a set amount of messages fast</p>
               </div>
             </div>
@@ -224,12 +202,10 @@
   <div class="hero-body">
     <div class="container">
       <p class="title is-size-2">It's all customizable.</p>
-      <p class="subtitle is-size-4"><%= bot.user.username %> can be tweaked and customized in many ways!</p>
-      <p>Want to log some events, but not others? And in separate channels? Edit the channel configs!</p>
-      <p>Don't want users running a certain command, or even an entire category? You can disable them!</p>
-      <p>Want to add custom command responses? That's possible with the addcommand and removecommand commands.</p>
-      <p>Want to tweak how message sniping works, add ignored channels, or outright disable it? You can edit the snipe config!</p>
-      <p>You can get the best experience configuring <%= bot.user.username %> by using the <a href="/manage/servers" class="has-text-info">dashboard</a>. You'll need permission to manage the server.</p>
+      <p class="subtitle is-size-4"><%= bot.user.username %> is designed to be heavily tweaked and customized.</p>
+      <p><%= bot.user.username %> is designed with a KISS principle - but it's also extremely hackable.</p>
+      <p>Nearly every major feature or module is configurable, so you can fit things to fit any server.</p>
+      <p>You can even set thresholds for the automod system and opt-out of individual logger events.</p>
     </div>
   </div>
 </section>
@@ -241,31 +217,52 @@
       <p class="title is-size-2">It's all <strong>free, forever</strong>.</p>
       <p class="subtitle is-size-4">We'll never lock features behind a paywall.</p>
       <p>We'll <strong>never</strong> make you donate or vote to unlock features - unlike bots that beg for premium.</p>
-      <p>Hibiki is a <strong>passion project</strong> built by our team of developers that ♥ free &amp; open-source software.</p>
+      <p>
+        <%= bot.user.username %> is a <strong>passion project</strong> built by our team of developers that ♥ free &amp; open-source
+        software.
+      </p>
       <p>The entire project's codebase is free and open-source software licensed under the GNU AGPLv3 or later.</p>
     </div>
   </div>
 </section>
 
+<%# Global %>
+<section class="hero has-text-left">
+  <div class="hero-body">
+    <div class="container">
+      <p class="title is-size-2"><%= bot.user.username %> is <strong>global</strong>.</p>
+      <p class="subtitle is-size-4">Every command is completely translatable.</p>
+      <p>We already have several complete languages finished.</p>
+      <p>You can change your default language so every command returns in it.</p>
+      <p>
+        Additionally, anyone (even you) can help us
+        <a href="https://translate.hibiki.app" target="_blank" rel="noopener noreferrer">translate</a> <%= bot.user.username %> to other
+        languages!
+      </p>
+    </div>
+  </div>
+</section>
+
 <%# Links %>
-<section class="hero is-small has-text-centered" id="links">
+<section class="hero has-text-centered" id="links">
   <div class="hero-body">
     <p class="is-size-3 has-text-weight-semibold">Ready to improve your server?</p>
-    <a href="/github/" class="button is-medium" target="_blank" rel="noopener">
+    <p class="subtitle is-size-5">Join the <%= bot.users.size %> other users and never need to invite another bot.</p>
+    <a href="/github/" class="button is-medium" target="_blank" rel="noopener noreferrer">
       <span class="icon is-small">
-        <i class="fab fa-github"></i>
+        <em class="fab fa-github"></em>
       </span>
       <span>View on GitHub</span>
     </a>
     <a href="/invite/" class="button is-medium">
       <span class="icon is-small">
-        <i class="fas fa-plus"></i>
+        <em class="fas fa-plus"></em>
       </span>
       <span>Add to Server</span>
     </a>
-    <a href="/vote/" class="button is-medium" target="_blank" rel="noopener">
+    <a href="/vote/" class="button is-medium" target="_blank" rel="noopener noreferrer">
       <span class="icon is-small">
-        <i class="fas fa-vote-yea"></i>
+        <em class="fas fa-vote-yea"></em>
       </span>
       <span>Vote on top.gg</span>
     </a>
@@ -273,7 +270,7 @@
 </section>
 
 <%# Developers %>
-<section class="hero is-medium is-bold has-text-centered" id="developers">
+<section class="hero has-text-centered" id="developers">
   <div class="hero-body">
     <div class="container">
       <p class="title is-size-2">Team</p>
@@ -283,17 +280,16 @@
           <div class="card">
             <div class="card-image">
               <figure class="image is-square">
-                <img src="https://avatars1.githubusercontent.com/u/49253425" alt="smolespi">
+                <img src="/public/img/espi.jpg" alt="Espi" height="350" width="350" />
               </figure>
             </div>
             <div class="card-content">
-              <p class="title is-size-3">smolespi</p>
-              <p class="subtitle is-size-5">Bot Owner, Developer</p>
+              <p class="title is-size-3">Espi</p>
+              <p class="subtitle is-size-5">Owner, Developer</p>
             </div>
             <footer class="card-footer">
-              <a href="https://github.com/smolespi" class="card-footer-item has-text-info" target="_blank" rel="noopener">GitHub</a>
-              <a href="https://twitter.com/smolespi" class="card-footer-item has-text-info" target="_blank" rel="noopener">Twitter</a>
-              <a href="https://lesbian.codes" class="card-footer-item has-text-info" target="_blank" rel="noopener">Website</a>
+              <a href="https://github.com/smolespi" class="card-footer-item" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://twitter.com/smolespi" class="card-footer-item" target="_blank" rel="noopener noreferrer">Twitter</a>
             </footer>
           </div>
         </div>
@@ -301,7 +297,7 @@
           <div class="card">
             <div class="card-image">
               <figure class="image is-square">
-                <img src="https://avatars1.githubusercontent.com/u/46578648" alt="resolved">
+                <img src="/public/img/resolved.jpg" alt="resolved" height="350" width="350" />
               </figure>
             </div>
             <div class="card-content">
@@ -309,8 +305,8 @@
               <p class="subtitle is-size-5">Owner, Developer</p>
             </div>
             <footer class="card-footer">
-              <a href="https://github.com/resolvedxd" class="card-footer-item has-text-info" target="_blank" rel="noopener">GitHub</a>
-              <a href="https://twitter.com/resolvedxd" class="card-footer-item has-text-info" target="_blank" rel="noopener">Twitter</a>
+              <a href="https://github.com/resolvedxd" class="card-footer-item" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://twitter.com/resolvedxd" class="card-footer-item" target="_blank" rel="noopener noreferrer">Twitter</a>
             </footer>
           </div>
         </div>
@@ -318,7 +314,7 @@
           <div class="card">
             <div class="card-image">
               <figure class="image is-square">
-                <img src="https://avatars1.githubusercontent.com/u/30247185" alt="cth103">
+                <img src="/public/img/cth103.jpg" alt="cth103" height="350" width="350" />
               </figure>
             </div>
             <div class="card-content">
@@ -326,8 +322,8 @@
               <p class="subtitle is-size-5">Developer</p>
             </div>
             <footer class="card-footer">
-              <a href="https://github.com/cthpw103" class="card-footer-item has-text-info" target="_blank" rel="noopener">GitHub</a>
-              <a href="https://twitter.com/cth103" class="card-footer-item has-text-info" target="_blank" rel="noopener">Twitter</a>
+              <a href="https://github.com/cthpw103" class="card-footer-item" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://twitter.com/cth103" class="card-footer-item" target="_blank" rel="noopener noreferrer">Twitter</a>
             </footer>
           </div>
         </div>
@@ -335,7 +331,7 @@
           <div class="card">
             <div class="card-image">
               <figure class="image is-square">
-                <img src="https://avatars1.githubusercontent.com/u/17570452" alt="tttie">
+                <img src="/public/img/tttie.jpg" alt="TTtie" height="350" width="350" />
               </figure>
             </div>
             <div class="card-content">
@@ -343,9 +339,8 @@
               <p class="subtitle is-size-5">Developer</p>
             </div>
             <footer class="card-footer">
-              <a href="https://github.com/TTtie" class="card-footer-item has-text-info" target="_blank" rel="noopener">GitHub</a>
-              <a href="https://twitter.com/TTtie_TT" class="card-footer-item has-text-info" target="_blank" rel="noopener">Twitter</a>
-              <a href="https://tttie.cz" class="card-footer-item has-text-info">Website</a>
+              <a href="https://github.com/TTtie" class="card-footer-item" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="https://twitter.com/TTtie_TT" class="card-footer-item" target="_blank" rel="noopener noreferrer">Twitter</a>
             </footer>
           </div>
         </div>

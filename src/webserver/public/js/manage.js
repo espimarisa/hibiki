@@ -1,11 +1,10 @@
-"use strict";
-
 /**
  * @fileoverview Guild manager
  * @description Manages a guildconfig via the API
- * @param {string} id The guild ID to fetch
- * @module webserver/manage
+ * @module webserver/public/manage
  */
+
+"use strict";
 
 // Gets the csrf token
 const token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
@@ -17,7 +16,7 @@ async function getGuildConfig(id) {
     headers: {
       "CSRF-Token": token,
     },
-  }).then(res => {
+  }).then((res) => {
     if (res.status === 204) return {};
     return res.json().catch(() => {});
   });
@@ -26,6 +25,10 @@ async function getGuildConfig(id) {
 
 // Updates a config
 async function updateGuildConfig(id, cfg) {
+  Object.keys(cfg).forEach((item) => {
+    if (cfg[item] === null) delete cfg[item];
+  });
+
   return fetch(`/api/updateGuildConfig/${id}`, {
     method: "post",
     credentials: "include",
@@ -51,7 +54,7 @@ async function resetGuildConfig(id) {
   });
 }
 
-let oldcfg;
+// let oldcfg;
 let multiCats;
 
 // Listens on window load
@@ -62,7 +65,7 @@ window.addEventListener("load", async () => {
     headers: {
       "CSRF-Token": token,
     },
-  }).then(res => res.json().catch(() => {}));
+  }).then((res) => res.json().catch(() => {}));
 
   // Multiselect base options
   const baseOptions = {
@@ -74,14 +77,14 @@ window.addEventListener("load", async () => {
 
   // Multiselect handler for channelArrays
   const multiChannelArrays = {
-    ignoredLoggingChannels: new Bulmaselect("multiIgnoredChannels", { ...baseOptions }),
-    snipingIgnore: new Bulmaselect("multiSnipingIgnore", { ...baseOptions }),
+    ignoredLoggingChannels: new Bulmaselect("multiignoredLoggingChannels", { ...baseOptions }),
+    snipingIgnore: new Bulmaselect("multisnipingIgnore", { ...baseOptions }),
   };
 
   // Multiselect handler for roleArrays
   const multiRoleArrays = {
-    assignableRoles: new Bulmaselect("multiAssignableRoles", { ...baseOptions }),
-    autoRoles: new Bulmaselect("multiAutomaticRoles", { ...baseOptions }),
+    assignableRoles: new Bulmaselect("multiassignableRoles", { ...baseOptions }),
+    autoRoles: new Bulmaselect("multiautoRoles", { ...baseOptions }),
   };
 
   // Gets items and IDs
@@ -91,92 +94,122 @@ window.addEventListener("load", async () => {
     headers: {
       "CSRF-Token": token,
     },
-  }).then(res => res.json());
-  const configItems = fetchedItems.map(p => p.id);
+  }).then((res) => res.json());
+  const configItems = fetchedItems.map((p) => p.id);
 
   if (!id) return;
   let guildConfig = await getGuildConfig(id);
-  oldcfg = { ...guildConfig };
+  // oldcfg = { ...guildConfig };
   if (!guildConfig) guildConfig = {};
 
   // Slices content
-  [document.getElementById("prefix"), document.getElementById("joinMessage"), document.getElementById("leaveMessage")].forEach(d => {
-    d.addEventListener("input", starget => {
+  [document.getElementById("prefix"), document.getElementById("joinMessage"), document.getElementById("leaveMessage")].forEach((d) => {
+    d.addEventListener("input", (starget) => {
       const e = starget.target;
       if (e.id === "prefix" && e.value.length > 15) e.value = e.value.substring(0, 15);
-      if (e.id === "joinMessage" && e.value.length > 200) e.value = e.value.substring(0, 200);
-      if (e.id === "leaveMessage" && e.value.length > 200) e.value = e.value.substring(0, 200);
+      else if (e.id === "joinMessage" && e.value.length > 200) e.value = e.value.substring(0, 200);
+      else if (e.id === "leaveMessage" && e.value.length > 200) e.value = e.value.substring(0, 200);
     });
   });
 
   // Gets each element
-  Object.keys(guildConfig).forEach(p => {
+  Object.keys(guildConfig).forEach((p) => {
     const element = document.getElementById(p);
-    if (!element && p !== "disabledCategories") return;
-    const type = fetchedItems.find(pr => pr.id === p).type;
+    if ((!element && p !== "disabledCategories") || typeof guildConfig[p] === "undefined") return;
+    const type = fetchedItems.find((pr) => pr.id === p).type;
 
-    // Boolean checker
-    if (type === "bool") {
-      if (guildConfig[p]) document.getElementById(p).children[0].children[0].checked = true;
-      else document.getElementById(p).children[1].children[0].checked = true;
-    }
+    // Each type of item
+    switch (type) {
+      // Booleans
+      case "bool": {
+        if (guildConfig[p]) document.getElementById(`${p}_ON`).checked = true;
+        else document.getElementById(`${p}_OFF`).checked = true;
+        break;
+      }
 
-    // Checks number content
-    if (type === "number") {
-      document.getElementById(p).children[0].value = Array.from(document.getElementById(p).children[0].children).find(n => n.innerText.split(" ")[0] === `${guildConfig[p]}`)
-        .innerText;
-    }
+      // Numbers
+      case "number": {
+        document.getElementById(`${p}_Select`).value = guildConfig[p];
+        break;
+      }
 
-    // Checks for ticked punishments
-    if (type === "punishment") {
-      guildConfig[p].forEach(punishment => {
-        if (punishment === "Purge") document.getElementById(p).children[0].checked = true;
-        if (punishment === "Mute") document.getElementById(p).children[2].checked = true;
-        if (punishment === "Warn") document.getElementById(p).children[4].checked = true;
-      });
-    }
+      // Punishments
+      case "punishment": {
+        guildConfig[p].forEach((punishment) => {
+          document.getElementById(`${p}_${punishment}`).checked = true;
+        });
+        break;
+      }
 
-    // Gets the channel/roleID from content
-    if (type === "channelID" || type === "roleID") {
-      const opt = Array.from(element.children[0].children).find(a => a.id === guildConfig[p]);
-      if (!opt) return;
-      document.getElementById(p).children[0].value = opt.innerText;
-    }
+      // Raid punishments
+      case "raidPunishment": {
+        const Ban = document.getElementById(`${p}_Ban`).checked;
+        const Kick = document.getElementById(`${p}_Kick`).checked;
+        const Mute = document.getElementById(`${p}_Mute`).checked;
+        guildConfig[p] = [];
+        if (Ban) guildConfig[p].push("Ban");
+        if (Kick) guildConfig[p].push("Kick");
+        if (Mute) guildConfig[p].push("Mute");
+        break;
+      }
 
-    // Sets string; emoji as content
-    if (type === "string") element.value = guildConfig[p];
-    if (type === "emoji") element.innerHTML = guildConfig[p];
+      // Channel & roles
+      case "channelID":
+      case "roleID": {
+        const opt = Array.from(element.children[0].children).find((a) => a.id === guildConfig[p]);
+        if (!opt) return;
+        document.getElementById(p).children[0].value = opt.innerText;
+        break;
+      }
 
-    // Sets RoleArray as content
-    if (type === "roleArray") {
-      if (!multiRoleArrays[p]) return;
-      if (typeof guildConfig[p] !== "object") guildConfig[p] = [guildConfig[p]];
+      // Strings
+      case "string": {
+        element.value = guildConfig[p];
+        break;
+      }
 
-      multiRoleArrays[p].options.forEach(s => {
-        const id = /.{1,32} \(([0-9]{16,19})\)/.exec(s.label)[1];
-        if (guildConfig[p] && guildConfig[p].includes(id)) s.state = true;
-      });
-    }
+      // Emojis
+      case "emoji": {
+        element.innerHTML = guildConfig[p];
+        break;
+      }
 
-    // Sets ChannelArray as content
-    if (type === "channelArray") {
-      if (!multiChannelArrays[p]) return;
-      if (typeof guildConfig[p] !== "object") guildConfig[p] = [guildConfig[p]];
+      // Rolearrays
+      case "roleArray": {
+        if (!multiRoleArrays[p]) return;
+        if (typeof guildConfig[p] !== "object") guildConfig[p] = [guildConfig[p]];
 
-      multiChannelArrays[p].options.forEach(s => {
-        const id = /.{1,32} \(([0-9]{16,19})\)/.exec(s.label)[1];
-        if (guildConfig[p] && guildConfig[p].includes(id)) s.state = true;
-      });
+        multiRoleArrays[p].options.forEach((s) => {
+          const id = /.{1,32} \(([0-9]{16,19})\)/.exec(s.label)[1];
+          if (guildConfig[p] && guildConfig[p].includes(id)) s.state = true;
+        });
+
+        break;
+      }
+
+      // Channelarrays
+      case "channelArray": {
+        if (!multiChannelArrays[p]) return;
+        if (typeof guildConfig[p] !== "object") guildConfig[p] = [guildConfig[p]];
+
+        multiChannelArrays[p].options.forEach((s) => {
+          const id = /.{1,32} \(([0-9]{16,19})\)/.exec(s.label)[1];
+          if (guildConfig[p] && guildConfig[p].includes(id)) s.state = true;
+        });
+        break;
+      }
     }
 
     // Disabled command selector
     if (p === "disabledCmds") {
-      multiCats.options.forEach(o => {
+      multiCats.options.forEach((o) => {
         if (o.type === "group") {
           if (guildConfig.disabledCategories && guildConfig.disabledCategories.includes(o.label)) o.state = true;
-          else o.children.forEach(c => {
-            if (guildConfig.disabledCmds && guildConfig.disabledCmds.includes(c.label)) c.state = true;
-          });
+          else {
+            o.children.forEach((c) => {
+              if (guildConfig.disabledCmds && guildConfig.disabledCmds.includes(c.label)) c.state = true;
+            });
+          }
         }
       });
     }
@@ -184,73 +217,98 @@ window.addEventListener("load", async () => {
 
   // Refreshes local guildConfig
   function refreshGuildConfig() {
-    configItems.forEach(p => {
+    configItems.forEach((p) => {
       // Gets the items
-      const type = fetchedItems.find(c => c.id === p).type;
+      const type = fetchedItems.find((c) => c.id === p).type;
       const element = document.getElementById(p);
       if (!element) return;
 
-      // Sets booleans in guildConfig
-      if (type === "bool") {
-        guildConfig[p] = document.getElementById(p).children[0].children[0].checked;
-      }
+      switch (type) {
+        case "bool": {
+          guildConfig[p] = document.getElementById(`${p}_ON`).checked;
+          break;
+        }
 
-      // Sets numbers in guildConfig
-      if (type === "number") {
-        guildConfig[p] = parseInt(document.getElementById(p).children[0].value.split(" ")[0]);
-      }
+        case "number": {
+          guildConfig[p] = parseInt(document.getElementById(`${p}_Select`).value.split(" ")[0]);
+          break;
+        }
 
-      // Sets punishment types in guildConfig
-      if (type === "punishment") {
-        const Purge = document.getElementById(p).children[0].checked;
-        const Mute = document.getElementById(p).children[2].checked;
-        const Warn = document.getElementById(p).children[4].checked;
-        guildConfig[p] = [];
-        if (Purge) guildConfig[p].push("Purge");
-        if (Mute) guildConfig[p].push("Mute");
-        if (Warn) guildConfig[p].push("Warn");
-      }
+        case "punishment": {
+          const Purge = document.getElementById(`${p}_Purge`).checked;
+          const Mute = document.getElementById(`${p}_Mute`).checked;
+          const Warn = document.getElementById(`${p}_Warn`).checked;
+          guildConfig[p] = [];
+          if (Purge) guildConfig[p].push("Purge");
+          if (Mute) guildConfig[p].push("Mute");
+          if (Warn) guildConfig[p].push("Warn");
+          break;
+        }
 
-      // Sets channels/roles in guildConfig
-      if (type === "channelID" || type === "roleID") {
-        const r = Array.from(element.children[0].children).find(a => a.innerText === element.children[0].value).id;
-        guildConfig[p] = !r || r.toLowerCase() === "none" ? null : r;
-      }
+        case "raidPunishment": {
+          const Ban = document.getElementById(`${p}_Ban`).checked;
+          const Kick = document.getElementById(`${p}_Kick`).checked;
+          const Mute = document.getElementById(`${p}_Mute`).checked;
+          guildConfig[p] = [];
+          if (Ban) guildConfig[p].push("Ban");
+          if (Kick) guildConfig[p].push("Kick");
+          if (Mute) guildConfig[p].push("Mute");
+          break;
+        }
 
-      // Sets string; emoji in guildConfig
-      if (type === "string") guildConfig[p] = element.value;
-      if (type === "emoji") guildConfig[p] = element.innerHTML;
+        case "channelID":
+        case "roleID": {
+          const r = Array.from(element.children[0].children).find((a) => a.innerText === element.children[0].value).id;
+          if (!r || r.toLowerCase() === "none") return;
+          guildConfig[p] = r;
+          break;
+        }
 
-      // Sets roles in guildConfig
-      if (type === "roleArray") {
-        if (!multiRoleArrays[p]) return;
-        const values = multiRoleArrays[p].getSelected().map(s => s.label);
-        const ids = [];
-        values.forEach(v => {
-          ids.push(/.{1,32} \(([0-9]{16,19})\)/.exec(v)[1]);
-        });
-        guildConfig[p] = ids;
-      }
+        case "string": {
+          const val = element.value;
+          if (val.length) guildConfig[p] = element.value;
+          break;
+        }
 
-      // Sets channels in guildConfig
-      if (type === "channelArray") {
-        if (!multiChannelArrays[p]) return;
-        const values = multiChannelArrays[p].getSelected().map(s => s.label);
-        const ids = [];
-        values.forEach(v => {
-          ids.push(/.{1,32} \(([0-9]{16,19})\)/.exec(v)[1]);
-        });
-        guildConfig[p] = ids;
+        case "emoji": {
+          guildConfig[p] = element.innerHTML;
+          break;
+        }
+
+        case "roleArray": {
+          if (!multiRoleArrays[p]) return;
+          const values = multiRoleArrays[p].getSelected().map((s) => s.label);
+          const ids = [];
+          values.forEach((v) => {
+            ids.push(/.{1,32} \(([0-9]{16,19})\)/.exec(v)[1]);
+          });
+          guildConfig[p] = ids;
+          break;
+        }
+
+        case "channelArray": {
+          if (!multiChannelArrays[p]) return;
+          const values = multiChannelArrays[p].getSelected().map((s) => s.label);
+          const ids = [];
+          values.forEach((v) => {
+            ids.push(/.{1,32} \(([0-9]{16,19})\)/.exec(v)[1]);
+          });
+
+          guildConfig[p] = ids;
+          break;
+        }
       }
     });
 
     // Selected disabled items
-    if (!guildConfig.disabledCmds || !guildConfig.disabledCategories || Array.isArray(guildConfig.disabledCmds)) guildConfig.disabledCmds = [];
-    if (!guildConfig.disabledCmds || !guildConfig.disabledCategories || Array.isArray(guildConfig.disabledCategories)) guildConfig.disabledCategories = [];
-    multiCats.getSelected().forEach(o => {
+    if (!guildConfig.disabledCmds || !guildConfig.disabledCategories || Array.isArray(guildConfig.disabledCmds))
+      guildConfig.disabledCmds = [];
+    if (!guildConfig.disabledCmds || !guildConfig.disabledCategories || Array.isArray(guildConfig.disabledCategories))
+      guildConfig.disabledCategories = [];
+    multiCats.getSelected().forEach((o) => {
       if (o.type === "group") {
         if (o.state) guildConfig.disabledCategories.push(o.label);
-        else o.children.forEach(c => guildConfig.disabledCmds.push(c.label));
+        else o.children.forEach((c) => guildConfig.disabledCmds.push(c.label));
       }
     });
   }
@@ -261,9 +319,9 @@ window.addEventListener("load", async () => {
     // Loading animation
     button.classList.add("is-loading");
     refreshGuildConfig();
-    oldcfg = { ...guildConfig };
+    // oldcfg = { ...guildConfig };
     // Updates config
-    updateGuildConfig(id, guildConfig).then(res => {
+    updateGuildConfig(id, guildConfig).then((res) => {
       if (res.status === 200 || res.status === 204) {
         // Button animation & changes
         button.classList.remove("is-loading");
@@ -287,9 +345,9 @@ window.addEventListener("load", async () => {
     const button = document.getElementById("delete");
     // Loading animation
     button.classList.add("is-loading");
-    oldcfg = { ...guildConfig };
+    // oldcfg = { ...guildConfig };
     // Updates config
-    resetGuildConfig(id).then(res => {
+    resetGuildConfig(id).then((res) => {
       if (res.status === 200) {
         // Button animation & changes
         button.classList.remove("is-loading");
@@ -312,23 +370,21 @@ window.addEventListener("load", async () => {
     });
   });
 
+  // // Config changes
+  // function compareGuildConfig() {
+  //   // Don't ask for confirmation on deletion
+  //   if (guildConfig === { id: id }) return;
+  //   refreshGuildConfig();
 
-  // Config changes
-  function compareGuildConfig() {
-    // Don't ask for confirmation on deletion
-    if (JSON.stringify(guildConfig === { id: id })) return;
+  //   // Compares objects; leave confirmation
+  //   if (JSON.stringify(oldcfg) !== JSON.stringify(guildConfig))
+  //     window.onbeforeunload = function () {
+  //       return "Do you really want to leave?";
+  //     };
+  //   else window.onbeforeunload = null;
+  // }
 
-    refreshGuildConfig();
-
-    // Compares objects; leave confirmation
-    if (JSON.stringify(oldcfg) !== JSON.stringify(guildConfig)) window.onbeforeunload = function() {
-      return "Do you really want to leave?";
-    };
-
-    else window.onbeforeunload = null;
-  }
-
-  // Event listeners
-  document.addEventListener("click", compareGuildConfig);
-  document.addEventListener("input", compareGuildConfig);
+  // // Event listeners
+  // document.addEventListener("click", compareGuildConfig);
+  // document.addEventListener("input", compareGuildConfig);
 });

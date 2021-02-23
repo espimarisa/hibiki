@@ -1,18 +1,18 @@
 * text=auto
 
+LICENSE text eol=lf
+*.bat text eol=crlf
 *.css text eol=lf
-*.editorconfig text eol=lf
+*.eslintrc text eol=lf
 *.ejs text eol=lf
 *.gitattributes text eol=lf
 *.gitignore text eol=lf
-*.htm text eol=lf
 *.html text eol=lf
 *.js text eol=lf
-*.jsbeautifyrc text eol=lf
 *.json text eol=lf
+*.prettierrc text eol=lf
 *.sh text eol=lf
 *.ts text eol=lf
-*.tsx text eol=lf
 *.md text eol=lf
 *.yml text eol=lf
 
@@ -20,6 +20,7 @@
 *.gif binary
 *.jpeg binary
 *.jpg binary
+*.map binary
 *.png binary
 *.tar.gz binary
 *.zip binary
