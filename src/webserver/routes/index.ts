@@ -4,10 +4,9 @@
  * @module dashboard/routes/index
  */
 
-import type { HibikiClient } from "../../classes/Client";
 import type { Profile } from "passport-discord";
+import type { HibikiClient } from "../../classes/Client";
 import { defaultAvatar } from "../../helpers/constants";
-import { uptimeFormat } from "../../utils/format";
 import express from "express";
 const router = express.Router();
 
@@ -26,7 +25,6 @@ export = (bot: HibikiClient) => {
       bot: bot,
       page: req.url,
       user: req.isAuthenticated() ? getAuthedUser(req.user as Profile) : null,
-      uptimeFormat: uptimeFormat,
     });
   });
 
