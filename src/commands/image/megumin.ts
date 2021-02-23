@@ -7,6 +7,7 @@ export class MeguminCommand extends Command {
   aliases = ["megu"];
   description = "Sends a random GIF of Megumin.";
   cooldown = 3000;
+  allowdms = true;
 
   async run(msg: Message<TextChannel>) {
     const body = (await axios

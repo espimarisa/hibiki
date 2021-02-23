@@ -1,5 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
+import { blacklistedTags, videoFileRegex } from "../../helpers/constants";
 import { resError } from "../../utils/exception";
 import axios from "axios";
 
@@ -16,22 +17,27 @@ export class MikuCommand extends Command {
         resError(err);
       });
 
-    if (!body || !body.data[0]?.image || !body.data[0]?.directory) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");
+    // If nothing was found
+    if (!body || !body.data?.[0]?.image || !body.data?.[0]?.directory) {
+      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
+    }
+
+    // Gets post
+    const random = Math.floor(Math.random() * body.data.length);
+
+    // Blacklists bad posts
+    if (body.data[random].rating !== "safe" && !blacklistedTags.every((t) => !body.data[random]?.tags?.split(" ")?.includes(t))) {
+      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
     }
 
     // Handles videos
-    if (body.data?.[0]?.image.endsWith(".webm") || body?.data[0]?.image.endsWith(".mp4")) {
+    if (videoFileRegex.test(body.data[random].image)) {
       return msg.createEmbed(
         msg.string("global.ERROR"),
-        msg.string("global.RESERROR_ATTACHMENT", {
-          url: `https://safebooru.org/images/${body.data?.[0]?.directory}/${body?.data?.[0]?.image}`,
-        }),
+        msg.string("global.RESERROR_ATTACHMENT", { url: body.data[random].image }),
         "error",
       );
     }
-
-    const random = Math.floor(Math.random() * body?.data.length);
 
     msg.channel.createMessage({
       embed: {

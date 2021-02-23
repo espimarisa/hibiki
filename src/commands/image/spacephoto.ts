@@ -26,7 +26,7 @@ export class SpacephotoCommand extends Command {
     // Randomly picks and image and gets its description
     const images = body.data?.collection?.items;
     const data = images[Math.floor(Math.random() * images.length)];
-    const description = data.data[0].description;
+    const description = data.data?.[0].description;
     if (!data) return omsg.editEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");
 
     omsg.edit({
@@ -35,7 +35,14 @@ export class SpacephotoCommand extends Command {
         description: description.length > 2000 ? `${description.substring(0, 2000)}...` : description || null,
         color: msg.convertHex("general"),
         image: {
-          url: data.links[0].href,
+          url: data.links?.[0]?.href,
+        },
+        footer: {
+          text: msg.string("global.RAN_BY", {
+            author: msg.tagUser(msg.author),
+            poweredBy: "nasa.gov",
+          }),
+          icon_url: msg.author.dynamicAvatarURL(),
         },
       },
     });
