@@ -23,10 +23,11 @@ export class SetassignableCommand extends Command {
         );
 
         if (!role) return;
-        if (guildconfig.assignableRoles.includes(role.id)) return;
+        if (!guildconfig?.assignableRoles?.length) guildconfig.assignableRoles = [];
+        if (guildconfig?.assignableRoles?.includes?.(role.id)) return;
 
         // Adds the role to the guildconfig
-        guildconfig.assignableRoles.push(role.id);
+        guildconfig.assignableRoles?.push?.(role.id);
         roles.push(role.name);
       });
 

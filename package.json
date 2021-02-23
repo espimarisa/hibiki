@@ -1,7 +1,7 @@
 {
   "private": "true",
   "name": "hibiki",
-  "version": "3.3.0-alpha",
+  "version": "3.3.0-rc.1",
   "description": "An easy, customizable, and powerful Discord bot that does anything that your server needs.",
   "author": "Espi <espi@riseup.net> (https://espi.me)",
   "contributors": [
@@ -77,7 +77,7 @@
     "prettier": "^2.2.1",
     "sass": "^1.32.8",
     "ts-node": "^9.1.1",
-    "typescript": "^4.1.5"
+    "typescript": "^4.2.2"
   },
   "optionalDependencies": {
     "@discordjs/opus": "^0.4.0",

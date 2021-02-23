@@ -4,7 +4,7 @@ import { Command } from "../../classes/Command";
 export class RemovepointCommand extends Command {
   description = "Removes one or more reputation points.";
   requiredperms: ["manageMessages"];
-  args = "<id(s):string>";
+  args = "<ids:string>";
   aliases = ["removemerit", "removemerits", "removepoint", "removepoints", "rmmerit", "rmmerits", "rmpoint", "rmpoints"];
   staff = true;
 

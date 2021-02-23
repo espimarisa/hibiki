@@ -1,5 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
+import { defaultAvatar } from "../../helpers/constants";
 
 export class BannerCommand extends Command {
   description = "Sends the server's banner.";
@@ -13,7 +14,7 @@ export class BannerCommand extends Command {
       embed: {
         color: msg.convertHex("general"),
         author: {
-          icon_url: msg.channel.guild.iconURL || "https://cdn.discordapp.com/embed/avatars/0.png",
+          icon_url: msg.channel.guild.dynamicIconURL() || defaultAvatar,
           name: msg.channel.guild.name,
         },
         image: {

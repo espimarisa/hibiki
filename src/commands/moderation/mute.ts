@@ -35,7 +35,6 @@ export class MuteCommand extends Command {
     // if specified timeout was given
     if (timeArg) {
       `${timeArg} `.split("").forEach((char: string, i: number) => {
-        console.log(char);
         // Returns if it isn't a proper value
         if (isNaN(parseInt(char))) return;
         if (i === timeArg.length - 1) return;

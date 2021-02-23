@@ -5,6 +5,7 @@ export class WordFilterCommand extends Command {
   description = "Adds or removes a word from the filtered list.";
   args = "[word:string] | [remove:string] [id:string]";
   aliases = ["addfilter", "removefilter", "rmfilter"];
+  requiredperms = ["manageMessages"];
   staff = true;
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[], args: string[]) {

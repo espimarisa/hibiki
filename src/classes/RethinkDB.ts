@@ -210,6 +210,12 @@ export class RethinkProvider {
   }
 
   // Inserts blank amount of user cookies
+  async insertUserCookies(cookies: UserCookies) {
+    await this.dblock;
+    return this.db.table("economy").insert(cookies).run();
+  }
+
+  // Inserts blank amount of user cookies
   async insertBlankUserCookies(user: string) {
     await this.dblock;
     return this.db.table("economy").insert({ id: user, amount: 0, lastclaim: null }).run();

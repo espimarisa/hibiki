@@ -16,6 +16,7 @@ import {
 export class ServerCommand extends Command {
   description = "Returns info about the server.";
   aliases = ["g", "guild", "guildinfo", "serverinfo"];
+  allowdisable = false;
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     let guild: Guild;

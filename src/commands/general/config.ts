@@ -33,8 +33,9 @@ validItems.forEach((s) => {
   }
 });
 
+// TODO: Add a pagified config viewer (god help us)
 export class SetupCommand extends Command {
-  description = "Edits the bot's config or displays the current one.";
+  description = "Edits the bot's config.";
   aliases = ["cfg", "guildconfig", "serverconfig", "setup"];
   allowdisable = false;
   cooldown = 5000;
