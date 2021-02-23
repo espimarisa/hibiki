@@ -28,10 +28,10 @@ interface GuildConfig {
   greetingFooter?: string;
   id?: string;
   ignoredLoggingChannels?: string[];
+  inviteOptOut?: boolean;
   invitePunishments?: string[];
   joinMessage?: string;
   joinTitle?: string;
-  inviteOptOut?: boolean;
   leaveJoin?: string;
   leaveMessage?: string;
   leaveTitle?: string;
@@ -68,12 +68,12 @@ interface GuildConfig {
 // Userconfig data
 interface UserConfig {
   bio?: string;
+  gayLevel?: number;
   id?: string;
   locale?: string;
   pronouns?: string | number;
   timezone?: string;
   timezoneHide?: boolean;
-  gayLevel?: number;
 }
 
 // Mutecache data
