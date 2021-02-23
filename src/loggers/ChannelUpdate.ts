@@ -177,8 +177,8 @@ export class ChannelUpdate extends Logger {
         embed.fields.push({
           name: string("global.SLOWMODE"),
           value: `${
-            oldchannel.rateLimitPerUser === 0 ? string("global.NONE") : `${oldchannel.rateLimitPerUser} ${string("global.SECONDS")}`
-          } ➜ ${channel.rateLimitPerUser === 0 ? string("global.NONE") : `${channel.rateLimitPerUser} ${string("global.SECONDS")}`}`,
+            oldchannel.rateLimitPerUser === 0 ? string("global.NONE") : `${oldchannel.rateLimitPerUser} ${string("logger.SECONDS")}`
+          } ➜ ${channel.rateLimitPerUser === 0 ? string("global.NONE") : `${channel.rateLimitPerUser} ${string("logger.SECONDS")}`}`,
         });
       }
 

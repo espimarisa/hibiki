@@ -55,6 +55,7 @@
 
   "general": {
     "ABOUT": "About",
+    "ABOUT_LINK_STRING": "[GitHub]({github}) • [Invite]({invite}) • [Privacy]({privacy}) • [Support]({support}) • [Translate]({translate}) • [Website]({website})",
     "ABOUT_DESCRIPTION": "{username}, by [Espi](https://espi.me), [resolved](https://github.com/resolvedxd), and [contributors](https://github.com/smolespi/hibiki). 💜",
     "ABOUT_HOST": "Host",
     "ABOUT_HOST_STRING": "Bot using {botMemoryUsage} of memory \nSystem using {hostMemoryUsage} of memory \nSystem up for {uptime} \nRunning on {platform}",
@@ -319,10 +320,21 @@
     "USER_TIME": "Current Time",
     "USER_WATCHING": "Watching",
     "VOTE": "Vote",
-    "VOTE_INFO": "Vote for **{username}** on top.gg [here]({link}). Each vote gives you cookies!"
+    "VOTE_INFO": "Vote for **{username}** on top.gg [here]({link})."
   },
 
   "global": {
+    "LINKS": "Links",
+    "BYTES": "Bytes",
+    "BYTES_KB": "KB",
+    "BYTES_MB": "MB",
+    "BYTES_GB": "GB",
+    "BYTES_TB": "TB",
+    "BYTES_PB": "PB",
+    "BYTES_EB": "EB",
+    "BYTES_ZB": "ZB",
+    "BYTES_YB": "YB",
+    "TIME_AGO": "{time} ago",
     "BOTSTATUS_VERSION": "v{version} | hibiki.app",
     "BOTSTATUS_USERS": "{users} users",
     "BOTSTATUS_GUILDS": "{guilds} guilds",
@@ -383,6 +395,7 @@
     "CREATED_AT": "Created At",
     "CUSTOMCOMMAND_RANBY": "Ran by {author} | Created by {creator}",
     "DATE": "Date",
+    "HOURS": "{hours} {hours:#hours#!hour!}",
     "DAYS": "{days} {days:#day#!days!}",
     "DAYS_OLD": "days old",
     "DELETE": "Delete",
@@ -418,12 +431,12 @@
     "EXITED": "❌ Exited",
     "FALSE": "False",
     "FEATURES": "Features",
-    "FORMAT_DAY": "**{hours}** hours and **{minutes}** minutes",
+    "FORMAT_DAY": "**{hours} {hours:#hours#!hour!}** and **{minutes} {minutes:#minutes#!minute!}**",
     "GREETINGS": "Member Greetings",
     "HAS_BEEN": "has been",
     "HIGH": "High",
     "HIGHEST": "Highest",
-    "HOURS": "{hours} {hours:#hour#!hours!}",
+    "MONTHS": "{months} {months:#month#!months!}",
     "ID": "ID",
     "IDLE": "Idle",
     "IMAGE": "Image",
@@ -442,7 +455,7 @@
     "MEMBER_AMOUNT": "{amount} {amount:#members#!member!}",
     "MEMBERS": "Members",
     "MESSAGE": "Message",
-    "MINUTES": "{minutes} {minutes:#minute#!minutes!}",
+    "MINUTES": "{minutes} {minutes:#minutes#!minute!}",
     "MUSIC": "Music",
     "NAME": "Name",
     "NEW_CONTENT": "New Content",
@@ -476,7 +489,7 @@
     "RESERROR_IMAGE": "Failed to send the image. Try again later.",
     "RESERROR_IMAGEQUERY": "No images found for your query.",
     "ROLES": "Roles",
-    "SECONDS": "Seconds",
+    "SECONDS": "{seconds} {seconds:#seconds#!second!}",
     "SENT_ON": "Sent On",
     "SERVER": "Server",
     "SERVER_PREFIX": "The prefix in this server is `{prefix}`.",
@@ -501,7 +514,7 @@
     "UPVOTES": "Upvotes",
     "URL": "URL",
     "VOTING_COOKIES_ADDED": "**{amount}** cookies have been added to your account.",
-    "YEARS": "{years} {years:#year#!years!}",
+    "YEARS": "{years} {years:#years#!year!}",
     "YES": "Yes"
   },
 
@@ -525,6 +538,7 @@
   },
 
   "logger": {
+    "SECONDS": "Seconds",
     "INVITE_USED": "Invite Used",
     "INVITE_USES": "Invite Uses",
     "INVITE_USESLEFT": "Invite Uses Left",

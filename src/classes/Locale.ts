@@ -64,7 +64,7 @@ export class LocaleSystem {
         // Sends the output with the correct grammar
         if (plurals) {
           let plural = "";
-          if (args[arg] === 1) plural = plurals[2];
+          if (args[arg] === 1 || (args[arg] > 1 && args[arg] < 2)) plural = plurals[2];
           else if (plurals[3] && args[arg] >= 2 && args[arg] <= 4) plural = plurals[3];
           else plural = plurals[1];
 
