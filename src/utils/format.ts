@@ -139,17 +139,59 @@ export function regionFormat(region: string) {
   }
 }
 
+// Formats time from a number
+export function timeFormat(
+  time: number,
+  string: LocaleString,
+  options = { hours: true, days: true, months: true, years: true, autohide: true },
+) {
+  let finalstring = "";
+  let hour: number;
+  let day: number;
+  let month: number;
+  let year: number;
+
+  if (options.hours) {
+    hour = time / 3600;
+    if (options.autohide) finalstring = string("global.HOURS", { hours: hour.toFixed(1) });
+    if (!options.autohide) finalstring += `${string("global.HOURS", { hours: hour.toFixed(1) })} `;
+  }
+
+  if (options.days) {
+    day = time / 86400;
+    if (hour > 24 && options.autohide) finalstring = string("global.DAYS", { days: day.toFixed(1) });
+    if (!options.autohide) finalstring += `${string("global.DAYS", { days: day.toFixed(1) })} `;
+  }
+
+  if (options.months) {
+    month = time / 2592000;
+    if (day > 31 && options.autohide) finalstring = string("global.MONTHS", { months: month.toFixed(1) });
+    if (!options.autohide) finalstring += finalstring += `${string("global.MONTHS", { value: month.toFixed(1) })} `;
+  }
+
+  if (options.years) {
+    year = time / 32140800;
+    if (month > 12 && options.autohide) finalstring = string("global.YEARS", { years: year.toFixed(1) });
+    if (!options.autohide) finalstring += finalstring += `${string("global.YEARS", { years: year.toFixed(1) })} `;
+  }
+
+  return finalstring;
+}
+
 // Formats uptime
-export function uptimeFormat(uptime: number) {
+export function uptimeFormat(uptime: number, string: LocaleString) {
   const date = new Date(uptime * 1000);
   const days = date.getUTCDate() - 1;
   const hours = date.getUTCHours();
   const minutes = date.getUTCMinutes();
-  const segments = [];
-  if (days > 0) segments.push(`${days} day${days === 1 ? "" : "s"}`);
-  if (hours > 0) segments.push(`${hours} hour${hours === 1 ? "" : "s"}`);
-  if (minutes === 0) segments.push("less than a minute");
-  if (minutes > 0) segments.push(`${minutes} minute${minutes === 1 ? "" : "s"}`);
+  const seconds = date.getUTCSeconds();
+  const segments: string[] = [];
+
+  if (days > 0) segments.push(string("global.DAYS", { days: days }));
+  if (hours > 0) segments.push(string("global.HOURS", { hours: hours }));
+  if (minutes === 0) segments.push(string("global.SECONDS", { seconds: seconds }));
+  if (minutes > 0) segments.push(string("global.MINUTES", { minutes: minutes }));
+
   const dateString = segments.join(", ");
   return dateString;
 }

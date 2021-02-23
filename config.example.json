@@ -8,6 +8,7 @@
   "statuses": ["guilds", "help", "users", "version"],
   "token": "",
   "inviteLogs": true,
+  "dmLogs": true,
 
   "colors": {
     "error": "#FF0048",

@@ -26,15 +26,36 @@ export class HandlerEvent extends Event {
     const string = this.bot.localeSystem.getLocaleFunction(localeString);
     msg.string = string;
 
-    // Tells people how to invite the bot if they send an invite
-    if (msg.channel instanceof PrivateChannel && inviteRegex.test(msg.content)) {
-      return msg.createEmbed(
-        `📌 ${string("general.INVITE")}`,
-        string("general.INVITE_INFO", {
-          bot: `https://discord.com/oauth2/authorize?&client_id=${this.bot.user.id}&scope=bot&permissions=506850534`,
-          support: "https://discord.gg/gZEj4sM",
-        }),
-      );
+    // DM Specific actions
+    if (msg.channel instanceof PrivateChannel) {
+      if (inviteRegex.test(msg.content)) {
+        msg.createEmbed(
+          `📌 ${string("general.INVITE")}`,
+          string("general.INVITE_INFO", {
+            bot: `https://discord.com/oauth2/authorize?&client_id=${this.bot.user.id}&scope=bot&permissions=506850534`,
+            support: "https://discord.gg/gZEj4sM",
+          }),
+        );
+      }
+
+      // Logs DMs if enabled
+      if (this.bot.config.dmLogs === true) {
+        this.bot
+          .createMessage(this.bot.config.logchannel, {
+            embed: {
+              description: `${msg.content}`,
+              color: msg.convertHex("general"),
+              author: {
+                icon_url: msg.author.dynamicAvatarURL(),
+                name: `Messaged by ${msg.tagUser(msg.author)}`,
+              },
+              image: {
+                url: msg.attachments.length !== 0 ? msg.attachments[0].url : "",
+              },
+            },
+          })
+          .catch(() => {});
+      }
     }
 
     // Finds what prefix to use

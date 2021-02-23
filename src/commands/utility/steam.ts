@@ -1,6 +1,6 @@
 import type { EmbedField, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { dateFormat } from "../../utils/format";
+import { dateFormat, timeFormat } from "../../utils/format";
 import axios from "axios";
 
 export class SteamCommand extends Command {
@@ -164,9 +164,7 @@ export class SteamCommand extends Command {
     if (profile.lastlogoff !== undefined) {
       fields.push({
         name: msg.string("utility.STEAM_OFFLINE"),
-        // TODO: add date parser back l o l
-        // value:  `${(new Date() / 1000 - profile.lastlogoff)} ago`,
-        value: "uh uh hhimhgkorwok",
+        value: msg.string("global.TIME_AGO", { time: timeFormat(new Date().getTime() / 1000 - profile.lastlogoff, msg.string) }),
         inline: true,
       });
     }
