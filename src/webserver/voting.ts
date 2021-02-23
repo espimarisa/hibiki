@@ -10,6 +10,7 @@ import express from "express";
 import helmet from "helmet";
 
 const app = express();
+app.enable("trust proxy");
 app.use(express.json());
 app.use(helmet());
 
