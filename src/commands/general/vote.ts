@@ -3,8 +3,8 @@ import { Command } from "../../classes/Command";
 
 export class VoteCommand extends Command {
   description = "Gives a link to vote on top.gg.";
-  allowdms = true;
   requiredkeys = ["topgg"];
+  allowdms = true;
 
   async run(msg: Message<TextChannel>) {
     msg.createEmbed(

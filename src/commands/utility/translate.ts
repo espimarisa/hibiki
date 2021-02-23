@@ -1,4 +1,4 @@
-import type { Message, TextChannel } from "eris";
+import type { Message, TextChannel, User } from "eris";
 import { Command } from "../../classes/Command";
 import { ISOcodes } from "../../helpers/constants";
 import axios from "axios";
@@ -8,7 +8,7 @@ export class TranslateCommand extends Command {
   args = "[language:string] [text:string]";
   cooldown = 3000;
 
-  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[], easyTranslate = false, easyTranslateUser?: User) {
     // If nothing was given
     if (!args.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.TRANSLATE_NOTEXT"), "error");
     let locale = "en";
@@ -47,7 +47,7 @@ export class TranslateCommand extends Command {
     // Sends the translation
     msg.channel.createMessage({
       embed: {
-        title: `🌍 ${msg.string("utility.TRANSLATE")}`,
+        title: `🌍 ${easyTranslate ? msg.string("utility.EASYTRANSLATE") : msg.string("utility.TRANSLATE")}`,
         description: `${msg.string("utility.TRANSLATE_DESCRIPTION", {
           oldcontent: body.data[0][0][1],
           content: body.data[0][0][0],
@@ -55,11 +55,11 @@ export class TranslateCommand extends Command {
         color: msg.convertHex("general"),
         footer: {
           text: `${msg.string("utility.TRANSLATE_FOOTER", {
-            author: msg.tagUser(msg.author),
+            author: easyTranslate && easyTranslateUser ? msg.tagUser(easyTranslateUser) : msg.tagUser(msg.author),
             from: body.data[2].toUpperCase(),
             to: locale.toUpperCase(),
           })}`,
-          icon_url: msg.author.dynamicAvatarURL(),
+          icon_url: easyTranslate && easyTranslateUser ? easyTranslateUser.dynamicAvatarURL() : msg.author.dynamicAvatarURL(),
         },
       },
     });

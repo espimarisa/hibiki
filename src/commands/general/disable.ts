@@ -3,7 +3,7 @@ import { Command } from "../../classes/Command";
 
 export class DisableCommand extends Command {
   description = "Disables a command or category.";
-  args = "[item:string]";
+  args = "<item:string>";
   requiredperms = ["manageMessages"];
   allowdisable = false;
   staff = true;

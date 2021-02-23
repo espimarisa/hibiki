@@ -7,6 +7,9 @@ export class ChangelogCommand extends Command {
   allowdms = true;
 
   async run(msg: Message<TextChannel>) {
+    // TODO: In the future, make this return data from GitHub's release endpoint
+    // Also, pagify it to go back in time
+
     msg.channel.createMessage({
       embed: {
         title: `📚 ${msg.string("general.CHANGELOG")}`,

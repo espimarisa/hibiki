@@ -7,6 +7,7 @@ export class AwooCommand extends Command {
   aliases = ["momiji"];
   description = "Sends a picture of Momiji Inubashiri (awoo!).";
   cooldown = 3000;
+  allowdms = true;
 
   async run(msg: Message<TextChannel>) {
     const body = (await axios

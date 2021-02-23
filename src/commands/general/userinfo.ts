@@ -17,7 +17,7 @@ export class UserinfoCommand extends Command {
   description = "Returns information about a member and displays their profile.";
   args = "<member:member&fallback,userFallback>";
   aliases = ["profileinfo", "member", "minfo", "memberinfo", "uinfo", "user"];
-  allowdms = true;
+  allowdisable = false;
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     let member = (await pargs[0].value) as Member;

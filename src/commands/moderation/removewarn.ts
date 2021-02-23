@@ -4,7 +4,7 @@ import { Command } from "../../classes/Command";
 export class RemovewarnCommand extends Command {
   description = "Removes one or more warnings.";
   requiredperms: ["manageMessages"];
-  args = "<id(s):string>";
+  args = "<ids:string>";
   aliases = ["removepunish", "rmpunish", "removestrike", "removestrikes", "rmstrike", "rmwarn", "removewarning", "removewarnings"];
   staff = true;
 

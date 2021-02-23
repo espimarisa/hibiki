@@ -6,6 +6,7 @@ import axios from "axios";
 export class RemCommand extends Command {
   description = "Sends a random picture of Rem from Re:Zero.";
   cooldown = 3000;
+  allowdms = true;
 
   async run(msg: Message<TextChannel>) {
     const body = (await axios

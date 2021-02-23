@@ -17,11 +17,9 @@ export class SafebooruCommand extends Command {
     const body = await axios.get(`https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1&tags=${query}`).catch(() => {});
 
     // If nothing was found
-    if (!body || !body.data[0]?.image || !body.data?.[0]?.directory) {
+    if (!body || !body.data?.[0]?.image || !body.data?.[0]?.directory) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
     }
-
-    console.log(body.data[0]);
 
     // Gets post
     const random = Math.floor(Math.random() * body.data.length);

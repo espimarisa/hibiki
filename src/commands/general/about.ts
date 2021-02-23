@@ -8,6 +8,7 @@ import os from "os";
 export class AboutCommand extends Command {
   aliases = ["aboutbot", "botinfo", "info", "stats", "statistics", "uptime"];
   description = "Displays bot information and statistics.";
+  allowdisable = false;
   allowdms = true;
 
   async run(msg: Message<TextChannel>) {

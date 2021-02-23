@@ -36,8 +36,6 @@ export class e621Command extends Command {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
     }
 
-    console.log(body.data.posts[random]);
-
     // Handles videos
     if (videoFileRegex.test(body?.data?.posts?.[random]?.file?.url)) {
       return msg.createEmbed(

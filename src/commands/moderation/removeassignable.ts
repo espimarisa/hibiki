@@ -23,11 +23,11 @@ export class RemoveassignableCommand extends Command {
         );
 
         if (!role) return;
-        if (!guildconfig.assignableRoles.includes(role.id)) return;
+        if (!guildconfig?.assignableRoles?.includes(role.id)) return;
 
         // Removes the role from the config
-        const index = guildconfig.assignableRoles.indexOf(role.id);
-        guildconfig.assignableRoles.slice(index, 1);
+        const index = guildconfig?.assignableRoles?.indexOf(role.id);
+        guildconfig.assignableRoles?.splice?.(index, 1);
         roles.push(role.name);
       });
 
