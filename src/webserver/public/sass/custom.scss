@@ -1,0 +1,138 @@
+// Branding
+$hibiki-primary: #8e94f2;
+$hibiki-secondary: #9fa0ff;
+$hibiki-tertiary: #bbadff;
+$hibiki-pink: #dab6fc;
+$hibiki-dark: #17181c;
+$hibiki-primary-darker: #676cb8;
+$hibiki-secondary-darker: #886fb9;
+$hibiki-link: #60a5ff;
+
+#logo {
+  box-shadow: 0px 0px 20px $hibiki-tertiary;
+  border-radius: 50%;
+}
+
+.is-rounded {
+  border-radius: 50%;
+}
+
+.navbar-menu {
+  .is-active,
+  .is-inline-block {
+    vertical-align: middle;
+    justify-content: center;
+  }
+}
+
+.menu {
+  z-index: 1;
+}
+
+#stare {
+  width: 15%;
+  height: 15%;
+  top: 100vh;
+  z-index: 0;
+  bottom: 0;
+  position: absolute;
+  height: auto;
+}
+
+button.mbutton.select,
+div.ms-drop {
+  z-index: 2 !important;
+}
+
+a.navbar-item,
+.navbar-toggle,
+.navbar-burger:hover,
+.navbar-menu.is-active,
+.navbar-menu.is-active:hover {
+  background: transparent !important;
+}
+
+.media {
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 0;
+}
+
+select {
+  z-index: 1 !important;
+}
+
+.sticky {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 30px;
+}
+
+.sticky-buttons {
+  background: #fff;
+  position: sticky;
+  position: -webkit-sticky;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  top: 0px;
+  z-index: 35;
+}
+
+@media (prefers-color-scheme: dark) {
+  .sticky-buttons {
+    background: #17181c;
+  }
+}
+
+// Mixin for animations
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+.floating {
+  animation: float 2s infinite ease-in-out;
+
+  @include keyframes(float) {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+}
+
+.gradient {
+  animation: gradient 4s ease infinite;
+  background-size: 400% 400%;
+
+  @include keyframes(gradient) {
+    0% {
+      background: $hibiki-primary-darker;
+    }
+
+    50% {
+      background: $hibiki-secondary-darker;
+    }
+
+    100% {
+      background: $hibiki-primary-darker;
+    }
+  }
+}

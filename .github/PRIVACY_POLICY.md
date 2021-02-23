@@ -1,31 +1,40 @@
 # Hibiki Privacy Policy
-## Updated 17 September 2020
 
-This Privacy Policy applies to personal information collected through jiktim's ("we", "us", or "our") "Hibiki" Discord application and website, "hibiki.app". If you have any questions, please contact a developer or email `espi@lesbian.codes` with your inquiry. Additionally, this is not 100% legally binding and pretty informal.
+### Updated 22 February 2021
 
-Do note that this applies to the **official** instance of Hibiki (493904957523623936). Other instances may not respect this.
+This privacy policy applies to all information collected by the main "Hibiki" Discord application and website. If you have any questions or concerns, contact a developer.
 
-## Information we collect
+Do note that while this applies for the **official** Hibiki instance `(493904957523623936)`, other instances of Hibiki may not respect this. You're advised to use the main instance.
 
-### hibiki.app
-We require certain information for authentication. The information we collect does not reveal your specific identity (like your name, email, address, or IP). Additionally, some data is provided in the configuration dashboard, but nothing personally identifiable.
+## Information Collected
 
-Collected for authentication:
+#### Bot Application
 
-- oAuth tokens: a read-only, encrypted &amp; signed one-use token in order to verify the Discord account belongs to you. You can control the information we can get from the token, however, for proper authentication to work you must provide "user" and "guilds". This is stored in order to properly authenticate a user and is necessary for logging-in via Discord. If you do not wish to provide this, do not sign in to the dashboard. Additionally, your token is invalidated and deleted upon logout (https://hibiki.app/logout/).
+Hibiki (the bot application) does not log any personally identifiable information (PII). However, in order for some modules to work, we need to retrieve some data.
 
-- A user cookie to identify that (you) are the currently authenticated user is saved in your browser. This is encrypted, signed, and secure. If you don't want this stored anymore, you can logout at https://hibiki.app/logout. Additionally, another cookie (csrf) verifies that form submissions are legitimate and you aren't being phished.
+**Required for functionality**:
 
-Collected for features:
+- User ID: Hibiki reads your unique 16-18 digit Discord user ID to read your user config and know who to tag/mention.
+- Guild ID: Hibiki reads the current guild's config to read the guildconfig and know what to do/run or what not to do.
 
-- Your timezone and locale information. This is provided using your web browser's native API (Intl.DateTimeFormat().resolvedOptions()) and doesn't contain anything personally identifiable, but contains your timezone and locale. We currently only read the timezone part, however. If you don't wish to use this data, head over to https://hibiki.app/manage/profile and delete your profile data. Don't save the changes, they're deleted automatically. Additionally, any profile edits will save this data. Your current time is displayed on your profile when a user runs h!profile.
+This information is **NOT** identifiable and is publically viewable through Discord's open API. If you have a problem with this, do not use our application.
 
-### Hibiki Bot Application
-We collect very little information, however, for some configurations and functionality to work, we need to collect the following:
+Additionally, some modules may need to collect the following:
 
-- User &amp; Server ID: a unique number for every Discord server ("guild") and user, this is stored in order to know which server should be modified and to verify if the user is authorized to modify the server. This is non-personal information and can be accessed by anyone. If you do not wish to provide this, do not use our bot, or even Discord as it's public.
+- Message data: Data in message responses that the application reads to store a response for some modules (example: welcome messages).
+- Invite data (read-only): If you aren't opted out (you can do so via `h!config` if you want to), these will be used for more advanced member join logging (such as who invited someone). Data is wiped following a bot restart, and is not saved permanently anywhere. Additionally, we (the Hibiki Development Team), will never read said data.
+- DM Message data: Any DMs sent to the bot will be logged to our configured log channel. This is done to help us debug any issues. If you don't want this to happen, don't DM the bot. Additionally, we will delete anything that is identifiable.
 
-- Command Responses: some commands, such as the con fig or createCommand commands, ask for a response. We will store the msg.content data in order to send that response at a later time.
+#### Hibiki.app
 
-### Closure
-We do not, and never will, sell or redistribute any user or guild data. If you wish for us to remove all data belonging to you or your guild, contact one of the developers or email `espi@lesbian.codes`. Additionally, we do not view any sensitive information (oAuth tokens, for example) and keep your data secure.
+In order for the dashboard to handle user authentication properly, you must sign in through Discord's OAuth2 API. This returns some information that the application uses to verify that you are who your account says you are.
+
+- oAuth token: A read-only, signed and protected single-use token that is passed to the application to retrieve your username, user ID, avatar, and any guilds you have permission to manage. We cannot read or modify this value. If you do not wish to provide this, don't log into the dashboard.
+
+- Your timezone and locale: This is provided using your web browser's native API `(Intl.DateTimeFormat().resolvedOptions())`. We use this so you (and other users) can see what time it is for you relative to your timezone. If you do not wish to provide this, clear your profile data or the field using `h!profile`.
+
+#### GDPR
+
+If you would like a dump of your user data, you can do so by running `h!gdpr`. If you're a guild owner (or someone with the `Administrator` permission), you can get your guild's data with `h!gdpr guild`.
+
+You can delete your profile using the command (`h!profile`) or on the dashboard, and also can do-so for the guildconfig (`h!config`).

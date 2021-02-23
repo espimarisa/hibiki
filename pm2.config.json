@@ -1,10 +1,10 @@
 {
-  "name": "Hibiki",
+  "name": "hibiki",
   "script": "node",
-  "args": "src/index.js",
-  "error_file": "./logs/errors.log",
-  "out_file": "./logs/output.log",
-  "max_memory_restart": "4096M",
+  "args": "dist/src/index.js",
+  "error_file": "./logs/pm2-errors.log",
+  "out_file": "./logs/pm2-output.log",
+  "max_memory_restart": "512M",
   "mode": "fork",
   "env": {
     "NODE_ENV": "production"

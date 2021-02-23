@@ -1,7 +1,0 @@
-{
-  "delay": "4000",
-  "exec": "node ./src/index.js",
-  "ext": "js",
-  "ignore": ["node_modules", "rethinkdb_data"],
-  "watch": ["src"]
-}
