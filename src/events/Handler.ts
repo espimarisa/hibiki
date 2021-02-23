@@ -47,7 +47,9 @@ export class HandlerEvent extends Event {
               color: msg.convertHex("general"),
               author: {
                 icon_url: msg.author.dynamicAvatarURL(),
-                name: `Messaged by ${msg.tagUser(msg.author)}`,
+                name: this.bot.localeSystem.getLocale(this.bot.config.defaultLocale, "global.MESSAGED_BY", {
+                  author: msg.tagUser(msg.author),
+                }),
               },
               image: {
                 url: msg.attachments.length !== 0 ? msg.attachments[0].url : "",
