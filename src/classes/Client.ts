@@ -20,6 +20,7 @@ import { logger } from "../utils/logger";
 import { statuses } from "../helpers/statuses";
 import { InviteHandler } from "../scripts/invites";
 import { MonitorHandler } from "../scripts/monitors";
+import { MuteHandler } from "../scripts/mutes";
 import { ReminderHandler } from "../scripts/reminders";
 import { startDashboard } from "../webserver/dashboard";
 import { startVoting } from "../webserver/voting";
@@ -41,6 +42,7 @@ export class HibikiClient extends Client {
   log: typeof logger;
   inviteHandler: InviteHandler;
   monitorHandler: MonitorHandler;
+  muteHandler: MuteHandler;
   reminderHandler: ReminderHandler;
   antiSpam: AntiSpam[];
   logs: BotLogs[];
@@ -76,6 +78,7 @@ export class HibikiClient extends Client {
     this.localeSystem = new LocaleSystem(LOCALES_DIRECTORY);
     this.inviteHandler = new InviteHandler(this);
     this.monitorHandler = new MonitorHandler(this);
+    this.muteHandler = new MuteHandler(this);
     this.reminderHandler = new ReminderHandler(this);
     this.requestHandler = new Eris.RequestHandler(this);
 
