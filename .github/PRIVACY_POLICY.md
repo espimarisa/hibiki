@@ -23,6 +23,7 @@ Additionally, some modules may need to collect the following:
 
 - Message data: Data in message responses that the application reads to store a response for some modules (example: welcome messages).
 - Invite data (read-only): If you aren't opted out (you can do so via `h!config` if you want to), these will be used for more advanced member join logging (such as who invited someone). Data is wiped following a bot restart, and is not saved permanently anywhere. Additionally, we (the Hibiki Development Team), will never read said data.
+- DM Message data: Any DMs sent to the bot will be logged to our configured log channel. This is done to help us debug any issues. If you don't want this to happen, don't DM the bot. Additionally, we will delete anything that is identifiable.
 
 #### Hibiki.app
 
