@@ -52,7 +52,9 @@ export class RemindCommand extends Command {
 
     // Parses the time given
     const timeArg = finalArgs.join(" ").substring(0, finalArgs.join(" ").indexOf(args.join(" ")));
+    console.log(timeArg);
     timeArg.split("").forEach((char: string, i: number) => {
+      console.log(char);
       // Returns if it isn't a proper value
       if (isNaN(parseInt(char))) return;
       if (i === timeArg.length - 1) return;
@@ -84,6 +86,8 @@ export class RemindCommand extends Command {
             break;
         }
       }
+
+      console.log(time);
     });
 
     // Gets final date and time

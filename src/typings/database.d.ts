@@ -78,9 +78,11 @@ interface UserConfig {
 
 // Mutecache data
 interface MuteCache {
+  expiration?: number;
   guild?: string;
   member?: string;
   role?: string;
+  roles?: string[];
 }
 
 // User warning data
