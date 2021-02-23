@@ -1,16 +1,19 @@
-<%# Warns if the user has JavaScript disabled %>
 <noscript>
   <div class="notification">
-    <p>In order for the dashboard to function properly, you need to enable JavaScript. Additionally, your ad or tracker blocker may be blocking a script. We promise we don't track you!</p>
+    <p>
+      In order for the server and profile manager to function properly, you need to enable JavaScript in your browser. Additionally, your ad
+      or tracker blocker may be blocking a script.
+    </p>
   </div>
 </noscript>
+
 <div class="hero-head">
   <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
     <div class="container">
       <div class="navbar-brand">
         <a href="/" class="navbar-item has-text-white">
-          <img src="<%= bot.user.dynamicAvatarURL(null, 64) %>" class="nav-logo is-rounded" alt="logo">
-          <span class="is-inline-block ml-2"><%= bot.user.username %> v<%= bot.version %></span>
+          <img src="<%= bot.user.dynamicAvatarURL(null, 32) %>" class="is-rounded" alt="<%= bot.user.username %>" width="28" height="28" />
+          <span class="is-inline-block ml-2"><%= bot.user.username %> </span>
         </a>
         <a class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu" role="button">
           <span aria-hidden="true" class="has-text-white"></span>
@@ -20,62 +23,55 @@
       </div>
       <div class="navbar-menu" id="navMenu">
         <div class="navbar-start">
-          <%# Index navbar %>
-          <% if (page === "/") { %>
-          <% if (user) { %>
+          <% if (page === "/") { %> <% if (user) { %>
           <a href="/manage/servers" class="navbar-item has-text-white">
-            <span class="icon"><i class="fas fa-wrench"></i></span>
+            <span class="icon"><em class="fas fa-wrench"></em></span>
             <span>Dashboard</span>
           </a>
           <% } %>
-          <a href="/privacy/" class="navbar-item has-text-white">
-            <span class="icon"><i class="fas fa-shield-alt"></i></span>
-            <span>Privacy Policy</span>
-          </a>
-          <a href="/github/" class="navbar-item has-text-white">
-            <span class="icon"><i class="fab fa-github"></i></span>
-            <span>GitHub</span>
+          <a href="/donate/" class="navbar-item has-text-white">
+            <span class="icon"><em class="fas fa-heart"></em></span>
+            <span>Donate</span>
           </a>
           <a href="/support/" class="navbar-item has-text-white">
-            <span class="icon"><i class="fab fa-discord"></i></span>
+            <span class="icon"><em class="fab fa-discord"></em></span>
             <span>Support</span>
           </a>
-          <%# Server chooser navbar %>
+          <a href="https://translate.hibiki.app" class="navbar-item has-text-white">
+            <span class="icon"><em class="fas fa-globe"></em></span>
+            <span>Translate</span>
+          </a>
           <% } else if (page === "servers") { %>
           <a href="/login/" class="navbar-item has-text-white">
-            <span class="icon"><i class="fas fa-sync"></i></span>
+            <span class="icon"><em class="fas fa-sync"></em></span>
             <span>Refresh</span>
           </a>
-          <%# Server manager navbar %>
           <% } else if (page === "manage") { %>
           <a href="/manage/servers" class="navbar-item has-text-white">
-            <span class="icon"><i class="fas fa-home"></i></span>
+            <span class="icon"><em class="fas fa-home"></em></span>
             <span>Servers</span>
           </a>
-          <%# Profile editor navbar %>
           <% } else if (page === "profile") { %>
           <a href="/manage/servers" class="navbar-item has-text-white">
-            <span class="icon"><i class="fas fa-home"></i></span>
+            <span class="icon"><em class="fas fa-home"></em></span>
             <span>Servers</span>
           </a>
           <% } %>
         </div>
-        <%# If the user's logged in %>
         <% if (user) { %>
         <div class="navbar-end">
           <a href="/manage/profile" class="navbar-item has-text-white">
-            <img src="<%= user.avatar %>" class="nav-logo is-inline-block" alt="avatar">
+            <img src="<%= user.avatar %>" class="is-rounded is-inline-block" alt="<%= user.username %>" />
             <span class="is-inline-block ml-2"><%= user.username %>#<%= user.discriminator %></span>
           </a>
           <a href="/logout/" class="navbar-item has-text-white">
-            <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+            <span class="icon"><em class="fas fa-sign-out-alt"></em></span>
             <span>Logout</span>
           </a>
-          <%# If the user isn't logged in %>
           <% } else { %>
           <div class="navbar-end">
             <a href="/manage/servers/" class="navbar-item has-text-white">
-              <span class="icon"><i class="fas fa-sign-in-alt"></i></span>
+              <span class="icon"><em class="fas fa-sign-in-alt"></em></span>
               <span>Login</span>
             </a>
           </div>
