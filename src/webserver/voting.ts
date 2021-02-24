@@ -8,11 +8,20 @@ import type { HibikiClient } from "../classes/Client";
 import { convertHex } from "../helpers/embed";
 import express from "express";
 import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+
+// Voting handler ratelimit
+const votingRateLimit = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 10,
+  message: "Too many voting requests in the past minute. Try again later.",
+});
 
 const app = express();
 app.enable("trust proxy");
 app.use(express.json());
 app.use(helmet());
+app.use(votingRateLimit);
 
 export async function startVoting(bot: HibikiClient) {
   if (!bot.config.keys.botlists.voting.auth || !bot.config.keys.botlists.voting.port) return;

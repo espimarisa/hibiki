@@ -11,7 +11,15 @@ import { localizeProfileItems, localizeSetupItems } from "../../utils/format";
 import { defaultAvatar } from "../../helpers/constants";
 import { validItems } from "../../utils/validItems";
 import express from "express";
+import rateLimit from "express-rate-limit";
 const router = express.Router();
+
+// Ratelimit for manage requests. 20 requests per minute.
+const manageRateLimit = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 20,
+  message: "Too many manage requests in the past minute. Try again later.",
+});
 
 export = (bot: HibikiClient) => {
   const checkAuth = (req: Request, res: Response, next: NextFunction) => {
@@ -34,13 +42,13 @@ export = (bot: HibikiClient) => {
   });
 
   // List of servers
-  router.get("/servers/", checkAuth, async (req, res) => {
+  router.get("/servers/", manageRateLimit, checkAuth, async (req, res) => {
     const user = getAuthedUser(req.user as Profile);
     res.render("servers", { bot: bot, page: req.url.split("/")[1], user: user });
   });
 
   // Profile manager
-  router.get("/profile/", checkAuth, async (req, res) => {
+  router.get("/profile/", manageRateLimit, checkAuth, async (req, res) => {
     const user = getAuthedUser(req.user as Profile);
     const userconfig = await bot.db.getUserConfig(user.id);
     const localeString = bot.localeSystem.getLocaleFunction(userconfig?.locale ? userconfig?.locale : bot.config.defaultLocale);
@@ -60,7 +68,7 @@ export = (bot: HibikiClient) => {
   });
 
   // Server manager
-  router.get("/:id", checkAuth, async (req, res) => {
+  router.get("/:id", manageRateLimit, checkAuth, async (req, res) => {
     if (!req.isAuthenticated()) {
       res.status(401).render("401");
     }
