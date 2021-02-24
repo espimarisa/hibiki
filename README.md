@@ -56,9 +56,11 @@ Hibiki is licensed under the [GNU AGPL-v3][license] or later. This means that:
 
 ## Contributing
 
-- View the [contributing][contributing] file for details and guidelines on how to contribute to the source code.
-- If you're looking to help us translate Hibiki into other languages, you can do so via [Crowdin][translating].
-- If you believe you've found a security concern or vulnerability, view our [security guidelines][security] file.
+We have guides on how to contribute to the project.
+
+- [Source][contributing]
+- [Security][security]
+- [Translating][translation]
 
 ## Donating
 
@@ -77,8 +79,8 @@ All donations will go directly towards hosting, domain renewals, and API keys.
 [privacy]: .github/PRIVACY_POLICY.md "Our Privacy Policy."
 [security]: .github/SECURITY.md "Security guidelines file."
 [stable]: https://github.com/smolespi/hibiki/releases/latest "Latest stable GitHub release."
-[support]: https://discord.gg/gZEj4sM "A Discord invite to the bot's support server."
-[translating]: https://translate.hibiki.app "Hibiki translations on Crowdin."
+[support]: https://discord.gg/gZEj4sM "A Discord invite to the official support server."
+[translating]: .github/CONTRIBUTING.md#Translation%20Guide "Hibiki translations on Crowdin."
 [translation]: https://translate.hibiki.app/project/hibiki "Total progress of translations."
 [typescript]: https://www.typescriptlang.org/ "TypeScript's official website."
 [workflow]: https://github.com/smolespi/hibiki/actions?query=workflow%3Apush "Main GitHub workflow action."
