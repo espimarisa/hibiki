@@ -51,7 +51,7 @@
     "SLOTS_NOTENOUGH": "Tu n'as pas assez de cookies pour parier. Tu as actuellement **{amount}** {amount:#cookies#!cookie!}.",
     "SLOTS_PLAY": "Spécifiez le montant que tu veux miser. \n{worth}",
     "SLOTS_WON": "Tu as gagné **{amount}** {amount:#cookies#!cookie!}.",
-    "SLOTS_WORTH": "{emotes} vaut **{modifier}** {modificateur:#cookies#!cookie!}.",
+    "SLOTS_WORTH": "{emotes} vaut **{modifier}** {modifier:#cookies#!cookie!}.",
     "URBAN_EXAMPLE": "Exemple",
     "URBAN_NOTFOUND": "Pas de définition trouvée.",
     "URBAN_WRITTENON": "Écrit le",
@@ -59,7 +59,7 @@
   },
   "general": {
     "ABOUT": "À propos",
-    "ABOUT_DESCRIPTION": "{username}, par [Espi](https://espi.me), [resolved](https://github.com/resolvedxd), et les [contributeurs](https://github.com/smolespi/hibiki). 💜",
+    "ABOUT_DESCRIPTION": "{username}, par [Espi](https://espi.me), [resolved](https://github.com/resolvedxd), et les [contributors](https://github.com/smolespi/hibiki). 💜",
     "ABOUT_HOST": "Hébergeur",
     "ABOUT_HOST_STRING": "Bot using {botMemoryUsage} of memory \nSystem using {hostMemoryUsage} of memory \nSystem up for {uptime} \nRunning on {platform}",
     "ABOUT_LINK_STRING": "[GitHub]({github}) • [Invite]({invite}) • [Privacy]({privacy}) • [Support]({support}) • [Translate]({translate}) • [Website]({website})",
