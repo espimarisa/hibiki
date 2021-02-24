@@ -20,6 +20,12 @@ import passport from "passport";
 const app = express();
 app.enable("trust proxy");
 
+// Enables robots.txt
+app.get("/robots.txt", function (req, res) {
+  res.type("text/plain");
+  res.send("User-agent: *\nCrawl-delay: 5\nDisallow: /public/\nDisallow: /auth/");
+});
+
 // Disables cache-control on specified routes
 const noCache = (_req: Request, res: Response, next: NextFunction) => {
   res.header("Cache-Control", "no-cache");
@@ -43,6 +49,7 @@ app.use(
 // Starts the dashboard
 export async function startDashboard(bot: HibikiClient) {
   if (!bot.config.dashboard.port || !bot.config.dashboard.redirectURI || !bot.config.dashboard.botSecret) return;
+  if (!bot.config.dashboard.cookieSecret) return;
 
   // Creates a session RethinkDB store
   const sessionStore = new RethinkDBStore({
@@ -71,7 +78,7 @@ export async function startDashboard(bot: HibikiClient) {
   // Enables expressSession
   app.use(
     expressSession({
-      secret: bot.config.dashboard.cookieSecret || "thisIsNotVerySecureAndYouShouldChangeIt",
+      secret: bot.config.dashboard.cookieSecret,
       store: sessionStore,
       name: bot.user.username,
       cookie: {
