@@ -58,7 +58,7 @@ Hibiki is licensed under the [GNU AGPL-v3][license] or later. This means that:
 
 We have guides on how to contribute to the project.
 
-- [Source][contributing]
+- [Source][source]
 - [Security][security]
 - [Translating][translating]
 
@@ -68,7 +68,7 @@ Hibiki (and all of its features) will always be completely free. However, if you
 
 All donations will go directly towards hosting, domain renewals, and API keys.
 
-[contributing]: .github/CONTRIBUTING.md "Contributing guidelines file."
+[source]: https://github.com/smolespi/hibiki/blob/main/.github/CONTRIBUTING.md#source-contributions "Source contribution guidelines file."
 [donate]: https://ko-fi.com/smolespi "Donate thru Ko-fi to help cover Hibiki's expenses."
 [eris]: https://abal.moe/eris "Eris's documentation website."
 [hibiki]: https://hibiki.app "Hibiki's official website and dashboard."
@@ -76,11 +76,11 @@ All donations will go directly towards hosting, domain renewals, and API keys.
 [latest]: https://github.com/smolespi/hibiki/tree/next "The latest bot version (on the next branch)."
 [license]: LICENSE "Hibiki is licensed under the GNU AGPLv3 or later."
 [nodejs]: https://nodejs.org "Node.js's official website."
-[privacy]: .github/PRIVACY_POLICY.md "Our Privacy Policy."
-[security]: .github/SECURITY.md "Security guidelines file."
+[privacy]: https://github.com/smolespi/hibiki/blob/main/.github/PRIVACY_POLICY.md#hibiki-privacy-policy "Our Privacy Policy."
+[security]: https://github.com/smolespi/hibiki/blob/main/.github/SECURITY.md#security-policy "Security guidelines file."
 [stable]: https://github.com/smolespi/hibiki/releases/latest "Latest stable GitHub release."
 [support]: https://discord.gg/gZEj4sM "A Discord invite to the official support server."
-[translating]: .github/CONTRIBUTING.md#Translation%20Guide "Hibiki translations on Crowdin."
+[translating]: https://github.com/smolespi/hibiki/blob/main/.github/CONTRIBUTING.md#translation-guide "Translation guide."
 [translation]: https://translate.hibiki.app/project/hibiki "Total progress of translations."
 [typescript]: https://www.typescriptlang.org/ "TypeScript's official website."
 [workflow]: https://github.com/smolespi/hibiki/actions?query=workflow%3Apush "Main GitHub workflow action."

@@ -2,7 +2,7 @@ name: Crowdin
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   synchronize-with-crowdin:
@@ -12,12 +12,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: crowdin action
+      - name: Crowdin Synchronization
         uses: crowdin/github-action@1.0.13
         with:
           upload_translations: true
           download_translations: true
+          commit_message: "i18n: new translations"
+          pull_request_title: "[i18n] New translations"
+          pull_request_labels: "translations"
+          pull_request_body: "New Crowdin pull request with translations"
+          project_id: 433190
+          token: CROWDIN_API_TOKEN
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_API_TOKEN: ${{ secrets.CROWDIN_API_TOKEN }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
