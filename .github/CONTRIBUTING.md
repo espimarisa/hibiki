@@ -2,7 +2,7 @@
 
 Here's a pretty cohesive list of guidelines you should try and stick to (and instructions on how to do so).
 
-**TL;DR**
+# TL;DR
 
 - Respect our linter/compiler. You can use @ts-expect-error or // eslint-disable if you really need to.
 - Add a string following our naming convention in `src/locales/en` if you need to.
@@ -36,7 +36,7 @@ A. This depends on context. Literal translations can sometimes work, but other t
 Q. What do I do if I don't know how to translate a word?
 A. You don't have to translate everything at once. Changes are automatically saved, and any help counts.
 
-## Source Contributions
+# Source Contributions
 
 We probably won't outright reject a PR if it doesn't follow these guidelines, but please try and stick to them. It makes our job a lot easier.
 
