@@ -11,16 +11,24 @@ import { defaultEmojiRegex, emojiIDRegex, fullInviteRegex } from "../../helpers/
 import { validItems } from "../../utils/validItems";
 import dayjs from "dayjs";
 import express from "express";
+import rateLimit from "express-rate-limit";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+// Ratelimit for API requests. 20 requests per minute.
+const apiRateLimit = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 20,
+  message: "Too many API requests in the past minute. Try again later.",
+});
+
 const router = express.Router();
 
 export = (bot: HibikiClient) => {
-  router.get("/getItems/", async (req, res) => {
+  router.get("/getItems/", apiRateLimit, async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
 
     // Sends loaded cmds
@@ -58,7 +66,7 @@ export = (bot: HibikiClient) => {
   });
 
   // Gets a guildconfig
-  router.get("/getGuildConfig/:id", async (req, res) => {
+  router.get("/getGuildConfig/:id", apiRateLimit, async (req, res) => {
     const user = req.user as Profile;
 
     // Checks to see if the user has permission
@@ -74,7 +82,7 @@ export = (bot: HibikiClient) => {
   });
 
   // Updates a guildConfig
-  router.post("/updateGuildConfig/:id", async (req, res) => {
+  router.post("/updateGuildConfig/:id", apiRateLimit, async (req, res) => {
     // Checks to see if the user has permission
     const user = req.user as Profile;
 
@@ -216,7 +224,7 @@ export = (bot: HibikiClient) => {
   });
 
   // Resets a guild config
-  router.post("/resetGuildConfig/:id", async (req, res) => {
+  router.post("/resetGuildConfig/:id", apiRateLimit, async (req, res) => {
     // Checks to see if the user has permission
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     const user = req.user as Profile;
@@ -240,7 +248,7 @@ export = (bot: HibikiClient) => {
   });
 
   // Gets a profileConfig
-  router.get("/getUserConfig/:id", async (req, res) => {
+  router.get("/getUserConfig/:id", apiRateLimit, async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     const user = req.user as Profile;
 
@@ -251,7 +259,7 @@ export = (bot: HibikiClient) => {
   });
 
   // Updates a profileConfig
-  router.post("/updateUserConfig/:id", async (req, res) => {
+  router.post("/updateUserConfig/:id", apiRateLimit, async (req, res) => {
     // Checks to see if the user has permission
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     const user = req.user as Profile;
@@ -320,7 +328,7 @@ export = (bot: HibikiClient) => {
   });
 
   // Resets a user's config
-  router.post("/resetUserConfig/:id", async (req, res) => {
+  router.post("/resetUserConfig/:id", apiRateLimit, async (req, res) => {
     // Checks to see if the user has permission
     if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized" });
     const user = req.user as Profile;

@@ -8,7 +8,15 @@ import type { Profile } from "passport-discord";
 import type { HibikiClient } from "../../classes/Client";
 import { defaultAvatar } from "../../helpers/constants";
 import express from "express";
+import rateLimit from "express-rate-limit";
 const router = express.Router();
+
+// Ratelimit for index requests. Very loose, but it's here just in case some idiot tries to spam getAuthedUser.
+const indexAuthLimit = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 30,
+  message: "Too many requests in the past minute. Try again later.",
+});
 
 export = (bot: HibikiClient) => {
   // Gets authed user's info
@@ -20,7 +28,7 @@ export = (bot: HibikiClient) => {
     avatar: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128` : defaultAvatar,
   });
 
-  router.get("/", (req, res) => {
+  router.get("/", indexAuthLimit, (req, res) => {
     res.render("index", {
       bot: bot,
       page: req.url,
