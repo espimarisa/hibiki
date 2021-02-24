@@ -60,7 +60,7 @@ We have guides on how to contribute to the project.
 
 - [Source][contributing]
 - [Security][security]
-- [Translating][translation]
+- [Translating][translating]
 
 ## Donating
 
