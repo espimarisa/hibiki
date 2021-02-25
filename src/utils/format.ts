@@ -17,25 +17,31 @@ export function tagUser(user: User, emojiFilter = false) {
   }
 }
 
-const logColors = {
-  reset: "\x1b[0m",
-  blue: "\x1b[34m",
-  cyan: "\x1b[36m",
-  green: "\x1b[32m",
-  red: "\x1b[31m",
-  white: "\x1b[37m",
-  yellow: "\x1b[33m",
-};
-
 // Formats a timestamp to a human-readable one
-export function dateFormat(timestamp: Date | number, colors = false) {
+export function dateFormat(timestamp: Date | number, string: LocaleString) {
   const date = new Date(timestamp);
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  // Localizes month names
+  const monthNames = [
+    string("global.MONTH_JANUARY"),
+    string("global.MONTH_FEBRUARY"),
+    string("global.MONTH_MARCH"),
+    string("global.MONTH_APRIL"),
+    string("global.MONTH_MAY"),
+    string("global.MONTH_JUNE"),
+    string("global.MONTH_JULY"),
+    string("global.MONTH_AUGUST"),
+    string("global.MONTH_SEPTEMBER"),
+    string("global.MONTH_OCTOBER"),
+    string("global.MONTH_NOVEMBER"),
+    string("global.MONTH_DECEMBER"),
+  ];
+
   const month = monthNames[date.getMonth()];
   const day = date.getDate();
   const year = date.getFullYear();
   const time = `${(date.getHours() < 10 ? "0" : "") + date.getHours()}:${(date.getMinutes() < 10 ? "0" : "") + date.getMinutes()}`;
-  return `${colors ? `${logColors.cyan}[` : ""}${month} ${day} ${year} ${time}${colors ? `]${logColors.reset}` : ""}`;
+  return `${month} ${day} ${year} ${time}`;
 }
 
 // Formats seconds to a HH:MM:SS timestamp

@@ -70,7 +70,7 @@ export class nhentaiCommand extends Command {
     if (book.upload_date) {
       fields.push({
         name: msg.string("global.UPLOADED"),
-        value: dateFormat(book.upload_date * 1000),
+        value: dateFormat(book.upload_date * 1000, msg.string),
         inline: false,
       });
     }

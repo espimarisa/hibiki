@@ -340,16 +340,16 @@ export async function askForLocale(
 
   // Asks for input
   omsg.editEmbed(
-    string("global.ASKFOR_LOCALE"),
+    `🌍 ${string("global.ASKFOR_LOCALE")}`,
     Object.entries(localeEmojis)
-      .map((p) => `${p[0]}: ${p[1]}`)
+      .map((p) => `${p[0]} ${p[1]}`)
       .join("\n"),
   );
 
   // Waits for message reactions for locale
   return waitFor(
     "messageReactionAdd",
-    10000,
+    60000,
     async (m: Message<TextChannel>, emoji: Emoji, user: Member) => {
       if (m.id !== omsg.id) return;
       if (user.id !== msg.author.id) return;

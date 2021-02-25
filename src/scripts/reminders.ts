@@ -37,7 +37,7 @@ export class ReminderHandler {
                   description: `${reminder.message}`,
                   color: convertHex("general"),
                   footer: {
-                    text: `${string("utility.REMINDER_SETON", { date: dateFormat(reminder.set) })}`,
+                    text: `${string("utility.REMINDER_SETON", { date: dateFormat(reminder.set, string) })}`,
                     icon_url: bot.user.dynamicAvatarURL(),
                   },
                 },

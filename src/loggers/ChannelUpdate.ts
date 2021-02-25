@@ -44,7 +44,7 @@ export class ChannelUpdate extends Logger {
           },
           {
             name: string("global.CREATED"),
-            value: `${dateFormat(channel.createdAt)}`,
+            value: `${dateFormat(channel.createdAt, string)}`,
             inline: true,
           },
         ],
@@ -95,7 +95,7 @@ export class ChannelUpdate extends Logger {
           },
           {
             name: string("global.CREATED"),
-            value: `${dateFormat(channel.createdAt) || string("global.UNKNOWN")}`,
+            value: `${dateFormat(channel.createdAt, string) || string("global.UNKNOWN")}`,
             inline: true,
           },
         ],

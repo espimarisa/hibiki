@@ -29,7 +29,7 @@ export class ChannelinfoCommand extends Command {
     // Creation info
     fields.push({
       name: msg.string("global.CREATED"),
-      value: `${dateFormat(channel.createdAt)}`,
+      value: `${dateFormat(channel.createdAt, msg.string)}`,
     });
 
     // Info for text channels
