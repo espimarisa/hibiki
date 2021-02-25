@@ -65,7 +65,7 @@
     "ABOUT_LINK_STRING": "[GitHub]({github}) • [Invite]({invite}) • [Privacy]({privacy}) • [Support]({support}) • [Translate]({translate}) • [Website]({website})",
     "ABOUT_MODULES": "Modules",
     "ABOUT_MODULES_STRING": "Hibiki v{botVersion} \nEris v{erisVersion} \nNode.js {nodeVersion} \nTypeScript v{tsVersion}",
-    "ABOUT_STATISTICS": "Statistics",
+    "ABOUT_STATISTICS": "Statistiques",
     "ABOUT_STATISTICS_STRING": "{users} total users \n{guilds} total guilds \n{commands} total commands \nBot up for {uptime}",
     "ASSIGN": "Assign",
     "ASSIGN_ASSIGNED": "Successfully self-assigned the {roles} {amount:#roles#!role!} to you.",
