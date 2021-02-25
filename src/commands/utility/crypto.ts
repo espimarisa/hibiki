@@ -101,7 +101,7 @@ export class CryptoCommand extends Command {
       {
         embed: {
           title: `💰 ${currency.name}`,
-          description: msg.string("utility.CRYPTO_UPDATEDAT", { time: dateFormat(data.last_updated_at * 1000) }),
+          description: msg.string("utility.CRYPTO_UPDATEDAT", { time: dateFormat(data.last_updated_at * 1000, msg.string) }),
           color: msg.convertHex("general"),
           fields: [
             {

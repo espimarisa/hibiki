@@ -98,7 +98,7 @@ export class aurCommand extends Command {
     if (pkg.FirstSubmitted)
       fields.push({
         name: msg.string("utility.CREATED_AT"),
-        value: dateFormat(pkg.FirstSubmitted * 1000),
+        value: dateFormat(pkg.FirstSubmitted * 1000, msg.string),
         inline: true,
       });
 
@@ -106,7 +106,7 @@ export class aurCommand extends Command {
     if (pkg.LastModified)
       fields.push({
         name: msg.string("utility.UPDATED_AT"),
-        value: dateFormat(pkg.LastModified * 1000),
+        value: dateFormat(pkg.LastModified * 1000, msg.string),
         inline: true,
       });
 

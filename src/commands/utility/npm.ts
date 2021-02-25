@@ -78,7 +78,7 @@ export class npmCommand extends Command {
     if (body.data.time?.created)
       fields.push({
         name: msg.string("global.CREATED_AT"),
-        value: `${dateFormat(body.data.time.created)}`,
+        value: `${dateFormat(body.data.time.created, msg.string)}`,
         inline: true,
       });
 
@@ -86,7 +86,7 @@ export class npmCommand extends Command {
     if (body.data.time?.modified)
       fields.push({
         name: msg.string("global.UPDATED_AT"),
-        value: `${dateFormat(body.data.time.modified)}`,
+        value: `${dateFormat(body.data.time.modified, msg.string)}`,
         inline: true,
       });
 

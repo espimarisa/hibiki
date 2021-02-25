@@ -34,7 +34,7 @@ export class OsuCommand extends Command {
     if (data.join_date) {
       fields.push({
         name: msg.string("global.CREATED_AT"),
-        value: dateFormat(data.join_date),
+        value: dateFormat(data.join_date, msg.string),
         inline: false,
       });
     }

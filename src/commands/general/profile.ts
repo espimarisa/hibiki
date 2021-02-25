@@ -164,7 +164,7 @@ export class ProfileCommand extends Command {
           // Waits for message reactions for pronouns
           await waitFor(
             "messageReactionAdd",
-            10000,
+            15000,
             async (_m: Message<TextChannel>, _emoji: Emoji, _user: Member) => {
               if (_m.id !== omsg.id) return;
               if (_user.id !== msg.author.id) return;

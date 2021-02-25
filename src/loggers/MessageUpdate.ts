@@ -83,7 +83,7 @@ export class MessageUpdate extends Logger {
             },
             {
               name: string("global.SENT_ON"),
-              value: dateFormat(msg.timestamp),
+              value: dateFormat(msg.timestamp, string),
               inline: false,
             },
           ],
@@ -135,7 +135,7 @@ export class MessageUpdate extends Logger {
             },
             {
               name: string("global.SENT_ON"),
-              value: dateFormat(msg.timestamp),
+              value: dateFormat(msg.timestamp, string),
               inline: false,
             },
           ],
