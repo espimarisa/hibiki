@@ -1,6 +1,9 @@
 name: Crowdin
 
 on:
+  schedule:
+    - cron: "0 * * * *"
+
   push:
     branches: [main]
 
@@ -15,12 +18,14 @@ jobs:
       - name: Crowdin Synchronization
         uses: crowdin/github-action@1.0.13
         with:
+          upload_sources: true
           upload_translations: true
           download_translations: true
-          commit_message: "i18n: new %language% translations"
+          commit_message: "i18n: add new translations"
           pull_request_title: "[i18n] New translations"
           pull_request_labels: "translations"
           pull_request_body: "New Crowdin pull request with translations"
+          localization_branch_name: "i18n"
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
