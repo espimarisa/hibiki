@@ -15,13 +15,15 @@ Here's a pretty cohesive list of guidelines you should try and stick to (and ins
 1. Navigate to https://translate.hibiki.app.
 2. On the homepage, select the language you'd like to work on.
    1. If you don't see your language listed, message a developer or make an issue and it'll be added quickly.
-3. In the file listing, open the Hibiki folder and go thru src/locales until you see `en.json`.
+3. In the file listing and select `en.json`.
 4. Select en.json and sign up/sign in to Crowdin. If you don't have an account, GitHub integration is fast.
 5. Start navigating through any strings that are red or incomplete. The content on the top is the source, and the content on the bottom is what you should write.
-   1. Do not translate anything that is highlighted by Crowdin. These are our variables.
-   2. Do not translate markdown URLs (items enclosed in () between []). You can translate markdown text, though.
-   3. When translating, copy and paste any emojis that are included in the string. We try and keep these at a minimum, but please preserve them.
-   4. Our plural system handles things in a very simple way. The first content is the variable. Don't touch this.
+   1. For the name, choose how your language is said in said language. `Example: Deutsch (German)`
+   2. For the "EMOJI", either use the unicode flag for the country code, or leave it as-is.
+   3. Do not translate anything that is highlighted by Crowdin. These are our variables.
+   4. Do not translate markdown URLs (items enclosed in () between []). You can translate markdown text, though.
+   5. When translating, copy and paste any emojis that are included in the string. We try and keep these at a minimum, but please preserve them.
+   6. Our plural system handles things in a very simple way. The first content is the variable. Don't touch this.
       1. The second content is the word that will show when there's anything but one of something. Additionally, we may use this to display different strings. You can translate these normally. Ex: channel types.
       2. The third content is the word that will show when there's only one of something.
       3. Example: `{variable:#pluralForm#!singularForm!}`
