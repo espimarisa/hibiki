@@ -56,7 +56,7 @@ export class UserinfoCommand extends Command {
       const currentTime = new Date();
       if (userconfig.timezone) timezone = dayjs(currentTime).tz(userconfig.timezone);
       if (!timezone || !(timezone as any).d) timezone = null;
-      else timezone = dateFormat((timezone as any).$d);
+      else timezone = dateFormat((timezone as any).$d, msg.string);
     }
 
     // Custom statuses/game
@@ -141,8 +141,8 @@ export class UserinfoCommand extends Command {
     fields.push({
       name: msg.string("general.USER_ACCOUNT"),
       value:
-        `${msg.string("general.USER_CREATED")} ${dateFormat(member.createdAt)}` +
-        (!user ? `\n${msg.string("general.USER_JOINED")} ${dateFormat(member.joinedAt)}` : ""),
+        `${msg.string("general.USER_CREATED")} ${dateFormat(member.createdAt, msg.string)}` +
+        (!user ? `\n${msg.string("general.USER_JOINED")} ${dateFormat(member.joinedAt, msg.string)}` : ""),
     });
 
     // Playing

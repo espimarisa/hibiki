@@ -37,7 +37,7 @@ export class GitHubCommand extends Command {
       if (body.data.created_at) {
         dates.push({
           name: msg.string("utility.CREATED_AT"),
-          value: `${dateFormat(body.data.created_at)}`,
+          value: `${dateFormat(body.data.created_at, msg.string)}`,
         });
       }
 
@@ -45,7 +45,7 @@ export class GitHubCommand extends Command {
       if (body.data.updated_at) {
         dates.push({
           name: msg.string("utility.UPDATED_AT"),
-          value: `${dateFormat(body.data.updated_at)}`,
+          value: `${dateFormat(body.data.updated_at, msg.string)}`,
         });
       }
 
@@ -53,7 +53,7 @@ export class GitHubCommand extends Command {
       if (body.data.pushed_at) {
         dates.push({
           name: msg.string("utility.GITHUB_LASTPUSH"),
-          value: `${dateFormat(body.data.pushed_at)}`,
+          value: `${dateFormat(body.data.pushed_at, msg.string)}`,
         });
       }
 
@@ -190,8 +190,8 @@ export class GitHubCommand extends Command {
         fields.push({
           name: msg.string("general.USER_ACCOUNT"),
           value:
-            `${msg.string("global.CREATED_AT")} ${dateFormat(body.data.created_at)}` +
-            (body.data.updated_at ? `\n${msg.string("utility.UPDATED_AT")} ${dateFormat(body.data.updated_at)}` : ""),
+            `${msg.string("global.CREATED_AT")} ${dateFormat(body.data.created_at, msg.string)}` +
+            (body.data.updated_at ? `\n${msg.string("utility.UPDATED_AT")} ${dateFormat(body.data.updated_at, msg.string)}` : ""),
         });
       }
 

@@ -94,7 +94,7 @@ export class MessagePinboard extends Logger {
             },
             {
               name: string("global.SENT_ON"),
-              value: dateFormat(msg.timestamp),
+              value: dateFormat(msg.timestamp, string),
               inline: false,
             },
           ],

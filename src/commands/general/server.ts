@@ -72,7 +72,7 @@ export class ServerCommand extends Command {
     // Creation date
     fields.push({
       name: msg.string("global.CREATED"),
-      value: `${dateFormat(guild.createdAt)}`,
+      value: `${dateFormat(guild.createdAt, msg.string)}`,
     });
 
     // Guild owner

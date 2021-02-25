@@ -121,7 +121,7 @@ export class RemindCommand extends Command {
           },
           {
             name: msg.string("global.DATE"),
-            value: dateFormat(reminder.date),
+            value: dateFormat(reminder.date, msg.string),
           },
         ],
         footer: {

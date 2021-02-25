@@ -171,12 +171,12 @@ export class MemberUpdate extends Logger {
           },
           {
             name: string("global.CREATED"),
-            value: dateFormat(member.user.createdAt),
+            value: dateFormat(member.user.createdAt, string),
             inline: true,
           },
           {
             name: string("global.JOINED_ON"),
-            value: dateFormat(member.joinedAt),
+            value: dateFormat(member.joinedAt, string),
             inline: true,
           },
           {
@@ -290,11 +290,11 @@ export class MemberUpdate extends Logger {
             },
             {
               name: string("global.CREATED_AT"),
-              value: dateFormat(member.user.createdAt),
+              value: dateFormat(member.user.createdAt, string),
             },
             {
               name: string("global.JOINED_ON"),
-              value: dateFormat(member.joinedAt),
+              value: dateFormat(member.joinedAt, string),
             },
             {
               name: string("global.ACCOUNT_AGE"),

@@ -43,7 +43,7 @@ export class GuildRoleUpdate extends Logger {
           },
           {
             name: string("global.CREATED"),
-            value: `${dateFormat(role.createdAt) || string("global.UNKNOWN")}`,
+            value: `${dateFormat(role.createdAt, string) || string("global.UNKNOWN")}`,
             inline: true,
           },
           {
@@ -103,7 +103,7 @@ export class GuildRoleUpdate extends Logger {
           },
           {
             name: string("global.CREATED"),
-            value: `${dateFormat(role.createdAt) || string("global.UNKNOWN")}`,
+            value: `${dateFormat(role.createdAt, string) || string("global.UNKNOWN")}`,
             inline: true,
           },
           {

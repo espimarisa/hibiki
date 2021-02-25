@@ -53,7 +53,7 @@ export class UrbanCommand extends Command {
     if (word.written_on) {
       fields.push({
         name: msg.string("fun.URBAN_WRITTENON"),
-        value: dateFormat(word.written_on),
+        value: dateFormat(word.written_on, msg.string),
         inline: false,
       });
     }

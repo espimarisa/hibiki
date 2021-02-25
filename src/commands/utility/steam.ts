@@ -114,7 +114,7 @@ export class SteamCommand extends Command {
     if (profile.timecreated) {
       fields.push({
         name: msg.string("global.CREATED_AT"),
-        value: dateFormat(profile.timecreated * 1000),
+        value: dateFormat(profile.timecreated * 1000, msg.string),
         inline: true,
       });
     }

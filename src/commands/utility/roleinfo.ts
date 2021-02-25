@@ -40,7 +40,7 @@ export class RoleinfoCommand extends Command {
 
     fields.push({
       name: msg.string("global.CREATED"),
-      value: `${dateFormat(role.createdAt)}`,
+      value: `${dateFormat(role.createdAt, msg.string)}`,
     });
 
     if (settings.length)

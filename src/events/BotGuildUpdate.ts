@@ -90,7 +90,7 @@ export class BotGuildUpdateEvent extends Event {
             },
             {
               name: string("global.CREATED_AT"),
-              value: dateFormat(guild.createdAt),
+              value: dateFormat(guild.createdAt, string),
             },
             {
               name: string("global.OWNER"),
