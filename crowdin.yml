@@ -2,5 +2,11 @@ files:
   - source: /src/locales/en.json
     translation: /src/locales/%two_letters_code%.json
 
+append_commit_message: false
+commit_message: "i18n: new %language% translations"
+pull_request_title: "[i18n] New translations"
+pull_request_labels: "translations"
+pull_request_body: "New Crowdin pull request with translations"
+author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
 project_id_env: "CROWDIN_PROJECT_ID"
 api_token_env: "CROWDIN_PERSONAL_TOKEN"
