@@ -17,11 +17,11 @@ jobs:
         with:
           upload_translations: true
           download_translations: true
-          # commit_message: "i18n: new translations"
-          # pull_request_title: "[i18n] New translations"
-          # pull_request_labels: "translations"
-          # pull_request_body: "New Crowdin pull request with translations"
-          # author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          commit_message: "i18n: new translations"
+          pull_request_title: "[i18n] New translations"
+          pull_request_labels: "translations"
+          pull_request_body: "New Crowdin pull request with translations"
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
