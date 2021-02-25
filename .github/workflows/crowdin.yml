@@ -15,9 +15,9 @@ jobs:
       - name: Crowdin Synchronization
         uses: crowdin/github-action@1.0.13
         with:
-          upload_translations: false
+          upload_translations: true
           download_translations: true
-          commit_message: "i18n: new translations"
+          commit_message: "i18n: new %language% translations"
           pull_request_title: "[i18n] New translations"
           pull_request_labels: "translations"
           pull_request_body: "New Crowdin pull request with translations"
