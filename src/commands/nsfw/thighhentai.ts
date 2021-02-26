@@ -6,6 +6,7 @@ import axios from "axios";
 
 export class ThighhentaiCommand extends Command {
   description = "Sends an ecchi/hentai thigh picture.";
+  aliases = ["thighs"];
   cooldown = 4000;
   allowdms = true;
   nsfw = true;
