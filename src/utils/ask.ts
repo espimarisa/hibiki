@@ -342,7 +342,7 @@ export async function askForLocale(
   omsg.editEmbed(
     `🌍 ${string("global.ASKFOR_LOCALE")}`,
     Object.entries(localeEmojis)
-      .map((p) => `${p[0]} ${p[1]}`)
+      .map((locale) => `${locale[0]} ${locale[1]}`)
       .join("\n"),
   );
 
