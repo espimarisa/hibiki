@@ -1,4 +1,4 @@
-import type { Emoji, Member, Message, TextChannel } from "eris";
+import type { EmbedOptions, Emoji, Member, Message, TextChannel } from "eris";
 import type { LocaleSystem } from "../../classes/Locale";
 import { Command } from "../../classes/Command";
 import { askForLocale, askForValue, askYesNo } from "../../utils/ask";
@@ -11,13 +11,13 @@ const items = validItems.filter((item) => item.category === "profile");
 
 export class ProfileCommand extends Command {
   description = "Updates or views your profile's configuration.";
-  aliases = ["usercfg", "userconfig"];
+  aliases = ["locale", "usercfg", "userconfig"];
   cooldown = 5000;
   allowdisable = false;
 
   async run(msg: Message<TextChannel>) {
-    const localeEmojis = {};
-    const localeNames = {};
+    const localeEmojis: Record<string, string> = {};
+    const localeNames: Record<string, string> = {};
     Object.keys(this.bot.localeSystem.locales).forEach((locale) => {
       localeEmojis[this.bot.localeSystem.getLocale(locale, "EMOJI")] = this.bot.localeSystem.getLocale(locale, "NAME");
       localeNames[this.bot.localeSystem.getLocale(locale, "EMOJI")] = locale;
@@ -50,28 +50,31 @@ export class ProfileCommand extends Command {
     const emojiArray = Object.keys(pronounEmojis);
     let reacting = false;
 
-    function localizeLocale(item: ValidItem, localeSystem?: LocaleSystem) {
+    // Localizes items or returns the configured options
+    function localizeItem(item: ValidItem, localeSystem?: LocaleSystem) {
       if (item.type === "pronouns" && typeof userconfig[item.id] != "undefined") return pronouns[userconfig[item.id]];
-      else if (item.type === "locale" && userconfig[item.id] && localeSystem?.getLocale)
+      else if (item.type === "locale" && userconfig[item.id] && localeSystem?.getLocale) {
         return localeSystem.getLocale(userconfig[item.id], "NAME");
-      else if (item.id === "gayLevel" && userconfig[item.id]) return `${userconfig[item.id]}%`;
+      } else if (item.id === "gayLevel" && userconfig[item.id]) return `${userconfig[item.id]}%`;
       else if (userconfig[item.id]) return userconfig[item.id];
     }
 
+    // Edits the embed
     function editEmbed(localeSystem?: LocaleSystem) {
       const primaryEmbed = {
         embed: {
           title: `👤 ${msg.string("general.PROFILE")}`,
+          description: msg.string("general.PROFILE_DESCRIPTION"),
           color: msg.convertHex("general"),
           fields: items.concat([{ emoji: deleteEmoji, label: msg.string("global.DELETE"), type: "delete", id: "delete" }]).map((item) => ({
             name: `${item.emoji} ${localizeProfileItems(msg.string, item.id, true)}`,
-            value: localizeLocale(item, localeSystem) || localizeProfileItems(msg.string, item.id),
+            value: localizeItem(item, localeSystem) || localizeProfileItems(msg.string, item.id),
           })),
           footer: {
             text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
             icon_url: msg.author.dynamicAvatarURL(),
           },
-        },
+        } as EmbedOptions,
       };
 
       return primaryEmbed;

@@ -4,7 +4,11 @@
  * @module utils/logger
  */
 
-import { createLogger, format, transports } from "winston";
+import path from "path";
+import * as winston from "winston";
+import "winston-daily-rotate-file";
+const level = process.env.NODE_ENV === "development" ? "verbose" : "info";
+const LOGS_DIRECTORY = path.join(__dirname, "../../logs");
 
 // Color overrides
 const logColors = {
@@ -18,25 +22,56 @@ const logColors = {
 };
 
 // Formats dates
-function dateLogFormat(timestamp: Date) {
+function dateLogFormat(timestamp: Date, colors = true) {
   const date = new Date(timestamp);
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const month = monthNames[date.getMonth()];
   const day = date.getDate();
   const year = date.getFullYear();
   const time = `${(date.getHours() < 10 ? "0" : "") + date.getHours()}:${(date.getMinutes() < 10 ? "0" : "") + date.getMinutes()}`;
-  return `${`${logColors.cyan}[`}${month} ${day} ${year} ${time}${`]${logColors.reset}`}`;
+  if (colors) return `${`${logColors.cyan}[`}${month} ${day} ${year} ${time}${`]${logColors.reset}`}`;
+  else return `${`[${month} ${day} ${year} ${time}]`}`;
 }
 
-// Log formatting options
-const logFormat = format.combine(
-  format.colorize(),
-  format.timestamp(),
-  format.printf((info) => `${dateLogFormat(info.timestamp)} (${info.level}): ${info.message}`),
+// Logs to the console
+const consoleLogFormat = winston.format.combine(
+  winston.format.colorize(),
+  winston.format.timestamp(),
+  winston.format.printf((info) => `${dateLogFormat(info.timestamp)} (${info.level}): ${info.message}`),
 );
 
-// Creates the logger
-export const logger = createLogger({
+// Logs to files
+const logFormat = winston.format.combine(
+  winston.format.timestamp(),
+  winston.format.printf((info) => `${dateLogFormat(info.timestamp, false)}: ${info.message}`),
+);
+
+// Rotates logs daily
+const dailyTransport = new winston.transports.DailyRotateFile({
+  filename: "hibiki-%DATE%.log",
+  dirname: LOGS_DIRECTORY,
+  level: level,
+  datePattern: "YYYY-MM-DD",
+  handleExceptions: true,
+  zippedArchive: true,
+  json: false,
   format: logFormat,
-  transports: [new transports.Console()],
+  maxSize: "20m",
+  maxFiles: "14d",
+  auditFile: `${LOGS_DIRECTORY}/hibiki-${level}-audit.json`,
+});
+
+// Console logger
+const consoleLogger = new winston.transports.Console({
+  format: consoleLogFormat,
+});
+
+// Creates the logger
+export const logger = winston.createLogger({
+  transports: [dailyTransport, consoleLogger],
+});
+
+// Logs when logs were rotated
+dailyTransport.on("rotate", () => {
+  logger.info("Daily logs have been rotated.");
 });

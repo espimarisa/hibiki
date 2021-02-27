@@ -29,6 +29,8 @@ rethinkdb_data/
 # Logs & lockfiles
 .npm
 logs/*
+*-audit.json
+*.log
 npm
 npm-debug.log
 npm-error.log

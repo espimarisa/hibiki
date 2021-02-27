@@ -6,7 +6,7 @@ export class bioCommand extends Command {
   description = "Sets your bio or views you or another member's bio.";
   args = "[bio:string] | [member:member]";
 
-  async run(msg: Message<TextChannel>, pargs: ParsedArgs[], args: string[]) {
+  async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Shows other member's bios
     if (args.join(" ").length) {
       const member = this.bot.args.argtypes.member(args.join(" "), msg, ["strict"]) as Member;
