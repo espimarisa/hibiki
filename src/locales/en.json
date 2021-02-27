@@ -909,7 +909,7 @@
     "INVITER": "Inviter",
     "IPINFO_ABUSEDATA": "{reports} {reports:#reports#!report!}, {confidence}% confidence score",
     "IPINFO_ABUSEINFO": "Abuse Info",
-    "IPINFO_DESCRIPTION": "Information may be slightly innacurate.",
+    "IPINFO_DESCRIPTION": "Information may be slightly inaccurate.",
     "IPINFO_GEOLOCATION": "Geolocation",
     "IPINFO_HOSTNAME": "Hostname",
     "IPINFO_INVALID": "Invalid IP address.",
