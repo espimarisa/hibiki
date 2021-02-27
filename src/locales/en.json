@@ -827,7 +827,7 @@
     "LOAD_LOADED": "Loaded {command}.",
     "LOGS": "Logs",
     "LOGS_CLEARED": "Logs successfully cleared.",
-    "LOGS_COMMAND": "**{command} has been ran **{times}** in the last 24 hours.",
+    "LOGS_COMMAND": "**{command}** has been ran **{times}** in the last 24 hours.",
     "LOGS_NOLOGS": "No logs are currently present.",
     "LOGS_NOTFOUND": "Command not found.",
     "RELOAD_NODEMON": "It appears that you're running the bot in nodemon. Please use that to reload, as tsc won't have an affect.",
