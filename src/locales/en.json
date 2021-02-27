@@ -583,7 +583,7 @@
     "INVITE_USED": "Invite Used",
     "INVITE_USES": "Invite Uses",
     "INVITE_USESLEFT": "Invite Uses Left",
-    "JOIN_MESSAGE": "Welcome to **{guild}, **{member}**.",
+    "JOIN_MESSAGE": "Welcome to **{guild}**, **{member}**.",
     "JOINED_AFTER_MUTED": "Rejoined after being muted",
     "LEAVE_MESSAGE": "We'll miss you, **{member}**.",
     "MEMBER_COUNT": "{guild} now has {members} members.",
