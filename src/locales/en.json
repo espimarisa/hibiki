@@ -254,6 +254,7 @@
     "PREFIX_SET": "The prefix was set to `{prefix}`.",
     "PREFIX_TOOLONG": "The max prefix length is 15 characters.",
     "PROFILE": "Profile",
+    "PROFILE_DESCRIPTION": "React with the option that you'd like to change.",
     "PROFILE_BIO_DESCRIPTION": "Sets a short bio to be displayed on your profile.",
     "PROFILE_CANCELLED_DELETING": "Cancelled deleting your profile data.",
     "PROFILE_DELETE_CONFIRMATION": "Are you sure you'd like to delete your profile data?",

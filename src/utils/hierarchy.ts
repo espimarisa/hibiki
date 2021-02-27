@@ -11,8 +11,8 @@ export function roleHierarchy(author: Member, target: Member) {
   if (author.guild !== target.guild) return;
   if (author.guild.ownerID === author.id) return true;
   if (author.guild.ownerID === target.id) return false;
-  if (!author.roles.length) return false;
-  if (!target.roles.length) return true;
+  if (!author.roles?.length) return false;
+  if (!target.roles?.length) return true;
   let authorRoles = author.roles.map((r) => author.guild.roles.get(r));
   let targetRoles = target.roles.map((r) => target.guild.roles.get(r));
   authorRoles = authorRoles.sort((a, b) => b.position - a.position);

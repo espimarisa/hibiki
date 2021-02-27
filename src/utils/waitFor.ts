@@ -8,7 +8,6 @@ import type { Message } from "eris";
 import type { HibikiClient } from "../classes/Client";
 import type { LocaleString } from "../typings/locales";
 import { convertHex } from "../helpers/embed";
-import { tagUser } from "../utils/format";
 
 // Waits for an event to happen and rejects or resolves it
 export function waitFor(event: string, timeout: number, check: any, bot: HibikiClient) {
@@ -51,10 +50,6 @@ export function timeoutHandler(err: string, msg: Message, string: LocaleString, 
           title: string("global.ERROR"),
           description: string("global.TIMEOUT_REACHED"),
           color: convertHex("error"),
-          footer: {
-            text: string("global.RAN_BY", { author: tagUser(msg.author) }),
-            icon_url: msg.author.dynamicAvatarURL(),
-          },
         },
       })
       .catch(() => {});
