@@ -252,7 +252,7 @@
     "PREFIX_SET": "Prefixul a fost setat la `{prefix}`.",
     "PREFIX_TOOLONG": "Valoarea maximă a prefixului este de 15 caractere.",
     "PROFILE": "Profil",
-    "PROFILE_DESCRIPTION": "React with the option that you'd like to change.",
+    "PROFILE_DESCRIPTION": "Reacţionaţi cu opţiunea pe care doriţi să o schimbaţi.",
     "PROFILE_BIO_DESCRIPTION": "Setează o scurtă biografie pentru a fi afișată în profilul tău.",
     "PROFILE_CANCELLED_DELETING": "S-a anulat ștergerea datelor profilului tău.",
     "PROFILE_DELETE_CONFIRMATION": "Sunteţi sigur că doriţi să ştergeţi datele de profil?",
