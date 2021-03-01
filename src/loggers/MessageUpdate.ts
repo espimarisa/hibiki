@@ -99,6 +99,7 @@ export class MessageUpdate extends Logger {
      */
 
     if (event === "messageUpdate") {
+      if (!msg || !oldmsg) return;
       if (messageContent === oldMessageContent) return;
       const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
       if (!guildconfig?.logBotMessages && msg.author.bot) return;
