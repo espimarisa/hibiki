@@ -42,8 +42,10 @@
       "directMessageReactions",
       "directMessages",
       "guildBans",
+      "guildMembers",
       "guildMessageReactions",
       "guildMessages",
+      "guildPresences",
       "guildVoiceStates",
       "guilds"
     ]
