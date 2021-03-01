@@ -26,7 +26,7 @@ export class SimpleembedCommand extends Command {
         color: msg.convertHex("general"),
         author: {
           icon_url: msg.author.dynamicAvatarURL(),
-          name: `${msg.string("moderation.SIMPLEEMBED", { member: msg.tagUser(msg.author) })}`,
+          name: `${msg.string("global.MEMBER_SAID", { member: msg.tagUser(msg.author) })}`,
         },
         image: {
           url: `${imgurl || ""}`,

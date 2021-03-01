@@ -25,7 +25,7 @@ export class LogsCommand extends Command {
       );
 
       // Filters through the logs
-      if (!cmd) return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.LOGS_NOTFOUND"), "error");
+      if (!cmd) return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.COMMAND_NOTFOUND"), "error");
       let cmdlogs = [];
       cmdlogs = this.bot.logs.filter((l) => l.cmdName === cmd.name);
 

@@ -135,7 +135,7 @@ export class ServerCommand extends Command {
 
     // Notification level
     fields.push({
-      name: msg.string("general.SERVER_NOTIFICATIONS"),
+      name: msg.string("general.SERVER_NOTIFICATION_LEVEL"),
       value: `${notificationLevelFormat(msg.string, guild.defaultNotifications)}`,
       inline: true,
     });

@@ -12,3 +12,16 @@ updates:
       prefix: "deps: "
     labels:
       - "dependabot"
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: friday
+      time: "18:00"
+    open-pull-requests-limit: 10
+    versioning-strategy: increase
+    commit-message:
+      prefix: "ci: "
+    labels:
+      - "dependabot"

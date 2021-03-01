@@ -11,7 +11,7 @@ export class UnloadCommand extends Command {
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     const query = args.join(" ").toLowerCase();
     const command = this.bot.commands.find((c) => c.name === query || c.aliases.includes(query));
-    if (!command) return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.LOGS_NOTFOUND"), "error");
+    if (!command) return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.COMMAND_NOTFOUND"), "error");
 
     // Deletes the cache and unloads the command
     delete require.cache[require.resolve(`../${command.category}/${command.name}`)];
