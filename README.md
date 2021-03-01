@@ -79,13 +79,6 @@ Special thanks to these people for fully translating Hibiki into other languages
 - [solelysol][sol] (Russian)
 - Hikari (Japanese)
 
-<!-- Translator links -->
-
-[cth103]: https://github.com/cthpw103 "cth103's GitHub profile"
-[resolved]: https://github.com/resolvedxd "resolved's GitHub profile"
-[sol]: https://github.com/solelysol "Sol's GitHub profile"
-[nocturno]: https://github.com/nocturnodev "nocturno's GitHub profile"
-[nephacks]: https://github.com/nepneppynep "nephacks' GitHub profile"
 [source]: https://github.com/smolespi/hibiki/blob/main/.github/CONTRIBUTING.md#source-contributions "Source contribution guidelines file."
 [donate]: https://ko-fi.com/smolespi "Donate thru Ko-fi to help cover Hibiki's expenses."
 [eris]: https://abal.moe/eris "Eris's documentation website."
@@ -113,3 +106,11 @@ Special thanks to these people for fully translating Hibiki into other languages
 [badge-support]: https://img.shields.io/discord/620287077778587651?color=purple&label=support "Shields.io badge for the Discord support server information."
 [badge-website]: https://img.shields.io/website?down_color=critical&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fhibiki.app "Shields.io badge to indicate whether hibiki.app is online or not."
 [hibiki-logo]: https://user-images.githubusercontent.com/49253425/106350318-abb63080-62a2-11eb-821a-3752a77d0692.png "Hibiki's Logo."
+
+<!-- Translator links -->
+
+[cth103]: https://github.com/cthpw103 "cth103's GitHub profile"
+[resolved]: https://github.com/resolvedxd "resolved's GitHub profile"
+[sol]: https://github.com/solelysol "Sol's GitHub profile"
+[nocturno]: https://github.com/nocturnodev "nocturno's GitHub profile"
+[nephacks]: https://github.com/nepneppynep "nephacks' GitHub profile"
