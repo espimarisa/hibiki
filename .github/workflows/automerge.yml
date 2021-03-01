@@ -19,7 +19,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Automerge"
-        uses: pascalgn/automerge-action@v0.11.0
+        uses: pascalgn/automerge-action@v0.13.1
         if: steps.waitforstatuschecks.outputs.status == 'success'
         env:
           MERGE_LABELS: "update"
