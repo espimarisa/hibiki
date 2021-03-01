@@ -68,6 +68,24 @@ Hibiki (and all of its features) will always be completely free. However, if you
 
 All donations will go directly towards hosting, domain renewals, and API keys.
 
+## Translators
+
+Special thanks to these people for fully translating Hibiki into other languages!
+
+- [resolved][resolved] (Bulgarian)
+- [cthpw103][cth103] (French)
+- [nephacks][nephacks] (German)
+- [nocturno][nocturno] (Romanian)
+- [solelysol][sol] (Russian)
+- Hikari (Japanese)
+
+<!-- Translator links -->
+
+[cth103]: https://github.com/cthpw103 "cth103's GitHub profile"
+[resolved]: https://github.com/resolvedxd "resolved's GitHub profile"
+[sol]: https://github.com/solelysol "Sol's GitHub profile"
+[nocturno]: https://github.com/nocturnodev "nocturno's GitHub profile"
+[nephacks]: https://github.com/nepneppynep "nephacks' GitHub profile"
 [source]: https://github.com/smolespi/hibiki/blob/main/.github/CONTRIBUTING.md#source-contributions "Source contribution guidelines file."
 [donate]: https://ko-fi.com/smolespi "Donate thru Ko-fi to help cover Hibiki's expenses."
 [eris]: https://abal.moe/eris "Eris's documentation website."

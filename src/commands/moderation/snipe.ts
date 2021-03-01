@@ -30,7 +30,7 @@ export class SnipeCommand extends Command {
         color: msg.convertHex("general"),
         timestamp: new Date(snipeMessage.timestamp || Date.now()),
         author: {
-          name: snipeMessage.author ? ` ${msg.string("moderation.SNIPE_MEMBERSAID", { member: snipeMessage.author })}` : "",
+          name: snipeMessage.author ? ` ${msg.string("global.MEMBER_SAID", { member: snipeMessage.author })}` : "",
           icon_url: snipeMessage.authorpfp || "",
         },
         image: {

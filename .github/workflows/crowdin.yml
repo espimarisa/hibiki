@@ -1,8 +1,8 @@
 name: Crowdin
 
 on:
-  # schedule:
-  #  - cron: "0 * * * *"
+  schedule:
+   - cron: "0 18 * * 5"
 
   push:
     branches: [main]
