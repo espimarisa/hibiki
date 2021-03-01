@@ -7,4 +7,6 @@ append_commit_message: false
 author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
 project_id_env: "CROWDIN_PROJECT_ID"
 api_token_env: "CROWDIN_PERSONAL_TOKEN"
-export_only_approved: true
+skip_untranslated_strings: true
+skip_untranslated_files: true
+export_only_approved : true

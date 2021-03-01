@@ -1,8 +1,8 @@
 {
   "private": "true",
   "name": "hibikiapp",
-  "version": "3.3.0-rc.1",
-  "description": "An easy, customizable, and powerful Discord bot that does anything that your server needs.",
+  "version": "3.3.0-rc.2",
+  "description": "The best all-in-one Discord bot! Automod, fun, music, utilities, and more. Customizable, easy-to-use, and fully translatable.",
   "author": "Espi <espi@riseup.net> (https://espi.me)",
   "contributors": [
     "resolved <resolvedxd@gmail.com> (https://github.com/resolvedxd)"
@@ -38,13 +38,13 @@
   },
   "dependencies": {
     "@sentry/node": "^6.2.0",
+    "@smolespi/erela.js-spotify": "^1.2.2",
     "canvas": "^2.6.1",
     "cookie-parser": "^1.4.5",
     "csurf": "^1.11.0",
     "dayjs": "^1.10.4",
     "ejs": "^3.1.6",
     "erela.js": "^2.3.2",
-    "erela.js-spotify": "^1.2.0",
     "eris": "github:abalabahaha/eris#dev",
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.6",

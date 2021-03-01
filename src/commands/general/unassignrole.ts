@@ -13,7 +13,7 @@ export class UnassignroleCommand extends Command {
 
     // If no roles are set to be assigned
     if (!guildconfig?.assignableRoles?.length) {
-      return msg.createEmbed(`📄 ${msg.string("general.ASSIGNABLE_ROLES")}`, msg.string("general.ASSIGN_NOTHINGSET"));
+      return msg.createEmbed(`📄 ${msg.string("general.CONFIG_ASSIGNABLEROLES")}`, msg.string("general.ASSIGN_NOTHINGSET"));
     }
 
     // Cleans up roles that no longer exist
@@ -28,7 +28,7 @@ export class UnassignroleCommand extends Command {
     // List of assignable roles if no args given
     if (!args.length) {
       return msg.createEmbed(
-        `📄 ${msg.string("general.ASSIGNABLE_ROLES")}`,
+        `📄 ${msg.string("general.CONFIG_ASSIGNABLEROLES")}`,
         `${guildconfig.assignableRoles.map((role) => `\`${msg.channel.guild.roles.get(role)?.name || role}\``).join(",")}`,
       );
     }
