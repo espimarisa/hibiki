@@ -1,12 +1,10 @@
-[![Hibiki][hibiki-logo]][hibiki]
+# Hibiki
 
 [![Build][badge-workflow]][workflow]
 [![Crowdin][badge-crowdin]][translation]
 [![License][badge-license]][license]
 [![Stable][badge-stable]][stable]
-[![Latest][badge-latest]][latest]
 [![Support][badge-support]][support]
-[![Website][badge-website]][hibiki]
 
 [Hibiki][hibiki] is an easy, customizable, and powerful all-in-one Discord bot that does anything that your server needs.
 
@@ -72,19 +70,18 @@ All donations will go directly towards hosting, domain renewals, and API keys.
 
 Special thanks to these people for fully translating Hibiki into other languages!
 
-- [resolved][resolved] (Bulgarian)
-- [cthpw103][cth103] (French)
+- [cth103][cth103] (French)
 - [nephacks][nephacks] (German)
 - [nocturno][nocturno] (Romanian)
+- [resolved][resolved] (Bulgarian)
 - [solelysol][sol] (Russian)
-- Hikari (Japanese)
+- [hikari_hoshino][hikari] (Japanese)
 
 [source]: https://github.com/smolespi/hibiki/blob/main/.github/CONTRIBUTING.md#source-contributions "Source contribution guidelines file."
 [donate]: https://ko-fi.com/smolespi "Donate thru Ko-fi to help cover Hibiki's expenses."
 [eris]: https://abal.moe/eris "Eris's documentation website."
 [hibiki]: https://hibiki.app "Hibiki's official website and dashboard."
 [invite]: https://discordapp.com/oauth2/authorize?&client_id=493904957523623936&scope=bot&permissions=506850534 "A Discord invite for the official Hibiki instance."
-[latest]: https://github.com/smolespi/hibiki/tree/next "The latest bot version (on the next branch)."
 [license]: LICENSE "Hibiki is licensed under the GNU AGPLv3 or later."
 [nodejs]: https://nodejs.org "Node.js's official website."
 [privacy]: https://github.com/smolespi/hibiki/blob/main/.github/PRIVACY_POLICY.md#hibiki-privacy-policy "Our Privacy Policy."
@@ -101,16 +98,15 @@ Special thanks to these people for fully translating Hibiki into other languages
 [badge-workflow]: https://img.shields.io/github/workflow/status/smolespi/hibiki/Push "Shields.io badge for workflow status."
 [badge-crowdin]: https://badges.crowdin.net/hibiki/localized.svg "Crowdin badge for total localization progress."
 [badge-license]: https://img.shields.io/badge/license-AGPL%20v3-orange.svg "Shields.io badge for the GNU AGPLv3."
-[badge-stable]: https://img.shields.io/github/v/release/smolespi/hibiki?label=stable "Shields.io badge for the latest stable Hibiki release."
-[badge-latest]: https://img.shields.io/github/package-json/v/smolespi/hibiki/next?color=red&label=latest "Shields.io badge for the latest Hibiki release."
+[badge-stable]: https://img.shields.io/github/v/release/smolespi/hibiki?label=version "Shields.io badge for the latest stable Hibiki release."
+[badge-latest]: https://img.shields.io/github/package-json/v/smolespi/hibiki/main?color=red&label=latest "Shields.io badge for the latest Hibiki release."
 [badge-support]: https://img.shields.io/discord/620287077778587651?color=purple&label=support "Shields.io badge for the Discord support server information."
-[badge-website]: https://img.shields.io/website?down_color=critical&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Fhibiki.app "Shields.io badge to indicate whether hibiki.app is online or not."
-[hibiki-logo]: https://user-images.githubusercontent.com/49253425/106350318-abb63080-62a2-11eb-821a-3752a77d0692.png "Hibiki's Logo."
 
 <!-- Translator links -->
 
 [cth103]: https://github.com/cthpw103 "cth103's GitHub profile"
-[resolved]: https://github.com/resolvedxd "resolved's GitHub profile"
 [sol]: https://github.com/solelysol "Sol's GitHub profile"
 [nocturno]: https://github.com/nocturnodev "nocturno's GitHub profile"
 [nephacks]: https://github.com/nepneppynep "nephacks' GitHub profile"
+[resolved]: https://github.com/resolvedxd "resolved's GitHub profile"
+[hikari]: https://crowdin.com/profile/hikari_hoshino "hikari's Crowdin profile"
