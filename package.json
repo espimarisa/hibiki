@@ -1,7 +1,7 @@
 {
   "private": "true",
   "name": "hibikiapp",
-  "version": "3.3.0-rc.4",
+  "version": "3.3.0-rc.5",
   "description": "The best all-in-one Discord bot! Automod, fun, music, utilities, and more. Customizable, easy-to-use, and fully translatable.",
   "author": "Espi <espi@riseup.net> (https://espi.me)",
   "contributors": [
@@ -11,11 +11,11 @@
   "homepage": "https://hibiki.app",
   "main": "dist/src/index.js",
   "bugs": {
-    "url": "https://github.com/smolespi/hibiki/issues"
+    "url": "https://github.com/sysdotini/hibiki/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/smolespi/hibiki.git"
+    "url": "git+https://github.com/sysdotini/hibiki.git"
   },
   "engines": {
     "npm": ">=6.9.0",
@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@sentry/node": "^6.2.1",
-    "@smolespi/erela.js-spotify": "^1.2.2",
+    "@sysdotini/erela.js-spotify": "^1.2.3",
     "canvas": "^2.7.0",
     "cookie-parser": "^1.4.5",
     "csurf": "^1.11.0",
@@ -53,7 +53,7 @@
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "rethinkdb-ts": "^2.4.9",
-    "session-rethinkdb-ts": "^1.0.5",
+    "session-rethinkdb-ts": "^1.0.6",
     "terser": "^5.6.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.0"
