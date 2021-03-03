@@ -1,7 +1,7 @@
 {
   "private": "true",
   "name": "hibikiapp",
-  "version": "3.3.0-rc.5",
+  "version": "3.3.0",
   "description": "The best all-in-one Discord bot! Automod, fun, music, utilities, and more. Customizable, easy-to-use, and fully translatable.",
   "author": "Espi <espi@riseup.net> (https://espi.me)",
   "contributors": [
@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@sentry/node": "^6.2.1",
-    "@sysdotini/erela.js-spotify": "^1.2.3",
+    "@sysdotini/erela.js-spotify": "^1.2.4",
     "canvas": "^2.7.0",
     "cookie-parser": "^1.4.5",
     "csurf": "^1.11.0",
