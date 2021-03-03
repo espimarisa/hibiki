@@ -77,29 +77,29 @@ Special thanks to these people for fully translating Hibiki into other languages
 - [solelysol][sol] (Russian)
 - [hikari_hoshino][hikari] (Japanese)
 
-[source]: https://github.com/smolespi/hibiki/blob/main/.github/CONTRIBUTING.md#source-contributions "Source contribution guidelines file."
-[donate]: https://ko-fi.com/smolespi "Donate thru Ko-fi to help cover Hibiki's expenses."
+[source]: https://github.com/sysdotini/hibiki/blob/main/.github/CONTRIBUTING.md#source-contributions "Source contribution guidelines file."
+[donate]: https://ko-fi.com/sysdotini "Donate thru Ko-fi to help cover Hibiki's expenses."
 [eris]: https://abal.moe/eris "Eris's documentation website."
 [hibiki]: https://hibiki.app "Hibiki's official website and dashboard."
 [invite]: https://discordapp.com/oauth2/authorize?&client_id=493904957523623936&scope=bot&permissions=506850534 "A Discord invite for the official Hibiki instance."
 [license]: LICENSE "Hibiki is licensed under the GNU AGPLv3 or later."
 [nodejs]: https://nodejs.org "Node.js's official website."
-[privacy]: https://github.com/smolespi/hibiki/blob/main/.github/PRIVACY_POLICY.md#hibiki-privacy-policy "Our Privacy Policy."
-[security]: https://github.com/smolespi/hibiki/blob/main/.github/SECURITY.md#security-policy "Security guidelines file."
-[stable]: https://github.com/smolespi/hibiki/releases/latest "Latest stable GitHub release."
+[privacy]: https://github.com/sysdotini/hibiki/blob/main/.github/PRIVACY_POLICY.md#hibiki-privacy-policy "Our Privacy Policy."
+[security]: https://github.com/sysdotini/hibiki/blob/main/.github/SECURITY.md#security-policy "Security guidelines file."
+[stable]: https://github.com/sysdotini/hibiki/releases/latest "Latest stable GitHub release."
 [support]: https://discord.gg/gZEj4sM "A Discord invite to the official support server."
-[translating]: https://github.com/smolespi/hibiki/blob/main/.github/CONTRIBUTING.md#translation-guide "Translation guide."
+[translating]: https://github.com/sysdotini/hibiki/blob/main/.github/CONTRIBUTING.md#translation-guide "Translation guide."
 [translation]: https://translate.hibiki.app/project/hibiki "Total progress of translations."
 [typescript]: https://www.typescriptlang.org/ "TypeScript's official website."
-[workflow]: https://github.com/smolespi/hibiki/actions?query=workflow%3Apush "Main GitHub workflow action."
+[workflow]: https://github.com/sysdotini/hibiki/actions?query=workflow%3Apush "Main GitHub workflow action."
 
 <!-- Badge URLs -->
 
-[badge-workflow]: https://img.shields.io/github/workflow/status/smolespi/hibiki/Push "Shields.io badge for workflow status."
+[badge-workflow]: https://img.shields.io/github/workflow/status/sysdotini/hibiki/Push "Shields.io badge for workflow status."
 [badge-crowdin]: https://badges.crowdin.net/hibiki/localized.svg "Crowdin badge for total localization progress."
 [badge-license]: https://img.shields.io/badge/license-AGPL%20v3-orange.svg "Shields.io badge for the GNU AGPLv3."
-[badge-stable]: https://img.shields.io/github/v/release/smolespi/hibiki?label=version "Shields.io badge for the latest stable Hibiki release."
-[badge-latest]: https://img.shields.io/github/package-json/v/smolespi/hibiki/main?color=red&label=latest "Shields.io badge for the latest Hibiki release."
+[badge-stable]: https://img.shields.io/github/v/release/sysdotini/hibiki?label=version "Shields.io badge for the latest stable Hibiki release."
+[badge-latest]: https://img.shields.io/github/package-json/v/sysdotini/hibiki/main?color=red&label=latest "Shields.io badge for the latest Hibiki release."
 [badge-support]: https://img.shields.io/discord/620287077778587651?color=purple&label=support "Shields.io badge for the Discord support server information."
 
 <!-- Translator links -->
