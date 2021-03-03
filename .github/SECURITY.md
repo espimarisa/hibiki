@@ -25,7 +25,7 @@ If you believe you have discovered a vulnerability or exploit and have followed 
 
 If you are unable to make contact through any of these methods whatsoever, you can go ahead and make an issue and we'll immediately look into it. However, it's best to do this as a last resort to prevent any possible damage from misuse.
 
-[1]: https://github.com/smolespi/hibiki/releases/latest "Releases"
+[1]: https://github.com/sysdotini/hibiki/releases/latest "Releases"
 [2]: https://discord.gg/gZEj4sM "Discord"
-[3]: https://t.me/smolespi "Telegram"
+[3]: https://t.me/sysdotini "Telegram"
 [4]: mailto:espi@riseup.net "Email"

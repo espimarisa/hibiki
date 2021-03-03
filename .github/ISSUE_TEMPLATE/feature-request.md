@@ -3,7 +3,7 @@ name: Feature Request
 about: Suggest a feature
 title: "[REQ]"
 labels: enhancement
-assignees: "smolespi"
+assignees: "sysdotini"
 ---
 
 **Is your request related to a problem? Please describe.**

@@ -89,7 +89,7 @@ export class AboutCommand extends Command {
       invite: `https://discord.com/oauth2/authorize?&client_id=${this.bot.user.id}&scope=bot&permissions=506850534`,
       privacy: "https://hibiki.app/privacy/",
       support: "https://discord.gg/gZEj4sM",
-      github: "https://github.com/smolespi/hibiki",
+      github: "https://github.com/sysdotini/hibiki",
       translate: "https://translate.hibiki.app",
       website: `${this.bot.config.homepage}`,
     });

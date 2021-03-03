@@ -48,7 +48,7 @@ export = (bot: HibikiClient) => {
 
   // Donate redirection
   router.get("/donate/", (req, res) => {
-    res.redirect(301, `https://ko-fi.com/smolespi`);
+    res.redirect(301, `https://ko-fi.com/sysdotini`);
   });
 
   // Invite redirection
@@ -63,12 +63,12 @@ export = (bot: HibikiClient) => {
 
   // GitHub redirection
   router.get("/github/", (req, res) => {
-    res.redirect(301, "https://github.com/smolespi/hibiki");
+    res.redirect(301, "https://github.com/sysdotini/hibiki");
   });
 
   // Privacy redirection
   router.get("/privacy/", (req, res) => {
-    res.redirect(301, "https://github.com/smolespi/hibiki/blob/main/.github/PRIVACY_POLICY.md");
+    res.redirect(301, "https://github.com/sysdotini/hibiki/blob/main/.github/PRIVACY_POLICY.md");
   });
 
   // Voting redirection
