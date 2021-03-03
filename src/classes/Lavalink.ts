@@ -4,7 +4,7 @@ import type { HibikiClient } from "./Client";
 import { Manager } from "erela.js";
 import { convertHex } from "../helpers/embed";
 import { tagUser, toHHMMSS } from "../utils/format";
-import Spotify from "@smolespi/erela.js-spotify";
+import Spotify from "@sysdotini/erela.js-spotify";
 import config from "../../config.json";
 let plugins: Spotify[];
 
