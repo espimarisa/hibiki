@@ -61,7 +61,7 @@
 
   "general": {
     "ABOUT": "About",
-    "ABOUT_DESCRIPTION": "{username}, by [Espi](https://espi.me), [resolved](https://github.com/resolvedxd), and [contributors](https://github.com/smolespi/hibiki). 💜",
+    "ABOUT_DESCRIPTION": "{username}, by [Espi](https://espi.me), [resolved](https://github.com/resolvedxd), and [contributors](https://github.com/sysdotini/hibiki). 💜",
     "ABOUT_HOST": "Host",
     "ABOUT_HOST_STRING": "Bot using {botMemoryUsage} of memory \nSystem using {hostMemoryUsage} of memory \nSystem up for {uptime} \nRunning on {platform}",
     "ABOUT_LINK_STRING": "[GitHub]({github}) • [Invite]({invite}) • [Privacy]({privacy}) • [Support]({support}) • [Translate]({translate}) • [Website]({website})",
@@ -84,7 +84,7 @@
     "BIO_SHOW": "Your bio is currently `{bio}`.",
     "BIO_TOOLONG": "The maximum bio length is 200 characters or less.",
     "CHANGELOG": "Changelog",
-    "CHANGELOG_DESCRIPTION": "The latest changelog can be viewed [here](https://github.com/smolespi/hibiki/releases/latest).",
+    "CHANGELOG_DESCRIPTION": "The latest changelog can be viewed [here](https://github.com/sysdotini/hibiki/releases/latest).",
     "CONFIG": "Config",
     "CONFIG_AGREEBLOCKCOMMANDS": "Allow Commands in Agree",
     "CONFIG_AGREEBLOCKCOMMANDS_DESCRIPTION": "Whether or not members can run other commands in the agree channel. Default: false",
@@ -210,7 +210,7 @@
     "DISABLE_COMMAND_DISABLED": "The **{command}** command has been disabled.",
     "DISABLE_COMMAND_NOTFOUND": "That command doesn't exist.",
     "DONATE": "Donate",
-    "DONATE_DESCRIPTION": "Hibiki will always be completely free. However, if you really like and appreciate our work, you can donate through [Ko-fi](https://ko-fi.com/smolespi). All donations will go directly towards hosting, domain renewals, and API keys. Do note that **no bot incentives** will be given for doing such.",
+    "DONATE_DESCRIPTION": "Hibiki will always be completely free. However, if you really like and appreciate our work, you can donate through [Ko-fi](https://ko-fi.com/sysdotini). All donations will go directly towards hosting, domain renewals, and API keys. Do note that **no bot incentives** will be given for doing such.",
     "ENABLE": "Enable",
     "ENABLE_ALREADYENABLED": "That's already enabled.",
     "ENABLE_CATEGORY_ALREADYENABLED": "That category is already enabled.",
