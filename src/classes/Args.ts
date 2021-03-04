@@ -25,7 +25,7 @@ export class Args {
       channel: (a, msg, flag) => {
         const channel = msg.channel.guild.channels.find((c) => c.id === a || a.startsWith(`<#${c.id}>`) || c.name.startsWith(a));
         if (channel?.type === 4 || (channel?.type === 2 && flag?.includes("allowVoice"))) return;
-        if (!channel && flag.includes("fallback")) return msg.channel;
+        if (!channel && flag?.includes("fallback")) return msg.channel;
         return channel;
       },
 

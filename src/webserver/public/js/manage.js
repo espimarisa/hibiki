@@ -155,6 +155,7 @@ window.addEventListener("load", async () => {
 
       // Channel & roles
       case "channelID":
+      case "voiceChannel":
       case "roleID": {
         const opt = Array.from(element.children[0].children).find((a) => a.id === guildConfig[p]);
         if (!opt) return;
@@ -257,6 +258,7 @@ window.addEventListener("load", async () => {
         }
 
         case "channelID":
+        case "voiceChannel":
         case "roleID": {
           const r = Array.from(element.children[0].children).find((a) => a.innerText === element.children[0].value).id;
           if (!r || r.toLowerCase() === "none") return;
