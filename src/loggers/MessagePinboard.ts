@@ -48,7 +48,9 @@ export class MessagePinboard extends Logger {
       const fullPinChannel = msg.channel.guild.channels.get(pinChannel) as TextChannel;
       const messages = await fullPinChannel.getMessages(50).catch(() => {});
       if (!messages) return;
-      const pinnedMessage = messages.find((m: Message) => m.embeds?.[0]?.footer?.text?.startsWith(pin) && m.author.id === this.bot.user.id);
+      const pinnedMessage = messages.find(
+        (m: Message) => m.embeds?.[0]?.footer?.text?.endsWith(msg.id) && m.author.id === this.bot.user.id,
+      );
 
       // Sends the pinboard message
       if (pinReactions?.count) {
@@ -61,7 +63,7 @@ export class MessagePinboard extends Logger {
         }
 
         // Edits the footer with the correct pin count
-        if (guildconfig.pinAmount ? guildconfig.pinAmount : 3 <= pinReactions.count) {
+        if ((guildconfig.pinAmount ? guildconfig.pinAmount : 3) <= pinReactions.count) {
           if (pinnedMessage) {
             const embed = pinnedMessage.embeds?.[0];
             embed.footer.text = `${pin}${pinReactions.count} | ${msg.id}`;
@@ -145,7 +147,9 @@ export class MessagePinboard extends Logger {
       const messages = await fullPinChannel.getMessages(50).catch(() => {});
       if (!messages) return;
       const pinReactions = msg.reactions?.[pin] as MessageReactions;
-      const pinnedMessage = messages.find((m: Message) => m.embeds?.[0]?.footer?.text?.startsWith(pin) && m.author.id === this.bot.user.id);
+      const pinnedMessage = messages.find(
+        (m: Message) => m.embeds?.[0]?.footer?.text?.endsWith(msg.id) && m.author.id === this.bot.user.id,
+      );
       if (!pinnedMessage) return;
 
       // Returns if the guild has disabled self pinning
