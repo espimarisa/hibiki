@@ -1,4 +1,5 @@
 import type { EmbedField, Message, TextChannel } from "eris";
+import type { ResponseData } from "../../typings/utils";
 import { Command } from "../../classes/Command";
 import { askYesNo } from "../../utils/ask";
 import { getRESTUser } from "../../utils/getRESTUser";
@@ -28,13 +29,13 @@ export class ForcebanCommand extends Command {
       }),
     );
 
-    const { response } = await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
+    const response = (await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
       timeoutHandler(err, banmsg, msg.string),
-    );
+    )) as ResponseData;
 
     // If banning is cancelled
-    if (typeof response != "boolean") return;
-    if (response === false) {
+    if (typeof response?.response != "boolean") return;
+    if (response?.response === false) {
       return banmsg.editEmbed(`🔨 ${msg.string("moderation.BAN")}`, msg.string("moderation.FORCEBAN_CANCELLED"), "error");
     }
 

@@ -1,4 +1,5 @@
 import type { Member, Message, TextChannel } from "eris";
+import type { ResponseData } from "../../typings/utils";
 import { Command } from "../../classes/Command";
 import { askYesNo } from "../../utils/ask";
 import { timeoutHandler } from "../../utils/waitFor";
@@ -29,19 +30,20 @@ export class MarryCommand extends Command {
     );
 
     // Asks for yes/no
-    const { response } = await askYesNo(this.bot, msg.string, member.id, msg.channel.id).catch((err) =>
-      timeoutHandler(err, marrymsg, msg.string),
-    );
+    const response = (await askYesNo(this.bot, msg.string, member.id, msg.channel.id).catch((err) => {
+      return timeoutHandler(err, marrymsg, msg.string);
+    })) as ResponseData;
+
+    if (typeof response?.response !== "boolean") return;
 
     // If marriage is cancelled
-    if (typeof response != "boolean") return;
-    if (response === false) {
+    if (response?.response === false) {
       return marrymsg.editEmbed(`💝 ${msg.string("fun.MARRY")}`, msg.string("fun.MARRY_CANCELLED"));
     }
 
     // Marries the members
     await this.bot.db.insertUserMarriage(msg.author.id, member.id);
-    msg.createEmbed(
+    marrymsg.editEmbed(
       `💝 ${msg.string("fun.MARRY")}`,
       msg.string("fun.MARRY_MARRIED", {
         user: msg.author.username,
