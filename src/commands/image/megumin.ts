@@ -25,7 +25,7 @@ export class MeguminCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        description: `💥 ${msg.string("image.MEGUMIN")}`,
+        title: `💥 ${msg.string("image.MEGUMIN")}`,
         color: msg.convertHex("general"),
         image: {
           url: image,

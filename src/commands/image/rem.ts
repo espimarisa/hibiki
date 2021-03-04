@@ -24,7 +24,7 @@ export class RemCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        description: `🌸 ${msg.string("image.REM")}`,
+        title: `🌸 ${msg.string("image.REM")}`,
         color: msg.convertHex("general"),
         image: {
           url: image,
