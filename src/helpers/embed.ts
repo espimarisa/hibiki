@@ -19,8 +19,8 @@ export async function createEmbed(this: Message, title: string, desc?: string, c
     icon_url: "",
   };
 
-  if (title) embedTitle = title.length > 256 ? `${title.substring(0, 256)}...` : title;
-  if (desc) embedDescription = desc.length > 2048 ? `${desc.substring(0, 2048)}...` : desc;
+  if (title) embedTitle = title.length > 250 ? `${title.substring(0, 250)}...` : title;
+  if (desc) embedDescription = desc.length > 2000 ? `${desc.substring(0, 2000)}...` : desc;
 
   if (typeof this === "object" && this.author) {
     embedFooter.text = `${this.string("global.RAN_BY", { author: this.tagUser(this.author) })}`;
@@ -54,8 +54,8 @@ export async function editEmbed(this: Message, title: string, desc?: string, col
   let embedFooter;
   let embedFieldColor;
 
-  if (title) embedTitle = title.length > 256 ? `${title.substring(0, 256)}...` : title;
-  if (desc) embedDescription = desc.length > 2048 ? `${desc.substring(0, 2048)}...` : desc;
+  if (title) embedTitle = title.length > 250 ? `${title.substring(0, 250)}...` : title;
+  if (desc) embedDescription = desc.length > 2000 ? `${desc.substring(0, 2000)}...` : desc;
 
   if (colortype) {
     embedFieldColor = convertHex(colortype);

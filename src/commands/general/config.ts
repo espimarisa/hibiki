@@ -1,5 +1,6 @@
 import type { Emoji, Member, Message, TextChannel } from "eris";
 import type { HibikiClient } from "../../classes/Client";
+import type { ResponseData } from "../../typings/utils";
 import { Command } from "../../classes/Command";
 import { localizeItemTypes, localizeSetupItems } from "../../utils/format";
 import { askForLocale, askForValue, askYesNo } from "../../utils/ask";
@@ -146,13 +147,14 @@ export class SetupCommand extends Command {
           if (emoji.name === deleteEmoji) {
             omsg.editEmbed(`❓ ${msg.string("global.CONFIRMATION")}`, msg.string("general.CONFIG_DELETE_CONFIRMATION"));
             // Waits for response
-            const { response } = await askYesNo(bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
+            const response = (await askYesNo(bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
               timeoutHandler(err, msg, msg.string),
-            );
-            if (typeof response != "boolean") return;
+            )) as ResponseData;
+
+            if (typeof response?.response != "boolean") return;
 
             // If the user cancels deleting
-            if (response === false) {
+            if (response?.response === false) {
               return omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.CONFIG_CANCELLED_DELETE"), "error");
             }
 

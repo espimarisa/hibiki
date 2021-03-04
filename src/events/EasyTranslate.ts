@@ -39,6 +39,13 @@ export class EasyTranslate extends Event {
       this.bot.cooldowns.delete(`easytranslate:${msg.channel.id}`);
     }, 5000);
 
+    let localeString = "";
+    const userLocale = await this.bot.localeSystem.getUserLocale(msg.author.id, this.bot, true);
+    if (userLocale) localeString = userLocale;
+    else if (cfg?.locale && !userLocale) localeString = cfg.locale;
+    const string = this.bot.localeSystem.getLocaleFunction(localeString);
+    msg.string = string;
+
     this.bot.commands.find((c) => c.name === "translate").run(msg, null, [lang].concat(msg.content.split(" ")), true, member.user);
   }
 }
