@@ -8,6 +8,7 @@ import type { EmbedOptions, Emoji, Message, TextChannel } from "eris";
 import { Logger } from "../classes/Logger";
 import { urlRegex } from "../helpers/constants";
 import { dateFormat } from "../utils/format";
+const VARIATION_SELECTOR_REGEX = /[\uFE00-\uFE0F]/;
 const TYPE = "pinChannel";
 
 export class MessagePinboard extends Logger {
@@ -40,11 +41,12 @@ export class MessagePinboard extends Logger {
       const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
 
       // Gets the pin emoji
-      const pin = guildconfig.pinEmoji ? guildconfig.pinEmoji : "📌";
-      if (pin !== emoji?.name) return;
+      const pin = guildconfig.pinEmoji ? guildconfig.pinEmoji.replace(VARIATION_SELECTOR_REGEX, "") : "📌";
 
+      if (pin !== emoji?.name.replace(VARIATION_SELECTOR_REGEX, "")) return;
       // Gets channel and messages
-      const pinReactions = msg.reactions?.[pin] as MessageReactions;
+      const pinReactions = (msg.reactions?.[pin] ??
+        Object.entries(msg.reactions).find((m) => m[0].replace(VARIATION_SELECTOR_REGEX, "") === pin)[1]) as MessageReactions;
       const fullPinChannel = msg.channel.guild.channels.get(pinChannel) as TextChannel;
       const messages = await fullPinChannel.getMessages(50).catch(() => {});
       if (!messages) return;
@@ -137,8 +139,8 @@ export class MessagePinboard extends Logger {
       if (!pinChannel) return;
 
       // Gets the pin emoji
-      const pin = guildconfig.pinEmoji ? guildconfig.pinEmoji : "📌";
-      if (pin !== emoji?.name) return;
+      const pin = guildconfig.pinEmoji ? guildconfig.pinEmoji.replace(VARIATION_SELECTOR_REGEX, "") : "📌";
+      if (pin !== emoji?.name.replace(VARIATION_SELECTOR_REGEX, "")) return;
 
       // Gets the channel, messages, and reactions
       // read above
@@ -146,7 +148,8 @@ export class MessagePinboard extends Logger {
       const fullPinChannel = msg.channel.guild.channels.get(pinChannel) as TextChannel;
       const messages = await fullPinChannel.getMessages(50).catch(() => {});
       if (!messages) return;
-      const pinReactions = msg.reactions?.[pin] as MessageReactions;
+      const pinReactions =
+        msg.reactions?.[pin] ?? Object.entries(msg.reactions).find((m) => m[0].replace(VARIATION_SELECTOR_REGEX, "") === pin);
       const pinnedMessage = messages.find(
         (m: Message) => m.embeds?.[0]?.footer?.text?.endsWith(msg.id) && m.author.id === this.bot.user.id,
       );
@@ -156,12 +159,12 @@ export class MessagePinboard extends Logger {
       if (guildconfig.pinSelfPinning === false && msg.author.id === user) return;
 
       // Unpins the message if the count is at 0 or doesn't exist
-      if (!pinReactions || pinReactions?.count === 0) return pinnedMessage.delete().catch(() => {});
+      if (!pinReactions || pinReactions[1]?.count === 0) return pinnedMessage.delete().catch(() => {});
 
       // Edits the footer with the correct star count
-      if (guildconfig.pinAmount ? guildconfig.pinAmount : 3 <= pinReactions.count) {
+      if (guildconfig.pinAmount ? guildconfig.pinAmount : 3 <= pinReactions?.[1].count) {
         const embed = pinnedMessage.embeds?.[0];
-        embed.footer.text = `${pin}${pinReactions?.count} | ${msg.id}`;
+        embed.footer.text = `${pin}${pinReactions?.[1].count} | ${msg.id}`;
         pinnedMessage.edit({ embed: embed });
       } else {
         // Deletes the pinned message
