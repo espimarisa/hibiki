@@ -1,7 +1,9 @@
 import type { Member, Message, TextChannel } from "eris";
+import type { ResponseData } from "../../typings/utils";
 import { Command } from "../../classes/Command";
 import { askYesNo } from "../../utils/ask";
 import { roleHierarchy } from "../../utils/hierarchy";
+import { timeoutHandler } from "../../utils/waitFor";
 
 export class KickCommand extends Command {
   description = "Kicks a member from the server.";
@@ -39,14 +41,13 @@ export class KickCommand extends Command {
         }),
       );
 
-      const { response } = await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch(() => {
-        // Waits for response
-        return kickmsg.editEmbed(msg.string("global.ERROR"), msg.string("global.TIMEOUT_REACHED"), "error");
-      });
+      const response = (await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
+        timeoutHandler(err, kickmsg, msg.string),
+      )) as ResponseData;
 
       // If the kick was cancelled
-      if (typeof response != "boolean") return;
-      if (response === false)
+      if (typeof response?.response != "boolean") return;
+      if (response?.response === false)
         return kickmsg.editEmbed(
           msg.string("global.CANCELLED"),
           msg.string("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.string("moderation.KICKING") }),

@@ -1,4 +1,5 @@
 import type { Member, Message, TextChannel, User } from "eris";
+import type { ResponseData } from "../../typings/utils";
 import { Command } from "../../classes/Command";
 import { imageFileTypes, urlRegex } from "../../helpers/constants";
 import { askYesNo } from "../../utils/ask";
@@ -36,13 +37,15 @@ export class PurgeCommand extends Command {
       msg.string("moderation.PURGE_CONFIRMATION", { amount: amount }),
     );
 
-    const { response } = await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
+    const response = (await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
       timeoutHandler(err, purgmsg, msg.string),
-    );
+    )) as ResponseData;
 
     // If cancelled
-    if (typeof response != "boolean") return;
-    if (response === false) return purgmsg.editEmbed(`💣 ${msg.string("moderation.PURGE")}`, msg.string("moderation.PURGE_CANCELLED"));
+    if (typeof response?.response != "boolean") return;
+    if (response?.response === false) {
+      return purgmsg.editEmbed(`💣 ${msg.string("moderation.PURGE")}`, msg.string("moderation.PURGE_CANCELLED"));
+    }
 
     // Purges the messages
     try {

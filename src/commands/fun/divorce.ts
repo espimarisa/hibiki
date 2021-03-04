@@ -1,4 +1,5 @@
 import type { Message, TextChannel } from "eris";
+import type { ResponseData } from "../../typings/utils";
 import { Command } from "../../classes/Command";
 import { askYesNo } from "../../utils/ask";
 import { timeoutHandler } from "../../utils/waitFor";
@@ -14,13 +15,13 @@ export class DivorceCommand extends Command {
 
     // Asks for confirmation
     const divorcemsg = await msg.createEmbed(`💔 ${msg.string("fun.DIVORCE")}`, msg.string("fun.DIVORCE_CONFIRMATION"));
-    const { response } = await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
-      timeoutHandler(err, divorcemsg, msg.string),
-    );
+    const response = (await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) => {
+      return timeoutHandler(err, divorcemsg, msg.string);
+    })) as ResponseData;
 
     // If divorce is cancelled
-    if (typeof response != "boolean") return;
-    if (response === false) {
+    if (typeof response?.response !== "boolean") return;
+    if (response?.response === false) {
       return divorcemsg.editEmbed(`💔 ${msg.string("fun.DIVORCE")}`, msg.string("fun.DIVORCE_CANCELLED"));
     }
 

@@ -6,6 +6,7 @@
 
 import type { HibikiClient } from "../classes/Client";
 import type { Emoji, Member, Message, TextChannel } from "eris";
+import type { ResponseData } from "../typings/utils";
 import type { LocaleString } from "../typings/locales";
 import { defaultEmojiRegex, emojiIDRegex, fullInviteRegex } from "../helpers/constants";
 import { localizeSetupItems } from "../utils/format";
@@ -25,7 +26,7 @@ const blacklistedCategories = ["general", "owner"];
 
 // Asks a user for yes or no response
 export async function askYesNo(bot: HibikiClient, string: LocaleString, member: string, channel: string) {
-  let response: Promise<any> | Record<string, unknown>;
+  let response: ResponseData = { msg: null, response: null };
 
   const no = string("global.NO").toLowerCase();
   const yes = string("global.YES").toLowerCase();
@@ -46,7 +47,7 @@ export async function askYesNo(bot: HibikiClient, string: LocaleString, member: 
       } else if (m.content.toLowerCase().startsWith(no[0])) response = { msg: m, response: false };
       else if (m.content.toLowerCase().startsWith(yes[0])) response = { msg: m, response: true };
       if (!response) response = { msg: null, response: false };
-      return true;
+      return response;
     },
 
     bot,

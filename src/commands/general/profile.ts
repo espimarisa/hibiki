@@ -1,5 +1,6 @@
 import type { EmbedOptions, Emoji, Member, Message, TextChannel } from "eris";
 import type { LocaleSystem } from "../../classes/Locale";
+import type { ResponseData } from "../../typings/utils";
 import { Command } from "../../classes/Command";
 import { askForLocale, askForValue, askYesNo } from "../../utils/ask";
 import { localizeItemTypes, localizeProfileItems } from "../../utils/format";
@@ -105,13 +106,13 @@ export class ProfileCommand extends Command {
         if (emoji.name === deleteEmoji) {
           omsg.editEmbed(`❓ ${msg.string("global.CONFIRMATION")}`, msg.string("general.PROFILE_DELETE_CONFIRMATION"));
           // Waits for response
-          const { response } = await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
+          const response = (await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
             timeoutHandler(err, msg, msg.string),
-          );
+          )) as ResponseData;
 
           // If the user cancels deleting
-          if (typeof response != "boolean") return;
-          if (response === false) {
+          if (typeof response?.response != "boolean") return;
+          if (response?.response === false) {
             return omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.PROFILE_CANCELLED_DELETING"), "error");
           }
 

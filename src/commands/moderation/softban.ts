@@ -1,7 +1,9 @@
 import type { Member, Message, TextChannel } from "eris";
+import type { ResponseData } from "../../typings/utils";
 import { Command } from "../../classes/Command";
 import { askYesNo } from "../../utils/ask";
 import { roleHierarchy } from "../../utils/hierarchy";
+import { timeoutHandler } from "../../utils/waitFor";
 
 export class SoftbanCommand extends Command {
   description = "Bans a member from the server without deleting their messages.";
@@ -40,14 +42,13 @@ export class SoftbanCommand extends Command {
         }),
       );
 
-      const { response } = await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch(() => {
-        // Waits for response
-        return banmsg.editEmbed(msg.string("global.ERROR"), msg.string("global.TIMEOUT_REACHED"), "error");
-      });
+      const response = (await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
+        timeoutHandler(err, banmsg, msg.string),
+      )) as ResponseData;
 
       // If the ban was cancelled
-      if (typeof response != "boolean") return;
-      if (response === false)
+      if (typeof response?.response != "boolean") return;
+      if (response?.response === false)
         return banmsg.editEmbed(
           msg.string("global.CANCELLED"),
           msg.string("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.string("moderation.BANNING") }),
