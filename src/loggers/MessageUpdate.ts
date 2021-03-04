@@ -68,7 +68,7 @@ export class MessageUpdate extends Logger {
           fields: [
             {
               name: string("global.CONTENT"),
-              value: `\`\`\`${messageContent}\`\`\``,
+              value: `\`\`\`${`${messageContent?.substring(0, 1000)}...`}\`\`\``,
               inline: false,
             },
             {
@@ -116,12 +116,12 @@ export class MessageUpdate extends Logger {
           fields: [
             {
               name: string("global.OLD_CONTENT"),
-              value: `\`\`\`${oldMessageContent}\`\`\``,
+              value: `\`\`\`${`${oldMessageContent?.substring(0, 1000)}...`}\`\`\``,
               inline: false,
             },
             {
               name: string("global.NEW_CONTENT"),
-              value: `\`\`\`${messageContent}\`\`\``,
+              value: `\`\`\`${`${messageContent?.substring(0, 1000)}...`}\`\`\``,
               inline: false,
             },
             {
