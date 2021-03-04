@@ -83,7 +83,7 @@ export class MessagePinboard extends Logger {
           fields: [
             {
               name: string("global.CONTENT"),
-              value: `\`\`\`${messageContent?.substring(0, 1000)}${messageContent.length > 1000 ? "..." : ""}\`\`\``,
+              value: `\`\`\`${messageContent.length > 1000 ? `${messageContent.substring(0, 1000)}...` : messageContent}\`\`\``,
               inline: false,
             },
             {

@@ -135,6 +135,11 @@ export = (bot: HibikiClient) => {
         guildConfig[c] = null;
       }
 
+      // Voice channels
+      else if (item?.type === "voiceChannel" && !bot.guilds.get(guild.id).channels.find((channel) => channel.id === opt)) {
+        guildConfig[c] = null;
+      }
+
       // ChannelArray
       else if (item?.type === "channelArray" && Array.isArray(guildConfig[c]) && guildConfig[c].length) {
         guildConfig[c] = opt.filter((c: string) => bot.guilds.get(guild.id).channels.find((channel) => channel.id === c));

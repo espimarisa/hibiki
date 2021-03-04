@@ -36,7 +36,7 @@
     "compress": true,
     "defaultImageFormat": "png",
     "defaultImageSize": 512,
-    "getAllUsers": true,
+    "getAllUsers": false,
     "maxShards": 1,
     "intents": [
       "directMessageReactions",
