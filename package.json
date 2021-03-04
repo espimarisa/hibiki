@@ -1,7 +1,7 @@
 {
   "private": "true",
   "name": "hibikiapp",
-  "version": "3.3.1",
+  "version": "3.3.2-rc.1",
   "description": "The best all-in-one Discord bot! Automod, fun, music, utilities, and more. Customizable, easy-to-use, and fully translatable.",
   "author": "Espi <espi@riseup.net> (https://espi.me)",
   "contributors": [
@@ -25,7 +25,7 @@
     "build": "tsc",
     "build:all": "npm run build && npm run build:sass && npm run build:static",
     "build:sass": "cross-env sass ./src/webserver/public/sass/:./src/webserver/public/css/",
-    "build:static": "cross-env copyfiles './src/webserver/**/**/*.{css,jpg,png,ejs}' './dist/'",
+    "build:static": "cross-env copyfiles './src/webserver/**/**/*.{js,css,jpg,png,ejs}' './dist/'",
     "dev": "npm run build:sass && npm run nodemon",
     "format": "cross-env prettier --config .prettierrc 'src/**/*.{sass,scss,htm,html,js,json,ts,tsx}' --write",
     "lint": "eslint --fix .",

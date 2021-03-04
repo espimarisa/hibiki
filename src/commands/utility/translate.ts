@@ -29,8 +29,8 @@ export class TranslateCommand extends Command {
     }
 
     // Adjusts locale
-    if (ISOcodes.includes(args[0].toLowerCase())) {
-      locale = args.shift().toLowerCase();
+    if (ISOcodes.includes(args?.[0]?.toLowerCase())) {
+      locale = args?.shift()?.toLowerCase();
     }
 
     // Gets translation

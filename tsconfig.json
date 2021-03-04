@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "allowJs": true,
+    "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
     "baseUrl": "./src",
@@ -11,7 +11,7 @@
     "experimentalDecorators": true,
     "importsNotUsedAsValues": "error",
     "incremental": true,
-    "inlineSources": true,
+    // "inlineSources": true,
     "lib": ["es2020"],
     "module": "commonjs",
     "moduleResolution": "node",
@@ -27,8 +27,8 @@
     "removeComments": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "sourceMap": true,
-    "sourceRoot": "src/",
+    // "sourceMap": true,
+    // "sourceRoot": "src/",
     "strict": true,
     "strictBindCallApply": true,
     "strictNullChecks": false,

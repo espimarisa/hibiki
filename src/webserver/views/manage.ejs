@@ -101,6 +101,9 @@
           let channels = bot.guilds.get(guild.id).channels.map(c => ({name: c.name, id: c.id, type: c.type}));
           channels = channels.filter(c => c.type === 0);
           channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).permissionsOf(bot.user.id).has("sendMessages"));
+          let voiceChannels = bot.guilds.get(guild.id).channels.map(c => ({name: c.name, id: c.id, type: c.type}));
+          voiceChannels = voiceChannels.filter(c => c.type === 2);
+          voiceChannels = voiceChannels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).permissionsOf(bot.user.id).has("voiceSpeak"));
           let roles = bot.guilds.get(guild.id).roles.map(r => ({name: r.name, managed: r.managed, color: r.color.toString(16), id: r.id}));
           roles.splice(roles.find(r => r.name === "@everyone"), 1);
           roles = roles.filter(r => !r.managed);
@@ -160,6 +163,26 @@
                         <option id="none">None</option>
                         <% for (let i = 0; i < channels.length; i++) { %>
                         <% let channel = channels[i] %>
+                        <option id=<%= channel.id %>>#<%= channel.name %></option>
+                        <% } %>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <br>
+
+                <%# Voice channels %>
+                <% } else if (item.type === "voiceChannel") { %>
+                <div class="field">
+                  <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
+                  <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
+
+                  <div class="control">
+                    <div id="<%= item.id %>" class="select">
+                      <select>
+                        <option id="none">None</option>
+                        <% for (let i = 0; i < voiceChannels.length; i++) { %>
+                        <% let channel = voiceChannels[i] %>
                         <option id=<%= channel.id %>>#<%= channel.name %></option>
                         <% } %>
                       </select>
