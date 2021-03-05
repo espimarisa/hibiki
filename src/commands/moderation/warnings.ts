@@ -16,11 +16,11 @@ export class WarningsCommand extends Command {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.WARNINGS_HASNONE", { member: member.username }), "error");
     }
 
-    // If more than 20 points
+    // If more than 20 warnings
     if (warnings.length > 20) {
       const pages: EmbedOptions[] = [];
       warnings.forEach((w) => {
-        // Makes pages out of points
+        // Makes pages out of warning
         if (!pages[pages.length - 1] || pages[pages.length - 1].fields.length > 10) {
           pages.push({
             title: `🔨 ${msg.string("moderation.WARNINGS_TOTAL", { member: member.user.username, total: warnings.length })}`,

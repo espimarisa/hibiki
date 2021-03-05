@@ -124,8 +124,10 @@ export class Lavalink {
       // Disconnects and destroys the player if the channel is empty or only has the bot in it
       if (userCount === 0 || (member.id === bot.user.id && oldchannel)) {
         if (player) {
-          player.disconnect();
-          player.destroy();
+          player?.stop();
+          player?.destroy();
+          // player?.disconnect();
+          // currentChannel.leave();
         }
       }
     };

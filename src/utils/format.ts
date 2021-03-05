@@ -371,7 +371,7 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
     case "massMentionThreshold":
       if (title) return string("general.CONFIG_ANTIMASSMENTIONTHRESHOLD");
       return string("general.CONFIG_ANTIMASSMENTIONTHRESHOLD_DESCRIPTION");
-    case "locale":
+    case "guildLocale":
       if (title) return string("general.CONFIG_DEFAULTLOCALE");
       return string("general.CONFIG_DEFAULTLOCALE_DESCRIPTION");
     case "disabledCategories":

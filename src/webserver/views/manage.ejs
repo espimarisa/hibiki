@@ -29,11 +29,13 @@
             <p class="menu-label is-active">Settings</p>
             <ul id="menu" class="menu-list">
               <li><a href="#general">General Options</a></li>
-              <li><a href="#automod">Automod Settings</a></li>
-              <li><a href="#logging">Channels &amp; Logging</a></li>
-              <li><a href="#pinboard">Pinboard Settings</a></li>
-              <li><a href="#sniping">Sniping Configuration</a></li>
               <li><a href="#roles">Role Configuration</a></li>
+              <li><a href="#greeting">Greeting Options</a></li>
+              <li><a href="#logging">Logger Options</a></li>
+              <li><a href="#music">Music Options</a></li>
+              <li><a href="#pinboard">Pinboard Settings</a></li>
+              <li><a href="#sniping">Sniping Options</a></li>
+              <li><a href="#automod">Automod Settings</a></li>
             </ul>
           </div>
         </div>
@@ -66,31 +68,35 @@
               %>
               <h2 class="title is-size-2" id="general"><em class="fas fa-cog mr-2"></em>General</h2>
               <p class="subtitle is-size-4">Basic options and functionality to configure.</p>
-              <% break
+              <% break;
               case "automod": %>
               <h2 class="title is-size-2" id="automod"><em class="fas fa-hammer mr-2"></em>Automod</h2>
               <p class="subtitle is-size-4">Configures how automod works.</p>
-              <% break
+              <% break;
               case "logging": %>
               <h2 class="title is-size-2" id="logging"><em class="fas fa-scroll mr-2"></em>Logging</h2>
               <p class="subtitle is-size-4">Sets what channels things log to and how logging works.</p>
-              <% break
+              <% break;
+              case "greeting": %>
+              <h2 class="title is-size-2" id="greeting"><em class="fas fa-users mr-2"></em>Greeting and Farewell</h2>
+              <p class="subtitle is-size-4">Configures and sets member greeting and farewell messages.</p>
+              <% break;
               case "pinboard": %>
               <h2 class="title is-size-2" id="pinboard"><em class="fas fa-thumbtack mr-2"></em>Pinboard</h2>
               <p class="subtitle is-size-4">Configures and toggles Pinboard (aka Starboard) functionality.</p>
-              <% break
+              <% break;
               case "sniping": %>
               <h2 class="title is-size-2" id="sniping"><em class="fas fa-comment-slash mr-2"></em>Sniping</h2>
               <p class="subtitle is-size-4">Configures how message sniping works.</p>
-              <% break
+              <% break;
               case "roles": %>
               <h2 class="title is-size-2" id="roles"><em class="fas fa-user-tag mr-2"></em>Roles</h2>
               <p class="subtitle is-size-4">Configures role functions and their designated roles.</p>
-              <% break
+              <% break;
               case "music": %>
               <h2 class="title is-size-2" id="music"><em class="fas fa-music mr-2"></em>Music</h2>
               <p class="subtitle is-size-4">Configures certain music options.</p>
-              <% break
+              <% break;
             }
 
           } %>
@@ -227,6 +233,24 @@
                   </div>
                 </div>
                 <br>
+
+                <%# Locale %>
+                <% } else if (item.type === "locale") {%>
+                <div class="field">
+                  <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
+                  <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
+                  <div class="control">
+                    <div id="<%= item.id %>" class="select">
+                      <select>
+                        <%
+                        Object.keys(locales).forEach(locale => { %>
+                          <option <%= (cfg && cfg[item.id] ? cfg[item.id] === locale : locale === item.default) ? "selected " : "" %>id="<%= locale %>"><%= locales[locale] %></option>
+                        <% }) %>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              <br>
 
               <%# Punishments %>
               <% } else if (item.type === "punishment") { %>

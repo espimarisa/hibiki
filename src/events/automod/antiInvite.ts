@@ -11,7 +11,7 @@ import { punishMute, punishWarn } from "./punishments";
 const reason = "Sent an invite (Automod)";
 
 export async function automodAntiInvite(msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig) {
-  const string = bot.localeSystem.getLocaleFunction(cfg?.locale ? cfg?.locale : bot.config.defaultLocale);
+  const string = bot.localeSystem.getLocaleFunction(cfg?.guildLocale ? cfg?.guildLocale : bot.config.defaultLocale);
 
   // Checks if an invite was posted
   if (fullInviteRegex.test(msg.content)) {

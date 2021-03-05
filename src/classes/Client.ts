@@ -31,23 +31,23 @@ import * as Sentry from "@sentry/node";
 const LOCALES_DIRECTORY = path.join(__dirname, "../locales");
 
 export class HibikiClient extends Client {
+  antiSpam: AntiSpam[];
+  args: Args;
   commands: Array<Command> = [];
-  events: Array<Event> = [];
-  loggers: Array<Logger> = [];
+  config: typeof config;
   cooldowns: Map<string, Date>;
+  db: RethinkProvider;
+  events: Array<Event> = [];
+  inviteHandler: InviteHandler;
   lavalink: Lavalink;
   localeSystem: LocaleSystem;
-  args: Args;
-  db: RethinkProvider;
   log: typeof logger;
-  inviteHandler: InviteHandler;
+  loggers: Array<Logger> = [];
+  logs: BotLogs[];
   monitorHandler: MonitorHandler;
   muteHandler: MuteHandler;
   reminderHandler: ReminderHandler;
-  antiSpam: AntiSpam[];
-  logs: BotLogs[];
-  config: typeof config;
-  snipeData: Record<string, any>;
+  snipeData: SnipeData;
 
   constructor(token: string, options: ClientOptions) {
     super(token, options);
@@ -89,9 +89,9 @@ export class HibikiClient extends Client {
 
   // Runs when the bot is ready
   async readyListener() {
-    await loadItems(this);
+    loadItems(this);
     statuses(this);
-    if (config.sentry) await this.initializeSentry();
+    if (config.sentry) this.initializeSentry();
     if (config.lavalink.enabled) this.lavalink.manager.init(this.user.id);
 
     // Starts webservers at first boot
@@ -100,16 +100,23 @@ export class HibikiClient extends Client {
       if (config.keys.botlists.voting.auth && config.keys.botlists.voting.port) await startVoting(this);
     }
 
+    this.log.info(`${this.commands.length} commands loaded`);
+    this.log.info(`${this.events.length} events loaded`);
+    this.log.info(`${this.loggers.length} loggers loaded`);
+    this.log.info(`${Object.keys(this.localeSystem.locales).length} locales loaded`);
     this.log.info(`Logged in as ${tagUser(this.user)} on ${this.guilds.size} guilds`);
   }
 
   // Initializes sentry
-  async initializeSentry() {
+  initializeSentry() {
     try {
       Sentry.init({
         dsn: config.sentry,
         environment: process.env.NODE_ENV,
+        release: process.env.npm_package_version,
         tracesSampleRate: 0.5,
+        maxBreadcrumbs: 50,
+        attachStacktrace: true,
       });
     } catch (err) {
       this.log.error(`Sentry failed to initialize: ${err}`);
