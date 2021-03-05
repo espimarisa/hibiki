@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/stale@v3.0.17
+      - uses: actions/stale@v3.0.18
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-message: "This issue seems to be inactive, and will automatically be closed in one week."
