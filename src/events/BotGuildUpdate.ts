@@ -98,7 +98,7 @@ export class BotGuildUpdateEvent extends Event {
             },
             {
               name: string("global.MEMBERS"),
-              value: string("general.SERVER_MEMBERS", { members: guild.memberOnlyCount, bots: guild.botCount }),
+              value: string("general.SERVER_MEMBERS", { members: guild.memberCount }),
               inline: true,
             },
             {

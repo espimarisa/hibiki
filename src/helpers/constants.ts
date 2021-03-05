@@ -19,8 +19,8 @@ export const emojiIDRegex = /<:[^\s]+:\d{17,18}>/;
 
 // Invite regexes
 export const inviteRegex = /(https?:\/\/)?discord.(gg)\/[a-z0-9]+/i;
-export const discordOnlyInviteRegex = /(https?:\/\/)?(www\.)?(discord\.(gg)|discord(app)?\.com\/invite)\/(.+)/;
-export const fullInviteRegex = /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|com)|discordapp\.com\/invite)\/.+\w/i;
+export const discordOnlyInviteRegex = /(https?:\/\/)?(www\.)?(discord\.(gg)|discord(app)?\.com\/invite)\/(.+)/i;
+export const fullInviteRegex = /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discord(?:app)?\.com\/invite)\/.+\w/i;
 
 // Strings, URLs
 export const defaultAvatar = "https://cdn.discordapp.com/embed/avatars/0.png";
