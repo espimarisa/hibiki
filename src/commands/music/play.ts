@@ -12,7 +12,11 @@ export class PlayCommand extends Command {
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     const query = args.join(" ");
-    const voiceChannel = msg.channel.guild.members.get(msg.author.id)?.voiceState?.channelID;
+    const voiceChannel = msg.channel.guild.members?.get(msg.author.id)?.voiceState?.channelID;
+
+    if (!voiceChannel) {
+      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ERROR_VOICE", { command: this.name }), "error");
+    }
 
     const player = this.bot.lavalink.manager.create({
       guild: msg.channel.guild.id,
