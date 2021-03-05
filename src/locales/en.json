@@ -61,7 +61,7 @@
 
   "general": {
     "ABOUT": "About",
-    "ABOUT_DESCRIPTION": "{username}, by [Espi](https://espi.me), [resolved](https://github.com/resolvedxd), and [contributors](https://github.com/sysdotini/hibiki). 💜",
+    "ABOUT_DESCRIPTION": "{username}, by [sysdotini](https://espi.me), [resolved](https://github.com/resolvedxd), and [contributors](https://github.com/sysdotini/hibiki). 💜",
     "ABOUT_HOST": "Host",
     "ABOUT_HOST_STRING": "Bot using {botMemoryUsage} of memory \nSystem using {hostMemoryUsage} of memory \nSystem up for {uptime} \nRunning on {platform}",
     "ABOUT_LINK_STRING": "[GitHub]({github}) • [Invite]({invite}) • [Privacy]({privacy}) • [Support]({support}) • [Translate]({translate}) • [Website]({website})",
@@ -141,6 +141,7 @@
     "CONFIG_IGNOREDLOGGINGCHANNELS": "Ignored Logging Channels",
     "CONFIG_IGNOREDLOGGINGCHANNELS_DESCRIPTION": "Channels to exclude from message logging.",
     "CONFIG_INVALIDNUMBERSIZE": "The number you provided is invalid.",
+    "CONFIG_STRINGTOOLONG": "The maximum length is {maximum}.",
     "CONFIG_INVITEOPTOUT": "Invite Caching Opt-Out",
     "CONFIG_INVITEOPTOUT_DESCRIPTION": "Disables logging invite data to your log channel on member join.",
     "CONFIG_INVITEPUNISHMENTS": "Invite Punishments",

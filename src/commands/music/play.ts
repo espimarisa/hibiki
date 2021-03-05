@@ -11,15 +11,14 @@ export class PlayCommand extends Command {
   voice = true;
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
-    // Creates a player
     const query = args.join(" ");
-
-    // FIXME: This sometimes breaks? This is 100% due to intents being dogshit. Not our problem...
     const voiceChannel = msg.channel.guild.members.get(msg.author.id)?.voiceState?.channelID;
+
     const player = this.bot.lavalink.manager.create({
       guild: msg.channel.guild.id,
       textChannel: msg.channel.id,
       voiceChannel: voiceChannel,
+      selfDeafen: true,
     });
 
     // Searches for the query
@@ -86,6 +85,8 @@ export class PlayCommand extends Command {
             "error",
           );
         }
+
+        if (!this.bot.lavalink.manager.players.get(msg.channel.guild.id)) return;
 
         // Adds the song to the queue
         player.queue.add(tracks[song - 1]);

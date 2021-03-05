@@ -235,7 +235,7 @@ export class SetupCommand extends Command {
         if (m.id !== omsg.id) return;
         if (!emoji.name) return;
         if (selectingItem) return;
-        if (emoji.name === back && !selectingCategory) {
+        if (emoji.name === back) {
           category = { repeat: true };
           return true;
         }

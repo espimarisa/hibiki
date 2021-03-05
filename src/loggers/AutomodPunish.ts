@@ -20,7 +20,9 @@ export class AutomodPunish extends Logger {
     if (!channel) return;
 
     if (event === "automodMemberMute") {
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(
+        guildconfig?.guildLocale ? guildconfig?.guildLocale : this.bot.config.defaultLocale,
+      );
 
       this.bot.createMessage(channel, {
         embed: {
@@ -49,7 +51,9 @@ export class AutomodPunish extends Logger {
      */
 
     if (event === "automodAntiInvite") {
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(
+        guildconfig?.guildLocale ? guildconfig?.guildLocale : this.bot.config.defaultLocale,
+      );
 
       this.bot.createMessage(channel, {
         embed: {

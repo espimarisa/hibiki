@@ -96,6 +96,7 @@ export = (bot: HibikiClient) => {
       user: user,
       csrfToken: req.csrfToken(),
       localizeItem: localizeItem,
+      locales: localeNames,
     });
   });
 

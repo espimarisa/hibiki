@@ -11,7 +11,7 @@ import { punishMute, punishWarn } from "./punishments";
 const reason = "Mass mention (Automod)";
 
 export async function automodAntiMassMention(msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig) {
-  const string = bot.localeSystem.getLocaleFunction(cfg?.locale ? cfg?.locale : bot.config.defaultLocale);
+  const string = bot.localeSystem.getLocaleFunction(cfg?.guildLocale ? cfg?.guildLocale : bot.config.defaultLocale);
 
   if (!cfg.massMentionThreshold) cfg.massMentionThreshold = 8;
   if (msg.mentions.length >= cfg.massMentionThreshold) {
