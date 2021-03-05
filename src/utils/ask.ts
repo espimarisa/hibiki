@@ -227,6 +227,12 @@ export async function askForValue(
           check: setting.type === "number" && setting.maximum && (setting.minimum > result || setting.maximum < result),
           errorMsg: msg.string("general.CONFIG_INVALIDNUMBERSIZE"),
         },
+
+        // Invalid string size
+        invalidStringSize: {
+          check: setting.type === "string" && setting.maximum && setting.maximum < result.length,
+          errorMsg: msg.string("general.CONFIG_STRINGTOOLONG", { maximum: setting.maximum }),
+        },
       };
       //
 
@@ -337,7 +343,9 @@ export async function askForLocale(
 
   await omsg.removeReactions();
   Object.keys(localeEmojis).forEach(async (emoji) => omsg.addReaction(emoji));
-  const string = bot.localeSystem.getLocaleFunction(userconfig?.locale ? userconfig?.locale : bot.config.defaultLocale);
+  const string = bot.localeSystem.getLocaleFunction(
+    (userconfig as UserConfig)?.locale ? (userconfig as UserConfig)?.locale : bot.config.defaultLocale,
+  );
 
   // Asks for input
   omsg.editEmbed(
@@ -359,7 +367,7 @@ export async function askForLocale(
       // Gets the locale and updates config
       const locale = localeNames[emoji.name];
       if (!locale) return;
-      userconfig.locale = locale;
+      (userconfig as UserConfig).locale = locale;
       if (isGuildConfig) bot.db.updateGuildConfig(msg.channel.guild.id, userconfig);
       else bot.db.updateUserConfig(msg.author.id, userconfig);
 

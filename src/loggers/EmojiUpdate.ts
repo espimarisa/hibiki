@@ -16,7 +16,9 @@ export class EmojiUpdate extends Logger {
     const guildconfig = await this.bot.db.getGuildConfig(guild.id);
     const channel = await this.getChannel(guild, TYPE, event, guildconfig);
     if (!channel) return;
-    const string = this.bot.localeSystem.getLocaleFunction(guildconfig.locale ? guildconfig.locale : this.bot.config.defaultLocale);
+    const string = this.bot.localeSystem.getLocaleFunction(
+      guildconfig.guildLocale ? guildconfig.guildLocale : this.bot.config.defaultLocale,
+    );
 
     // Gets changes
     let changes: Emoji[] = [];

@@ -26,7 +26,7 @@ export class ReminderHandler {
             if (!dm) return;
 
             // Gets the user's locale
-            const userLocale = await bot.localeSystem.getUserLocale(`${user}`, bot);
+            const userLocale = await bot.localeSystem.getUserLocale(reminder.user, bot);
             const string = bot.localeSystem.getLocaleFunction(userLocale);
 
             // Sends the user a message
@@ -49,7 +49,7 @@ export class ReminderHandler {
             this.reminders.splice(i);
           }
         });
-      }, 1000);
-    }, 10000);
+      }, 1_0_0_0);
+    }, 1_0_0_0_0);
   }
 }

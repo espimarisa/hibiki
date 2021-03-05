@@ -4,6 +4,8 @@
  * @module utils/validItems
  */
 
+import { defaultLocale } from "../../config.json";
+
 export const validItems = [
   /**
    * Feature options
@@ -31,9 +33,10 @@ export const validItems = [
   },
   {
     category: "features",
-    id: "locale",
+    id: "guildLocale",
     emoji: "🌐",
     type: "locale",
+    default: defaultLocale,
   },
   {
     id: "assignableRoles",
@@ -421,6 +424,7 @@ export const validItems = [
     category: "profile",
     id: "locale",
     type: "locale",
+    default: defaultLocale,
   },
   {
     emoji: "🕒",

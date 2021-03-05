@@ -31,6 +31,6 @@ export class InviteHandler {
           this.inviteCache[guild.id] = invites;
         }, i * 5000);
       });
-    }, 35000);
+    }, 10000);
   }
 }

@@ -81,8 +81,9 @@
           <div class="control">
             <div id="<%= item.id %>" class="select">
               <select>
-                <% Object.keys(locales).forEach(locale => { %>
-                  <option <%= cfg && cfg[item.id] === locale ? "selected " : "" %>id="<%= locale %>"><%= locales[locale] %></option>
+                <%
+                  Object.keys(locales).forEach(locale => { %>
+                  <option <%= (cfg && cfg[item.id] ? cfg[item.id] === locale : locale === item.default) ? "selected " : "" %>id="<%= locale %>"><%= locales[locale] %></option>
                 <% }) %>
               </select>
             </div>

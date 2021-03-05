@@ -175,7 +175,7 @@ export = (bot: HibikiClient) => {
       }
 
       // Locales
-      else if (item?.type === "locale") {
+      else if (item?.type === "locale" && !Object.keys(bot.localeSystem.locales).includes(guildConfig[c])) {
         delete guildConfig[c];
       }
 
@@ -280,8 +280,8 @@ export = (bot: HibikiClient) => {
 
     // If no profileConfig
     if (!req.body) return res.status(204).end();
+    else if (!req.body.id) req.body.id = user.id;
     profileConfig = req.body;
-
     if (profileConfig.id !== user.id) return res.status(403).end();
 
     // Each profileConfig type/option
@@ -323,6 +323,8 @@ export = (bot: HibikiClient) => {
         }
 
         if (invalidTimezone) delete profileConfig[c];
+      } else if (item?.type === "locale" && !Object.keys(bot.localeSystem.locales).includes(profileConfig[c])) {
+        delete profileConfig[c];
       }
     });
     profileConfig.id = user.id;

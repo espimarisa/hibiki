@@ -23,7 +23,9 @@ export class ChannelUpdate extends Logger {
       const guildconfig = await this.bot.db.getGuildConfig(channel.guild.id);
       const loggingChannel = await this.getChannel(channel.guild, TYPE, event, guildconfig);
       if (!loggingChannel) return;
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(
+        guildconfig?.guildLocale ? guildconfig?.guildLocale : this.bot.config.defaultLocale,
+      );
 
       const embed = {
         color: this.convertHex("general"),
@@ -74,7 +76,9 @@ export class ChannelUpdate extends Logger {
       const guildconfig = await this.bot.db.getGuildConfig(channel.guild.id);
       const loggingChannel = await this.getChannel(channel.guild, TYPE, event, guildconfig);
       if (!loggingChannel) return;
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(
+        guildconfig?.guildLocale ? guildconfig?.guildLocale : this.bot.config.defaultLocale,
+      );
 
       const embed = {
         color: this.convertHex("error"),
@@ -127,7 +131,9 @@ export class ChannelUpdate extends Logger {
       const guildconfig = await this.bot.db.getGuildConfig(channel.guild.id);
       const loggingChannel = await this.getChannel(channel.guild, TYPE, event, guildconfig);
       if (!loggingChannel) return;
-      const string = this.bot.localeSystem.getLocaleFunction(guildconfig?.locale ? guildconfig?.locale : this.bot.config.defaultLocale);
+      const string = this.bot.localeSystem.getLocaleFunction(
+        guildconfig?.guildLocale ? guildconfig?.guildLocale : this.bot.config.defaultLocale,
+      );
 
       const embed = {
         color: this.convertHex("general"),

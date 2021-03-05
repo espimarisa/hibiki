@@ -59,7 +59,7 @@
   },
   "general": {
     "ABOUT": "Despre",
-    "ABOUT_DESCRIPTION": "{username}, de [Espi](https://espi.me), [resolved](https://github.com/resolvedxd), și [contributors](https://github.com/sysdotini/hibiki). 💜",
+    "ABOUT_DESCRIPTION": "{username}, de [sysdotini](https://espi.me), [resolved](https://github.com/resolvedxd), și [contributors](https://github.com/sysdotini/hibiki). 💜",
     "ABOUT_HOST": "Gazdă",
     "ABOUT_HOST_STRING": "Bot folosind {botMemoryUsage} de memorie \nSistem folosind {hostMemoryUsage} memorie \nSistem pornit pentru {uptime} \nRulînd pe {platform}",
     "ABOUT_LINK_STRING": "[GitHub]({github}) • [Invite]({invite}) • [Privacy]({privacy}) • [Support]({support}) • [Translate]({translate}) • [Website]({website})",

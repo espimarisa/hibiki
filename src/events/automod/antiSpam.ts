@@ -11,7 +11,7 @@ import { punishMute, punishPurge, punishWarn } from "./punishments";
 const punishedUsers: string[] = [];
 
 export async function automodAntiSpam(msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig) {
-  const string = bot.localeSystem.getLocaleFunction(cfg?.locale ? cfg?.locale : bot.config.defaultLocale);
+  const string = bot.localeSystem.getLocaleFunction(cfg?.guildLocale ? cfg?.guildLocale : bot.config.defaultLocale);
 
   // Filters thru the antiSpam
   const spam = bot.antiSpam.filter(

@@ -1,7 +1,8 @@
-import type { Message, TextChannel } from "eris";
+import type { EmbedOptions, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { validTimeRegex } from "../../helpers/constants";
 import { dateFormat } from "../../utils/format";
+import { pagify } from "../../utils/pagify";
 import { generateSnowflake } from "../../utils/snowflake";
 
 export class RemindCommand extends Command {
@@ -17,12 +18,50 @@ export class RemindCommand extends Command {
       const reminders = await this.bot.db.getAllUserReminders(msg.author.id);
       if (!reminders?.length) return msg.createEmbed(`⏰ ${msg.string("utility.REMINDERS")}`, msg.string("utility.REMINDERS_NONE"));
 
+      // If more than 20 reminders
+      if (reminders.length > 20) {
+        const pages: EmbedOptions[] = [];
+        reminders.forEach((r) => {
+          // Makes pages out of reminders
+          if (!pages[pages.length - 1] || pages[pages.length - 1].fields.length > 10) {
+            pages.push({
+              title: `⏰ ${msg.string("utility.REMINDERS")}`,
+              color: msg.convertHex("general"),
+              fields: [
+                {
+                  name: `${r.id} ${r.date ? `(${dateFormat(r.date, msg.string)})` : ""}`,
+                  value: `${r.message?.slice(0, 150)}`,
+                },
+              ],
+            });
+          } else {
+            // Adds to already existing pages
+            pages[pages.length - 1].fields.push({
+              name: `${r.id} ${r.date ? `(${dateFormat(r.date, msg.string)})` : ""}`,
+              value: `${r.message?.slice(0, 150)}`,
+            });
+          }
+        });
+
+        // Pagifies points
+        return pagify(
+          pages,
+          msg.channel,
+          this.bot,
+          msg.author.id,
+          { title: msg.string("global.EXITED"), color: msg.convertHex("error") },
+          false,
+          msg.string("global.RAN_BY", { author: msg.tagUser(msg.author), extra: "%c/%a" }),
+          msg.author.dynamicAvatarURL(),
+        );
+      }
+
       return msg.channel.createMessage({
         embed: {
           title: `⏰ ${msg.string("utility.REMINDERS")}`,
           color: msg.convertHex("general"),
           fields: reminders.map((r) => ({
-            name: `${r.id}`,
+            name: `${r.id} ${r.date ? `(${dateFormat(r.date, msg.string)})` : ""}`,
             value: `${r.message}`,
           })),
           footer: {

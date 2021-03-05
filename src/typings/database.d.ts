@@ -35,7 +35,7 @@ interface GuildConfig {
   leaveJoin?: string;
   leaveMessage?: string;
   leaveTitle?: string;
-  locale?: string;
+  guildLocale?: string;
   logBotMessages?: boolean;
   loggingChannel?: string;
   massMentionThreshold?: number;
@@ -139,4 +139,17 @@ interface SteamMonitor {
   id: string;
   user?: string;
   username?: string;
+}
+
+// Snipe data
+interface SnipeData {
+  [id: string]: {
+    id?: string;
+    content?: string;
+    author?: string;
+    authorpfp?: string;
+    msg?: string;
+    attachment?: string;
+    timestamp?: Date;
+  };
 }

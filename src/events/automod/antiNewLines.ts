@@ -8,7 +8,7 @@ export async function automodAntiNewLine(msg: Message<TextChannel>, bot: HibikiC
   if (!cfg.newlineThreshold) cfg.newlineThreshold = 10;
   const newLineAmt = msg.content.split("\n").length;
   if (newLineAmt <= cfg.newlineThreshold) return;
-  const string = bot.localeSystem.getLocaleFunction(cfg?.locale ? cfg?.locale : bot.config.defaultLocale);
+  const string = bot.localeSystem.getLocaleFunction(cfg?.guildLocale ? cfg?.guildLocale : bot.config.defaultLocale);
 
   cfg?.antiNewLinesPunishments.forEach(async (punishment: string) => {
     switch (punishment) {

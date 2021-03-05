@@ -59,7 +59,7 @@
   },
   "general": {
     "ABOUT": "ボットについて",
-    "ABOUT_DESCRIPTION": "{username}は[Espi](https://espi.me)、[resolved](https://github.com/resolvedxd)、と [contributors](https://github.com/sysdotini/hibiki)によって作成されました。 💜",
+    "ABOUT_DESCRIPTION": "{username}は[sysdotini](https://espi.me)、[resolved](https://github.com/resolvedxd)、と [contributors](https://github.com/sysdotini/hibiki)によって作成されました。 💜",
     "ABOUT_HOST": "ホスト",
     "ABOUT_HOST_STRING": "ボットは {botMemoryUsage} のメモリを使用しています\nシステムは {hostMemoryUsage} のメモリを使用しています\nシステムは {uptime} 稼働しています\n {platform} で実行中",
     "ABOUT_LINK_STRING": "[GitHub]({github}) • [招待する]({invite}) • [プライバシー]({privacy}) • [サポート]({support}) • [翻訳する]({translate}) • [サイト]({website})",

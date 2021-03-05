@@ -268,7 +268,14 @@ window.addEventListener("load", async () => {
 
         case "string": {
           const val = element.value;
-          if (val.length) guildConfig[p] = element.value;
+          if (val && val.length) guildConfig[p] = element.value;
+          break;
+        }
+
+        case "locale": {
+          const r = Array.from(element.children[0].children).find((a) => a.innerText === element.children[0].value).id;
+          if (!r) return;
+          guildConfig[p] = r;
           break;
         }
 

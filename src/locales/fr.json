@@ -59,7 +59,7 @@
   },
   "general": {
     "ABOUT": "À propos",
-    "ABOUT_DESCRIPTION": "{username}, par [Espi](https://espi.me), [resolved](https://github.com/resolvedxd), et les [contributors](https://github.com/sysdotini/hibiki). 💜",
+    "ABOUT_DESCRIPTION": "{username}, par [sysdotini](https://espi.me), [resolved](https://github.com/resolvedxd), et les [contributors](https://github.com/sysdotini/hibiki). 💜",
     "ABOUT_HOST": "Hébergeur",
     "ABOUT_HOST_STRING": "Bot utilise {botMemoryUsage} de RAM \nMachine hôte utilise {hostMemoryUsage} de RAM \nMachine hôte marche pour {uptime} \nMachine hôte est sur {platform}",
     "ABOUT_LINK_STRING": "[GitHub]({github}) • [Inviter]({invite}) • [Politique de données]({privacy}) • [Aide]({support}) • [Traduire]({translate}) • [Site Internet]({website})",
