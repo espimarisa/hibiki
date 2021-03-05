@@ -92,7 +92,7 @@ export class ServerCommand extends Command {
     // Member & bot count
     fields.push({
       name: msg.string("global.MEMBERS"),
-      value: msg.string("general.SERVER_MEMBERS", { members: msg.channel.guild.memberOnlyCount, bots: msg.channel.guild.botCount }),
+      value: msg.string("general.SERVER_MEMBERS", { members: guild.memberCount }),
       inline: true,
     });
 

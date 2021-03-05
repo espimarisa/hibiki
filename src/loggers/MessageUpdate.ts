@@ -42,108 +42,113 @@ export class MessageUpdate extends Logger {
       }
     }
 
-    /**
-     * Logs message deletions
-     */
+    switch (event) {
+      /**
+       * Logs message deletions
+       */
 
-    if (event === "messageDelete") {
-      if (!msg || !msg.author) return;
-      const channel = await this.getChannel(msg.channel, TYPE, event, guildconfig);
-      if (!channel) return;
+      case "messageDelete": {
+        if (!msg || !msg.author) return;
+        const channel = await this.getChannel(msg.channel, TYPE, event, guildconfig);
+        if (!channel) return;
 
-      let image;
-      const urlCheck = msg.content.match(urlRegex);
-      if (msg.embeds?.[0]?.image?.proxy_url && !msg.attachments?.[0]) image = msg.embeds?.[0]?.image?.proxy_url;
-      if (urlCheck || msg.attachments?.[0]) {
-        if (urlCheck?.[0].endsWith(".jpg") || urlCheck?.[0].endsWith(".png") || urlCheck?.[0].endsWith(".gif")) image = urlCheck?.[0];
-        else if (msg.attachments?.[0]) image = msg.attachments[0].proxy_url;
+        let image: string;
+        const urlCheck = msg.content.match(urlRegex);
+        if (msg.embeds?.[0]?.image?.proxy_url && !msg.attachments?.[0]) image = msg.embeds?.[0]?.image?.proxy_url;
+        if (urlCheck || msg.attachments?.[0]) {
+          if (urlCheck?.[0].endsWith(".jpg") || urlCheck?.[0].endsWith(".png") || urlCheck?.[0].endsWith(".gif")) image = urlCheck?.[0];
+          else if (msg.attachments?.[0]) image = msg.attachments[0].proxy_url;
+        }
+
+        this.bot.createMessage(channel, {
+          embed: {
+            color: msg.convertHex("error"),
+            author: {
+              name: string("logger.MESSAGE_DELETED", { member: this.tagUser(msg.author) }),
+              icon_url: msg.author.dynamicAvatarURL(),
+            },
+            fields: [
+              {
+                name: string("global.CONTENT"),
+                value: `\`\`\`${messageContent?.substring(0, 1000)}${messageContent.length > 1000 ? "..." : ""}\`\`\``,
+                inline: false,
+              },
+              {
+                name: string("global.CHANNEL"),
+                value: msg.channel.mention || string("global.UNKNOWN"),
+                inline: true,
+              },
+              {
+                name: string("global.ID"),
+                value: msg.id,
+                inline: true,
+              },
+              {
+                name: string("global.SENT_ON"),
+                value: dateFormat(msg.timestamp, string),
+                inline: false,
+              },
+            ],
+            image: {
+              url: image || null,
+            },
+          },
+        });
+
+        break;
       }
 
-      // Sets the image
-      this.bot.createMessage(channel, {
-        embed: {
-          color: msg.convertHex("error"),
-          author: {
-            name: string("logger.MESSAGE_DELETED", { member: this.tagUser(msg.author) }),
-            icon_url: msg.author.dynamicAvatarURL(),
-          },
-          fields: [
-            {
-              name: string("global.CONTENT"),
-              value: `\`\`\`${messageContent?.substring(0, 1000)}${messageContent.length > 1000 ? "..." : ""}\`\`\``,
-              inline: false,
-            },
-            {
-              name: string("global.CHANNEL"),
-              value: msg.channel.mention || string("global.UNKNOWN"),
-              inline: true,
-            },
-            {
-              name: string("global.ID"),
-              value: msg.id,
-              inline: true,
-            },
-            {
-              name: string("global.SENT_ON"),
-              value: dateFormat(msg.timestamp, string),
-              inline: false,
-            },
-          ],
-          image: {
-            url: image || null,
-          },
-        },
-      });
-    }
+      /**
+       * Logs message updates
+       */
 
-    /**
-     * Logs message updates
-     */
+      case "messageUpdate": {
+        if (!msg || !oldmsg) return;
+        if (messageContent === oldMessageContent) return;
+        const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
+        if (!guildconfig?.logBotMessages && msg.author.bot) return;
+        const channel = await this.getChannel(msg.channel, TYPE, event, guildconfig);
+        if (!channel) return;
 
-    if (event === "messageUpdate") {
-      if (!msg || !oldmsg) return;
-      if (messageContent === oldMessageContent) return;
-      const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
-      if (!guildconfig?.logBotMessages && msg.author.bot) return;
-      const channel = await this.getChannel(msg.channel, TYPE, event, guildconfig);
-      if (!channel) return;
-
-      this.bot.createMessage(channel, {
-        embed: {
-          color: msg.convertHex("error"),
-          author: {
-            name: string("logger.MESSAGE_UPDATED", { member: this.tagUser(msg.author) }),
-            icon_url: msg.author.dynamicAvatarURL(),
+        this.bot.createMessage(channel, {
+          embed: {
+            color: msg.convertHex("error"),
+            author: {
+              name: string("logger.MESSAGE_UPDATED", { member: this.tagUser(msg.author) }),
+              icon_url: msg.author.dynamicAvatarURL(),
+            },
+            fields: [
+              {
+                name: string("global.OLD_CONTENT"),
+                value: `\`\`\`${oldMessageContent.length > 1000 ? `${oldMessageContent.substring(0, 1000)}...` : oldMessageContent}\`\`\``,
+                inline: false,
+              },
+              {
+                name: string("global.NEW_CONTENT"),
+                value: `\`\`\`${messageContent.length > 1000 ? `${messageContent.substring(0, 1000)}...` : messageContent}\`\`\``,
+                inline: false,
+              },
+              {
+                name: string("global.CHANNEL"),
+                value: msg.channel.mention || msg.string("global.UNKNOWN"),
+                inline: true,
+              },
+              {
+                name: string("global.MESSAGE"),
+                value: `[${string("global.JUMP_TO")}](${msg.jumpLink})`,
+                inline: true,
+              },
+              {
+                name: string("global.SENT_ON"),
+                value: dateFormat(msg.timestamp, string),
+                inline: false,
+              },
+            ],
           },
-          fields: [
-            {
-              name: string("global.OLD_CONTENT"),
-              value: `\`\`\`${oldMessageContent.length > 1000 ? `${oldMessageContent.substring(0, 1000)}...` : oldMessageContent}\`\`\``,
-              inline: false,
-            },
-            {
-              name: string("global.NEW_CONTENT"),
-              value: `\`\`\`${messageContent.length > 1000 ? `${messageContent.substring(0, 1000)}...` : messageContent}\`\`\``,
-              inline: false,
-            },
-            {
-              name: string("global.CHANNEL"),
-              value: msg.channel.mention || msg.string("global.UNKNOWN"),
-              inline: true,
-            },
-            {
-              name: string("global.MESSAGE"),
-              value: `[${string("global.JUMP_TO")}](${msg.jumpLink})`,
-              inline: true,
-            },
-            {
-              name: string("global.SENT_ON"),
-              value: dateFormat(msg.timestamp, string),
-              inline: false,
-            },
-          ],
-        },
-      });
+        });
+
+        break;
+      }
     }
   }
 }

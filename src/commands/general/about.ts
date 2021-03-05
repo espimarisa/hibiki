@@ -86,7 +86,7 @@ export class AboutCommand extends Command {
     });
 
     const linkString = msg.string("general.ABOUT_LINK_STRING", {
-      invite: `https://discord.com/oauth2/authorize?&client_id=${this.bot.user.id}&scope=bot&permissions=506850534`,
+      invite: `https://discord.com/oauth2/authorize?&client_id=${this.bot.user.id}&scope=bot&permissions=1581116663`,
       privacy: "https://hibiki.app/privacy/",
       support: "https://discord.gg/gZEj4sM",
       github: "https://github.com/sysdotini/hibiki",

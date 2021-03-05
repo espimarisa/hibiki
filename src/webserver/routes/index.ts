@@ -53,7 +53,7 @@ export = (bot: HibikiClient) => {
 
   // Invite redirection
   router.get("/invite/", (req, res) => {
-    res.redirect(301, `https://discordapp.com/oauth2/authorize?&client_id=${bot.user.id}&scope=bot&permissions=506850534`);
+    res.redirect(301, `https://discordapp.com/oauth2/authorize?&client_id=${bot.user.id}&scope=bot&permissions=1581116663`);
   });
 
   // Support redirection

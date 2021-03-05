@@ -34,11 +34,21 @@ export async function automodAntiInvite(msg: Message<TextChannel>, bot: HibikiCl
 
     // If msgOnPunishment is on
     if (cfg.msgOnPunishment) {
-      const pmsg = await msg.createEmbed(`⚠ ${string("global.AUTOMOD")}`, string("global.AUTOMOD_INVITES"), "error");
+      const pmsg = await msg.channel.createMessage({
+        embed: {
+          title: `⚠ ${string("global.AUTOMOD")}`,
+          description: string("global.AUTOMOD_INVITES"),
+          color: msg.convertHex("error"),
+          footer: {
+            text: `${string("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
+            icon_url: msg.author.dynamicAvatarURL(),
+          },
+        },
+      });
       setTimeout(() => pmsg.delete("Automod message deletion").catch(() => {}), 5000);
     }
 
     // Emits the event for logging
-    bot.emit("automodAntiInvite", msg.channel.guild, msg.member.user, msg.content, warning);
+    bot.emit("automodAntiInvite", msg.channel.guild, msg.member.user, warning, msg.content);
   }
 }
