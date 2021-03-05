@@ -80,7 +80,7 @@
     "prettier": "^2.2.1",
     "sass": "^1.32.8",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.2"
+    "typescript": "^4.2.3"
   },
   "optionalDependencies": {
     "@discordjs/opus": "^0.4.0",
