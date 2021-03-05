@@ -48,8 +48,9 @@ export class MessagePinboard extends Logger {
 
       if (pin !== emoji?.name.replace(VARIATION_SELECTOR_REGEX, "")) return;
       // Gets channel and messages
-      const pinReactions = (msg.reactions?.[pin] ??
+      const pinReactions = (msg.reactions?.[pin] ||
         Object.entries(msg.reactions).find((m) => m[0].replace(VARIATION_SELECTOR_REGEX, "") === pin)[1]) as MessageReactions;
+
       const fullPinChannel = msg.channel.guild.channels.get(pinChannel) as TextChannel;
       const messages = await fullPinChannel.getMessages(50).catch(() => {});
       if (!messages) return;
@@ -58,7 +59,7 @@ export class MessagePinboard extends Logger {
       );
 
       // Sends the pinboard message
-      if (pinReactions?.count) {
+      if (pinReactions?.count >= (guildconfig.pinAmount ? guildconfig.pinAmount : 3)) {
         // Sets what message content to use
         let messageContent = string("global.NO_CONTENT");
         if (msg.content) messageContent = msg.content;
@@ -68,12 +69,10 @@ export class MessagePinboard extends Logger {
         }
 
         // Edits the footer with the correct pin count
-        if ((guildconfig.pinAmount ? guildconfig.pinAmount : 3) <= pinReactions.count) {
-          if (pinnedMessage) {
-            const embed = pinnedMessage.embeds?.[0];
-            embed.footer.text = `${pin}${pinReactions.count} | ${msg.id}`;
-            return pinnedMessage.edit({ embed: embed });
-          }
+        if (pinnedMessage) {
+          const embed = pinnedMessage.embeds?.[0];
+          embed.footer.text = `${pin}${pinReactions.count} | ${msg.id}`;
+          return pinnedMessage.edit({ embed: embed });
         }
 
         // Sets the embed construct
@@ -146,28 +145,29 @@ export class MessagePinboard extends Logger {
       if (pin !== emoji?.name.replace(VARIATION_SELECTOR_REGEX, "")) return;
 
       // Gets the channel, messages, and reactions
-      // read above
-
       const fullPinChannel = msg.channel.guild.channels.get(pinChannel) as TextChannel;
       const messages = await fullPinChannel.getMessages(50).catch(() => {});
       if (!messages) return;
+
       const pinReactions =
-        msg.reactions?.[pin] ?? Object.entries(msg.reactions).find((m) => m[0].replace(VARIATION_SELECTOR_REGEX, "") === pin);
+        msg.reactions?.[pin] || Object.entries(msg.reactions).find((m) => m[0].replace(VARIATION_SELECTOR_REGEX, "") === pin);
+
       const pinnedMessage = messages.find(
         (m: Message) => m.embeds?.[0]?.footer?.text?.endsWith(msg.id) && m.author.id === this.bot.user.id,
       );
+
       if (!pinnedMessage) return;
 
       // Returns if the guild has disabled self pinning
       if (guildconfig.pinSelfPinning === false && msg.author.id === user) return;
 
       // Unpins the message if the count is at 0 or doesn't exist
-      if (!pinReactions || pinReactions[1]?.count === 0) return pinnedMessage.delete().catch(() => {});
+      if (!pinReactions || (pinReactions as MessageReactions)?.count === 0) return pinnedMessage.delete().catch(() => {});
 
       // Edits the footer with the correct star count
-      if (guildconfig.pinAmount ? guildconfig.pinAmount : 3 <= pinReactions?.[1].count) {
+      if ((guildconfig.pinAmount ? guildconfig.pinAmount : 3) <= (pinReactions as MessageReactions).count) {
         const embed = pinnedMessage.embeds?.[0];
-        embed.footer.text = `${pin}${pinReactions?.[1].count} | ${msg.id}`;
+        embed.footer.text = `${pin}${(pinReactions as MessageReactions).count} | ${msg.id}`;
         pinnedMessage.edit({ embed: embed });
       } else {
         // Deletes the pinned message
