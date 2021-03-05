@@ -55,7 +55,7 @@ export class UserinfoCommand extends Command {
     if (userconfig?.timezone && !userconfig?.timezoneHide) {
       const currentTime = new Date();
       if (userconfig.timezone) timezone = dayjs(currentTime).tz(userconfig.timezone);
-      if (!timezone || !(timezone as any).d) timezone = null;
+      if (!timezone || !(timezone as any).$d) timezone = null;
       else timezone = dateFormat((timezone as any).$d, msg.string);
     }
 
