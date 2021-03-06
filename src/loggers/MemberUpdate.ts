@@ -187,11 +187,6 @@ export class MemberUpdate extends Logger {
               inline: true,
             },
             {
-              name: string("global.JOINED_ON"),
-              value: dateFormat(member.joinedAt, string),
-              inline: true,
-            },
-            {
               name: string("global.ACCOUNT_AGE"),
               value: `**${Math.floor((Date.now() - member.user.createdAt) / 86400000)}** ${string("global.DAYS_OLD")}`,
               inline: true,
@@ -209,6 +204,15 @@ export class MemberUpdate extends Logger {
             text: string("logger.MEMBER_COUNT", { guild: guild.name, members: guild.memberCount }),
           },
         } as EmbedOptions;
+
+        // Join date
+        if (member.joinedAt) {
+          embed.fields.push({
+            name: string("global.JOINED_ON"),
+            value: dateFormat(member.joinedAt, string),
+            inline: true,
+          });
+        }
 
         setTimeout(async () => {
           if (this.bot.config.inviteLogs && guildconfig?.inviteOptOut !== true) {
@@ -289,40 +293,44 @@ export class MemberUpdate extends Logger {
           guildconfig?.guildLocale ? guildconfig?.guildLocale : this.bot.config.defaultLocale,
         );
 
-        this.bot.createMessage(channel, {
-          embed: {
-            color: this.convertHex("error"),
-            author: {
-              name: `${this.tagUser(member.user)} ${string("global.LEFT")}`,
-              icon_url: member.user.dynamicAvatarURL(),
-            },
-            thumbnail: {
-              url: member.user ? member.user.dynamicAvatarURL(null, 1024) : defaultAvatar,
-            },
-            fields: [
-              {
-                name: string("global.ID"),
-                value: member.id,
-              },
-              {
-                name: string("global.CREATED_AT"),
-                value: dateFormat(member.user.createdAt, string),
-              },
-              {
-                name: string("global.JOINED_ON"),
-                value: dateFormat(member.joinedAt, string),
-              },
-              {
-                name: string("global.ACCOUNT_AGE"),
-                value: `**${Math.floor((Date.now() - member.user.createdAt) / 86400000)}** ${string("global.DAYS_OLD")}`,
-              },
-            ],
-            footer: {
-              icon_url: guild.iconURL || defaultAvatar,
-              text: string("logger.MEMBER_COUNT", { guild: guild.name, members: guild.memberCount }),
-            },
+        const embed = {
+          color: this.convertHex("error"),
+          author: {
+            name: `${this.tagUser(member.user)} ${string("global.LEFT")}`,
+            icon_url: member.user.dynamicAvatarURL(),
           },
-        });
+          thumbnail: {
+            url: member.user ? member.user.dynamicAvatarURL(null, 1024) : defaultAvatar,
+          },
+          fields: [
+            {
+              name: string("global.ID"),
+              value: member.id,
+            },
+            {
+              name: string("global.CREATED_AT"),
+              value: dateFormat(member.user.createdAt, string),
+            },
+            {
+              name: string("global.ACCOUNT_AGE"),
+              value: `**${Math.floor((Date.now() - member.user.createdAt) / 86400000)}** ${string("global.DAYS_OLD")}`,
+            },
+          ],
+          footer: {
+            icon_url: guild.iconURL || defaultAvatar,
+            text: string("logger.MEMBER_COUNT", { guild: guild.name, members: guild.memberCount }),
+          },
+        };
+
+        // Join date
+        if (member.joinedAt) {
+          embed.fields.push({
+            name: string("global.JOINED_ON"),
+            value: dateFormat(member.joinedAt, string),
+          });
+        }
+
+        await this.bot.createMessage(channel, { embed: embed });
 
         break;
       }
