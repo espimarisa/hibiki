@@ -27,7 +27,6 @@ const blacklistedCategories = ["general", "owner"];
 // Asks a user for yes or no response
 export async function askYesNo(bot: HibikiClient, string: LocaleString, member: string, channel: string) {
   let response: ResponseData = { msg: null, response: null };
-
   const no = string("global.NO").toLowerCase();
   const yes = string("global.YES").toLowerCase();
   const sameStartingChar = no[0] === yes[0];
@@ -36,18 +35,26 @@ export async function askYesNo(bot: HibikiClient, string: LocaleString, member: 
     "messageCreate",
     15000,
     (m: Message) => {
-      if (!m.content) return;
-      if (m.author.id !== member) return;
-      if (m.channel?.id !== channel) return;
+      if (!m.content) return false;
+      if (m.author.id !== member) return false;
+      if (m.channel?.id !== channel) return false;
 
       // If two locales start with the same y/n chars
       if (sameStartingChar) {
-        if (m.content.toLowerCase() === no) response = { msg: m, response: false };
-        else if (m.content.toLowerCase() === yes) response = { msg: m, response: true };
-      } else if (m.content.toLowerCase().startsWith(no[0])) response = { msg: m, response: false };
-      else if (m.content.toLowerCase().startsWith(yes[0])) response = { msg: m, response: true };
-      if (!response) response = { msg: null, response: false };
-      return response;
+        if (m.content.toLowerCase() === no) {
+          response = { msg: m, response: false };
+          return true;
+        } else if (m.content.toLowerCase() === yes) {
+          response = { msg: m, response: true };
+          return true;
+        }
+      } else if (m.content.toLowerCase().startsWith(no[0]) || m.content.toLowerCase() === "no") {
+        response = { msg: m, response: false };
+        return true;
+      } else if (m.content.toLowerCase().startsWith(yes[0]) || m.content.toLowerCase() === "yes") {
+        response = { msg: m, response: true };
+        return true;
+      }
     },
 
     bot,

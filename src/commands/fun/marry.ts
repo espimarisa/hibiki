@@ -28,13 +28,13 @@ export class MarryCommand extends Command {
       `💝 ${msg.string("fun.MARRY")}`,
       msg.string("fun.MARRY_YN", { member: member.user.username, user: msg.author.username }),
     );
-
+    const spouselocale = await this.bot.localeSystem.getUserLocale(member.id, this.bot);
     // Asks for yes/no
-    const response = (await askYesNo(this.bot, msg.string, member.id, msg.channel.id).catch((err) => {
-      return timeoutHandler(err, marrymsg, msg.string);
-    })) as ResponseData;
-
-    if (typeof response?.response !== "boolean") return;
+    const response = (await askYesNo(this.bot, this.bot.localeSystem.getLocaleFunction(spouselocale), member.id, msg.channel.id).catch(
+      (err) => {
+        return timeoutHandler(err, marrymsg, msg.string);
+      },
+    )) as ResponseData;
 
     // If marriage is cancelled
     if (response?.response === false) {

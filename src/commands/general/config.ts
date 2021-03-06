@@ -151,8 +151,6 @@ export class SetupCommand extends Command {
               timeoutHandler(err, msg, msg.string),
             )) as ResponseData;
 
-            if (typeof response?.response != "boolean") return;
-
             // If the user cancels deleting
             if (response?.response === false) {
               return omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.CONFIG_CANCELLED_DELETE"), "error");

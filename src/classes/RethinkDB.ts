@@ -274,7 +274,7 @@ export class RethinkProvider {
   // Deletes a marriage
   async deleteUserMarriage(user: string) {
     await this.dblock;
-    return this.db.table("marriages").get(user).delete().run();
+    return this.db.table("marriages").getAll(user, { index: "marriages" }).delete().run();
   }
 
   /**
