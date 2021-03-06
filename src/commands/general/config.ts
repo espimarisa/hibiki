@@ -40,6 +40,7 @@ export class SetupCommand extends Command {
   aliases = ["cfg", "guildconfig", "serverconfig", "setup"];
   allowdisable = false;
   cooldown = 5000;
+  staff = true;
 
   async run(msg: Message<TextChannel>): Promise<void> {
     const localeEmojis = {};
