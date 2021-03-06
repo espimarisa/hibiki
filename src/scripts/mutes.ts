@@ -38,7 +38,7 @@ export class MuteHandler {
             });
 
             // Updates the mute cache
-            bot.db.deleteUserGuildMuteCache(guild.id, mute.member);
+            await bot.db.deleteUserGuildMuteCache(guild.id, mute.member);
             this.muteCache.splice(i);
 
             // Unmutes the member
@@ -47,7 +47,7 @@ export class MuteHandler {
             }
           }
         });
-      }, 1000);
+      }, 5000);
     }, 10000);
   }
 }

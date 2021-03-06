@@ -143,7 +143,7 @@ export class HandlerEvent extends Event {
       // Handles staff commands
       if (command.staff) {
         if (!msg.member?.permissions.has("administrator") && guildconfig?.staffRole && !msg.member?.roles.includes(guildconfig.staffRole)) {
-          return msg.createEmbed(string("global.ERROR"), string("global.ERROR_STAFFCOMMAND"), "error");
+          return msg.createEmbed(string("global.ERROR"), string("global.ERROR_STAFFCOMMAND", { command: command.name }), "error");
         }
       }
 

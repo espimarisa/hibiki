@@ -47,7 +47,6 @@ export class SoftbanCommand extends Command {
       )) as ResponseData;
 
       // If the ban was cancelled
-      if (typeof response?.response != "boolean") return;
       if (response?.response === false)
         return banmsg.editEmbed(
           msg.string("global.CANCELLED"),

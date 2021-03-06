@@ -111,7 +111,6 @@ export class ProfileCommand extends Command {
           )) as ResponseData;
 
           // If the user cancels deleting
-          if (typeof response?.response != "boolean") return;
           if (response?.response === false) {
             return omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.PROFILE_CANCELLED_DELETING"), "error");
           }
