@@ -46,7 +46,6 @@ export class KickCommand extends Command {
       )) as ResponseData;
 
       // If the kick was cancelled
-      if (typeof response?.response != "boolean") return;
       if (response?.response === false)
         return kickmsg.editEmbed(
           msg.string("global.CANCELLED"),
