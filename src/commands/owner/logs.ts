@@ -49,8 +49,8 @@ export class LogsCommand extends Command {
             : `**${(msg.timestamp / 1000 - log.date / 1000).toFixed(1)}** secs ago`;
 
         // Returns human readable logs
-        return `${logTime}: **${msg.tagUser(this.bot.users.get(log.authorID))}** ran **${log.cmdName}** in **${
-          this.bot.guilds.get(log.guildID).name
+        return `${logTime}: **${msg.tagUser(this.bot.users.get(log.authorID)) || log.authorID}** ran **${log.cmdName}** in **${
+          this.bot.guilds.get(log.guildID)?.name || log.guildID
         }** (${log.guildID}) ${log.args.length ? `:\`${log.args.join(" ")}\`` : ""}`;
       })
       .join("\n");
