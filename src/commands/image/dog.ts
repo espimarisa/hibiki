@@ -1,6 +1,5 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { resError } from "../../utils/exception";
 import axios from "axios";
 
 export class DogCommand extends Command {
@@ -10,9 +9,7 @@ export class DogCommand extends Command {
   allowdms = true;
 
   async run(msg: Message<TextChannel>) {
-    const body = await axios.get("https://random.dog/woof.json").catch((err) => {
-      resError(err);
-    });
+    const body = await axios.get("https://random.dog/woof.json").catch(() => {});
 
     if (!body || !body.data?.url) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");

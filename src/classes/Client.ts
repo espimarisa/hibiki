@@ -21,8 +21,7 @@ import { InviteHandler } from "../scripts/invites";
 import { MonitorHandler } from "../scripts/monitors";
 import { MuteHandler } from "../scripts/mutes";
 import { ReminderHandler } from "../scripts/reminders";
-import { startDashboard } from "../webserver/dashboard";
-import { startVoting } from "../webserver/voting";
+import { startDashboard } from "../webserver/index";
 import path from "path";
 import config from "../../config.json";
 import * as Sentry from "@sentry/node";
@@ -93,8 +92,7 @@ export class HibikiClient extends Client {
 
     // Starts webservers at first boot
     if (process.uptime() < 20) {
-      if (config.dashboard.port) await startDashboard(this);
-      if (config.keys.botlists.voting.auth && config.keys.botlists.voting.port) await startVoting(this);
+      if (config.dashboard.port) startDashboard(this);
     }
 
     this.log.info(`${this.commands.length} commands loaded`);

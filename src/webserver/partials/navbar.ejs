@@ -1,12 +1,3 @@
-<noscript>
-  <div class="notification">
-    <p>
-      In order for the server and profile manager to function properly, you need to enable JavaScript in your browser. Additionally, your ad
-      or tracker blocker may be blocking a script.
-    </p>
-  </div>
-</noscript>
-
 <div class="hero-head">
   <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
     <div class="container">
@@ -37,12 +28,12 @@
             <span class="icon"><em class="fab fa-discord"></em></span>
             <span>Support</span>
           </a>
-          <a href="https://translate.hibiki.app" class="navbar-item has-text-white">
+          <a href="/translate/" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-globe"></em></span>
             <span>Translate</span>
           </a>
           <% } else if (page === "servers") { %>
-          <a href="/login/" class="navbar-item has-text-white">
+          <a href="/auth/login/" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-sync"></em></span>
             <span>Refresh</span>
           </a>
@@ -64,7 +55,7 @@
             <img src="<%= user.avatar %>" class="is-rounded is-inline-block" alt="<%= user.username %>" />
             <span class="is-inline-block ml-2"><%= user.username %>#<%= user.discriminator %></span>
           </a>
-          <a href="/logout/" class="navbar-item has-text-white">
+          <a href="/auth/logout/" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-sign-out-alt"></em></span>
             <span>Logout</span>
           </a>

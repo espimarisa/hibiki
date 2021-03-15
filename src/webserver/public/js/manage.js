@@ -6,6 +6,8 @@
 
 "use strict";
 
+// I already miss typings
+// lmfao
 // Gets the csrf token
 const token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
@@ -106,9 +108,10 @@ window.addEventListener("load", async () => {
   [document.getElementById("prefix"), document.getElementById("joinMessage"), document.getElementById("leaveMessage")].forEach((d) => {
     d.addEventListener("input", (starget) => {
       const e = starget.target;
-      if (e.id === "prefix" && e.value.length > 15) e.value = e.value.substring(0, 15);
-      else if (e.id === "joinMessage" && e.value.length > 200) e.value = e.value.substring(0, 200);
-      else if (e.id === "leaveMessage" && e.value.length > 200) e.value = e.value.substring(0, 200);
+
+      if (e.id === "prefix" && e.value.length > fetchedItems.prefix.maximum /* || 15*/) e.value = e.value.substring(0, 15);
+      else if (e.id === "joinMessage" && e.value.length > (fetchedItems.joinMessage.maximum || 200)) e.value = e.value.substring(0, 200);
+      else if (e.id === "leaveMessage" && e.value.length > (fetchedItems.leaveMessage.maximum || 200)) e.value = e.value.substring(0, 200);
     });
   });
 

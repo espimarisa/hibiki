@@ -1,58 +1,61 @@
 /**
  * @file Auth routes
  * @description Routings for Discord authentication
- * @module dashboard/routes/auth
+ * @module webserver/routes/auth
  */
 
-import type { HibikiClient } from "../../classes/Client";
-import type { Request } from "express";
+import type { User } from "eris";
+import type { StrategyOptions } from "passport-discord";
 import { Strategy } from "passport-discord";
+import { destroySession } from "../../utils/auth";
 import express from "express";
-import passport from "passport";
 import rateLimit from "express-rate-limit";
-
-const router = express.Router();
+import passport from "passport";
+import config from "../../../config.json";
 const scope = ["identify", "guilds"];
+const router = express.Router();
 
-// Destroys a session
-const destroySession = (req: Request) => new Promise<void>((rs, rj) => req.session.destroy((e) => (e ? rj(e) : rs())));
-
-// Ratelimit for auth requests. 5 requests per minute.
 const authRateLimit = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 5,
-  message: "Too many authorization or deauthorization attempts in the past minute. Try again later.",
+  max: 15,
+  message: "Too many attempts to authenticate or deauthenticate in a short period of time. Try again later",
 });
 
-export = (bot: HibikiClient) => {
+export function authRoutes(user: User) {
+  // oAuth options
+  const strategyOptions: StrategyOptions = {
+    clientID: user.id,
+    clientSecret: config.dashboard.botSecret,
+    callbackURL: config.dashboard.redirectURI,
+    scope: scope,
+  };
+
   // Create a Discord passport
   passport.use(
-    new Strategy(
-      {
-        clientID: bot.user.id,
-        clientSecret: bot.config.dashboard.botSecret,
-        callbackURL: bot.config.dashboard.redirectURI,
-        scope: scope,
-      },
-      (_accessToken, _refreshToken, profile, done) => {
-        process.nextTick(() => {
-          return done(null, profile);
-        });
-      },
-    ),
+    new Strategy(strategyOptions, (_accessToken, _refreshToken, profile, done) => {
+      process.nextTick(() => {
+        return done(null, profile);
+      });
+    }),
   );
 
   // Authentication routes
-  router.get("/", authRateLimit, passport.authenticate("discord", { scope: scope }));
-  router.get("/callback/", authRateLimit, passport.authenticate("discord", { failureRedirect: "/auth/fail/" }), (_req, res) => {
-    res.redirect(301, "../manage/servers/");
-  });
+  router.get("/", passport.authenticate("discord", { scope: scope }));
+  router.get(
+    "/callback/",
+    authRateLimit,
+    passport.authenticate("discord", { failureRedirect: "/auth/fail/", successRedirect: "/manage/servers/" }),
+  );
 
-  // Logs the authed user out
+  // Logout handler; destroys the session
   router.get("/logout/", authRateLimit, async (req, res) => {
-    await destroySession(req).then(() => {
-      res.redirect(301, "/");
-    });
+    await destroySession(req)
+      .then(() => {
+        res.redirect(301, "/");
+      })
+      .catch(() => {
+        res.status(500).send({ error: "Failed to destroy the session data. Try clearing your cookies manually." });
+      });
   });
 
   // Login fail page; destroys the session
@@ -63,7 +66,7 @@ export = (bot: HibikiClient) => {
   });
 
   // Ratelimited page; destroys the session
-  router.get("/ratelimited/", authRateLimit, async (req, res) => {
+  router.get("/ratelimited/", async (req, res) => {
     await destroySession(req).then(() => {
       res.render("429");
     });
@@ -74,4 +77,4 @@ export = (bot: HibikiClient) => {
   passport.deserializeUser((user, done) => done(null, user));
 
   return router;
-};
+}
