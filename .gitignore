@@ -1,24 +1,14 @@
 # Configs
-cfg.js
-cfg.json
-config.js
 config.json
 application.yml
 
 # Binaries
-ffmpeg
-ffmpeg.exe
-ffplay
-ffplay.exe
-ffprobe
-ffprobe.exe
+*.exe
+*.jar
 rethinkdb
-rethinkdb.exe
-Lavalink
-Lavalink.jar
 
 # Modules
-src/webserver/public/css*
+src/webserver/public/css/
 .sass-cache
 dist/
 docs/
@@ -28,16 +18,12 @@ rethinkdb_data/
 
 # Logs & lockfiles
 .npm
-logs/*
-*-audit.json
 *.log
+*-audit.json
 npm
-npm-debug.log
-npm-error.log
 report.*
-yarn-debug.log
-yarn-error.log
 yarn.lock*
+logs/
 
 # Windows
 *.stackdump

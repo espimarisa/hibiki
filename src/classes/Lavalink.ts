@@ -80,8 +80,8 @@ export class Lavalink {
             },
           })
           .then((m) => {
-            setTimeout(() => {
-              m.delete();
+            setTimeout(async () => {
+              await m.delete().catch(() => {});
             }, 15000);
           });
       })

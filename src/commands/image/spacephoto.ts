@@ -1,6 +1,5 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { resError } from "../../utils/exception";
 import axios from "axios";
 
 export class SpacephotoCommand extends Command {
@@ -15,9 +14,7 @@ export class SpacephotoCommand extends Command {
     const omsg = await msg.createEmbed(`${msg.string("image.SPACEPHOTO")}`, msg.string("global.PLEASE_WAIT"));
 
     // Gets the image
-    const body = await axios.get(`https://images-api.nasa.gov/search?media_type=image&q=${query}`).catch((err) => {
-      resError(err);
-    });
+    const body = await axios.get(`https://images-api.nasa.gov/search?media_type=image&q=${query}`).catch(() => {});
 
     if (!body || !body.data?.collection?.items) {
       return omsg.editEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");

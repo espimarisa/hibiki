@@ -283,7 +283,7 @@ export async function askForValue(
       // Updates configs
       if (category === "profile") await bot.db.updateUserConfig(msg.author.id, config);
       else await bot.db.updateGuildConfig(msg.channel.guild.id, config);
-      m.delete();
+      await m.delete().catch(() => {});
 
       // Formats result names
       if (setting.type === "roleID") resultName = msg.channel.guild.roles.get(result)?.name || result;

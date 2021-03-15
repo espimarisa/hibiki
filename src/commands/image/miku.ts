@@ -1,7 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { blacklistedTags, videoFileRegex } from "../../helpers/constants";
-import { resError } from "../../utils/exception";
 import axios from "axios";
 
 export class MikuCommand extends Command {
@@ -13,9 +12,7 @@ export class MikuCommand extends Command {
   async run(msg: Message<TextChannel>) {
     const body = await axios
       .get("https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1&tags=hatsune_miku%20rating:safe")
-      .catch((err) => {
-        resError(err);
-      });
+      .catch(() => {});
 
     // If nothing was found
     if (!body || !body.data?.[0]?.image || !body.data?.[0]?.directory) {

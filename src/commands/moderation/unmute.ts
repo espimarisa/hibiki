@@ -38,7 +38,7 @@ export class UnmuteCommand extends Command {
     const mutecache = await this.bot.db.getUserGuildMuteCache(msg.channel.guild.id, member.id);
     const failed: string[] = [];
 
-    if (mutecache) {
+    if (mutecache?.roles?.length) {
       mutecache.roles.forEach(async (role) => {
         try {
           await msg.channel.guild.addMemberRole(member.id, role, `Unmuted by ${msg.tagUser(msg.author, true)}`);

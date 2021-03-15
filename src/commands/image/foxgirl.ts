@@ -1,7 +1,6 @@
 import type { NekosLifeImage } from "../../typings/endpoints";
 import type { Message } from "eris";
 import { Command } from "../../classes/Command";
-import { resError } from "../../utils/exception";
 import axios from "axios";
 
 export class FoxgirlCommand extends Command {
@@ -11,9 +10,7 @@ export class FoxgirlCommand extends Command {
   allowdms = true;
 
   async run(msg: Message) {
-    const body = (await axios.get("https://nekos.life/api/v2/img/fox_girl").catch((err) => {
-      resError(err);
-    })) as NekosLifeImage;
+    const body = (await axios.get("https://nekos.life/api/v2/img/fox_girl").catch(() => {})) as NekosLifeImage;
 
     if (!body || !body.data?.url) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");

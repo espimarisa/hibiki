@@ -1,7 +1,6 @@
 import type { NekobotImage } from "../../typings/endpoints";
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { resError } from "../../utils/exception";
 import axios from "axios";
 
 export class ThighhentaiCommand extends Command {
@@ -12,9 +11,7 @@ export class ThighhentaiCommand extends Command {
   nsfw = true;
 
   async run(msg: Message<TextChannel>) {
-    const body = (await axios.get("https://nekobot.xyz/api/image?type=hthigh").catch((err) => {
-      resError(err);
-    })) as NekobotImage;
+    const body = (await axios.get("https://nekobot.xyz/api/image?type=hthigh").catch(() => {})) as NekobotImage;
 
     if (!body || !body.data?.message) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");

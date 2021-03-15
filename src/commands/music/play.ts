@@ -25,6 +25,11 @@ export class PlayCommand extends Command {
       selfDeafen: true,
     });
 
+    // NOTE: This may not be an actual fix for the weird RangeError we're getting.
+    if (!player?.voiceChannel) {
+      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ERROR_VOICE", { command: this.name }), "error");
+    }
+
     // Searches for the query
     const res = await this.bot.lavalink.manager.search({ query: query }, msg.author);
     player.connect();
@@ -181,8 +186,8 @@ export class PlayCommand extends Command {
             },
           })
           .then((m) => {
-            setTimeout(() => {
-              m.delete();
+            setTimeout(async () => {
+              await m.delete().catch(() => {});
             }, 10000);
           });
 

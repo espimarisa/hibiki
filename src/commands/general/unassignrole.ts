@@ -1,4 +1,4 @@
-import type { EmbedField, Message, Role, TextChannel } from "eris";
+import type { EmbedField, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { itemExists } from "../../utils/itemExists";
 
@@ -38,14 +38,11 @@ export class UnassignroleCommand extends Command {
       args
         .join(" ")
         .split(/(?:\s{0,},\s{0,})|\s/)
-        .map(async (role: string | Role) => {
-          role = msg.channel.guild.roles.find(
-            (r) => r.id === role || r.name.toLowerCase().startsWith(role as string) || role === `<@&${role}>`,
-          );
-
-          if (!role) return { removed: false, role: role };
-          if (!msg.member.roles.includes(role.id)) return { removed: false, role: undefined };
-          if (!guildconfig.assignableRoles.includes(role.id)) return { removed: false, role: undefined };
+        .map(async (arg: string) => {
+          const role = this.bot.args.argtypes.role(arg, msg);
+          if (!role) return { added: false, role: undefined };
+          if (!msg.member.roles?.includes(role.id)) return { added: false, role: role, doesntHave: true };
+          if (!guildconfig.assignableRoles?.includes(role.id)) return { added: false, role: role };
 
           try {
             // Removes the role
@@ -59,6 +56,11 @@ export class UnassignroleCommand extends Command {
 
     // Finds roles that exist in args
     roles = roles.filter((role) => role.role !== undefined);
+
+    // If the member already has every role
+    if (roles.every((r) => r.doesntHave === true)) {
+      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ROLE_DOESNTHAVE", { amount: roles.length }), "error");
+    }
 
     // If no roles were added; finds failed roles
     if (!roles.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.ASSIGN_NOROLES"), "error");

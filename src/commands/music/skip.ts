@@ -21,8 +21,8 @@ export class SkipCommand extends Command {
     msg
       .createEmbed(`🎶 ${msg.string("music.SKIPPED")}`, msg.string("music.SKIP_DESCRIPTION", { title: player.queue.current?.title }))
       .then((m) => {
-        setTimeout(() => {
-          m.delete();
+        setTimeout(async () => {
+          await m.delete().catch(() => {});
         }, 10000);
       });
   }

@@ -14,8 +14,7 @@ export class MessageUpdate extends Logger {
   events = ["messageUpdate", "messageDelete"];
 
   async run(event: string, msg: Message<TextChannel>, oldmsg: Message<TextChannel>) {
-    if (!msg || !msg.author) return;
-    if (msg.author.id === this.bot.user.id) return;
+    if (!msg?.channel?.guild?.id || !msg.author || msg?.author?.id === this.bot.user.id) return;
     const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
     if (!guildconfig?.logBotMessages && msg.author.bot) return;
     const string = this.bot.localeSystem.getLocaleFunction(

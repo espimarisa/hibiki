@@ -1,7 +1,8 @@
 {
   "env": {
     "es6": true,
-    "amd": true
+    "amd": true,
+    "browser": true
   },
 
   "root": true,
@@ -82,7 +83,7 @@
 
       // Enable if you need jsx support
       // "parserOptions": {
-      // "ecmaFeatures": { "jsx": true }
+      //   "ecmaFeatures": { "jsx": true }
       // },
 
       "rules": {

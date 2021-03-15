@@ -1,4 +1,4 @@
-import type { Message, Role, TextChannel } from "eris";
+import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 
 export class RemoveassignableCommand extends Command {
@@ -10,20 +10,22 @@ export class RemoveassignableCommand extends Command {
   staff = true;
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
-    const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
     const roles: string[] = [];
+    let guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);
+    if (!guildconfig) {
+      await this.bot.db.insertBlankGuildConfig(msg.channel.guild.id);
+      guildconfig = { id: msg.channel.guild.id };
+    }
 
     // Tries to remove each role
     args
       .join(" ")
       .split(/(?:\s{0,},\s{0,})|\s/)
-      .forEach(async (role: string | Role) => {
-        role = msg.channel.guild.roles.find(
-          (r) => r.id === role || r.name.toLowerCase().startsWith(role as string) || role === `<@&${role}>`,
-        );
-
+      .forEach(async (arg: string) => {
+        const role = this.bot.args.argtypes.role(arg, msg);
         if (!role) return;
-        if (!guildconfig?.assignableRoles?.includes(role.id)) return;
+        if (!guildconfig?.assignableRoles?.length) guildconfig.assignableRoles = [];
+        if (!guildconfig?.assignableRoles?.includes?.(role.id)) return;
 
         // Removes the role from the config
         const index = guildconfig?.assignableRoles?.indexOf(role.id);
