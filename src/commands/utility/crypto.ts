@@ -1,7 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { createCanvas } from "canvas";
 import { Command } from "../../classes/Command";
-import { resError } from "../../utils/exception";
 import { dateFormat } from "../../utils/format";
 import axios from "axios";
 
@@ -30,9 +29,7 @@ export class CryptoCommand extends Command {
     // Finds the valid currency, defaults to Bitcoin
     let currency = currencies.find((c: Record<string, string>) => c.id === coin || c.symbol === coin || c.name.toLowerCase() === coin);
     if (!currency?.id) currency = { id: "bitcoin", name: "Bitcoin" };
-    const body = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${currency.id}&${options}`).catch((err) => {
-      resError(err);
-    });
+    const body = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${currency.id}&${options}`).catch(() => {});
 
     // If nothing is found
     if (!body || !body.data?.[currency?.id]) {

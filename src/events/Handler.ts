@@ -198,12 +198,12 @@ export class HandlerEvent extends Event {
 
       // Sends if the bot can't send messages in a channel or guild
       if (!msg.channel.permissionsOf(this.bot.user.id).has("sendMessages") || !botPerms?.has("sendMessages")) {
-        return dmChannel.createMessage(string("global.ERROR_SENDPERMS", { channel: `<#${msg.channel.id}>` }));
+        return dmChannel.createMessage(string("global.ERROR_SENDPERMS", { channel: `<#${msg.channel.id}>` })).catch(() => {});
       }
 
       // Sends if the bot can't embed messages in a channel or guild
       if (!msg.channel.permissionsOf(this.bot.user.id).has("embedLinks") || !botPerms.has("embedLinks")) {
-        return dmChannel.createMessage(string("global.ERROR_EMBEDPERMS", { channel: `<#${msg.channel.id}>` }));
+        return dmChannel.createMessage(string("global.ERROR_EMBEDPERMS", { channel: `<#${msg.channel.id}>` })).catch(() => {});
       }
 
       // Handles clientPerms

@@ -1,33 +1,23 @@
 /**
- * @file Voting webserver
- * @description Webserver for voting rewards
- * @module webserver/voting
+ * @file Voting routes
+ * @description Routings for voting and votingRewards
+ * @module webserver/routes/voting
  */
 
-import type { HibikiClient } from "../classes/Client";
-import { convertHex } from "../helpers/embed";
+import type { HibikiClient } from "../../classes/Client";
+import { convertHex } from "../../helpers/embed";
 import express from "express";
-import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+const router = express.Router();
 
-// Voting handler ratelimit
 const votingRateLimit = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 10,
-  message: "Too many voting requests in the past minute. Try again later.",
+  max: 30,
+  message: "Too many voting requests in a short period of time.",
 });
 
-const app = express();
-app.enable("trust proxy");
-app.use(express.json());
-app.use(helmet());
-app.use(votingRateLimit);
-
-export async function startVoting(bot: HibikiClient) {
-  if (!bot.config.keys.botlists.voting.auth || !bot.config.keys.botlists.voting.port) return;
-
-  app.post("/voteReceive", async (req, res) => {
-    // Sends if unauthorized
+export function votingRoutes(bot: HibikiClient) {
+  router.post("/get/", votingRateLimit, async (req, res) => {
     if (req.headers.authorization !== bot.config.keys.botlists.voting.auth) {
       if (req.headers.authorization?.length || !req.headers.authorization) {
         bot.log.warn(`${req.socket.remoteAddress} tried to make a request with the wrong auth key.`);
@@ -45,9 +35,9 @@ export async function startVoting(bot: HibikiClient) {
     }
 
     // Sets amount; if weekend give 300
-    let amnt = cookies.amount + 150;
-    if (req.body.isWeekend) amnt += 150;
-    cookies = { id: req.body.user, amount: amnt, lastclaim: cookies.lastclaim };
+    let amount = cookies.amount + 150;
+    if (req.body.isWeekend) amount += 150;
+    cookies = { id: req.body.user, amount: amount, lastclaim: cookies.lastclaim };
 
     // Updates db
     await bot.db.updateUserCookies(req.body.user, cookies);
@@ -83,11 +73,7 @@ export async function startVoting(bot: HibikiClient) {
 
     // Logs when a user votes
     bot.log.info(`${user ? user.username : req.body.user} has voted.`);
-    res.sendStatus(200);
   });
 
-  // Listens on port
-  app.listen(bot.config.keys.botlists.voting.port, "0.0.0.0", async () => {
-    bot.log.info(`Voting handler listening on port ${bot.config.keys.botlists.voting.port}`);
-  });
+  return router;
 }

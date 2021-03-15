@@ -64,8 +64,7 @@
           <%# Gets validItems categories %>
           <% function getCategoryHTML(category) {
             switch(category) {
-              case "features":
-              %>
+              case "features": %>
               <h2 class="title is-size-2" id="general"><em class="fas fa-cog mr-2"></em>General</h2>
               <p class="subtitle is-size-4">Basic options and functionality to configure.</p>
               <% break;
@@ -98,33 +97,39 @@
               <p class="subtitle is-size-4">Configures certain music options.</p>
               <% break;
             }
-
           } %>
 
 
           <%# Things to get %>
           <% let cats = {};
+
+          // Gets text channels that the bot has permissions for
           let channels = bot.guilds.get(guild.id).channels.map(c => ({name: c.name, id: c.id, type: c.type}));
           channels = channels.filter(c => c.type === 0);
           channels = channels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).permissionsOf(bot.user.id).has("sendMessages"));
+
+          // Gets voice channels that the bot has permission to speak in
           let voiceChannels = bot.guilds.get(guild.id).channels.map(c => ({name: c.name, id: c.id, type: c.type}));
           voiceChannels = voiceChannels.filter(c => c.type === 2);
           voiceChannels = voiceChannels.filter(c => bot.guilds.get(guild.id).channels.get(c.id).permissionsOf(bot.user.id).has("voiceSpeak"));
+
+          // Gets roles that aren't @everyone or managed
           let roles = bot.guilds.get(guild.id).roles.map(r => ({name: r.name, managed: r.managed, color: r.color.toString(16), id: r.id}));
           roles.splice(roles.find(r => r.name === "@everyone"), 1);
           roles = roles.filter(r => !r.managed);
 
           items.forEach(item => {
-            if(item.category === "profile" || item.id === "disabledCategories") return;
-            if(cats[item.category]) cats[item.category].push(item);
+            // Ignores profile and disabledCategories (profile is managed sep; disabledCats is managed by disabledCmds)
+            if (item.category === "profile" || item.id === "disabledCategories") return;
+            if (cats[item.category]) cats[item.category].push(item);
             else cats[item.category] = [item];
           });
 
           // Goes thru each item in a category
-          Object.keys(cats).forEach(cat => {
-            %>
+          Object.keys(cats).forEach(cat => { %>
             <%= getCategoryHTML(cat); %>
             <% cats[cat].forEach(item => { %>
+
             <%# Booleans %>
             <% if (item.type === "bool") { %>
               <div class="field">
@@ -135,11 +140,11 @@
                 <div id="<%= item.id %>" class="control">
                   <label class="radio">
                     <%# Enabled %>
-                    <input id=<%= `${item.id}_ON` %> type="radio" name="<%= item.id %>"<%=cfg && (cfg[item.id] === true || (!cfg[item.id] && item.default === true)) ? " checked" : ""%>> Enabled </input>
+                    <input id="<%= `${item.id}_ON` %>" type="radio" name="<%= item.id %>"<%= cfg?.[item.id] === true || (!cfg?.[item.id] && item.default === true) ? " checked" : ""%>> Enabled </input>
                   </label>
                   <%# Disabled %>
                   <label class="radio">
-                    <input id=<%= `${item.id}_OFF` %> type="radio" name="<%= item.id %>"<%=cfg && (cfg[item.id] === false || (!cfg[item.id] && item.default === false)) ? " checked" : ""? " checked" : ""%>> Disabled </input>
+                    <input id="<%= `${item.id}_OFF` %>" type="radio" name="<%= item.id %>"<%=cfg?.[item.id] === false || (!cfg?.[item.id] && item.default === false) ? " checked" : ""%>> Disabled </input>
                   </label>
                 </div>
               </div>
@@ -168,8 +173,7 @@
                       <select>
                         <option id="none">None</option>
                         <% for (let i = 0; i < channels.length; i++) { %>
-                        <% let channel = channels[i] %>
-                        <option id=<%= channel.id %>>#<%= channel.name %></option>
+                        <option id="<%= channels[i].id %>">#<%= channels[i].name %></option>
                         <% } %>
                       </select>
                     </div>
@@ -188,8 +192,7 @@
                       <select>
                         <option id="none">None</option>
                         <% for (let i = 0; i < voiceChannels.length; i++) { %>
-                        <% let channel = voiceChannels[i] %>
-                        <option id=<%= channel.id %>>#<%= channel.name %></option>
+                        <option id="<%= voiceChannels[i].id %>">#<%= voiceChannels[i].name %></option>
                         <% } %>
                       </select>
                     </div>
@@ -208,8 +211,7 @@
                       <select>
                         <option id="none">None</option>
                         <% for (let i = 0; i < roles.length; i++) { %>
-                        <% let role = roles[i] %>
-                        <option <%= `style=color:#${role.color}` %> id=<%=role.id%>><%= role.name %></option>
+                        <option id="<%= roles[i].id %>">#<%= roles[i].name %></option>
                         <% } %>
                       </select>
                     </div>
@@ -224,9 +226,9 @@
                   <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
                   <div class="control">
                     <div id="<%= item.id %>" class="select">
-                      <select id=<%= `${item.id}_Select` %>>
+                      <select id="<%= `${item.id}_Select` %>">
                         <% for (let i = item.minimum; i <= (item.maximum ? item.maximum : (item.minimum + (item.minimum === 1 ? 9 : 10))); i++) { %>
-                          <option<%= cfg && (cfg[item.id] ? cfg[item.id] === i : item.default === i) ? " selected" : "" %>><%= i %></option>
+                          <option "<%= cfg?.[item.id] ? cfg?.[item.id] === i : item.default === i ? "selected" : "" %>"><%= i %></option>
                         <% } %>
                       </select>
                     </div>
@@ -242,9 +244,8 @@
                   <div class="control">
                     <div id="<%= item.id %>" class="select">
                       <select>
-                        <%
-                        Object.keys(locales).forEach(locale => { %>
-                          <option <%= (cfg && cfg[item.id] ? cfg[item.id] === locale : locale === item.default) ? "selected " : "" %>id="<%= locale %>"><%= locales[locale] %></option>
+                        <% Object.keys(locales).forEach((locale) => { %>
+                          <option <%= (cfg?.[item.id] ? cfg[item.id] === locale : locale === item.default) ? "selected " : "" %> id="<%= locale %>"><%= locales[locale] %></option>
                         <% }) %>
                       </select>
                     </div>
@@ -257,11 +258,11 @@
                 <div class="field">
                   <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
                   <div id="<%= item.id %>" class="control">
-                    <input id=<%= `${item.id}_Purge` %> type="checkbox"<%= cfg && cfg[item.id] && cfg[item.id].includes("Purge") ? " checked" : "" %>> Delete message</input>
+                    <input id="<%= `${item.id}_Purge` %>" type="checkbox"<%= cfg?.[item?.id]?.includes("Purge") ? " checked" : "" %>> Delete message</input>
                     <br>
-                    <input id=<%= `${item.id}_Mute` %> type="checkbox"<%= cfg && cfg[item.id] && cfg[item.id].includes("Mute") ? " checked" : "" %>> Mute the member </input>
+                    <input id="<%= `${item.id}_Mute` %>" type="checkbox"<%= cfg?.[item?.id]?.includes("Mute") ? " checked" : "" %>> Mute the member </input>
                     <br>
-                    <input id=<%= `${item.id}_Warn` %> type="checkbox"<%= cfg && cfg[item.id] && cfg[item.id].includes("Warn") ? " checked" : "" %>> Warn the member</input>
+                    <input id="<%= `${item.id}_Warn` %>" type="checkbox"<%= cfg?.[item?.id]?.includes("Warn") ? " checked" : "" %>> Warn the member</input>
                     </label>
                   </div>
                 </div>
@@ -273,11 +274,11 @@
                   <p class="title is-size-4"><%= localizeItem(item.id, true) %></p>
                   <p class="subtitle is-size-5"><%= localizeItem(item.id) %></p>
                   <div id="<%= item.id %>" class="control">
-                    <input id=<%= `${item.id}_Ban` %> type="checkbox"<%= cfg && cfg[item.id] && cfg[item.id].includes("Ban") ? " checked" : "" %>> Ban the member</input>
+                    <input id="<%= `${item.id}_Ban` %>" type="checkbox"<%= cfg?.[item?.id]?.includes("Ban") ? " checked" : "" %>> Ban the member</input>
                     <br>
-                    <input id=<%= `${item.id}_Kick` %> type="checkbox"<%= cfg && cfg[item.id] && cfg[item.id].includes("Kick") ? " checked" : "" %>> Kick the member </input>
+                    <input id="<%= `${item.id}_Kick` %>" type="checkbox"<%= cfg?.[item?.id]?.includes("Kick") ? " checked" : "" %>> Kick the member </input>
                     <br>
-                    <input id=<%= `${item.id}_Mute` %> type="checkbox"<%= cfg && cfg[item.id] && cfg[item.id].includes("Mute") ? " checked" : "" %>> Mute the member</input>
+                    <input id="<%= `${item.id}_Mute` %>" type="checkbox"<%= cfg?.[item?.id]?.includes("Mute") ? " checked" : "" %>> Mute the member</input>
                     </label>
                   </div>
                 </div>
@@ -302,8 +303,7 @@
                     <div id="<%= item.id %>" class="select">
                       <select id="<%= `multi${item.id}` %>" class="multiple-select">
                         <% for (let i = 0; i < roles.length; i++) { %>
-                        <% let role = roles[i] %>
-                        <option><%= role.name %> (<%= role.id %>)</option>
+                        <option><%= roles[i].name %> (<%= roles[i].id %>)</option>
                         <% } %>
                       </select>
                     </div>
@@ -320,8 +320,7 @@
                     <div id="<%= item.id %>" class="select">
                       <select id="<%= `multi${item.id}` %>" class="multiple-select">
                         <% for (let i = 0; i < channels.length; i++) { %>
-                        <% let channel = channels[i] %>
-                        <option><%= channel.name %> (<%= channel.id %>)</option>
+                        <option><%= channels[i].name %> (<%= channels[i].id %>)</option>
                         <% } %>
                       </select>
                     </div>
@@ -352,10 +351,10 @@
     <%- include("../partials/footer") %>
   </body>
 
-  <script src="/public/js/navbar.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bulmaselect@1.0.12/dist/bulmaselect.min.js" crossorigin="anonymous"></script>
-  <script src="/public/js/imageClick.js"></script>
-  <script src="/public/js/manage.js"></script>
-  <script src="/public/js/modal.js"></script>
-  <script src="/public/js/picker.js" type="module"></script>
+  <script src="/public/js/navbar.js" nonce="<%= nonce %>"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bulmaselect@1.0.12/dist/bulmaselect.min.js" crossorigin="anonymous" nonce="<%= nonce %>"></script>
+  <script src="/public/js/imageClick.js" nonce="<%= nonce %>"></script>
+  <script src="/public/js/manage.js" nonce="<%= nonce %>"></script>
+  <script src="/public/js/modal.js" nonce="<%= nonce %>"></script>
+  <script src="/public/js/picker.js" type="module" nonce="<%= nonce %>"></script>
 </html>

@@ -1,7 +1,7 @@
 /**
  * @file Imageclick Cycler
  * @description Cycles through images on click
- * @module webserver/public/imageClick.js
+ * @module webserver/public/imageClick
  */
 
 "use strict";

@@ -1,34 +1,24 @@
 /**
  * @file Index routes
  * @description Routings for the index page and it's redirects
- * @module dashboard/routes/index
+ * @module webserver/routes/index
  */
 
 import type { Profile } from "passport-discord";
 import type { HibikiClient } from "../../classes/Client";
-import { defaultAvatar } from "../../helpers/constants";
+import { getAuthedUser } from "../../utils/auth";
 import express from "express";
 import rateLimit from "express-rate-limit";
 const router = express.Router();
 
-// Ratelimit for index requests. Very loose, but it's here just in case some idiot tries to spam getAuthedUser.
-const indexAuthLimit = rateLimit({
+const indexRateLimit = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 30,
-  message: "Too many requests in the past minute. Try again later.",
+  max: 50,
+  message: "Too many requests in a short period of time.",
 });
 
-export = (bot: HibikiClient) => {
-  // Gets authed user's info
-  const getAuthedUser = (user: Profile) => ({
-    username: user.username,
-    discriminator: user.discriminator,
-    guilds: user.guilds,
-    id: user.id,
-    avatar: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128` : defaultAvatar,
-  });
-
-  router.get("/", indexAuthLimit, (req, res) => {
+export function indexRoutes(bot: HibikiClient) {
+  router.get("/", indexRateLimit, async (req, res) => {
     res.render("index", {
       bot: bot,
       page: req.url,
@@ -36,45 +26,46 @@ export = (bot: HibikiClient) => {
     });
   });
 
-  // Login redirection
-  router.get("/login/", (req, res) => {
-    res.redirect(301, "/auth/");
-  });
-
-  // Logout redirection
-  router.get("/logout/", (req, res) => {
-    res.redirect(301, "/auth/logout");
-  });
-
   // Donate redirection
-  router.get("/donate/", (req, res) => {
+  router.get("/donate/", async (_req, res) => {
     res.redirect(301, `https://ko-fi.com/sysdotini`);
   });
 
   // Invite redirection
-  router.get("/invite/", (req, res) => {
+  router.get("/invite/", async (_req, res) => {
     res.redirect(301, `https://discordapp.com/oauth2/authorize?&client_id=${bot.user.id}&scope=bot&permissions=1581116663`);
   });
 
   // Support redirection
-  router.get("/support/", (req, res) => {
+  router.get("/support/", async (_req, res) => {
     res.redirect(301, "https://discord.gg/gZEj4sM");
   });
 
+  // Translate redirection
+  router.get("/translate/", async (_req, res) => {
+    res.redirect(301, "https://translate.hibiki.app");
+  });
+
   // GitHub redirection
-  router.get("/github/", (req, res) => {
+  router.get("/github/", async (_req, res) => {
     res.redirect(301, "https://github.com/sysdotini/hibiki");
   });
 
   // Privacy redirection
-  router.get("/privacy/", (req, res) => {
+  router.get("/privacy/", async (_req, res) => {
     res.redirect(301, "https://github.com/sysdotini/hibiki/blob/main/.github/PRIVACY_POLICY.md");
   });
 
   // Voting redirection
-  router.get("/vote/", (req, res) => {
+  router.get("/vote/", async (_req, res) => {
     res.redirect(301, "https://top.gg/bot/493904957523623936/vote");
   });
 
+  // robots.txt
+  router.get("/robots.txt", async (_req, res) => {
+    res.type("text/plain");
+    res.send("User-agent: *\nCrawl-delay: 5\nDisallow: /public/\nDisallow: /auth/");
+  });
+
   return router;
-};
+}

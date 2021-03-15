@@ -5,10 +5,9 @@
     <meta content="https://hibiki.app" property="og:url" />
     <meta content="<%= bot.user.username %>" property="og:title" />
     <meta content="<%= bot.user.username %>" name="twitter:title" />
-    <meta content="The best all-in-one Discord bot! Automod, fun, music, utilities, and more. Customizable, easy-to-use, and fully translatable." name="description" />
-    <meta content="The best all-in-one Discord bot! Automod, fun, music, utilities, and more. Customizable, easy-to-use, and fully translatable." property="og:description" />
-    <meta content="The best all-in-one Discord bot! Automod, fun, music, utilities, and more. Customizable, easy-to-use, and fully translatable." name="twitter:description" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" />
+    <meta content="The best all-in-one Discord bot! Automod, fun, music, utilities, and more." name="description" />
+    <meta content="The best all-in-one Discord bot! Automod, fun, music, utilities, and more." property="og:description" />
+    <meta content="The best all-in-one Discord bot! Automod, fun, music, utilities, and more." name="twitter:description" />
     <title><%= bot.user.username %></title>
   </head>
 
@@ -16,7 +15,7 @@
     <%- include("../partials/navbar") %>
     <div class="hero-body">
       <div class="container has-text-centered animate__animated animate__fadeIn animate__faster">
-        <img src="<%= bot.user.dynamicAvatarURL("jpeg", 512) %>" id="logo" alt="<%= bot.user.username %>" width="300" height="300" />
+        <img src="<%= bot.user.dynamicAvatarURL("png", 512) %>" id="logo" alt="<%= bot.user.username %>" width="300" height="300" />
         <p class="is-size-2 has-text-weight-semibold has-text-light"><%= bot.user.username %></p>
         <p class="control has-text-centered">
           <%# The button will look slightly off on phones. https://github.com/jgthms/bulma/issues/1572 %>
@@ -56,5 +55,5 @@
   </section>
 
   <%- include("../partials/about") %> <%- include("../partials/footer") %>
-  <script src="/public/js/navbar.js"></script>
+  <script src="/public/js/navbar.js" nonce="<%= nonce %>"></script>
 </html>

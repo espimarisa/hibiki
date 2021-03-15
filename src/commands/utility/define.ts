@@ -1,6 +1,5 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { resError } from "../../utils/exception";
 import axios from "axios";
 
 export class DefineCommand extends Command {
@@ -14,9 +13,7 @@ export class DefineCommand extends Command {
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[], args: string[]) {
     const word = encodeURIComponent(args.join(" "));
     const key = this.bot.config.keys.dictionary;
-    const body = await axios.get(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${key}`).catch((err) => {
-      resError(err);
-    });
+    const body = await axios.get(`https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${key}`).catch(() => {});
 
     // If nothing is found
     if (!body || !body.data || !body.data?.[0]?.meta) {

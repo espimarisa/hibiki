@@ -332,6 +332,8 @@
   },
 
   "global": {
+    "ROLE_DOESNTHAVE": "You don't have {amount:#those roles#!that role!}.",
+    "ROLE_ALREADYHAS": "You already have {amount:#those roles#!that role!}.",
     "MEMBER_SAID": "{member} said...",
     "ACCOUNT_AGE": "Account Age",
     "ALL": "all",
