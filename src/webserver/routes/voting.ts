@@ -73,6 +73,7 @@ export function votingRoutes(bot: HibikiClient) {
 
     // Logs when a user votes
     bot.log.info(`${user ? user.username : req.body.user} has voted.`);
+    res.sendStatus(200);
   });
 
   return router;
