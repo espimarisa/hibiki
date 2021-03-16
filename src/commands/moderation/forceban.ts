@@ -11,7 +11,7 @@ export class ForcebanCommand extends Command {
   clientperms = ["banMembers"];
   requiredperms = ["banMembers"];
   args = "<userID:string>";
-  aliases = ["fb"];
+  aliases = ["fb", "hackban"];
   staff = true;
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
