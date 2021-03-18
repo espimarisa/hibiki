@@ -26,6 +26,9 @@ export class TranslateCommand extends Command {
     } else if (args[0].toLowerCase().startsWith("br")) {
       locale = "pt";
       args.shift();
+    } else if (args[0].toLowerCase().startsWith("gb") || args[0].toLowerCase().startsWith("us")) {
+      locale = "en";
+      args.shift();
     }
 
     // Adjusts locale
