@@ -21,10 +21,23 @@ export class EasyTranslate extends Event {
     if (!/[A-Z]{2}/.test(lang)) return;
 
     // Fixes some other languages
-    if (lang === "CZ") lang = "CS";
-    if (lang === "JP") lang = "JA";
-    else if (lang === "SE") lang = "SV";
-    else if (lang === "BR") lang = "PT";
+    switch (lang) {
+      case "CZ":
+        lang = "CS";
+        break;
+      case "JP":
+        lang = "JA";
+        break;
+      case "SE":
+        lang = "SV";
+        break;
+      case "BR":
+        lang = "PT";
+        break;
+      case "GB":
+      case "US":
+        lang = "EN";
+    }
 
     const cfg = await this.bot.db.getGuildConfig(msg.channel.guild.id);
     if (cfg?.easyTranslate === false) return;
