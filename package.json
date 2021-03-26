@@ -36,7 +36,7 @@
     "test": "tsc && eslint ."
   },
   "dependencies": {
-    "@sentry/node": "^6.2.2",
+    "@sentry/node": "^6.2.3",
     "@sysdotini/erela.js-spotify": "^1.2.4",
     "canvas": "^2.7.0",
     "cookie-parser": "^1.4.5",
