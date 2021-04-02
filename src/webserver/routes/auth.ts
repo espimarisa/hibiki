@@ -7,7 +7,7 @@
 import type { User } from "eris";
 import type { StrategyOptions } from "passport-discord";
 import { Strategy } from "passport-discord";
-import { destroySession } from "../../utils/auth";
+import { destroySession } from "../../utils/webserver";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import passport from "passport";
@@ -68,7 +68,7 @@ export function authRoutes(user: User) {
   // Ratelimited page; destroys the session
   router.get("/ratelimited/", async (req, res) => {
     await destroySession(req).then(() => {
-      res.render("429");
+      res.render("ratelimited");
     });
   });
 

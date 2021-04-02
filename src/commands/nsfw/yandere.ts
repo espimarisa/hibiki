@@ -1,6 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { blacklistedTags, videoFileRegex } from "../../helpers/constants";
+import { blacklistedTags, videoFileRegex } from "../../utils/constants";
 import axios from "axios";
 
 export class YandereCommand extends Command {

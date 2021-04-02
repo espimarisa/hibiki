@@ -3,8 +3,8 @@
     <div class="container">
       <div class="navbar-brand">
         <a href="/" class="navbar-item has-text-white">
-          <img src="<%= bot.user.dynamicAvatarURL(null, 32) %>" class="is-rounded" alt="<%= bot.user.username %>" width="28" height="28" />
-          <span class="is-inline-block ml-2"><%= bot.user.username %> </span>
+          <img src="{{ botAvatar }}?size=64" class="is-rounded" alt="{{ bot.user.username }}" width="28" height="28" />
+          <span class="is-inline-block ml-2">{{ bot.user.username }}</span>
         </a>
         <a class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu" role="button">
           <span aria-hidden="true" class="has-text-white"></span>
@@ -14,59 +14,73 @@
       </div>
       <div class="navbar-menu" id="navMenu">
         <div class="navbar-start">
-          <% if (page === "/") { %> <% if (user) { %>
+          <!-- Index page -->
+          {% if page == "/" %}
+
+          <!-- If the user is logged in -->
+          {% if user %}
           <a href="/manage/servers" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-wrench"></em></span>
-            <span>Dashboard</span>
+            <span>{{ locales.web.DASHBOARD }}</span>
           </a>
-          <% } %>
+          {% endif %}
+
+          <!-- Useful links -->
           <a href="/donate/" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-heart"></em></span>
-            <span>Donate</span>
+            <span>{{ locales.web.DONATE }}</span>
           </a>
           <a href="/support/" class="navbar-item has-text-white">
             <span class="icon"><em class="fab fa-discord"></em></span>
-            <span>Support</span>
+            <span>{{ locales.web.SUPPORT }}</span>
           </a>
           <a href="/translate/" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-globe"></em></span>
-            <span>Translate</span>
+            <span>{{ locales.web.TRANSLATE }}</span>
           </a>
-          <% } else if (page === "servers") { %>
+
+          <!-- Servers page -->
+          {% elsif page == "servers" %}
           <a href="/auth/login/" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-sync"></em></span>
-            <span>Refresh</span>
+            <span>{{ locales.web.REFRESH }}</span>
           </a>
-          <% } else if (page === "manage") { %>
+
+          <!-- Manage page -->
+          {% elsif page == "manage" %}
           <a href="/manage/servers" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-home"></em></span>
-            <span>Servers</span>
+            <span>{{ locales.web.SERVERS }}</span>
           </a>
-          <% } else if (page === "profile") { %>
+
+          <!-- Profile page -->
+          {% elsif page == "profile" %}
           <a href="/manage/servers" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-home"></em></span>
-            <span>Servers</span>
+            <span>{{ locales.web.SERVERS }}</span>
           </a>
-          <% } %>
+          {% endif %}
         </div>
-        <% if (user) { %>
+
+        <!-- If the user is logged in  -->
+        {% if user %}
         <div class="navbar-end">
           <a href="/manage/profile" class="navbar-item has-text-white">
-            <img src="<%= user.avatar %>" class="is-rounded is-inline-block" alt="<%= user.username %>" />
-            <span class="is-inline-block ml-2"><%= user.username %>#<%= user.discriminator %></span>
+            <img src="{{ user.avatar }}" class="is-rounded is-inline-block" alt="{{ user.username }}" />
+            <span class="is-inline-block ml-2">{{ user.username }}#{{ user.discriminator }}</span>
           </a>
           <a href="/auth/logout/" class="navbar-item has-text-white">
             <span class="icon"><em class="fas fa-sign-out-alt"></em></span>
-            <span>Logout</span>
+            <span>{{ locales.web.LOGOUT }}</span>
           </a>
-          <% } else { %>
+          {% else %}
           <div class="navbar-end">
             <a href="/manage/servers/" class="navbar-item has-text-white">
               <span class="icon"><em class="fas fa-sign-in-alt"></em></span>
-              <span>Login</span>
+              <span>{{ locales.web.LOGIN }}</span>
             </a>
           </div>
-          <% } %>
+          {% endif %}
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@
  * @module utils/colors
  */
 
-import { hexColorRegex } from "../helpers/constants";
+import { hexColorRegex } from "./constants";
 
 // Converts hex 2 rgb
 function hexToRGB(hex: string) {

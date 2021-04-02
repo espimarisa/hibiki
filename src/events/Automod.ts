@@ -37,9 +37,9 @@ export class AutomodEvent extends Event {
         if (
           // Ignores privelaged users from automod
           (member?.roles && member.roles?.includes?.(guildconfig?.staffRole)) ||
-          member.permissions.has("administrator") ||
-          member.permissions.has("manageGuild") ||
-          member.permissions.has("manageMessages")
+          member?.permissions?.has("administrator") ||
+          member?.permissions?.has("manageGuild") ||
+          member?.permissions?.has("manageMessages")
         )
           return;
 

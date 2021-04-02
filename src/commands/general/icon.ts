@@ -1,6 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { defaultAvatar } from "../../helpers/constants";
+import { defaultAvatar } from "../../utils/constants";
 
 export class IconCommand extends Command {
   aliases = ["guildicon", "servericon"];

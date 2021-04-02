@@ -1,6 +1,6 @@
-import type { EmbedField, Message, TextChannel } from "eris";
+import type { EmbedField, Invite, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { defaultAvatar, discordOnlyInviteRegex } from "../../helpers/constants";
+import { defaultAvatar, discordOnlyInviteRegex } from "../../utils/constants";
 
 export class InspectCommand extends Command {
   description = "Inspects a Discord invite's information.";
@@ -10,7 +10,7 @@ export class InspectCommand extends Command {
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     const parser = discordOnlyInviteRegex.exec(args.join(" "));
-    const invinfo = await this.bot.getInvite(parser ? parser[6] : args.join(" "), true).catch(() => {});
+    const invinfo = ((await this.bot.getInvite(parser ? parser[6] : args.join(" "), true).catch(() => {})) as unknown) as Invite;
 
     // Sends if the invite is invalid
     if (!invinfo) return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.INVALID_INVITE"), "error");

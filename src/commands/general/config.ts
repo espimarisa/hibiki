@@ -251,7 +251,7 @@ export class SetupCommand extends Command {
         omsg.removeReaction(emoji.name, user.id);
 
         // Handles booleans
-        if (setting.type === "bool") {
+        if (setting.type === "boolean") {
           if (typeof guildconfig[setting.id] === "boolean") guildconfig[setting.id] = !guildconfig[setting.id];
           else guildconfig[setting.id] = typeof setting.default === "undefined" ? true : !setting.default;
 

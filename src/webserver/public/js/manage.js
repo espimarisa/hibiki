@@ -6,26 +6,33 @@
 
 "use strict";
 
-// I already miss typings
-// lmfao
-// Gets the csrf token
-const token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+// Gets the csrf token and guildID
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+const guildID = /manage\/([\d]{17,19})/.exec(document.URL)[1];
 
-// Gets a server's config
+/**
+ * Gets a guildConfig
+ * TODO: Stop doing this when we figure out how to SSR Bulmaselect
+ */
+
 async function getGuildConfig(id) {
   const body = await fetch(`/api/getGuildConfig/${id}`, {
     credentials: "include",
     headers: {
-      "CSRF-Token": token,
+      "CSRF-Token": csrfToken,
     },
   }).then((res) => {
     if (res.status === 204) return {};
     return res.json().catch(() => {});
   });
+
   return body;
 }
 
-// Updates a config
+/**
+ * Updates a guildConfig
+ */
+
 async function updateGuildConfig(id, cfg) {
   Object.keys(cfg).forEach((item) => {
     if (cfg[item] === null) delete cfg[item];
@@ -38,179 +45,99 @@ async function updateGuildConfig(id, cfg) {
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      "CSRF-Token": token,
+      "CSRF-Token": csrfToken,
     },
   });
 }
 
-// Resets a config
-async function resetGuildConfig(id) {
-  return fetch(`/api/resetGuildConfig/${id}`, {
+/**
+ * Deletes a guildConfig
+ */
+
+async function deleteGuildConfig(id) {
+  return fetch(`/api/deleteGuildConfig/${id}`, {
     method: "post",
     credentials: "include",
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      "CSRF-Token": token,
+      "CSRF-Token": csrfToken,
     },
   });
 }
 
-// let oldcfg;
 let multiCats;
 
 // Listens on window load
 window.addEventListener("load", async () => {
-  const token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
   const commands = await fetch("../../api/getItems?commands=true", {
     credentials: "include",
     headers: {
-      "CSRF-Token": token,
+      "CSRF-Token": csrfToken,
     },
   }).then((res) => res.json().catch(() => {}));
 
-  // Multiselect base options
   const baseOptions = {
     searchEnable: true,
   };
 
-  // Multiselect handler for commands & categories
+  // Creates a new Bulmaselect instance for disabled commands/categories
   multiCats = new Bulmaselect("disabledCmds", { ...baseOptions, options: commands });
 
-  // Multiselect handler for channelArrays
+  // Creates a new Bulmaselect instance for channelArrays
   const multiChannelArrays = {
+    // lmao @ hardcoded
     ignoredLoggingChannels: new Bulmaselect("multiignoredLoggingChannels", { ...baseOptions }),
     snipingIgnore: new Bulmaselect("multisnipingIgnore", { ...baseOptions }),
   };
 
-  // Multiselect handler for roleArrays
+  // Creates a new Bulmaselect instance for roleArrays
   const multiRoleArrays = {
     assignableRoles: new Bulmaselect("multiassignableRoles", { ...baseOptions }),
     autoRoles: new Bulmaselect("multiautoRoles", { ...baseOptions }),
   };
 
   // Gets items and IDs
-  const id = /manage\/([\d]{17,19})/.exec(document.URL)[1];
-  const fetchedItems = await fetch("/api/getItems", {
+  const fetchedItems = await fetch("/api/getItems?manage=true", {
     credentials: "include",
     headers: {
-      "CSRF-Token": token,
+      "CSRF-Token": csrfToken,
     },
   }).then((res) => res.json());
-  const configItems = fetchedItems.map((p) => p.id);
 
-  if (!id) return;
-  let guildConfig = await getGuildConfig(id);
-  // oldcfg = { ...guildConfig };
+  const configItems = fetchedItems.map((item) => item.id);
+  if (!guildID) return;
+  let guildConfig = await getGuildConfig(guildID);
   if (!guildConfig) guildConfig = {};
 
-  // Slices content
-  [document.getElementById("prefix"), document.getElementById("joinMessage"), document.getElementById("leaveMessage")].forEach((d) => {
-    d.addEventListener("input", (starget) => {
-      const e = starget.target;
-
-      if (e.id === "prefix" && e.value.length > fetchedItems.prefix.maximum /* || 15*/) e.value = e.value.substring(0, 15);
-      else if (e.id === "joinMessage" && e.value.length > (fetchedItems.joinMessage.maximum || 200)) e.value = e.value.substring(0, 200);
-      else if (e.id === "leaveMessage" && e.value.length > (fetchedItems.leaveMessage.maximum || 200)) e.value = e.value.substring(0, 200);
+  // Handles items with maximum limits
+  fetchedItems
+    .filter((item) => item.type === "string")
+    .map((item) => document.getElementById(item.id))
+    .forEach((e) => {
+      const maximum = fetchedItems.find((item) => item.id === e.id).maximum;
+      e.addEventListener("input", (setting) => {
+        const element = setting.target;
+        if (element.value.length > maximum) element.value = element.value.substring(0, maximum);
+      });
     });
-  });
 
-  // Gets each element
-  Object.keys(guildConfig).forEach((p) => {
-    const element = document.getElementById(p);
-    if ((!element && p !== "disabledCategories") || typeof guildConfig[p] === "undefined") return;
-    const type = fetchedItems.find((pr) => pr.id === p).type;
+  /**
+   * Sets item content to the guildConfig values
+   * TODO: Figure out how the fuck to SSR Bulmaselect so we can remove this junk
+   */
 
-    // Each type of item
-    switch (type) {
-      // Booleans
-      case "bool": {
-        if (guildConfig[p]) document.getElementById(`${p}_ON`).checked = true;
-        else document.getElementById(`${p}_OFF`).checked = true;
-        break;
-      }
-
-      // Numbers
-      case "number": {
-        document.getElementById(`${p}_Select`).value = guildConfig[p];
-        break;
-      }
-
-      // Punishments
-      case "punishment": {
-        guildConfig[p].forEach((punishment) => {
-          document.getElementById(`${p}_${punishment}`).checked = true;
-        });
-        break;
-      }
-
-      // Raid punishments
-      case "raidPunishment": {
-        const Ban = document.getElementById(`${p}_Ban`).checked;
-        const Kick = document.getElementById(`${p}_Kick`).checked;
-        const Mute = document.getElementById(`${p}_Mute`).checked;
-        guildConfig[p] = [];
-        if (Ban) guildConfig[p].push("Ban");
-        if (Kick) guildConfig[p].push("Kick");
-        if (Mute) guildConfig[p].push("Mute");
-        break;
-      }
-
-      // Channel & roles
-      case "channelID":
-      case "voiceChannel":
-      case "roleID": {
-        const opt = Array.from(element.children[0].children).find((a) => a.id === guildConfig[p]);
-        if (!opt) return;
-        document.getElementById(p).children[0].value = opt.innerText;
-        break;
-      }
-
-      // Strings
-      case "string": {
-        element.value = guildConfig[p];
-        break;
-      }
-
-      // Emojis
-      case "emoji": {
-        element.innerHTML = guildConfig[p];
-        break;
-      }
-
-      // Rolearrays
-      case "roleArray": {
-        if (!multiRoleArrays[p]) return;
-        if (typeof guildConfig[p] !== "object") guildConfig[p] = [guildConfig[p]];
-
-        multiRoleArrays[p].options.forEach((s) => {
-          const id = /.{1,32} \(([0-9]{16,19})\)/.exec(s.label)[1];
-          if (guildConfig[p] && guildConfig[p].includes(id)) s.state = true;
-        });
-
-        break;
-      }
-
-      // Channelarrays
-      case "channelArray": {
-        if (!multiChannelArrays[p]) return;
-        if (typeof guildConfig[p] !== "object") guildConfig[p] = [guildConfig[p]];
-
-        multiChannelArrays[p].options.forEach((s) => {
-          const id = /.{1,32} \(([0-9]{16,19})\)/.exec(s.label)[1];
-          if (guildConfig[p] && guildConfig[p].includes(id)) s.state = true;
-        });
-        break;
-      }
-    }
+  Object.keys(guildConfig).forEach((setting) => {
+    const element = document.getElementById(setting);
+    if ((!element && setting !== "disabledCategories") || typeof guildConfig[setting] === "undefined") return;
 
     // Disabled command selector
-    if (p === "disabledCmds") {
-      multiCats.options.forEach((o) => {
-        if (o.type === "group") {
-          if (guildConfig.disabledCategories && guildConfig.disabledCategories.includes(o.label)) o.state = true;
+    if (setting === "disabledCmds") {
+      multiCats.config.options.forEach((option) => {
+        if (option.type === "group") {
+          if (guildConfig.disabledCategories && guildConfig.disabledCategories.includes(option.label)) option.state = true;
           else {
-            o.children.forEach((c) => {
+            option.children.forEach((c) => {
               if (guildConfig.disabledCmds && guildConfig.disabledCmds.includes(c.label)) c.state = true;
             });
           }
@@ -219,184 +146,174 @@ window.addEventListener("load", async () => {
     }
   });
 
-  // Refreshes local guildConfig
+  /**
+   * Refreshes the local guildConfig
+   */
+
   function refreshGuildConfig() {
-    configItems.forEach((p) => {
+    configItems.forEach((item) => {
       // Gets the items
-      const type = fetchedItems.find((c) => c.id === p).type;
-      const element = document.getElementById(p);
+      const type = fetchedItems.find((c) => c.id === item).type;
+      const element = document.getElementById(item);
       if (!element) return;
 
       switch (type) {
-        case "bool": {
-          guildConfig[p] = document.getElementById(`${p}_ON`).checked;
+        // Booleans
+        case "boolean": {
+          guildConfig[item] = document.getElementById(`${item}_ON`).checked;
           break;
         }
 
+        // Numbers
         case "number": {
-          guildConfig[p] = parseInt(document.getElementById(`${p}_Select`).value.split(" ")[0]);
+          guildConfig[item] = parseInt(document.getElementById(`${item}_Select`).value.split(" ")[0]);
           break;
         }
 
+        // Automod punishments
         case "punishment": {
-          const Purge = document.getElementById(`${p}_Purge`).checked;
-          const Mute = document.getElementById(`${p}_Mute`).checked;
-          const Warn = document.getElementById(`${p}_Warn`).checked;
-          guildConfig[p] = [];
-          if (Purge) guildConfig[p].push("Purge");
-          if (Mute) guildConfig[p].push("Mute");
-          if (Warn) guildConfig[p].push("Warn");
+          const purge = document.getElementById(`${item}_Purge`).checked;
+          const mute = document.getElementById(`${item}_Mute`).checked;
+          const warn = document.getElementById(`${item}_Warn`).checked;
+          guildConfig[item] = [];
+          if (purge) guildConfig[item].push("Purge");
+          if (mute) guildConfig[item].push("Mute");
+          if (warn) guildConfig[item].push("Warn");
           break;
         }
 
+        // Automod raid punishments
         case "raidPunishment": {
-          const Ban = document.getElementById(`${p}_Ban`).checked;
-          const Kick = document.getElementById(`${p}_Kick`).checked;
-          const Mute = document.getElementById(`${p}_Mute`).checked;
-          guildConfig[p] = [];
-          if (Ban) guildConfig[p].push("Ban");
-          if (Kick) guildConfig[p].push("Kick");
-          if (Mute) guildConfig[p].push("Mute");
+          const ban = document.getElementById(`${item}_Ban`).checked;
+          const kick = document.getElementById(`${item}_Kick`).checked;
+          const mute = document.getElementById(`${item}_Mute`).checked;
+          guildConfig[item] = [];
+          if (ban) guildConfig[item].push("Ban");
+          if (kick) guildConfig[item].push("Kick");
+          if (mute) guildConfig[item].push("Mute");
           break;
         }
 
-        case "channelID":
+        // Channel & roles
+        case "channel":
         case "voiceChannel":
-        case "roleID": {
-          const r = Array.from(element.children[0].children).find((a) => a.innerText === element.children[0].value).id;
-          if (!r || r.toLowerCase() === "none") return;
-          guildConfig[p] = r;
+        case "role": {
+          const option = Array.from(element.children[0].children).find((a) => a.innerText === element.children[0].value).id;
+          if (!option || option.toLowerCase() === "none") return;
+          guildConfig[item] = option;
           break;
         }
 
+        // Strings
         case "string": {
-          const val = element.value;
-          if (val && val.length) guildConfig[p] = element.value;
+          const value = element.value;
+          if (value && value.length) guildConfig[item] = element.value;
           break;
         }
 
+        // Locale
         case "locale": {
-          const r = Array.from(element.children[0].children).find((a) => a.innerText === element.children[0].value).id;
-          if (!r) return;
-          guildConfig[p] = r;
+          const locale = Array.from(element.children[0].children).find((a) => a.innerText === element.children[0].value).id;
+          if (!locale) return;
+          guildConfig[item] = locale;
           break;
         }
 
+        // Emoji
         case "emoji": {
-          guildConfig[p] = element.innerHTML;
+          guildConfig[item] = element.innerText;
           break;
         }
 
+        // Role arrays
         case "roleArray": {
-          if (!multiRoleArrays[p]) return;
-          const values = multiRoleArrays[p].getSelected().map((s) => s.label);
-          const ids = [];
-          values.forEach((v) => {
-            ids.push(/.{1,32} \(([0-9]{16,19})\)/.exec(v)[1]);
-          });
-          guildConfig[p] = ids;
+          if (!multiRoleArrays[item]) return;
+          const values = multiRoleArrays[item].getSelected().map((s) => s.id);
+          guildConfig[item] = values;
           break;
         }
 
+        // Channel arrays
         case "channelArray": {
-          if (!multiChannelArrays[p]) return;
-          const values = multiChannelArrays[p].getSelected().map((s) => s.label);
-          const ids = [];
-          values.forEach((v) => {
-            ids.push(/.{1,32} \(([0-9]{16,19})\)/.exec(v)[1]);
-          });
-
-          guildConfig[p] = ids;
+          if (!multiChannelArrays[item]) return;
+          const values = multiChannelArrays[item].getSelected().map((s) => s.id);
+          guildConfig[item] = values;
           break;
         }
       }
     });
 
     // Selected disabled items
-    if (!guildConfig.disabledCmds || !guildConfig.disabledCategories || Array.isArray(guildConfig.disabledCmds))
+    if (!guildConfig.disabledCmds || !guildConfig.disabledCategories || Array.isArray(guildConfig.disabledCmds)) {
       guildConfig.disabledCmds = [];
-    if (!guildConfig.disabledCmds || !guildConfig.disabledCategories || Array.isArray(guildConfig.disabledCategories))
+    }
+
+    if (!guildConfig.disabledCmds || !guildConfig.disabledCategories || Array.isArray(guildConfig.disabledCategories)) {
       guildConfig.disabledCategories = [];
-    multiCats.getSelected().forEach((o) => {
-      if (o.type === "group") {
-        if (o.state) guildConfig.disabledCategories.push(o.label);
-        else o.children.forEach((c) => guildConfig.disabledCmds.push(c.label));
+    }
+
+    multiCats.getSelected().forEach((option) => {
+      if (option.type === "group") {
+        if (option.state) guildConfig.disabledCategories.push(option.label);
+        else option.children.forEach((c) => guildConfig.disabledCmds.push(c.label));
       }
     });
   }
 
-  // Submission button functionality
+  /**
+   * Submission button functionality
+   */
+
   document.getElementById("submit").addEventListener("click", async () => {
+    // Gets submission button
     const button = document.getElementById("submit");
+
     // Loading animation
     button.classList.add("is-loading");
     refreshGuildConfig();
-    // oldcfg = { ...guildConfig };
-    // Updates config
-    updateGuildConfig(id, guildConfig).then((res) => {
+
+    // Updates the guildConfig
+    updateGuildConfig(guildID, guildConfig).then((res) => {
       if (res.status === 200 || res.status === 204) {
-        // Button animation & changes
+        // Makes the button "animated"
         button.classList.remove("is-loading");
         button.classList.add("is-success");
         document.getElementById("saved").innerText = "Changes saved";
         setTimeout(() => {
+          // Sets the button back to the original text
           document.getElementById("saved").innerText = "Save changes";
           button.classList.remove("is-success");
         }, 2000);
-      } else {
-        // Displays if error (user likely not authed)
-        document.getElementById("saved").innerText = "Error, please refresh";
-        button.classList.add("is-error");
-        button.classList.remove("is-success");
       }
     });
   });
 
-  // Deletion button functionality
+  /**
+   * Deletion button functionality
+   */
+
   document.getElementById("delete").addEventListener("click", async () => {
     const button = document.getElementById("delete");
     // Loading animation
     button.classList.add("is-loading");
-    // oldcfg = { ...guildConfig };
-    // Updates config
-    resetGuildConfig(id).then((res) => {
+
+    // Deletes the guildConfig
+    deleteGuildConfig(guildID).then((res) => {
       if (res.status === 200) {
-        // Button animation & changes
+        // "Animates" the deletion button
         button.classList.remove("is-loading");
         button.classList.remove("is-light");
         button.classList.add("is-danger");
-        document.getElementById("reset").innerText = "Config reset";
+        document.getElementById("reset").innerText = "Server config deleted";
         setTimeout(() => {
-          document.getElementById("reset").innerText = "Reset config";
+          // Sets the content back to what it originally was
+          document.getElementById("reset").innerText = "Delete server config";
           button.classList.remove("is-danger");
         }, 2000);
-      } else {
-        // Displays if error (user likely not authed)
-        document.getElementById("reset").innerText = "Error, please refresh";
-        button.classList.add("is-error");
-        button.classList.remove("is-danger");
       }
 
-      // Force reloads the window
-      return window.location.reload(true);
+      // "Reloads" the window (in a non-deprecated way)
+      return window.location.replace(window.location.href.replace("#", ""));
     });
   });
-
-  // // Config changes
-  // function compareGuildConfig() {
-  //   // Don't ask for confirmation on deletion
-  //   if (guildConfig === { id: id }) return;
-  //   refreshGuildConfig();
-
-  //   // Compares objects; leave confirmation
-  //   if (JSON.stringify(oldcfg) !== JSON.stringify(guildConfig))
-  //     window.onbeforeunload = function () {
-  //       return "Do you really want to leave?";
-  //     };
-  //   else window.onbeforeunload = null;
-  // }
-
-  // // Event listeners
-  // document.addEventListener("click", compareGuildConfig);
-  // document.addEventListener("input", compareGuildConfig);
 });

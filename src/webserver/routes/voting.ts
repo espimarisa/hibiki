@@ -5,7 +5,7 @@
  */
 
 import type { HibikiClient } from "../../classes/Client";
-import { convertHex } from "../../helpers/embed";
+import { convertHex } from "../../utils/embed";
 import express from "express";
 import rateLimit from "express-rate-limit";
 const router = express.Router();

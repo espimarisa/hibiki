@@ -8,8 +8,8 @@ import type { HibikiClient } from "../classes/Client";
 import type { Emoji, Member, Message, TextChannel } from "eris";
 import type { ResponseData } from "../typings/utils";
 import type { LocaleString } from "../typings/locales";
-import { defaultEmojiRegex, emojiIDRegex, fullInviteRegex } from "../helpers/constants";
-import { localizeSetupItems } from "../utils/format";
+import { defaultEmojiRegex, emojiIDRegex, fullInviteRegex } from "./constants";
+import { localizeSetupItems } from "./format";
 import { timeoutHandler, waitFor } from "./waitFor";
 
 // Dayjs plugins
@@ -64,114 +64,117 @@ export async function askYesNo(bot: HibikiClient, string: LocaleString, member: 
 }
 
 // Asks for a specific type of input
-export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: string, arg: any) {
+export function askFor(bot: HibikiClient, msg: Message<TextChannel>, type: ValidItemTypes, arg: any) {
   if (!type) return "No type";
   if (!arg) return "No arg";
   if (!msg.channel.guild) return "No guild";
   const clear = arg.toLowerCase() === "clear" || arg.toLowerCase() === "off" || arg.toLowerCase() === "null";
   if (clear) return "clear";
 
-  // Looks for a role
-  if (type === "roleID") {
-    const role = bot.args.argtypes.role(arg, msg, undefined);
-    if (!role || role?.managed) return "No role";
-    return role.id;
-  }
-
-  // Looks for a channel
-  if (type === "channelID") {
-    const channel = bot.args.argtypes.channel(arg, msg, undefined);
-    if (!channel) return;
-    return channel.id;
-  }
-
-  // Looks for a voice Channel
-  if (type === "voiceChannel") {
-    const channel = bot.args.argtypes.voiceChannel(arg, msg, undefined);
-    if (channel.type !== 2) return "Invalid channel type";
-    if (!channel) return;
-    return channel.id;
-  }
-
-  // Looks for a number
-  if (type === "number") {
-    const number = bot.args.argtypes.number(arg, msg);
-    if (!number) return "No number";
-    return number;
-  }
-
-  // Looks for a string
-  if (type === "string") {
-    let string = bot.args.argtypes.string(arg);
-    if (!string) return "No string";
-    string = string.replace(emojiIDRegex, "");
-    return string;
-  }
-
-  // Looks for a boolean
-  if (type === "bool") {
-    const boolean = bot.args.argtypes.boolean(arg, undefined, arg);
-    if (!boolean) return "No boolean";
-    return boolean;
-  }
-
-  // Looks for a roleArray
-  if (type === "roleArray") {
-    const roles = bot.args.argtypes.roleArray(arg.split(/(?:\s{0,},\s{0,})|\s/), msg);
-    if (!roles?.length) return "No rolearray";
-    return roles;
-  }
-
-  // Looks for a channelArray
-  if (type === "channelArray") {
-    const channels = bot.args.argtypes.channelArray(arg.split(/(?:\s{0,},\s{0,})|\s/), msg);
-    if (!channels?.length) return "No channelArray";
-    return channels;
-  }
-
-  // Looks for an emoji
-  if (type === "emoji") {
-    const emoji = defaultEmojiRegex.exec(arg);
-    if (!emoji) return "No emoji";
-    return emoji[0];
-  }
-
-  // Looks for a timezone
-  if (type === "timezone") {
-    let invalidTimezone = false;
-    try {
-      dayjs(new Date()).tz(arg);
-    } catch (err) {
-      invalidTimezone = true;
+  switch (type) {
+    // Roles
+    case "role": {
+      const role = bot.args.argtypes.role(arg, msg, undefined);
+      if (!role || role?.managed) return "No role";
+      return role.id;
     }
 
-    if (invalidTimezone) return "No valid timezone";
-    return arg;
-  }
+    // Channels
+    case "channel": {
+      const channel = bot.args.argtypes.channel(arg, msg, undefined);
+      if (!channel) return;
+      return channel.id;
+    }
 
-  // Disabled commands
-  if (type === "disabledCmds") {
-    const cmds = arg
-      .split(/(?:\s{0,},\s{0,})|\s/)
-      .map(
-        (cmd: string) =>
-          bot.commands.find((c) => {
-            return c.allowdisable && (c.name === cmd || c.aliases.includes(cmd));
-          })?.name,
-      )
-      .filter((c: string) => c !== undefined);
+    // Voice channels
+    case "voiceChannel": {
+      const channel = bot.args.argtypes.voiceChannel(arg, msg, undefined);
+      if (channel.type !== 2) return "Invalid channel type";
+      if (!channel) return;
+      return channel.id;
+    }
 
-    return cmds.length ? cmds : "No cmds";
-  }
+    // Numbers
+    case "number": {
+      const number = bot.args.argtypes.number(arg, msg);
+      if (!number) return "No number";
+      return number;
+    }
 
-  // Disabled categories
-  if (type === "disabledCategories") {
-    if (!cmdCategories.length)
-      bot.commands.forEach((cmd) => {
-        if (!cmdCategories.includes(cmd.category) && !blacklistedCategories.includes(cmd.category)) cmdCategories.push(cmd.category);
-      });
-    const cats = arg.split(/(?:\s{0,},\s{0,})|\s/).filter((cat: string) => cmdCategories.includes(cat));
-    return cats.length ? cats : "No cats";
+    // Strings
+    case "string": {
+      let string = bot.args.argtypes.string(arg);
+      if (!string) return "No string";
+      string = string.replace(emojiIDRegex, "");
+      return string;
+    }
+
+    // Booleans
+    case "boolean": {
+      const boolean = bot.args.argtypes.boolean(arg, undefined, arg);
+      if (!boolean) return "No boolean";
+      return boolean;
+    }
+
+    // Role arrays
+    case "roleArray": {
+      const roles = bot.args.argtypes.roleArray(arg.split(/(?:\s{0,},\s{0,})|\s/), msg);
+      if (!roles?.length) return "No rolearray";
+      return roles;
+    }
+
+    // Channel arrays
+    case "channelArray": {
+      const channels = bot.args.argtypes.channelArray(arg.split(/(?:\s{0,},\s{0,})|\s/), msg);
+      if (!channels?.length) return "No channelArray";
+      return channels;
+    }
+
+    // Emoji
+    case "emoji": {
+      const emoji = defaultEmojiRegex.exec(arg);
+      if (!emoji) return "No emoji";
+      return emoji[0];
+    }
+
+    // Timezones
+    case "timezone": {
+      let invalidTimezone = false;
+      try {
+        dayjs(new Date()).tz(arg);
+      } catch (err) {
+        invalidTimezone = true;
+      }
+
+      if (invalidTimezone) return "No valid timezone";
+      return arg;
+    }
+
+    // Disabled commands
+    case "disabledCmds": {
+      const cmds = arg
+        .split(/(?:\s{0,},\s{0,})|\s/)
+        .map(
+          (cmd: string) =>
+            bot.commands.find((c) => {
+              return c.allowdisable && (c.name === cmd || c.aliases.includes(cmd));
+            })?.name,
+        )
+        .filter((c: string) => c !== undefined);
+
+      return cmds.length ? cmds : "No cmds";
+    }
+
+    // Disabled categories
+    case "disabledCategories": {
+      if (!cmdCategories.length)
+        bot.commands.forEach((cmd) => {
+          if (!cmdCategories.includes(cmd.category) && !blacklistedCategories.includes(cmd.category)) cmdCategories.push(cmd.category);
+        });
+
+      const cats = arg.split(/(?:\s{0,},\s{0,})|\s/).filter((cat: string) => cmdCategories.includes(cat));
+      return cats.length ? cats : "No cats";
+    }
   }
 }
 
@@ -200,8 +203,9 @@ export async function askForValue(
       );
 
       const invalidChecks = {
+        // Checks if it's not a boolean
         notBoolean: {
-          check: setting.type !== "bool" && !result,
+          check: setting.type !== "boolean" && !result,
           errorMsg: msg.string("general.CONFIG_ISINVALID"),
         },
 
@@ -241,7 +245,6 @@ export async function askForValue(
           errorMsg: msg.string("general.CONFIG_STRINGTOOLONG", { maximum: setting.maximum }),
         },
       };
-      //
 
       // If an invalid response was given
       let error = "";
@@ -286,32 +289,47 @@ export async function askForValue(
       await m.delete().catch(() => {});
 
       // Formats result names
-      if (setting.type === "roleID") resultName = msg.channel.guild.roles.get(result)?.name || result;
-      else if (setting.type === "channelID") resultName = msg.channel.guild.channels.get(result)?.mention || result;
-      // Role array tagging
-      else if (setting.type === "roleArray") {
-        const roleNames: string[] = [];
-        await result.forEach((r: string) => {
-          const role = msg.channel.guild.roles.get(r)?.name;
-          if (role) roleNames.push(role);
-          else roleNames.push(r);
-        });
+      switch (setting.type) {
+        // Roles
+        case "role": {
+          resultName = msg.channel.guild.roles.get(result)?.name || result;
+          break;
+        }
 
-        resultName = roleNames.join(", ");
+        // Channels
+        case "channel": {
+          resultName = msg.channel.guild.channels.get(result)?.mention || result;
+          break;
+        }
+
+        // Role arrays
+        case "roleArray": {
+          const roleNames: string[] = [];
+          await result.forEach((r: string) => {
+            const role = msg.channel.guild.roles.get(r)?.name;
+            if (role) roleNames.push(role);
+            else roleNames.push(r);
+          });
+
+          resultName = roleNames.join(", ");
+          break;
+        }
+
+        // Channel arrays
+        case "channelArray": {
+          const channelNames: string[] = [];
+          await result.forEach((c: string) => {
+            const channel = msg.channel.guild.channels.get(c)?.mention;
+            if (channel) channelNames.push(channel);
+            else channelNames.push(c);
+          });
+
+          resultName = channelNames.join(", ");
+          break;
+        }
       }
 
-      // Channelarray tagging
-      else if (setting.type === "channelArray") {
-        const channelNames: string[] = [];
-        await result.forEach((c: string) => {
-          const channel = msg.channel.guild.channels.get(c)?.mention;
-          if (channel) channelNames.push(channel);
-          else channelNames.push(c);
-        });
-
-        resultName = channelNames.join(", ");
-      }
-
+      // Sends the success message
       const setmsg = await msg.createEmbed(
         msg.string("global.SUCCESS"),
         `**${localizeSetupItems(msg.string, setting.id, true)}** ${msg.string("global.SET_TO")} **${

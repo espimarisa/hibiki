@@ -4,10 +4,10 @@
  * @module webserver/index
  */
 
-import type { Options } from "ejs";
 import type { NextFunction, Request, Response } from "express";
 import type { SessionOptions } from "express-session";
 import type { HibikiClient } from "../classes/Client";
+import { Liquid } from "liquidjs";
 import { RethinkDBStore } from "session-rethinkdb-ts";
 import { readFileSync, readdirSync } from "fs";
 import { minify } from "terser";
@@ -16,6 +16,7 @@ import { authRoutes } from "./routes/auth";
 import { indexRoutes } from "./routes/index";
 import { manageRoutes } from "./routes/manage";
 import { votingRoutes } from "./routes/voting";
+import { loadIcons } from "../utils/webserver";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import crypto from "crypto";
@@ -27,11 +28,13 @@ import passport from "passport";
 import path from "path";
 
 const isProduction = process.env.NODE_ENV === "production";
+const LAYOUTS_DIRECTORY = path.join(__dirname, "layouts");
+const PARTIALS_DIRECTORY = path.join(__dirname, "partials");
 const PUBLIC_DIRECTORY = path.join(__dirname, "public");
 const VIEWS_DIRECTORY = path.join(__dirname, "views");
+const cookieSecret = crypto.randomBytes(48).toString("hex");
 
-export function startDashboard(bot: HibikiClient) {
-  if (!bot.config.dashboard.botSecret || !bot.config.dashboard.port || !bot.config.dashboard.redirectURI) return;
+export function startWebserver(bot: HibikiClient) {
   const app = express();
   app.enable("trust proxy");
 
@@ -42,9 +45,7 @@ export function startDashboard(bot: HibikiClient) {
   };
 
   // Enables CSRF protection on specified routes
-  const csurfProtection = csurf({
-    cookie: true,
-  });
+  const csurfProtection = csurf({ cookie: true });
 
   // RethinkDB session store
   const sessionStore = new RethinkDBStore({
@@ -60,9 +61,9 @@ export function startDashboard(bot: HibikiClient) {
 
   // Express session options
   const sessionOptions: SessionOptions = {
-    secret: bot.config.dashboard.cookieSecret,
+    secret: cookieSecret,
     store: sessionStore,
-    name: bot.user.username,
+    name: "Session",
     resave: false,
     saveUninitialized: false,
     unset: "destroy",
@@ -99,21 +100,29 @@ export function startDashboard(bot: HibikiClient) {
 
   // Middleware
   app.use(cors({ credentials: true }));
-  app.use(cookieParser(bot.config.dashboard.cookieSecret));
+  app.use(cookieParser(cookieSecret));
   app.use(expressSession(sessionOptions));
   app.use(express.urlencoded({ extended: true, limit: "1mb" }));
   app.use(express.json({ limit: "1mb" }));
   app.use(passport.initialize());
   app.use(passport.session());
 
-  // View engine options
-  app.set("views", VIEWS_DIRECTORY);
-  app.set("view engine", "ejs");
-  app.set("view options", {
-    beautify: !isProduction,
-    rmWhitespace: isProduction,
+  // Liquid engine options
+  const engine = new Liquid({
+    root: [VIEWS_DIRECTORY, PARTIALS_DIRECTORY, LAYOUTS_DIRECTORY],
     cache: isProduction,
-  } as Options);
+    lenientIf: true,
+    jsTruthy: true,
+    extname: ".liquid",
+  });
+
+  // Custom icon tag
+  loadIcons(engine);
+
+  // View engine options
+  app.engine("liquid", engine.express());
+  app.set("views", [VIEWS_DIRECTORY, PARTIALS_DIRECTORY, LAYOUTS_DIRECTORY]);
+  app.set("view engine", "liquid");
 
   // Minifies JS if running in production
   if (process.env.NODE_ENV === "production") {

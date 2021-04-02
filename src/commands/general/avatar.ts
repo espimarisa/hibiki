@@ -1,7 +1,7 @@
 import type { Member, Message, TextChannel } from "eris";
 import { User } from "eris";
 import { Command } from "../../classes/Command";
-import { defaultAvatar } from "../../helpers/constants";
+import { defaultAvatar } from "../../utils/constants";
 
 export class AvatarCommand extends Command {
   args = "<member:member&fallback,userFallback>";
