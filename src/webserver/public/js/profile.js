@@ -6,26 +6,16 @@
 
 "use strict";
 
-// Gets the csrf token and user ID
-const token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-const id = document.querySelector('meta[name="user-id"]').getAttribute("content");
+// Gets the csrf token and userID
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+const userID = document.querySelector('meta[name="user-id"]').getAttribute("content");
+const userConfig = {};
 
-// Gets a profile config
-async function getProfileConfig(id) {
-  const body = await fetch(`/api/getUserConfig/${id}`, {
-    credentials: "include",
-    headers: {
-      "CSRF-Token": token,
-    },
-  }).then((res) => {
-    if (res.status === 204) return {};
-    return res.json().catch(() => {});
-  });
-  return body;
-}
+/**
+ * Updates a userConfig
+ */
 
-// Updates a config
-async function updateProfileConfig(id, cfg) {
+async function updateUserConfig(id, cfg) {
   return fetch(`/api/updateUserConfig/${id}`, {
     method: "post",
     credentials: "include",
@@ -33,125 +23,101 @@ async function updateProfileConfig(id, cfg) {
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      "CSRF-Token": token,
+      "CSRF-Token": csrfToken,
     },
   });
 }
 
-// Resets a config
-async function resetProfileConfig(id) {
-  return fetch(`/api/resetUserConfig/${id}`, {
+/**
+ * Deletes a userConfig
+ */
+
+async function deleteUserConfig(id) {
+  return fetch(`/api/deleteUserConfig/${id}`, {
     method: "post",
     credentials: "include",
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      "CSRF-Token": token,
+      "CSRF-Token": csrfToken,
     },
   });
 }
 
-// let oldcfg;
-
-// Listens on window load
 window.addEventListener("load", async () => {
   // Gets items and IDs
   const fetchedItems = await fetch("/api/getItems?profile=true", {
     credentials: "include",
     headers: {
-      "CSRF-Token": token,
+      "CSRF-Token": csrfToken,
     },
   }).then((res) => res.json());
-  const configItems = fetchedItems.map((p) => p.id);
 
-  if (!id) return;
-  let profileConfig = await getProfileConfig(id);
-  // oldcfg = { ...profileConfig };
-  if (!profileConfig) profileConfig = {};
+  const configItems = fetchedItems.map((setting) => setting.id);
+  if (!userID) return;
 
   // Sets locale info
   const localeInfo = Intl.DateTimeFormat().resolvedOptions();
   document.getElementById("timezone").value = localeInfo.timeZone;
 
-  // Slices content
-  [document.getElementById("bio")].forEach((d) => {
-    d.addEventListener("input", (starget) => {
-      const e = starget.target;
-      if (e.id === "bio") {
-        if (e.value.length > 200) e.value = e.value.substring(0, 200);
-        e.value = e.value.replace(/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|com)|discordapp\.com\/invite)\/.+\w/i, "");
-      }
-    });
+  const bioElement = document.getElementById("bio");
+  const bioMaximum = fetchedItems.find((a) => a.id === "bio").maximum;
+  bioElement.addEventListener("input", (element) => {
+    const setting = element.target;
+    if (setting.value.length > bioMaximum) setting.value = setting.value.substring(0, bioMaximum);
+    setting.value = setting.value.replace(/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discord(?:app)?\.com\/invite)\/.+\w/i, "");
   });
 
-  // Gets each element
-  Object.keys(profileConfig).forEach((p) => {
-    const element = document.getElementById(p);
-    if (!element && p !== "disabledCategories") return;
-    const type = fetchedItems.find((pr) => pr.id === p).type;
+  /**
+   * Refreshes the locale userConfig
+   */
 
-    // Boolean checker
-    if (type === "bool") {
-      if (profileConfig[p]) document.getElementById(p).children[0].checked = true;
-      else document.getElementById(p).children[0].checked = false;
-    }
-
-    // Checks number content
-    if (type === "number") {
-      document.getElementById(p).children[0].value = Array.from(document.getElementById(p).children[0].children).find(
-        (n) => n.innerText.split(" ")[0] === `${profileConfig[p]}`,
-      ).innerText;
-    }
-
-    // Sets string; emoji as content
-    if (type === "string") element.value = profileConfig[p];
-
-    // Pronouns
-    if (type === "pronouns") {
-      const opt = Array.from(element.children[0].children)[profileConfig[p]];
-      if (!opt) return;
-      document.getElementById(p).children[0].value = opt.innerText;
-    }
-  });
-
-  // Refreshes local profileConfig
-  function refreshProfileConfig() {
-    configItems.forEach((p) => {
-      // Gets the items
-      const type = fetchedItems.find((c) => c.id === p).type;
-      const element = document.getElementById(p);
+  function refreshUserConfig() {
+    configItems.forEach((item) => {
+      const type = fetchedItems.find((c) => c.id === item).type;
+      const element = document.getElementById(item);
       if (!element) return;
 
-      // Sets booleans in profileConfig
-      if (type === "bool") {
-        profileConfig[p] = document.getElementById(p).children[0].checked;
-      }
+      switch (type) {
+        // Booleans
+        case "boolean": {
+          userConfig[item] = document.getElementById(item).children[0].checked;
+          break;
+        }
 
-      // Sets numbers in profileConfig
-      if (type === "number") {
-        profileConfig[p] = parseInt(document.getElementById(p).children[0].value.split(" ")[0]);
-      }
+        // Numbers
+        case "number": {
+          userConfig[item] = parseInt(document.getElementById(item).value);
+          // userConfig[item] = parseInt(document.getElementById(item).children[0].value.split(" ")[0]);
+          break;
+        }
 
-      // Sets string; emoji in profileConfig
-      if (type === "string") profileConfig[p] = element.value;
+        // Strings
+        case "string": {
+          userConfig[item] = element.value;
+          break;
+        }
 
-      // Pronouns
-      if (type === "pronouns") {
-        const pronouns = Array.from(element.children[0].children);
-        const r = pronouns.indexOf(pronouns.find((a) => a.innerText === element.children[0].value));
-        profileConfig[p] = r;
-      }
+        // Locale
+        case "locale": {
+          const locales = Array.from(element.children[0].children);
+          const setting = locales.find((a) => a.innerText === element.children[0].value).id;
+          userConfig[item] = setting;
+          break;
+        }
 
-      // Locale
-      if (type === "locale") {
-        const pronouns = Array.from(element.children[0].children);
-        const r = pronouns.find((a) => a.innerText === element.children[0].value).id;
-        profileConfig[p] = r;
-      }
+        // Timezone
+        case "timezone": {
+          userConfig[item] = localeInfo.timeZone;
+          break;
+        }
 
-      // Timezone info
-      if (type === "timezone") {
-        profileConfig[p] = localeInfo.timeZone;
+        // Pronouns
+        case "pronouns": {
+          const pronouns = Array.from(element.children[0].children);
+          const setting = pronouns.indexOf(pronouns.find((a) => a.innerText === element.children[0].value));
+          userConfig[item] = setting;
+        }
       }
     });
   }
@@ -159,27 +125,23 @@ window.addEventListener("load", async () => {
   // Submission button functionality
   document.getElementById("submit").addEventListener("click", async () => {
     const button = document.getElementById("submit");
-    // Loading animation
+
+    // Makes the button "animated" (its not but i like to think it is)
     button.classList.add("is-loading");
-    // Refreshes config
-    refreshProfileConfig();
-    // oldcfg = { ...profileConfig };
+    refreshUserConfig();
+
     // Updates config
-    updateProfileConfig(id, profileConfig).then((res) => {
+    updateUserConfig(userID, userConfig).then((res) => {
       if (res.status === 200 || res.status === 204) {
-        // Button animation & changes
+        // Makes the button "animated"
         button.classList.remove("is-loading");
         button.classList.add("is-success");
         document.getElementById("saved").innerText = "Changes saved";
         setTimeout(() => {
+          // Sets the inner content back to the original text
           document.getElementById("saved").innerText = "Save changes";
           button.classList.remove("is-success");
-        }, 2000);
-      } else {
-        // Displays if error (user likely not authed)
-        document.getElementById("saved").innerText = "Error, please refresh";
-        button.classList.add("is-error");
-        button.classList.remove("is-success");
+        }, 3000);
       }
     });
   });
@@ -187,49 +149,25 @@ window.addEventListener("load", async () => {
   // Deletion button functionality
   document.getElementById("delete").addEventListener("click", async () => {
     const button = document.getElementById("delete");
-    // Loading animation
     button.classList.add("is-loading");
-    // oldcfg = { ...profileConfig };
-    // Updates config
-    resetProfileConfig(id).then((res) => {
+
+    // Deletes the userConfig
+    deleteUserConfig(userID).then((res) => {
       if (res.status === 200) {
         // Button animation & changes
         button.classList.remove("is-loading");
         button.classList.remove("is-light");
-        button.classList.add("is-danger");
-        document.getElementById("reset").innerText = "Config reset";
+        button.classList.add("is-success");
+        document.getElementById("reset").innerText = "Profile data deleted";
         setTimeout(() => {
-          document.getElementById("reset").innerText = "Reset config";
-          button.classList.remove("is-danger");
-        }, 2000);
-      } else {
-        // Displays if error (user likely not authed)
-        document.getElementById("reset").innerText = "Error, please refresh";
-        button.classList.add("is-error");
-        button.classList.remove("is-danger");
+          // Sets the button content back to the original text
+          document.getElementById("reset").innerText = "Delete profile data";
+          button.classList.remove("is-success");
+        }, 3000);
       }
 
-      // Force reloads the window
-      return window.location.reload(true);
+      // "Reloads" the window (in a non-deprecated way)
+      return window.location.replace(window.location.href.replace("#", ""));
     });
   });
-
-  // // Config changes
-  // function compareProfileConfig() {
-  //   // Don't ask for confirmation on deletion
-  //   if (profileConfig === { id: id }) return;
-
-  //   refreshProfileConfig();
-
-  //   // Compares objects; leave confirmation
-  //   if (JSON.stringify(oldcfg) !== JSON.stringify(profileConfig))
-  //     window.onbeforeunload = function () {
-  //       return "Do you really want to leave?";
-  //     };
-  //   else window.onbeforeunload = null;
-  // }
-
-  // // Event listeners
-  // document.addEventListener("click", compareProfileConfig);
-  // document.addEventListener("input", compareProfileConfig);
 });

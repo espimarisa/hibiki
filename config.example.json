@@ -19,7 +19,6 @@
 
   "dashboard": {
     "botSecret": "",
-    "cookieSecret": "setThisToSomethingMoreSecure",
     "port": 6000,
     "redirectURI": "http://localhost:6000/auth/callback"
   },
@@ -81,7 +80,7 @@
   "lavalink": {
     "enabled": true,
     "host": "localhost",
-    "maxlength": 720000,
+    "maxlength": 7200000,
     "password": "youshallnotpass",
     "port": 2333,
     "spotifyClientID": "",

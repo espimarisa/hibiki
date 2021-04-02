@@ -1,0 +1,302 @@
+<!-- Page title -->
+{% assign pageTitle = locales.web.MANAGING | append: " " | append: guild.name %}
+
+<!-- Default layout -->
+{% layout "default" %}
+
+<!-- Additional head data -->
+{% block head %}
+<meta name="user-id" content="{{ user.id }}" />
+<meta name="csrf-token" content="{{ csrfToken }}" />
+{% endblock %}
+
+<!-- Begin content  -->
+{% block content %}
+
+<section class="hero gradient">
+  {% include "navbar" %}
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <figure class="image is-128x128 is-inline-block">
+        <img src="{{ guildIcon }}" class="is-rounded" alt="{{ guild.name }}" />
+      </figure>
+      <p class="title is-size-3 has-text-white">{{ locales.web.MANAGING }} {{ guild.name }}</p>
+    </div>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="columns is-sidebar">
+    <div class="column">
+      <div class="menu sticky">
+        <!-- Sidebar -->
+        {% include "sidebar" %}
+      </div>
+    </div>
+
+    <div class="column is-10">
+      <!-- Buttons -->
+      {% include "buttons" %}
+
+      <!-- Cycles through each setup category -->
+      {% for category in categories %}
+      <h2 class="title is-size-2" id="{{ category }}">
+        <span class="icon is-medium"> {{ categoryInfo[category].icon | icon }}</span>
+        {{ categoryInfo[category].title }}
+      </h2>
+
+      <!-- Item descriptions -->
+      <p class="subtitle is-size-4">{{ categoryInfo[category].description }}</p>
+      <br />
+
+      <!-- Each setup item -->
+      {% for item in itemCategories[category] %}
+      <p class="title is-size-4">{{ itemLocalesTitle[item.id] }}</p>
+      <p class="subtitle is-size-5">{{ itemLocales[item.id] }}</p>
+
+      {% case item.type %}
+
+      <!-- Strings -->
+      {% when "string" %}
+      <div class="control">
+        {% if cfg[item.id] %}
+        <input
+          class="input"
+          id="{{ item.id }}"
+          type="text"
+          value="{{ cfg[item.id] }}"
+          placeholder="{{ item.maximum }}{% if item.maximum > 15 %} {{ locales.web.MANAGE_INPUT_REDUCE }} {% else %} {{
+            locales.web.MANAGE_INPUT_MAXIMUM
+          }} {% endif %}"
+        />
+
+        {% else %}
+        <input
+          class="input"
+          id="{{ item.id }}"
+          type="text"
+          placeholder="{{ item.maximum }}{% if item.maximum > 15 %} {{ locales.web.MANAGE_INPUT_REDUCE }} {% else %} {{
+            locales.web.MANAGE_INPUT_MAXIMUM
+          }} {% endif %}"
+        />
+        {% endif %}
+      </div>
+
+      {% else %}
+
+      <!-- Channels -->
+      {% when "channel" %}
+      <div id="{{ item.id }}" class="control select">
+        <select class="select">
+          <option id="none">{{ locales.web.NOT_SET }}</option>
+          {% for channel in channels %}
+          <option id="{{ channel.id }}">#{{ channel.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      {% else %}
+
+      <!-- Voice channels -->
+      {% when "voiceChannel" %}
+      <div id="{{ item.id }}" class="control select">
+        <select class="select">
+          <option id="none">{{ locales.web.NOT_SET }}</option>
+          {% for channel in voiceChannels %}
+          <option id="{{ channel.id }}">#{{ channel.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Roles -->
+      {% when "role" %}
+      <div id="{{ item.id }}" class="control select">
+        <select class="select">
+          <option id="none">{{ locales.web.NOT_SET }}</option>
+          {% for role in roles %}
+          <option id="{{ role.id }}">@{{ role.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Locales -->
+      {% when "locale" %}
+      <div class="control">
+        <div id="{{ item.id }}" class="select">
+          <select>
+            {% for locale in localesKeys %}
+            <!-- Checks to see if the locale is set -->
+            {% if cfg[item.id] %} {% assign isSelected = cfg[item.id] == locale %}
+            <!-- Checks to see if the locale is the default -->
+            {% else %} {% assign isSelected = locale == item.default %} {% endif %}
+            <!-- If the locale is selected -->
+            {% if isSelected == true %}
+            <option selected id="{{ locale }}">{{ localeNames[locale}}</option>
+            <!-- Lists each locale -->
+            {% else %}
+            <option id="{{ locale }}">{{ localeNames[locale] }}</option>
+            {% endif %} {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      {% else %}
+
+      <!-- Punishments -->
+      {% when "punishment" %}
+      <div class="field">
+        <div id="{{ item.id }}" class="control">
+          <input id="{{ item.id }}_Purge" type="checkbox" class="is-checkradio" {% if cfg[item.id] contains "Purge" %} checked {% endif %}>
+          <label for="{{ item.id }}_Purge">{{ locales.web.MANAGE_PUNISH_PURGE }}</label>
+          <br />
+          <input id="{{ item.id }}_Mute" type="checkbox" class="is-checkradio" {% if cfg[item.id] contains "Mute" %} checked {% endif %}>
+          <label for="{{ item.id }}_Mute">{{ locales.web.MANAGE_PUNISH_MUTE }}</label>
+          <br />
+          <input id="{{ item.id }}_Warn" type="checkbox" class="is-checkradio" {% if cfg[item.id] contains "Warn" %} checked {% endif %}>
+          <label for="{{ item.id }}_Warn">{{ locales.web.MANAGE_PUNISH_WARN }}</label>
+        </div>
+      </div>
+
+      <!-- Raid punishments -->
+      {% when "raidPunishment" %}
+      <div class="field">
+        <div id="{{ item.id }}" class="control">
+          <input id="{{ item.id }}_Ban" type="checkbox" class="is-checkradio" {% if cfg[item.id] contains "Ban" %} checked {% endif %}>
+          <label for="{{ item.id }}_Ban">{{ locales.web.MANAGE_PUNISH_BAN }}</label>
+          <br />
+          <input id="{{ item.id }}_Kick" type="checkbox" class="is-checkradio" {% if cfg[item.id] contains "Kick" %} checked {% endif %}>
+          <label for="{{ item.id }}_Kick">{{ locales.web.MANAGE_PUNISH_KICK }}</label>
+          <br />
+          <input id="{{ item.id }}_Mute" type="checkbox" class="is-checkradio" {% if cfg[item.id] contains "Mute" %} checked {% endif %}>
+          <label for="{{ item.id }}_Mute">{{ locales.web.MANAGE_PUNISH_MUTE }}</label>
+        </div>
+      </div>
+
+      <!-- Booleans -->
+      {% when "boolean" %}
+
+      <!-- Checks to see if the item is enabled -->
+      {% assign isSelected = cfg and cfg[item.id] %}
+      <div class="field" id="{{ item.id }}" class="control">
+        <!-- Enabled -->
+        <input class="is-checkradio" id="{{ item.id }}_ON" type="radio" name="{{ item.id }}" />
+        <label for="{{ item.id }}_ON">{{ locales.web.ENABLED }}</label>
+        <!-- Disabled -->
+        <input class="is-checkradio" id="{{ item.id }}_OFF" type="radio" name="{{ item.id }}" />
+        <label for="{{ item.id }}_OFF">{{ locales.web.DISABLED }}</label>
+      </div>
+
+      {% else %}
+
+      <!-- Numbers -->
+      {% when "number" %}
+      <div class="control">
+        <div id="{{ item.id }}" class="select">
+          <select id="{{ item.id }}_Select">
+            <!-- If the item has a maximum -->
+            {% if item.maximum %} {% assign itemMax = item.maximum %}
+            <!-- If the minimum is 1 -->
+            {% else %} {% if item.minimum == 1 %} {% assign itemMax = item.minimum | plus: 9 %}
+            <!-- If the minimum isn't 1 -->
+            {% else %} {% assign itemMax = item.minimum | plus: 10 %} {% endif %} {% endif %}
+            <!-- Cycles through each possible number -->
+            {% for i in (item.minimum..itemMax) %}
+            <!-- If the item is set -->
+            {% if cfg[item.id] %} {% assign isSelected = cfg[item.id] == i %}
+            <!-- Sets the default value -->
+            {% else %} {% assign isSelected = item.default == i %} {% endif %}
+            <!-- Each individual option -->
+            <option {% if isSelected %} selected {% endif %}>{{ i }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      {% else %}
+
+      <!-- Emoji -->
+      {% when "emoji" %}
+
+      <div id="twemoji-picker">
+        <!-- If the emoji is set -->
+        {% if cfg[item.id] %}
+        <!-- Marks the item as selected -->
+        {% assign isSelected = locale == item.default %}
+        <!-- Sets the emoji -->
+        {% assign emoji = cfg[item.id] %} {% endif %}
+        <!-- If the emoji is set -->
+        {% if isSelected == true %}
+        <button id="{{ item.id }}" class="trigger">{{ emoji }}</button>
+        {% else %}
+        <button id="{{ item.id }}" class="trigger">{{ item.default }}</button>
+        {% endif %}
+      </div>
+
+      {% else %}
+
+      <!-- Channel arrays -->
+      {% when "channelArray" %}
+      <div class="control">
+        <div id="{{ item.id }}" class="select">
+          <select id="multi{{ item.id }}" class="multiple-select">
+            <!-- Cycles through the channels -->
+            {% for channel in channels %}
+            <option id="{{ channel.id }}">#{{ channel.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      {% else %}
+
+      <!-- Role arrays -->
+      {% when "roleArray" %}
+      <div class="control">
+        <div id="{{ item.id }}" class="select">
+          <select id="multi{{ item.id }}" class="multiple-select">
+            <!-- Cycles through the roles -->
+            {% for role in roles %}
+            <option id="{{ role.id }}">@{{ role.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      {% else %}
+
+      <!-- Arrays -->
+      {% when "array" %}
+      <div class="control">
+        <div id="{{ item.id }}" class="select"></div>
+      </div>
+
+      <!-- End each item -->
+      {% endcase %}
+      <br />
+
+      <!-- End each item category -->
+      <br />
+      {% endfor %}
+      <br />
+
+      <!-- End each category -->
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Cute image -->
+<img src="/public/img/stare.png" id="stare" class="is-hidden-mobile" alt="👀" />
+
+<!-- Modal -->
+{% include "modal" %}
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bulmaselect@2.0.3/dist/index.min.js" nonce="{{ nonce }}"></script>
+<script src="/public/js/imageClick.js" nonce="{{ nonce }}"></script>
+<script src="/public/js/manage.js" nonce="{{ nonce }}"></script>
+<script src="/public/js/modal.js" nonce="{{ nonce }}"></script>
+<script src="/public/js/navbar.js" nonce="{{ nonce }}"></script>
+<script src="/public/js/picker.js" type="module" nonce="{{ nonce }}"></script>
+
+{% endblock %}

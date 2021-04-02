@@ -1,6 +1,6 @@
 import type { Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { fullInviteRegex } from "../../helpers/constants";
+import { fullInviteRegex } from "../../utils/constants";
 
 export class bioCommand extends Command {
   description = "Sets your bio or views you or another member's bio.";
@@ -41,7 +41,7 @@ export class bioCommand extends Command {
     // Bio deletion
     if (["clear", "delete", "remove"].includes(args?.[0]?.toLowerCase())) {
       delete userconfig.bio;
-      await this.bot.db.replaceUserConfig(msg.author.id, userconfig);
+      await this.bot.db.updateUserConfig(msg.author.id, userconfig);
       return msg.createEmbed(msg.string("global.SUCCESS"), msg.string("general.BIO_CLEARED"), "success");
     }
 

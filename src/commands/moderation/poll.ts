@@ -1,6 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { urlRegex } from "../../helpers/constants";
+import { urlRegex } from "../../utils/constants";
 
 export class PollCommand extends Command {
   description = "Creates a poll that members can react to.";

@@ -27,7 +27,7 @@ export class PrefixCommand extends Command {
     if (prefix.length > 15) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.PREFIX_TOOLONG"), "error");
 
     // Lets members without permission check but not set
-    if (!msg.member.permissions.has("manageGuild") || (guildconfig?.staffRole && !msg.member?.roles?.includes(guildconfig.staffRole))) {
+    if (!msg.member?.permissions?.has("manageGuild") || (guildconfig?.staffRole && !msg.member?.roles?.includes(guildconfig.staffRole))) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.PREFIX_NOPERMISSIONS"), "error");
     }
 

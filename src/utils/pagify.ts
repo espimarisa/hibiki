@@ -7,7 +7,7 @@
 import type { EmbedOptions, Emoji, Member, Message } from "eris";
 import type { HibikiClient } from "../classes/Client";
 import { TextChannel } from "eris";
-import { convertHex } from "../helpers/embed";
+import { convertHex } from "./embed";
 import { waitFor } from "./waitFor";
 
 const backEmoji = "⬅️";

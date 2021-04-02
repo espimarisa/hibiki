@@ -131,7 +131,7 @@ export class ProfileCommand extends Command {
         await omsg.removeReaction(setting.emoji, user.id);
 
         // Handles booleans
-        if (setting.type === "bool") {
+        if (setting.type === "boolean") {
           if (typeof userconfig[setting.id] === "boolean") userconfig[setting.id] = !userconfig[setting.id];
           else userconfig[setting.id] = typeof setting.default === "undefined" ? true : !setting.default;
 

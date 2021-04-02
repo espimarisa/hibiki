@@ -6,7 +6,7 @@
 
 import type { ActivityType, Status, User } from "eris";
 import type { LocaleString } from "../typings/locales";
-import { auditLogRegex } from "../helpers/constants";
+import { auditLogRegex } from "./constants";
 
 // Tags a user by username#discriminator
 export function tagUser(user: User, emojiFilter = false) {
@@ -75,7 +75,7 @@ export function statusTypeFormat(string: LocaleString, type: ActivityType, liste
       return string("general.USER_CUSTOMSTATUS");
     // UNDOCUMENTED: There is a 5th type, but this isn't in Eris yet.
     // case 5:
-    //   return string("general.USER_COMPETING");
+    // return string("general.USER_COMPETING");
     case undefined:
     default:
       return type;
@@ -404,9 +404,9 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
 // Localizes askfor item types
 export function localizeItemTypes(string: LocaleString, item: string) {
   switch (item) {
-    case "channelID":
+    case "channel":
       return string("global.ASKFOR_CHANNEL");
-    case "roleID":
+    case "role":
       return string("global.ASKFOR_ROLE");
     case "voiceChannel":
       return string("global.ASKFOR_VOICECHANNEL");
@@ -414,7 +414,7 @@ export function localizeItemTypes(string: LocaleString, item: string) {
       return string("global.ASKFOR_NUMBER");
     case "string":
       return string("global.ASKFOR_STRING");
-    case "bool":
+    case "boolean":
       return string("global.ASKFOR_BOOL");
     case "roleArray":
       return string("global.ASKFOR_ROLEARRAY");

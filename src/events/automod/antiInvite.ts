@@ -6,7 +6,7 @@
 
 import type { Message, TextChannel } from "eris";
 import type { HibikiClient } from "../../classes/Client";
-import { fullInviteRegex } from "../../helpers/constants";
+import { fullInviteRegex } from "../../utils/constants";
 import { punishMute, punishWarn } from "./punishments";
 const reason = "Sent an invite (Automod)";
 

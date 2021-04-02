@@ -1,6 +1,6 @@
 import type { Message, TextChannel, User } from "eris";
 import { Command } from "../../classes/Command";
-import { ISOcodes } from "../../helpers/constants";
+import { ISOcodes } from "../../utils/constants";
 import axios from "axios";
 
 export class TranslateCommand extends Command {

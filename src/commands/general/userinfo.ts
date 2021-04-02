@@ -3,7 +3,7 @@ import type { EmbedField, Member, Message, Role, TextChannel } from "eris";
 import { Constants } from "eris";
 import { User } from "eris";
 import { Command } from "../../classes/Command";
-import { defaultAvatar } from "../../helpers/constants";
+import { defaultAvatar } from "../../utils/constants";
 import { dateFormat, statusFormat, statusTypeFormat } from "../../utils/format";
 import { getRESTUser } from "../../utils/getRESTUser";
 import dayjs from "dayjs";
@@ -183,7 +183,7 @@ export class UserinfoCommand extends Command {
 
       if (role) {
         fields.push({
-          name: "Highest role",
+          name: msg.string("general.USER_HIGHESTROLE"),
           value: `${role.name}`,
           inline: true,
         });

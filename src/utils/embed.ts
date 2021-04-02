@@ -1,7 +1,7 @@
 /**
  * @file Embed
  * @description Functions to create and edit oneliner embeds
- * @module helpers/embed
+ * @module utils/embed
  */
 
 import type { Message } from "eris";

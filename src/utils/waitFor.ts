@@ -7,7 +7,7 @@
 import type { Message } from "eris";
 import type { HibikiClient } from "../classes/Client";
 import type { LocaleString } from "../typings/locales";
-import { convertHex } from "../helpers/embed";
+import { convertHex } from "./embed";
 
 // Waits for an event to happen and rejects or resolves it
 export function waitFor(event: string, timeout: number, check: any, bot: HibikiClient) {

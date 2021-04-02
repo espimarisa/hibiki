@@ -1,6 +1,6 @@
 import type { Message, Role, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { defaultAvatar } from "../../helpers/constants";
+import { defaultAvatar } from "../../utils/constants";
 import { dateFormat } from "../../utils/format";
 
 export class RoleinfoCommand extends Command {

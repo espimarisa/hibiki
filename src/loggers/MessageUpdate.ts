@@ -7,7 +7,7 @@
 import type { Message, TextChannel } from "eris";
 import { dateFormat } from "../utils/format";
 import { Logger } from "../classes/Logger";
-import { urlRegex } from "../helpers/constants";
+import { urlRegex } from "../utils/constants";
 const TYPE = "messageLogging";
 
 export class MessageUpdate extends Logger {

@@ -6,7 +6,7 @@
 import type { Message, TextChannel, User } from "eris";
 import { PrivateChannel } from "eris";
 import { Event } from "../classes/Event";
-import { inviteRegex } from "../helpers/constants";
+import { inviteRegex } from "../utils/constants";
 import { wordFilter } from "../scripts/wordFilter";
 import * as Sentry from "@sentry/node";
 
@@ -70,7 +70,7 @@ export class HandlerEvent extends Event {
 
     // Checks to see if a member is staff
     const isStaff =
-      msg.member?.permissions.has("administrator") || (guildconfig?.staffRole && msg.member?.roles?.includes(guildconfig.staffRole));
+      msg.member?.permissions?.has("administrator") || (guildconfig?.staffRole && msg.member?.roles?.includes(guildconfig.staffRole));
 
     // Checks staff perms and wordFilter
     if (!prefix) return isStaff && !(msg.channel instanceof PrivateChannel) && wordFilter(guildconfig, msg);
@@ -142,7 +142,11 @@ export class HandlerEvent extends Event {
 
       // Handles staff commands
       if (command.staff) {
-        if (!msg.member?.permissions.has("administrator") && guildconfig?.staffRole && !msg.member?.roles.includes(guildconfig.staffRole)) {
+        if (
+          !msg.member?.permissions?.has("administrator") &&
+          guildconfig?.staffRole &&
+          !msg.member?.roles.includes(guildconfig.staffRole)
+        ) {
           return msg.createEmbed(string("global.ERROR"), string("global.ERROR_STAFFCOMMAND", { command: command.name }), "error");
         }
       }
@@ -209,7 +213,8 @@ export class HandlerEvent extends Event {
       // Handles clientPerms
       if (command.clientperms?.length) {
         const missingPerms: string[] = [];
-        command.clientperms.forEach((perm) => {
+
+        command.clientperms.forEach((perm: any) => {
           if (!botPerms.has(perm)) missingPerms.push(perm);
         });
 
@@ -226,8 +231,8 @@ export class HandlerEvent extends Event {
       // Handles commands with requiredPerms
       if (command.requiredperms?.length && !guildconfig?.staffRole) {
         const missingPerms: string[] = [];
-        command.requiredperms.forEach((perm) => {
-          if (!msg.member?.permissions.has(perm)) missingPerms.push(perm);
+        command.requiredperms.forEach((perm: any) => {
+          if (!msg.member?.permissions?.has(perm)) missingPerms.push(perm);
         });
 
         // Sends any missingperms

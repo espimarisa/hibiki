@@ -15,20 +15,20 @@ export const validItems = [
     category: "features",
     emoji: "☑",
     id: "agreeChannel",
-    type: "channelID",
+    type: "channel",
   },
   {
     category: "features",
     id: "agreeBlockCommands",
     emoji: "⛔",
-    type: "bool",
+    type: "boolean",
     default: true,
   },
   {
     category: "features",
     id: "easyTranslate",
     emoji: "🌍",
-    type: "bool",
+    type: "boolean",
     default: false,
   },
   {
@@ -73,7 +73,7 @@ export const validItems = [
     category: "greeting",
     emoji: "👋",
     id: "leaveJoin",
-    type: "channelID",
+    type: "channel",
   },
   {
     category: "greeting",
@@ -124,25 +124,25 @@ export const validItems = [
     category: "logging",
     emoji: "📄",
     id: "eventLogging",
-    type: "channelID",
+    type: "channel",
   },
   {
     category: "logging",
     emoji: "📜",
     id: "messageLogging",
-    type: "channelID",
+    type: "channel",
   },
   {
     category: "logging",
     emoji: "📰",
     id: "memberLogging",
-    type: "channelID",
+    type: "channel",
   },
   {
     category: "logging",
     emoji: "📃",
     id: "modLogging",
-    type: "channelID",
+    type: "channel",
   },
   {
     category: "logging",
@@ -154,14 +154,14 @@ export const validItems = [
     category: "logging",
     emoji: "🤖",
     id: "logBotMessages",
-    type: "bool",
+    type: "boolean",
     default: false,
   },
   {
     category: "logging",
     emoji: "🔗",
     id: "inviteOptOut",
-    type: "bool",
+    type: "boolean",
     default: false,
   },
 
@@ -172,7 +172,7 @@ export const validItems = [
   {
     category: "music",
     id: "musicRole",
-    type: "roleID",
+    type: "role",
     emoji: "🎧",
   },
   {
@@ -184,7 +184,7 @@ export const validItems = [
   {
     category: "music",
     id: "onlyRequesterCanControl",
-    type: "bool",
+    type: "boolean",
     emoji: "🎛",
   },
 
@@ -196,7 +196,7 @@ export const validItems = [
     category: "pinboard",
     emoji: "📍",
     id: "pinChannel",
-    type: "channelID",
+    type: "channel",
   },
   {
     category: "pinboard",
@@ -211,12 +211,13 @@ export const validItems = [
     emoji: "⭐",
     id: "pinEmoji",
     type: "emoji",
+    default: "📌",
   },
   {
     category: "pinboard",
     emoji: "🗣",
     id: "pinSelfPinning",
-    type: "bool",
+    type: "boolean",
     default: true,
   },
 
@@ -228,19 +229,19 @@ export const validItems = [
     category: "roles",
     emoji: "✔",
     id: "agreeRole",
-    type: "roleID",
+    type: "role",
   },
   {
     category: "roles",
     emoji: "☑",
     id: "verifiedRole",
-    type: "roleID",
+    type: "role",
   },
   {
     category: "roles",
     emoji: "🔨",
     id: "staffRole",
-    type: "roleID",
+    type: "role",
   },
   {
     category: "roles",
@@ -253,7 +254,7 @@ export const validItems = [
     category: "roles",
     emoji: "🔕",
     id: "mutedRole",
-    type: "roleID",
+    type: "role",
   },
 
   /**
@@ -264,7 +265,7 @@ export const validItems = [
     category: "sniping",
     emoji: "💣",
     id: "snipingEnable",
-    type: "bool",
+    type: "boolean",
     default: true,
   },
   {
@@ -277,14 +278,14 @@ export const validItems = [
     category: "sniping",
     emoji: "🔗",
     id: "snipingInvites",
-    type: "bool",
+    type: "boolean",
     default: true,
   },
   {
     category: "sniping",
     emoji: "⛔",
     id: "snipingPermission",
-    type: "bool",
+    type: "boolean",
     default: false,
   },
 
@@ -296,35 +297,35 @@ export const validItems = [
     category: "automod",
     emoji: "🔗",
     id: "antiInvite",
-    type: "bool",
+    type: "boolean",
     default: false,
   },
   {
     category: "automod",
     emoji: "🏓",
     id: "antiMassMention",
-    type: "bool",
+    type: "boolean",
     default: false,
   },
   {
     category: "automod",
     emoji: "😶",
     id: "antiNewLines",
-    type: "bool",
+    type: "boolean",
     default: false,
   },
   {
     category: "automod",
     emoji: "🔥",
     id: "antiRaid",
-    type: "bool",
+    type: "boolean",
     default: false,
   },
   {
     category: "automod",
     emoji: "🚯",
     id: "antiSpam",
-    type: "bool",
+    type: "boolean",
     default: false,
   },
   {
@@ -361,7 +362,7 @@ export const validItems = [
     category: "automod",
     emoji: "💬",
     id: "msgOnPunishment",
-    type: "bool",
+    type: "boolean",
     default: true,
   },
   {
@@ -436,7 +437,7 @@ export const validItems = [
     emoji: "🚫",
     category: "profile",
     id: "timezoneHide",
-    type: "bool",
+    type: "boolean",
     default: false,
   },
   {

@@ -1,5 +1,5 @@
 import type { Message, TextChannel } from "eris";
-import { defaultEmojiRegex, emojiIDArgRegex } from "../../helpers/constants";
+import { defaultEmojiRegex, emojiIDArgRegex } from "../../utils/constants";
 import { Command } from "../../classes/Command";
 
 export class EmojiCommand extends Command {

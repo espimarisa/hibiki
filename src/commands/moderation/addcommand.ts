@@ -1,6 +1,6 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { urlRegex } from "../../helpers/constants";
+import { urlRegex } from "../../utils/constants";
 
 export class addcommandCommand extends Command {
   description = "Creates a custom command.";

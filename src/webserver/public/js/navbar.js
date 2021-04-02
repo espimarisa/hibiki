@@ -7,17 +7,16 @@
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Get elements
-  const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll(".navbar-burger"), 0);
-  if ($navbarBurgers.length > 0) {
-    // Add click event
-    $navbarBurgers.forEach((el) => {
-      el.addEventListener("click", () => {
+  const burgers = Array.prototype.slice.call(document.querySelectorAll(".navbar-burger"), 0);
+  if (burgers.length > 0) {
+    burgers.forEach((element) => {
+      element.addEventListener("click", () => {
         // Gets target
-        const target = el.dataset.target;
+        const target = element.dataset.target;
         const $target = document.getElementById(target);
+
         // Toggle is-active
-        el.classList.toggle("is-active");
+        element.classList.toggle("is-active");
         $target.classList.toggle("is-active");
       });
     });

@@ -1,6 +1,6 @@
 import type { Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { validTimeRegex } from "../../helpers/constants";
+import { validTimeRegex } from "../../utils/constants";
 import { roleHierarchy } from "../../utils/hierarchy";
 import { itemExists } from "../../utils/itemExists";
 

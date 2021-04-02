@@ -6,7 +6,7 @@
 
 import type { Profile } from "passport-discord";
 import type { HibikiClient } from "../../classes/Client";
-import { getAuthedUser } from "../../utils/auth";
+import { getAuthedUser } from "../../utils/webserver";
 import express from "express";
 import rateLimit from "express-rate-limit";
 const router = express.Router();
@@ -19,10 +19,19 @@ const indexRateLimit = rateLimit({
 
 export function indexRoutes(bot: HibikiClient) {
   router.get("/", indexRateLimit, async (req, res) => {
+    const user = req.isAuthenticated() ? getAuthedUser(req.user as Profile) : null;
+    const userConfig = user ? await bot.db.getUserConfig(user?.id) : null;
+    const locale = userConfig?.locale ? userConfig?.locale : bot.config.defaultLocale;
+
     res.render("index", {
       bot: bot,
+      botAvatar: bot.user.dynamicAvatarURL("png", 512),
       page: req.url,
-      user: req.isAuthenticated() ? getAuthedUser(req.user as Profile) : null,
+      user: user,
+      locales:
+        bot.config.defaultLocale === locale
+          ? bot.localeSystem.locales[bot.config.defaultLocale]
+          : { ...(bot.localeSystem.locales[bot.config.defaultLocale] as any), ...(bot.localeSystem.locales[locale] as any) },
     });
   });
 
@@ -32,7 +41,14 @@ export function indexRoutes(bot: HibikiClient) {
   });
 
   // Invite redirection
-  router.get("/invite/", async (_req, res) => {
+  router.get("/invite/", async (req, res) => {
+    if (req.query.guild) {
+      return res.redirect(
+        301,
+        `https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=1581116663&guild_id=${req.query.guild}`,
+      );
+    }
+
     res.redirect(301, `https://discordapp.com/oauth2/authorize?&client_id=${bot.user.id}&scope=bot&permissions=1581116663`);
   });
 

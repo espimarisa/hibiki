@@ -21,7 +21,8 @@ export type LocaleStrings =
   | `nsfw.${keyof typeof en.nsfw}`
   | `owner.${keyof typeof en.owner}`
   | `roleplay.${keyof typeof en.roleplay}`
-  | `utility.${keyof typeof en.utility}`;
+  | `utility.${keyof typeof en.utility}`
+  | `web.${keyof typeof en.web}`;
 
 // Gets a string
 export interface LocaleString {

@@ -164,7 +164,7 @@ export class ChannelUpdate extends Logger {
         }
 
         // NSFW differences
-        if (channel.nsfw !== oldchannel.nsfw) {
+        if ((channel.nsfw === true && oldchannel.nsfw === false) || (channel.nsfw === false && oldchannel.nsfw === true)) {
           embed.fields.push({
             name: string("global.NSFW"),
             value: `${channel.nsfw ? string("logger.ENABLED") : string("logger.DISABLED")} ➜ ${

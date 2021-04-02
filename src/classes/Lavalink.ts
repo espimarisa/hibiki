@@ -2,7 +2,7 @@ import type { Member, User, VoiceChannel } from "eris";
 import type { VoicePacket } from "erela.js";
 import type { HibikiClient } from "./Client";
 import { Manager } from "erela.js";
-import { convertHex } from "../helpers/embed";
+import { convertHex } from "../utils/embed";
 import { tagUser, toHHMMSS } from "../utils/format";
 import Spotify from "@sysdotini/erela.js-spotify";
 import config from "../../config.json";
