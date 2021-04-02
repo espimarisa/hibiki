@@ -6,7 +6,7 @@
 
 import type { LocaleString } from "./locales";
 import type { tagUser } from "../utils/format";
-import type { convertHex, createEmbed, editEmbed } from "../helpers/embed";
+import type { convertHex, createEmbed, editEmbed } from "../utils/embed";
 
 declare module "eris" {
   declare interface Message {

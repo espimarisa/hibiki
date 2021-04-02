@@ -1,6 +1,6 @@
 import type { Message, TextChannel, VoiceChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { defaultAvatar } from "../../helpers/constants";
+import { defaultAvatar } from "../../utils/constants";
 import { dateFormat } from "../../utils/format";
 
 export class ChannelinfoCommand extends Command {

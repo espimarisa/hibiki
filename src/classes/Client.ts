@@ -12,16 +12,16 @@ import { Args } from "./Args";
 import { Lavalink } from "./Lavalink";
 import { LocaleSystem } from "./Locale";
 import { RethinkProvider } from "./RethinkDB";
-import { convertHex, createEmbed, editEmbed } from "../helpers/embed";
-import { loadItems } from "../scripts/loader";
-import { tagUser } from "../utils/format";
-import { logger } from "../utils/logger";
-import { statuses } from "../helpers/statuses";
 import { InviteHandler } from "../scripts/invites";
 import { MonitorHandler } from "../scripts/monitors";
 import { MuteHandler } from "../scripts/mutes";
 import { ReminderHandler } from "../scripts/reminders";
-import { startDashboard } from "../webserver/index";
+import { convertHex, createEmbed, editEmbed } from "../utils/embed";
+import { loadItems } from "../scripts/loader";
+import { tagUser } from "../utils/format";
+import { logger } from "../utils/logger";
+import { rotateStatuses } from "../utils/statuses";
+import { startWebserver } from "../webserver/index";
 import path from "path";
 import config from "../../config.json";
 import * as Sentry from "@sentry/node";
@@ -80,19 +80,36 @@ export class HibikiClient extends Client {
 
     this.connect();
     this.editStatus("idle");
-    this.once("ready", () => this.readyListener());
+    this.once("ready", async () => this.readyListener());
   }
 
   // Runs when the bot is ready
   async readyListener() {
     loadItems(this);
-    statuses(this);
-    if (config.sentry) this.initializeSentry();
+    rotateStatuses(this);
+
+    // Enables sentry
+    if (config.sentry) {
+      try {
+        Sentry.init({
+          dsn: config.sentry,
+          environment: process.env.NODE_ENV,
+          release: process.env.npm_package_version,
+          tracesSampleRate: 0.5,
+          maxBreadcrumbs: 50,
+          attachStacktrace: true,
+        });
+      } catch (err) {
+        this.log.error(`Sentry failed to initialize: ${err}`);
+      }
+    }
+
+    // Enables lavalink
     if (config.lavalink.enabled) this.lavalink.manager.init(this.user.id);
 
     // Starts webservers at first boot
     if (process.uptime() < 20) {
-      if (config.dashboard.port) startDashboard(this);
+      if (config.dashboard.port && config.dashboard.botSecret && config.dashboard.redirectURI) startWebserver(this);
     }
 
     this.log.info(`${this.commands.length} commands loaded`);
@@ -100,21 +117,5 @@ export class HibikiClient extends Client {
     this.log.info(`${this.loggers.length} loggers loaded`);
     this.log.info(`${Object.keys(this.localeSystem.locales).length} locales loaded`);
     this.log.info(`Logged in as ${tagUser(this.user)} on ${this.guilds.size} guilds`);
-  }
-
-  // Initializes sentry
-  initializeSentry() {
-    try {
-      Sentry.init({
-        dsn: config.sentry,
-        environment: process.env.NODE_ENV,
-        release: process.env.npm_package_version,
-        tracesSampleRate: 0.5,
-        maxBreadcrumbs: 50,
-        attachStacktrace: true,
-      });
-    } catch (err) {
-      this.log.error(`Sentry failed to initialize: ${err}`);
-    }
   }
 }

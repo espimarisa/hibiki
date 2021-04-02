@@ -6,7 +6,7 @@
 
 import type { EmbedOptions, Emoji, Message, TextChannel } from "eris";
 import { Logger } from "../classes/Logger";
-import { urlRegex } from "../helpers/constants";
+import { urlRegex } from "../utils/constants";
 import { dateFormat } from "../utils/format";
 const VARIATION_SELECTOR_REGEX = /[\uFE00-\uFE0F]/;
 const TYPE = "pinChannel";

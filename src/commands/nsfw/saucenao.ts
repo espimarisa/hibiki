@@ -2,7 +2,7 @@ import type { SauceNAOData } from "../../typings/endpoints";
 import type { AxiosResponse } from "axios";
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { urlRegex } from "../../helpers/constants";
+import { urlRegex } from "../../utils/constants";
 import axios from "axios";
 
 export class SauceNaoCommand extends Command {

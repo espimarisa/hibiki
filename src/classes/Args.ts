@@ -66,7 +66,6 @@ export class Args {
 
         // If no member found, try to use REST mode
         if (!member && flag?.includes("userFallback")) return this.argtypes.user(a, msg, ["REST"]);
-
         if ((!a || !member) && flag?.includes("fallback")) return msg.channel.guild?.members?.get(msg.author.id);
         if (!flag && member?.id === msg.author.id) return;
 

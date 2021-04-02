@@ -1,7 +1,7 @@
 /**
  * @file Constants
  * @description Regexes and other constants used throughout the app
- * @module helpers/constants
+ * @module utils/constants
  */
 
 // Regexes

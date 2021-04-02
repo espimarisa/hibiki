@@ -1,17 +1,17 @@
 /**
  * @file Status switcher
  * @description Cycles between configured bot statuses
- * @module helpers/statuses
+ * @module utils/statuses
  */
 
 import type { HibikiClient } from "../classes/Client";
 
 // Rotates bot statuses
-export function statuses(bot: HibikiClient) {
+export function rotateStatuses(bot: HibikiClient) {
   const string = bot.localeSystem.getLocaleFunction(bot.config.defaultLocale);
 
-  function getStatus(num: number) {
-    let status = bot.config.statuses[num];
+  function getStatus(number: number) {
+    let status = bot.config.statuses[number];
     switch (status) {
       case "help":
         status = string("global.BOTSTATUS_HELP", { prefix: bot.config.prefixes[0] });
@@ -32,7 +32,7 @@ export function statuses(bot: HibikiClient) {
 
   // Sets the initial status
   bot.editStatus("online", {
-    name: getStatus(Math.floor(statuses.length * Math.random())),
+    name: getStatus(Math.floor(rotateStatuses.length * Math.random())),
     type: 3,
     url: "https://twitch.tv/",
   });
@@ -40,7 +40,7 @@ export function statuses(bot: HibikiClient) {
   // Timeout for switching
   setInterval(() => {
     bot.editStatus("online", {
-      name: getStatus(Math.floor(statuses.length * Math.random())),
+      name: getStatus(Math.floor(rotateStatuses.length * Math.random())),
       type: 3,
       url: "https://twitch.tv/ifyouarereadingthisyoushouldgetalife",
     });

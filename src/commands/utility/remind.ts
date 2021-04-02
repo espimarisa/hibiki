@@ -1,6 +1,6 @@
 import type { EmbedOptions, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
-import { validTimeRegex } from "../../helpers/constants";
+import { validTimeRegex } from "../../utils/constants";
 import { dateFormat } from "../../utils/format";
 import { pagify } from "../../utils/pagify";
 import { generateSnowflake } from "../../utils/snowflake";

@@ -4,11 +4,12 @@
  * @module webserver/routes/api
  */
 
+import type { BulmaselectValues } from "bulmaselect";
 import type { Profile } from "passport-discord";
 import type { HibikiClient } from "../../classes/Client";
-import { defaultEmojiRegex, emojiIDRegex, fullInviteRegex } from "../../helpers/constants";
-import { getManagableGuilds } from "../../utils/auth";
+import { defaultEmojiRegex, emojiIDRegex, fullInviteRegex } from "../../utils/constants";
 import { validItems } from "../../utils/validItems";
+import { getManagableGuilds } from "../../utils/webserver";
 import dayjs from "dayjs";
 import express from "express";
 import rateLimit from "express-rate-limit";
@@ -28,14 +29,14 @@ const apiRateLimit = rateLimit({
 
 export function apiRoutes(bot: HibikiClient) {
   router.get("/getItems/", apiRateLimit, async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(401).send({ error: "You are not currently authenticated." });
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "You are not currently authenticated." }).end();
 
     /**
      * Sends bot commands
      */
 
     if (req.query.commands) {
-      const commands: Bulmaselect[] = [];
+      const commands: BulmaselectValues[] = [];
       bot.commands.forEach((command) => {
         if (!commands.find((cmd) => cmd.label === command.category) && command.category !== "owner") {
           commands.push({ label: command.category, type: "group", children: [] });
@@ -67,6 +68,17 @@ export function apiRoutes(bot: HibikiClient) {
       return res.status(200).send(profileItems);
     }
 
+    // Sends managable guild items
+    if (req.query.manage) {
+      const manageItems: ValidItem[] = [];
+      validItems.forEach((item) => {
+        if (item.category === "profile") return;
+        manageItems.push(item);
+      });
+
+      return res.status(200).send(manageItems);
+    }
+
     // Sends configurable validItems
     res.status(200).send(validItems);
   });
@@ -76,11 +88,11 @@ export function apiRoutes(bot: HibikiClient) {
    */
 
   router.get("/getGuildConfig/:id", apiRateLimit, async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(401).send({ error: "You are not currently authenticated." });
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "You are not currently authenticated." }).end();
 
     // Checks to see if the user has permission to manage the guild
     const guild = getManagableGuilds(req, req.user as Profile, bot.guilds);
-    if (!guild) return res.status(401).send({ error: "Unauthorized to get this guild's config." });
+    if (!guild) return res.status(401).send({ error: "Unauthorized to get this guild's config." }).end();
 
     // Gets the guildConfig
     const guildConfig = await bot.db.getGuildConfig(guild.id);
@@ -93,11 +105,11 @@ export function apiRoutes(bot: HibikiClient) {
    */
 
   router.post("/updateGuildConfig/:id", apiRateLimit, async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(401).send({ error: "You are not currently authenticated." });
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "You are not currently authenticated." }).end();
 
     // Checks to see if the user has permission to manage the guild
     const guild = getManagableGuilds(req, req.user as Profile, bot.guilds);
-    if (!guild) return res.status(401).send({ error: "Unauthorized to update this guild's config." });
+    if (!guild) return res.status(401).send({ error: "Unauthorized to update this guild's config." }).end();
 
     // Gets config
     let guildConfig = await bot.db.getGuildConfig(guild.id);
@@ -115,90 +127,121 @@ export function apiRoutes(bot: HibikiClient) {
     // Updates a guildConfig with the values
     Object.keys(guildConfig).forEach((value) => {
       if (value === "id") return;
-      const opt = guildConfig[value];
-      if (!opt) return;
+      const option = guildConfig[value];
+      if (!option) return;
 
       // Finds the item
       const item = validItems.find((i) => i.id === value);
-      if (!item || item?.category === "profile" || opt === null) delete guildConfig[value];
+      if (!item || item?.category === "profile" || option === null) delete guildConfig[value];
 
-      // Numbers
-      if (item?.type === "number") {
-        if (typeof opt !== "number") delete guildConfig[value];
-        if (item?.maximum && opt > item?.maximum) guildConfig[value] = item?.maximum;
-        if (item?.minimum && opt < item?.minimum) guildConfig[value] = item?.minimum;
-      }
+      // Validates each item type
+      switch (item.type) {
+        // Numbers
+        case "number": {
+          if (typeof option !== "number") delete guildConfig[value];
+          if (item?.maximum && option > item?.maximum) guildConfig[value] = item?.maximum;
+          if (item?.minimum && option < item?.minimum) guildConfig[value] = item?.minimum;
+          break;
+        }
 
-      // Punishments
-      else if (item?.type === "punishment" && Array.isArray(guildConfig[value]) && guildConfig[value].length) {
-        guildConfig[value] = opt.filter((p: string) => ["Purge", "Warn", "Mute"].includes(p));
-      }
+        // Punishments
+        case "punishment": {
+          if (Array.isArray(guildConfig[value]) && guildConfig[value].length) {
+            guildConfig[value] = option.filter((p: string) => ["Purge", "Warn", "Mute"].includes(p));
+          }
 
-      // Raid punishments
-      else if (item?.type === "raidPunishment" && Array.isArray(guildConfig[value]) && guildConfig[value].length) {
-        guildConfig[value] = opt.filter((p: string) => ["Ban", "Kick", "Mute"].includes(p));
-      }
+          guildConfig[value] = guildConfig[value].filter((punishment: string) => ["Purge", "Mute", "Warn"].includes(punishment));
+          break;
+        }
 
-      // Channel IDs
-      else if (item?.type === "channelID" && !bot.guilds.get(guild.id).channels.find((channel) => channel.id === opt)) {
-        guildConfig[value] = null;
-      }
+        // Raid punishments
+        case "raidPunishment": {
+          if (Array.isArray(guildConfig[value]) && guildConfig[value].length) {
+            guildConfig[value] = option.filter((p: string) => ["Ban", "Kick", "Mute"].includes(p));
+          }
 
-      // Voice channels
-      else if (item?.type === "voiceChannel" && !bot.guilds.get(guild.id).channels.find((channel) => channel.id === opt)) {
-        guildConfig[value] = null;
-      }
+          guildConfig[value] = guildConfig[value].filter((punishment: string) => ["Ban", "Kick", "Mute"].includes(punishment));
+          break;
+        }
 
-      // ChannelArray
-      else if (item?.type === "channelArray" && Array.isArray(guildConfig[value]) && guildConfig[value].length) {
-        guildConfig[value] = opt.filter((c: string) => bot.guilds.get(guild.id).channels.find((channel) => channel.id === c));
-      }
+        // Channels
+        case "channel": {
+          if (!bot.guilds.get(guild.id).channels.find((channel) => channel.id === option || channel.type !== 0)) {
+            guildConfig[value] = null;
+          }
 
-      // RoleArray
-      else if (item?.type === "roleArray" && Array.isArray(guildConfig[value]) && guildConfig[value].length) {
-        guildConfig[value] = opt.filter((r: string) => bot.guilds.get(guild.id).roles.find((rol) => rol.id === r));
-        if (item?.maximum && guildConfig[value].length > item?.maximum) guildConfig[value].length = item?.maximum;
-      }
+          break;
+        }
 
-      // Role IDs
-      else if (item?.type === "roleID" && !bot.guilds.get(guild.id).roles.find((r) => r.id === opt)) {
-        delete guildConfig[value];
-      }
+        // Voice channels
+        case "voiceChannel": {
+          if (!bot.guilds.get(guild.id).channels.find((channel) => channel.id === option || channel.type !== 2)) {
+            guildConfig[value] = null;
+          }
 
-      // Booleans
-      else if (item?.type === "bool" && typeof opt !== "boolean") {
-        delete guildConfig[value];
-      }
+          break;
+        }
 
-      // Strings
-      else if (item?.type === "string") {
-        // Invite filter
-        if (item?.inviteFilter) guildConfig[value] = guildConfig[value].replace(fullInviteRegex, "");
-        guildConfig[value] = guildConfig[value].replace(emojiIDRegex, "");
+        // Channel arrays
+        case "channelArray": {
+          if (Array.isArray(guildConfig[value]) && guildConfig[value].length) {
+            guildConfig[value] = option.filter((c: string) => bot.guilds.get(guild.id).channels.find((channel) => channel.id === c));
+          }
 
-        // Maximum & minimums
-        if (item?.maximum) guildConfig[value] = guildConfig[value].substring(0, item?.maximum);
-        if (item?.minimum && guildConfig[value].length < item?.minimum) delete guildConfig[value];
-      }
+          break;
+        }
 
-      // Emojis
-      else if (item?.type === "emoji" && defaultEmojiRegex.test(guildConfig[value])) {
-        delete guildConfig[value];
-      }
+        // Role arrays
+        case "roleArray": {
+          if (Array.isArray(guildConfig[value]) && guildConfig[value].length) {
+            guildConfig[value] = option.filter((r: string) => bot.guilds.get(guild.id).roles.find((rol) => rol.id === r));
+            if (item?.maximum && guildConfig[value].length > item?.maximum) guildConfig[value].length = item?.maximum;
+          }
 
-      // Locales
-      else if (item?.type === "locale" && !Object.keys(bot.localeSystem.locales).includes(guildConfig[value])) {
-        delete guildConfig[value];
-      }
+          break;
+        }
 
-      // Punishments
-      else if (item?.type === "punishment") {
-        guildConfig[value] = guildConfig[value].filter((punishment: string) => ["Purge", "Mute", "Warn"].includes(punishment));
-      }
+        // Roles
+        case "role": {
+          if (!bot.guilds.get(guild.id).roles.find((r) => r.id === option || r.managed)) {
+            delete guildConfig[value];
+          }
 
-      // Raid punishments
-      else if (item?.type === "raidPunishment") {
-        guildConfig[value] = guildConfig[value].filter((punishment: string) => ["Ban", "Kick", "Mute"].includes(punishment));
+          break;
+        }
+
+        // Booleans
+        case "boolean": {
+          if (typeof option !== "boolean") delete guildConfig[value];
+          break;
+        }
+
+        // Strings
+        case "string": {
+          // Filters
+          if (item?.inviteFilter) guildConfig[value] = guildConfig[value].replace(fullInviteRegex, "");
+          guildConfig[value] = guildConfig[value].replace(emojiIDRegex, "");
+
+          // Maximum & minimums
+          if (item?.maximum) guildConfig[value] = guildConfig[value].substring(0, item?.maximum);
+          if (item?.minimum && guildConfig[value].length < item?.minimum) delete guildConfig[value];
+          break;
+        }
+
+        // Emojis
+        case "emoji": {
+          if (defaultEmojiRegex.test(guildConfig[value])) delete guildConfig[value];
+          break;
+        }
+
+        // Locales
+        case "locale": {
+          if (!Object.keys(bot.localeSystem.locales).includes(guildConfig[value])) {
+            delete guildConfig[value];
+          }
+
+          break;
+        }
       }
 
       // Disabled categories
@@ -230,7 +273,7 @@ export function apiRoutes(bot: HibikiClient) {
 
     // Replaces the guildConfig with the new one
     await bot.db
-      .replaceGuildConfig(guild.id, guildConfig)
+      .updateGuildConfig(guild.id, guildConfig)
       .then(() => {
         res.sendStatus(200);
       })
@@ -243,12 +286,12 @@ export function apiRoutes(bot: HibikiClient) {
    * Resets a guildConfig
    */
 
-  router.post("/resetGuildConfig/:id", apiRateLimit, async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(401).send({ error: "You are not currently authenticated." });
+  router.post("/deleteGuildConfig/:id", apiRateLimit, async (req, res) => {
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "You are not currently authenticated." }).end();
 
     // Checks to see if the user has permission to manage the guild
     const guild = getManagableGuilds(req, req.user as Profile, bot.guilds);
-    if (!guild) return res.status(401).send({ error: "Unauthorized to update this guild's config." });
+    if (!guild) return res.status(401).send({ error: "Unauthorized to update this guild's config." }).end();
 
     // Deletes the config
     await bot.db
@@ -266,7 +309,7 @@ export function apiRoutes(bot: HibikiClient) {
    */
 
   router.get("/getUserConfig/:id", apiRateLimit, async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(401).send({ error: "You are not currently authenticated." });
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "You are not currently authenticated." }).end();
     const user = req.user as Profile;
 
     // Updates the userconfig
@@ -280,7 +323,7 @@ export function apiRoutes(bot: HibikiClient) {
    */
 
   router.post("/updateUserConfig/:id", apiRateLimit, async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(401).send({ error: "You are not currently authenticated." });
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "You are not currently authenticated." }).end();
 
     // Gets the userConfig
     const user = req.user as Profile;
@@ -300,55 +343,76 @@ export function apiRoutes(bot: HibikiClient) {
     // Updates the userConfig and validates input
     Object.keys(userConfig).forEach((value) => {
       if (value === "id") return;
-      const opt = userConfig[value];
-      if (!opt) return;
+      const option = userConfig[value];
+      if (!option) return;
 
       // Finds the item
       const item = validItems.find((i) => i.id === value);
       if (!item || item?.category !== "profile") delete userConfig[value];
-      // Numbers
-      else if (item?.type === "number") {
-        if (typeof opt !== "number") return delete userConfig[value];
-        if (item?.maximum && opt > item?.maximum) userConfig[value] = item?.maximum;
-        if (item?.minimum && opt < item?.minimum) userConfig[value] = item?.minimum;
-      }
 
-      // Booleans
-      else if (item?.type === "bool" && typeof opt !== "boolean") delete userConfig[value];
-      // Strings
-      else if (item?.type === "string") {
-        if (item?.inviteFilter) {
-          (userConfig[value] = userConfig[value].replace(fullInviteRegex, "")) &&
-            (userConfig[value] = userConfig[value].replace(emojiIDRegex, ""));
+      // Validates each item type
+      switch (item.type) {
+        // Numbers
+        case "number": {
+          if (typeof option !== "number") return delete userConfig[value];
+          if (item?.maximum && option > item?.maximum) userConfig[value] = item?.maximum;
+          if (item?.minimum && option < item?.minimum) userConfig[value] = item?.minimum;
+          break;
         }
 
-        // Maximum & minimums
-        if (item?.maximum) userConfig[value] = userConfig[value].substring(0, item?.maximum);
-        if (item?.minimum && userConfig[value].length < item?.minimum) delete userConfig[value];
-      }
-
-      // Arrays
-      else if (item?.type === "array" && !Array.isArray(userConfig[value])) delete userConfig[value];
-      // Timezone checking
-      else if (item?.id === "timezone") {
-        let invalidTimezone = false;
-
-        try {
-          dayjs(new Date()).tz(userConfig[value]);
-        } catch (err) {
-          invalidTimezone = true;
+        // Booleans
+        case "boolean": {
+          if (typeof option !== "boolean") delete userConfig[value];
+          break;
         }
 
-        if (invalidTimezone) delete userConfig[value];
+        // Strings
+        case "string": {
+          // Removes invites and emojis
+          if (item?.inviteFilter) {
+            (userConfig[value] = userConfig[value].replace(fullInviteRegex, "")) &&
+              (userConfig[value] = userConfig[value].replace(emojiIDRegex, ""));
+          }
+
+          // Maximum & minimums
+          if (item?.maximum) userConfig[value] = userConfig[value].substring(0, item?.maximum);
+          if (item?.minimum && userConfig[value].length < item?.minimum) delete userConfig[value];
+          break;
+        }
+
+        // Arrays
+        case "array": {
+          if (!Array.isArray(userConfig[value])) delete userConfig[value];
+          break;
+        }
+
+        // Timezone
+        case "timezone": {
+          let invalidTimezone = false;
+
+          try {
+            dayjs(new Date()).tz(userConfig[value]);
+          } catch (err) {
+            invalidTimezone = true;
+          }
+
+          if (invalidTimezone) delete userConfig[value];
+          break;
+        }
 
         // Locale
-      } else if (item?.type === "locale" && !Object.keys(bot.localeSystem.locales).includes(userConfig[value])) {
-        delete userConfig[value];
+        case "locale": {
+          if (!Object.keys(bot.localeSystem.locales).includes(userConfig[value])) {
+            delete userConfig[value];
+          }
+
+          break;
+        }
       }
     });
 
     await bot.db
-      .replaceUserConfig(user.id, userConfig)
+      .updateUserConfig(user.id, userConfig)
       .then(() => {
         res.sendStatus(200);
       })
@@ -358,11 +422,11 @@ export function apiRoutes(bot: HibikiClient) {
   });
 
   /**
-   * Resets a userConfig
+   * Deletes a userConfig
    */
 
-  router.post("/resetUserConfig/:id", apiRateLimit, async (req, res) => {
-    if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized to reset this user's config." });
+  router.post("/deleteUserConfig/:id", apiRateLimit, async (req, res) => {
+    if (!req.isAuthenticated()) return res.status(401).send({ error: "Unauthorized to reset this user's config." }).end();
     const user = req.user as Profile;
 
     await bot.db

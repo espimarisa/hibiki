@@ -7,18 +7,19 @@
 "use strict";
 
 window.addEventListener("load", () => {
+  // Cycles through the images onClick
   document.getElementById("stare").addEventListener("click", () => {
-    const el = document.getElementById("stare");
-    const splitSrc = el.src.split("/");
+    const element = document.getElementById("stare");
+    const splitSrc = element.src.split("/");
     switch (splitSrc[splitSrc.length - 1]) {
       case "stare.png":
-        el.src = "/public/img/stare2.png";
+        element.src = "/public/img/stare2.png";
         break;
       case "stare2.png":
-        el.src = "/public/img/stare3.png";
+        element.src = "/public/img/stare3.png";
         break;
       case "stare3.png":
-        el.src = "/public/img/stare.png";
+        element.src = "/public/img/stare.png";
         break;
     }
   });

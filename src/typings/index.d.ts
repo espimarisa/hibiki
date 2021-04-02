@@ -49,8 +49,29 @@ interface ValidItem {
   maximum?: number;
   minimum?: number;
   name?: string;
-  type?: string;
+  type?: ValidItemTypes;
 }
+
+// Valid item types
+type ValidItemTypes =
+  | "channel"
+  | "boolean"
+  | "roleArray"
+  | "string"
+  | "channelArray"
+  | "voiceChannel"
+  | "number"
+  | "emoji"
+  | "punishment"
+  | "raidPunishment"
+  | "pronouns"
+  | "locale"
+  | "array"
+  | "timezone"
+  | "role"
+  | "disabledCategories"
+  | "disabledCmds"
+  | "delete";
 
 // Valid item category
 interface ValidItemsCategory {
@@ -58,11 +79,4 @@ interface ValidItemsCategory {
   id?: string;
   items: string[];
   name: string;
-}
-
-// Bulmaselect options
-interface Bulmaselect {
-  children?: Record<string, string>[];
-  label?: string;
-  type?: string;
 }

@@ -4,7 +4,7 @@
  */
 
 import type { HibikiClient } from "./Client";
-import { convertHex } from "../helpers/embed";
+import { convertHex } from "../utils/embed";
 import { tagUser } from "../utils/format";
 
 export abstract class Event {

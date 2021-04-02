@@ -6,7 +6,7 @@
 
 import type { EmbedOptions, Guild, Invite, Member, TextChannel } from "eris";
 import { Logger } from "../classes/Logger";
-import { defaultAvatar } from "../helpers/constants";
+import { defaultAvatar } from "../utils/constants";
 import { dateFormat } from "../utils/format";
 const TYPE = "memberLogging";
 

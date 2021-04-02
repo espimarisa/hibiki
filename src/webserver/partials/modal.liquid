@@ -2,17 +2,22 @@
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Are you sure you'd like to reset this config?</p>
+      {% if page == "profile" %}
+      <p class="modal-card-title">{{ locales.web.DELETE_PROFILE_DATA }}</p>
+      {% else %}
+      <p class="modal-card-title">{{ locales.web.DELETE_SERVER_CONFIG }}</p>
+      {% endif %}
       <button class="delete" aria-label="close"></button>
     </header>
+
     <footer class="modal-card-foot">
       <button class="button is-danger" id="delete">
         <span class="icon is-small"><em class="fas fa-trash"></em></span>
-        <span id="reset">Reset</span>
+        <span>{{ locales.web.RESET }}</span>
       </button>
       <button class="button cancel" id="cancel-button">
         <span class="icon is-small"><em class="fas fa-times-circle"></em></span>
-        <span>Cancel</span>
+        <span>{{ locales.web.CANCEL }}</span>
       </button>
     </footer>
   </div>

@@ -5,7 +5,7 @@
 
 import type { Guild } from "eris";
 import { Event } from "../classes/Event";
-import { defaultAvatar } from "../helpers/constants";
+import { defaultAvatar } from "../utils/constants";
 import { dateFormat, regionFormat } from "../utils/format";
 import { getRESTUser } from "../utils/getRESTUser";
 import axios from "axios";
