@@ -42,7 +42,7 @@ export class AssignroleCommand extends Command {
           const role = this.bot.args.argtypes.role(arg, msg);
           if (!role) return { added: false, role: undefined };
           if (msg.member.roles?.includes(role.id)) return { added: false, role: role, alreadyHas: true };
-          if (!guildconfig.assignableRoles?.includes(role.id)) return { added: false, role: role };
+          if (!guildconfig.assignableRoles?.includes(role.id)) return { added: false, role: undefined };
 
           try {
             // Adds the role
@@ -57,13 +57,15 @@ export class AssignroleCommand extends Command {
     // Finds roles that exist in args
     roles = roles.filter((role) => role.role !== undefined);
 
+    // If no roles were added
+    if (!roles.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.ASSIGN_NOROLES"), "error");
+
     // If the member already has every role
     if (roles.every((r) => r.alreadyHas === true)) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ROLE_ALREADYHAS", { amount: roles.length }), "error");
     }
 
-    // If no roles were added; finds failed roles
-    if (!roles.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.ASSIGN_NOROLES"), "error");
+    // finds failed roles
     const failed = roles.filter((r) => r.added === false);
     const added = roles.filter((r) => r.added === true);
     const failedField: EmbedField[] = [];
