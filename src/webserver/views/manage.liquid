@@ -183,7 +183,7 @@
       {% when "boolean" %}
 
       <!-- Checks to see if the item is enabled -->
-      {% if cfg[item.id] %}
+      {% if cfg[item.id] == false or cfg[item.id] == true %}
       <!-- Marks it as enabled if it's set -->
       {% assign isSelected = cfg[item.id] %} {% else %}
       <!-- Uses the default -->
@@ -197,7 +197,7 @@
         <label for="{{ item.id }}_OFF" class="m-0">{{ locales.web.DISABLED }}</label>
       </div>
 
-      {% else %} // its always setting the default now
+      {% else %}
 
       <!-- Numbers -->
       {% when "number" %}
