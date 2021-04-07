@@ -47,7 +47,7 @@ export class MessagePinboard extends Logger {
         // Gets the pin emoji
         const pin = guildconfig.pinEmoji ? guildconfig.pinEmoji.replace(VARIATION_SELECTOR_REGEX, "") : "📌";
 
-        if (pin !== emoji?.name.replace(VARIATION_SELECTOR_REGEX, "")) return;
+        if (pin !== emoji?.name?.replace(VARIATION_SELECTOR_REGEX, "")) return;
         // Gets channel and messages
         const pinReactions = (msg.reactions?.[pin] ||
           Object.entries(msg.reactions).find((m) => m[0].replace(VARIATION_SELECTOR_REGEX, "") === pin)[1]) as MessageReactions;
@@ -145,7 +145,7 @@ export class MessagePinboard extends Logger {
 
         // Gets the pin emoji
         const pin = guildconfig.pinEmoji ? guildconfig.pinEmoji.replace(VARIATION_SELECTOR_REGEX, "") : "📌";
-        if (pin !== emoji?.name.replace(VARIATION_SELECTOR_REGEX, "")) return;
+        if (pin !== emoji?.name?.replace(VARIATION_SELECTOR_REGEX, "")) return;
 
         // Gets the channel, messages, and reactions
         const fullPinChannel = msg.channel.guild.channels.get(pinChannel) as TextChannel;
