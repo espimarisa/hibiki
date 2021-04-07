@@ -6,9 +6,11 @@
 
 "use strict";
 
-// Gets the csrf token and userID
+// Gets the csrf token, user ID, and some locale strings
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 const userID = document.querySelector('meta[name="user-id"]').getAttribute("content");
+const saveChanges = document.querySelector('meta[name="save-changes"').getAttribute("content");
+const changesSaved = document.querySelector('meta[name="changes-saved"').getAttribute("content");
 const userConfig = {};
 
 /**
@@ -136,10 +138,10 @@ window.addEventListener("load", async () => {
         // Makes the button "animated"
         button.classList.remove("is-loading");
         button.classList.add("is-success");
-        document.getElementById("saved").innerText = "Changes saved";
+        document.getElementById("saved").innerText = changesSaved;
         setTimeout(() => {
           // Sets the inner content back to the original text
-          document.getElementById("saved").innerText = "Save changes";
+          document.getElementById("saved").innerText = saveChanges;
           button.classList.remove("is-success");
         }, 3000);
       }
@@ -158,12 +160,6 @@ window.addEventListener("load", async () => {
         button.classList.remove("is-loading");
         button.classList.remove("is-light");
         button.classList.add("is-success");
-        document.getElementById("reset").innerText = "Profile data deleted";
-        setTimeout(() => {
-          // Sets the button content back to the original text
-          document.getElementById("reset").innerText = "Delete profile data";
-          button.classList.remove("is-success");
-        }, 3000);
       }
 
       // "Reloads" the window (in a non-deprecated way)

@@ -1,4 +1,4 @@
-<!-- Page titleW -->
+<!-- Page title -->
 {% assign pageTitle = locales.web.SERVERS %}
 
 <!-- Default layout -->
@@ -34,14 +34,14 @@
       <!-- If the bot is in the guild -->
       {% if guild.isIn == true %}
       <a href="/manage/{{ guild.id }}" class="button is-medium">
-        <span class="icon is-small"> <em class="fa fa-wrench"></em> </span>
+        <span class="icon is-small fa-xs">{{ "wrench" | icon }}</span>
         <p>{{ locales.web.CONFIG }}</p>
       </a>
 
       <!-- If the bot isn't in the guild -->
       {% else %}
       <a href="/invite?guild={{ guild.id }}" class="button is-medium">
-        <span class="icon is-small"> <em class="fa fa-plus"></em> </span>
+        <span class="icon is-small fa-xs">{{ "plus" | icon }}</span>
         <p>{{ locales.web.INVITE }}</p>
       </a>
       {% endif %}

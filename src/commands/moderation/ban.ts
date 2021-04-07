@@ -47,12 +47,13 @@ export class BanCommand extends Command {
       })) as ResponseData;
 
       // If the ban was cancelled
-      if (response?.response === false)
+      if (!response || response?.response === false) {
         return banmsg.editEmbed(
           msg.string("global.CANCELLED"),
           msg.string("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.string("moderation.BANNING") }),
           "error",
         );
+      }
 
       try {
         await member.ban(1, `${reason} (${msg.tagUser(msg.author, true)})`);

@@ -18,6 +18,7 @@
   },
 
   "dashboard": {
+    "cookieSecure": false,
     "botSecret": "",
     "port": 6000,
     "redirectURI": "http://localhost:6000/auth/callback"

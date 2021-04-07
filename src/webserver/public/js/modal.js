@@ -11,7 +11,7 @@ document.getElementById("cancel-button").addEventListener("click", toggleButton)
 
 // Clicks the cancel button
 function toggleButton() {
-  document.querySelector("#modal > div.modal-card > header > button").click();
+  document.getElementById("modal-close").click();
 }
 
 document.querySelectorAll(".modal-button").forEach((element) => {

@@ -8,6 +8,8 @@
 {% block head %}
 <meta name="user-id" content="{{ user.id }}" />
 <meta name="csrf-token" content="{{ csrfToken }}" />
+<meta name="save-changes" content="{{ locales.web.SAVE_CHANGES }}" />
+<meta name="changes-saved" content="{{ locales.web.CHANGES_SAVED }}" />
 {% endblock %}
 
 <!-- Begin content  -->
@@ -41,8 +43,8 @@
       <!-- Cycles through each setup category -->
       {% for category in categories %}
       <h2 class="title is-size-2" id="{{ category }}">
-        <span class="icon is-medium"> {{ categoryInfo[category].icon | icon }}</span>
-        {{ categoryInfo[category].title }}
+        <span class="icon is-medium fa-lg">{{ categoryInfo[category].icon | icon }}</span>
+        <span>{{ categoryInfo[category].title }}</span>
       </h2>
 
       <!-- Item descriptions -->
@@ -146,14 +148,17 @@
       {% when "punishment" %}
       <div class="field">
         <div id="{{ item.id }}" class="control">
-          <input id="{{ item.id }}_Purge" type="checkbox" class="is-checkradio" {% if cfg[item.id] contains "Purge" %} checked {% endif %}>
-          <label for="{{ item.id }}_Purge">{{ locales.web.MANAGE_PUNISH_PURGE }}</label>
+          <input id="{{ item.id }}_Purge" type="checkbox" class="is-checkradio m-0" {% if cfg[item.id] contains "Purge" %} checked {% endif
+          %}>
+          <label for="{{ item.id }}_Purge" class="m-0">{{ locales.web.MANAGE_PUNISH_PURGE }}</label>
           <br />
-          <input id="{{ item.id }}_Mute" type="checkbox" class="is-checkradio" {% if cfg[item.id] contains "Mute" %} checked {% endif %}>
-          <label for="{{ item.id }}_Mute">{{ locales.web.MANAGE_PUNISH_MUTE }}</label>
+          <input id="{{ item.id }}_Mute" type="checkbox" class="is-checkradio m-0" {% if cfg[item.id] contains "Mute" %} checked {% endif
+          %}>
+          <label for="{{ item.id }}_Mute" class="m-0">{{ locales.web.MANAGE_PUNISH_MUTE }}</label>
           <br />
-          <input id="{{ item.id }}_Warn" type="checkbox" class="is-checkradio" {% if cfg[item.id] contains "Warn" %} checked {% endif %}>
-          <label for="{{ item.id }}_Warn">{{ locales.web.MANAGE_PUNISH_WARN }}</label>
+          <input id="{{ item.id }}_Warn" type="checkbox" class="is-checkradio m-0" {% if cfg[item.id] contains "Warn" %} checked {% endif
+          %}>
+          <label for="{{ item.id }}_Warn" class="m-0">{{ locales.web.MANAGE_PUNISH_WARN }}</label>
         </div>
       </div>
 
@@ -161,14 +166,16 @@
       {% when "raidPunishment" %}
       <div class="field">
         <div id="{{ item.id }}" class="control">
-          <input id="{{ item.id }}_Ban" type="checkbox" class="is-checkradio" {% if cfg[item.id] contains "Ban" %} checked {% endif %}>
-          <label for="{{ item.id }}_Ban">{{ locales.web.MANAGE_PUNISH_BAN }}</label>
+          <input id="{{ item.id }}_Ban" type="checkbox" class="is-checkradio m-0" {% if cfg[item.id] contains "Ban" %} checked {% endif %}>
+          <label for="{{ item.id }}_Ban" class="m-0">{{ locales.web.MANAGE_PUNISH_BAN }}</label>
           <br />
-          <input id="{{ item.id }}_Kick" type="checkbox" class="is-checkradio" {% if cfg[item.id] contains "Kick" %} checked {% endif %}>
-          <label for="{{ item.id }}_Kick">{{ locales.web.MANAGE_PUNISH_KICK }}</label>
+          <input id="{{ item.id }}_Kick" type="checkbox" class="is-checkradio m-0" {% if cfg[item.id] contains "Kick" %} checked {% endif
+          %}>
+          <label for="{{ item.id }}_Kick" class="m-0">{{ locales.web.MANAGE_PUNISH_KICK }}</label>
           <br />
-          <input id="{{ item.id }}_Mute" type="checkbox" class="is-checkradio" {% if cfg[item.id] contains "Mute" %} checked {% endif %}>
-          <label for="{{ item.id }}_Mute">{{ locales.web.MANAGE_PUNISH_MUTE }}</label>
+          <input id="{{ item.id }}_Mute" type="checkbox" class="is-checkradio m-0" {% if cfg[item.id] contains "Mute" %} checked {% endif
+          %}>
+          <label for="{{ item.id }}_Mute" class="m-0">{{ locales.web.MANAGE_PUNISH_MUTE }}</label>
         </div>
       </div>
 
@@ -179,11 +186,11 @@
       {% assign isSelected = cfg and cfg[item.id] %}
       <div class="field" id="{{ item.id }}" class="control">
         <!-- Enabled -->
-        <input class="is-checkradio" id="{{ item.id }}_ON" type="radio" name="{{ item.id }}" />
-        <label for="{{ item.id }}_ON">{{ locales.web.ENABLED }}</label>
+        <input class="is-checkradio m-0" id="{{ item.id }}_ON" type="radio" name="{{ item.id }}" />
+        <label for="{{ item.id }}_ON" class="m-0">{{ locales.web.ENABLED }}</label>
         <!-- Disabled -->
-        <input class="is-checkradio" id="{{ item.id }}_OFF" type="radio" name="{{ item.id }}" />
-        <label for="{{ item.id }}_OFF">{{ locales.web.DISABLED }}</label>
+        <input class="is-checkradio m-0" id="{{ item.id }}_OFF" type="radio" name="{{ item.id }}" />
+        <label for="{{ item.id }}_OFF" class="m-0">{{ locales.web.DISABLED }}</label>
       </div>
 
       {% else %}
@@ -217,18 +224,17 @@
       <!-- Emoji -->
       {% when "emoji" %}
 
-      <div id="twemoji-picker">
-        <!-- If the emoji is set -->
+      <div class="control">
         {% if cfg[item.id] %}
-        <!-- Marks the item as selected -->
-        {% assign isSelected = locale == item.default %}
-        <!-- Sets the emoji -->
-        {% assign emoji = cfg[item.id] %} {% endif %}
-        <!-- If the emoji is set -->
-        {% if isSelected == true %}
-        <button id="{{ item.id }}" class="trigger">{{ emoji }}</button>
+        <input
+          class="input emoji-input"
+          id="{{ item.id }}"
+          type="text"
+          placeholder="{{ item.default }}"
+          value="{{ cfg[item.id] }}"
+        />
         {% else %}
-        <button id="{{ item.id }}" class="trigger">{{ item.default }}</button>
+        <input class="input emoji-input" id="{{ item.id }}" type="text" placeholder="{{ item.default }}" />
         {% endif %}
       </div>
 
@@ -292,11 +298,10 @@
 {% include "modal" %}
 
 <!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bulmaselect@2.0.3/dist/index.min.js" nonce="{{ nonce }}"></script>
-<script src="/public/js/imageClick.js" nonce="{{ nonce }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bulmaselect@latest/dist/index.min.js" nonce="{{ nonce }}"></script>
+<script src="/public/js/cycler.js" nonce="{{ nonce }}"></script>
 <script src="/public/js/manage.js" nonce="{{ nonce }}"></script>
 <script src="/public/js/modal.js" nonce="{{ nonce }}"></script>
 <script src="/public/js/navbar.js" nonce="{{ nonce }}"></script>
-<script src="/public/js/picker.js" type="module" nonce="{{ nonce }}"></script>
 
 {% endblock %}

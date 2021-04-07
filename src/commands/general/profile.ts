@@ -111,15 +111,15 @@ export class ProfileCommand extends Command {
           )) as ResponseData;
 
           // If the user cancels deleting
-          if (response?.response === false) {
-            return omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.PROFILE_CANCELLED_DELETING"), "error");
+          if (!response || response?.response === false) {
+            omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.PROFILE_CANCELLED_DELETING"), "error");
+          } else {
+            // Deletes the config and the askYesNo message
+            await this.bot.db.deleteUserConfig(msg.author.id);
+            userconfig = { id: msg.author.id };
+            omsg.removeReaction(deleteEmoji, user.id);
+            omsg.editEmbed(msg.string("global.SUCCESS"), msg.string("general.PROFILE_DELETED"), "success");
           }
-
-          // Deletes the config and the askYesNo message
-          await this.bot.db.deleteUserConfig(msg.author.id);
-          userconfig = { id: msg.author.id };
-          omsg.removeReaction(deleteEmoji, user.id);
-          omsg.editEmbed(msg.string("global.SUCCESS"), msg.string("general.PROFILE_DELETED"), "success");
           setTimeout(() => {
             omsg.edit(editEmbed(this.bot.localeSystem));
           }, 3000);

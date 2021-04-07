@@ -7,7 +7,7 @@
 import type { Profile } from "passport-discord";
 import type { HibikiClient } from "../../classes/Client";
 import { defaultAvatar } from "../../utils/constants";
-import { checkAuth, getAuthedUser, getManagableGuilds } from "../../utils/webserver";
+import { checkAuth, getAuthedUser, getManagableGuilds, getWebLocale } from "../../utils/webserver";
 import { localizeProfileItems, localizeSetupItems } from "../../utils/format";
 import { validItems } from "../../utils/validItems";
 import express from "express";
@@ -48,7 +48,7 @@ export function manageRoutes(bot: HibikiClient) {
   router.get("/servers/", manageRateLimit, checkAuth, async (req, res) => {
     const user = getAuthedUser(req.user as Profile);
     const userConfig = await bot.db.getUserConfig(user.id);
-    const locale = userConfig?.locale ? userConfig?.locale : bot.config.defaultLocale;
+    const locale = userConfig?.locale || bot.config.defaultLocale;
 
     // Finds guilds the user can manage
     const managableGuilds = user.guilds
@@ -66,16 +66,12 @@ export function manageRoutes(bot: HibikiClient) {
 
     res.render("servers", {
       bot: bot,
-      botAvatar: `https://cdn.discordapp.com/avatars/${bot.user.id}/${bot.user.avatar}.png`,
-      page: req.url.split("/")[1],
-      locales:
-        bot.config.defaultLocale === locale
-          ? bot.localeSystem.locales[bot.config.defaultLocale]
-          : { ...(bot.localeSystem.locales[bot.config.defaultLocale] as any), ...(bot.localeSystem.locales[locale] as any) },
-
-      user: user,
-      nonce: res.locals.nonce,
+      botAvatar: bot.user.dynamicAvatarURL(null, 128),
       guilds: managableGuilds,
+      locales: getWebLocale(bot, locale),
+      nonce: res.locals.nonce,
+      page: req.url.split("/")[1],
+      user: user,
     });
   });
 
@@ -83,27 +79,23 @@ export function manageRoutes(bot: HibikiClient) {
   router.get("/profile/", manageRateLimit, checkAuth, async (req, res) => {
     const user = getAuthedUser(req.user as Profile);
     const userConfig = await bot.db.getUserConfig(user.id);
-    const locale = userConfig?.locale ? userConfig?.locale : bot.config.defaultLocale;
+    const locale = userConfig?.locale || bot.config.defaultLocale;
 
     res.render("profile", {
       bot: bot,
-      botAvatar: bot.user.dynamicAvatarURL("png", 512),
+      botAvatar: bot.user.dynamicAvatarURL(null, 128),
       cfg: userConfig,
-      items: validItems.filter((item) => item.category === "profile"),
-      page: req.url.split("/")[1],
-      user: user,
       csrfToken: req.csrfToken(),
-      locales:
-        bot.config.defaultLocale === locale
-          ? bot.localeSystem.locales[bot.config.defaultLocale]
-          : { ...(bot.localeSystem.locales[bot.config.defaultLocale] as any), ...(bot.localeSystem.locales[locale] as any) },
-
-      pronouns: ["NO_PREFERENCE", "PRONOUNS_HE", "PRONOUNS_SHE", "PRONOUNS_THEY"],
       itemLocales: itemLocales[locale],
       itemLocalesTitle: itemLocalesTitle[locale],
+      items: validItems.filter((item) => item.category === "profile"),
       localeNames: localeNames,
+      locales: getWebLocale(bot, locale),
       localesKeys: Object.keys(localeNames),
       nonce: res.locals.nonce,
+      page: req.url.split("/")[1],
+      pronouns: ["NO_PREFERENCE", "PRONOUNS_HE", "PRONOUNS_SHE", "PRONOUNS_THEY"],
+      user: user,
     });
   });
 
@@ -121,7 +113,7 @@ export function manageRoutes(bot: HibikiClient) {
     // Gets the user's config, locale info, and guildConfig
     const userConfig = await bot.db.getUserConfig(user.id);
     const guildConfig = await bot.db.getGuildConfig(guild.id);
-    const locale = userConfig?.locale ? userConfig.locale : bot.config.defaultLocale;
+    const locale = userConfig?.locale || bot.config.defaultLocale;
 
     // Gets channels
     const channels = bot.guilds
@@ -181,32 +173,28 @@ export function manageRoutes(bot: HibikiClient) {
     });
 
     res.render("manage", {
-      guild: guild,
-      guildIcon: guild.icon ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128` : defaultAvatar,
       bot: bot,
-      botAvatar: `https://cdn.discordapp.com/avatars/${bot.user.id}/${bot.user.avatar}.png`,
-      roles: roles,
-      channels: channels,
-      voiceChannels: voiceChannels,
-      itemCategories: itemCategories,
+      botAvatar: bot.user.dynamicAvatarURL(null, 128),
       categories: Object.keys(itemCategories),
       categoryInfo: categoryInfo,
       cfg: guildConfig,
-      items: validItems.filter((item) => item.category !== "profile" && item.id !== "disabledCategories"),
-      page: "manage",
-      user: user,
+      channels: channels,
       csrfToken: req.csrfToken(),
+      guild: guild,
+      guildIcon: guild.icon ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128` : defaultAvatar,
+      itemCategories: itemCategories,
       itemLocales: itemLocales[locale],
-      itemLocalesTitle: itemLocalesTitle[locale],
       itemLocalesPunishment: itemLocalesPunishment[locale],
-      // locales: localeNames,
+      itemLocalesTitle: itemLocalesTitle[locale],
+      items: validItems.filter((item) => item.category !== "profile" && item.id !== "disabledCategories"),
       localeNames: localeNames,
+      locales: getWebLocale(bot, locale),
       localesKeys: Object.keys(localeNames),
-      locales:
-        bot.config.defaultLocale === locale
-          ? bot.localeSystem.locales[bot.config.defaultLocale]
-          : { ...(bot.localeSystem.locales[bot.config.defaultLocale] as any), ...(bot.localeSystem.locales[locale] as any) },
       nonce: res.locals.nonce,
+      page: "manage",
+      roles: roles,
+      user: user,
+      voiceChannels: voiceChannels,
     });
   });
 
