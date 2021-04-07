@@ -1,7 +1,7 @@
 {
   "private": "true",
   "name": "hibikiapp",
-  "version": "3.3.5",
+  "version": "3.3.6",
   "description": "The best all-in-one Discord bot! Automod, fun, music, utilities, and more. Customizable, easy-to-use, and fully translatable.",
   "author": "Espi <espi@riseup.net> (https://espi.me)",
   "contributors": [
@@ -89,7 +89,7 @@
     "rimraf": "^3.0.2",
     "sass": "^1.32.8",
     "ts-node": "^9.1.1",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.4"
   },
   "optionalDependencies": {
     "@discordjs/opus": "^0.5.0",
