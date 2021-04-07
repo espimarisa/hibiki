@@ -34,7 +34,7 @@ export class ForcebanCommand extends Command {
     )) as ResponseData;
 
     // If banning is cancelled
-    if (response?.response === false) {
+    if (!response || response?.response === false) {
       return banmsg.editEmbed(`🔨 ${msg.string("moderation.BAN")}`, msg.string("moderation.FORCEBAN_CANCELLED"), "error");
     }
 

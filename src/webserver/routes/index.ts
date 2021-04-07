@@ -6,7 +6,7 @@
 
 import type { Profile } from "passport-discord";
 import type { HibikiClient } from "../../classes/Client";
-import { getAuthedUser } from "../../utils/webserver";
+import { getAuthedUser, getWebLocale } from "../../utils/webserver";
 import express from "express";
 import rateLimit from "express-rate-limit";
 const router = express.Router();
@@ -21,17 +21,14 @@ export function indexRoutes(bot: HibikiClient) {
   router.get("/", indexRateLimit, async (req, res) => {
     const user = req.isAuthenticated() ? getAuthedUser(req.user as Profile) : null;
     const userConfig = user ? await bot.db.getUserConfig(user?.id) : null;
-    const locale = userConfig?.locale ? userConfig?.locale : bot.config.defaultLocale;
+    const locale = userConfig?.locale || bot.config.defaultLocale;
 
     res.render("index", {
       bot: bot,
-      botAvatar: bot.user.dynamicAvatarURL("png", 512),
+      botAvatar: bot.user.dynamicAvatarURL(null, 512),
+      locales: getWebLocale(bot, locale),
       page: req.url,
       user: user,
-      locales:
-        bot.config.defaultLocale === locale
-          ? bot.localeSystem.locales[bot.config.defaultLocale]
-          : { ...(bot.localeSystem.locales[bot.config.defaultLocale] as any), ...(bot.localeSystem.locales[locale] as any) },
     });
   });
 

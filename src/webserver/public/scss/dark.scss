@@ -50,4 +50,10 @@ $scheme-main: $white-bis;
 $scheme-main-bis: #0d0d0f;
 $body-background-color: #17181c;
 
+// Bulma-checkradio overrides
+$checkbox-border: 0.1rem solid $grey-darker-inverted;
+$checkradio-focus: 1px dotted $grey-dark-inverted;
+$checkbox-block-background: $black-ter-inverted;
+
+// yea it is
 @import "./default.scss";

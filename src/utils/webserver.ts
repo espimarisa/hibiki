@@ -8,6 +8,7 @@ import type { Collection, Guild } from "eris";
 import type { NextFunction, Request, Response } from "express";
 import type { Liquid } from "liquidjs";
 import type { Profile } from "passport-discord";
+import type { HibikiClient } from "../classes/Client";
 import { readdirSync } from "fs";
 import { defaultAvatar } from "./constants";
 import path from "path";
@@ -19,16 +20,26 @@ export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // Gets authenticated user info
-export const getAuthedUser = (user: Profile) => ({
-  username: user.username,
-  discriminator: user.discriminator,
-  guilds: user.guilds,
-  id: user.id,
-  avatar: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128` : defaultAvatar,
-});
+export function getAuthedUser(user: Profile) {
+  return {
+    username: user.username,
+    discriminator: user.discriminator,
+    guilds: user.guilds,
+    id: user.id,
+    avatar: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128` : defaultAvatar,
+  };
+}
+
+// Gets what locales to send to a route
+export function getWebLocale(bot: HibikiClient, locale: string) {
+  if (bot.config.defaultLocale === locale) return bot.localeSystem.locales[bot.config.defaultLocale];
+  else return { ...(bot.localeSystem.locales[bot.config.defaultLocale] as any), ...(bot.localeSystem.locales[locale] as any) };
+}
 
 // Destroys a session
-export const destroySession = (req: Request) => new Promise<void>((rs, rj) => req.session.destroy((e) => (e ? rj(e) : rs())));
+export async function destroySession(req: Request) {
+  return new Promise<void>((resolve, reject) => req.session.destroy((err) => (err ? reject(err) : resolve())));
+}
 
 // Gets guilds that a user can manage
 export function getManagableGuilds(req: Request, user: Profile, guilds: Collection<Guild>) {
@@ -67,6 +78,6 @@ export function loadIcons(engine: Liquid) {
   engine.registerFilter(
     "icon",
     (arg: string) =>
-      `<svg width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 ${icons[arg].width} ${icons[arg].height}"><path d="${icons[arg].svg}" /></svg>`,
+      `<svg width="100%" height="100%" fill=currentColor preserveAspectRatio="xMidYMid meet" viewBox="0 0 ${icons[arg].width} ${icons[arg].height}"><path d="${icons[arg].svg}" /></svg>`,
   );
 }

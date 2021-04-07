@@ -37,7 +37,7 @@ export class MarryCommand extends Command {
     )) as ResponseData;
 
     // If marriage is cancelled
-    if (response?.response === false) {
+    if (!response || response?.response === false) {
       return marrymsg.editEmbed(`💝 ${msg.string("fun.MARRY")}`, msg.string("fun.MARRY_CANCELLED"));
     }
 

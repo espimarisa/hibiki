@@ -1,7 +1,7 @@
 /**
- * @file Imageclick Cycler
+ * @file Image cycler
  * @description Cycles through images on click
- * @module webserver/public/imageClick
+ * @module webserver/public/cycler
  */
 
 "use strict";

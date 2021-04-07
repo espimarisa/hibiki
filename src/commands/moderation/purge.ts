@@ -42,7 +42,7 @@ export class PurgeCommand extends Command {
     )) as ResponseData;
 
     // If cancelled
-    if (response?.response === false) {
+    if (!response || response?.response === false) {
       return purgmsg.editEmbed(`💣 ${msg.string("moderation.PURGE")}`, msg.string("moderation.PURGE_CANCELLED"));
     }
 

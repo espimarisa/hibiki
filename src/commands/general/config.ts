@@ -153,7 +153,7 @@ export class SetupCommand extends Command {
             )) as ResponseData;
 
             // If the user cancels deleting
-            if (response?.response === false) {
+            if (!response || response.response === false) {
               return omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.CONFIG_CANCELLED_DELETE"), "error");
             }
 
