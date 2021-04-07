@@ -125,7 +125,11 @@
     {% when "boolean" %}
 
     <!-- Checks to see if the item is enabled -->
-    {% assign isSelected = cfg and cfg[item.id] %}
+    {% if cfg[item.id] %}
+    <!-- Marks it as enabled if it's set -->
+    {% assign isSelected = cfg[item.id] %} {% else %}
+    <!-- Uses the default -->
+    {% assign isSelected = item.default or false %} {% endif %}
     <div class="field" id="{{ item.id }}" class="control">
       <!-- If the item is enabled -->
       {% if isSelected == true %}
