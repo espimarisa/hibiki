@@ -26,7 +26,7 @@ export function getAuthedUser(user: Profile) {
     discriminator: user.discriminator,
     guilds: user.guilds,
     id: user.id,
-    avatar: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128` : defaultAvatar,
+    avatar: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256` : defaultAvatar,
   };
 }
 
