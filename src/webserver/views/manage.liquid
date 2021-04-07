@@ -183,17 +183,21 @@
       {% when "boolean" %}
 
       <!-- Checks to see if the item is enabled -->
-      {% assign isSelected = cfg and cfg[item.id] %}
+      {% if cfg[item.id] %}
+      <!-- Marks it as enabled if it's set -->
+      {% assign isSelected = cfg[item.id] %} {% else %}
+      <!-- Uses the default -->
+      {% assign isSelected = item.default %} {% endif %}
       <div class="field" id="{{ item.id }}" class="control">
         <!-- Enabled -->
-        <input class="is-checkradio m-0" id="{{ item.id }}_ON" type="radio" name="{{ item.id }}" />
+        <input class="is-checkradio m-0" id="{{ item.id }}_ON" type="radio" name="{{ item.id }}" {% if isSelected == true %} checked {% endif %} />
         <label for="{{ item.id }}_ON" class="m-0">{{ locales.web.ENABLED }}</label>
         <!-- Disabled -->
-        <input class="is-checkradio m-0" id="{{ item.id }}_OFF" type="radio" name="{{ item.id }}" />
+        <input class="is-checkradio m-0" id="{{ item.id }}_OFF" type="radio" name="{{ item.id }}" {% if isSelected == false %} checked {% endif %} />
         <label for="{{ item.id }}_OFF" class="m-0">{{ locales.web.DISABLED }}</label>
       </div>
 
-      {% else %}
+      {% else %} // its always setting the default now
 
       <!-- Numbers -->
       {% when "number" %}
