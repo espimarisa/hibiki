@@ -20,7 +20,7 @@
   <div class="hero-body">
     <div class="container has-text-centered">
       <figure class="image is-128x128 is-inline-block">
-        <img src="{{ guildIcon }}" class="is-rounded" alt="{{ guild.name }}" />
+        <img src="{{ guildIcon }}" class="is-rounded" alt="{{ guild.name }}" width="256" height="256" />
       </figure>
       <p class="title is-size-3 has-text-white">{{ locales.web.MANAGING }} {{ guild.name }}</p>
     </div>
@@ -226,13 +226,7 @@
 
       <div class="control">
         {% if cfg[item.id] %}
-        <input
-          class="input emoji-input"
-          id="{{ item.id }}"
-          type="text"
-          placeholder="{{ item.default }}"
-          value="{{ cfg[item.id] }}"
-        />
+        <input class="input emoji-input" id="{{ item.id }}" type="text" placeholder="{{ item.default }}" value="{{ cfg[item.id] }}" />
         {% else %}
         <input class="input emoji-input" id="{{ item.id }}" type="text" placeholder="{{ item.default }}" />
         {% endif %}
