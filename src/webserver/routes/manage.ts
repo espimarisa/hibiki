@@ -181,7 +181,7 @@ export function manageRoutes(bot: HibikiClient) {
       channels: channels,
       csrfToken: req.csrfToken(),
       guild: guild,
-      guildIcon: guild.icon ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=128` : defaultAvatar,
+      guildIcon: guild.icon ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png?size=256` : defaultAvatar,
       itemCategories: itemCategories,
       itemLocales: itemLocales[locale],
       itemLocalesPunishment: itemLocalesPunishment[locale],
