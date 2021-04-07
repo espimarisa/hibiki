@@ -12,9 +12,22 @@ $hibiki-link: #60a5ff;
   align-items: center;
   display: inline-flex;
   justify-content: center;
-  height: 1.5rem;
-  width: 1.5rem;
-  fill: white;
+  height: 1.75rem;
+  width: 1.75rem;
+}
+
+.menu {
+  z-index: 1;
+}
+
+.emoji-input {
+  width: 3em !important;
+}
+
+.is-checkradio[type="radio"] + label,
+.is-checkradio[type="checkbox"] + label {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .fa-xs {
@@ -23,6 +36,7 @@ $hibiki-link: #60a5ff;
 .fa-sm {
   transform: scale(0.875);
 }
+
 .fa-lg {
   transform: scale(1.33);
 }
@@ -48,10 +62,6 @@ $hibiki-link: #60a5ff;
     vertical-align: middle;
     justify-content: center;
   }
-}
-
-.menu {
-  z-index: 1;
 }
 
 #stare {
@@ -93,12 +103,16 @@ a.navbar-item,
   padding-top: 10px;
   padding-bottom: 10px;
   top: 0px;
-  z-index: 60;
+  z-index: 30;
 }
 
 @media (prefers-color-scheme: dark) {
   .sticky-buttons {
     background: #17181c;
+  }
+
+  .modal-card {
+    outline: 3px rgba(255, 255, 255, 0.153) solid;
   }
 }
 
@@ -133,6 +147,23 @@ a.navbar-item,
 
     100% {
       background: $hibiki-primary-darker;
+    }
+  }
+}
+
+// Custom floating
+.floating {
+  animation: float 2s infinite ease-in-out;
+
+  @include keyframes(float) {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0px);
     }
   }
 }

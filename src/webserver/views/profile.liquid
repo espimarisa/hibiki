@@ -8,6 +8,8 @@
 {% block head %}
 <meta name="user-id" content="{{ user.id }}" />
 <meta name="csrf-token" content="{{ csrfToken }}" />
+<meta name="save-changes" content="{{ locales.web.SAVE_CHANGES }}" />
+<meta name="changes-saved" content="{{ locales.web.CHANGES_SAVED }}" />
 {% endblock %}
 
 <!-- Start content -->
@@ -72,17 +74,16 @@
           {% assign pronounsize = pronouns.size | minus:1 %}
           <!-- Cycles through each pronoun -->
           {% for i in (0..pronounsize) %}
-          <!-- If the pronoun is selected -->
-          {% if cfg[item.id] == i %}
           <!-- Sets it as selected -->
-          {% assign isSelected = true %} {% endif %}
+          {% assign isSelected = cfg[item.id] == i %}
           <!-- If isSelected is set -->
           {% if isSelected == true %}
+          <!-- There are two "selected" ? -->
           <option selected>{{ locales.global[pronouns[i]] }}</option>
-          {% endif %}
+          {% else %}
           <!-- Lists the pronouns -->
           <option>{{ locales.global[pronouns[i]] }}</option>
-          {% endfor %}
+          {% endif %} {% endfor %}
         </select>
       </div>
     </div>
@@ -128,13 +129,13 @@
     <div class="field" id="{{ item.id }}" class="control">
       <!-- If the item is enabled -->
       {% if isSelected == true %}
-      <input checked id="{{ item.id }}Switch" type="checkbox" name="{{ item.id }}Switch" class="is-checkradio switch is-rounded is-link" />
+      <input checked id="{{ item.id }}Switch" type="checkbox" name="{{ item.id }}Switch" class="is-checkradio switch is-rounded m-0" />
       <!-- If the item is disabled -->
       {% else %}
-      <input id="{{ item.id }}Switch" type="checkbox" name="{{ item.id }}Switch" class="is-checkradio switch is-rounded is-link" />
+      <input id="{{ item.id }}Switch" type="checkbox" name="{{ item.id }}Switch" class="is-checkradio switch is-rounded m-0" />
       {% endif %}
       <!-- Item label -->
-      <label for="{{ item.id }}Switch">
+      <label for="{{ item.id }}Switch" class="m-0">
         <span>{{ locales.web.ENABLED }}</span>
       </label>
     </div>
@@ -154,8 +155,8 @@
 
 {% include "modal" %}
 
-<script src="/public/js/navbar.js" nonce="{{ nonce }}"></script>
 <script src="/public/js/modal.js" nonce="{{ nonce }}"></script>
+<script src="/public/js/navbar.js" nonce="{{ nonce }}"></script>
 <script src="/public/js/profile.js" nonce="{{ nonce }}"></script>
 
 {% endblock %}

@@ -6,9 +6,12 @@
 
 "use strict";
 
-// Gets the csrf token and guildID
+// Gets the csrf token, guild ID, and some locales
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+const saveChanges = document.querySelector('meta[name="save-changes"').getAttribute("content");
+const changesSaved = document.querySelector('meta[name="changes-saved"').getAttribute("content");
 const guildID = /manage\/([\d]{17,19})/.exec(document.URL)[1];
+const defaultEmojiRegex = /\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/;
 
 /**
  * Gets a guildConfig
@@ -112,13 +115,20 @@ window.addEventListener("load", async () => {
 
   // Handles items with maximum limits
   fetchedItems
-    .filter((item) => item.type === "string")
+    .filter((item) => item.type === "string" || item.type === "emoji")
     .map((item) => document.getElementById(item.id))
     .forEach((e) => {
-      const maximum = fetchedItems.find((item) => item.id === e.id).maximum;
+      const item = fetchedItems.find((item_) => item_.id === e.id);
       e.addEventListener("input", (setting) => {
         const element = setting.target;
-        if (element.value.length > maximum) element.value = element.value.substring(0, maximum);
+        if (element.value.length > item.maximum) element.value = element.value.substring(0, item.maximum);
+
+        // Emojis
+        if (item.type === "emoji") {
+          const emoji = defaultEmojiRegex.exec(element.value);
+          if (emoji) element.value = element.value.substring(emoji.index, emoji[0].length + 1);
+          else element.value = "";
+        }
       });
     });
 
@@ -221,7 +231,7 @@ window.addEventListener("load", async () => {
 
         // Emoji
         case "emoji": {
-          guildConfig[item] = element.innerText;
+          guildConfig[item] = element.value;
           break;
         }
 
@@ -278,10 +288,10 @@ window.addEventListener("load", async () => {
         // Makes the button "animated"
         button.classList.remove("is-loading");
         button.classList.add("is-success");
-        document.getElementById("saved").innerText = "Changes saved";
+        document.getElementById("saved").innerText = changesSaved;
         setTimeout(() => {
           // Sets the button back to the original text
-          document.getElementById("saved").innerText = "Save changes";
+          document.getElementById("saved").innerText = saveChanges;
           button.classList.remove("is-success");
         }, 2000);
       }
@@ -304,12 +314,6 @@ window.addEventListener("load", async () => {
         button.classList.remove("is-loading");
         button.classList.remove("is-light");
         button.classList.add("is-danger");
-        document.getElementById("reset").innerText = "Server config deleted";
-        setTimeout(() => {
-          // Sets the content back to what it originally was
-          document.getElementById("reset").innerText = "Delete server config";
-          button.classList.remove("is-danger");
-        }, 2000);
       }
 
       // "Reloads" the window (in a non-deprecated way)

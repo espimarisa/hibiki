@@ -74,7 +74,7 @@ export function startWebserver(bot: HibikiClient) {
       httpOnly: true,
       sameSite: "lax",
       // If you are getting infinite redirects, set this to "false" if you don't have a HTTPS-only environment setup.
-      secure: isProduction,
+      secure: bot.config.dashboard.cookieSecure,
     },
   };
 
@@ -92,8 +92,7 @@ export function startWebserver(bot: HibikiClient) {
         defaultSrc: ["'self'"],
         imgSrc: ["'self'", "cdn.discordapp.com"],
         scriptSrc: ["'self'", `'nonce-${res.locals.nonce}'`, "cdn.jsdelivr.net"],
-        styleSrc: ["'self'", "cdn.jsdelivr.net", "'unsafe-inline'"],
-        fontSrc: ["'self'", "cdn.jsdelivr.net"],
+        styleSrc: ["'self'", "cdn.jsdelivr.net"],
       },
     })(req, res, next);
   });

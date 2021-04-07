@@ -212,6 +212,7 @@ export const validItems = [
     id: "pinEmoji",
     type: "emoji",
     default: "📌",
+    maximum: 2,
   },
   {
     category: "pinboard",

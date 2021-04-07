@@ -4,11 +4,6 @@
 <!-- Metadata tagline -->
 {% assign metaDescription = "The best all-in-one Discord bot! Automod, fun, music, utilities, and more." %}
 
-<!-- Additional head data -->
-{% block head %}
-<link rel="stylesheet" href="/public/css/animate.css" type="text/css" />
-{% endblock %}
-
 <!-- Default layout -->
 {% layout "default" %}
 
@@ -23,9 +18,7 @@
       <p class="is-size-2 has-text-weight-semibold has-text-light">{{ bot.user.username }}</p>
       <p class="control has-text-centered">
         <a href="/invite/" class="button is-large is-rounded is-light is-size-4-desktop is-size-5-mobile">
-          <span class="icon is-small">
-            <em class="fa fa-plus"></em>
-          </span>
+          <span class="icon is-small fa-xs">{{ "plus" | icon }}</span>
           <span>{{ locales.web.INVITE }} {{ bot.user.username }}</span>
         </a>
       </p>

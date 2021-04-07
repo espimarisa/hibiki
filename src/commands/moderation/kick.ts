@@ -46,7 +46,7 @@ export class KickCommand extends Command {
       )) as ResponseData;
 
       // If the kick was cancelled
-      if (response?.response === false)
+      if (!response || response?.response === false)
         return kickmsg.editEmbed(
           msg.string("global.CANCELLED"),
           msg.string("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.string("moderation.KICKING") }),

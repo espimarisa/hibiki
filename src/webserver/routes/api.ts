@@ -230,7 +230,7 @@ export function apiRoutes(bot: HibikiClient) {
 
         // Emojis
         case "emoji": {
-          if (defaultEmojiRegex.test(guildConfig[value])) delete guildConfig[value];
+          if (!defaultEmojiRegex.test(guildConfig[value])) delete guildConfig[value];
           break;
         }
 
@@ -406,6 +406,14 @@ export function apiRoutes(bot: HibikiClient) {
             delete userConfig[value];
           }
 
+          break;
+        }
+
+        // Pronouns
+        case "pronouns": {
+          console.log(option !== 1, option !== 2, option !== 3);
+          if (typeof option !== "number") return delete userConfig[value];
+          if (option !== 1 && option !== 2 && option !== 3) return delete userConfig[value];
           break;
         }
       }

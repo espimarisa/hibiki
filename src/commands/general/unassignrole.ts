@@ -42,7 +42,7 @@ export class UnassignroleCommand extends Command {
           const role = this.bot.args.argtypes.role(arg, msg);
           if (!role) return { added: false, role: undefined };
           if (!msg.member.roles?.includes(role.id)) return { added: false, role: role, doesntHave: true };
-          if (!guildconfig.assignableRoles?.includes(role.id)) return { added: false, role: role };
+          if (!guildconfig.assignableRoles?.includes(role.id)) return { added: false, role: undefined };
 
           try {
             // Removes the role
@@ -57,12 +57,15 @@ export class UnassignroleCommand extends Command {
     // Finds roles that exist in args
     roles = roles.filter((role) => role.role !== undefined);
 
+    // If no roles were removed
+    if (!roles.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.ASSIGN_NOROLES"), "error");
+
     // If the member already has every role
     if (roles.every((r) => r.doesntHave === true)) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ROLE_DOESNTHAVE", { amount: roles.length }), "error");
     }
 
-    // If no roles were added; finds failed roles
+    // finds failed roles
     if (!roles.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.ASSIGN_NOROLES"), "error");
     const failed = roles.filter((r) => r.removed === false);
     const removed = roles.filter((r) => r.removed === true);
