@@ -27,11 +27,8 @@ export async function createEmbed(this: Message, title: string, desc?: string, c
     embedFooter.icon_url = this.author.dynamicAvatarURL();
   }
 
-  if (colortype) {
-    embedFieldColor = convertHex(colortype);
-  } else {
-    embedFieldColor = convertHex("general");
-  }
+  if (colortype) embedFieldColor = convertHex(colortype);
+  else embedFieldColor = convertHex("general");
 
   const embedConstruct = {
     embed: {
@@ -56,12 +53,8 @@ export async function editEmbed(this: Message, title: string, desc?: string, col
 
   if (title) embedTitle = title.length > 250 ? `${title.substring(0, 250)}...` : title;
   if (desc) embedDescription = desc.length > 2000 ? `${desc.substring(0, 2000)}...` : desc;
-
-  if (colortype) {
-    embedFieldColor = convertHex(colortype);
-  } else {
-    embedFieldColor = convertHex("general");
-  }
+  if (colortype) embedFieldColor = convertHex(colortype);
+  else embedFieldColor = convertHex("general");
 
   if (this && this.embeds[0].footer) {
     embedFooter = this.embeds[0].footer;
