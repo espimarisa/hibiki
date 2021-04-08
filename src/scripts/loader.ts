@@ -9,7 +9,6 @@ import type { Command } from "../classes/Command";
 import type { Event } from "../classes/Event";
 import { readdirSync } from "fs";
 import path from "path";
-import config from "../../config.json";
 
 const COMMANDS_DIRECTORY = path.join(__dirname, "../commands");
 const EVENTS_DIRECTORY = path.join(__dirname, "../events");
@@ -45,7 +44,7 @@ function loadCommands(path: string, bot: HibikiClient) {
 
     // Don't load commands missing requiredkeys
     let cmdMissingKeys = false;
-    if (!cmd.requiredkeys.every((k: string) => (Object.keys(config.keys).includes(k) && config.keys[k]) || config.keys.botlists[k])) {
+    if (!cmd.requiredkeys.every((k) => (Object.keys(bot.config.keys).includes(k) && bot.config.keys[k]) || bot.config.keys.botlists[k])) {
       cmdMissingKeys = true;
     }
 
