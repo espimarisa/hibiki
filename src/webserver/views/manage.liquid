@@ -190,10 +190,12 @@
       {% assign isSelected = item.default %} {% endif %}
       <div class="field" id="{{ item.id }}" class="control">
         <!-- Enabled -->
-        <input class="is-checkradio m-0" id="{{ item.id }}_ON" type="radio" name="{{ item.id }}" {% if isSelected == true %} checked {% endif %} />
+        <input class="is-checkradio m-0" id="{{ item.id }}_ON" type="radio" name="{{ item.id }}" {% if isSelected == true %} checked {%
+        endif %} />
         <label for="{{ item.id }}_ON" class="m-0">{{ locales.web.ENABLED }}</label>
         <!-- Disabled -->
-        <input class="is-checkradio m-0" id="{{ item.id }}_OFF" type="radio" name="{{ item.id }}" {% if isSelected == false %} checked {% endif %} />
+        <input class="is-checkradio m-0" id="{{ item.id }}_OFF" type="radio" name="{{ item.id }}" {% if isSelected == false %} checked {%
+        endif %} />
         <label for="{{ item.id }}_OFF" class="m-0">{{ locales.web.DISABLED }}</label>
       </div>
 
@@ -296,10 +298,10 @@
 {% include "modal" %}
 
 <!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bulmaselect@latest/dist/index.min.js" nonce="{{ nonce }}"></script>
 <script src="/public/js/cycler.js" nonce="{{ nonce }}"></script>
 <script src="/public/js/manage.js" nonce="{{ nonce }}"></script>
 <script src="/public/js/modal.js" nonce="{{ nonce }}"></script>
 <script src="/public/js/navbar.js" nonce="{{ nonce }}"></script>
+<script src="/public/js/bulmaselect/index.js" nonce="{{ nonce }}"></script>
 
 {% endblock %}

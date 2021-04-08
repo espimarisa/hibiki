@@ -89,10 +89,9 @@ export function startWebserver(bot: HibikiClient) {
   app.use((req, res, next) => {
     helmet.contentSecurityPolicy({
       directives: {
-        defaultSrc: ["'self'"],
-        imgSrc: ["'self'", "cdn.discordapp.com"],
-        scriptSrc: ["'self'", `'nonce-${res.locals.nonce}'`, "cdn.jsdelivr.net"],
-        styleSrc: ["'self'", "cdn.jsdelivr.net"],
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        "img-src": ["'self'", "cdn.discordapp.com"],
+        "script-src": ["'self'", `'nonce-${res.locals.nonce}'`],
       },
     })(req, res, next);
   });
@@ -125,12 +124,22 @@ export function startWebserver(bot: HibikiClient) {
 
   // Minifies JS if running in production
   if (process.env.NODE_ENV === "production") {
-    const files = readdirSync(`${PUBLIC_DIRECTORY}/js`, { withFileTypes: true });
+    const files = readdirSync(`${PUBLIC_DIRECTORY}/js`, { withFileTypes: true, encoding: "utf-8" });
     files.forEach(async (file) => {
       if (file.isDirectory()) return;
       if (!file.name.endsWith(".js")) return;
       const fileSource = readFileSync(`${PUBLIC_DIRECTORY}/js/${file.name}`, { encoding: "utf-8" });
-      const minifiedFile = await minify(fileSource);
+      const minifiedFile = await minify(fileSource, {
+        sourceMap: false,
+        mangle: true,
+        format: {
+          indent_level: 2,
+          comments: false,
+        },
+        compress: {
+          defaults: true,
+        },
+      });
 
       // Falls back to using non-minified files
       if (!minifiedFile.code) {
