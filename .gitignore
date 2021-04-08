@@ -8,6 +8,7 @@ application.yml
 rethinkdb
 
 # Modules
+bulmaselect/
 src/webserver/public/css/
 .sass-cache
 dist/
