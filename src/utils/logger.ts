@@ -37,6 +37,7 @@ function dateLogFormat(timestamp: Date, colors = true) {
 const consoleLogFormat = winston.format.combine(
   winston.format.colorize(),
   winston.format.timestamp(),
+  winston.format.errors({ stack: true }),
   winston.format.printf((info) => `${dateLogFormat(info.timestamp)} (${info.level}): ${info.message}`),
 );
 
@@ -52,7 +53,7 @@ const dailyTransport = new winston.transports.DailyRotateFile({
   dirname: LOGS_DIRECTORY,
   level: level,
   datePattern: "YYYY-MM-DD",
-  handleExceptions: true,
+  handleExceptions: false,
   zippedArchive: true,
   json: false,
   format: logFormat,
