@@ -1,11 +1,13 @@
 {
   "private": "true",
   "name": "hibikiapp",
-  "version": "3.3.7",
+  "version": "3.3.8",
   "description": "The best all-in-one Discord bot! Automod, fun, music, utilities, and more. Customizable, easy-to-use, and fully translatable.",
   "author": "Espi <espi@riseup.net> (https://espi.me)",
   "contributors": [
-    "resolved <resolvedxd@gmail.com> (https://github.com/resolvedxd)"
+    "resolved <resolvedxd@gmail.com> (https://github.com/resolvedxd)",
+    "cth103 <cthdev@email.com> (https://github.com/cthpw103)",
+    "TTtie <me@tttie.cz> (https://tttie.cz)"
   ],
   "license": "AGPL-3.0-or-later",
   "homepage": "https://hibiki.app",
