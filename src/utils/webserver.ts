@@ -12,6 +12,7 @@ import type { HibikiClient } from "../classes/Client";
 import { readdirSync } from "fs";
 import { defaultAvatar } from "./constants";
 import path from "path";
+const mergedLocales = {};
 
 // Checks if a user is authenticated
 export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
@@ -30,10 +31,41 @@ export function getAuthedUser(user: Profile) {
   };
 }
 
+// Checks to see if an item is an Object
+// JavaScript sucks
+function isObject(item: Record<string, string>) {
+  return item && typeof item === "object" && !Array.isArray(item);
+}
+
+// Merges two objects "deeply"
+// Why on earth does JS not support this?
+// This is awful code. SOF is not skid!
+function mergeDeep(target: { [x: string]: any }, source: { [x: string]: any }) {
+  const output = Object.assign({}, target);
+  if (isObject(target) && isObject(source)) {
+    Object.keys(source).forEach((key) => {
+      if (isObject(source[key])) {
+        if (!(key in target)) Object.assign(output, { [key]: source[key] });
+        else output[key] = mergeDeep(target[key], source[key]);
+      } else {
+        Object.assign(output, { [key]: source[key] });
+      }
+    });
+  }
+  return output;
+}
+
 // Gets what locales to send to a route
 export function getWebLocale(bot: HibikiClient, locale: string) {
   if (bot.config.defaultLocale === locale) return bot.localeSystem.locales[bot.config.defaultLocale];
-  else return { ...(bot.localeSystem.locales[bot.config.defaultLocale] as any), ...(bot.localeSystem.locales[locale] as any) };
+  else {
+    if (!mergedLocales[locale]) {
+      const merged = mergeDeep(bot.localeSystem.locales[bot.config.defaultLocale] as any, bot.localeSystem.locales[locale] as any);
+      mergedLocales[locale] = merged;
+    }
+
+    return mergedLocales[locale];
+  }
 }
 
 // Destroys a session
