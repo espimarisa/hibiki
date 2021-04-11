@@ -26,7 +26,24 @@ export class LocaleSystem {
         else if (file.isFile()) {
           readFile(`${path}/${file.name}`, { encoding: "utf8" }, (_err, fileData) => {
             if (err) throw err;
-            this.locales[file.name.replace(/.json/, "")] = JSON.parse(fileData);
+            const localeObj = {};
+            const data = JSON.parse(fileData);
+
+            // Parses each individual locale
+            Object.entries(data).forEach((locale) => {
+              // If the locale exists
+              if (typeof locale[1] === "object") {
+                localeObj[locale[0]] = {};
+                Object.entries(locale[1]).forEach((string) => {
+                  if (string[1].length > 0) localeObj[locale[0]][string[0]] = string[1];
+                });
+              } else {
+                // Replaces empty strings
+                localeObj[locale[0]] = locale[1];
+              }
+            });
+
+            this.locales[file.name.replace(/.json/, "")] = localeObj as string;
           });
         }
       });

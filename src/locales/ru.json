@@ -426,7 +426,7 @@
     "EXITED": "❌ Выход",
     "FALSE": "Нет",
     "FEATURES": "Свойства",
-    "FORMAT_DAY": "**{hours} {hours:#часов#!часа#!час!}** и **{minutes} {minutes:#минут#!минуты#!минута!}**",
+    "FORMAT_DAY": "**{hours} {hours:#часов#!час!?часа?}** и **{minutes} {minutes:#минут#!минуты#!минута!}**",
     "GREETINGS": "Приветствие участников",
     "GUILD": "Сервер",
     "HAS_BEEN": "был",
