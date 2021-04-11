@@ -411,7 +411,6 @@ export function apiRoutes(bot: HibikiClient) {
 
         // Pronouns
         case "pronouns": {
-          console.log(option !== 1, option !== 2, option !== 3);
           if (typeof option !== "number") return delete userConfig[value];
           if (option !== 1 && option !== 2 && option !== 3) return delete userConfig[value];
           break;
