@@ -38,6 +38,12 @@ export function startWebserver(bot: HibikiClient) {
   const app = express();
   app.enable("trust proxy");
 
+  // Opts out of Chrome FLoC, even though we don't serve ads. https://amifloced.org/
+  app.use((_req, res, next) => {
+    res.header("Permissions-Policy", "interest-cohort=()");
+    next();
+  });
+
   // Disables cache-control on specified routes
   const noCache = (_req: Request, res: Response, next: NextFunction) => {
     res.header("Cache-Control", "no-cache");
