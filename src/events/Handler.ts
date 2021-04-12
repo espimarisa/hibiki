@@ -286,6 +286,7 @@ export class HandlerEvent extends Event {
 
     try {
       // Runs the command
+      await msg.channel.sendTyping();
       await command.run(msg, parsedArgs, args);
     } catch (err) {
       // Captures exceptions with Sentry
