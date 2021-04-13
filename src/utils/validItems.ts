@@ -10,12 +10,12 @@ export const validItems = [
   /**
    * Feature options
    */
-
   {
     category: "features",
     emoji: "☑",
     id: "agreeChannel",
     type: "channel",
+    dependencies: ["agreeBlockCommands"],
   },
   {
     category: "features",
@@ -74,6 +74,7 @@ export const validItems = [
     emoji: "👋",
     id: "leaveJoin",
     type: "channel",
+    dependencies: ["greetingFooter", "leaveTitle", "joinTitle", "leaveMessage", "joinMessage"],
   },
   {
     category: "greeting",
@@ -131,6 +132,7 @@ export const validItems = [
     emoji: "📜",
     id: "messageLogging",
     type: "channel",
+    dependencies: ["logBotMessages"],
   },
   {
     category: "logging",
@@ -197,6 +199,7 @@ export const validItems = [
     emoji: "📍",
     id: "pinChannel",
     type: "channel",
+    dependencies: ["pinAmount", "pinEmoji", "pinSelfPinning"],
   },
   {
     category: "pinboard",
@@ -268,6 +271,7 @@ export const validItems = [
     id: "snipingEnable",
     type: "boolean",
     default: true,
+    dependencies: ["snipingIgnore", "snipingInvites", "snipingPermission"],
   },
   {
     category: "sniping",
@@ -300,6 +304,7 @@ export const validItems = [
     id: "antiInvite",
     type: "boolean",
     default: false,
+    dependencies: ["invitePunishments", "msgOnPunishment"],
   },
   {
     category: "automod",
@@ -307,6 +312,7 @@ export const validItems = [
     id: "antiMassMention",
     type: "boolean",
     default: false,
+    dependencies: ["antiMassMentionPunishments", "massMentionThreshold"],
   },
   {
     category: "automod",
@@ -314,6 +320,7 @@ export const validItems = [
     id: "antiNewLines",
     type: "boolean",
     default: false,
+    dependencies: ["antiNewLinesPunishments", "newlineThreshold"],
   },
   {
     category: "automod",
@@ -321,6 +328,7 @@ export const validItems = [
     id: "antiRaid",
     type: "boolean",
     default: false,
+    dependencies: ["raidPunishments", "raidThreshold"],
   },
   {
     category: "automod",
@@ -328,24 +336,28 @@ export const validItems = [
     id: "antiSpam",
     type: "boolean",
     default: false,
+    dependencies: ["spamPunishments", "spamThreshold"],
   },
   {
     category: "automod",
     emoji: "🔨",
     id: "antiNewLinesPunishments",
     type: "punishment",
+    default: ["Purge"],
   },
   {
     category: "automod",
     emoji: "⚒",
     id: "invitePunishments",
     type: "punishment",
+    default: ["Purge"],
   },
   {
     category: "automod",
     emoji: "🧨",
     id: "antiMassMentionPunishments",
     type: "punishment",
+    default: ["Purge"],
   },
   {
     category: "automod",
@@ -358,6 +370,7 @@ export const validItems = [
     emoji: "🛠",
     id: "spamPunishments",
     type: "punishment",
+    default: ["Purge"],
   },
   {
     category: "automod",
@@ -371,8 +384,8 @@ export const validItems = [
     emoji: "#️⃣",
     id: "newlineThreshold",
     type: "number",
-    minimum: 10,
-    default: 15,
+    minimum: 15,
+    default: 30,
   },
   {
     category: "automod",

@@ -83,10 +83,7 @@ export function getManagableGuilds(req: Request, user: Profile, guilds: Collecti
 // Enables directly serving font awesome icons
 export function loadIcons(engine: Liquid) {
   const icons = {};
-  const MODULES_DIRECTORY = path.resolve(
-    __dirname,
-    process.env.NODE_ENV === "development" ? "../../node_modules" : "../../../node_modules",
-  );
+  const MODULES_DIRECTORY = path.resolve(__dirname, process.env.NODE_ENV === "production" ? "../../../node_modules" : "../../node_modules");
 
   // Loads icon SVG files from font awesome
   const iconPackages = ["@fortawesome/free-solid-svg-icons", "@fortawesome/free-brands-svg-icons"];

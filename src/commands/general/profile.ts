@@ -67,10 +67,12 @@ export class ProfileCommand extends Command {
           title: `👤 ${msg.string("general.PROFILE")}`,
           description: msg.string("general.PROFILE_DESCRIPTION"),
           color: msg.convertHex("general"),
-          fields: items.concat([{ emoji: deleteEmoji, label: msg.string("global.DELETE"), type: "delete", id: "delete" }]).map((item) => ({
-            name: `${item.emoji} ${localizeProfileItems(msg.string, item.id, true)}`,
-            value: localizeItem(item, localeSystem) || localizeProfileItems(msg.string, item.id),
-          })),
+          fields: (items as any)
+            .concat([{ emoji: deleteEmoji, label: msg.string("global.DELETE"), type: "delete", id: "delete" }])
+            .map((item: ValidItem) => ({
+              name: `${item.emoji} ${localizeProfileItems(msg.string, item.id, true)}`,
+              value: localizeItem(item, localeSystem) || localizeProfileItems(msg.string, item.id),
+            })),
           footer: {
             text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
             icon_url: msg.author.dynamicAvatarURL(),

@@ -156,11 +156,7 @@ export function apiRoutes(bot: HibikiClient) {
 
         // Raid punishments
         case "raidPunishment": {
-          if (Array.isArray(guildConfig[value]) && guildConfig[value].length) {
-            guildConfig[value] = option.filter((p: string) => ["Ban", "Kick", "Mute"].includes(p));
-          }
-
-          guildConfig[value] = guildConfig[value].filter((punishment: string) => ["Ban", "Kick", "Mute"].includes(punishment));
+          if (!["Ban", "Kick", "Mute"].includes(guildConfig[value])) delete guildConfig[value];
           break;
         }
 
@@ -266,13 +262,16 @@ export function apiRoutes(bot: HibikiClient) {
         });
 
       // Arrays
-      if (arrayItemTypes.includes(item?.type) && (!Array.isArray(guildConfig[value]) || !guildConfig[value].length)) {
+      if (
+        arrayItemTypes.includes(item?.type) &&
+        (!Array.isArray(guildConfig[value]) || (!guildConfig[value].length && item.type !== "punishment"))
+      ) {
         delete guildConfig[value];
       }
     });
 
     // Replaces the guildConfig with the new one
-    await bot.db
+    bot.db
       .updateGuildConfig(guild.id, guildConfig)
       .then(() => {
         res.sendStatus(200);

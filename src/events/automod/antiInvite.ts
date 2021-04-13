@@ -8,7 +8,9 @@ import type { Message, TextChannel } from "eris";
 import type { HibikiClient } from "../../classes/Client";
 import { fullInviteRegex } from "../../utils/constants";
 import { punishMute, punishWarn } from "./punishments";
+import { validItems } from "../../utils/validItems";
 const reason = "Sent an invite (Automod)";
+const defaultPunishments = (validItems.find((item) => item.id === "invitePunishments").default as unknown) as string[];
 
 export async function automodAntiInvite(msg: Message<TextChannel>, bot: HibikiClient, cfg: GuildConfig) {
   const string = bot.localeSystem.getLocaleFunction(cfg?.guildLocale ? cfg?.guildLocale : bot.config.defaultLocale);
@@ -16,9 +18,10 @@ export async function automodAntiInvite(msg: Message<TextChannel>, bot: HibikiCl
   // Checks if an invite was posted
   if (fullInviteRegex.test(msg.content)) {
     let warning = "";
+    const punishments = cfg.invitePunishments ? cfg.invitePunishments : defaultPunishments;
 
     // Handles each type of punishment
-    cfg.invitePunishments.forEach(async (punishment: string) => {
+    punishments.forEach(async (punishment: string) => {
       switch (punishment) {
         case "Warn":
           warning = await punishWarn(msg, bot, reason);
