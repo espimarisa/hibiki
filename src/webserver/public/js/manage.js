@@ -157,6 +157,49 @@ window.addEventListener("load", async () => {
   });
 
   /**
+   * Gets parent item visibility info
+   */
+
+  function getValue(item) {
+    switch (item.type) {
+      case "boolean": {
+        return document.getElementById(`${item.id}_ON`).checked;
+      }
+
+      // Channel & roles
+      case "channel":
+      case "voiceChannel":
+      case "role": {
+        const element = document.getElementById(item.id);
+        if (!element) return;
+        const option = Array.from(element.children[0].children).find((a) => a.innerText === element.children[0].value).id;
+        if (!option || option.toLowerCase() === "none") return false;
+        return true;
+      }
+    }
+  }
+
+  /**
+   * Handles parents and their children's visibility
+   */
+
+  function visibilityLogic() {
+    fetchedItems.forEach((item) => {
+      if (item.dependencies && item.dependencies.length) {
+        const val = getValue(item);
+        item.dependencies.forEach((dep) => {
+          const dependant = document.getElementById(`${dep}-selector`);
+          if (dependant) dependant.hidden = !val;
+        });
+      }
+    });
+  }
+
+  // runs bestest code
+  document.addEventListener("input", visibilityLogic);
+  visibilityLogic();
+
+  /**
    * Refreshes the local guildConfig
    */
 

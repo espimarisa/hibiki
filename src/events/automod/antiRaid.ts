@@ -6,13 +6,16 @@
 
 import type { Guild, Member } from "eris";
 import type { HibikiClient } from "../../classes/Client";
+import { validItems } from "../../utils/validItems";
 import { punishMute } from "./punishments";
 const reason = "Raid detection (Automod)";
 const joinTimes = {};
 
+const defaultThreshold = validItems.find((item) => item.id === "raidThreshold").default as number;
+
 export async function automodAntiRaid(guild: Guild, member: Member, bot: HibikiClient, cfg: GuildConfig) {
   // Sets the threshold and members to punish
-  if (!cfg.raidThreshold) cfg.raidThreshold = 15;
+  if (!cfg.raidThreshold) cfg.raidThreshold = defaultThreshold;
   if (!joinTimes[guild.id]) joinTimes[guild.id] = [];
   joinTimes[guild.id].push({ member: member.id, time: Date.now() });
   joinTimes[guild.id] = joinTimes[guild.id].filter((join: Record<string, number>) => Date.now() - join.time < 5000);
