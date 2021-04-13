@@ -42,8 +42,9 @@ interface AntiSpam {
 interface ValidItem {
   category?: string;
   default?: boolean | string | number;
+  dependencies?: string[];
   emoji?: string;
-  id?: string;
+  id?: keyof GuildConfig | keyof UserConfig;
   inviteFilter?: boolean;
   label?: string;
   maximum?: number;

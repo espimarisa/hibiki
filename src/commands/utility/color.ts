@@ -3,7 +3,7 @@ import { Command } from "../../classes/Command";
 import { colorName, colors, rgbToLAB } from "../../utils/colors";
 
 export class ColorCommand extends Command {
-  description = "randomly gens a color and converts between some shit idk";
+  description = "Randomly generates a color or returns hex, LAB, and RGB info for one.";
   args = "[color:string]";
   aliases = ["hex", "colour", "hsv", "hsl", "rgb", "rgba", "lab", "cielab"];
   allowdms = true;

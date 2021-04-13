@@ -168,7 +168,10 @@ export class SetupCommand extends Command {
           }
 
           // Finds the category
-          category = categories.find((cat) => (cat.emoji.length > 2 ? cat.emoji.split(":")[1] === emoji.id : cat.emoji === emoji.name));
+          category = categories.find((cat) =>
+            cat.emoji.length > 2 ? cat.emoji.split(":")[1] === emoji.id : cat.emoji === emoji.name,
+          ) as any;
+
           if (!category) return;
           if (category === "profile") return;
           await m.removeReactions();

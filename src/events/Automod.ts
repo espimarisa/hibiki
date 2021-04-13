@@ -44,10 +44,10 @@ export class AutomodEvent extends Event {
           return;
 
         // Runs each automod event if it's configured to do so
-        if (guildconfig.antiSpam && guildconfig.spamPunishments) await automodAntiSpam(msg, this.bot, guildconfig);
-        if (guildconfig.antiInvite && guildconfig.invitePunishments) await automodAntiInvite(msg, this.bot, guildconfig);
-        if (guildconfig.antiNewLines && guildconfig.antiNewLinesPunishments) await automodAntiNewLine(msg, this.bot, guildconfig);
-        if (guildconfig.antiMassMention && guildconfig.antiMassMentionPunishments) await automodAntiMassMention(msg, this.bot, guildconfig);
+        if (guildconfig.antiSpam) await automodAntiSpam(msg, this.bot, guildconfig);
+        if (guildconfig.antiInvite) await automodAntiInvite(msg, this.bot, guildconfig);
+        if (guildconfig.antiNewLines) await automodAntiNewLine(msg, this.bot, guildconfig);
+        if (guildconfig.antiMassMention) await automodAntiMassMention(msg, this.bot, guildconfig);
 
         break;
       }
@@ -60,8 +60,7 @@ export class AutomodEvent extends Event {
         const guild = (msg as unknown) as Guild;
         const guildconfig = await this.bot.db.getGuildConfig(guild.id);
         if (!guildconfig) return;
-        if (guildconfig?.antiRaid) automodAntiRaid(guild, member, this.bot, guildconfig);
-
+        if (guildconfig?.antiRaid && guildconfig?.raidPunishments) await automodAntiRaid(guild, member, this.bot, guildconfig);
         break;
       }
     }
