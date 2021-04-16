@@ -32,7 +32,7 @@ export class LogsCommand extends Command {
       return msg.createEmbed(
         `📜 ${msg.string("owner.LOGS")}`,
         msg.string("owner.LOGS_COMMAND", {
-          comamnd: cmd.name,
+          command: cmd.name,
           times: cmdlogs.length,
         }),
       );
