@@ -46,7 +46,10 @@ export class HibikiClient extends Client {
   muteHandler: MuteHandler;
   reminderHandler: ReminderHandler;
   snipeData: SnipeData;
-
+  /**
+    * @param {string} token The token the bot should log in with.
+    * @param {ClientOptions} options The options for the client.
+    */
   constructor(token: string, options: ClientOptions) {
     super(token, options);
     this.config = config;
