@@ -37,6 +37,7 @@ const cookieSecret = crypto.randomBytes(48).toString("hex");
 export function startWebserver(bot: HibikiClient) {
   const app = express();
   app.enable("trust proxy");
+  app.disable("x-powered-by");
 
   // Opts out of Chrome FLoC, even though we don't serve ads. https://amifloced.org/
   app.use((_req, res, next) => {
@@ -90,8 +91,15 @@ export function startWebserver(bot: HibikiClient) {
     next();
   });
 
-  // Enables helmet and contentSecurityPolicy
-  app.use(helmet({ contentSecurityPolicy: false }));
+  // Enables helmet
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      hidePoweredBy: false,
+    }),
+  );
+
+  // Enables our CSP options
   app.use((req, res, next) => {
     helmet.contentSecurityPolicy({
       directives: {
