@@ -79,7 +79,7 @@ Special thanks to these people for fully translating Hibiki into other languages
 
 [source]: https://github.com/sysdotini/hibiki/blob/main/.github/CONTRIBUTING.md#source-contributions "Source contribution guidelines file."
 [donate]: https://ko-fi.com/sysdotini "Donate thru Ko-fi to help cover Hibiki's expenses."
-[eris]: https://abal.moe/eris "Eris's documentation website."
+[eris]: https://abal.moe/Eris "Eris's documentation website."
 [hibiki]: https://hibiki.app "Hibiki's official website and dashboard."
 [invite]: https://discordapp.com/oauth2/authorize?&client_id=493904957523623936&scope=bot&permissions=1581116663 "A Discord invite for the official Hibiki instance."
 [license]: LICENSE "Hibiki is licensed under the GNU AGPLv3 or later."
