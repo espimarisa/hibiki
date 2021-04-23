@@ -61,13 +61,15 @@ export class BotGuildUpdateEvent extends Event {
             `\n\n${ADDED_MODULES}\n${ADDED_DASHBOARD}` +
             `\n\n${ADDED_SUPPORT}`;
 
-          await ownerDM.createMessage({
-            embed: {
-              title: `✨ ${ADDED_TITLE}`,
-              description: ADDED_DESCRIPTION,
-              color: this.convertHex("general"),
-            },
-          });
+          await ownerDM
+            .createMessage({
+              embed: {
+                title: `✨ ${ADDED_TITLE}`,
+                description: ADDED_DESCRIPTION,
+                color: this.convertHex("general"),
+              },
+            })
+            .catch(() => {});
         }
       }
     }

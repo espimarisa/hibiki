@@ -41,7 +41,7 @@
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
-    "@sentry/node": "^6.2.5",
+    "@sentry/node": "^6.3.1",
     "@sysdotini/erela.js-spotify": "^1.2.4",
     "axios": "^0.21.1",
     "bulma": "^0.9.2",
@@ -62,13 +62,13 @@
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "rethinkdb-ts": "^2.4.9",
-    "session-rethinkdb-ts": "^1.0.6",
+    "session-rethinkdb-ts": "^1.1.0",
     "terser": "^5.6.1",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.2"
   },
   "devDependencies": {
-    "@sentry/types": "^6.2.5",
+    "@sentry/types": "^6.3.1",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.10",
     "@types/csurf": "^1.11.1",

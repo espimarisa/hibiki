@@ -65,8 +65,8 @@ export class MessagePinboard extends Logger {
           let messageContent = string("global.NO_CONTENT");
           if (msg.content) messageContent = msg.content;
           else if (msg?.embeds?.[0]) {
-            if (msg.embeds[0].title !== null) messageContent = msg.embeds[0].title;
-            if (msg.embeds[0].description) messageContent += `${msg.embeds[0].title !== null ? "\n" : ""}${msg.embeds[0].description}`;
+            if (msg.embeds[0]?.title !== null) messageContent = msg.embeds[0]?.title;
+            if (msg.embeds[0]?.description) messageContent += `${msg.embeds[0]?.title !== null ? "\n" : ""}${msg.embeds[0]?.description}`;
           }
 
           // Edits the footer with the correct pin count

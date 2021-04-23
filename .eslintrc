@@ -6,7 +6,7 @@
   },
 
   "root": true,
-  "ignorePatterns": ["docs/", "dist/", "out/", "rethinkdb_data/", "node_modules/"],
+  "ignorePatterns": ["docs/", "dist/", "out/", "rethinkdb_data/", "node_modules/", "bulmaselect/"],
 
   "parserOptions": {
     "sourceType": "module",
