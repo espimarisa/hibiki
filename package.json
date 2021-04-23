@@ -68,7 +68,7 @@
     "winston-daily-rotate-file": "^4.5.2"
   },
   "devDependencies": {
-    "@sentry/types": "^6.2.5",
+    "@sentry/types": "^6.3.1",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.10",
     "@types/csurf": "^1.11.1",
