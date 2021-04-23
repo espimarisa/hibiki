@@ -26,17 +26,17 @@ export class MessageUpdate extends Logger {
     let oldMessageContent = string("global.NO_CONTENT");
     if (msg.content) messageContent = msg.content;
     else if (msg.embeds && msg.embeds[0]) {
-      if (msg.embeds[0].title !== null) messageContent = msg.embeds[0].title;
-      if (msg.embeds[0].description) messageContent += `${msg.embeds[0].title !== null ? "\n" : ""}${msg.embeds[0].description}`;
+      if (msg.embeds[0]?.title !== null) messageContent = msg.embeds[0]?.title;
+      if (msg.embeds[0]?.description) messageContent += `${msg.embeds[0]?.title !== null ? "\n" : ""}${msg.embeds[0]?.description}`;
     }
 
     // Sets old message content if it was an edit
     if (oldmsg) {
       if (oldmsg.content) oldMessageContent = oldmsg.content;
       else if (oldmsg.embeds && oldmsg.embeds[0]) {
-        if (oldmsg.embeds[0].title !== null) oldMessageContent = msg.embeds[0].title;
-        if (oldmsg.embeds[0].description) {
-          oldMessageContent += `${msg.embeds[0].title !== null ? "\n" : ""}${msg.embeds[0].description}`;
+        if (oldmsg.embeds[0]?.title !== null) oldMessageContent = msg.embeds[0]?.title;
+        if (oldmsg.embeds[0]?.description) {
+          oldMessageContent += `${msg.embeds[0]?.title !== null ? "\n" : ""}${msg.embeds[0]?.description}`;
         }
       }
     }

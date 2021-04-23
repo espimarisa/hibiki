@@ -5,4 +5,3 @@ module.exports = {
   variables: true,
   keyframes: true,
 };
-
