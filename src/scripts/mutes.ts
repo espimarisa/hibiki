@@ -20,8 +20,7 @@ export class MuteHandler {
       setInterval(async () => {
         this.muteCache.forEach(async (mute: MuteCache, i: number) => {
           // If nothing is cached
-          if (!this.muteCache.length) return;
-
+          if (!this.muteCache.length || !mute.expiration) return;
           if (Date.now() >= new Date(mute.expiration).getTime()) {
             // Finds the guild
             const guild = this.bot.guilds.get(mute.guild);

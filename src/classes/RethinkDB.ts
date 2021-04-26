@@ -302,7 +302,7 @@ export class RethinkProvider {
   // Gets mutecache data from a guild user
   async getUserGuildMuteCache(guild: string, user: string) {
     await this.dblock;
-    return this.db.table("mutecache").filter({ guild: guild, member: user }).run() as Promise<MuteCache>;
+    return this.db.table("mutecache").filter({ guild: guild, member: user }).run() as Promise<MuteCache[]>;
   }
 
   // Deletes user's guild mute cache
