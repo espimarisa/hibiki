@@ -392,6 +392,9 @@ export function localizeSetupItems(string: LocaleString, item: string, title = f
     case "agreeBlockCommands":
       if (title) return string("general.CONFIG_AGREEBLOCKCOMMANDS");
       return string("general.CONFIG_AGREEBLOCKCOMMANDS_DESCRIPTION");
+    case "agreeBlockMessages":
+      if (title) return string("general.CONFIG_AGREEBLOCKMESSAGES");
+      return string("general.CONFIG_AGREEBLOCKMESSAGES_DESCRIPTION");
     case "inviteOptOut":
       if (title) return string("general.CONFIG_INVITEOPTOUT");
       return string("general.CONFIG_INVITEOPTOUT_DESCRIPTION");

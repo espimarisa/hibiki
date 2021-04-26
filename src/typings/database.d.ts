@@ -7,6 +7,7 @@
 // Guildconfig data
 interface GuildConfig {
   agreeBlockCommands?: boolean;
+  agreeBlockMessages?: boolean;
   agreeChannel?: string;
   agreeRole?: string;
   antiInvite?: boolean;
