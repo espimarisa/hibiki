@@ -8,6 +8,7 @@ export class HelpCommand extends Command {
   aliases = ["commands", "h", "listcmds", "listcommands"];
   allowdisable = false;
   allowdms = true;
+  silent = true;
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Localizes command categories
@@ -90,6 +91,7 @@ export class HelpCommand extends Command {
 
       // Sends help in the current channel
       if (args?.join(" ").toLowerCase() === "here") {
+        msg.channel.sendTyping();
         return msg.channel.createMessage({
           embed: {
             title: `📚 ${msg.string("general.HELP")}`,
@@ -255,6 +257,7 @@ export class HelpCommand extends Command {
       }
 
       // Sends info about a specific command
+      msg.channel.sendTyping();
       msg.channel.createMessage({
         embed: {
           description: cmd.description,
