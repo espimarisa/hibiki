@@ -87,8 +87,24 @@ export class HandlerEvent extends Event {
     const isStaff =
       msg.member?.permissions?.has("administrator") || (guildconfig?.staffRole && msg.member?.roles?.includes(guildconfig.staffRole));
 
-    // Checks staff perms and wordFilter
-    if (!prefix) return isStaff && !(msg.channel instanceof PrivateChannel) && wordFilter(guildconfig, msg);
+    // Things to check if no prefix was given
+    if (!prefix) {
+      // Block junk from being put in the agreeChannel if it's configured
+      if (guildconfig?.agreeChannel && guildconfig?.agreeBlockMessages === true && !isStaff && msg.author.id !== this.bot.user.id) {
+        if (msg.channel.id === guildconfig?.agreeChannel) {
+          await msg.delete("Didn't type the agree command in the agree channel.").catch(() => {});
+          return;
+        }
+      }
+
+      // Runs the wordFilter
+      if (!isStaff && !(msg.channel instanceof PrivateChannel)) {
+        wordFilter(guildconfig, msg);
+      }
+
+      return;
+    }
+
     msg.prefix = prefix;
 
     // Finds the command to run
@@ -130,7 +146,7 @@ export class HandlerEvent extends Event {
     }
 
     // Word filtering
-    if (!command) return isStaff && !(msg.channel instanceof PrivateChannel) && wordFilter(guildconfig, msg);
+    if (!command) return !isStaff && !(msg.channel instanceof PrivateChannel) && wordFilter(guildconfig, msg);
 
     // Handles owner commands
     if (command.owner && !this.bot.config.owners.includes(msg.author.id)) return;
@@ -207,7 +223,7 @@ export class HandlerEvent extends Event {
       // Handles agree channel commands
       if (command.name !== "agree") {
         if (guildconfig?.agreeChannel === msg.channel.id && guildconfig?.agreeBlockCommands !== false && !isStaff) {
-          await msg.delete().catch(() => {});
+          await msg.delete("Ran a command that wasn't the agree command in the agree channel.").catch(() => {});
           return;
         }
       }
