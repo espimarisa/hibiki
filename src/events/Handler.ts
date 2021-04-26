@@ -9,6 +9,21 @@ import { Event } from "../classes/Event";
 import { inviteRegex } from "../utils/constants";
 import { wordFilter } from "../scripts/wordFilter";
 import * as Sentry from "@sentry/node";
+import config from "../../config.json";
+
+// Hides API keys and the bot token from output
+const tokens: string[] = [config.token];
+Object.values(config.keys).forEach((key) => {
+  if (typeof key === "object") {
+    Object.values(key).forEach((key2: any) => {
+      if (key2?.auth) tokens.push(key2.auth);
+      else if (key2.length) tokens.push(key2);
+    });
+  } else if (key.length) tokens.push(key);
+});
+
+// Tokens to hide
+const tokenRegex = new RegExp(tokens.join("|"), "g");
 
 export class HandlerEvent extends Event {
   events = ["messageCreate"];
@@ -299,7 +314,11 @@ export class HandlerEvent extends Event {
       // Logs the error
       Sentry.captureException(err);
       console.error(err);
-      return msg.createEmbed(string("global.ERROR"), string("global.ERROR_OUTPUT", { error: err }), "error");
+      msg.createEmbed(
+        string("global.ERROR"),
+        string("global.ERROR_OUTPUT", { error: err.message.replace(tokenRegex, msg.string("owner.TOKEN_HIDDEN")) }),
+        "error",
+      );
     }
   }
 }
