@@ -18,6 +18,7 @@ export abstract class Command {
   allowdisable = true;
   nsfw = false;
   owner = false;
+  silent = false;
   staff = false;
   voice = false;
 

@@ -4,6 +4,7 @@ import { itemExists } from "../../utils/itemExists";
 
 export class AgreeCommand extends Command {
   description = "Gives you the set agree role if the server has it configured.";
+  silent = true;
 
   async run(msg: Message<TextChannel>) {
     const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild.id);

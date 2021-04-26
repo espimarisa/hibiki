@@ -285,8 +285,8 @@ export class HandlerEvent extends Event {
     });
 
     try {
-      // Runs the command
-      await msg.channel.sendTyping();
+      // Runs the command & emits typing if it isn't silent
+      if (command.silent !== true) await msg.channel.sendTyping();
       await command.run(msg, parsedArgs, args);
     } catch (err) {
       // Captures exceptions with Sentry
