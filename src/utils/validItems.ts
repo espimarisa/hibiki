@@ -15,7 +15,7 @@ export const validItems = [
     emoji: "☑",
     id: "agreeChannel",
     type: "channel",
-    dependencies: ["agreeBlockCommands"],
+    dependencies: ["agreeBlockCommands", "agreeBlockMessages"],
   },
   {
     category: "features",
@@ -23,6 +23,13 @@ export const validItems = [
     emoji: "⛔",
     type: "boolean",
     default: true,
+  },
+  {
+    category: "features",
+    id: "agreeBlockMessages",
+    emoji: "🔇",
+    type: "boolean",
+    default: false,
   },
   {
     category: "features",
