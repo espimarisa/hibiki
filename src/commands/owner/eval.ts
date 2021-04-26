@@ -48,7 +48,7 @@ export class EvalCommand extends Command {
       }
     } catch (err) {
       console.error(err);
-      msg.createEmbed(msg.string("global.ERROR"), `\`\`\`js\n${err.stack}\n\`\`\``, "error");
+      msg.createEmbed(msg.string("global.ERROR"), `\`\`\`js\n${err.stack.replace(tokenRegex, msg.string("owner.TOKEN_HIDDEN"))}\n\`\`\``, "error");
     }
   }
 }
