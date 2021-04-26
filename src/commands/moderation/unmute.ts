@@ -38,19 +38,25 @@ export class UnmuteCommand extends Command {
     const mutecache = await this.bot.db.getUserGuildMuteCache(msg.channel.guild.id, member.id);
     const failed: string[] = [];
 
-    if (mutecache?.roles?.length) {
-      mutecache.roles.forEach(async (role) => {
-        try {
-          await msg.channel.guild.addMemberRole(member.id, role, `Unmuted by ${msg.tagUser(msg.author, true)}`);
-        } catch (err) {
-          failed.push(msg.channel.guild.roles?.get(role).name || msg.string("global.UNKNOWN"));
-        }
+    // there's our problem -->
+    if (mutecache?.length) {
+      const added: string[] = [];
+      mutecache.forEach((cache) => {
+        cache.roles.forEach(async (role) => {
+          if (added.includes(role)) return;
+          try {
+            // Adds previously cached roles
+            await msg.channel.guild.addMemberRole(member.id, role, `Unmuted by ${msg.tagUser(msg.author, true)}`);
+            added.push(role);
+          } catch (err) {
+            failed.push(msg.channel.guild.roles?.get(role).name || msg.string("global.UNKNOWN"));
+          }
+        });
       });
-
       await this.bot.db.deleteUserGuildMuteCache(msg.channel.guild.id, member.id);
     }
 
-    // If member has no roles
+    // Removes the muted role
     try {
       await member.removeRole(guildconfig.mutedRole, `Unmuted by ${msg.tagUser(msg.author, true)}`);
     } catch (err) {
