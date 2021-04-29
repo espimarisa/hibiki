@@ -7,7 +7,7 @@ import axios from "axios";
 const readEmoji = "📖";
 
 export class nhentaiCommand extends Command {
-  description = "sends nhentai..bro";
+  description = "Sends information about an nHentai doujin or allows you to read one.";
   args = "<query:string>";
   cooldown = 4000;
   nsfw = true;

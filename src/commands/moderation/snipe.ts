@@ -14,7 +14,7 @@ export class SnipeCommand extends Command {
 
     // If sniping permission is set to staff only
     const isNotStaff =
-      !msg.member?.permissions?.has("manageGuild") || (guildconfig?.staffRole && !msg.member?.roles?.includes(guildconfig.staffRole));
+      !msg.member?.permissions?.has("manageMessages") || (guildconfig?.staffRole && !msg.member?.roles?.includes(guildconfig.staffRole));
 
     if (guildconfig?.snipingPermission === false && isNotStaff) {
       return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.SNIPE_NOPERMS"), "error");
