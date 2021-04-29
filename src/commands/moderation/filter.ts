@@ -37,6 +37,8 @@ export class WordFilterCommand extends Command {
       guildconfig.filteredWords.splice(wordIndex, 1);
       msg.createEmbed(`🛑 ${msg.string("moderation.FILTER")}`, msg.string("moderation.FILTER_REMOVED", { word: word }));
     } else {
+      // Ignores the first instance of "add" because I am ADHD
+      if (args[0].toLowerCase() === "add") args.shift();
       // Adds the word
       const word = args.join(" ");
 
@@ -52,7 +54,7 @@ export class WordFilterCommand extends Command {
 
       // Updates the DB
       guildconfig.filteredWords.push(word);
-      msg.createEmbed(msg.string("global.SUCCESS"), msg.string("moderation.FILTER_ADDED", { word: word }));
+      msg.createEmbed(msg.string("global.SUCCESS"), msg.string("moderation.FILTER_ADDED", { word: word }), "success");
     }
 
     await this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);

@@ -8,8 +8,8 @@
 
 // Gets the csrf token, guild ID, and some locales
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-const saveChanges = document.querySelector('meta[name="save-changes"').getAttribute("content");
-const changesSaved = document.querySelector('meta[name="changes-saved"').getAttribute("content");
+const saveChanges = document.querySelector('meta[name="save-changes"]').getAttribute("content");
+const changesSaved = document.querySelector('meta[name="changes-saved"]').getAttribute("content");
 const guildID = /manage\/([\d]{17,19})/.exec(document.URL)[1];
 const defaultEmojiRegex = /\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]/;
 
@@ -134,14 +134,13 @@ window.addEventListener("load", async () => {
 
   /**
    * Sets item content to the guildConfig values
-   * TODO: Figure out how the fuck to SSR Bulmaselect so we can remove this junk
    */
 
   Object.keys(guildConfig).forEach((setting) => {
     const element = document.getElementById(setting);
     if ((!element && setting !== "disabledCategories") || typeof guildConfig[setting] === "undefined") return;
 
-    // Disabled command selector
+    // Handles Bulmaselect for disabled commands
     if (setting === "disabledCmds") {
       multiCats.config.options.forEach((option) => {
         if (option.type === "group") {
@@ -153,6 +152,36 @@ window.addEventListener("load", async () => {
           }
         }
       });
+
+      return;
+    }
+
+    // Gets the item type and handles setting UI options
+    const type = fetchedItems.find((item) => item.id === setting).type;
+    switch (type) {
+      case "roleArray": {
+        if (!multiRoleArrays[setting]) return;
+        if (typeof guildConfig[setting] !== "object") guildConfig[setting] = [guildConfig[setting]];
+
+        // Handles Bulmaselect roleArrays
+        multiRoleArrays[setting].config.options.forEach((s) => {
+          if (guildConfig[setting] && guildConfig[setting].includes(s.id)) s.state = true;
+        });
+
+        break;
+      }
+
+      case "channelArray": {
+        if (!multiChannelArrays[setting]) return;
+        if (typeof guildConfig[setting] !== "object") guildConfig[setting] = [guildConfig[setting]];
+
+        // Handles Bulmaselect channelArrays
+        multiChannelArrays[setting].config.options.forEach((s) => {
+          if (guildConfig[setting] && guildConfig[setting].includes(s.id)) s.state = true;
+        });
+
+        break;
+      }
     }
   });
 
@@ -195,7 +224,6 @@ window.addEventListener("load", async () => {
     });
   }
 
-  // runs bestest code
   document.addEventListener("input", visibilityLogic);
   visibilityLogic();
 
@@ -252,7 +280,7 @@ window.addEventListener("load", async () => {
         case "voiceChannel":
         case "role": {
           const option = Array.from(element.children[0].children).find((a) => a.innerText === element.children[0].value).id;
-          if (!option || option.toLowerCase() === "none") return;
+          if (!option || (option && option.toLowerCase() === "none")) return delete guildConfig[item];
           guildConfig[item] = option;
           break;
         }
@@ -261,6 +289,7 @@ window.addEventListener("load", async () => {
         case "string": {
           const value = element.value;
           if (value && value.length) guildConfig[item] = element.value;
+          else return delete guildConfig[item];
           break;
         }
 

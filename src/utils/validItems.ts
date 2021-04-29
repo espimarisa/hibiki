@@ -139,7 +139,6 @@ export const validItems = [
     emoji: "📜",
     id: "messageLogging",
     type: "channel",
-    dependencies: ["logBotMessages"],
   },
   {
     category: "logging",
@@ -440,6 +439,7 @@ export const validItems = [
     category: "profile",
     id: "pronouns",
     type: "pronouns",
+    default: 0,
   },
   {
     emoji: "🌐",

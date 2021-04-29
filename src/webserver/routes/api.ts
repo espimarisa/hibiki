@@ -15,8 +15,8 @@ import express from "express";
 import rateLimit from "express-rate-limit";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-const arrayItemTypes = ["channelArray", "roleArray", "punishment", "raidPunishment", "array"];
 const router = express.Router();
+const arrayItemTypes = ["channelArray", "roleArray", "punishment", "raidPunishment", "array"];
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -61,7 +61,7 @@ export function apiRoutes(bot: HibikiClient) {
     if (req.query.profile) {
       const profileItems: UserConfig[] = [];
       validItems.forEach((item) => {
-        if (item.category !== "profile") return;
+        if (item?.category !== "profile") return;
         profileItems.push(item);
       });
 
@@ -72,7 +72,7 @@ export function apiRoutes(bot: HibikiClient) {
     if (req.query.manage) {
       const manageItems: ValidItem[] = [];
       validItems.forEach((item) => {
-        if (item.category === "profile") return;
+        if (item?.category === "profile") return;
         manageItems.push(item);
       });
 
@@ -113,14 +113,6 @@ export function apiRoutes(bot: HibikiClient) {
 
     // Gets config
     let guildConfig = await bot.db.getGuildConfig(guild.id);
-
-    // Inserts guildConfig
-    if (!guildConfig) {
-      guildConfig = { id: guild.id };
-      await bot.db.insertBlankGuildConfig(guild.id);
-    }
-
-    // If no guildConfig
     if (!req.body) return res.status(204).end();
     guildConfig = req.body;
 
@@ -132,15 +124,19 @@ export function apiRoutes(bot: HibikiClient) {
 
       // Finds the item
       const item = validItems.find((i) => i.id === value);
-      if (!item || item?.category === "profile" || option === null) delete guildConfig[value];
+      if (!item?.type) return;
+      if (!item || item?.category === "profile" || option === null || option === item.default) return delete guildConfig[value];
 
-      // Validates each item type
+      /**
+       * Validates each item type
+       */
+
       switch (item.type) {
         // Numbers
         case "number": {
-          if (typeof option !== "number") delete guildConfig[value];
-          if (item?.maximum && option > item?.maximum) guildConfig[value] = item?.maximum;
-          if (item?.minimum && option < item?.minimum) guildConfig[value] = item?.minimum;
+          if (typeof option !== "number") return delete guildConfig[value];
+          if (typeof item?.minimum === "number" && option > item.maximum) guildConfig[value] = item.maximum;
+          if (typeof item?.minimum === "number" && option < item.minimum) guildConfig[value] = item.minimum;
           break;
         }
 
@@ -180,7 +176,7 @@ export function apiRoutes(bot: HibikiClient) {
 
         // Channel arrays
         case "channelArray": {
-          if (Array.isArray(guildConfig[value]) && guildConfig[value].length) {
+          if (Array.isArray(guildConfig[value]) && guildConfig[value]?.length) {
             guildConfig[value] = option.filter((c: string) => bot.guilds.get(guild.id).channels.find((channel) => channel.id === c));
           }
 
@@ -189,8 +185,8 @@ export function apiRoutes(bot: HibikiClient) {
 
         // Role arrays
         case "roleArray": {
-          if (Array.isArray(guildConfig[value]) && guildConfig[value].length) {
-            guildConfig[value] = option.filter((r: string) => bot.guilds.get(guild.id).roles.find((rol) => rol.id === r));
+          if (Array.isArray(guildConfig[value]) && guildConfig[value]?.length) {
+            guildConfig[value] = option.filter((r: string) => bot.guilds.get(guild.id).roles.find((role) => role.id === r));
             if (item?.maximum && guildConfig[value].length > item?.maximum) guildConfig[value].length = item?.maximum;
           }
 
@@ -214,8 +210,11 @@ export function apiRoutes(bot: HibikiClient) {
 
         // Strings
         case "string": {
-          // Filters
-          if (item?.inviteFilter) guildConfig[value] = guildConfig[value].replace(fullInviteRegex, "");
+          if (guildConfig[value]?.length === 0) return delete guildConfig[value];
+
+          if (item?.inviteFilter)
+            // Filters
+            guildConfig[value] = guildConfig[value].replace(fullInviteRegex, "");
           guildConfig[value] = guildConfig[value].replace(emojiIDRegex, "");
 
           // Maximum & minimums
@@ -226,7 +225,7 @@ export function apiRoutes(bot: HibikiClient) {
 
         // Emojis
         case "emoji": {
-          if (!defaultEmojiRegex.test(guildConfig[value])) delete guildConfig[value];
+          if (!defaultEmojiRegex.test(guildConfig[value]) || !guildConfig[value].length) delete guildConfig[value];
           break;
         }
 
@@ -264,15 +263,16 @@ export function apiRoutes(bot: HibikiClient) {
       // Arrays
       if (
         arrayItemTypes.includes(item?.type) &&
-        (!Array.isArray(guildConfig[value]) || (!guildConfig[value].length && item.type !== "punishment"))
+        (!Array.isArray(guildConfig[value]) || (!guildConfig[value].length && item?.type !== "punishment"))
       ) {
         delete guildConfig[value];
       }
     });
 
     // Replaces the guildConfig with the new one
+    guildConfig.id = guild.id;
     bot.db
-      .updateGuildConfig(guild.id, guildConfig)
+      .replaceGuildConfig(guild.id, guildConfig)
       .then(() => {
         res.sendStatus(200);
       })
@@ -328,34 +328,32 @@ export function apiRoutes(bot: HibikiClient) {
     const user = req.user as Profile;
     let userConfig = await bot.db.getUserConfig(user.id);
     if (!req.body) return res.status(204).end();
-
-    // Inserts a blank userConfig
-    if (!userConfig) {
-      userConfig = { id: user.id };
-      await bot.db.insertBlankUserConfig(user.id);
-    }
-
-    if (userConfig.id !== user.id) return res.status(403).send({ error: "You are unauthorized to manage this user's config." }).end();
-    else if (!req.body.id) req.body.id = user.id;
     userConfig = req.body;
+    userConfig.id = user.id;
 
     // Updates the userConfig and validates input
     Object.keys(userConfig).forEach((value) => {
       if (value === "id") return;
       const option = userConfig[value];
-      if (!option) return;
 
-      // Finds the item
+      // Finds the item & removes junk
       const item = validItems.find((i) => i.id === value);
-      if (!item || item?.category !== "profile") delete userConfig[value];
+
+      // Removes null/0/undefined from stuff
+      if ((typeof option !== "boolean" && option !== 0 && !option) || (item.type === "pronouns" && option === 0)) {
+        return delete userConfig[value];
+      }
+
+      if (!item?.type) return;
+      if (!item || item?.category !== "profile" || option === null || option === item.default) return delete userConfig[value];
 
       // Validates each item type
-      switch (item.type) {
+      switch (item?.type) {
         // Numbers
         case "number": {
           if (typeof option !== "number") return delete userConfig[value];
-          if (item?.maximum && option > item?.maximum) userConfig[value] = item?.maximum;
-          if (item?.minimum && option < item?.minimum) userConfig[value] = item?.minimum;
+          if (typeof item?.minimum === "number" && option > item.maximum) userConfig[value] = item.maximum;
+          if (typeof item?.minimum === "number" && option < item.minimum) userConfig[value] = item.minimum;
           break;
         }
 
@@ -367,6 +365,8 @@ export function apiRoutes(bot: HibikiClient) {
 
         // Strings
         case "string": {
+          if (userConfig[value]?.length === 0) return delete userConfig[value];
+
           // Removes invites and emojis
           if (item?.inviteFilter) {
             (userConfig[value] = userConfig[value].replace(fullInviteRegex, "")) &&
@@ -417,8 +417,10 @@ export function apiRoutes(bot: HibikiClient) {
       }
     });
 
+    // Updates the userConfig
+    userConfig.id = user.id;
     await bot.db
-      .updateUserConfig(user.id, userConfig)
+      .replaceUserConfig(user.id, userConfig)
       .then(() => {
         res.sendStatus(200);
       })

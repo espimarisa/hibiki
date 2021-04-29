@@ -93,8 +93,15 @@
           <select class="select">
             <option id="none">{{ locales.web.NOT_SET }}</option>
             {% for channel in channels %}
+            <!-- Checks to see if the channel is set -->
+            {% if cfg[item.id] %} {% assign isSelected = cfg[item.id] == channel.id %} {% endif %}
+            <!-- If the channel is set -->
+            {% if isSelected == true %}
+            <option selected id="{{ channel.id }}">#{{ channel.name }}</option>
+            {% else %}
+            <!-- Lists the channel -->
             <option id="{{ channel.id }}">#{{ channel.name }}</option>
-            {% endfor %}
+            {% endif %} {% endfor %}
           </select>
         </div>
 
@@ -106,8 +113,15 @@
           <select class="select">
             <option id="none">{{ locales.web.NOT_SET }}</option>
             {% for channel in voiceChannels %}
+            <!-- Checks to see if the channel is set -->
+            {% if cfg[item.id] %} {% assign isSelected = cfg[item.id] == channel.id %} {% endif %}
+            <!-- If the channel is set -->
+            {% if isSelected == true %}
+            <option selected id="{{ channel.id }}">#{{ channel.name }}</option>
+            {% else %}
+            <!-- Lists the channel -->
             <option id="{{ channel.id }}">#{{ channel.name }}</option>
-            {% endfor %}
+            {% endif %} {% endfor %}
           </select>
         </div>
 
@@ -117,8 +131,15 @@
           <select class="select">
             <option id="none">{{ locales.web.NOT_SET }}</option>
             {% for role in roles %}
+            <!-- Checks to see if the role is set -->
+            {% if cfg[item.id] %} {% assign isSelected = cfg[item.id] == role.id %} {% endif %}
+            <!-- If the role is set -->
+            {% if isSelected == true %}
+            <option selected id="{{ role.id }}">@{{ role.name }}</option>
+            {% else %}
+            <!-- Lists the role -->
             <option id="{{ role.id }}">@{{ role.name }}</option>
-            {% endfor %}
+            {% endif %} {% endfor %}
           </select>
         </div>
 
