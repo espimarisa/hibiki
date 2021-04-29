@@ -9,8 +9,8 @@
 // Gets the csrf token, user ID, and some locale strings
 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 const userID = document.querySelector('meta[name="user-id"]').getAttribute("content");
-const saveChanges = document.querySelector('meta[name="save-changes"').getAttribute("content");
-const changesSaved = document.querySelector('meta[name="changes-saved"').getAttribute("content");
+const saveChanges = document.querySelector('meta[name="save-changes"]').getAttribute("content");
+const changesSaved = document.querySelector('meta[name="changes-saved"]').getAttribute("content");
 const userConfig = {};
 
 /**
@@ -89,14 +89,17 @@ window.addEventListener("load", async () => {
 
         // Numbers
         case "number": {
-          userConfig[item] = parseInt(document.getElementById(item).value);
-          // userConfig[item] = parseInt(document.getElementById(item).children[0].value.split(" ")[0]);
+          const val = parseInt(document.getElementById(item).value);
+          if ((val !== 0 && !val) || isNaN(val)) return delete userConfig[item];
+          else userConfig[item] = val;
           break;
         }
 
         // Strings
         case "string": {
-          userConfig[item] = element.value;
+          const value = element.value;
+          if (value && value.length) userConfig[item] = element.value;
+          else return delete userConfig[item];
           break;
         }
 

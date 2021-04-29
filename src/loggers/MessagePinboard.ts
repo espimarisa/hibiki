@@ -62,7 +62,7 @@ export class MessagePinboard extends Logger {
         // Sends the pinboard message
         if (pinReactions?.count >= (guildconfig.pinAmount ? guildconfig.pinAmount : 3)) {
           // Sets what message content to use
-          let messageContent = string("global.NO_CONTENT");
+          let messageContent: string;
           if (msg.content) messageContent = msg.content;
           else if (msg?.embeds?.[0]) {
             if (msg.embeds[0]?.title !== null) messageContent = msg.embeds[0]?.title;
@@ -85,11 +85,6 @@ export class MessagePinboard extends Logger {
             },
             fields: [
               {
-                name: string("global.CONTENT"),
-                value: `\`\`\`${messageContent.length > 1000 ? `${messageContent.substring(0, 1000)}...` : messageContent}\`\`\``,
-                inline: false,
-              },
-              {
                 name: string("global.CHANNEL"),
                 value: msg.channel.mention,
                 inline: true,
@@ -109,6 +104,15 @@ export class MessagePinboard extends Logger {
               text: `${pin}${pinReactions.count} | ${msg.id}`,
             },
           } as EmbedOptions;
+
+          // Pushes msg.content if it exists
+          if (messageContent?.length) {
+            pinboardEmbed.fields.unshift({
+              name: string("global.CONTENT"),
+              value: `\`\`\`${messageContent.length > 1000 ? `${messageContent.substring(0, 1000)}...` : messageContent}\`\`\``,
+              inline: false,
+            });
+          }
 
           // Adds image URLs as an attachment
           let image: string;
