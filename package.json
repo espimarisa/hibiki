@@ -41,7 +41,7 @@
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
-    "@sentry/node": "^6.3.4",
+    "@sentry/node": "^6.3.5",
     "@sysdotini/erela.js-spotify": "^1.2.4",
     "axios": "^0.21.1",
     "bulma": "^0.9.2",
