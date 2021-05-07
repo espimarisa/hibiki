@@ -53,7 +53,7 @@
     "csurf": "^1.11.0",
     "dayjs": "^1.10.4",
     "erela.js": "^2.3.3",
-    "eris": "^0.15.0",
+    "eris": "^0.15.1",
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.6",
     "express-session": "^1.17.1",
