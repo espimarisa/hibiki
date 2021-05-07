@@ -65,7 +65,7 @@
     "session-rethinkdb-ts": "^1.1.0",
     "terser": "^5.7.0",
     "winston": "^3.3.3",
-    "winston-daily-rotate-file": "^4.5.2"
+    "winston-daily-rotate-file": "^4.5.5"
   },
   "devDependencies": {
     "@sentry/types": "^6.3.5",
