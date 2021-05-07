@@ -58,7 +58,7 @@
     "express-rate-limit": "^5.2.6",
     "express-session": "^1.17.1",
     "helmet": "^4.5.0",
-    "liquidjs": "^9.23.4",
+    "liquidjs": "^9.25.0",
     "passport": "^0.4.1",
     "passport-discord": "^0.1.4",
     "rethinkdb-ts": "^2.4.10",
