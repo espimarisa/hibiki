@@ -52,7 +52,7 @@ We probably won't outright reject a PR if it doesn't follow these guidelines, bu
 
 9. When referencing a string, put any emoji it may use before it. This makes translations easier as there's no extra copy-pasting required.
 
-   1. Example: `🐱 ${msg.string("image.CAT)}`
+   1. Example: `🐱 ${msg.string("image.CAT")}`
 
 10. When referring to a member/user in code, follow the following guideline:
 
