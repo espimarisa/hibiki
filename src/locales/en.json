@@ -2,6 +2,11 @@
   "NAME": "English (English)",
   "EMOJI": "🇺🇸",
 
+  "args": {
+    "MEMBER": "member",
+    "TEXT": "text"
+  },
+
   "fun": {
     "COIN": "Coin",
     "COIN_HEADS": "heads",
@@ -417,7 +422,7 @@
     "ERROR_DISABLEDCATEGORY": "The category the **{command}** command is in has been disabled in this server.",
     "ERROR_EMBEDPERMS": "I don't have permission to **embed links** in {channel}.",
     "ERROR_INVALIDID": "You provided an invalid ID.",
-    "ERROR_MISSINGARGS": "You didn't provide a **{arg}**.",
+    "ERROR_MISSINGARGS": "Missing argument **{arg}**. Use **{cmdhelp}** for further information.",
     "ERROR_MUSICCHANNEL": "You must be in the music channel to run this command.",
     "ERROR_MUSICREQUESTER": "You can't control this track as you didn't request it.",
     "ERROR_MUSICROLE": "You must have the music role to run this command.",

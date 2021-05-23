@@ -5,8 +5,10 @@
 
 import type { HibikiClient } from "./Client";
 import type { LocaleString, LocaleStrings } from "../typings/locales";
-import { readFile, readdir } from "fs";
+import { logger } from "../utils/logger";
 import config from "../../config.json";
+
+import { readFile, readdir } from "fs";
 
 export class LocaleSystem {
   locales: Record<string, string>;
@@ -51,16 +53,23 @@ export class LocaleSystem {
   }
 
   // Returns a string from a specific locale
-  getLocale(language: string, fieldName: LocaleStrings, args?: { [x: string]: any } | undefined) {
+  getLocale(language: string, fieldName: LocaleStrings, args?: { [x: string]: any } | undefined): string {
     // Gets the string category
     const category = fieldName.split(".");
     let output = "";
 
     output = this._findLocaleString(language, fieldName, category);
-    if (!output) output = this._findLocaleString(config.defaultLocale ? config.defaultLocale : "en", fieldName, category);
 
-    // Sends an error if the string doesn't exist
-    if (!output) throw new Error(`${fieldName} is missing in the string table for ${language || config.defaultLocale}`);
+    // Search for the default entry if the string doesn't exist, sends a warning each time no entry is found
+    if (!output) {
+      const defaultLocale = config.defaultLocale ?? "en";
+      const isDefault = language === defaultLocale;
+      if (language)
+        logger.warn(
+          `${fieldName} is missing in the string table for ${language}${!isDefault ? ", searching in default locale string table" : ""}`,
+        );
+      return isDefault ? (fieldName as string) : this.getLocale(defaultLocale, fieldName, args);
+    }
 
     // Passes arguments to the string
     if (args) {
@@ -107,7 +116,8 @@ export class LocaleSystem {
     let locale = "";
     const userConfig = await bot.db.getUserConfig(user);
     if (userConfig?.locale) locale = userConfig.locale;
-    else if (!userConfig?.locale && handler === false) locale = config.defaultLocale ? config.defaultLocale : "en";
+    else if (handler === false) locale = config.defaultLocale ? config.defaultLocale : "en";
+
     return locale;
   }
 
