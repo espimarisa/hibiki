@@ -10,6 +10,7 @@ import { inviteRegex } from "../utils/constants";
 import { wordFilter } from "../scripts/wordFilter";
 import * as Sentry from "@sentry/node";
 import config from "../../config.json";
+import type { LocaleStrings } from "typings/locales";
 
 // Hides API keys and the bot token from output
 const tokens: string[] = [config.token];
@@ -108,7 +109,7 @@ export class HandlerEvent extends Event {
     msg.prefix = prefix;
 
     // Finds the command to run
-    const [commandName, ...args] = msg.content.trim().slice(prefix.length).split(/ +/g);
+    const [commandName, ...args] = msg.content.trim().slice(prefix.length).split(/\s+/g);
     const command = this.bot.commands.find(
       (cmd) => cmd?.name === commandName.toLowerCase() || cmd?.aliases.includes(commandName.toLowerCase()),
     );
@@ -299,7 +300,10 @@ export class HandlerEvent extends Event {
       if (missingargs.length) {
         return msg.createEmbed(
           string("global.ERROR"),
-          string("global.ERROR_MISSINGARGS", { arg: `${missingargs.map((a) => a.name).join(` ${string("global.OR")} `)}` }),
+          string("global.ERROR_MISSINGARGS", {
+            arg: `${missingargs.map((a) => string(`args.${a.name.toUpperCase()}` as LocaleStrings)).join(` ${string("global.OR")} `)}`,
+            cmdhelp: `${msg.prefix}help ${command.name}`,
+          }),
           "error",
         );
       }
