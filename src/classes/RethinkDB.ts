@@ -11,11 +11,11 @@ import config from "../../config.json";
 // Starts RethinkDB
 export function startRethink() {
   return r.connectPool({
-    db: config.database.db || undefined,
-    password: config.database.password || undefined,
-    port: config.database.port || 28015,
-    host: config.database.host || undefined,
-    user: config.database.user || undefined,
+    db: config.database?.db || undefined,
+    password: config.database?.password || undefined,
+    port: config.database?.port || 28015,
+    host: config.database?.host || undefined,
+    user: config.database?.user || undefined,
     silent: true,
   });
 }
