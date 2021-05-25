@@ -6,9 +6,9 @@
 import type { HibikiClient } from "./Client";
 import type { LocaleString, LocaleStrings } from "../typings/locales";
 
-import { readFile, readdir } from "fs";
-
 import { logger } from "../utils/logger";
+
+import { readFile, readdir } from "fs";
 
 import config from "../../config.json";
 
