@@ -1,4 +1,10 @@
+/**
+ * @file AssignRole command
+ * @description Gives executor a role that's set to be assignable
+ */
+
 import type { EmbedField, Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 import { itemExists } from "../../utils/itemExists";
 

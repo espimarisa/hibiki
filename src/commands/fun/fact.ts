@@ -1,5 +1,12 @@
+/**
+ * @file Fact command
+ * @description Posts a cat, dog, or random fact
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
+
 import axios from "axios";
 
 export class FactCommand extends Command {

@@ -1,5 +1,12 @@
+/**
+ * @file Help command
+ * @description Sends a list of commands or info about a specific command.
+ */
+
 import type { EmbedField, Message, TextChannel } from "eris";
+
 import { GuildChannel, PrivateChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 
 export class HelpCommand extends Command {

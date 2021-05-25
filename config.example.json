@@ -51,6 +51,12 @@
     ]
   },
 
+  "extensions": {
+    "_comment": "WARNING: Experimental! Only works in dev environments for now.",
+    "enabled": true,
+    "maxAllocatedSizePerGuild": 16
+  },
+
   "keys": {
     "abuseipdb": "",
     "dictionary": "",

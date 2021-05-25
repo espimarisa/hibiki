@@ -4,6 +4,7 @@
  */
 
 import type { Message } from "eris";
+
 import type { HibikiClient } from "./Client";
 
 // Main command class

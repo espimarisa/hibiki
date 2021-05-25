@@ -29,13 +29,12 @@ export class EvalCommand extends Command {
     try {
       const evaluated = await eval(`(async () => {\n${args.join(" ")}\n})()`);
       const evalstring = typeof evaluated === "string" ? evaluated : inspect(evaluated);
-      console.log(evalstring);
+      // console.log(evalstring); Why?
 
       // Uploads if over embed limit; DMs author
-      const dmchannel = await msg.author.getDMChannel();
       if (evalstring.length > 2000) {
         const body = await axios.post("https://pastie.io/documents", evalstring);
-        await dmchannel.createMessage(`https://pastie.io/${body.data.key}`);
+        await (await msg.author.getDMChannel()).createMessage(`https://pastie.io/${body.data.key}`);
       } else if (evalstring === "true") {
         return msg.channel.createMessage("true!");
       } else {

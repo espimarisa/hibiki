@@ -3,8 +3,9 @@
  * @description Handles running each automod event
  */
 
-import type { Guild, Member, Message, TextChannel } from "eris";
 import { PrivateChannel } from "eris";
+import type { Guild, Member, Message, TextChannel } from "eris";
+
 import { Event } from "../classes/Event";
 import { automodAntiInvite } from "./automod/antiInvite";
 import { automodAntiNewLine } from "./automod/antiNewLines";
@@ -13,7 +14,7 @@ import { automodAntiSpam } from "./automod/antiSpam";
 import { automodAntiMassMention } from "./automod/antiMassMention";
 
 export class AutomodEvent extends Event {
-  events = ["messageCreate", "guildMemberAdd"];
+  readonly events = ["messageCreate", "guildMemberAdd"];
 
   async run(event: string, msg: Message<TextChannel>, member: Member) {
     switch (event) {

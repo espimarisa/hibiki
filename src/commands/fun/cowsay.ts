@@ -1,8 +1,14 @@
+/**
+ * @file CowSay command
+ * @description Makes a cow say something (tf?)
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 
 // Cows to use
-const cows = {
+const COWS = {
   default:
     "        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||\n",
   tux: "   \\\n    \\\n        .--.\n       |o_o |\n       |:_/ |\n      //   \\ \\\n     (|     | )\n    /'\\_   _/`\\\n    \\___)=(___/",
@@ -32,7 +38,7 @@ export class CowsayCommand extends Command {
       return msg.createEmbed(
         `🐮 ${msg.string("fun.COWSAY")}`,
         msg.string("fun.COWSAY_USAGE", {
-          types: Object.keys(cows)
+          types: Object.keys(COWS)
             .map((c) => `\`${c}\``)
             .join(", "),
         }),
@@ -40,12 +46,12 @@ export class CowsayCommand extends Command {
     }
 
     // Finds the cow top use; defaults to the default one
-    let cow = Object.keys(cows).find((c) => args.indexOf(`cow=${c}`) !== -1);
-    if (!cow) cow = cows.default;
+    let cow = Object.keys(COWS).find((c) => args.indexOf(`cow=${c}`) !== -1);
+    if (!cow) cow = COWS.default;
     else {
       args.splice(args.indexOf(`cow=${cow}`), 1);
-      if (cows[cow]) cow = cows[cow];
-      else cow = cows.default;
+      if (COWS[cow]) cow = COWS[cow];
+      else cow = COWS.default;
     }
 
     // Fixes line breaks

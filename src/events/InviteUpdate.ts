@@ -4,6 +4,7 @@
  */
 
 import type { Guild, Invite } from "eris";
+
 import { Event } from "../classes/Event";
 
 export class InviteUpdateEvent extends Event {

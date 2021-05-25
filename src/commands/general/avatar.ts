@@ -1,12 +1,19 @@
+/**
+ * @file Avatar command
+ * @description Sends executor's or provided member's profile picture
+ */
+
 import type { Member, Message, TextChannel } from "eris";
+
 import { User } from "eris";
+
 import { Command } from "../../classes/Command";
 import { defaultAvatar } from "../../utils/constants";
 
 export class AvatarCommand extends Command {
   args = "<member:member&fallback,userFallback>";
   aliases = ["pfp", "profilepic", "profilepicture", "uicon", "usericon"];
-  description = "Sends a member's profile picture.";
+  description = "Sends your (or the provided member's) profile picture.";
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     let member = (await pargs[0].value) as Member;
@@ -15,7 +22,7 @@ export class AvatarCommand extends Command {
     let fallbackAvatar: string;
     let fallbackTag: string;
 
-    // Users not in guild
+    // User is not in guild
     if (user) {
       if (!member.avatar) fallbackAvatar = `https://cdn.discordapp.com/embed/avatars/${parseInt(member.discriminator) % 5}.png`;
       else fallbackAvatar = `https://cdn.discordapp.com/avatars/${member.id}/${member.avatar}.png?size=512`;

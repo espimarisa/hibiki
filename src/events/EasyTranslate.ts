@@ -1,4 +1,5 @@
 import type { Emoji, Member, Message } from "eris";
+
 import { Event } from "../classes/Event";
 
 export class EasyTranslate extends Event {
@@ -7,13 +8,13 @@ export class EasyTranslate extends Event {
     if (!msg || !msg.author || !msg.content || !msg.channel || msg.channel.type !== 0) return;
 
     // Converts emojis into unicode
-    const toUni = function (str: string) {
+    const toUnicode = function (str: string) {
       if (str.length < 4) return str.codePointAt(0).toString(16);
       return `${str.codePointAt(0).toString(16)}-${str.codePointAt(2).toString(16)}`;
     };
 
     // Parses the emoji
-    const [letter1, letter2] = toUni(emoji.name).split("-");
+    const [letter1, letter2] = toUnicode(emoji.name).split("-");
 
     const finalLetter1 = parseInt(letter1, 16) - 127397;
     const finalLetter2 = parseInt(letter2, 16) - 127397;

@@ -1,9 +1,15 @@
+/**
+ * @file Bio command
+ * @description Sets the executor's bio or view your or another member's bio
+ */
+
 import type { Member, Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 import { fullInviteRegex } from "../../utils/constants";
 
 export class bioCommand extends Command {
-  description = "Sets your bio or views you or another member's bio.";
+  description = "Sets your bio or views your or another member's bio.";
   args = "[bio:string] | [member:member]";
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {

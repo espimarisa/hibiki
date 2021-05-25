@@ -30,7 +30,7 @@
     "FACT_ERROR": "Не удалось отправить факт. Повторите попытку позже.",
     "FACT_USELESS": "Бесполезный факт",
     "GAYLEVEL": "Уровень гея",
-    "GAYLEVEL_LEVEL": "Участник **{member}** гей на **{level}%**!",
+    "GAYLEVEL_LEVEL": "Участник **{member}** гей на **{level}**!",
     "MARRY": "Жениться",
     "MARRY_ALREADY_MARRIED": "Вы уже в браке.",
     "MARRY_CANCELLED": "Брак отменен.",

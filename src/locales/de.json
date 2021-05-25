@@ -30,7 +30,7 @@
     "FACT_ERROR": "Konnte kein Fakt senden, versuchen Sie es später nochmal.",
     "FACT_USELESS": "Nutzloser Fakt",
     "GAYLEVEL": "Schwulenlevel",
-    "GAYLEVEL_LEVEL": "**{member}** ist **{level}%** schwul!",
+    "GAYLEVEL_LEVEL": "**{member}** ist **{level}** schwul!",
     "MARRY": "Heiraten",
     "MARRY_ALREADY_MARRIED": "Du bist bereits verheiratet.",
     "MARRY_CANCELLED": "Heirat abgebrochen.",

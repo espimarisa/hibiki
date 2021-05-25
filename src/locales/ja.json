@@ -30,7 +30,7 @@
     "FACT_ERROR": "豆知識を送信できませんでした。しばらくしてからもう一度お試しください。",
     "FACT_USELESS": "役に立たない豆知識",
     "GAYLEVEL": "ホモレベル",
-    "GAYLEVEL_LEVEL": "**{member}**のホモレベル**{level}%**です！",
+    "GAYLEVEL_LEVEL": "**{member}**のホモレベル**{level}**です！",
     "MARRY": "結婚",
     "MARRY_ALREADY_MARRIED": "あなたはもう既に結婚しています。",
     "MARRY_CANCELLED": "結婚は取り消されました。",

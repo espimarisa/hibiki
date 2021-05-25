@@ -1,7 +1,14 @@
+/**
+ * @file Urban command
+ * @description Returns a definition from the Urban Dictionary (http://urbandictionary.com)
+ */
+
 import type { EmbedField, Message, TextChannel } from "eris";
+
 import type { UrbanWord } from "../../typings/endpoints";
 import { Command } from "../../classes/Command";
 import { dateFormat } from "../../utils/format";
+
 import axios from "axios";
 
 export class UrbanCommand extends Command {
@@ -82,7 +89,7 @@ export class UrbanCommand extends Command {
         title: `📔 ${word.word}`,
         description: word.definition,
         color: msg.convertHex("general"),
-        fields: fields,
+        fields,
         footer: {
           text: `${msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
           icon_url: msg.author.dynamicAvatarURL(),

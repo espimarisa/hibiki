@@ -1,6 +1,13 @@
+/**
+ * @file Config command
+ * @description Sends the latest version's changelog
+ */
+
 import type { Emoji, Member, Message, TextChannel } from "eris";
+
 import type { HibikiClient } from "../../classes/Client";
 import type { ResponseData } from "../../typings/utils";
+
 import { Command } from "../../classes/Command";
 import { localizeItemTypes, localizeSetupItems } from "../../utils/format";
 import { askForLocale, askForValue, askYesNo } from "../../utils/ask";

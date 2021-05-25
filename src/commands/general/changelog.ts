@@ -1,5 +1,12 @@
+/**
+ * @file Changelog command
+ * @description Sends the latest version's changelog
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
+
 import axios from "axios";
 
 export class ChangelogCommand extends Command {

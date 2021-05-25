@@ -4,7 +4,9 @@
  */
 
 import type { GuildChannel } from "eris";
+
 import { Guild, TextChannel } from "eris";
+
 import { Event } from "./Event";
 
 export abstract class Logger extends Event {

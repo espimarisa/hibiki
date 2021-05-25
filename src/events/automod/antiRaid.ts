@@ -5,12 +5,13 @@
  */
 
 import type { Guild, Member } from "eris";
+
 import type { HibikiClient } from "../../classes/Client";
 import { validItems } from "../../utils/validItems";
 import { punishMute } from "./punishments";
+
 const reason = "Raid detection (Automod)";
 const joinTimes = {};
-
 const defaultThreshold = validItems.find((item) => item.id === "raidThreshold").default as number;
 
 export async function automodAntiRaid(guild: Guild, member: Member, bot: HibikiClient, cfg: GuildConfig) {

@@ -5,10 +5,12 @@
  */
 
 import type { Message, TextChannel } from "eris";
+
 import type { HibikiClient } from "../../classes/Client";
 import { fullInviteRegex } from "../../utils/constants";
 import { punishMute, punishWarn } from "./punishments";
 import { validItems } from "../../utils/validItems";
+
 const reason = "Sent an invite (Automod)";
 const defaultPunishments = (validItems.find((item) => item.id === "invitePunishments").default as unknown) as string[];
 

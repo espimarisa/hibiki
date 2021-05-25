@@ -4,12 +4,13 @@
  */
 
 import type { Guild, Member } from "eris";
+
 import { Event } from "../classes/Event";
 
 export class AutoroleEvent extends Event {
-  events = ["guildMemberAdd"];
+  readonly events = ["guildMemberAdd"];
 
-  async run(event: string, guild: Guild, member: Member) {
+  async run(_event: string, guild: Guild, member: Member) {
     if (!guild || !member) return;
 
     // Gets the guildconfig

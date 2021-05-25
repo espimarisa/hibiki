@@ -1,4 +1,10 @@
+/**
+ * @file Agree command
+ * @description Gives execitpr the set agree role if the server has it configured
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 import { itemExists } from "../../utils/itemExists";
 

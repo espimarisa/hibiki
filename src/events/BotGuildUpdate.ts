@@ -4,11 +4,13 @@
  */
 
 import type { Guild } from "eris";
+
+import axios from "axios";
+
 import { Event } from "../classes/Event";
 import { defaultAvatar } from "../utils/constants";
 import { dateFormat, regionFormat } from "../utils/format";
 import { getRESTUser } from "../utils/getRESTUser";
-import axios from "axios";
 
 export class BotGuildUpdateEvent extends Event {
   events = ["guildCreate", "guildDelete"];

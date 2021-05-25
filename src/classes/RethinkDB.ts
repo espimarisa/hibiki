@@ -4,8 +4,10 @@
  */
 
 import { r } from "rethinkdb-ts";
+
 import { setupRethink } from "../scripts/setup";
 import { logger } from "../utils/logger";
+
 import config from "../../config.json";
 
 // Starts RethinkDB
@@ -31,13 +33,8 @@ startRethink()
   });
 
 export class RethinkProvider {
-  db: typeof r;
-  dblock: any;
-
-  constructor() {
-    this.db = r;
-    this.dblock = this.db.db(config.database.db ?? "db").wait();
-  }
+  readonly db: typeof r = r;
+  readonly dblock: any = this.db.db(config.database.db ?? "db").wait();
 
   /**
    * Guild config functions

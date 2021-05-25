@@ -5,7 +5,7 @@ Here's a pretty cohesive list of guidelines you should try and stick to.
 # TL;DR
 
 - Respect our linter/compiler. You can use @ts-expect-error or // eslint-disable if you really need to, but it isn't preferred.
-- Add a string following our naming convention in `src/locales/en` if you need to.
+- Add a string following our naming convention in `src/locales/en.json` if you need to.
 - Don't rely on external dependencies for simple things that we can create ourselves.
 - If you're translating and the word doesn't exist in your language, you should either leave it as-is or reword it. View the translation guide for more details.
 - Keep your commit/issue/PR messages clean. Follow semantic commits to the best of your ability. Don't flame or harass others. Don't beg for things.
@@ -35,9 +35,12 @@ Here's a pretty cohesive list of guidelines you should try and stick to.
 
 We probably won't outright reject a PR if it doesn't follow these guidelines, but please try and stick to them. It makes our job a lot easier.
 
-1. Follow our existing linter/style guide. While annoying to some, it's pretty strict.
+1. Follow our existing linter/style guide. While annoying to some, it's pretty strict. (If you're using Visual Studio Code, you can [install the ESLint extension](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to make your job easier!)
+
 2. Respect existing eslint/tsconfig options; don't disable anything in those files.
+
 3. You can use @ts-expect-error or // eslint-disable if absolutely needed, but we like to remove those and fix the problem.
+
 4. When importing a value that's only used as a type, use `import type`. TSC will warn you if you do otherwise.
 
 5. When exporting a new module, don't do `export default name`. Instead, do `export name`.
@@ -62,11 +65,11 @@ We probably won't outright reject a PR if it doesn't follow these guidelines, bu
 
 12. When using ParsedArgs as pargs[0].value, import the type it is.
 
-    1. This isn't needed, but it helps intellisense and our types.
+    1. This isn't needed, but it helps IntelliSense and our types.
 
     2. Example: `pargs[0].value as Member;`
 
-13. When creating a new embed thru msg.channel.createMessage(), try and attach a footer with info of who ran the command.
+13. When creating a new embed throughs msg.channel.createMessage(), try and attach a footer with info of who ran the command.
     1. If you're using an API, be sure to add the `poweredBy` field.
     2. If you want to have extra content in a footer, use the `extra` field.
 
@@ -86,4 +89,51 @@ We probably won't outright reject a PR if it doesn't follow these guidelines, bu
         },
       },
     });
+```
+
+14. When creating any new TypeScript file, do not forget to include a JSDoc including `@file`, `@description` and optionnaly `@author`.
+```TS
+    /**
+     * @file My file
+     * @description File description
+     * @author My name <mail@example.com>
+     */
+```
+
+15. Try using our import scheme :
+
+    1. Types from external modules, alphabetically sorted
+    2. Types from internal modules, relatively sorted to the file tree (further in the tree = lower in the imports) THEN alphabetically
+    3. Named exports from external modules, alphabetically sorted
+    4. Named exports from internal modules, relatively sorted to the file tree (further in the tree = lower in the imports) THEN alphabetically
+    5. Default exports from external modules, alphabetically sorted
+    6. Default exports from internal modules, relatively sorted to the file tree (further in the tree = lower in the imports) THEN alphabetically
+    7. Other constants in CAPS, alphabetically sorted
+
+```TS
+   
+    
+    import type { Type } from "abc-external-module";
+    import type { Type } from "mno-external-module";
+    import type { Type } from "xyz-external-module";
+
+    import type { Type } from "./xyz-internal-module";
+    import type { Type } from "../mno-internal-module-2";
+    import type { Type } from "../../abc-internal-module-3";
+
+    import { Export } from "external-module";
+    import { Export } from "external-module-2";
+
+    import { Export } from "./xyz-internal-module";
+    import { Export } from "../mno-internal-module-2";
+    import { Export } from "../../abc-internal-module-3";
+
+    import fs from "fs";
+    import path from "path";
+
+    import xyz from "./xyz";
+    import abc from "../abc";
+
+    const ABC = "def";
+    const UVW = "xyz";
 ```

@@ -1,4 +1,10 @@
+/**
+ * @file Daily command
+ * @description Gives executor its daily amount of cookies
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 import { to24Hours } from "../../utils/format";
 

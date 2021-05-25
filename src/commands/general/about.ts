@@ -1,8 +1,16 @@
+/**
+ * @file About command
+ * @description Displays bot information and statistics
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { VERSION as erisVersion } from "eris";
 import { version as tsVersion } from "typescript";
+
 import { Command } from "../../classes/Command";
 import { uptimeFormat } from "../../utils/format";
+
 import os from "os";
 
 export class AboutCommand extends Command {

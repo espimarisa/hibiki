@@ -30,7 +30,7 @@
     "FACT_ERROR": "Nu s-a putut trimite fapta. Încearcă din nou mai tîrziu.",
     "FACT_USELESS": "Faptă inutilă",
     "GAYLEVEL": "Nivel de homosexualitate",
-    "GAYLEVEL_LEVEL": "**{member}** este **{level}%** gay!",
+    "GAYLEVEL_LEVEL": "**{member}** este **{level}** gay!",
     "MARRY": "Căsătorie",
     "MARRY_ALREADY_MARRIED": "Ești deja căsătorit.",
     "MARRY_CANCELLED": "Căsătorie anulată.",

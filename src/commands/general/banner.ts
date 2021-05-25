@@ -1,4 +1,10 @@
+/**
+ * @file Banner command
+ * @description Sends the server's banner
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 import { defaultAvatar } from "../../utils/constants";
 

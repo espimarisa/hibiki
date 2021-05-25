@@ -5,12 +5,13 @@
  */
 
 import type { Message, TextChannel } from "eris";
+
 import type { HibikiClient } from "../../classes/Client";
 import { localizePunishments, tagUser } from "../../utils/format";
 import { validItems } from "../../utils/validItems";
 import { punishMute, punishWarn } from "./punishments";
-const reason = "Mass mention (Automod)";
 
+const reason = "Mass mention (Automod)";
 const defaultPunishments = (validItems.find((item) => item.id === "antiMassMentionPunishments").default as unknown) as string[];
 const defaultThreshold = validItems.find((item) => item.id === "massMentionThreshold").default as number;
 

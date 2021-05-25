@@ -1,4 +1,10 @@
+/**
+ * @file Points command
+ * @description Shows what reputation points executor or provided member has
+ */
+
 import type { EmbedOptions, Member, Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 import { pagify } from "../../utils/pagify";
 

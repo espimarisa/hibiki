@@ -1,5 +1,12 @@
+/**
+ * @file Divorce command
+ * @description Ends executor's marriage if they're in one.
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import type { ResponseData } from "../../typings/utils";
+
 import { Command } from "../../classes/Command";
 import { askYesNo } from "../../utils/ask";
 import { timeoutHandler } from "../../utils/waitFor";
