@@ -1,4 +1,10 @@
+/**
+ * @file Pay command
+ * @description Gives another member some of executor's cookies
+ */
+
 import type { Member, Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 
 export class PayCommand extends Command {

@@ -1,10 +1,11 @@
 import type { Message, TextChannel } from "eris";
+
 import type { HibikiClient } from "../../classes/Client";
 import { localizePunishments, tagUser } from "../../utils/format";
 import { validItems } from "../../utils/validItems";
 import { punishMute, punishWarn } from "./punishments";
-const reason = "Newline spam (Automod)";
 
+const reason = "Newline spam (Automod)";
 const defaultPunishments = (validItems.find((item) => item.id === "antiNewLinesPunishments").default as unknown) as string[];
 const defaultThreshold = validItems.find((item) => item.id === "newlineThreshold").default as number;
 

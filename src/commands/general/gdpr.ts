@@ -1,4 +1,10 @@
+/**
+ * @file GPDR command
+ * @description Sends executor any data associated to them or their server.
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 
 export class GDPRCommand extends Command {

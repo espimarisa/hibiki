@@ -5,16 +5,18 @@
 
 import type { HibikiClient } from "./Client";
 import type { LocaleString, LocaleStrings } from "../typings/locales";
+
 import { logger } from "../utils/logger";
-import config from "../../config.json";
 
 import { readFile, readdir } from "fs";
 
+import config from "../../config.json";
+
 export class LocaleSystem {
-  locales: Record<string, string>;
+  readonly locales: Record<string, string> = {};
+
   constructor(path: string) {
-    this.locales = {};
-    if (path) this.updateLocales(path);
+    this.updateLocales(path);
   }
 
   updateLocales(path: string) {

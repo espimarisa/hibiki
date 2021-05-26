@@ -1,8 +1,15 @@
-import type { Message, TextChannel } from "eris";
-import { Command } from "../../classes/Command";
-const faces = ["(・`ω´・)", "OwO", "ouo", "UwU", "uwu", ">w<", "^w^"];
+/**
+ * @file OwOify command
+ * @description OwOify's provided text
+ */
 
-export class OWOIfyCommand extends Command {
+import type { Message, TextChannel } from "eris";
+
+import { Command } from "../../classes/Command";
+
+const FACES = ["(・`ω´・)", "OwO", "ouo", "UwU", "uwu", ">w<", "^w^"];
+
+export class OwOifyCommand extends Command {
   description = "OwOify's some text.";
   args = "<text:string>";
   aliases = ["owo"];
@@ -26,9 +33,9 @@ export class OWOIfyCommand extends Command {
         .replace(/N([aeiou])/g, "Ny")
         .replace(/N([AEIOU])/g, "NY")
         .replace(/ove/g, "uv")
-        .replace(/!+/g, `! ${faces[Math.floor(Math.random() * faces.length)]} `);
+        .replace(/!+/g, `! ${FACES[Math.floor(Math.random() * FACES.length)]} `);
     };
 
-    msg.createEmbed(`${faces[Math.floor(Math.random() * faces.length)]}`, owoify(args.join(" ").slice(0, 1024)));
+    msg.createEmbed(`${FACES[Math.floor(Math.random() * FACES.length)]}`, owoify(args.join(" ").slice(0, 1024)));
   }
 }

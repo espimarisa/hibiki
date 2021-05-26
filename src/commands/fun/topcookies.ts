@@ -1,4 +1,10 @@
+/**
+ * @file TopCookies command
+ * @description Shows the 10 members with the most cookies
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 
 export class TopcookiesCommand extends Command {

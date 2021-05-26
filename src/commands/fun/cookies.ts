@@ -1,4 +1,10 @@
+/**
+ * @file Cookies command
+ * @description Tells how many cookies executor or another member has
+ */
+
 import type { Member, Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 
 export class CookiesCommand extends Command {

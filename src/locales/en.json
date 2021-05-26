@@ -36,7 +36,7 @@
     "FACT_ERROR": "Couldn't send the fact. Try again later.",
     "FACT_USELESS": "Useless Fact",
     "GAYLEVEL": "Gay Level",
-    "GAYLEVEL_LEVEL": "**{member}** is **{level}%** gay!",
+    "GAYLEVEL_LEVEL": "**{member}** is **{level}** gay!",
     "MARRY": "Marry",
     "MARRY_ALREADY_MARRIED": "You're already married.",
     "MARRY_CANCELLED": "Marriage cancelled.",

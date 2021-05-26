@@ -30,7 +30,7 @@
     "FACT_ERROR": "Фактът не можеше да бъде изпратен. Опитайте пак по-късно.",
     "FACT_USELESS": "Безполезен факт",
     "GAYLEVEL": "Гей ниво",
-    "GAYLEVEL_LEVEL": "**{member}** е **{level}%** гей!",
+    "GAYLEVEL_LEVEL": "**{member}** е **{level}** гей!",
     "MARRY": "Брак",
     "MARRY_ALREADY_MARRIED": "Вече сте уженени.",
     "MARRY_CANCELLED": "Брак отменен.",

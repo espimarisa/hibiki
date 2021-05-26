@@ -1,4 +1,10 @@
+/**
+ * @file Donate command
+ * @description Tells executor how to donate to the bot project
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 
 export class DonateCommand extends Command {

@@ -1,5 +1,12 @@
+/**
+ * @file Marry command
+ * @description Asks another member to marry executor
+ */
+
 import type { Member, Message, TextChannel } from "eris";
+
 import type { ResponseData } from "../../typings/utils";
+
 import { Command } from "../../classes/Command";
 import { askYesNo } from "../../utils/ask";
 import { timeoutHandler } from "../../utils/waitFor";

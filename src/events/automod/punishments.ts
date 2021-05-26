@@ -4,10 +4,11 @@
  * @module automod/punishments
  */
 
-import type { Guild, Message, TextChannel } from "eris";
-import type { HibikiClient } from "../../classes/Client";
 import { Member } from "eris";
+import type { Guild, Message, TextChannel } from "eris";
+
 import { generateSnowflake } from "../../utils/snowflake";
+import type { HibikiClient } from "../../classes/Client";
 
 // Mute punishment
 export const punishMute = async (

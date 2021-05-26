@@ -3,12 +3,14 @@
  * @description Handles and executes commands
  */
 
-import type { Message, TextChannel, User } from "eris";
 import { PrivateChannel } from "eris";
+import type { Message, TextChannel, User } from "eris";
+
+import * as Sentry from "@sentry/node";
+
 import { Event } from "../classes/Event";
 import { inviteRegex } from "../utils/constants";
 import { wordFilter } from "../scripts/wordFilter";
-import * as Sentry from "@sentry/node";
 import config from "../../config.json";
 import type { LocaleStrings } from "typings/locales";
 

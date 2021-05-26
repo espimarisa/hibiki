@@ -4,6 +4,7 @@
  */
 
 import type { Message, TextChannel } from "eris";
+
 import { Event } from "../classes/Event";
 
 export class MessageSnipingEvent extends Event {

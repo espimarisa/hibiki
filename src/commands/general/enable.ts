@@ -1,4 +1,10 @@
+/**
+ * @file Enable command
+ * @description Enables a disabled command or category
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 
 export class EnableCommand extends Command {

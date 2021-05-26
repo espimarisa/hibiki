@@ -5,12 +5,13 @@
  */
 
 import type { Message, TextChannel } from "eris";
+
 import type { HibikiClient } from "../../classes/Client";
 import { localizePunishments, tagUser } from "../../utils/format";
 import { validItems } from "../../utils/validItems";
 import { punishMute, punishPurge, punishWarn } from "./punishments";
-const punishedUsers: string[] = [];
 
+const punishedUsers: string[] = [];
 const defaultPunishments = (validItems.find((item) => item.id === "spamPunishments").default as unknown) as string[];
 const defaultThreshold = validItems.find((item) => item.id === "spamThreshold").default as number;
 

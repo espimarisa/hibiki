@@ -4,13 +4,15 @@
  */
 
 import type { Message } from "eris";
+
 import type { HibikiClient } from "./Client";
 import type { ArgTypes } from "../typings/argtypes";
+
 import { getRESTUser } from "../utils/getRESTUser";
 
 export class Args {
-  argtypes: ArgTypes;
-  bot: HibikiClient;
+  readonly bot: HibikiClient;
+  readonly argtypes: ArgTypes;
 
   constructor(bot: HibikiClient) {
     this.bot = bot;

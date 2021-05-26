@@ -1,4 +1,10 @@
+/**
+ * @file Coin command
+ * @description Flips a coin
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 
 export class CoinCommand extends Command {

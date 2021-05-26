@@ -1,26 +1,37 @@
+/**
+ * @file Lavalink
+ * @description Handles music-related features
+ */
+
 import type { Member, User, VoiceChannel } from "eris";
 import type { VoicePacket } from "erela.js";
+
 import type { HibikiClient } from "./Client";
+
 import { Manager } from "erela.js";
+
 import { convertHex } from "../utils/embed";
 import { tagUser, toHHMMSS } from "../utils/format";
+
 import Spotify from "@sysdotini/erela.js-spotify";
+
 import config from "../../config.json";
-let plugins: Spotify[];
+
+const plugins: Spotify[] = [];
 
 // Only load Spotify plugin if both a ID and secret are given
-if (config.lavalink.spotifyClientID && config.lavalink.spotifyClientSecret) {
-  plugins = [
+if (config.lavalink?.spotifyClientID && config.lavalink?.spotifyClientSecret) {
+  plugins.push(
     new Spotify({
       clientID: config.lavalink.spotifyClientID,
       clientSecret: config.lavalink.spotifyClientSecret,
     }),
-  ];
+  );
 }
 
 export class Lavalink {
-  manager: Manager;
-  eventHandler: (m: Member, channel: VoiceChannel, oldchannel: VoiceChannel) => void;
+  readonly manager: Manager;
+  readonly eventHandler: (m: Member, channel: VoiceChannel, oldchannel: VoiceChannel) => void;
 
   // Creates a new lavalink manager
   constructor(bot: HibikiClient) {
@@ -31,9 +42,9 @@ export class Lavalink {
       nodes: [
         {
           retryAmount: 2,
-          host: config.lavalink.host ? config.lavalink.host : "localhost",
-          port: config.lavalink.port ? config.lavalink.port : 2333,
-          password: config.lavalink.password ? config.lavalink.password : "youshallnotpass",
+          host: config.lavalink?.host ?? "localhost",
+          port: config.lavalink?.port ?? 2333,
+          password: config.lavalink?.password ?? "youshallnotpass",
         },
       ],
 

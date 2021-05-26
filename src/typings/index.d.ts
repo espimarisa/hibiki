@@ -53,6 +53,9 @@ interface ValidItem {
   type?: ValidItemTypes;
 }
 
+// Valid extension events
+type ExtensionEvent = "command" | "ping";
+
 // Valid item types
 type ValidItemTypes =
   | "channel"

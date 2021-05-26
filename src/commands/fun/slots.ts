@@ -1,7 +1,14 @@
+/**
+ * @file Slots command
+ * @description Gambles cookies in the slot machine
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
-const emotes = ["🍒", "🍌", "💎"];
-const modifiers = [1, 2, 3];
+
+const EMOTES = ["🍒", "🍌", "💎"];
+const MODIFIERS = [1, 2, 3];
 
 export class SlotsCommand extends Command {
   description = "Gambles cookies in the slot machine.";
@@ -20,22 +27,22 @@ export class SlotsCommand extends Command {
       return msg.createEmbed(
         `🎰 ${msg.string("fun.SLOTS")}`,
         msg.string("fun.SLOTS_PLAY", {
-          worth: emotes.map((e) => msg.string("fun.SLOTS_WORTH", { emotes: e, modifier: modifiers[emotes.indexOf(e)] })).join("\n"),
+          worth: EMOTES.map((e) => msg.string("fun.SLOTS_WORTH", { emotes: e, modifier: MODIFIERS[EMOTES.indexOf(e)] })).join("\n"),
         }),
       );
     }
 
     // Pushes the emotes randomly
     for (let i = 0; i < 3; i++) {
-      slotEmojis.push(emotes[Math.floor(Math.random() * emotes.length)]);
+      slotEmojis.push(EMOTES[Math.floor(Math.random() * EMOTES.length)]);
     }
     if (amount > 100) amount = 100;
 
     // Applies the profit; if 2 match, apply 1/3 profit (should result in evening out?)
     if (slotEmojis[0] === slotEmojis[1] && slotEmojis[1] === slotEmojis[2]) {
-      profit = Math.round(amount * modifiers[emotes.indexOf(slotEmojis[0])]);
+      profit = Math.round(amount * MODIFIERS[EMOTES.indexOf(slotEmojis[0])]);
     } else if (slotEmojis[0] === slotEmojis[1] || slotEmojis[1] === slotEmojis[2]) {
-      profit = Math.round((amount * modifiers[emotes.indexOf(slotEmojis[0])]) / 3);
+      profit = Math.round((amount * MODIFIERS[EMOTES.indexOf(slotEmojis[0])]) / 3);
     }
 
     // Gets user's cookies

@@ -4,12 +4,12 @@
  * @module utils/embed
  */
 
-import type { Message } from "eris";
+import { AnyChannel, Message, TextChannel } from "eris";
 import config from "../../config.json";
 
 // Creates a new oneliner embed
-export async function createEmbed(this: Message, title: string, desc?: string, colortype?: keyof typeof config.colors) {
-  if (this && !this.channel) return;
+export async function createEmbed(this: Message | AnyChannel, title: string, desc?: string, colortype?: keyof typeof config.colors) {
+  if (this && ((this instanceof Message && !this.channel) || ![0, 5].includes(this.type))) return;
   let embedTitle;
   let embedDescription;
   let embedFieldColor;
@@ -22,7 +22,7 @@ export async function createEmbed(this: Message, title: string, desc?: string, c
   if (title) embedTitle = title.length > 250 ? `${title.substring(0, 250)}...` : title;
   if (desc) embedDescription = desc.length > 2000 ? `${desc.substring(0, 2000)}...` : desc;
 
-  if (typeof this === "object" && this.author) {
+  if (typeof this === "object" && this instanceof Message && this.author) {
     embedFooter.text = `${this.string("global.RAN_BY", { author: this.tagUser(this.author) })}`;
     embedFooter.icon_url = this.author.dynamicAvatarURL();
   }
@@ -39,7 +39,7 @@ export async function createEmbed(this: Message, title: string, desc?: string, c
     },
   };
 
-  return this.channel.createMessage(embedConstruct);
+  return (this instanceof Message ? this.channel : (this as TextChannel)).createMessage(embedConstruct);
 }
 
 // Edits a oneliner embed

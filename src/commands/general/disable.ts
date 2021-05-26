@@ -1,3 +1,8 @@
+/**
+ * @file Disable command
+ * @description Disables a command or category
+ */
+
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 

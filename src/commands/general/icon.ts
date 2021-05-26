@@ -1,4 +1,10 @@
+/**
+ * @file Icon command
+ * @description Sends the server's icon
+ */
+
 import type { Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 import { defaultAvatar } from "../../utils/constants";
 

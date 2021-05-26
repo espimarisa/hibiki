@@ -1,4 +1,10 @@
+/**
+ * @file CoolLevel command
+ * @description Calculates how cool executor or another member is
+ */
+
 import type { Member, Message, TextChannel } from "eris";
+
 import { Command } from "../../classes/Command";
 
 export class CoollevelCommand extends Command {
