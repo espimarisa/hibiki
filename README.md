@@ -70,7 +70,7 @@ All donations will go directly towards hosting, domain renewals, and API keys.
 
 Special thanks to these people for fully translating Hibiki into other languages!
 
-- [cth103][cth103] (French)
+- [cth103][cth103], [lambdagg][lambdagg] (French)
 - [nephacks][nephacks] (German)
 - [nocturno][nocturno] (Romanian)
 - [resolved][resolved] (Bulgarian)
@@ -105,6 +105,7 @@ Special thanks to these people for fully translating Hibiki into other languages
 <!-- Translator links -->
 
 [cth103]: https://github.com/cthpw103 "cth103's GitHub profile"
+[lambdagg]: https://github.com/lambdagg "lambdagg's GitHub profile"
 [sol]: https://github.com/solelysol "Sol's GitHub profile"
 [nocturno]: https://github.com/nocturnodev "nocturno's GitHub profile"
 [nephacks]: https://github.com/nepneppynep "nephacks' GitHub profile"

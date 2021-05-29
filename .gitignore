@@ -1,6 +1,7 @@
 # Configs
 config.json
 application.yml
+.vscode/launch.json
 
 # Binaries
 *.exe
