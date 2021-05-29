@@ -1,18 +1,19 @@
 /**
- * Master
+ * Cluster Master
  */
 
 import cluster from "cluster";
-import { DataTypeByIndex } from "./DataTypes";
-import { IPCPacket } from "./IPCPacket";
-import { PlainText } from "./Mixed/PlainText";
-import { log } from "../CommonUtils";
-import { IncomingIPCPacket } from "./Incoming/_IncomingIPCPacket";
+// import { DataTypeByIndex } from "../Messaging/DataTypes";
+// import { IPCPacket } from "../Messaging/IPCPacket";
+import { PlainText } from "../Messaging/Duplex/PlainText";
+import { log } from "./Utils";
+import { InboundIPCPacket } from "../Messaging/Inbound/InboundIPCPacket";
+import { handleNetworkMessage } from "../GlobalUtils";
 // import os from "os";
 
 const THREADS = 1;
 
-export class Master {
+export class ClusterMaster {
   constructor() {
     log(`${this.constructor.name} starting ($pid)`);
 
@@ -31,21 +32,23 @@ export class Master {
     });
 
     cluster.on("message", (worker, msg) => {
-      let parsed;
+      /* let parsed;
       try {
         parsed = JSON.parse(msg);
       } catch (e) {
-        console.log(e);
+        console.error(e);
         return log(`worker ${worker.id} just sent ${msg}`);
       }
       if (parsed.$hash !== IPCPacket.hash) return log(`worker ${worker.id} sent a wrong-hashed message: ${msg}`);
       if (!DataTypeByIndex[parsed.$type]) return log(`worker ${worker.id} sent a wrong-typed message: ${msg}`);
-      parsed = IPCPacket.deserialize(JSON.stringify(parsed), DataTypeByIndex[parsed.$type]);
-      if (parsed instanceof IncomingIPCPacket) {
-        parsed.execute(worker);
+      parsed = IPCPacket.deserialize(JSON.stringify(parsed), DataTypeByIndex[parsed.$type]); */
+      msg = handleNetworkMessage(msg);
+      log(msg);
+      if (msg instanceof InboundIPCPacket) {
+        log(`(FROM ${worker.id}) ${msg.execute()}`);
       }
-      if (parsed instanceof PlainText) {
-        log(`worker ${worker.id} sent a plain text message: ${parsed.content}`);
+      if (msg instanceof PlainText) {
+        log(`(FROM ${worker.id}) Plain text message: ${msg.content}`);
       }
     });
 

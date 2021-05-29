@@ -1,6 +1,6 @@
 import { IPCPacket } from "../IPCPacket";
 
-export class MehCredentials extends IPCPacket {
+export class WorkerCredentials extends IPCPacket {
   guildId?: string;
   errorChannel?: string;
 

@@ -1,6 +1,6 @@
-import { MixedIPCPacket } from "./_MixedIPCPacket";
+import { DuplexIPCPacket } from "./DuplexIPCPacket";
 
-export class PlainText extends MixedIPCPacket {
+export class PlainText extends DuplexIPCPacket {
   content?: string;
 
   constructor(content?: string) {

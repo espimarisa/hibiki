@@ -1,17 +1,17 @@
 /**
- * Worker
+ * Cluster Worker
  */
 
 import ivm from "isolated-vm";
-import { Ready } from "./Incoming/Ready";
-import { IPCPacket } from "./IPCPacket";
-import { PlainText } from "./Mixed/PlainText";
-import { MehCredentials } from "./Outgoing/WorkerCredentials";
+import { Ready } from "../Messaging/Inbound/Ready";
+import { IPCPacket } from "../Messaging/IPCPacket";
+import { PlainText } from "../Messaging/Duplex/PlainText";
+import { WorkerCredentials } from "../Messaging/Outbound/WorkerCredentials";
 
-import { log } from "../CommonUtils";
+import { log } from "./Utils";
 
-export class Worker {
-  creds?: MehCredentials;
+export class ClusterWorker {
+  creds?: WorkerCredentials;
 
   vm?: ivm.Isolate;
   vmSyncContext?: ivm.Context;
@@ -38,7 +38,7 @@ export class Worker {
     process.send?.(message.serialize());
   }
 
-  setup(creds: MehCredentials) {
+  setup(creds: WorkerCredentials) {
     this.creds = creds;
   }
 }
