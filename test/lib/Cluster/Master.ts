@@ -2,7 +2,7 @@
  * Cluster Master
  */
 
-import cluster from "cluster";
+import * as cluster from "cluster";
 
 import { log } from "./Utils";
 

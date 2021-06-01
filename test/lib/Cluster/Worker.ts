@@ -2,7 +2,7 @@
  * Cluster Worker
  */
 
-import ivm from "isolated-vm";
+import * as ivm from "isolated-vm";
 import { ReadyPacket } from "../Network/Packets/Inbound/Ready";
 import { IPCPacket } from "../Network/Packets/IPCPacket";
 import { PlainTextPacket } from "../Network/Packets/Duplex/PlainText";

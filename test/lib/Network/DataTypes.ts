@@ -6,12 +6,10 @@ import { ReadyPacket } from "./Packets/Inbound/Ready";
 import { WorkerCredentialsPacket } from "./Packets/Outbound/WorkerCredentials";
 import { PlainTextPacket } from "./Packets/Duplex/PlainText";
 import { InvalidPacket } from "./Packets/InvalidPacket";
-import { WorkerExitPacket } from "./Packets/Duplex/WorkerExit";
 
 export const DataTypes = [
   IPCPacket,
   InvalidPacket,
-  WorkerExitPacket,
   ReadyPacket,
   DuplexIPCPacket,
   InboundIPCPacket,

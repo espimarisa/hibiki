@@ -7,7 +7,7 @@ export class IPCPacket {
     this.$type = $type || "-1";
   }
 
-  static cast<T extends IPCPacket>(uncastedPacket: IPCPacket, newtype: new () => T): (T & IPCPacket) | undefined {
+  static cast<T extends IPCPacket>(uncastedPacket: any, newtype: new () => T): (T & IPCPacket) | undefined {
     if (uncastedPacket.$type === new newtype().$type) return Object.assign(new newtype(), uncastedPacket);
   }
 
