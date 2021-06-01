@@ -1,6 +1,6 @@
 import { DuplexIPCPacket } from "./DuplexIPCPacket";
 
-export class PlainText extends DuplexIPCPacket {
+export class PlainTextPacket extends DuplexIPCPacket {
   content?: string;
 
   constructor(content?: string) {

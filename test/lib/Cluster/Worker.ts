@@ -3,15 +3,15 @@
  */
 
 import ivm from "isolated-vm";
-import { Ready } from "../Messaging/Inbound/Ready";
-import { IPCPacket } from "../Messaging/IPCPacket";
-import { PlainText } from "../Messaging/Duplex/PlainText";
-import { WorkerCredentials } from "../Messaging/Outbound/WorkerCredentials";
+import { ReadyPacket } from "../Network/Packets/Inbound/Ready";
+import { IPCPacket } from "../Network/Packets/IPCPacket";
+import { PlainTextPacket } from "../Network/Packets/Duplex/PlainText";
+import { WorkerCredentialsPacket } from "../Network/Packets/Outbound/WorkerCredentials";
 
 import { log } from "./Utils";
 
 export class ClusterWorker {
-  creds?: WorkerCredentials;
+  creds?: WorkerCredentialsPacket;
 
   vm?: ivm.Isolate;
   vmSyncContext?: ivm.Context;
@@ -21,24 +21,22 @@ export class ClusterWorker {
 
   constructor() {
     log(`Running with PID $pid`);
-    process.on("message", (msg) => {
-      log(msg);
-    });
+    // process.on("message", (msg) => log(msg));
     setTimeout(() => this.sendPlain("Hello!"), 1000);
     setTimeout(() => process.send?.("Starting timeout!"), 5000);
     setTimeout(process.exit, 5000 + Math.random() * 2000);
-    this.sendMessage(new Ready());
+    this.sendMessage(new ReadyPacket());
   }
 
   sendPlain(message: string) {
-    process.send?.(new PlainText(message).serialize());
+    process.send?.(new PlainTextPacket(message).serialize());
   }
 
   sendMessage(message: IPCPacket) {
     process.send?.(message.serialize());
   }
 
-  setup(creds: WorkerCredentials) {
+  setup(creds: WorkerCredentialsPacket) {
     this.creds = creds;
   }
 }

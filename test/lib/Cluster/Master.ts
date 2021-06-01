@@ -3,13 +3,12 @@
  */
 
 import cluster from "cluster";
-// import { DataTypeByIndex } from "../Messaging/DataTypes";
-// import { IPCPacket } from "../Messaging/IPCPacket";
-import { PlainText } from "../Messaging/Duplex/PlainText";
+
 import { log } from "./Utils";
-import { InboundIPCPacket } from "../Messaging/Inbound/InboundIPCPacket";
-import { handleNetworkMessage } from "../GlobalUtils";
-// import os from "os";
+
+import { PlainTextPacket } from "../Network/Packets/Duplex/PlainText";
+import { InboundIPCPacket } from "../Network/Packets/Inbound/InboundIPCPacket";
+import { handleNetworkMessage } from "../libutils";
 
 const THREADS = 1;
 
@@ -43,11 +42,11 @@ export class ClusterMaster {
       if (!DataTypeByIndex[parsed.$type]) return log(`worker ${worker.id} sent a wrong-typed message: ${msg}`);
       parsed = IPCPacket.deserialize(JSON.stringify(parsed), DataTypeByIndex[parsed.$type]); */
       msg = handleNetworkMessage(msg);
-      log(msg);
+      // log(msg);
       if (msg instanceof InboundIPCPacket) {
         log(`(FROM ${worker.id}) ${msg.execute()}`);
       }
-      if (msg instanceof PlainText) {
+      if (msg instanceof PlainTextPacket) {
         log(`(FROM ${worker.id}) Plain text message: ${msg.content}`);
       }
     });

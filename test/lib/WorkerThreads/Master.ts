@@ -3,12 +3,12 @@
  */
 
 import { Worker } from "worker_threads";
-import { PlainText } from "../Messaging/Duplex/PlainText";
+
+import { PlainTextPacket } from "../Network/Packets/Duplex/PlainText";
 import { log } from "./Utils";
-import { InboundIPCPacket } from "../Messaging/Inbound/InboundIPCPacket";
-import { handleNetworkMessage } from "../GlobalUtils";
+import { InboundIPCPacket } from "../Network/Packets/Inbound/InboundIPCPacket";
+import { handleNetworkMessage } from "../libutils";
 import { join } from "path";
-// import os from "os";
 
 const THREADS = 1;
 
@@ -20,7 +20,7 @@ export class WorkerThreadsMaster {
 
     // Fork workers.
     for (let i = 0; i < THREADS; i++) {
-      const worker = new Worker(join(__dirname, `./Worker.${process.env.NODE_ENV === "production" ? "" : "Import.c"}js`));
+      const worker = new Worker(join(__dirname, `./Worker.${process.env.NODE_ENV === "dev" ? "Import.c" : ""}js`));
 
       worker.on("online", () => {
         log(`${worker.threadId} just got online!`);
@@ -28,11 +28,11 @@ export class WorkerThreadsMaster {
 
       worker.on("message", (msg) => {
         msg = handleNetworkMessage(msg);
-        log(msg);
+        // log(msg);
         if (msg instanceof InboundIPCPacket) {
           log(`(FROM ${worker.threadId}) ${msg.execute()}`);
         }
-        if (msg instanceof PlainText) {
+        if (msg instanceof PlainTextPacket) {
           log(`(FROM ${worker.threadId}) Plain text message: ${msg.content}`);
         }
       });
