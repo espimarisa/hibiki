@@ -1,10 +1,10 @@
-import { IPCPacket } from "./Packets/IPCPacket";
+import type { IPCPacket } from "./Packets/IPCPacket";
 
-export class PacketListener<T extends IPCPacket, T1> {
+export class PacketListener<T extends IPCPacket> {
   packet?: T;
-  run: (packet: T, worker?: T1) => void;
+  run: (packet: T, worker?: number) => void;
 
-  constructor(packet: T, callback: (packet: T, worker?: T1) => void) {
+  constructor(packet: T, callback: (packet: T, worker?: number) => void) {
     this.packet = packet;
     this.run = callback;
   }

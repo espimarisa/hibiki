@@ -5,23 +5,17 @@
 import { isMainThread, parentPort } from "worker_threads";
 
 import { log } from "./Utils";
+import { ReadyPacket } from "@Network/Packets/Inbound/Ready";
+import { IPCPacket } from "@Network/Packets/IPCPacket";
+import { PlainTextPacket } from "@Network/Packets/Duplex/PlainText";
+import { PacketListener } from "@Network/PacketListener";
+import { NetworkMember } from "@Network/NetworkMember";
+import { WorkerThreadsChannel } from "./Channel";
 
-import { ReadyPacket } from "../Network/Packets/Inbound/Ready";
-import { IPCPacket } from "../Network/Packets/IPCPacket";
-import { PlainTextPacket } from "../Network/Packets/Duplex/PlainText";
-import { PacketListener } from "../Network/PacketListener";
-import { handleNetworkMessage } from "../libutils";
-import { DataTypes } from "@Network/DataTypes";
-
-export const packetFilter = (msg: IPCPacket, pl: PacketListener<any, any>) =>
-  pl.packet.$type === new IPCPacket().$type || IPCPacket.cast(msg, DataTypes.filter((t) => new t().$type === pl.packet.$type)[0]);
-
-export class WorkerThreadsWorker {
-  readonly packetListeners: PacketListener<any, never>[] = [];
-
+export class WorkerThreadsWorker extends NetworkMember {
   constructor() {
-    // this.sendPlain("f");
-    log("Running with PID $pid");
+    super(new WorkerThreadsChannel(parentPort));
+    log("Starting.");
 
     this.createPacketListeners(
       new PacketListener(new IPCPacket(), (packet) => {
@@ -30,20 +24,21 @@ export class WorkerThreadsWorker {
       new PacketListener(new PlainTextPacket(), (packet) => log(packet.constructor.name)),
     );
 
-    parentPort?.on("message", (data) => {
+    /* parentPort?.on("message", (data) => {
       const msg = handleNetworkMessage(data) as IPCPacket;
-      this.packetListeners.filter((pl) => packetFilter(msg, pl as PacketListener<any, any>)).forEach((pl) => pl.run(msg));
-    });
+      this.packetListeners.filter((pl) => packetFilter(msg, pl)).forEach((pl) => pl.run(msg));
+    });*/
 
     // process.on("message", (msg) => log(msg));
-    setTimeout(() => this.sendPlain("Hello!"), 1000);
+    /* setTimeout(() => this.sendPlain("Hello!"), 1000);
     setTimeout(() => parentPort?.postMessage("Starting timeout!"), 5000);
-    setTimeout(process.exit, 5000 + Math.random() * 2000);
+    setTimeout(process.exit, 5000 + Math.random() * 2000);*/
+    log("Ready.");
     this.sendMessage(new ReadyPacket());
-  }
-
-  createPacketListeners(...listeners: PacketListener<any, never>[]) {
-    this.packetListeners.push(...listeners);
+    setTimeout(async () => {
+      this.sendPlain("Exiting now");
+      process.exit(0);
+    }, 5000);
   }
 
   sendPlain(message: string) {
