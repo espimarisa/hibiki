@@ -53,7 +53,6 @@ export const exceptionHandler = (app: FasteerInstance) => {
     const type = acceptedType ? (Array.isArray(acceptedType) ? acceptedType[0] : acceptedType) : "json";
 
     const responses = {
-      html: "<p>404</p>",
       text: "404 Not Found",
       json: {
         success: false,
@@ -66,14 +65,16 @@ export const exceptionHandler = (app: FasteerInstance) => {
 
     // Please refer to above comment.
     const mimeTypes = {
-      html: "text/html",
       json: "application/json",
       text: "text/plain",
     };
 
-    res
-      .status(404)
-      .type(mimeTypes[type] ?? mimeTypes["text"])
-      .send(responses[type] ?? responses["text"]);
+    res.status(404);
+
+    if (type === "html") {
+      return res.view("404");
+    }
+
+    res.type(mimeTypes[type] ?? mimeTypes["text"]).send(responses[type] ?? responses["text"]);
   });
 };

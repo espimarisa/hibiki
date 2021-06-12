@@ -39,3 +39,10 @@ export const exceptRoutes = (middleware: MiddlewareFunc, routes: RouteDef[], fal
     return await middleware.call(this, req, res);
   };
 };
+
+/**
+ * Redirect Route Handler
+ */
+export const redirect = (url: string) => (_: FastifyRequest, res: FastifyReply) => {
+  res.redirect(301, url);
+};

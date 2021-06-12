@@ -2,7 +2,7 @@ import { createFasteer } from "@fasteerjs/fasteer";
 import type { HibikiClient } from "classes/Client";
 import { RethinkDBStore } from "session-rethinkdb-ts";
 import { Liquid } from "liquidjs";
-import { loadIcons } from "../utils/webserver";
+import { getWebLocale, loadIcons } from "../utils/webserver";
 import { fastify } from "fastify";
 import { lifecycle } from "./lifecycle";
 import fastifyAccepts from "fastify-accepts";
@@ -22,7 +22,7 @@ const LAYOUTS_DIRECTORY = path.join(OLD_WEBSERVER, "layouts");
 const PARTIALS_DIRECTORY = path.join(OLD_WEBSERVER, "partials");
 const PUBLIC_DIRECTORY = path.join(OLD_WEBSERVER, "public");
 const VIEWS_DIRECTORY = path.join(OLD_WEBSERVER, "views");
-const CONTROLLERS_DIRECTORY = path.join(__dirname, "controllers", "**", "*.{ts,js}");
+const CONTROLLERS_DIRECTORY = path.join(__dirname, "controllers", "**", "*Controller.{ts,js}");
 
 export const startWebserver = async (bot: HibikiClient) => {
   const app = createFasteer(
@@ -104,6 +104,12 @@ export const startWebserver = async (bot: HibikiClient) => {
     .register(pointOfView, {
       engine: {
         liquid,
+      },
+      viewExt: "liquid",
+      root: VIEWS_DIRECTORY,
+      defaultContext: {
+        bot,
+        botAvatar: bot.user.dynamicAvatarURL(null, 512),
       },
     })
     .register(fastifyStatic, {

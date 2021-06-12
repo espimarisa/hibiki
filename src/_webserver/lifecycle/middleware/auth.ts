@@ -1,10 +1,8 @@
 import type { RouteDef } from "_webserver/types";
-import { exceptRoutes } from "_webserver/utils/onlyRoutes";
+import { onlyRoutes } from "_webserver/utils";
 
-const EXCEPT_ROUTES: RouteDef[] = [
-  // Routes that don't require authentication
-];
+const ONLY_ROUTES: RouteDef[] = [];
 
-export const authMiddleware = exceptRoutes(async (req, res) => {
+export const authMiddleware = onlyRoutes(async (req, res) => {
   // TODO: implement auth
-}, EXCEPT_ROUTES);
+}, ONLY_ROUTES);
