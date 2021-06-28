@@ -20,7 +20,7 @@ const OLD_WEBSERVER = path.join(__dirname, "..", "webserver");
 const isProduction = process.env.NODE_ENV === "production";
 const LAYOUTS_DIRECTORY = path.join(OLD_WEBSERVER, "layouts");
 const PARTIALS_DIRECTORY = path.join(OLD_WEBSERVER, "partials");
-const PUBLIC_DIRECTORY = path.join(OLD_WEBSERVER, "public");
+const PUBLIC_DIRECTORY = path.join(OLD_WEBSERVER, "frontend", "dist");
 const VIEWS_DIRECTORY = path.join(OLD_WEBSERVER, "views");
 const CONTROLLERS_DIRECTORY = path.join(__dirname, "controllers", "**", "*Controller.{ts,js}");
 const COOKIE_SECRET_PATH = path.join(__dirname, "..", "..", "hibiki_cookie_secret.key");
@@ -39,9 +39,9 @@ export const startWebserver = async (bot: HibikiClient) => {
         contentSecurityPolicy: {
           directives: {
             ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-            "img-src": ["'self'", "cdn.discordapp.com"],
-            "script-src": ["'self'"],
-          },
+            "img-src": ["'self'", "cdn.discordapp.com", "data:"],
+            "script-src": ["'self'"]
+          }
         },
       },
       cors: {
@@ -52,8 +52,6 @@ export const startWebserver = async (bot: HibikiClient) => {
       trustProxy: bot.config.dashboard.trustProxy,
     }),
   );
-
-  app.logger = bot.log;
 
   app
     .inject({
@@ -91,7 +89,7 @@ export const startWebserver = async (bot: HibikiClient) => {
     })
     .register(fastifyStatic, {
       root: PUBLIC_DIRECTORY,
-      prefix: "/public/",
+      prefix: "/",
     });
 
   const addr = await app.start();

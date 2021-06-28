@@ -1,22 +1,10 @@
-import { getWebLocale } from "utils/webserver";
 import type { Controller } from "_webserver/types";
 import { redirect } from "_webserver/utils";
 
-// TODO: indexRateLimit
 export default (async (app, { bot }) => {
   // Landing page
-  // TODO: Use the React SPA
   app.get("/", async (req, res) => {
-    // TODO: auth
-    // TODO: userConfig
-    // TODO: user locale
-    const locale = bot.config.defaultLocale;
-
-    return res.view("index", {
-      locales: getWebLocale(bot, locale),
-      page: req.url,
-      user: null, // TODO
-    });
+    return res.sendFile("index.html")
   });
 
   // Donate link
