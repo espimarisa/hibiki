@@ -21,7 +21,7 @@ import { loadItems } from "../scripts/loader";
 import { tagUser } from "../utils/format";
 import { logger } from "../utils/logger";
 import { rotateStatuses } from "../utils/statuses";
-import { startWebserver } from "../_webserver/index";
+import { startWebserver } from "../webserver/index";
 import path from "path";
 import config from "../../config.json";
 import * as Sentry from "@sentry/node";

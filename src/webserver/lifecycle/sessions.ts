@@ -1,6 +1,6 @@
 import type { FasteerInstance } from "@fasteerjs/fasteer";
 import type { HibikiClient } from "classes/Client";
-import { getSecret } from "_webserver/utils/secret";
+import { getSecret } from "webserver/utils/secret";
 import DiscordStrategy, { Profile } from "passport-discord";
 import fastifyPassport from "fastify-passport";
 import fastifySecureSession from "fastify-secure-session";

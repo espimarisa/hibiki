@@ -40,6 +40,6 @@
     "target": "es2020",
     "typeRoots": ["./src/typings"]
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "src/webserver/frontend"],
   "include": ["src/**/*", "src/**/*.json"]
 }

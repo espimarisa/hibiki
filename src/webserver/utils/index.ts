@@ -1,6 +1,6 @@
 // todo: move this boilerplate somewhere else lol
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { MiddlewareFunc, RouteDef } from "_webserver/types";
+import type { MiddlewareFunc, RouteDef } from "webserver/types";
 
 export const routesInclude = (req: FastifyRequest, routes: [string, string][]): boolean => {
   // 404

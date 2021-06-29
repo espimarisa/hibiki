@@ -1,10 +1,10 @@
-import type { RouteDef } from "_webserver/types";
-import { onlyRoutes } from "_webserver/utils";
+import type { RouteDef } from "webserver/types";
+import { onlyRoutes } from "webserver/utils";
 
 const ONLY_ROUTES: RouteDef[] = [["GET", "/todo"]];
 
 export const noCacheMiddleware = onlyRoutes(
-  async (req, res) => {
+  async (_, res) => {
     res.header("Cache-Control", "no-cache");
   },
   ONLY_ROUTES,

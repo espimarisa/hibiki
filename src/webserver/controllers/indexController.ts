@@ -1,5 +1,5 @@
-import type { Controller } from "_webserver/types";
-import { redirect } from "_webserver/utils";
+import type { Controller } from "webserver/types";
+import { redirect } from "webserver/utils";
 
 export default (async (app, { bot }) => {
   // Landing page
