@@ -5,7 +5,7 @@ export class WorkerCredentialsPacket extends IPCPacket {
   errorChannel?: string;
 
   constructor(guildId?: string, errorChannel?: string) {
-    super("500");
+    super(500);
     this.guildId = guildId;
     this.errorChannel = errorChannel;
   }

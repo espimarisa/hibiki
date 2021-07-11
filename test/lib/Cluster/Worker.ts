@@ -2,12 +2,11 @@
  * Cluster Worker
  */
 
-import * as ivm from "isolated-vm";
-import { ReadyPacket } from "../Network/Packets/Inbound/Ready";
-import { IPCPacket } from "../Network/Packets/IPCPacket";
+import type * as ivm from "isolated-vm";
 import { PlainTextPacket } from "../Network/Packets/Duplex/PlainText";
-import { WorkerCredentialsPacket } from "../Network/Packets/Outbound/WorkerCredentials";
-
+import { ReadyPacket } from "../Network/Packets/Inbound/Ready";
+import type { IPCPacket } from "../Network/Packets/IPCPacket";
+import type { WorkerCredentialsPacket } from "../Network/Packets/Outbound/WorkerCredentials";
 import { log } from "./Utils";
 
 export class ClusterWorker {
