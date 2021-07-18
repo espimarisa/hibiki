@@ -33,7 +33,7 @@ export class OwOifyCommand extends Command {
         .replace(/N([aeiou])/g, "Ny")
         .replace(/N([AEIOU])/g, "NY")
         .replace(/ove/g, "uv")
-        .replace(/!+/g, `! ${faces[Math.floor(Math.random() * faces.length)]} `);
+        .replace(/!+/g, `! ${FACES[Math.floor(Math.random() * FACES.length)]} `);
     };
 
     msg.createEmbed(`${FACES[Math.floor(Math.random() * FACES.length)]}`, owoify(args.join(" ").slice(0, 1024)));
