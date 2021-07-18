@@ -7,6 +7,7 @@
   "sentry": "",
   "statuses": ["guilds", "help", "users", "version"],
   "token": "",
+  "disableAutoReconnect": false,
   "inviteLogs": true,
   "dmLogs": true,
 
