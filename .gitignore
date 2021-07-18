@@ -8,6 +8,9 @@ application.yml
 *.jar
 rethinkdb
 
+# Extensions
+test/
+
 # Modules
 bulmaselect/
 src/webserver/public/css/
