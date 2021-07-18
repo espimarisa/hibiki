@@ -5,12 +5,11 @@
 
 import type { HibikiClient } from "./Client";
 import type { LocaleString, LocaleStrings } from "../typings/locales";
-
 import { logger } from "../utils/logger";
+import { readFile, readdir } from "fs";
+import config from "../../config.json";
 
 import { readFile, readdir } from "fs";
-
-import config from "../../config.json";
 
 export class LocaleSystem {
   readonly bot: HibikiClient;
