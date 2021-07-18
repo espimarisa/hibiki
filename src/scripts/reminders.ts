@@ -30,7 +30,7 @@ export class ReminderHandler {
             await bot.db.deleteUserReminder(reminder.user, reminder.id);
 
             // Gets the user's locale
-            const userLocale = await bot.localeSystem.getUserLocale(reminder.user, bot);
+            const userLocale = await bot.localeSystem.getUserLocale(reminder.user);
             const string = bot.localeSystem.getLocaleFunction(userLocale);
 
             // Sends the user a message

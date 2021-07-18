@@ -38,7 +38,7 @@ export class HandlerEvent extends Event {
 
     // Finds what locale to use
     const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild ? msg.channel.guild.id : "");
-    const userLocale = await this.bot.localeSystem.getUserLocale(msg.author.id, this.bot, true);
+    const userLocale = await this.bot.localeSystem.getUserLocale(msg.author.id, true);
     if (userLocale) localeString = userLocale;
     else if (guildconfig?.guildLocale && !userLocale) localeString = guildconfig.guildLocale;
     const string = this.bot.localeSystem.getLocaleFunction(localeString);

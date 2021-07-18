@@ -13,9 +13,11 @@ import { readFile, readdir } from "fs";
 import config from "../../config.json";
 
 export class LocaleSystem {
+  readonly bot: HibikiClient;
   readonly locales: Record<string, string> = {};
 
-  constructor(path: string) {
+  constructor(bot: HibikiClient, path: string) {
+    this.bot = bot;
     this.updateLocales(path);
   }
 
@@ -114,9 +116,9 @@ export class LocaleSystem {
   }
 
   // Returns what locale a user uses
-  async getUserLocale(user: string, bot: HibikiClient, handler = false) {
+  async getUserLocale(user: string, handler = false) {
     let locale = "";
-    const userConfig = await bot.db.getUserConfig(user);
+    const userConfig = await this.bot.db.getUserConfig(user);
     if (userConfig?.locale) locale = userConfig.locale;
     else if (handler === false) locale = config.defaultLocale ? config.defaultLocale : "en";
 

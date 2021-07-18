@@ -28,7 +28,7 @@ export class WarnCommand extends Command {
     const dmchannel = await member.user.getDMChannel().catch(() => {});
     if (dmchannel) {
       // Gets the victim's locale and strings to use
-      const victimLocale = await this.bot.localeSystem.getUserLocale(member.id, this.bot);
+      const victimLocale = await this.bot.localeSystem.getUserLocale(member.id);
       const NO_REASON = this.bot.localeSystem.getLocale(`${victimLocale}`, "global.NO_REASON");
       const DM_TITLE = this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.WARN_DM_TITLE", { guild: msg.channel.guild.name });
       const DM_DESCRIPTION = this.bot.localeSystem.getLocale(`${victimLocale}`, "moderation.WARN_DM", {

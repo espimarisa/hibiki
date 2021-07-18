@@ -4,7 +4,7 @@
  */
 
 import type { Member, User, VoiceChannel } from "eris";
-import type { VoicePacket } from "erela.js";
+import type { Plugin, VoicePacket } from "erela.js";
 
 import type { HibikiClient } from "./Client";
 
@@ -17,11 +17,11 @@ import Spotify from "@sysdotini/erela.js-spotify";
 
 import config from "../../config.json";
 
-const plugins: Spotify[] = [];
+const PLUGINS: Plugin[] = [];
 
 // Only load Spotify plugin if both a ID and secret are given
 if (config.lavalink?.spotifyClientID && config.lavalink?.spotifyClientSecret) {
-  plugins.push(
+  PLUGINS.push(
     new Spotify({
       clientID: config.lavalink.spotifyClientID,
       clientSecret: config.lavalink.spotifyClientSecret,
@@ -36,7 +36,7 @@ export class Lavalink {
   // Creates a new lavalink manager
   constructor(bot: HibikiClient) {
     this.manager = new Manager({
-      plugins: plugins,
+      plugins: PLUGINS,
       autoPlay: true,
 
       nodes: [
@@ -60,15 +60,14 @@ export class Lavalink {
       .on("nodeError", (node, err) => bot.log.error(`Lavalink node ${node.options.identifier} encountered an error: ${err}`))
       .on("trackStart", async (p, { title, author, thumbnail, requester, uri }) => {
         // Finds the locale
-        const userLocale = await bot.localeSystem.getUserLocale(`${requester}`, bot);
-        const string = bot.localeSystem.getLocaleFunction(userLocale);
+        const locale = bot.localeSystem.getLocaleFunction(await bot.localeSystem.getUserLocale(String(requester)));
         if (p.trackRepeat) return;
 
         bot
           .createMessage(p.options.textChannel, {
             embed: {
-              title: `🎶 ${string("music.NOW_PLAYING")}`,
-              description: string("music.NOW_PLAYING_INFO", {
+              title: `🎶 ${locale("music.NOW_PLAYING")}`,
+              description: locale("music.NOW_PLAYING_INFO", {
                 track: title,
                 url: uri,
                 author: author,
@@ -76,7 +75,7 @@ export class Lavalink {
               color: convertHex("general"),
               fields: [
                 {
-                  name: string("music.DURATION"),
+                  name: locale("music.DURATION"),
                   value: `${toHHMMSS(p.queue.current?.duration / 1000)}`,
                   inline: true,
                 },
@@ -85,14 +84,14 @@ export class Lavalink {
                 url: thumbnail ? thumbnail : undefined,
               },
               footer: {
-                text: string("music.REQUESTED_BY_FOOTER", { requester: tagUser(requester as User) }),
+                text: locale("music.REQUESTED_BY_FOOTER", { requester: tagUser(requester as User) }),
                 icon_url: bot.user.dynamicAvatarURL(),
               },
             },
           })
           .then((m) => {
             setTimeout(async () => {
-              await m.delete().catch(() => {});
+              await m.delete().catch(() => { });
             }, 15000);
           });
       })
@@ -100,16 +99,15 @@ export class Lavalink {
       // Handles queue ending
       .on("queueEnd", async (player, { requester }) => {
         // Finds the locale
-        const userLocale = await bot.localeSystem.getUserLocale(`${requester}`, bot);
-        const string = bot.localeSystem.getLocaleFunction(userLocale);
+        const locale = bot.localeSystem.getLocaleFunction(await bot.localeSystem.getUserLocale(String(requester)));
 
         bot.createMessage(player.options.textChannel, {
           embed: {
-            title: `⏹ ${string("music.STOPPED")}`,
-            description: string("music.END_OF_QUEUE"),
+            title: `⏹ ${locale("music.STOPPED")}`,
+            description: locale("music.END_OF_QUEUE"),
             color: convertHex("general"),
             footer: {
-              text: string("music.REQUESTED_BY_FOOTER", { requester: tagUser(requester as User) }),
+              text: locale("music.REQUESTED_BY_FOOTER", { requester: tagUser(requester as User) }),
               icon_url: bot.user.dynamicAvatarURL(),
             },
           },
@@ -121,8 +119,9 @@ export class Lavalink {
     // Sends the actual websocket
     bot.on("rawWS", (data: VoicePacket) => bot.lavalink.manager.updateVoiceState(data));
 
+    // Listens on channel leave, join, and move
     // Leaves the voice channel and kills the queue if alone or moved in a channel
-    this.eventHandler = (member: Member, channel: VoiceChannel, oldchannel: VoiceChannel) => {
+    ["Leave", "Join", "Switch"].map(x => bot.on(`voiceChannel${x}`, (member: Member, channel: VoiceChannel, oldChannel: VoiceChannel) => {
       // Gets the player
       const player = this.manager.players.get(channel.guild.id);
       if (!player) return;
@@ -133,19 +132,12 @@ export class Lavalink {
       currentChannel?.voiceMembers.forEach((m) => (m.user.id === bot.user.id ? null : userCount++));
 
       // Disconnects and destroys the player if the channel is empty or only has the bot in it
-      if (userCount === 0 || (member.id === bot.user.id && oldchannel)) {
-        if (player) {
-          player?.stop();
-          player?.destroy();
-          // player?.disconnect();
-          // currentChannel.leave();
-        }
+      if (userCount === 0 || (member.id === bot.user.id && oldChannel)) {
+        player?.stop();
+        player?.destroy();
+        // player?.disconnect();
+        // currentChannel.leave();
       }
-    };
-
-    // Listens on channel leave, join, and move
-    bot.on("voiceChannelLeave", this.eventHandler);
-    bot.on("voiceChannelJoin", this.eventHandler);
-    bot.on("voiceChannelSwitch", this.eventHandler);
+    }));
   }
 }

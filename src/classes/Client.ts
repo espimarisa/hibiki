@@ -66,7 +66,7 @@ export class HibikiClient extends Client {
     // Handlers & functions
     this.args = new Args(this);
     this.lavalink = new Lavalink(this);
-    this.localeSystem = new LocaleSystem(LOCALES_DIRECTORY);
+    this.localeSystem = new LocaleSystem(this, LOCALES_DIRECTORY);
     this.inviteHandler = new InviteHandler(this);
     this.monitorHandler = new MonitorHandler(this);
     this.muteHandler = new MuteHandler(this);
@@ -77,46 +77,44 @@ export class HibikiClient extends Client {
     if (this.config?.extensions?.enabled && process.env["NODE_ENV"] === "dev")
       this.extensionEnvProvider = new HibikiExtensionEnvironmentProvider(this);
 
-    this.connect();
     this.editStatus("idle");
-    this.once("ready", this.readyListener);
-  }
+    this.once("ready", async () => {
+      loadItems(this);
+      rotateStatuses(this);
 
-  // Runs when the bot is ready
-  async readyListener() {
-    loadItems(this);
-    rotateStatuses(this);
-
-    // Enables sentry
-    if (config.sentry) {
-      try {
-        Sentry.init({
-          dsn: config.sentry,
-          environment: process.env.NODE_ENV,
-          release: process.env.npm_package_version,
-          tracesSampleRate: 0.5,
-          maxBreadcrumbs: 50,
-          attachStacktrace: true,
-        });
-      } catch (err) {
-        this.log.error(`Sentry failed to initialize: ${err}`);
+      // Enables sentry
+      if (config.sentry) {
+        try {
+          Sentry.init({
+            dsn: config.sentry,
+            environment: process.env.NODE_ENV,
+            release: process.env.npm_package_version,
+            tracesSampleRate: 0.5,
+            maxBreadcrumbs: 50,
+            attachStacktrace: true,
+          });
+        } catch (err) {
+          this.log.error(`Sentry failed to initialize: ${err}`);
+        }
       }
-    }
 
-    // Enables lavalink
-    if (config.lavalink.enabled) this.lavalink.manager.init(this.user.id);
+      // Enables lavalink
+      if (config.lavalink?.enabled) this.lavalink.manager.init(this.user.id);
 
-    // Starts webservers at first boot
-    if (process.uptime() < 20) {
-      if (config.dashboard.port && config.dashboard.botSecret && config.dashboard.redirectURI) startWebserver(this);
-    }
+      if (config.dashboard?.port && config.dashboard?.botSecret && config.dashboard?.redirectURI) startWebserver(this);
 
-    this.log.info(`Loaded ${this.commands.length} commands`);
-    this.log.info(`Loaded ${this.events.length} events`);
-    this.log.info(`Loaded ${this.loggers.length} loggers`);
-    this.log.info(`Loaded ${Object.keys(this.localeSystem.locales).length} locales`);
-    this.log.info(`Logged in as ${tagUser(this.user)}, serving ${this.guilds.size} guilds with ${this.users.size} users`);
+      this.log.info(`Loaded ${this.commands.length} commands`);
+      this.log.info(`Loaded ${this.events.length} events`);
+      this.log.info(`Loaded ${this.loggers.length} loggers`);
+      this.log.info(`Loaded ${Object.keys(this.localeSystem.locales).length} locales`);
+      this.log.info(`Logged in as ${tagUser(this.user)}, serving ${this.guilds.size} guilds with ${this.users.size} users through ${this.gatewayURL}`);
 
-    if (this.extensionEnvProvider) this.extensionEnvProvider.createEnvironment("0").runNewTestExtension();
+      if (this.extensionEnvProvider) this.extensionEnvProvider.createEnvironment("0").runNewTestExtension();
+
+      this.on("ready", () => this.log.info(`Reconnected to Discord (${this.gatewayURL}) - now serving ${this.guilds.size} guilds with ${this.users.size} users`));
+    });
+
+    if (!config.disableAutoReconnect) this.on("disconnect", this.connect);
+    this.connect();
   }
 }

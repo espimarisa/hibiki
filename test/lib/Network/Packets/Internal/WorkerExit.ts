@@ -5,7 +5,7 @@ export class WorkerExitPacket extends InternalPacket {
   exitCode?: number;
 
   constructor(workerId = -1, exitCode?: number) {
-    super("5001");
+    super(5001);
     this.workerId = workerId;
     this.exitCode = exitCode;
   }

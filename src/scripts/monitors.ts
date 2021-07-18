@@ -52,7 +52,7 @@ export class MonitorHandler {
               if (!dm) return;
 
               // Gets the user's locale
-              const userLocale = await bot.localeSystem.getUserLocale(`${user}`, bot);
+              const userLocale = await bot.localeSystem.getUserLocale(String(user));
               const string = bot.localeSystem.getLocaleFunction(userLocale);
 
               // Sends the user a message

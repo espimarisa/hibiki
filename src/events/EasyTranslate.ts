@@ -54,7 +54,7 @@ export class EasyTranslate extends Event {
     }, 5000);
 
     let localeString = "";
-    const userLocale = await this.bot.localeSystem.getUserLocale(msg.author.id, this.bot, true);
+    const userLocale = await this.bot.localeSystem.getUserLocale(msg.author.id, true);
     if (userLocale) localeString = userLocale;
     else if (cfg?.guildLocale && !userLocale) localeString = cfg.guildLocale;
     const string = this.bot.localeSystem.getLocaleFunction(localeString);

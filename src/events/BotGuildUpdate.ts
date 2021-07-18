@@ -40,7 +40,7 @@ export class BotGuildUpdateEvent extends Event {
         const ownerDM = await owner.getDMChannel().catch(() => {});
         if (ownerDM) {
           // Gets owners's locale
-          const ownerLocale = await this.bot.localeSystem.getUserLocale(owner.id, this.bot);
+          const ownerLocale = await this.bot.localeSystem.getUserLocale(owner.id);
           const string = this.bot.localeSystem.getLocaleFunction(ownerLocale || this.bot.config.defaultLocale);
           const prefix = db?.prefix ? db.prefix : this.bot.config.prefixes[0];
 

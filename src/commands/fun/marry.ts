@@ -35,7 +35,7 @@ export class MarryCommand extends Command {
       `💝 ${msg.string("fun.MARRY")}`,
       msg.string("fun.MARRY_YN", { member: member.user.username, user: msg.author.username }),
     );
-    const spouselocale = await this.bot.localeSystem.getUserLocale(member.id, this.bot);
+    const spouselocale = await this.bot.localeSystem.getUserLocale(member.id);
     // Asks for yes/no
     const response = (await askYesNo(this.bot, this.bot.localeSystem.getLocaleFunction(spouselocale), member.id, msg.channel.id).catch(
       (err) => {

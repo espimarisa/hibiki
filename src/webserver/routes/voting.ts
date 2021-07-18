@@ -48,7 +48,7 @@ export function votingRoutes(bot: HibikiClient) {
       if (!dmChannel) return;
 
       // Gets the user's locale
-      const userLocale = await bot.localeSystem.getUserLocale(`${user}`, bot);
+      const userLocale = await bot.localeSystem.getUserLocale(String(user));
       const string = bot.localeSystem.getLocaleFunction(userLocale);
 
       await dmChannel

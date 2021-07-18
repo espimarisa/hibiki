@@ -21,7 +21,7 @@ export class IPCPacket {
   $type: string;
 
   constructor($type?: number) {
-    this.$type = ($type || "-1").toString();
+    this.$type = ($type ?? -1).toString();
   }
 
   static cast<T extends IPCPacket>(uncastedPacket: any, targetType: new () => T): (T & IPCPacket) | undefined {
