@@ -36,7 +36,7 @@
     "FACT_ERROR": "Impossible d'envoyer le fait. Réessaye plus tard.",
     "FACT_USELESS": "Faits inutiles",
     "GAYLEVEL": "Gay-o-mètre",
-    "GAYLEVEL_LEVEL": "**{member}** est gay à **{level}%** !",
+    "GAYLEVEL_LEVEL": "**{member}** est gay à **{level}** !",
     "MARRY": "Mariage",
     "MARRY_ALREADY_MARRIED": "Tu es déjà marié.e.",
     "MARRY_CANCELLED": "Mariage annulé.",
