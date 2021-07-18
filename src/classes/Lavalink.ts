@@ -91,7 +91,7 @@ export class Lavalink {
           })
           .then((m) => {
             setTimeout(async () => {
-              await m.delete().catch(() => { });
+              await m.delete().catch(() => {});
             }, 15000);
           });
       })
@@ -121,23 +121,25 @@ export class Lavalink {
 
     // Listens on channel leave, join, and move
     // Leaves the voice channel and kills the queue if alone or moved in a channel
-    ["Leave", "Join", "Switch"].map(x => bot.on(`voiceChannel${x}`, (member: Member, channel: VoiceChannel, oldChannel: VoiceChannel) => {
-      // Gets the player
-      const player = this.manager.players.get(channel.guild.id);
-      if (!player) return;
-      let userCount = 0;
+    ["Leave", "Join", "Switch"].map((x) =>
+      bot.on(`voiceChannel${x}`, (member: Member, channel: VoiceChannel, oldChannel: VoiceChannel) => {
+        // Gets the player
+        const player = this.manager.players.get(channel.guild.id);
+        if (!player) return;
+        let userCount = 0;
 
-      // Gets the voice channel and the member amount in it
-      const currentChannel = channel.guild.channels.get(player.options.voiceChannel) as VoiceChannel;
-      currentChannel?.voiceMembers.forEach((m) => (m.user.id === bot.user.id ? null : userCount++));
+        // Gets the voice channel and the member amount in it
+        const currentChannel = channel.guild.channels.get(player.options.voiceChannel) as VoiceChannel;
+        currentChannel?.voiceMembers.forEach((m) => (m.user.id === bot.user.id ? null : userCount++));
 
-      // Disconnects and destroys the player if the channel is empty or only has the bot in it
-      if (userCount === 0 || (member.id === bot.user.id && oldChannel)) {
-        player?.stop();
-        player?.destroy();
-        // player?.disconnect();
-        // currentChannel.leave();
-      }
-    }));
+        // Disconnects and destroys the player if the channel is empty or only has the bot in it
+        if (userCount === 0 || (member.id === bot.user.id && oldChannel)) {
+          player?.stop();
+          player?.destroy();
+          // player?.disconnect();
+          // currentChannel.leave();
+        }
+      }),
+    );
   }
 }

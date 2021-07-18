@@ -107,11 +107,15 @@ export class HibikiClient extends Client {
       this.log.info(`Loaded ${this.events.length} events`);
       this.log.info(`Loaded ${this.loggers.length} loggers`);
       this.log.info(`Loaded ${Object.keys(this.localeSystem.locales).length} locales`);
-      this.log.info(`Logged in as ${tagUser(this.user)}, serving ${this.guilds.size} guilds with ${this.users.size} users through ${this.gatewayURL}`);
+      this.log.info(
+        `Logged in as ${tagUser(this.user)}, serving ${this.guilds.size} guilds with ${this.users.size} users through ${this.gatewayURL}`,
+      );
 
       if (this.extensionEnvProvider) this.extensionEnvProvider.createEnvironment("0").runNewTestExtension();
 
-      this.on("ready", () => this.log.info(`Reconnected to Discord (${this.gatewayURL}) - now serving ${this.guilds.size} guilds with ${this.users.size} users`));
+      this.on("ready", () =>
+        this.log.info(`Reconnected to Discord (${this.gatewayURL}) - now serving ${this.guilds.size} guilds with ${this.users.size} users`),
+      );
     });
 
     if (!config.disableAutoReconnect) this.on("disconnect", this.connect);
