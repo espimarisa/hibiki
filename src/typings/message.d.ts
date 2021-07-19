@@ -14,7 +14,7 @@ declare module "eris" {
     createEmbed: typeof createEmbed;
     editEmbed: typeof editEmbed;
     prefix?: string;
-    string?: LocaleString;
+    locale?: LocaleString;
     tagUser: typeof tagUser;
   }
 }

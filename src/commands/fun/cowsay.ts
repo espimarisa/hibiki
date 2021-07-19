@@ -34,10 +34,10 @@ export class CowsayCommand extends Command {
 
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[], args: string[]) {
     // Lists animals that you can use
-    if (!args.length || ["list", msg.string("global.LIST")].includes(args?.[0]?.toLowerCase())) {
+    if (!args.length || ["list", msg.locale("global.LIST")].includes(args?.[0]?.toLowerCase())) {
       return msg.createEmbed(
-        `🐮 ${msg.string("fun.COWSAY")}`,
-        msg.string("fun.COWSAY_USAGE", {
+        `🐮 ${msg.locale("fun.COWSAY")}`,
+        msg.locale("fun.COWSAY_USAGE", {
           types: Object.keys(COWS)
             .map((c) => `\`${c}\``)
             .join(", "),
@@ -101,6 +101,6 @@ export class CowsayCommand extends Command {
     };
 
     // Sends the cowsay
-    msg.createEmbed(`🐮 ${msg.string("fun.COWSAY")}`, `\`\`\`\n ${cowsay(args.join(" "))}\n\`\`\``);
+    msg.createEmbed(`🐮 ${msg.locale("fun.COWSAY")}`, `\`\`\`\n ${cowsay(args.join(" "))}\n\`\`\``);
   }
 }

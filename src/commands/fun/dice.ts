@@ -21,6 +21,6 @@ export class DiceCommand extends Command {
     else if (sides < 2) sides = 6;
 
     const num = Math.floor(Math.random() * sides) + 1;
-    msg.createEmbed(`🎲 ${msg.string("fun.DICE")}`, msg.string("fun.DICE_RESULT", { sides, result: num }));
+    msg.createEmbed(`🎲 ${msg.locale("fun.DICE")}`, msg.locale("fun.DICE_RESULT", { sides, result: num }));
   }
 }

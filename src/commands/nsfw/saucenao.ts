@@ -5,7 +5,7 @@ import { Command } from "../../classes/Command";
 import { urlRegex } from "../../utils/constants";
 import axios from "axios";
 
-export class SauceNaoCommand extends Command {
+export class SauceNAOCommand extends Command {
   description = "Gets a source for an image from Saucenao.";
   args = "[url:string]";
   requiredkeys = ["sauce"];
@@ -17,7 +17,7 @@ export class SauceNaoCommand extends Command {
   async run(msg: Message<TextChannel>, pargs: ParsedArgs[]) {
     // Gets the image
     const img = msg.attachments?.length ? msg.attachments[0].url : pargs[0].value;
-    if (!img) return msg.createEmbed(msg.string("global.ERROR"), msg.string("nsfw.SAUCENAO_NOIMAGE"), "error");
+    if (!img) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("nsfw.SAUCENAO_NOIMAGE"), "error");
 
     // Searches for it on saucenao
     const body = await axios.post(
@@ -26,7 +26,7 @@ export class SauceNaoCommand extends Command {
 
     // If nothing was found
     if (!body || !body?.data.results) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("nsfw.SAUCENAO_ERROR"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("nsfw.SAUCENAO_ERROR"), "error");
     }
 
     // Sorts the data
@@ -45,14 +45,14 @@ export class SauceNaoCommand extends Command {
     // Sends the source embed
     msg.channel.createMessage({
       embed: {
-        title: `🔎 ${msg.string("nsfw.SAUCENAO")}`,
+        title: `🔎 ${msg.locale("nsfw.SAUCENAO")}`,
         color: msg.convertHex("general"),
-        description: `${msg.string("nsfw.SAUCENAO_SOURCES", { sources: imgUrls.join("\n") })}`,
+        description: `${msg.locale("nsfw.SAUCENAO_SOURCES", { sources: imgUrls.join("\n") })}`,
         image: {
           url: `${body.data.results[0]?.header?.thumbnail ?? ""}`,
         },
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

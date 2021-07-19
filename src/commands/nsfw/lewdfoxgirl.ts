@@ -3,7 +3,7 @@ import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import axios from "axios";
 
-export class LewdfoxgirlCommand extends Command {
+export class LewdFoxgirlCommand extends Command {
   description = "Sends a NSFW image of a foxgirl/kitsune.";
   aliases = ["foxgirlhentai", "kitsunehentai", "lewdkitsune"];
   cooldown = 4000;
@@ -14,18 +14,18 @@ export class LewdfoxgirlCommand extends Command {
     const body = (await axios.get("https://nekos.life/api/v2/img/lewdk").catch(() => {})) as NekosLifeImage;
 
     if (!body || !body.data?.url) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGE"), "error");
     }
 
     msg.channel.createMessage({
       embed: {
-        title: `🐱 ${msg.string("nsfw.LEWDFOXGIRL")}`,
+        title: `🐱 ${msg.locale("nsfw.LEWDFOXGIRL")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data.url,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "nekos.life",
           }),

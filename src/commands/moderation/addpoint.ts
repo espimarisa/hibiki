@@ -2,7 +2,7 @@ import type { EmbedField, Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { generateSnowflake } from "../../utils/snowflake";
 
-export class AddpointCommand extends Command {
+export class AddPointCommand extends Command {
   description = "Gives a member a reputation point.";
   requiredperms = ["manageMessages"];
   args = "<member:member&strict> [reason:string]";
@@ -33,7 +33,7 @@ export class AddpointCommand extends Command {
 
     // ID
     fields.push({
-      name: msg.string("global.ID"),
+      name: msg.locale("global.ID"),
       value: `${id}`,
       inline: true,
     });
@@ -41,7 +41,7 @@ export class AddpointCommand extends Command {
     // Total if over 1
     if (points.length > 1) {
       fields.push({
-        name: msg.string("moderation.POINT_TOTAL"),
+        name: msg.locale("moderation.POINT_TOTAL"),
         value: `${points.length}`,
         inline: true,
       });
@@ -50,7 +50,7 @@ export class AddpointCommand extends Command {
     // Reason
     if (reason) {
       fields.push({
-        name: msg.string("global.REASON"),
+        name: msg.locale("global.REASON"),
         value: `${reason}`,
       });
     }
@@ -58,12 +58,12 @@ export class AddpointCommand extends Command {
     // Sends point success
     msg.channel.createMessage({
       embed: {
-        title: msg.string("global.SUCCESS"),
-        description: msg.string("moderation.POINT_ADDED", { member: member.user.username }),
+        title: msg.locale("global.SUCCESS"),
+        description: msg.locale("moderation.POINT_ADDED", { member: member.user.username }),
         color: msg.convertHex("success"),
         fields: fields,
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

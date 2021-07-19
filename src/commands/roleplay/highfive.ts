@@ -3,7 +3,7 @@ import type { WeebSHImage } from "../../typings/endpoints";
 import { Command } from "../../classes/Command";
 import axios from "axios";
 
-export class HighfiveCommand extends Command {
+export class HighFiveCommand extends Command {
   args = "<member:member>";
   description = "Gives someeone a high five.";
   cooldown = 3000;
@@ -25,13 +25,13 @@ export class HighfiveCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        description: `✋ ${msg.string("roleplay.HIGHFIVE", { user: msg.author.username, member: member.user.username })}`,
+        description: `✋ ${msg.locale("roleplay.HIGHFIVE", { user: msg.author.username, member: member.user.username })}`,
         color: msg.convertHex("general"),
         image: {
           url: image,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "weeb.sh",
           }),

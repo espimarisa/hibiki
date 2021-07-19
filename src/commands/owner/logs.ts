@@ -10,12 +10,12 @@ export class LogsCommand extends Command {
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // If no logs exist
-    if (!this.bot.logs) return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.LOGS_NOLOGS"), "error");
+    if (!this.bot.logs) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("owner.LOGS_NOLOGS"), "error");
 
     // Handler for log clearing
-    if (["clear", msg.string("global.CLEAR")].includes(args?.[0]?.toLowerCase())) {
+    if (["clear", msg.locale("global.CLEAR")].includes(args?.[0]?.toLowerCase())) {
       this.bot.logs = [];
-      return msg.createEmbed(`📜 ${msg.string("owner.LOGS")}`, msg.string("owner.LOGS_CLEARED"), "success");
+      return msg.createEmbed(`📜 ${msg.locale("owner.LOGS")}`, msg.locale("owner.LOGS_CLEARED"), "success");
     }
 
     // Sends logs about a specific command
@@ -25,13 +25,13 @@ export class LogsCommand extends Command {
       );
 
       // Filters through the logs
-      if (!cmd) return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.COMMAND_NOTFOUND"), "error");
+      if (!cmd) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("owner.COMMAND_NOTFOUND"), "error");
       let cmdlogs = [];
       cmdlogs = this.bot.logs.filter((l) => l.cmdName === cmd.name);
 
       return msg.createEmbed(
-        `📜 ${msg.string("owner.LOGS")}`,
-        msg.string("owner.LOGS_COMMAND", {
+        `📜 ${msg.locale("owner.LOGS")}`,
+        msg.locale("owner.LOGS_COMMAND", {
           command: cmd.name,
           times: cmdlogs.length,
         }),
@@ -55,6 +55,6 @@ export class LogsCommand extends Command {
       })
       .join("\n");
 
-    msg.createEmbed(`📜 ${msg.string("owner.LOGS")}`, humanReadableLogs);
+    msg.createEmbed(`📜 ${msg.locale("owner.LOGS")}`, humanReadableLogs);
   }
 }

@@ -26,7 +26,7 @@ function loadCommands(path: string, bot: HibikiClient) {
 
     // Tries to import each command
     let command;
-    if (!fileTypes.test(file.name)) return;
+    if (!fileTypes.test(file.name.toLowerCase())) return;
 
     try {
       const importedCommand = require(`${path}/${file.name}`);
@@ -40,7 +40,7 @@ function loadCommands(path: string, bot: HibikiClient) {
 
     // Gets the command to load
     const splitPath = path.split("/");
-    const cmd = new command(bot, file.name.split(fileTypes)[0], splitPath[splitPath.length - 1]) as Command;
+    const cmd = new command(bot, file.name.toLowerCase().split(fileTypes)[0], splitPath[splitPath.length - 1]) as Command;
 
     // Don't load commands missing requiredkeys
     let cmdMissingKeys = false;
@@ -71,7 +71,7 @@ function loadEvents(path: string, bot: HibikiClient, logger = false) {
     if (file.isDirectory()) return;
 
     let event;
-    if (!fileTypes.test(file.name)) return;
+    if (!fileTypes.test(file.name.toLowerCase())) return;
 
     try {
       const importedEvent = require(`${path}/${file.name}`);
@@ -84,7 +84,7 @@ function loadEvents(path: string, bot: HibikiClient, logger = false) {
     if (!event) return;
 
     // Pushes the events and runs them
-    (logger ? bot.loggers : bot.events).push(new event(bot, file.name.split(fileTypes)[0]));
+    (logger ? bot.loggers : bot.events).push(new event(bot, file.name.toLowerCase().split(fileTypes)[0]));
   });
 
   subscribeEvents(logger ? bot.loggers : bot.events);

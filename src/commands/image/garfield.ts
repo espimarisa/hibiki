@@ -34,17 +34,17 @@ export class GarfieldCommand extends Command {
     }
 
     const garfield = garfieldComic();
-    if (!garfield[0]) return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");
+    if (!garfield[0]) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGE"), "error");
 
     msg.channel.createMessage({
       embed: {
-        title: `💭 ${msg.string("image.GARFIELD_PUBLISHEDON", { date: `${garfield[1]}-${garfield[2]}-${garfield[3]}` })}`,
+        title: `💭 ${msg.locale("image.GARFIELD_PUBLISHEDON", { date: `${garfield[1]}-${garfield[2]}-${garfield[3]}` })}`,
         color: msg.convertHex("general"),
         image: {
           url: `${garfield[0]}`,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "images.ucomics.com",
           }),

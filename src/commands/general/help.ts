@@ -24,31 +24,31 @@ export class HelpCommand extends Command {
 
       switch (category) {
         case "fun":
-          label = `🎉 ${msg.string("general.HELP_CATEGORY_FUN")}`;
+          label = `🎉 ${msg.locale("general.HELP_CATEGORY_FUN")}`;
           break;
         case "general":
-          label = `🤖 ${msg.string("general.HELP_CATEGORY_GENERAL")}`;
+          label = `🤖 ${msg.locale("general.HELP_CATEGORY_GENERAL")}`;
           break;
         case "image":
-          label = `🖼 ${msg.string("general.HELP_CATEGORY_IMAGE")}`;
+          label = `🖼 ${msg.locale("general.HELP_CATEGORY_IMAGE")}`;
           break;
         case "moderation":
-          label = `🔨 ${msg.string("general.HELP_CATEGORY_MODERATION")}`;
+          label = `🔨 ${msg.locale("general.HELP_CATEGORY_MODERATION")}`;
           break;
         case "music":
-          label = `🎵 ${msg.string("general.HELP_CATEGORY_MUSIC")}`;
+          label = `🎵 ${msg.locale("general.HELP_CATEGORY_MUSIC")}`;
           break;
         case "nsfw":
-          label = `🔞 ${msg.string("general.HELP_CATEGORY_NSFW")}`;
+          label = `🔞 ${msg.locale("general.HELP_CATEGORY_NSFW")}`;
           break;
         case "roleplay":
-          label = `❤ ${msg.string("general.HELP_CATEGORY_ROLEPLAY")}`;
+          label = `❤ ${msg.locale("general.HELP_CATEGORY_ROLEPLAY")}`;
           break;
         case "utility":
-          label = `🔧 ${msg.string("general.HELP_CATEGORY_UTILITY")}`;
+          label = `🔧 ${msg.locale("general.HELP_CATEGORY_UTILITY")}`;
           break;
         default:
-          label = `❓ ${msg.string("general.HELP_CATEGORY_UNKNOWN")}`;
+          label = `❓ ${msg.locale("general.HELP_CATEGORY_UNKNOWN")}`;
           break;
       }
 
@@ -101,8 +101,8 @@ export class HelpCommand extends Command {
         msg.channel.sendTyping();
         return msg.channel.createMessage({
           embed: {
-            title: `📚 ${msg.string("general.HELP")}`,
-            description: msg.string("general.HELP_DESCRIPTION", { prefix: db?.prefix ? db.prefix : this.bot.config.prefixes[0] }),
+            title: `📚 ${msg.locale("general.HELP")}`,
+            description: msg.locale("general.HELP_DESCRIPTION", { prefix: db?.prefix ? db.prefix : this.bot.config.prefixes[0] }),
             color: msg.convertHex("general"),
             fields: categories.map((category) => ({
               name: sortedcategories[categories.indexOf(category)],
@@ -118,9 +118,9 @@ export class HelpCommand extends Command {
             })),
             footer: {
               icon_url: msg.author.dynamicAvatarURL(),
-              text: msg.string("global.RAN_BY", {
+              text: msg.locale("global.RAN_BY", {
                 author: msg.tagUser(msg.author),
-                extra: msg.string("general.HELP_COMMANDS", { commands: this.bot.commands.length - owneramt }),
+                extra: msg.locale("general.HELP_COMMANDS", { commands: this.bot.commands.length - owneramt }),
               }),
             },
           },
@@ -132,8 +132,8 @@ export class HelpCommand extends Command {
       const dmson = await dmChannel
         .createMessage({
           embed: {
-            title: `📚 ${msg.string("general.HELP")}`,
-            description: msg.string("general.HELP_DESCRIPTION", { prefix: db?.prefix ? db.prefix : this.bot.config.prefixes[0] }),
+            title: `📚 ${msg.locale("general.HELP")}`,
+            description: msg.locale("general.HELP_DESCRIPTION", { prefix: db?.prefix ? db.prefix : this.bot.config.prefixes[0] }),
             color: msg.convertHex("general"),
             fields: categories.map((category) => ({
               name: sortedcategories[categories.indexOf(category)],
@@ -147,9 +147,9 @@ export class HelpCommand extends Command {
             })),
             footer: {
               icon_url: msg.author.dynamicAvatarURL(),
-              text: msg.string("global.RAN_BY", {
+              text: msg.locale("global.RAN_BY", {
                 author: msg.tagUser(msg.author),
-                extra: msg.string("general.HELP_COMMANDS", { commands: this.bot.commands.length - owneramt }),
+                extra: msg.locale("general.HELP_COMMANDS", { commands: this.bot.commands.length - owneramt }),
               }),
             },
           },
@@ -158,8 +158,8 @@ export class HelpCommand extends Command {
           // Sends in the channel if failed
           msg.channel.createMessage({
             embed: {
-              title: `📚 ${msg.string("general.HELP")}`,
-              description: msg.string("general.HELP_DESCRIPTION", { prefix: db?.prefix ? db.prefix : this.bot.config.prefixes[0] }),
+              title: `📚 ${msg.locale("general.HELP")}`,
+              description: msg.locale("general.HELP_DESCRIPTION", { prefix: db?.prefix ? db.prefix : this.bot.config.prefixes[0] }),
               color: msg.convertHex("general"),
               fields: categories.map((category) => ({
                 name: sortedcategories[categories.indexOf(category)],
@@ -174,9 +174,9 @@ export class HelpCommand extends Command {
               })),
               footer: {
                 icon_url: msg.author.dynamicAvatarURL(),
-                text: msg.string("global.RAN_BY", {
+                text: msg.locale("global.RAN_BY", {
                   author: msg.tagUser(msg.author),
-                  extra: msg.string("general.HELP_COMMANDS", { commands: this.bot.commands.length - owneramt }),
+                  extra: msg.locale("general.HELP_COMMANDS", { commands: this.bot.commands.length - owneramt }),
                 }),
               },
             },
@@ -200,7 +200,7 @@ export class HelpCommand extends Command {
       // Command aliases
       if (cmd.aliases.length) {
         fields.push({
-          name: msg.string("general.HELP_ALIASES"),
+          name: msg.locale("general.HELP_ALIASES"),
           value: aliases.map((alias) => `\`${alias}\``).join(", "),
           inline: false,
         });
@@ -209,7 +209,7 @@ export class HelpCommand extends Command {
       // Command usage
       if (cmd.args) {
         fields.push({
-          name: msg.string("general.HELP_USAGE"),
+          name: msg.locale("general.HELP_USAGE"),
           value: cmd.args
             .split(" ")
             .map((arg) => `${arg.split(":")[0]}${arg[0] === "<" ? ">" : arg[0] === "[" ? "]" : ""}`)
@@ -221,8 +221,8 @@ export class HelpCommand extends Command {
       // Command cooldown
       if (cmd.cooldown) {
         fields.push({
-          name: msg.string("general.HELP_COOLDOWN"),
-          value: msg.string("global.SECONDS", { seconds: cmd.cooldown / 1000 }),
+          name: msg.locale("general.HELP_COOLDOWN"),
+          value: msg.locale("global.SECONDS", { seconds: cmd.cooldown / 1000 }),
           inline: true,
         });
       }
@@ -230,7 +230,7 @@ export class HelpCommand extends Command {
       // Command clientperms
       if (cmd.clientperms?.length && cmd.clientperms !== ["embedLinks"]) {
         fields.push({
-          name: msg.string("general.HELP_BOTPERMS"),
+          name: msg.locale("general.HELP_BOTPERMS"),
           value: cmd.clientperms.join(", "),
           inline: false,
         });
@@ -239,7 +239,7 @@ export class HelpCommand extends Command {
       // Command requiredperms
       if (cmd?.requiredperms.length) {
         fields.push({
-          name: msg.string("general.HELP_REQUIREDPERMS"),
+          name: msg.locale("general.HELP_REQUIREDPERMS"),
           value: cmd.requiredperms.join(", "),
           inline: false,
         });
@@ -248,7 +248,7 @@ export class HelpCommand extends Command {
       // If a command isn't toggleable
       if (!cmd.allowdisable) {
         fields.push({
-          name: msg.string("general.HELP_ALLOWDISABLE"),
+          name: msg.locale("general.HELP_ALLOWDISABLE"),
           value: `${cmd.allowdisable}`,
           inline: true,
         });
@@ -257,7 +257,7 @@ export class HelpCommand extends Command {
       // If a command is staff restricted
       if (cmd.staff) {
         fields.push({
-          name: msg.string("general.HELP_STAFF"),
+          name: msg.locale("general.HELP_STAFF"),
           value: `${cmd.staff}`,
           inline: true,
         });
@@ -276,9 +276,9 @@ export class HelpCommand extends Command {
           },
           footer: {
             icon_url: msg.author.dynamicAvatarURL(),
-            text: msg.string("global.RAN_BY", {
+            text: msg.locale("global.RAN_BY", {
               author: msg.tagUser(msg.author),
-              extra: msg.string("general.HELP_COMMANDS", { commands: this.bot.commands.length - owneramt }),
+              extra: msg.locale("general.HELP_COMMANDS", { commands: this.bot.commands.length - owneramt }),
             }),
           },
         },

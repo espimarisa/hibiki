@@ -12,7 +12,7 @@ export class ExecCommand extends Command {
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     child.exec(args.join(" "), async (error, stderr, stdout) => {
-      if (stdout?.length < 1000) return msg.createEmbed(msg.string("global.SUCCESS"), `\`\`\`\n${stdout || stderr}\n\`\`\``, "success");
+      if (stdout?.length < 1000) return msg.createEmbed(msg.locale("global.SUCCESS"), `\`\`\`\n${stdout || stderr}\n\`\`\``, "success");
 
       // Uploads if over embed limit; DMs author
       const dmchannel = await msg.author.getDMChannel();
@@ -20,7 +20,7 @@ export class ExecCommand extends Command {
         const body = await axios.post("https://pastie.io/documents", stdout || stderr);
         await dmchannel.createMessage(`https://pastie.io/${body.data.key}`);
       } else if (stderr?.length < 2000) {
-        msg.createEmbed(msg.string("global.ERROR"), `\`\`\`\n${stdout || stderr}\n\`\`\``, "error");
+        msg.createEmbed(msg.locale("global.ERROR"), `\`\`\`\n${stdout || stderr}\n\`\`\``, "error");
       }
     });
   }

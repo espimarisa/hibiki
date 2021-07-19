@@ -17,7 +17,7 @@ export class npmCommand extends Command {
 
     // Sends if nothing is found
     if (!body || !body.data || body.data?.error || !body.data?.["dist-tags"]) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.PACKAGE_NOTFOUND"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.PACKAGE_NOTFOUND"), "error");
     }
 
     // Gets the package info
@@ -29,21 +29,21 @@ export class npmCommand extends Command {
     // Keywords
     if (pkg.keywords?.length)
       fields.push({
-        name: msg.string("utility.KEYWORDS"),
+        name: msg.locale("utility.KEYWORDS"),
         value: `${pkg.keywords.map((k: string) => `\`${k}\``).join(", ")}`,
         inline: false,
       });
 
     // URL
     fields.push({
-      name: msg.string("global.URL"),
+      name: msg.locale("global.URL"),
       value: `[https://${isYarn ? "yarnpkg" : "npmjs"}.com/package/${args.join(" ")}](https://www.npmjs.com/package/${args.join(" ")})`,
       inline: false,
     });
 
     // Latest version
     fields.push({
-      name: msg.string("utility.LATEST_VERSION"),
+      name: msg.locale("utility.LATEST_VERSION"),
       value: body.data["dist-tags"].latest,
       inline: true,
     });
@@ -51,7 +51,7 @@ export class npmCommand extends Command {
     // License with no type
     if (!body.data.license?.type) {
       fields.push({
-        name: msg.string("utility.LICENSE"),
+        name: msg.locale("utility.LICENSE"),
         value: `${body.data.license}`,
         inline: true,
       });
@@ -60,7 +60,7 @@ export class npmCommand extends Command {
     // License type
     else if (body.data.license?.type) {
       fields.push({
-        name: msg.string("utility.LICENSE"),
+        name: msg.locale("utility.LICENSE"),
         value: `${body.data.license.type}`,
         inline: true,
       });
@@ -69,7 +69,7 @@ export class npmCommand extends Command {
     // Maintainers
     if (pkg.maintainers?.length)
       fields.push({
-        name: msg.string("utility.MAINTAINERS"),
+        name: msg.locale("utility.MAINTAINERS"),
         value: pkg.maintainers.map((m: Record<string, string>) => `\`${m.name}\``).join(", "),
         inline: false,
       });
@@ -77,16 +77,16 @@ export class npmCommand extends Command {
     // Created at
     if (body.data.time?.created)
       fields.push({
-        name: msg.string("global.CREATED_AT"),
-        value: `${dateFormat(body.data.time.created, msg.string)}`,
+        name: msg.locale("global.CREATED_AT"),
+        value: `${dateFormat(body.data.time.created, msg.locale)}`,
         inline: true,
       });
 
     // Updated at
     if (body.data.time?.modified)
       fields.push({
-        name: msg.string("global.UPDATED_AT"),
-        value: `${dateFormat(body.data.time.modified, msg.string)}`,
+        name: msg.locale("global.UPDATED_AT"),
+        value: `${dateFormat(body.data.time.modified, msg.locale)}`,
         inline: true,
       });
 
@@ -97,7 +97,7 @@ export class npmCommand extends Command {
         color: isYarn ? 0x2c8ebb : 0xcc3534,
         fields: fields,
         footer: {
-          text: `${msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
+          text: `${msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

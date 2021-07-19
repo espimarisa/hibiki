@@ -2,7 +2,7 @@ import type { EmbedOptions, Member, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { pagify } from "../../utils/pagify";
 
-export class WarningsCommand extends Command {
+export class WarnsCommand extends Command {
   description = "Shows what warnings you (or another member) has.";
   args = "<member:member&fallback>";
   aliases = ["search", "punishments", "strikes", "warns", "warnings"];
@@ -13,7 +13,7 @@ export class WarningsCommand extends Command {
 
     // If the member has no warnings
     if (!warnings.length) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.WARNINGS_HASNONE", { member: member.username }), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.WARNINGS_HASNONE", { member: member.username }), "error");
     }
 
     // If more than 20 warnings
@@ -23,26 +23,26 @@ export class WarningsCommand extends Command {
         // Makes pages out of warning
         if (!pages[pages.length - 1] || pages[pages.length - 1].fields.length > 10) {
           pages.push({
-            title: `🔨 ${msg.string("moderation.WARNINGS_TOTAL", { member: member.user.username, total: warnings.length })}`,
+            title: `🔨 ${msg.locale("moderation.WARNINGS_TOTAL", { member: member.user.username, total: warnings.length })}`,
             color: msg.convertHex("general"),
             fields: [
               {
-                name: `${msg.string("moderation.WARNING_DESCRIPTION", {
+                name: `${msg.locale("moderation.WARNING_DESCRIPTION", {
                   id: w.id,
                   giver: msg.channel.guild.members.get?.(w.giver)?.user ? msg.channel.guild.members.get(w.giver)?.user.username : w.giver,
                 })}`,
-                value: `${w.reason?.slice(0, 150) || msg.string("global.NO_REASON")}`,
+                value: `${w.reason?.slice(0, 150) || msg.locale("global.NO_REASON")}`,
               },
             ],
           });
         } else {
           // Adds to already existing pages
           pages[pages.length - 1].fields.push({
-            name: `${msg.string("moderation.WARNING_DESCRIPTION", {
+            name: `${msg.locale("moderation.WARNING_DESCRIPTION", {
               id: w.id,
               giver: msg.channel.guild.members.get?.(w.giver)?.user ? msg.channel.guild.members.get(w.giver)?.user.username : w.giver,
             })}`,
-            value: `${w.reason?.slice(0, 150) || msg.string("global.NO_REASON")}`,
+            value: `${w.reason?.slice(0, 150) || msg.locale("global.NO_REASON")}`,
           });
         }
       });
@@ -53,9 +53,9 @@ export class WarningsCommand extends Command {
         msg.channel,
         this.bot,
         msg.author.id,
-        { title: msg.string("global.EXITED"), color: msg.convertHex("error") },
+        { title: msg.locale("global.EXITED"), color: msg.convertHex("error") },
         false,
-        msg.string("global.RAN_BY", { author: msg.tagUser(msg.author), extra: "%c/%a" }),
+        msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author), extra: "%c/%a" }),
         msg.author.dynamicAvatarURL(),
       );
     }
@@ -63,17 +63,17 @@ export class WarningsCommand extends Command {
     // Sends points
     msg.channel.createMessage({
       embed: {
-        title: `🔨 ${msg.string("moderation.WARNINGS_TOTAL", { member: member.user.username, total: warnings.length })}`,
+        title: `🔨 ${msg.locale("moderation.WARNINGS_TOTAL", { member: member.user.username, total: warnings.length })}`,
         color: msg.convertHex("general"),
         fields: warnings.map((w) => ({
-          name: `${msg.string("moderation.WARNING_DESCRIPTION", {
+          name: `${msg.locale("moderation.WARNING_DESCRIPTION", {
             id: w.id,
             giver: msg.channel.guild.members.get?.(w.giver)?.user ? msg.channel.guild.members.get(w.giver)?.user.username : w.giver,
           })}`,
-          value: `${w.reason?.slice(0, 150) || msg.string("global.NO_REASON")}`,
+          value: `${w.reason?.slice(0, 150) || msg.locale("global.NO_REASON")}`,
         })),
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

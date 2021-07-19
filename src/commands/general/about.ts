@@ -24,16 +24,16 @@ export class AboutCommand extends Command {
     function formatBytes(bytes: number) {
       const k = 1024;
       const sizes = [
-        msg.string("global.BYTES"),
-        msg.string("global.BYTES_KB"),
-        msg.string("global.BYTES_MB"),
-        msg.string("global.BYTES_GB"),
-        msg.string("global.BYTES_TB"),
-        msg.string("global.BYTES_PB"),
-        msg.string("global.BYTES_EB"),
-        msg.string("global.BYTES_ZB"),
-        msg.string("global.BYTES_YB"),
-        msg.string("global.BYTES_GB"),
+        msg.locale("global.BYTES"),
+        msg.locale("global.BYTES_KB"),
+        msg.locale("global.BYTES_MB"),
+        msg.locale("global.BYTES_GB"),
+        msg.locale("global.BYTES_TB"),
+        msg.locale("global.BYTES_PB"),
+        msg.locale("global.BYTES_EB"),
+        msg.locale("global.BYTES_ZB"),
+        msg.locale("global.BYTES_YB"),
+        msg.locale("global.BYTES_GB"),
       ];
 
       const i = Math.floor(Math.log(bytes) / Math.log(k));
@@ -65,35 +65,35 @@ export class AboutCommand extends Command {
     }
 
     // Host & bot system information
-    const botUptime = uptimeFormat(process.uptime(), msg.string);
+    const botUptime = uptimeFormat(process.uptime(), msg.locale);
     const botMemoryUsage = formatBytes(process.memoryUsage().rss);
     const hostMemoryUsage = formatBytes(os.totalmem() - os.freemem());
     const hostPlatform = `${formatPlatform(os.platform(), os.release())} ${os.arch()}`;
-    const hostUptime = uptimeFormat(os.uptime(), msg.string);
+    const hostUptime = uptimeFormat(os.uptime(), msg.locale);
 
     // Information strings
-    const statisticsString = msg.string("general.ABOUT_STATISTICS_STRING", {
+    const statisticsString = msg.locale("general.ABOUT_STATISTICS_STRING", {
       users: this.bot.users.size,
       guilds: this.bot.guilds.size,
       commands: this.bot.commands.length,
       uptime: botUptime,
     });
 
-    const moduleString = msg.string("general.ABOUT_MODULES_STRING", {
+    const moduleString = msg.locale("general.ABOUT_MODULES_STRING", {
       botVersion: process.env.npm_package_version,
       erisVersion: erisVersion,
       nodeVersion: process.version,
       tsVersion: tsVersion,
     });
 
-    const hostString = msg.string("general.ABOUT_HOST_STRING", {
+    const hostString = msg.locale("general.ABOUT_HOST_STRING", {
       botMemoryUsage: botMemoryUsage,
       hostMemoryUsage: hostMemoryUsage,
       uptime: hostUptime,
       platform: hostPlatform,
     });
 
-    const linkString = msg.string("general.ABOUT_LINK_STRING", {
+    const linkString = msg.locale("general.ABOUT_LINK_STRING", {
       donate: "https://ko-fi.com/sysdotini",
       invite: `https://discord.com/oauth2/authorize?&client_id=${this.bot.user.id}&scope=bot&permissions=1581116663`,
       privacy: "https://hibiki.app/privacy/",
@@ -105,27 +105,27 @@ export class AboutCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        title: `🤖 ${msg.string("general.ABOUT")}`,
-        description: `${msg.string("general.ABOUT_DESCRIPTION", { username: this.bot.user.username })}`,
+        title: `🤖 ${msg.locale("general.ABOUT")}`,
+        description: `${msg.locale("general.ABOUT_DESCRIPTION", { username: this.bot.user.username })}`,
         color: msg.convertHex("general"),
         fields: [
           {
-            name: msg.string("general.ABOUT_STATISTICS"),
+            name: msg.locale("general.ABOUT_STATISTICS"),
             value: statisticsString,
             inline: true,
           },
           {
-            name: msg.string("general.ABOUT_MODULES"),
+            name: msg.locale("general.ABOUT_MODULES"),
             value: moduleString,
             inline: true,
           },
           {
-            name: msg.string("general.ABOUT_HOST"),
+            name: msg.locale("general.ABOUT_HOST"),
             value: hostString,
             inline: false,
           },
           {
-            name: msg.string("global.LINKS"),
+            name: msg.locale("global.LINKS"),
             value: linkString,
             inline: false,
           },
@@ -134,7 +134,7 @@ export class AboutCommand extends Command {
           url: this.bot.user.dynamicAvatarURL(),
         },
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

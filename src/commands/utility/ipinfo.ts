@@ -28,7 +28,7 @@ export class IPInfoCommand extends Command {
 
     // If nothing is found
     if (!body || !body.data || body.data.error || !body.data.ip || !body.data.org) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.IPINFO_INVALID"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.IPINFO_INVALID"), "error");
     }
 
     // Embed fields
@@ -45,7 +45,7 @@ export class IPInfoCommand extends Command {
     // Hostname
     if (body.data.hostname) {
       fields.push({
-        name: msg.string("utility.IPINFO_HOSTNAME"),
+        name: msg.locale("utility.IPINFO_HOSTNAME"),
         value: body.data.hostname,
         inline: true,
       });
@@ -54,7 +54,7 @@ export class IPInfoCommand extends Command {
     // Org
     if (body.data.org) {
       fields.push({
-        name: msg.string("utility.IPINFO_ORG"),
+        name: msg.locale("utility.IPINFO_ORG"),
         value: body.data.org,
         inline: true,
       });
@@ -63,7 +63,7 @@ export class IPInfoCommand extends Command {
     // Geolocation
     if (body.data.loc) {
       fields.push({
-        name: msg.string("utility.IPINFO_GEOLOCATION"),
+        name: msg.locale("utility.IPINFO_GEOLOCATION"),
         value: body.data.loc,
         inline: true,
       });
@@ -72,7 +72,7 @@ export class IPInfoCommand extends Command {
     // Region
     if (regionString) {
       fields.push({
-        name: msg.string("utility.LOCATION"),
+        name: msg.locale("utility.LOCATION"),
         value: `${regionString}`,
         inline: false,
       });
@@ -82,8 +82,8 @@ export class IPInfoCommand extends Command {
     if (abuseinfo && abuseinfo.data?.data) {
       if (!abuseinfo.data.data.errors) {
         fields.push({
-          name: msg.string("utility.IPINFO_ABUSEINFO"),
-          value: msg.string("utility.IPINFO_ABUSEDATA", {
+          name: msg.locale("utility.IPINFO_ABUSEINFO"),
+          value: msg.locale("utility.IPINFO_ABUSEDATA", {
             reports: abuseinfo.data.data.totalReports,
             confidence: abuseinfo.data.data.abuseConfidenceScore,
           }),
@@ -101,14 +101,14 @@ export class IPInfoCommand extends Command {
     msg.channel.createMessage({
       embed: {
         title: `🌐 ${body.data.ip}`,
-        description: msg.string("utility.IPINFO_DESCRIPTION"),
+        description: msg.locale("utility.IPINFO_DESCRIPTION"),
         color: msg.convertHex("general"),
         image: {
           url: image || "",
         },
         fields: fields,
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "ipinfo.io",
           }),

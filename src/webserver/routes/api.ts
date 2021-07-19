@@ -9,7 +9,7 @@ import type { Profile } from "passport-discord";
 import type { HibikiClient } from "../../classes/Client";
 import { defaultEmojiRegex, emojiIDRegex, fullInviteRegex } from "../../utils/constants";
 import { validItems } from "../../utils/validItems";
-import { getManagableGuilds } from "../../utils/webserver";
+import { getManagableGuilds } from "../../utils/webServer";
 import dayjs from "dayjs";
 import express from "express";
 import rateLimit from "express-rate-limit";

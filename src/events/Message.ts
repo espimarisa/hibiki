@@ -28,7 +28,7 @@ Object.values(config.keys).forEach((key) => {
 // Tokens to hide
 const tokenRegex = new RegExp(tokens.join("|"), "g");
 
-export class HandlerEvent extends Event {
+export class MessageEvent extends Event {
   events = ["messageCreate"];
 
   async run(_event: string, msg: Message<TextChannel>) {
@@ -42,7 +42,7 @@ export class HandlerEvent extends Event {
     if (userLocale) localeString = userLocale;
     else if (guildconfig?.guildLocale && !userLocale) localeString = guildconfig.guildLocale;
     const string = this.bot.localeSystem.getLocaleFunction(localeString);
-    msg.string = string;
+    msg.locale = string;
 
     // DM Specific actions
     if (msg.channel instanceof PrivateChannel) {
@@ -218,7 +218,7 @@ export class HandlerEvent extends Event {
           const requester = this.bot.lavalink.manager.players.get(msg.channel.guild.id)?.queue?.current?.requester as User;
 
           if ((!isStaff || !hasMusicRole) && requester.id !== msg.author.id) {
-            return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ERROR_MUSICREQUESTER"));
+            return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.ERROR_MUSICREQUESTER"));
           }
         }
       }
@@ -338,7 +338,7 @@ export class HandlerEvent extends Event {
       console.error(err);
       msg.createEmbed(
         string("global.ERROR"),
-        string("global.ERROR_OUTPUT", { error: err.message.replace(tokenRegex, msg.string("owner.TOKEN_HIDDEN")) }),
+        string("global.ERROR_OUTPUT", { error: err.message.replace(tokenRegex, msg.locale("owner.TOKEN_HIDDEN")) }),
         "error",
       );
     }

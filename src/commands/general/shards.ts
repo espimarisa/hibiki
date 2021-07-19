@@ -1,3 +1,8 @@
+/**
+ * @file Shards command
+ * @description Returns info about all the bot's current shards
+ */
+
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 
@@ -22,7 +27,7 @@ export class ShardsCommand extends Command {
     // Sends shard info
     msg.channel.createMessage({
       embed: {
-        title: `🌐 ${msg.string("general.SHARDS")}`,
+        title: `🌐 ${msg.locale("general.SHARDS")}`,
         color: msg.convertHex("general"),
         fields: this.bot.shards.map((shard) => ({
           name: `#${shard.id}`,
@@ -30,7 +35,7 @@ export class ShardsCommand extends Command {
           inline: true,
         })),
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

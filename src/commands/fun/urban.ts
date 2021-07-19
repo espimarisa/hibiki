@@ -26,7 +26,7 @@ export class UrbanCommand extends Command {
 
     // If no word is found
     if (!body || !body.data || !body.data?.list || body?.data?.error) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("fun.URBAN_NOTFOUND"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("fun.URBAN_NOTFOUND"), "error");
     }
 
     // Finds the top word
@@ -35,7 +35,7 @@ export class UrbanCommand extends Command {
 
     // If the word has no definition
     if (!topword || !word || !word?.definition) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("fun.URBAN_NOTFOUND"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("fun.URBAN_NOTFOUND"), "error");
     }
 
     // Cleans up definitions & examples
@@ -51,7 +51,7 @@ export class UrbanCommand extends Command {
     // Example
     if (word.example) {
       fields.push({
-        name: msg.string("fun.URBAN_EXAMPLE"),
+        name: msg.locale("fun.URBAN_EXAMPLE"),
         value: `${word.example}`,
         inline: false,
       });
@@ -59,8 +59,8 @@ export class UrbanCommand extends Command {
 
     if (word.written_on) {
       fields.push({
-        name: msg.string("fun.URBAN_WRITTENON"),
-        value: dateFormat(word.written_on, msg.string),
+        name: msg.locale("fun.URBAN_WRITTENON"),
+        value: dateFormat(word.written_on, msg.locale),
         inline: false,
       });
     }
@@ -68,7 +68,7 @@ export class UrbanCommand extends Command {
     // Thumbs up
     if (word.thumbs_up) {
       fields.push({
-        name: msg.string("global.UPVOTES"),
+        name: msg.locale("global.UPVOTES"),
         value: `${word.thumbs_up}`,
         inline: true,
       });
@@ -77,7 +77,7 @@ export class UrbanCommand extends Command {
     // Thumbs down
     if (word.thumbs_down) {
       fields.push({
-        name: msg.string("global.DOWNVOTES"),
+        name: msg.locale("global.DOWNVOTES"),
         value: `${word.thumbs_down}`,
         inline: true,
       });
@@ -91,7 +91,7 @@ export class UrbanCommand extends Command {
         color: msg.convertHex("general"),
         fields,
         footer: {
-          text: `${msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
+          text: `${msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

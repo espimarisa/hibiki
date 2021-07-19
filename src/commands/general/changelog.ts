@@ -29,7 +29,7 @@ export class ChangelogCommand extends Command {
 
     // If the changelog has no data or wasn't found
     if (!body || !body.data || !body.data?.[0]?.body) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.GITHUB_ERROR"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.GITHUB_ERROR"), "error");
     }
 
     // Splits the changelog body into lines
@@ -65,7 +65,7 @@ export class ChangelogCommand extends Command {
           icon_url: this.bot.user.dynamicAvatarURL(),
         },
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

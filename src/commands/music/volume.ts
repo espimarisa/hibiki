@@ -10,17 +10,17 @@ export class VolumeCommand extends Command {
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     const player = this.bot.lavalink.manager.get(msg.channel.guild.id);
-    if (!player) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_PLAYING"), "error");
+    if (!player) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("music.NOTHING_PLAYING"), "error");
 
     // Tells the user the current volume if no args were given
     if (!args.length) {
-      return msg.createEmbed(`🔊 ${msg.string("music.VOLUME")}`, msg.string("music.VOLUME_CURRENT", { volume: player.volume.toFixed(0) }));
+      return msg.createEmbed(`🔊 ${msg.locale("music.VOLUME")}`, msg.locale("music.VOLUME_CURRENT", { volume: player.volume.toFixed(0) }));
     }
 
     // Resets volume
-    if (["reset", msg.string("global.RESET")].includes(args[0].toLowerCase())) {
+    if (["reset", msg.locale("global.RESET")].includes(args[0].toLowerCase())) {
       player.setVolume(100);
-      return msg.createEmbed(`🔊 ${msg.string("music.VOLUME")}`, msg.string("music.VOLUME_RESET"));
+      return msg.createEmbed(`🔊 ${msg.locale("music.VOLUME")}`, msg.locale("music.VOLUME_RESET"));
     }
 
     // Gets the volume; clamps it if needed
@@ -32,6 +32,6 @@ export class VolumeCommand extends Command {
     else volume = number;
 
     player.setVolume(volume);
-    msg.createEmbed(`🔊 ${msg.string("music.VOLUME")}`, msg.string("music.VOLUME_CHANGED", { volume: volume }));
+    msg.createEmbed(`🔊 ${msg.locale("music.VOLUME")}`, msg.locale("music.VOLUME_CHANGED", { volume: volume }));
   }
 }

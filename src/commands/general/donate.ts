@@ -13,6 +13,6 @@ export class DonateCommand extends Command {
   allowdisable = false;
 
   async run(msg: Message<TextChannel>) {
-    msg.createEmbed(`💜 ${msg.string("general.DONATE")}`, msg.string("general.DONATE_DESCRIPTION"));
+    msg.createEmbed(`💜 ${msg.locale("general.DONATE")}`, msg.locale("general.DONATE_DESCRIPTION"));
   }
 }

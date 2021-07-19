@@ -1,6 +1,6 @@
 /**
  * @file Setup
- * @description Sets up RethinkDB
+ * @description Sets RethinkDB up
  * @module scripts/setup
  */
 

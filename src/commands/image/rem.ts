@@ -24,13 +24,13 @@ export class RemCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        title: `🌸 ${msg.string("image.REM")}`,
+        title: `🌸 ${msg.locale("image.REM")}`,
         color: msg.convertHex("general"),
         image: {
           url: image,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "weeb.sh",
           }),

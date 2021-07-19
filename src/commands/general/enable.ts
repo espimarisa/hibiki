@@ -42,7 +42,7 @@ export class EnableCommand extends Command {
     if (!cmd && category) {
       if (!guildconfig.disabledCategories) guildconfig.disabledCategories = [];
       if (!guildconfig.disabledCategories.includes(category)) {
-        return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.ENABLE_CATEGORY_ALREADYENABLED"), "error");
+        return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.ENABLE_CATEGORY_ALREADYENABLED"), "error");
       }
 
       // Updates the guildconfig
@@ -50,17 +50,17 @@ export class EnableCommand extends Command {
       await this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);
       this.bot.emit("categoryEnable", msg.channel.guild, msg.member, category);
       return msg.createEmbed(
-        msg.string("global.SUCCESS"),
-        msg.string("general.ENABLE_CATEGORY_ENABLED", { category: category }),
+        msg.locale("global.SUCCESS"),
+        msg.locale("general.ENABLE_CATEGORY_ENABLED", { category: category }),
         "success",
       );
     }
 
     // Sends if a valid command isn't found or isn't disabled
-    if (!cmd) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.DISABLE_COMMAND_NOTFOUND"), "error");
+    if (!cmd) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.DISABLE_COMMAND_NOTFOUND"), "error");
     if (!guildconfig.disabledCmds) guildconfig.disabledCmds = [];
     if (guildconfig.disabledCmds && !guildconfig.disabledCmds.includes(cmd.name)) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.ENABLE_ALREADYENABLED"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.ENABLE_ALREADYENABLED"), "error");
     }
 
     if (cmd) {
@@ -68,7 +68,7 @@ export class EnableCommand extends Command {
       guildconfig.disabledCmds.splice(guildconfig.disabledCmds.indexOf(cmd.name), 1);
       await this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);
       this.bot.emit("commandEnable", msg.channel.guild, msg.member, command);
-      msg.createEmbed(msg.string("global.SUCCESS"), msg.string("general.ENABLE_COMMAND_ENABLED", { command: cmd.name }), "success");
+      msg.createEmbed(msg.locale("global.SUCCESS"), msg.locale("general.ENABLE_COMMAND_ENABLED", { command: cmd.name }), "success");
     }
   }
 }

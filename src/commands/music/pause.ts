@@ -13,20 +13,20 @@ export class PauseCommand extends Command {
 
     // If nothing is playing
     if (!player?.queue?.current) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_PLAYING"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("music.NOTHING_PLAYING"), "error");
     }
 
     // Resumes if paused
     if (player.paused) {
       player.pause(false);
-      return msg.createEmbed(`▶ ${msg.string("music.RESUMED")}`, msg.string("music.PAUSE_RESUMED", { track: player.queue.current?.title }));
+      return msg.createEmbed(`▶ ${msg.locale("music.RESUMED")}`, msg.locale("music.PAUSE_RESUMED", { track: player.queue.current?.title }));
     }
 
     // Pauses the song
     player.pause(true);
     return msg.createEmbed(
-      `⏸ ${msg.string("music.PAUSED")}`,
-      msg.string("music.PAUSE_PAUSED", {
+      `⏸ ${msg.locale("music.PAUSED")}`,
+      msg.locale("music.PAUSE_PAUSED", {
         track: player.queue.current?.title,
       }),
     );

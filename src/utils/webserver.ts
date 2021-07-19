@@ -32,7 +32,7 @@ export function getAuthedUser(user: Profile) {
 }
 
 // Checks to see if an item is an Object
-// JavaScript sucks
+// JavaScript sucks // Agreed
 function isObject(item: Record<string, string>) {
   return item && typeof item === "object" && !Array.isArray(item);
 }

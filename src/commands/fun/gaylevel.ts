@@ -1,5 +1,5 @@
 /**
- * @file GayLevel command
+ * @file Gay Level command
  * @description Calculates how gay executor or another member is
  */
 
@@ -16,7 +16,7 @@ const GAY_LEVEL_EASTER_EGG = {
   "451285730648653834": "(b=13, a=10 ∫2xdx)%", // Zorbit maths expert! Jik
 };
 
-export class GaylevelCommand extends Command {
+export class GayLevelCommand extends Command {
   description = "Calculates how gay you or another member is.";
   args = "[member:member&fallback]";
   aliases = ["gay", "gayness"];
@@ -25,8 +25,8 @@ export class GaylevelCommand extends Command {
     const member = pargs[0].value as Member;
 
     msg.createEmbed(
-      `🏳️‍🌈 ${msg.string("fun.GAYLEVEL")}`,
-      msg.string("fun.GAYLEVEL_LEVEL", {
+      `🏳️‍🌈 ${msg.locale("fun.GAYLEVEL")}`,
+      msg.locale("fun.GAYLEVEL_LEVEL", {
         member: member.user.username,
         level:
           GAY_LEVEL_EASTER_EGG[member.id] ||

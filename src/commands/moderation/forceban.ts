@@ -6,7 +6,7 @@ import { getRESTUser } from "../../utils/getRESTUser";
 import { roleHierarchy } from "../../utils/hierarchy";
 import { timeoutHandler } from "../../utils/waitFor";
 
-export class ForcebanCommand extends Command {
+export class ForceBanCommand extends Command {
   description = "Bans one or more members by their user ID.";
   clientperms = ["banMembers"];
   requiredperms = ["banMembers"];
@@ -17,25 +17,25 @@ export class ForcebanCommand extends Command {
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Max # of bans
     if (args.length > 10) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.FORCEBAN_TOOLONG"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.FORCEBAN_TOOLONG"), "error");
     }
 
     // Asks for confirmation
     const banmsg = await msg.createEmbed(
-      `🔨 ${msg.string("moderation.BAN")}`,
-      msg.string("moderation.PUNISHMENT_CONFIRMATION", {
+      `🔨 ${msg.locale("moderation.BAN")}`,
+      msg.locale("moderation.PUNISHMENT_CONFIRMATION", {
         member: args.map((b) => `\`${b}\``).join(", "),
-        type: msg.string("moderation.BAN").toLowerCase(),
+        type: msg.locale("moderation.BAN").toLowerCase(),
       }),
     );
 
-    const response = (await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
-      timeoutHandler(err, banmsg, msg.string),
+    const response = (await askYesNo(this.bot, msg.locale, msg.author.id, msg.channel.id).catch((err) =>
+      timeoutHandler(err, banmsg, msg.locale),
     )) as ResponseData;
 
     // If banning is cancelled
     if (!response || response?.response === false) {
-      return banmsg.editEmbed(`🔨 ${msg.string("moderation.BAN")}`, msg.string("moderation.FORCEBAN_CANCELLED"), "error");
+      return banmsg.editEmbed(`🔨 ${msg.locale("moderation.BAN")}`, msg.locale("moderation.FORCEBAN_CANCELLED"), "error");
     }
 
     // Tries to ban the IDs
@@ -103,12 +103,12 @@ export class ForcebanCommand extends Command {
     const failed = bans.filter((b) => !b.banned);
 
     // If no members were banned
-    if (!banned.length) return banmsg.editEmbed(msg.string("global.ERROR"), msg.string("moderation.FORCEBAN_ALLFAILED"), "error");
+    if (!banned.length) return banmsg.editEmbed(msg.locale("global.ERROR"), msg.locale("moderation.FORCEBAN_ALLFAILED"), "error");
 
     // If some failed
     if (failed.length) {
       failedField.push({
-        name: msg.string("moderation.FORCEBAN_FAILED"),
+        name: msg.locale("moderation.FORCEBAN_FAILED"),
         value: failed.map((b) => `\`${b.user}\``).join(", "),
       });
     }
@@ -116,12 +116,12 @@ export class ForcebanCommand extends Command {
     // Sends confirmation
     await banmsg.edit({
       embed: {
-        title: `✅ ${msg.string("moderation.FORCEBAN_BANNED", { amount: banned.length })}`,
+        title: `✅ ${msg.locale("moderation.FORCEBAN_BANNED", { amount: banned.length })}`,
         description: `${usernames.map((u) => `\`${u.name}\``).join(", ")}`,
         fields: failedField,
         color: msg.convertHex("success"),
         footer: {
-          text: `${msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
+          text: `${msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

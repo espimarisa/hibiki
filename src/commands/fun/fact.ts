@@ -22,7 +22,7 @@ export class FactCommand extends Command {
 
     // API strings
     const apinames = ["cat", "dog", "useless"];
-    const apilabels = [`🐱 ${msg.string("fun.FACT_CAT")}`, `🐶 ${msg.string("fun.FACT_DOG")}`, `🍀 ${msg.string("fun.FACT_USELESS")}`];
+    const apilabels = [`🐱 ${msg.locale("fun.FACT_CAT")}`, `🐶 ${msg.locale("fun.FACT_DOG")}`, `🍀 ${msg.locale("fun.FACT_USELESS")}`];
     let index = Math.floor(Math.random() * apis.length);
 
     // Gets an API to use
@@ -40,7 +40,7 @@ export class FactCommand extends Command {
     const body = await axios.get(api).catch(() => {});
 
     // Gets what API to send in the message
-    if (!body || !body.data) return msg.createEmbed(msg.string("global.ERROR"), msg.string("fun.FACT_ERROR"), "error");
+    if (!body || !body.data) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("fun.FACT_ERROR"), "error");
     if (apiname === "cat") fact = body.data.fact;
     else if (apiname === "dog") fact = body.data.facts[0];
     else if (apiname === "useless") fact = body.data.data;

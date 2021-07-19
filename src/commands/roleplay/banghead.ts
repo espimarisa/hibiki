@@ -3,7 +3,7 @@ import type { WeebSHImage } from "../../typings/endpoints";
 import { Command } from "../../classes/Command";
 import axios from "axios";
 
-export class BangheadCommand extends Command {
+export class BangHeadCommand extends Command {
   description = "Bangs your head on something.";
   aliases = ["headbang"];
   cooldown = 3000;
@@ -25,13 +25,13 @@ export class BangheadCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        description: `💢 ${msg.string("roleplay.BANGHEAD", { user: msg.author.username })}`,
+        description: `💢 ${msg.locale("roleplay.BANGHEAD", { user: msg.author.username })}`,
         color: msg.convertHex("general"),
         image: {
           url: image,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "weeb.sh",
           }),

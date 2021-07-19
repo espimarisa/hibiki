@@ -19,7 +19,7 @@ export class OsuCommand extends Command {
 
     // If nothing was found
     if (!body || !body.data?.length) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.ACCOUNT_NOTFOUND"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.ACCOUNT_NOTFOUND"), "error");
     }
 
     const data = body.data[0];
@@ -27,21 +27,21 @@ export class OsuCommand extends Command {
 
     // If the user hasn't played
     if (!data.pp_raw && !data.playcount && !data.level && !data.accuracy && !data.playcount) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.ACCOUNT_NODATA"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.ACCOUNT_NODATA"), "error");
     }
 
     // Join date
     if (data.join_date) {
       fields.push({
-        name: msg.string("global.CREATED_AT"),
-        value: dateFormat(data.join_date, msg.string),
+        name: msg.locale("global.CREATED_AT"),
+        value: dateFormat(data.join_date, msg.locale),
         inline: false,
       });
     }
 
     // User ID
     fields.push({
-      name: msg.string("global.ID"),
+      name: msg.locale("global.ID"),
       value: data.user_id,
       inline: true,
     });
@@ -49,7 +49,7 @@ export class OsuCommand extends Command {
     // Total PP
     if (data.pp_raw > 0) {
       fields.push({
-        name: msg.string("utility.OSU_PP"),
+        name: msg.locale("utility.OSU_PP"),
         value: data.pp_raw,
         inline: true,
       });
@@ -58,7 +58,7 @@ export class OsuCommand extends Command {
     // Global ranking
     if (data.pp_rank > 0) {
       fields.push({
-        name: msg.string("utility.OSU_GLOBAL"),
+        name: msg.locale("utility.OSU_GLOBAL"),
         value: data.pp_rank,
         inline: true,
       });
@@ -67,7 +67,7 @@ export class OsuCommand extends Command {
     // Country ranking
     if (data.pp_country_rank > 0) {
       fields.push({
-        name: msg.string("utility.OSU_COUNTRY"),
+        name: msg.locale("utility.OSU_COUNTRY"),
         value: `${data.pp_country_rank} :flag_${data.country.toLowerCase()}:`,
         inline: true,
       });
@@ -76,7 +76,7 @@ export class OsuCommand extends Command {
     // Level
     if (data.level > 0) {
       fields.push({
-        name: msg.string("global.LEVEL"),
+        name: msg.locale("global.LEVEL"),
         value: parseInt(data.level).toFixed(0),
         inline: true,
       });
@@ -85,7 +85,7 @@ export class OsuCommand extends Command {
     // Accuracy
     if (data.accuracy > 0) {
       fields.push({
-        name: msg.string("utility.OSU_ACCURACY"),
+        name: msg.locale("utility.OSU_ACCURACY"),
         value: `${Math.round(data.accuracy)}%`,
         inline: true,
       });
@@ -94,7 +94,7 @@ export class OsuCommand extends Command {
     // Play count
     if (data.playcount > 0) {
       fields.push({
-        name: msg.string("utility.OSU_PLAYS"),
+        name: msg.locale("utility.OSU_PLAYS"),
         value: parseInt(data.playcount).toFixed(0),
         inline: true,
       });
@@ -103,7 +103,7 @@ export class OsuCommand extends Command {
     // Total score
     if (data.total_score > 0) {
       fields.push({
-        name: msg.string("utility.OSU_SCORE"),
+        name: msg.locale("utility.OSU_SCORE"),
         value: data.total_score,
         inline: true,
       });
@@ -123,7 +123,7 @@ export class OsuCommand extends Command {
           url: `https://a.ppy.sh/${data.user_id}?ifyouseethisyoureallyneedtogetalife.png` || "",
         },
         footer: {
-          text: `${msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
+          text: `${msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

@@ -27,13 +27,13 @@ export class PollCommand extends Command {
         color: msg.convertHex("general"),
         author: {
           icon_url: msg.author.dynamicAvatarURL(),
-          name: `${msg.string("moderation.POLL", { member: msg.tagUser(msg.author) })}`,
+          name: `${msg.locale("moderation.POLL", { member: msg.tagUser(msg.author) })}`,
         },
         thumbnail: {
           url: `${imgurl || ""}`,
         },
         footer: {
-          text: `${msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
+          text: `${msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

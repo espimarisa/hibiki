@@ -11,18 +11,18 @@ export class FoxCommand extends Command {
     const body = await axios.get("https://randomfox.ca/floof/").catch(() => {});
 
     if (!body || !body.data?.image) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGE"), "error");
     }
 
     msg.channel.createMessage({
       embed: {
-        title: `🦊 ${msg.string("image.FOX")}`,
+        title: `🦊 ${msg.locale("image.FOX")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data.image,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "randomfox.ca",
           }),

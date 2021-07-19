@@ -17,7 +17,7 @@ export class DefineCommand extends Command {
 
     // If nothing is found
     if (!body || !body.data || !body.data?.[0]?.meta) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.WORD_NOTFOUND"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.WORD_NOTFOUND"), "error");
     }
 
     // Gets the results
@@ -30,23 +30,23 @@ export class DefineCommand extends Command {
         color: msg.convertHex("general"),
         fields: [
           {
-            name: msg.string("global.CATEGORY"),
-            value: `${results.fl || msg.string("global.NONE")}`,
+            name: msg.locale("global.CATEGORY"),
+            value: `${results.fl || msg.locale("global.NONE")}`,
             inline: true,
           },
           {
-            name: msg.string("utility.WORD_STEMS"),
-            value: `${results.meta?.stems ? `${results.meta.stems.map((r: string) => `\`${r}\``).join(", ")}` : msg.string("global.NONE")}`,
+            name: msg.locale("utility.WORD_STEMS"),
+            value: `${results.meta?.stems ? `${results.meta.stems.map((r: string) => `\`${r}\``).join(", ")}` : msg.locale("global.NONE")}`,
             inline: false,
           },
           {
-            name: msg.string("utility.WORD_DEFINITION"),
-            value: `${results.shortdef[0] || msg.string("global.NONE")}`,
+            name: msg.locale("utility.WORD_DEFINITION"),
+            value: `${results.shortdef[0] || msg.locale("global.NONE")}`,
             inline: false,
           },
         ],
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

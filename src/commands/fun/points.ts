@@ -19,7 +19,7 @@ export class PointsCommand extends Command {
 
     // If the member has no points
     if (!points.length) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("fun.POINTS_HASNONE", { member: member.username }), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("fun.POINTS_HASNONE", { member: member.username }), "error");
     }
 
     // If more than 20 points
@@ -30,26 +30,26 @@ export class PointsCommand extends Command {
         // Makes pages out of points
         if (!pages[pages.length - 1] || pages[pages.length - 1].fields.length > 10) {
           pages.push({
-            title: `✨ ${msg.string("fun.POINTS_TOTAL", { member: member.user.username, total: points.length })}`,
+            title: `✨ ${msg.locale("fun.POINTS_TOTAL", { member: member.user.username, total: points.length })}`,
             color: msg.convertHex("general"),
             fields: [
               {
-                name: `${msg.string("fun.POINT_DESCRIPTION", {
+                name: `${msg.locale("fun.POINT_DESCRIPTION", {
                   id: p.id,
                   giver: msg.channel.guild.members.get?.(p.giver)?.user ? msg.channel.guild.members.get(p.giver)?.user.username : p.giver,
                 })}`,
-                value: `${p.reason?.slice(0, 150) || msg.string("global.NO_REASON")}`,
+                value: `${p.reason?.slice(0, 150) || msg.locale("global.NO_REASON")}`,
               },
             ],
           });
         } else {
           // Adds to already existing pages
           pages[pages.length - 1].fields.push({
-            name: `${msg.string("fun.POINT_DESCRIPTION", {
+            name: `${msg.locale("fun.POINT_DESCRIPTION", {
               id: p.id,
               giver: msg.channel.guild.members.get?.(p.giver)?.user ? msg.channel.guild.members.get(p.giver)?.user.username : p.giver,
             })}`,
-            value: `${p.reason?.slice(0, 150) || msg.string("global.NO_REASON")}`,
+            value: `${p.reason?.slice(0, 150) || msg.locale("global.NO_REASON")}`,
           });
         }
       });
@@ -60,9 +60,9 @@ export class PointsCommand extends Command {
         msg.channel,
         this.bot,
         msg.author.id,
-        { title: msg.string("global.EXITED"), color: msg.convertHex("error") },
+        { title: msg.locale("global.EXITED"), color: msg.convertHex("error") },
         false,
-        msg.string("global.RAN_BY", { author: msg.tagUser(msg.author), extra: "%c/%a" }),
+        msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author), extra: "%c/%a" }),
         msg.author.dynamicAvatarURL(),
       );
     }
@@ -70,17 +70,17 @@ export class PointsCommand extends Command {
     // Sends points
     msg.channel.createMessage({
       embed: {
-        title: `✨ ${msg.string("fun.POINTS_TOTAL", { member: member.user.username, total: points.length })}`,
+        title: `✨ ${msg.locale("fun.POINTS_TOTAL", { member: member.user.username, total: points.length })}`,
         color: msg.convertHex("general"),
         fields: points.map((p) => ({
-          name: `${msg.string("fun.POINT_DESCRIPTION", {
+          name: `${msg.locale("fun.POINT_DESCRIPTION", {
             id: p.id,
             giver: msg.channel.guild.members.get?.(p.giver)?.user ? msg.channel.guild.members.get(p.giver)?.user.username : p.giver,
           })}`,
-          value: `${p.reason?.slice(0, 150) || msg.string("global.NO_REASON")}`,
+          value: `${p.reason?.slice(0, 150) || msg.locale("global.NO_REASON")}`,
         })),
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

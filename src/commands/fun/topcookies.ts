@@ -1,5 +1,5 @@
 /**
- * @file TopCookies command
+ * @file Top cookies command
  * @description Shows the 10 members with the most cookies
  */
 
@@ -7,7 +7,7 @@ import type { Message, TextChannel } from "eris";
 
 import { Command } from "../../classes/Command";
 
-export class TopcookiesCommand extends Command {
+export class TopCookiesCommand extends Command {
   description = "Shows the 10 members with the most cookies.";
   aliases = ["cookieleaderboard", "leaderboard"];
   allowdms = true;
@@ -38,9 +38,9 @@ export class TopcookiesCommand extends Command {
     });
 
     // If no members have cookies
-    if (!content) return msg.createEmbed(msg.string("global.ERROR"), msg.string("fun.COOKIE_LEADERBOARDNOMEMBERS"), "error");
+    if (!content) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("fun.COOKIE_LEADERBOARDNOMEMBERS"), "error");
 
     // Sends leaderboard
-    msg.createEmbed(`🍪 ${msg.string("fun.COOKIE_LEADERBOARD")}`, content, "general");
+    msg.createEmbed(`🍪 ${msg.locale("fun.COOKIE_LEADERBOARD")}`, content, "general");
   }
 }

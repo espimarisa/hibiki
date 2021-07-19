@@ -17,7 +17,7 @@ export class HypnohubCommand extends Command {
     const body = await axios.get(`https://hypnohub.net/post.json?api_version=2&tags=${query}`).catch(() => {});
 
     if (!body || !body.data.posts?.length) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGEQUERY"), "error");
     }
 
     // Gets post
@@ -25,27 +25,27 @@ export class HypnohubCommand extends Command {
 
     // Blacklists bad posts
     if (body.data.posts[random].rating !== "s" && !blacklistedTags.every((t) => !body.data.posts[random]?.tags?.split(" ")?.includes(t))) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGEQUERY"), "error");
     }
 
     // Handles videos
     if (videoFileRegex.test(body.data.posts[random].sample_url)) {
       return msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("global.RESERROR_ATTACHMENT", { url: body.data.posts[random].sample_url }),
+        msg.locale("global.ERROR"),
+        msg.locale("global.RESERROR_ATTACHMENT", { url: body.data.posts[random].sample_url }),
         "error",
       );
     }
 
     msg.channel.createMessage({
       embed: {
-        title: `🔞 ${msg.string("nsfw.HYPNOHUB")}`,
+        title: `🔞 ${msg.locale("nsfw.HYPNOHUB")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data.posts[random].sample_url,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "hypnohub.net",
           }),

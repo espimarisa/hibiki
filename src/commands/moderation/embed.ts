@@ -29,34 +29,34 @@ export class EmbedCommand extends Command {
 
     // Labels
     const emojilabels = {
-      "title": msg.string("global.TITLE"),
-      "description": msg.string("global.DESCRIPTION"),
-      "image.url": msg.string("global.IMAGE"),
-      "thumbnail.url": msg.string("global.THUMBNAIL"),
-      "author.name": msg.string("moderation.EMBED_AUTHORTEXT"),
-      "author.icon_url": msg.string("moderation.EMBED_AUTHORICON"),
-      "footer.text": msg.string("moderation.EMBED_FOOTERTEXT"),
-      "footer.icon_url": msg.string("moderation.EMBED_FOOTERICON"),
-      "color": msg.string("global.COLOR"),
-      "timestamp": msg.string("global.TIMESTAMP"),
-      "hibiki:done": msg.string("global.DONE"),
-      "hibiki:cancel": msg.string("global.CANCEL"),
+      "title": msg.locale("global.TITLE"),
+      "description": msg.locale("global.DESCRIPTION"),
+      "image.url": msg.locale("global.IMAGE"),
+      "thumbnail.url": msg.locale("global.THUMBNAIL"),
+      "author.name": msg.locale("moderation.EMBED_AUTHORTEXT"),
+      "author.icon_url": msg.locale("moderation.EMBED_AUTHORICON"),
+      "footer.text": msg.locale("moderation.EMBED_FOOTERTEXT"),
+      "footer.icon_url": msg.locale("moderation.EMBED_FOOTERICON"),
+      "color": msg.locale("global.COLOR"),
+      "timestamp": msg.locale("global.TIMESTAMP"),
+      "hibiki:done": msg.locale("global.DONE"),
+      "hibiki:cancel": msg.locale("global.CANCEL"),
     };
 
     // Descriptions
     const emojidescriptions = {
-      "title": msg.string("moderation.EMBED_TITLE"),
-      "description": msg.string("moderation.EMBED_DESCRIPTION"),
-      "image.url": msg.string("moderation.EMBED_IMAGEURL_DESCRIPTION"),
-      "thumbnail.url": msg.string("moderation.EMBED_THUMBNAIL_DESCRIPTION"),
-      "author.name": msg.string("moderation.EMBED_AUTHORNAME_DESCRIPTION"),
-      "author.icon_url": msg.string("moderation.EMBED_AUTHORICON_DESCRIPTION"),
-      "footer.text": msg.string("moderation.EMBED_FOOTERTEXT_DESCRIPTION"),
-      "footer.icon_url": msg.string("moderation.EMBED_FOOTERICON_DESCRIPTION"),
-      "color": msg.string("moderation.EMBED_COLOR_DESCRIPTION"),
-      "timestamp": msg.string("moderation.EMBED_TIMESTAMP"),
-      "hibiki:done": msg.string("moderation.EMBED_SEND"),
-      "hibiki:cancel": msg.string("moderation.EMBED_CANCEL"),
+      "title": msg.locale("moderation.EMBED_TITLE"),
+      "description": msg.locale("moderation.EMBED_DESCRIPTION"),
+      "image.url": msg.locale("moderation.EMBED_IMAGEURL_DESCRIPTION"),
+      "thumbnail.url": msg.locale("moderation.EMBED_THUMBNAIL_DESCRIPTION"),
+      "author.name": msg.locale("moderation.EMBED_AUTHORNAME_DESCRIPTION"),
+      "author.icon_url": msg.locale("moderation.EMBED_AUTHORICON_DESCRIPTION"),
+      "footer.text": msg.locale("moderation.EMBED_FOOTERTEXT_DESCRIPTION"),
+      "footer.icon_url": msg.locale("moderation.EMBED_FOOTERICON_DESCRIPTION"),
+      "color": msg.locale("moderation.EMBED_COLOR_DESCRIPTION"),
+      "timestamp": msg.locale("moderation.EMBED_TIMESTAMP"),
+      "hibiki:done": msg.locale("moderation.EMBED_SEND"),
+      "hibiki:cancel": msg.locale("moderation.EMBED_CANCEL"),
     };
 
     let embed: Record<string, any> = {};
@@ -65,17 +65,17 @@ export class EmbedCommand extends Command {
     // Sends the first embed
     const embedmsg = await msg.channel.createMessage({
       embed: {
-        title: `🖊 ${msg.string("global.EMBED")}`,
+        title: `🖊 ${msg.locale("global.EMBED")}`,
         color: msg.convertHex("general"),
         fields: Object.entries(emojiactions).map((e) => {
           return {
             name: `${e[0]} ${emojilabels[e[1]] ? emojilabels[e[1]] : e[1]}`,
-            value: emojidescriptions[e[1]] ? emojidescriptions[e[1]] : msg.string("global.NO_CONTENT"),
+            value: emojidescriptions[e[1]] ? emojidescriptions[e[1]] : msg.locale("global.NO_CONTENT"),
             inline: true,
           };
         }),
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
@@ -95,7 +95,7 @@ export class EmbedCommand extends Command {
         if (e === "hibiki:done") return true;
         if (e === "hibiki:cancel") {
           embedmsg.delete();
-          embed = { error: msg.string("global.CANCELLED") };
+          embed = { error: msg.locale("global.CANCELLED") };
           return true;
         }
 
@@ -109,9 +109,9 @@ export class EmbedCommand extends Command {
 
         // Sends a prompt to the author
         embedmsg.editEmbed(
-          `🖊 ${msg.string("global.EMBED")} `,
+          `🖊 ${msg.locale("global.EMBED")} `,
           // This is uglier than ur mum ngl
-          msg.string("global.ASKFOR", {
+          msg.locale("global.ASKFOR", {
             item: emojilabels[typeof e == "string" ? e : e.join(".")]
               ? `${emojilabels[typeof e == "string" ? e : e.join(".")][0].toLowerCase()}${emojilabels[
                   typeof e == "string" ? e : e.join(".")
@@ -131,24 +131,24 @@ export class EmbedCommand extends Command {
           },
           this.bot,
         ).catch((err) => {
-          timeoutHandler(err, embedmsg, msg.string);
+          timeoutHandler(err, embedmsg, msg.locale);
         });
 
         // Edits the embed message
         embedmsg
           .edit({
             embed: {
-              title: `🖊 ${msg.string("global.EMBED")}`,
+              title: `🖊 ${msg.locale("global.EMBED")}`,
               color: msg.convertHex("general"),
               fields: Object.entries(emojiactions).map((em) => {
                 return {
                   name: `${em[0]} ${emojilabels[em[1]] ? emojilabels[em[1]] : em[1]}`,
-                  value: emojidescriptions[em[1]] ? emojidescriptions[em[1]] : msg.string("global.NO_CONTENT"),
+                  value: emojidescriptions[em[1]] ? emojidescriptions[em[1]] : msg.locale("global.NO_CONTENT"),
                   inline: true,
                 };
               }),
               footer: {
-                text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+                text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
                 icon_url: msg.author.dynamicAvatarURL(),
               },
             },
@@ -195,7 +195,7 @@ export class EmbedCommand extends Command {
 
     // Invalid embed handler
     if (!Object.keys(embed).length || Object.keys(embed).includes("error")) {
-      return embedmsg.editEmbed(msg.string("global.ERROR"), embed.error ? embed.error : msg.string("moderation.EMBED_INVALID"), "error");
+      return embedmsg.editEmbed(msg.locale("global.ERROR"), embed.error ? embed.error : msg.locale("moderation.EMBED_INVALID"), "error");
     }
 
     // Sends the final embed

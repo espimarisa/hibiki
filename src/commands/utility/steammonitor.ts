@@ -2,7 +2,7 @@ import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import axios from "axios";
 
-export class steammonitorCommand extends Command {
+export class SteamMonitorCommand extends Command {
   description = "Monitors a Steam account for future bans.";
   args = "[account:string] | [remove:string]";
   aliases = ["monitor", "monitorsteam"];
@@ -13,24 +13,24 @@ export class steammonitorCommand extends Command {
     const monitors = await this.bot.db.getAllUserMonitors(msg.author.id);
     if (!args.length) {
       return msg.createEmbed(
-        `🎮 ${msg.string("utility.STEAMMONITOR")}`,
-        msg.string("utility.STEAMMONITOR_CURRENTMONITORING", {
-          monitors: monitors.length > 0 ? monitors.map((m) => `\`${m.username}\``).join(", ") : `${msg.string("global.NOBODY")}`,
+        `🎮 ${msg.locale("utility.STEAMMONITOR")}`,
+        msg.locale("utility.STEAMMONITOR_CURRENTMONITORING", {
+          monitors: monitors.length > 0 ? monitors.map((m) => `\`${m.username}\``).join(", ") : `${msg.locale("global.NOBODY")}`,
         }),
       );
     }
 
     // Removal functionality
     if (args?.[0]?.toLowerCase() === "remove" || args?.[0]?.toLowerCase() === "delete") {
-      if (!args?.[1]?.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ERROR_INVALIDID"), "error");
+      if (!args?.[1]?.length) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.ERROR_INVALIDID"), "error");
 
       // Finds the monitor
       const validMonitor = monitors.find((monitor) => monitor.id === args[1] || monitor.username.toLowerCase() === args[1].toLowerCase());
-      if (!validMonitor?.id) return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ERROR_INVALIDID"), "error");
+      if (!validMonitor?.id) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.ERROR_INVALIDID"), "error");
 
       // Deletes the monitor from the DB
       const monitor = await this.bot.db.deleteUserMonitor(msg.author.id, validMonitor.id);
-      if (!monitor.deleted) return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.ACCOUNT_NOTFOUND"), "error");
+      if (!monitor.deleted) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.ACCOUNT_NOTFOUND"), "error");
 
       // Finds the monitor in the handler
       const foundMonitor = this.bot.monitorHandler.monitors.find(
@@ -39,7 +39,7 @@ export class steammonitorCommand extends Command {
 
       // Updates the handler and sends confirmation
       this.bot.reminderHandler.reminders.splice(this.bot.reminderHandler.reminders.indexOf(foundMonitor), 1);
-      return msg.createEmbed(`🎮 ${msg.string("utility.STEAMMONITOR")}`, msg.string("utility.STEAMMONITOR_REMOVED"));
+      return msg.createEmbed(`🎮 ${msg.locale("utility.STEAMMONITOR")}`, msg.locale("utility.STEAMMONITOR_REMOVED"));
     }
 
     const key = this.bot.config.keys.steam;
@@ -62,7 +62,7 @@ export class steammonitorCommand extends Command {
       id = await axios.get(`http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${key}&vanityurl=${query}`).catch(() => {});
 
       if (!id || !id.data || id.data?.response.success !== 1) {
-        return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.ACCOUNT_NOTFOUND"), "error");
+        return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.ACCOUNT_NOTFOUND"), "error");
       }
 
       steamid = id.data.response.steamid;
@@ -76,7 +76,7 @@ export class steammonitorCommand extends Command {
     profile = profile && profile.data?.response?.players?.[0] ? profile.data.response.players[0] : null;
 
     if (!profile || !profile.personaname) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.ACCOUNT_NOTFOUND"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.ACCOUNT_NOTFOUND"), "error");
     }
 
     // Embed construct
@@ -88,7 +88,7 @@ export class steammonitorCommand extends Command {
     };
 
     // Only 10 accounts can be monitored at a time
-    if (monitors.length >= 10) return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.STEAMMONITOR_TOOMANY"), "error");
+    if (monitors.length >= 10) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.STEAMMONITOR_TOOMANY"), "error");
 
     if (!monitors.find((d: SteamMonitor) => d.id === steamid)) {
       bans = await axios.get(`http://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=${key}&steamids=${steamid}`).catch(() => {});
@@ -97,8 +97,8 @@ export class steammonitorCommand extends Command {
       // If already banned
       if (bans.VACBanned || bans.NumberOfGameBans > 0) {
         return msg.createEmbed(
-          msg.string("global.ERROR"),
-          msg.string("utility.STEAMMONITOR_ALREADYBANNED", {
+          msg.locale("global.ERROR"),
+          msg.locale("utility.STEAMMONITOR_ALREADYBANNED", {
             profile: profile.personaname,
             type: bans.VACBanned ? 0 : 1,
           }),
@@ -109,13 +109,13 @@ export class steammonitorCommand extends Command {
       // Updates db
       await this.bot.db.insertUserMonitor(construct);
       msg.createEmbed(
-        `🎮 ${msg.string("utility.STEAMMONITOR")}`,
-        msg.string("utility.STEAMMONITOR_MONITORING", { profile: profile.personaname }),
+        `🎮 ${msg.locale("utility.STEAMMONITOR")}`,
+        msg.locale("utility.STEAMMONITOR_MONITORING", { profile: profile.personaname }),
       );
     } else {
       msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("utility.STEAMMONITOR_ALREADYMONITORING", { profile: profile.personaname }),
+        msg.locale("global.ERROR"),
+        msg.locale("utility.STEAMMONITOR_ALREADYMONITORING", { profile: profile.personaname }),
         "error",
       );
     }

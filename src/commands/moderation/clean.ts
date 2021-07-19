@@ -19,8 +19,8 @@ export class CleanCommand extends Command {
 
     // Sends a confirmation message and deletes it quickly
     const cleanmsg = await msg.createEmbed(
-      `💣 ${msg.string("moderation.PURGE")}`,
-      msg.string("moderation.CLEAN_CLEANED", {
+      `💣 ${msg.locale("moderation.PURGE")}`,
+      msg.locale("moderation.CLEAN_CLEANED", {
         author: msg.tagUser(msg.author),
         amount: amount,
       }),

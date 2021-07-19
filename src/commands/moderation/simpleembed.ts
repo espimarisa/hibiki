@@ -2,7 +2,7 @@ import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { urlRegex } from "../../utils/constants";
 
-export class SimpleembedCommand extends Command {
+export class SimpleEmbedCommand extends Command {
   description = "Creates an embed.";
   requiredperms = ["manageMessages"];
   args = "<text:string>";
@@ -26,13 +26,13 @@ export class SimpleembedCommand extends Command {
         color: msg.convertHex("general"),
         author: {
           icon_url: msg.author.dynamicAvatarURL(),
-          name: `${msg.string("global.MEMBER_SAID", { member: msg.tagUser(msg.author) })}`,
+          name: `${msg.locale("global.MEMBER_SAID", { member: msg.tagUser(msg.author) })}`,
         },
         image: {
           url: `${imgurl || ""}`,
         },
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

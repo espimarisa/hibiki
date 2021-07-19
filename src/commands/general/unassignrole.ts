@@ -1,8 +1,13 @@
+/**
+ * @file Unassign role command
+ * @description Removes a role from you that's set to be assignable
+ */
+
 import type { EmbedField, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { itemExists } from "../../utils/itemExists";
 
-export class UnassignroleCommand extends Command {
+export class UnassignRoleCommand extends Command {
   description = "Removes a role from you that's set to be assignable.";
   clientperms = ["manageRoles"];
   args = "[role:role]";
@@ -13,7 +18,7 @@ export class UnassignroleCommand extends Command {
 
     // If no roles are set to be assigned
     if (!guildconfig?.assignableRoles?.length) {
-      return msg.createEmbed(`📄 ${msg.string("general.CONFIG_ASSIGNABLEROLES")}`, msg.string("general.ASSIGN_NOTHINGSET"));
+      return msg.createEmbed(`📄 ${msg.locale("general.CONFIG_ASSIGNABLEROLES")}`, msg.locale("general.ASSIGN_NOTHINGSET"));
     }
 
     // Cleans up roles that no longer exist
@@ -28,7 +33,7 @@ export class UnassignroleCommand extends Command {
     // List of assignable roles if no args given
     if (!args.length) {
       return msg.createEmbed(
-        `📄 ${msg.string("general.CONFIG_ASSIGNABLEROLES")}`,
+        `📄 ${msg.locale("general.CONFIG_ASSIGNABLEROLES")}`,
         `${guildconfig.assignableRoles.map((role) => `\`${msg.channel.guild.roles.get(role)?.name || role}\``).join(",")}`,
       );
     }
@@ -58,22 +63,22 @@ export class UnassignroleCommand extends Command {
     roles = roles.filter((role) => role.role !== undefined);
 
     // If no roles were removed
-    if (!roles.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.ASSIGN_NOROLES"), "error");
+    if (!roles.length) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.ASSIGN_NOROLES"), "error");
 
     // If the member already has every role
     if (roles.every((r) => r.doesntHave === true)) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ROLE_DOESNTHAVE", { amount: roles.length }), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.ROLE_DOESNTHAVE", { amount: roles.length }), "error");
     }
 
     // finds failed roles
-    if (!roles.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.ASSIGN_NOROLES"), "error");
+    if (!roles.length) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.ASSIGN_NOROLES"), "error");
     const failed = roles.filter((r) => r.removed === false);
     const removed = roles.filter((r) => r.removed === true);
     const failedField: EmbedField[] = [];
 
     if (failed.length) {
       failedField.push({
-        name: msg.string("general.UNASSIGN_FAILED"),
+        name: msg.locale("general.UNASSIGN_FAILED"),
         value: failed.map((f) => `\`${f.role.name}\``).join(", "),
       });
     }
@@ -81,15 +86,15 @@ export class UnassignroleCommand extends Command {
     // Sends added roles
     msg.channel.createMessage({
       embed: {
-        title: msg.string("global.SUCCESS"),
-        description: msg.string("general.UNASSIGN_UNASSIGNED", {
+        title: msg.locale("global.SUCCESS"),
+        description: msg.locale("general.UNASSIGN_UNASSIGNED", {
           amount: removed.length,
           roles: removed.map((r) => `\`${r.role.name}\``).join(", "),
         }),
         color: msg.convertHex("success"),
         fields: failedField,
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

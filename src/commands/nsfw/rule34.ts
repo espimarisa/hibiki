@@ -17,7 +17,7 @@ export class Rule34Command extends Command {
     const body = await axios.get(`https://r34-json-api.herokuapp.com/posts?tags=${query}`).catch(() => {});
 
     if (!body || !body.data?.[0]) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGEQUERY"), "error");
     }
 
     // Gets the post
@@ -25,27 +25,27 @@ export class Rule34Command extends Command {
 
     // Blacklists bad posts
     if (!blacklistedTags.every((t) => !body.data[random]?.tags?.includes(t))) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGEQUERY"), "error");
     }
 
     // Handles videos
     if (videoFileRegex.test(body.data[random].sample_url)) {
       return msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("global.RESERROR_ATTACHMENT", { url: body.data[random].sample_url }),
+        msg.locale("global.ERROR"),
+        msg.locale("global.RESERROR_ATTACHMENT", { url: body.data[random].sample_url }),
         "error",
       );
     }
 
     msg.channel.createMessage({
       embed: {
-        title: `🔞 ${msg.string("nsfw.RULE34")}`,
+        title: `🔞 ${msg.locale("nsfw.RULE34")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data[random].sample_url,
         },
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

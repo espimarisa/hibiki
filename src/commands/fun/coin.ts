@@ -13,7 +13,7 @@ export class CoinCommand extends Command {
   allowdms = true;
 
   async run(msg: Message<TextChannel>) {
-    const coin = [msg.string("fun.COIN_HEADS"), msg.string("fun.COIN_TAILS")][Math.round(Math.random())];
-    msg.createEmbed(`💰 ${msg.string("fun.COIN")}`, msg.string("fun.COIN_RESULT", { side: coin }));
+    const coin = [msg.locale("fun.COIN_HEADS"), msg.locale("fun.COIN_TAILS")][Math.round(Math.random())];
+    msg.createEmbed(`💰 ${msg.locale("fun.COIN")}`, msg.locale("fun.COIN_RESULT", { side: coin }));
   }
 }

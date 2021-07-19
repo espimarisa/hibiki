@@ -25,13 +25,13 @@ export class MeguminCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        title: `💥 ${msg.string("image.MEGUMIN")}`,
+        title: `💥 ${msg.locale("image.MEGUMIN")}`,
         color: msg.convertHex("general"),
         image: {
           url: image,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "weeb.sh",
           }),

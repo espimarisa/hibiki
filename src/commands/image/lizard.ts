@@ -13,18 +13,18 @@ export class LizardCommand extends Command {
     const body = (await axios.get("https://nekos.life/api/v2/img/lizard").catch(() => {})) as NekosLifeImage;
 
     if (!body || !body.data?.url) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGE"), "error");
     }
 
     msg.channel.createMessage({
       embed: {
-        title: `🦎 ${msg.string("image.LIZARD")}`,
+        title: `🦎 ${msg.locale("image.LIZARD")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data.url,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "nekos.life",
           }),

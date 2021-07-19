@@ -15,7 +15,7 @@ export class PlayCommand extends Command {
     const voiceChannel = msg.channel.guild.members?.get(msg.author.id)?.voiceState?.channelID;
 
     if (!voiceChannel) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ERROR_VOICE", { command: this.name }), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.ERROR_VOICE", { command: this.name }), "error");
     }
 
     const player = this.bot.lavalink.manager.create({
@@ -27,7 +27,7 @@ export class PlayCommand extends Command {
 
     // NOTE: This may not be an actual fix for the weird RangeError we're getting.
     if (!player?.voiceChannel) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ERROR_VOICE", { command: this.name }), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.ERROR_VOICE", { command: this.name }), "error");
     }
 
     // Searches for the query
@@ -36,7 +36,7 @@ export class PlayCommand extends Command {
 
     // Handles exceptions
     if (!res || res?.exception?.message) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.PLAY_RESERROR", { error: res.exception?.message }), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("music.PLAY_RESERROR", { error: res.exception?.message }), "error");
     }
 
     // Handles search results
@@ -54,8 +54,8 @@ export class PlayCommand extends Command {
         // Cleans up the results and sends the initial embed
         const results = tracks.slice(0, tracks.length < maxResults ? tracks.length : maxResults);
         const resultMsg = await msg.createEmbed(
-          `🔎 ${msg.string("music.SEARCH")}`,
-          msg.string("music.SEARCH_RESULTS", { results: results.map((r, i) => `**${i + 1}** - ${r.title}`).join("\n") }),
+          `🔎 ${msg.locale("music.SEARCH")}`,
+          msg.locale("music.SEARCH_RESULTS", { results: results.map((r, i) => `**${i + 1}** - ${r.title}`).join("\n") }),
         );
 
         // Sends the search results and waits for input
@@ -73,10 +73,10 @@ export class PlayCommand extends Command {
             return true;
           },
           this.bot,
-        ).catch((err) => timeoutHandler(err, resultMsg, msg.string))) as any;
+        ).catch((err) => timeoutHandler(err, resultMsg, msg.locale))) as any;
 
         // Handles invalid songs
-        if (invalidSong) return resultMsg.editEmbed(msg.string("global.ERROR"), msg.string("music.INVALID_SONG"), "error");
+        if (invalidSong) return resultMsg.editEmbed(msg.locale("global.ERROR"), msg.locale("music.INVALID_SONG"), "error");
         if (!song || !song[0] || !song[0].content) return;
 
         // Sets the song
@@ -89,8 +89,8 @@ export class PlayCommand extends Command {
         // Prevents songs that are over the max length from playing
         if (!!this.bot.config.lavalink.maxlength && tracks?.[song - 1].duration > this.bot.config.lavalink.maxlength) {
           return msg.createEmbed(
-            msg.string("global.ERROR"),
-            msg.string("music.TOO_LONG", { limit: this.bot.config.lavalink.maxlength / 60000 }),
+            msg.locale("global.ERROR"),
+            msg.locale("music.TOO_LONG", { limit: this.bot.config.lavalink.maxlength / 60000 }),
             "error",
           );
         }
@@ -101,7 +101,7 @@ export class PlayCommand extends Command {
         player.queue.add(tracks[song - 1]);
 
         if (player.queue?.length > 0) {
-          msg.createEmbed(`🎶 ${msg.string("music.ADDED")}`, msg.string("music.ADDED_TO_QUEUE", { track: tracks[song - 1].title }));
+          msg.createEmbed(`🎶 ${msg.locale("music.ADDED")}`, msg.locale("music.ADDED_TO_QUEUE", { track: tracks[song - 1].title }));
         }
 
         if (!player.playing && !player.paused && !player.queue.length) player.play();
@@ -111,13 +111,13 @@ export class PlayCommand extends Command {
       // If nothing was found
       case "NO_MATCHES": {
         if (!player.queue.current) player.destroy();
-        msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NO_MATCHES"), "error");
+        msg.createEmbed(msg.locale("global.ERROR"), msg.locale("music.NO_MATCHES"), "error");
         break;
       }
 
       // If something failed to load
       case "LOAD_FAILED": {
-        msg.createEmbed(msg.string("global.ERROR"), msg.string("music.LOADFAILED"), "error");
+        msg.createEmbed(msg.locale("global.ERROR"), msg.locale("music.LOADFAILED"), "error");
         break;
       }
 
@@ -126,8 +126,8 @@ export class PlayCommand extends Command {
         // Prevents songs that are over the max length from playing
         if (!!this.bot.config.lavalink.maxlength && res.tracks[0].duration > this.bot.config.lavalink.maxlength) {
           return msg.createEmbed(
-            msg.string("global.ERROR"),
-            msg.string("music.TOO_LONG", { limit: this.bot.config.lavalink.maxlength / 60000 }),
+            msg.locale("global.ERROR"),
+            msg.locale("music.TOO_LONG", { limit: this.bot.config.lavalink.maxlength / 60000 }),
             "error",
           );
         }
@@ -135,7 +135,7 @@ export class PlayCommand extends Command {
         // Adds the song and plays it
         player.queue.add(res.tracks[0]);
         if (!player.playing && !player.paused && !player.queue.size) player.play();
-        msg.createEmbed(`🎶 ${msg.string("music.ADDED")}`, msg.string("music.ADDED_TRACK", { track: res.tracks[0].title })).then((m) => {
+        msg.createEmbed(`🎶 ${msg.locale("music.ADDED")}`, msg.locale("music.ADDED_TRACK", { track: res.tracks[0].title })).then((m) => {
           setTimeout(() => {
             m?.delete();
           }, 5000);
@@ -156,7 +156,7 @@ export class PlayCommand extends Command {
         });
 
         // Sends if the plalyist has no valid songs
-        if (!songsToQueue) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.PLAYLIST_NOTHING"), "error");
+        if (!songsToQueue) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("music.PLAYLIST_NOTHING"), "error");
 
         // Plays the songs in the playlist
         player.queue.add(songsToQueue);
@@ -166,7 +166,7 @@ export class PlayCommand extends Command {
         const fields = [];
         if (songsRemoved > 0) {
           fields.push({
-            name: msg.string("music.ITEMS_REMOVED"),
+            name: msg.locale("music.ITEMS_REMOVED"),
             value: `${songsRemoved}`,
           });
         }
@@ -175,12 +175,12 @@ export class PlayCommand extends Command {
         msg.channel
           .createMessage({
             embed: {
-              title: `🎶 ${msg.string("music.PLAYLIST_ADDED")}`,
-              description: msg.string("music.ADDED_PLAYLIST", { name: res.playlist?.name, tracks: res.tracks.length }),
+              title: `🎶 ${msg.locale("music.PLAYLIST_ADDED")}`,
+              description: msg.locale("music.ADDED_PLAYLIST", { name: res.playlist?.name, tracks: res.tracks.length }),
               color: msg.convertHex("general"),
               fields: fields,
               footer: {
-                text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+                text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
                 icon_url: msg.author.dynamicAvatarURL(),
               },
             },

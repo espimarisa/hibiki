@@ -20,38 +20,38 @@ export class RoleinfoCommand extends Command {
 
     // Role settings
     const settings = [];
-    if (role.mentionable) settings.push(msg.string("utility.ROLEINFO_MENTIONABLE"));
-    if (role.hoist) settings.push(msg.string("utility.ROLEINFO_HOISTED"));
-    if (role.managed) settings.push(msg.string("utility.ROLEINFO_MANAGED"));
+    if (role.mentionable) settings.push(msg.locale("utility.ROLEINFO_MENTIONABLE"));
+    if (role.hoist) settings.push(msg.locale("utility.ROLEINFO_HOISTED"));
+    if (role.managed) settings.push(msg.locale("utility.ROLEINFO_MANAGED"));
 
     // Fields to push
     fields.push({
-      name: msg.string("global.ID"),
+      name: msg.locale("global.ID"),
       value: role.id,
       inline: true,
     });
 
     if (role.color !== 0)
       fields.push({
-        name: msg.string("global.COLOR"),
+        name: msg.locale("global.COLOR"),
         value: `#${role.color.toString(16)}`,
         inline: true,
       });
 
     fields.push({
-      name: msg.string("global.CREATED"),
-      value: `${dateFormat(role.createdAt, msg.string)}`,
+      name: msg.locale("global.CREATED"),
+      value: `${dateFormat(role.createdAt, msg.locale)}`,
     });
 
     if (settings.length)
       fields.push({
-        name: msg.string("global.SETTINGS"),
+        name: msg.locale("global.SETTINGS"),
         value: `${settings.join(", ")}`,
       });
 
     fields.push({
-      name: msg.string("global.INFO"),
-      value: `${msg.string("utility.ROLEINFO_INFO", {
+      name: msg.locale("global.INFO"),
+      value: `${msg.locale("utility.ROLEINFO_INFO", {
         members: membersWithRole,
         position: role.position,
       })}`,
@@ -66,7 +66,7 @@ export class RoleinfoCommand extends Command {
           name: `@${role.name}`,
         },
         footer: {
-          text: `${msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
+          text: `${msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

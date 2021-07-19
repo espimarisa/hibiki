@@ -20,35 +20,35 @@ export class bioCommand extends Command {
         const userconfig = await this.bot.db.getUserConfig(member.id);
         return userconfig?.bio
           ? msg.createEmbed(
-              `👤 ${msg.string("global.BIO")}`,
-              msg.string("general.BIO_MEMBER", { member: member.username, bio: userconfig.bio }),
+              `👤 ${msg.locale("global.BIO")}`,
+              msg.locale("general.BIO_MEMBER", { member: member.username, bio: userconfig.bio }),
             )
-          : msg.createEmbed(msg.string("global.ERROR"), msg.string("general.BIO_MEMBER_DOESNTHAVE", { member: member.username }), "error");
+          : msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.BIO_MEMBER_DOESNTHAVE", { member: member.username }), "error");
       }
     }
 
     // Bio limit
     if (args.join(" ").length > 200) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.BIO_TOOLONG"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.BIO_TOOLONG"), "error");
     }
 
     let userconfig = await this.bot.db.getUserConfig(msg.author.id);
 
     // No bio set; no args
     if (!args.length && !userconfig?.bio) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.BIO_DIDNTPROVIDE"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.BIO_DIDNTPROVIDE"), "error");
     }
 
     // Shows the bio
     else if (!args.length && userconfig?.bio) {
-      return msg.createEmbed(`👤 ${msg.string("global.BIO")}`, msg.string("general.BIO_SHOW", { bio: userconfig.bio }));
+      return msg.createEmbed(`👤 ${msg.locale("global.BIO")}`, msg.locale("general.BIO_SHOW", { bio: userconfig.bio }));
     }
 
     // Bio deletion
     if (["clear", "delete", "remove"].includes(args?.[0]?.toLowerCase())) {
       delete userconfig.bio;
       await this.bot.db.updateUserConfig(msg.author.id, userconfig);
-      return msg.createEmbed(msg.string("global.SUCCESS"), msg.string("general.BIO_CLEARED"), "success");
+      return msg.createEmbed(msg.locale("global.SUCCESS"), msg.locale("general.BIO_CLEARED"), "success");
     }
 
     if (!userconfig?.bio) {
@@ -59,11 +59,11 @@ export class bioCommand extends Command {
     // Sets bio; blocks ads
     userconfig.bio = args.join(" ");
     if (fullInviteRegex.test(userconfig.bio)) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.BIO_ADVERTISEMENT"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.BIO_ADVERTISEMENT"), "error");
     }
 
     // Updates userconfig
     await this.bot.db.updateUserConfig(msg.author.id, userconfig);
-    msg.createEmbed(msg.string("global.SUCCESS"), msg.string("general.BIO_SET", { bio: args.join(" ") }), "success");
+    msg.createEmbed(msg.locale("global.SUCCESS"), msg.locale("general.BIO_SET", { bio: args.join(" ") }), "success");
   }
 }

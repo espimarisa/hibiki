@@ -21,7 +21,7 @@ export class PurgeCommand extends Command {
 
     // Handles invalid amounts
     if (isNaN(amount) || amount <= 0) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.PURGE_INVALIDAMOUNT"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.PURGE_INVALIDAMOUNT"), "error");
     }
 
     // Trims the amount to the limit
@@ -33,17 +33,17 @@ export class PurgeCommand extends Command {
 
     // Waits for response
     const purgmsg = await msg.createEmbed(
-      `💣 ${msg.string("moderation.PURGE")}`,
-      msg.string("moderation.PURGE_CONFIRMATION", { amount: amount }),
+      `💣 ${msg.locale("moderation.PURGE")}`,
+      msg.locale("moderation.PURGE_CONFIRMATION", { amount: amount }),
     );
 
-    const response = (await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
-      timeoutHandler(err, purgmsg, msg.string),
+    const response = (await askYesNo(this.bot, msg.locale, msg.author.id, msg.channel.id).catch((err) =>
+      timeoutHandler(err, purgmsg, msg.locale),
     )) as ResponseData;
 
     // If cancelled
     if (!response || response?.response === false) {
-      return purgmsg.editEmbed(`💣 ${msg.string("moderation.PURGE")}`, msg.string("moderation.PURGE_CANCELLED"));
+      return purgmsg.editEmbed(`💣 ${msg.locale("moderation.PURGE")}`, msg.locale("moderation.PURGE_CANCELLED"));
     }
 
     let purgedmsgs = 0;
@@ -67,13 +67,13 @@ export class PurgeCommand extends Command {
         )
         .catch(() => {});
     } catch (err) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.PURGE_ERROR"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.PURGE_ERROR"), "error");
     }
 
     // Sends a confirmation message and deletes it
     const finalmsg = await msg.createEmbed(
-      `💣 ${msg.string("moderation.PURGE")} `,
-      msg.string("moderation.PURGE_PURGED", { author: msg.tagUser(msg.author), amount: args.length > 1 ? purgedmsgs : purgedmsgs - 3 }),
+      `💣 ${msg.locale("moderation.PURGE")} `,
+      msg.locale("moderation.PURGE_PURGED", { author: msg.tagUser(msg.author), amount: args.length > 1 ? purgedmsgs : purgedmsgs - 3 }),
     );
 
     // Deletes the message

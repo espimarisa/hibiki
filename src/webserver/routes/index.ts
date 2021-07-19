@@ -6,7 +6,7 @@
 
 import type { Profile } from "passport-discord";
 import type { HibikiClient } from "../../classes/Client";
-import { getAuthedUser, getWebLocale } from "../../utils/webserver";
+import { getAuthedUser, getWebLocale } from "../../utils/webServer";
 import express from "express";
 import rateLimit from "express-rate-limit";
 const router = express.Router();

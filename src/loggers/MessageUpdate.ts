@@ -129,7 +129,7 @@ export class MessageUpdate extends Logger {
               },
               {
                 name: string("global.CHANNEL"),
-                value: msg.channel.mention || msg.string("global.UNKNOWN"),
+                value: msg.channel.mention || msg.locale("global.UNKNOWN"),
                 inline: true,
               },
               {

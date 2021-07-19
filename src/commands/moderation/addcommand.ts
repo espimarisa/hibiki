@@ -2,7 +2,7 @@ import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { urlRegex } from "../../utils/constants";
 
-export class addcommandCommand extends Command {
+export class AddCommandCommand extends Command {
   description = "Creates a custom command.";
   requiredperms = ["manageMessages"];
   args = "[name:string] [content:string]";
@@ -15,7 +15,7 @@ export class addcommandCommand extends Command {
 
     // If no name was provided
     if (!args.length || (!args.length && !guildconfig)) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.ADDCOMMAND_NONAME"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.ADDCOMMAND_NONAME"), "error");
     }
 
     // Gets command name & content
@@ -23,13 +23,13 @@ export class addcommandCommand extends Command {
     let content = args.slice(1).join(" ");
 
     // If no content, if the name is too short, or if the content is too long
-    if (!content?.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.ADDCOMMAND_NOCONTENT"), "error");
-    if (name.length > 20) return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.ADDCOMMAND_NAMETOOLONG"), "error");
-    if (content.length > 1000) return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.ADDCOMMAND_TOOLONG"), "error");
+    if (!content?.length) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.ADDCOMMAND_NOCONTENT"), "error");
+    if (name.length > 20) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.ADDCOMMAND_NAMETOOLONG"), "error");
+    if (content.length > 1000) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.ADDCOMMAND_TOOLONG"), "error");
 
     // If a command already exists
     if (this.bot.commands.find((cmd) => cmd.name === name || cmd.aliases.includes(name))) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.ADDCOMMAND_ALREADYCMD"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.ADDCOMMAND_ALREADYCMD"), "error");
     }
 
     let imgurl: string;
@@ -50,11 +50,11 @@ export class addcommandCommand extends Command {
     // If too many commands or if the custom command exists
     if (!guildconfig.customCommands) guildconfig.customCommands = [];
     if (guildconfig.customCommands.length >= 30) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.ADDCOMMAND_TOOMANY"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.ADDCOMMAND_TOOMANY"), "error");
     }
 
     if (guildconfig.customCommands.find((cmd) => cmd.name === name)) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.ADDCOMMAND_ALREADYEXISTS"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.ADDCOMMAND_ALREADYEXISTS"), "error");
     }
 
     // Updates database
@@ -67,6 +67,6 @@ export class addcommandCommand extends Command {
 
     await this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);
     this.bot.emit("commandCreate", msg.channel.guild, msg.author, name);
-    msg.createEmbed(msg.string("global.SUCCESS"), msg.string("moderation.ADDCOMMAND_ADDED", { command: name }), "success");
+    msg.createEmbed(msg.locale("global.SUCCESS"), msg.locale("moderation.ADDCOMMAND_ADDED", { command: name }), "success");
   }
 }

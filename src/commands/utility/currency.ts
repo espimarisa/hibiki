@@ -17,12 +17,12 @@ export class CurrencyCommand extends Command {
     const body = await axios.get(`https://api.exchangeratesapi.io/latest?base=${base}&symbols=${to}`).catch(() => {});
 
     if (!body || !body.data || body?.data?.error) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.CURRENCY_NOTHING"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.CURRENCY_NOTHING"), "error");
     }
 
     msg.createEmbed(
-      `💱 ${msg.string("utility.CURRENCY")}`,
-      msg.string("utility.CURRENCY_RATES", {
+      `💱 ${msg.locale("utility.CURRENCY")}`,
+      msg.locale("utility.CURRENCY_RATES", {
         amount: amount,
         from: base,
         amountTo: amount * body.data.rates[to].toFixed(3),

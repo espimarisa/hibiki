@@ -22,10 +22,10 @@ export class KickCommand extends Command {
     // Compares bot roles to target's roles
     if (!roleHierarchy(msg.channel.guild.members.get(this.bot.user.id), member)) {
       return msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("moderation.PUNISHMENT_TOOLOWROLE", {
+        msg.locale("global.ERROR"),
+        msg.locale("moderation.PUNISHMENT_TOOLOWROLE", {
           member: msg.tagUser(member.user),
-          type: msg.string("moderation.KICK").toLowerCase(),
+          type: msg.locale("moderation.KICK").toLowerCase(),
         }),
         "error",
       );
@@ -34,22 +34,22 @@ export class KickCommand extends Command {
     // Compares author roles to target
     if (roleHierarchy(msg.member, member)) {
       const kickmsg = await msg.createEmbed(
-        `🔨 ${msg.string("moderation.KICK")}`,
-        msg.string("moderation.PUNISHMENT_CONFIRMATION", {
+        `🔨 ${msg.locale("moderation.KICK")}`,
+        msg.locale("moderation.PUNISHMENT_CONFIRMATION", {
           member: msg.tagUser(member.user),
-          type: msg.string("moderation.KICK").toLowerCase(),
+          type: msg.locale("moderation.KICK").toLowerCase(),
         }),
       );
 
-      const response = (await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
-        timeoutHandler(err, kickmsg, msg.string),
+      const response = (await askYesNo(this.bot, msg.locale, msg.author.id, msg.channel.id).catch((err) =>
+        timeoutHandler(err, kickmsg, msg.locale),
       )) as ResponseData;
 
       // If the kick was cancelled
       if (!response || response?.response === false)
         return kickmsg.editEmbed(
-          msg.string("global.CANCELLED"),
-          msg.string("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.string("moderation.KICKING") }),
+          msg.locale("global.CANCELLED"),
+          msg.locale("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.locale("moderation.KICKING") }),
           "error",
         );
 
@@ -57,10 +57,10 @@ export class KickCommand extends Command {
         await member.kick(`${reason} (${msg.tagUser(msg.author, true)})`);
       } catch (err) {
         await kickmsg.editEmbed(
-          `🔨 ${msg.string("moderation.KICK")}`,
-          msg.string("moderation.PUNISHMENT_FAILED", {
+          `🔨 ${msg.locale("moderation.KICK")}`,
+          msg.locale("moderation.PUNISHMENT_FAILED", {
             member: msg.tagUser(member.user),
-            type: msg.string("moderation.KICK").toLowerCase(),
+            type: msg.locale("moderation.KICK").toLowerCase(),
           }),
           "error",
         );
@@ -105,10 +105,10 @@ export class KickCommand extends Command {
           .catch(() => {});
 
         await kickmsg.editEmbed(
-          msg.string("global.SUCCESS"),
-          msg.string("moderation.PUNISHMENT_SUCCESS", {
+          msg.locale("global.SUCCESS"),
+          msg.locale("moderation.PUNISHMENT_SUCCESS", {
             member: msg.tagUser(member.user),
-            type: msg.string("moderation.KICKED").toLowerCase(),
+            type: msg.locale("moderation.KICKED").toLowerCase(),
             author: msg.author.username,
           }),
           "success",

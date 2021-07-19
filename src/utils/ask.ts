@@ -206,43 +206,43 @@ export async function askForValue(
         // Checks if it's not a boolean
         notBoolean: {
           check: setting.type !== "boolean" && !result,
-          errorMsg: msg.string("general.CONFIG_ISINVALID"),
+          errorMsg: msg.locale("general.CONFIG_ISINVALID"),
         },
 
         // Checks if it's invalid
         isInvalid: {
           check: typeof result === "string" && result.startsWith("No"),
-          errorMsg: msg.string("general.CONFIG_ISINVALID"),
+          errorMsg: msg.locale("general.CONFIG_ISINVALID"),
         },
 
         // Checks if it contains an invite
         containsInvite: {
           check: setting.inviteFilter === true && fullInviteRegex.test(result),
-          errorMsg: msg.string("general.CONFIG_CONTAINSINVITE"),
+          errorMsg: msg.locale("general.CONFIG_CONTAINSINVITE"),
         },
 
         // Checks role array length
         roleArrayTooLong: {
           check: setting.type === "roleArray" && setting.maximum && result.length > setting.maximum,
-          errorMsg: msg.string("general.CONFIG_ROLEARRAYTOOLONG", { maximum: setting.maximum }),
+          errorMsg: msg.locale("general.CONFIG_ROLEARRAYTOOLONG", { maximum: setting.maximum }),
         },
 
         // Checks channel array length
         channelArrayTooLong: {
           check: setting.type === "channelArray" && setting.maximum && result.length > setting.maximum,
-          errorMsg: msg.string("general.CONFIG_CHANNELARRAYTOOLONG", { maximum: setting.maximum }),
+          errorMsg: msg.locale("general.CONFIG_CHANNELARRAYTOOLONG", { maximum: setting.maximum }),
         },
 
         // Checks number size
         invalidNumberSize: {
           check: setting.type === "number" && setting.maximum && (setting.minimum > result || setting.maximum < result),
-          errorMsg: msg.string("general.CONFIG_INVALIDNUMBERSIZE"),
+          errorMsg: msg.locale("general.CONFIG_INVALIDNUMBERSIZE"),
         },
 
         // Invalid string size
         invalidStringSize: {
           check: setting.type === "string" && setting.maximum && setting.maximum < result.length,
-          errorMsg: msg.string("general.CONFIG_STRINGTOOLONG", { maximum: setting.maximum }),
+          errorMsg: msg.locale("general.CONFIG_STRINGTOOLONG", { maximum: setting.maximum }),
         },
       };
 
@@ -259,8 +259,8 @@ export async function askForValue(
       // Sends if something is invalid >:(
       if (error) {
         const errormsg = await msg.createEmbed(
-          msg.string("global.ERROR"),
-          `${error} ${msg.string("general.CONFIG_ATTEMPTS_LEFT", { attempts: Math.abs(cooldown - 2) })}`,
+          msg.locale("global.ERROR"),
+          `${error} ${msg.locale("general.CONFIG_ATTEMPTS_LEFT", { attempts: Math.abs(cooldown - 2) })}`,
           "error",
         );
 
@@ -331,9 +331,9 @@ export async function askForValue(
 
       // Sends the success message
       const setmsg = await msg.createEmbed(
-        msg.string("global.SUCCESS"),
-        `**${localizeSetupItems(msg.string, setting.id, true)}** ${msg.string("global.SET_TO")} **${
-          resultName || (result ?? msg.string("global.NOTHING"))
+        msg.locale("global.SUCCESS"),
+        `**${localizeSetupItems(msg.locale, setting.id, true)}** ${msg.locale("global.SET_TO")} **${
+          resultName || (result ?? msg.locale("global.NOTHING"))
         }**.`,
         "success",
       );
@@ -347,7 +347,7 @@ export async function askForValue(
     },
 
     bot,
-  ).catch((err) => timeoutHandler(err, omsg, msg.string));
+  ).catch((err) => timeoutHandler(err, omsg, msg.locale));
 }
 
 // Asks for a locale

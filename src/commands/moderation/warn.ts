@@ -63,7 +63,7 @@ export class WarnCommand extends Command {
 
     // ID
     fields.push({
-      name: msg.string("global.ID"),
+      name: msg.locale("global.ID"),
       value: `${id}`,
       inline: true,
     });
@@ -71,7 +71,7 @@ export class WarnCommand extends Command {
     // Total if over 1
     if (warnings.length > 1) {
       fields.push({
-        name: msg.string("moderation.WARN_TOTAL"),
+        name: msg.locale("moderation.WARN_TOTAL"),
         value: `${warnings.length}`,
         inline: true,
       });
@@ -80,7 +80,7 @@ export class WarnCommand extends Command {
     // Reason
     if (reason) {
       fields.push({
-        name: msg.string("global.REASON"),
+        name: msg.locale("global.REASON"),
         value: `${reason}`,
       });
     }
@@ -88,12 +88,12 @@ export class WarnCommand extends Command {
     // Sends warning success
     msg.channel.createMessage({
       embed: {
-        title: msg.string("global.SUCCESS"),
-        description: msg.string("moderation.WARN_ADDED", { member: member.user.username }),
+        title: msg.locale("global.SUCCESS"),
+        description: msg.locale("moderation.WARN_ADDED", { member: member.user.username }),
         color: msg.convertHex("success"),
         fields: fields,
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

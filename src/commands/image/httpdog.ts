@@ -79,7 +79,7 @@ export class HTTPDogCommand extends Command {
           url: `https://httpstatusdogs.com/img/${code}.jpg`,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "httpstatusdogs.com",
           }),

@@ -1,3 +1,8 @@
+/**
+ * @file Prefix command
+ * @description Views or changes the bot's prefix
+ */
+
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 
@@ -13,22 +18,22 @@ export class PrefixCommand extends Command {
 
     if (!args.length && !guildconfig?.prefix) {
       return msg.createEmbed(
-        `🤖 ${msg.string("global.PREFIX")}`,
-        `${msg.string("global.SERVER_PREFIX", { prefix: this.bot.config.prefixes[0] })}`,
+        `🤖 ${msg.locale("global.PREFIX")}`,
+        `${msg.locale("global.SERVER_PREFIX", { prefix: this.bot.config.prefixes[0] })}`,
       );
     }
 
     // If there's a prefix & no args
     if (!args.length) {
-      return msg.createEmbed(`🤖 ${msg.string("global.PREFIX")}`, `${msg.string("global.SERVER_PREFIX", { prefix: guildconfig.prefix })}`);
+      return msg.createEmbed(`🤖 ${msg.locale("global.PREFIX")}`, `${msg.locale("global.SERVER_PREFIX", { prefix: guildconfig.prefix })}`);
     }
 
     // Too long prefix
-    if (prefix.length > 15) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.PREFIX_TOOLONG"), "error");
+    if (prefix.length > 15) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.PREFIX_TOOLONG"), "error");
 
     // Lets members without permission check but not set
     if (!msg.member?.permissions?.has("manageGuild") || (guildconfig?.staffRole && !msg.member?.roles?.includes(guildconfig.staffRole))) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.PREFIX_NOPERMISSIONS"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.PREFIX_NOPERMISSIONS"), "error");
     }
 
     // If no guildconfig
@@ -41,6 +46,6 @@ export class PrefixCommand extends Command {
     guildconfig.prefix = prefix;
     await this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);
     this.bot.emit("prefixUpdate", msg.channel.guild, msg.member, prefix);
-    msg.createEmbed(msg.string("global.SUCCESS"), msg.string("general.PREFIX_SET", { prefix: prefix }), "success");
+    msg.createEmbed(msg.locale("global.SUCCESS"), msg.locale("general.PREFIX_SET", { prefix: prefix }), "success");
   }
 }

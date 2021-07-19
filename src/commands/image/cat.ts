@@ -11,18 +11,18 @@ export class CatCommand extends Command {
   async run(msg: Message<TextChannel>) {
     const body = await axios.get("https://aws.random.cat/meow").catch(() => {});
     if (!body || !body.data?.file) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGE"), "error");
     }
 
     msg.channel.createMessage({
       embed: {
-        title: `🐱 ${msg.string("image.CAT")}`,
+        title: `🐱 ${msg.locale("image.CAT")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data.file,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "random.cat",
           }),

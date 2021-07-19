@@ -40,16 +40,16 @@ export class EvalCommand extends Command {
       } else {
         // Sends output
         msg.createEmbed(
-          msg.string("global.SUCCESS"),
-          `\`\`\`js\n${evalstring.replace(tokenRegex, msg.string("owner.TOKEN_HIDDEN"))}\n\`\`\``,
+          msg.locale("global.SUCCESS"),
+          `\`\`\`js\n${evalstring.replace(tokenRegex, msg.locale("owner.TOKEN_HIDDEN"))}\n\`\`\``,
           "success",
         );
       }
     } catch (err) {
       console.error(err);
       msg.createEmbed(
-        msg.string("global.ERROR"),
-        `\`\`\`js\n${err.stack.replace(tokenRegex, msg.string("owner.TOKEN_HIDDEN"))}\n\`\`\``,
+        msg.locale("global.ERROR"),
+        `\`\`\`js\n${err.stack.replace(tokenRegex, msg.locale("owner.TOKEN_HIDDEN"))}\n\`\`\``,
         "error",
       );
     }

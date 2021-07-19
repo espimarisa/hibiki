@@ -9,7 +9,7 @@ export class SnipeCommand extends Command {
 
     // If sniping is explicitly disabled
     if (guildconfig?.snipingEnable === false) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.SNIPE_NOTENABLED"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.SNIPE_NOTENABLED"), "error");
     }
 
     // If sniping permission is set to staff only
@@ -17,12 +17,12 @@ export class SnipeCommand extends Command {
       !msg.member?.permissions?.has("manageMessages") || (guildconfig?.staffRole && !msg.member?.roles?.includes(guildconfig.staffRole));
 
     if (guildconfig?.snipingPermission === false && isNotStaff) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.SNIPE_NOPERMS"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.SNIPE_NOPERMS"), "error");
     }
 
     // Gets the snipe data
     const snipeMessage = this.bot.snipeData[msg.channel.id];
-    if (!snipeMessage) return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.SNIPE_NODATA"), "error");
+    if (!snipeMessage) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.SNIPE_NODATA"), "error");
 
     msg.channel.createMessage({
       embed: {
@@ -30,7 +30,7 @@ export class SnipeCommand extends Command {
         color: msg.convertHex("general"),
         timestamp: new Date(snipeMessage.timestamp || Date.now()),
         author: {
-          name: snipeMessage.author ? ` ${msg.string("global.MEMBER_SAID", { member: snipeMessage.author })}` : "",
+          name: snipeMessage.author ? ` ${msg.locale("global.MEMBER_SAID", { member: snipeMessage.author })}` : "",
           icon_url: snipeMessage.authorpfp || "",
         },
         image: {

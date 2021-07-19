@@ -35,10 +35,10 @@ export class DailyCommand extends Command {
 
       // Updates DB
       await this.bot.db.updateUserCookies(msg.author.id, cookies);
-      return msg.createEmbed(`🍪 ${msg.string("fun.DAILY")}`, msg.string("fun.DAILY_CLAIMED"));
+      return msg.createEmbed(`🍪 ${msg.locale("fun.DAILY")}`, msg.locale("fun.DAILY_CLAIMED"));
     } else {
       const time = 86400000 - (new Date().getTime() - cookies.lastclaim.getTime());
-      msg.createEmbed(`🍪 ${msg.string("fun.DAILY")}`, msg.string("fun.DAILY_COOLDOWN", { timeout: to24Hours(msg.string, time) }));
+      msg.createEmbed(`🍪 ${msg.locale("fun.DAILY")}`, msg.locale("fun.DAILY_COOLDOWN", { timeout: to24Hours(msg.locale, time) }));
     }
   }
 }

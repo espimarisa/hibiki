@@ -26,7 +26,7 @@ export class ColorCommand extends Command {
     // Randomly sets a color if no args are given
     else if (!colorQuery) color = this.hexToRGB(Math.floor(Math.random() * 16777215).toString(16));
     else if (namecheck) color = this.hexToRGB(namecheck[0]);
-    else if (!color) return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.COLOR_INVALID"), "error");
+    else if (!color) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.COLOR_INVALID"), "error");
 
     const hex = this.rgbToHex(color?.r, color.g, color.b);
     const hsv = this.rgbToHSV(color.r / 255, color.g / 255, color.b / 255);
@@ -45,7 +45,7 @@ export class ColorCommand extends Command {
         description: `${hexString + rgbString + hsvString + labString}`,
         color: parseInt(`0x${hex}`),
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

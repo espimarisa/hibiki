@@ -14,9 +14,9 @@ export class RemindCommand extends Command {
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Reminder list functionality
-    if (!args.length || ["list", msg.string("global.LIST")].includes(args?.[0]?.toLowerCase())) {
+    if (!args.length || ["list", msg.locale("global.LIST")].includes(args?.[0]?.toLowerCase())) {
       const reminders = await this.bot.db.getAllUserReminders(msg.author.id);
-      if (!reminders?.length) return msg.createEmbed(`⏰ ${msg.string("utility.REMINDERS")}`, msg.string("utility.REMINDERS_NONE"));
+      if (!reminders?.length) return msg.createEmbed(`⏰ ${msg.locale("utility.REMINDERS")}`, msg.locale("utility.REMINDERS_NONE"));
 
       // If more than 20 reminders
       if (reminders.length > 20) {
@@ -25,11 +25,11 @@ export class RemindCommand extends Command {
           // Makes pages out of reminders
           if (!pages[pages.length - 1] || pages[pages.length - 1].fields.length > 10) {
             pages.push({
-              title: `⏰ ${msg.string("utility.REMINDERS")}`,
+              title: `⏰ ${msg.locale("utility.REMINDERS")}`,
               color: msg.convertHex("general"),
               fields: [
                 {
-                  name: `${r.id} ${r.date ? `(${dateFormat(r.date, msg.string)})` : ""}`,
+                  name: `${r.id} ${r.date ? `(${dateFormat(r.date, msg.locale)})` : ""}`,
                   value: `${r.message?.slice(0, 150)}`,
                 },
               ],
@@ -37,7 +37,7 @@ export class RemindCommand extends Command {
           } else {
             // Adds to already existing pages
             pages[pages.length - 1].fields.push({
-              name: `${r.id} ${r.date ? `(${dateFormat(r.date, msg.string)})` : ""}`,
+              name: `${r.id} ${r.date ? `(${dateFormat(r.date, msg.locale)})` : ""}`,
               value: `${r.message?.slice(0, 150)}`,
             });
           }
@@ -49,23 +49,23 @@ export class RemindCommand extends Command {
           msg.channel,
           this.bot,
           msg.author.id,
-          { title: msg.string("global.EXITED"), color: msg.convertHex("error") },
+          { title: msg.locale("global.EXITED"), color: msg.convertHex("error") },
           false,
-          msg.string("global.RAN_BY", { author: msg.tagUser(msg.author), extra: "%c/%a" }),
+          msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author), extra: "%c/%a" }),
           msg.author.dynamicAvatarURL(),
         );
       }
 
       return msg.channel.createMessage({
         embed: {
-          title: `⏰ ${msg.string("utility.REMINDERS")}`,
+          title: `⏰ ${msg.locale("utility.REMINDERS")}`,
           color: msg.convertHex("general"),
           fields: reminders.map((r) => ({
-            name: `${r.id} ${r.date ? `(${dateFormat(r.date, msg.string)})` : ""}`,
+            name: `${r.id} ${r.date ? `(${dateFormat(r.date, msg.locale)})` : ""}`,
             value: `${r.message}`,
           })),
           footer: {
-            text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+            text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
             icon_url: msg.author.dynamicAvatarURL(),
           },
         },
@@ -73,15 +73,15 @@ export class RemindCommand extends Command {
     }
 
     // Reminder removal functionality
-    if (["delete", "remove", msg.string("global.REMOVE"), msg.string("global.DELETE")].includes(args?.[0]?.toLowerCase())) {
-      if (!args?.[1]?.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ERROR_INVALIDID"), "error");
+    if (["delete", "remove", msg.locale("global.REMOVE"), msg.locale("global.DELETE")].includes(args?.[0]?.toLowerCase())) {
+      if (!args?.[1]?.length) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.ERROR_INVALIDID"), "error");
 
       // Deletes the reminder
       const reminder = await this.bot.db.deleteUserReminder(msg.author.id, args[1]);
-      if (!reminder.deleted) return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.REMINDER_NOTFOUND"), "error");
+      if (!reminder.deleted) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.REMINDER_NOTFOUND"), "error");
       const foundReminder = this.bot.reminderHandler.reminders.find((reminder) => reminder.id === args[1]);
       this.bot.reminderHandler.reminders.splice(this.bot.reminderHandler.reminders.indexOf(foundReminder), 1);
-      return msg.createEmbed(`⏰ ${msg.string("utility.REMINDER")}`, msg.string("utility.REMINDER_REMOVED"));
+      return msg.createEmbed(`⏰ ${msg.locale("utility.REMINDER")}`, msg.locale("utility.REMINDER_REMOVED"));
     }
 
     // Gets valid time
@@ -126,7 +126,7 @@ export class RemindCommand extends Command {
     });
 
     // Gets final date and time
-    if (time < 1000) return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.REMINDER_INVALIDTIME"), "error");
+    if (time < 1000) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.REMINDER_INVALIDTIME"), "error");
     const finalDate = new Date().getTime() + time;
     const finalTime = timeArg
       .split(" ")
@@ -150,21 +150,21 @@ export class RemindCommand extends Command {
     // Sends confirmation message
     msg.channel.createMessage({
       embed: {
-        title: `⏰ ${msg.string("utility.REMINDER_SET")}`,
-        description: msg.string("utility.REMINDER_INFO", { reminder: args.join(" "), time: finalTime }),
+        title: `⏰ ${msg.locale("utility.REMINDER_SET")}`,
+        description: msg.locale("utility.REMINDER_INFO", { reminder: args.join(" "), time: finalTime }),
         color: msg.convertHex("general"),
         fields: [
           {
-            name: msg.string("global.ID"),
+            name: msg.locale("global.ID"),
             value: reminder.id,
           },
           {
-            name: msg.string("global.DATE"),
-            value: dateFormat(reminder.date, msg.string),
+            name: msg.locale("global.DATE"),
+            value: dateFormat(reminder.date, msg.locale),
           },
         ],
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

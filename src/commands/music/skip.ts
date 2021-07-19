@@ -7,7 +7,7 @@ export class SkipCommand extends Command {
 
   async run(msg: Message<TextChannel>) {
     const player = this.bot.lavalink.manager.players.get(msg.channel.guild.id);
-    if (!player) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_PLAYING"), "error");
+    if (!player) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("music.NOTHING_PLAYING"), "error");
     const queueRepeat = player.queueRepeat;
 
     // HACK: Stop repeating if the song was being repeated
@@ -19,7 +19,7 @@ export class SkipCommand extends Command {
 
     // Sends when the track is skipped
     msg
-      .createEmbed(`🎶 ${msg.string("music.SKIPPED")}`, msg.string("music.SKIP_DESCRIPTION", { title: player.queue.current?.title }))
+      .createEmbed(`🎶 ${msg.locale("music.SKIPPED")}`, msg.locale("music.SKIP_DESCRIPTION", { title: player.queue.current?.title }))
       .then((m) => {
         setTimeout(async () => {
           await m.delete().catch(() => {});

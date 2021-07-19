@@ -1,7 +1,7 @@
 import type { EmbedField, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 
-export class RemovepointCommand extends Command {
+export class RemovePointsCommand extends Command {
   description = "Removes one or more reputation points.";
   requiredperms: ["manageMessages"];
   args = "<ids:string>";
@@ -30,10 +30,10 @@ export class RemovepointCommand extends Command {
     const failedField: EmbedField[] = [];
     const removed = points.filter((p) => p.removed);
     const failed = points.filter((p) => !p.removed);
-    if (!removed.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.POINTS_ALLFAILED"), "error");
+    if (!removed.length) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.POINTS_ALLFAILED"), "error");
     if (failed.length) {
       failedField.push({
-        name: msg.string("moderation.POINTS_FAILED"),
+        name: msg.locale("moderation.POINTS_FAILED"),
         value: failed.map((p) => p.point).join(", "),
       });
     }
@@ -41,12 +41,12 @@ export class RemovepointCommand extends Command {
     // Sends the embed
     msg.channel.createMessage({
       embed: {
-        title: `✨ ${msg.string("moderation.POINTS_REMOVED", { amount: removed.length })}`,
+        title: `✨ ${msg.locale("moderation.POINTS_REMOVED", { amount: removed.length })}`,
         description: `${removed.map((p) => `\`${p.point}\``).join(", ")}`,
         color: msg.convertHex("general"),
         fields: failedField,
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

@@ -7,7 +7,7 @@
 import type { User } from "eris";
 import type { StrategyOptions } from "passport-discord";
 import { Strategy } from "passport-discord";
-import { destroySession } from "../../utils/webserver";
+import { destroySession } from "../../utils/webServer";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import passport from "passport";

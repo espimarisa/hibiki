@@ -3,7 +3,7 @@ import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import axios from "axios";
 
-export class ThighhentaiCommand extends Command {
+export class ThighHentaiCommand extends Command {
   description = "Sends an ecchi/hentai thigh picture.";
   aliases = ["thighs"];
   cooldown = 4000;
@@ -14,18 +14,18 @@ export class ThighhentaiCommand extends Command {
     const body = (await axios.get("https://nekobot.xyz/api/image?type=hthigh").catch(() => {})) as NekobotImage;
 
     if (!body || !body.data?.message) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGE"), "error");
     }
 
     msg.channel.createMessage({
       embed: {
-        title: `🔞 ${msg.string("nsfw.THIGH_HENTAI")}`,
+        title: `🔞 ${msg.locale("nsfw.THIGH_HENTAI")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data.message,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "api.nekobot.xyz",
           }),

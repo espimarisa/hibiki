@@ -24,7 +24,7 @@ export class e621Command extends Command {
 
     // If nothing was found
     if (!body || !body?.data?.posts?.[0]?.file?.url || body?.data?.success === false) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGEQUERY"), "error");
     }
 
     // Gets post
@@ -33,14 +33,14 @@ export class e621Command extends Command {
     // Blacklists bad posts
     const tags = Object.values(body.data.posts[random]?.tags).flat();
     if (body.data.posts[random].rating !== "s" && !blacklistedTags.every((t) => !tags?.includes(t))) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGEQUERY"), "error");
     }
 
     // Handles videos
     if (videoFileRegex.test(body?.data?.posts?.[random]?.file?.url)) {
       return msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("global.RESERROR_ATTACHMENT", { url: body.data.posts[random].file_url }),
+        msg.locale("global.ERROR"),
+        msg.locale("global.RESERROR_ATTACHMENT", { url: body.data.posts[random].file_url }),
         "error",
       );
     }
@@ -48,13 +48,13 @@ export class e621Command extends Command {
     // Sends the post
     msg.channel.createMessage({
       embed: {
-        title: `${msg.string("nsfw.E621")}`,
+        title: `${msg.locale("nsfw.E621")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data.posts[random].file.url,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "e621.net",
           }),

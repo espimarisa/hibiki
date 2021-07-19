@@ -23,7 +23,7 @@ export async function createEmbed(this: Message | AnyChannel, title: string, des
   if (desc) embedDescription = desc.length > 2000 ? `${desc.substring(0, 2000)}...` : desc;
 
   if (typeof this === "object" && this instanceof Message && this.author) {
-    embedFooter.text = `${this.string("global.RAN_BY", { author: this.tagUser(this.author) })}`;
+    embedFooter.text = `${this.locale("global.RAN_BY", { author: this.tagUser(this.author) })}`;
     embedFooter.icon_url = this.author.dynamicAvatarURL();
   }
 

@@ -11,13 +11,13 @@ export class RepeatCommand extends Command {
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     const player = this.bot.lavalink.manager.players.get(msg.channel.guild.id);
-    if (!player?.queue) return msg.createEmbed(msg.string("global.ERROR"), msg.string("music.NOTHING_QUEUED"), "error");
+    if (!player?.queue) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("music.NOTHING_QUEUED"), "error");
 
     // Allows looping queues
-    if (["queue", "all", msg.string("global.ALL"), msg.string("music.QUEUE")].includes(args?.[0]?.toLowerCase())) {
+    if (["queue", "all", msg.locale("global.ALL"), msg.locale("music.QUEUE")].includes(args?.[0]?.toLowerCase())) {
       msg.createEmbed(
-        `🔁 ${msg.string("music.REPEATING")}`,
-        msg.string("music.QUEUE_REPEAT", { option: player.queueRepeat ? "Disabled" : "Enabled" }),
+        `🔁 ${msg.locale("music.REPEATING")}`,
+        msg.locale("music.QUEUE_REPEAT", { option: player.queueRepeat ? "Disabled" : "Enabled" }),
       );
 
       return player.setQueueRepeat(!player.queueRepeat);
@@ -25,8 +25,8 @@ export class RepeatCommand extends Command {
 
     // Toggles repeat of a track
     msg.createEmbed(
-      `🔁 ${msg.string("music.REPEATING")}`,
-      msg.string("music.SONG_REPEAT", { option: player.trackRepeat ? "Disabled" : "Enabled" }),
+      `🔁 ${msg.locale("music.REPEATING")}`,
+      msg.locale("music.SONG_REPEAT", { option: player.trackRepeat ? "Disabled" : "Enabled" }),
     );
 
     return player.setTrackRepeat(!player.trackRepeat);

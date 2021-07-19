@@ -1,7 +1,7 @@
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 
-export class WhitelistCommand extends Command {
+export class WhiteListCommand extends Command {
   description = "Whitelists a user or guild.";
   args = "<target:string>";
   allowdms = true;
@@ -10,8 +10,8 @@ export class WhitelistCommand extends Command {
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     const target = args[0];
-    if (isNaN(parseInt(target))) return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.BLACKLIST_INVALID"), "error");
+    if (isNaN(parseInt(target))) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("owner.BLACKLIST_INVALID"), "error");
     await this.bot.db.deleteBlacklistedItem(target);
-    msg.createEmbed(msg.string("global.SUCCESS"), `${msg.string("owner.WHITELIST_WHITELISTED", { target: target })}`, "success");
+    msg.createEmbed(msg.locale("global.SUCCESS"), `${msg.locale("owner.WHITELIST_WHITELISTED", { target: target })}`, "success");
   }
 }

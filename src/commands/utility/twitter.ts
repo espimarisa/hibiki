@@ -21,7 +21,7 @@ export class TwitterCommand extends Command {
       .catch(() => {});
 
     if (!body || !body.data || body?.data?.errors) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.ACCOUNT_NOTFOUND"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.ACCOUNT_NOTFOUND"), "error");
     }
 
     // Embed fields
@@ -30,7 +30,7 @@ export class TwitterCommand extends Command {
     // Total tweets
     if (body.data.statuses_count)
       fields.push({
-        name: msg.string("utility.TWITTER_TWEETS"),
+        name: msg.locale("utility.TWITTER_TWEETS"),
         value: `${body.data.statuses_count}`,
         inline: true,
       });
@@ -38,7 +38,7 @@ export class TwitterCommand extends Command {
     // Total likes
     if (body.data.favourites_count)
       fields.push({
-        name: msg.string("utility.TWITTER_LIKES"),
+        name: msg.locale("utility.TWITTER_LIKES"),
         value: `${body.data.favourites_count}`,
         inline: true,
       });
@@ -46,7 +46,7 @@ export class TwitterCommand extends Command {
     // Total followers
     if (body.data.followers_count)
       fields.push({
-        name: msg.string("utility.FOLLOWERS"),
+        name: msg.locale("utility.FOLLOWERS"),
         value: `${body.data.followers_count}`,
         inline: true,
       });
@@ -54,7 +54,7 @@ export class TwitterCommand extends Command {
     // Total following
     if (body.data.friends_count) {
       fields.push({
-        name: msg.string("utility.FOLLOWING"),
+        name: msg.locale("utility.FOLLOWING"),
         value: `${body.data.friends_count}`,
         inline: true,
       });
@@ -63,7 +63,7 @@ export class TwitterCommand extends Command {
     // Location
     if (body.data.location)
       fields.push({
-        name: msg.string("utility.LOCATION"),
+        name: msg.locale("utility.LOCATION"),
         value: `${body.data.location}`,
         inline: true,
       });
@@ -71,39 +71,39 @@ export class TwitterCommand extends Command {
     // Website
     if (body.data.url)
       fields.push({
-        name: msg.string("utility.WEBSITE"),
-        value: `[${msg.string("utility.WEBSITE")}](${body.data.url})`,
+        name: msg.locale("utility.WEBSITE"),
+        value: `[${msg.locale("utility.WEBSITE")}](${body.data.url})`,
         inline: true,
       });
 
     // Private & verified
     if (body.data.protected && body.data.verified)
       fields.push({
-        name: msg.string("utility.TWITTER_NOTES"),
-        value: msg.string("utility.TWITTER_PRIVATEVERIFIED"),
+        name: msg.locale("utility.TWITTER_NOTES"),
+        value: msg.locale("utility.TWITTER_PRIVATEVERIFIED"),
         inline: false,
       });
 
     // Verified
     if (body.data.verified && !body.data.protected)
       fields.push({
-        name: msg.string("utility.TWITTER_NOTES"),
-        value: msg.string("utility.TWITTER_VERIFIED"),
+        name: msg.locale("utility.TWITTER_NOTES"),
+        value: msg.locale("utility.TWITTER_VERIFIED"),
         inline: false,
       });
 
     // Private
     if (body.data.protected && !body.data.verified)
       fields.push({
-        name: msg.string("utility.TWITTER_NOTES"),
-        value: msg.string("utility.TWITTER_PRIVATE"),
+        name: msg.locale("utility.TWITTER_NOTES"),
+        value: msg.locale("utility.TWITTER_PRIVATE"),
         inline: false,
       });
 
     // Latest tweet
     if (body.data.status)
       fields.push({
-        name: msg.string("utility.TWITTER_LATESTTWEET"),
+        name: msg.locale("utility.TWITTER_LATESTTWEET"),
         value: body.data.status.text,
         inline: false,
       });
@@ -126,7 +126,7 @@ export class TwitterCommand extends Command {
           url: `${body.data.profile_banner_url || ""}`,
         },
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

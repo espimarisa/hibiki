@@ -14,7 +14,7 @@ export class EmojiCommand extends Command {
 
     // If no emoji exists
     if (!emoji && !defaultEmojiRegex.test(args[0])) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.EMOJI_NOEMOJI"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.EMOJI_NOEMOJI"), "error");
     }
 
     // Unicode to emoji conversion
@@ -49,7 +49,7 @@ export class EmojiCommand extends Command {
               url: `https://twemoji.maxcdn.com/v/13.0.0/72x72/${toEmoji(args[0])}.png`,
             },
             footer: {
-              text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+              text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
               icon_url: msg.author.dynamicAvatarURL(),
             },
           },
@@ -66,7 +66,7 @@ export class EmojiCommand extends Command {
           url: `https://cdn.discordapp.com/emojis/${emoji}.${animated ? "gif" : "png"}`,
         },
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

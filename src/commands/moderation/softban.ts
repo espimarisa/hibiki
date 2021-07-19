@@ -17,16 +17,16 @@ export class SoftbanCommand extends Command {
     // Gets the member and reason
     const member = pargs[0].value as Member;
     let reason = args.slice(1).join(" ");
-    if (!reason.length) reason = msg.string("global.NO_REASON");
+    if (!reason.length) reason = msg.locale("global.NO_REASON");
     else if (reason.length > 512) reason = reason.slice(0, 512);
 
     // Compares bot roles to target's roles
     if (!roleHierarchy(msg.channel.guild.members.get(this.bot.user.id), member)) {
       return msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("moderation.PUNISHMENT_TOOLOWROLE", {
+        msg.locale("global.ERROR"),
+        msg.locale("moderation.PUNISHMENT_TOOLOWROLE", {
           member: msg.tagUser(member.user),
-          type: msg.string("moderation.BAN").toLowerCase(),
+          type: msg.locale("moderation.BAN").toLowerCase(),
         }),
         "error",
       );
@@ -35,22 +35,22 @@ export class SoftbanCommand extends Command {
     // Compares author roles to target
     if (roleHierarchy(msg.member, member)) {
       const banmsg = await msg.createEmbed(
-        `🔨 ${msg.string("moderation.BAN")}`,
-        msg.string("moderation.PUNISHMENT_CONFIRMATION", {
+        `🔨 ${msg.locale("moderation.BAN")}`,
+        msg.locale("moderation.PUNISHMENT_CONFIRMATION", {
           member: msg.tagUser(member.user),
-          type: msg.string("moderation.BAN").toLowerCase(),
+          type: msg.locale("moderation.BAN").toLowerCase(),
         }),
       );
 
-      const response = (await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
-        timeoutHandler(err, banmsg, msg.string),
+      const response = (await askYesNo(this.bot, msg.locale, msg.author.id, msg.channel.id).catch((err) =>
+        timeoutHandler(err, banmsg, msg.locale),
       )) as ResponseData;
 
       // If the ban was cancelled
       if (!response || response.response === false) {
         return banmsg.editEmbed(
-          msg.string("global.CANCELLED"),
-          msg.string("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.string("moderation.BANNING") }),
+          msg.locale("global.CANCELLED"),
+          msg.locale("moderation.PUNISHMENT_CANCELLED", { member: msg.tagUser(member.user), type: msg.locale("moderation.BANNING") }),
           "error",
         );
       }
@@ -59,10 +59,10 @@ export class SoftbanCommand extends Command {
         await member.ban(0, `${reason} (${msg.tagUser(msg.author, true)})`);
       } catch (err) {
         await banmsg.editEmbed(
-          `🔨 ${msg.string("moderation.BAN")}`,
-          msg.string("moderation.PUNISHMENT_FAILED", {
+          `🔨 ${msg.locale("moderation.BAN")}`,
+          msg.locale("moderation.PUNISHMENT_FAILED", {
             member: msg.tagUser(member.user),
-            type: msg.string("moderation.BAN").toLowerCase(),
+            type: msg.locale("moderation.BAN").toLowerCase(),
           }),
           "error",
         );
@@ -108,10 +108,10 @@ export class SoftbanCommand extends Command {
       }
 
       await banmsg.editEmbed(
-        msg.string("global.SUCCESS"),
-        msg.string("moderation.PUNISHMENT_SUCCESS", {
+        msg.locale("global.SUCCESS"),
+        msg.locale("moderation.PUNISHMENT_SUCCESS", {
           member: msg.tagUser(member.user),
-          type: msg.string("moderation.BANNED").toLowerCase(),
+          type: msg.locale("moderation.BANNED").toLowerCase(),
           author: msg.author.username,
         }),
         "success",

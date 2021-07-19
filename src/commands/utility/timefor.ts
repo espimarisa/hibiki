@@ -9,7 +9,7 @@ import utc from "dayjs/plugin/utc";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export class TimeforCommand extends Command {
+export class TimeForCommand extends Command {
   description = "Retuns the current time for a member if they have a timezone set.";
   args = "<member:member&fallback>";
   aliases = ["time", "tz"];
@@ -23,15 +23,15 @@ export class TimeforCommand extends Command {
       const currentTime = new Date();
       if (userConfig.timezone) timezone = dayjs(currentTime).tz(userConfig.timezone);
       if (!timezone || !(timezone as any).$d) timezone = null;
-      else timezone = dateFormat((timezone as any).$d, msg.string);
+      else timezone = dateFormat((timezone as any).$d, msg.locale);
     }
 
     if (!timezone)
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.TIMEFOR_NOTSET", { member: member.user.username }), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.TIMEFOR_NOTSET", { member: member.user.username }), "error");
 
     msg.createEmbed(
-      `⌚ ${msg.string("utility.TIMEFOR")}`,
-      msg.string("utility.TIMEFOR_TIME", {
+      `⌚ ${msg.locale("utility.TIMEFOR")}`,
+      msg.locale("utility.TIMEFOR_TIME", {
         member: member.user.username,
         time: timezone,
       }),

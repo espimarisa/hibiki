@@ -12,7 +12,7 @@ export class DanbooruCommand extends Command {
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Danbooru only supports up to 2 tags at a time
-    if (args.length > 2) return msg.createEmbed(msg.string("global.ERROR"), msg.string("nsfw.DANBOORU_TAGS"), "error");
+    if (args.length > 2) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("nsfw.DANBOORU_TAGS"), "error");
     const query = encodeURIComponent(args.join(" ").toLowerCase());
 
     // Finds the posts
@@ -20,7 +20,7 @@ export class DanbooruCommand extends Command {
 
     // Sends if no posts
     if (!body || !body.data?.length || !body.data?.[0]?.file_url) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGEQUERY"), "error");
     }
 
     // Gets post
@@ -28,24 +28,24 @@ export class DanbooruCommand extends Command {
 
     // Blacklists bad posts
     if (body.data[random].rating !== "s" && !blacklistedTags.every((t) => !body.data[random]?.tag_string?.split(" ")?.includes(t))) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGEQUERY"), "error");
     }
 
     // Handles videos
     if (videoFileRegex.test(body.data[random].file_url)) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_ATTACHMENT", { url: body.data[0].file_url }), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_ATTACHMENT", { url: body.data[0].file_url }), "error");
     }
 
     // Sends the post
     msg.channel.createMessage({
       embed: {
-        title: `🔞 ${msg.string("nsfw.DANBOORU")}`,
+        title: `🔞 ${msg.locale("nsfw.DANBOORU")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data[random]?.file_url,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "danbooru.donmai.us",
           }),

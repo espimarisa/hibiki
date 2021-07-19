@@ -19,20 +19,20 @@ export class VerifyCommand extends Command {
 
     // If the role isn't yet yet
     if (!guildconfig?.verifiedRole) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.VERIFY_NOTSET"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.VERIFY_NOTSET"), "error");
     }
 
     // Deletes the role in the guildconfig if it doesn't exist anymore
     const roleCheck = await itemExists(msg.channel.guild, "role", guildconfig.verifiedRole, this.bot.db, "verifiedRole");
     if (!roleCheck) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.VERIFY_NOTSET"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.VERIFY_NOTSET"), "error");
     }
 
     // If the bot's role isn't high enough to update the member's role
     if (!roleHierarchy(msg.channel.guild.members.get(this.bot.user.id), member)) {
       return msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("global.ERROR_ROLEUPDATE_TOOLOW", { member: msg.tagUser(member.user) }),
+        msg.locale("global.ERROR"),
+        msg.locale("global.ERROR_ROLEUPDATE_TOOLOW", { member: msg.tagUser(member.user) }),
         "error",
       );
     }
@@ -40,8 +40,8 @@ export class VerifyCommand extends Command {
     // If a member already has the role
     if (member.roles?.includes(guildconfig.verifiedRole)) {
       return msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("moderation.VERIFY_ALREADYHAS", { member: msg.tagUser(member.user) }),
+        msg.locale("global.ERROR"),
+        msg.locale("moderation.VERIFY_ALREADYHAS", { member: msg.tagUser(member.user) }),
         "error",
       );
     }
@@ -50,10 +50,10 @@ export class VerifyCommand extends Command {
     try {
       await member.addRole(guildconfig.verifiedRole, `Verified by ${msg.tagUser(msg.author, true)}`);
     } catch (err) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.VERIFY_FAILED"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.VERIFY_FAILED"), "error");
     }
 
     this.bot.emit("memberVerify", msg.channel.guild, member.user, msg.author, reason, guildconfig.verifiedRole);
-    msg.createEmbed(msg.string("global.SUCCESS"), msg.string("moderation.VERIFY_SUCCESS", { member: msg.tagUser(member.user) }), "success");
+    msg.createEmbed(msg.locale("global.SUCCESS"), msg.locale("moderation.VERIFY_SUCCESS", { member: msg.tagUser(member.user) }), "success");
   }
 }

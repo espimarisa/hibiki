@@ -3,7 +3,7 @@ import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import axios from "axios";
 
-export class LewdnekoCommand extends Command {
+export class MidriffHentaiCommand extends Command {
   description = "Sends a ecchi/hentai midriff picture.";
   aliases = ["midriff"];
   cooldown = 4000;
@@ -14,20 +14,20 @@ export class LewdnekoCommand extends Command {
     const body = (await axios.get("https://nekobot.xyz/api/image?type=hmidriff").catch(() => {})) as NekobotImage;
 
     if (!body || !body.data?.message) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGE"), "error");
     }
 
     msg.channel.createMessage({
       embed: {
-        title: `🔞 ${msg.string("nsfw.MIDRIFF_HENTAI")}`,
+        title: `🔞 ${msg.locale("nsfw.MIDRIFF_HENTAI")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data.message,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
-            poweredBy: "api.nekobot.xyz",
+            poweredBy: "nekobot.xyz/api",
           }),
           icon_url: msg.author.dynamicAvatarURL(),
         },

@@ -15,17 +15,17 @@ export class WikipediaCommand extends Command {
     const body = await axios.get(`https://en.wikipedia.org/api/rest_v1/page/summary/${query}`).catch(() => {});
 
     if (!body || !body.data || body.data.title === "Not found.") {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.WIKIPEDIA_NOTFOUND"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.WIKIPEDIA_NOTFOUND"), "error");
     }
 
     // Handles disambiguation pages
     if (body.data.type === "disambiguation") {
       return msg.createEmbed(
-        `🌐 ${msg.string("utility.WIKIPEDIA")}`,
-        msg.string("utility.WIKIPEDIA_DISAMBIGUATION", { page: body.data.content_urls.desktop.page }),
+        `🌐 ${msg.locale("utility.WIKIPEDIA")}`,
+        msg.locale("utility.WIKIPEDIA_DISAMBIGUATION", { page: body.data.content_urls.desktop.page }),
       );
     }
 
-    msg.createEmbed(`🌐 ${msg.string("utility.WIKIPEDIA")}`, `${body.data.extract}`);
+    msg.createEmbed(`🌐 ${msg.locale("utility.WIKIPEDIA")}`, `${body.data.extract}`);
   }
 }

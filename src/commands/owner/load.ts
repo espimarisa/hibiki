@@ -15,7 +15,7 @@ export class LoadCommand extends Command {
 
     // Warn us if we're in nodemon
     if (process.env.NODE_ENV === "development") {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.RELOAD_NODEMON"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("owner.RELOAD_NODEMON"), "error");
     }
 
     try {
@@ -34,9 +34,9 @@ export class LoadCommand extends Command {
 
       const commandToLoad = new command[Object.keys(command)[0]](this.bot, args.join(" "), category);
       this.bot.commands.push(commandToLoad);
-      msg.createEmbed(msg.string("global.SUCCESS"), msg.string("owner.LOAD_LOADED", { command: args.join(", ") }), "success");
+      msg.createEmbed(msg.locale("global.SUCCESS"), msg.locale("owner.LOAD_LOADED", { command: args.join(", ") }), "success");
     } catch (err) {
-      msg.createEmbed(msg.string("global.ERROR"), `\n\`\`\`js\n${err}\n\`\`\``, "error");
+      msg.createEmbed(msg.locale("global.ERROR"), `\n\`\`\`js\n${err}\n\`\`\``, "error");
     }
   }
 }

@@ -1,3 +1,8 @@
+/**
+ * @file Profile command
+ * @description Updates or views your profile's configuration
+ */
+
 import type { EmbedOptions, Emoji, Member, Message, TextChannel } from "eris";
 import type { LocaleSystem } from "../../classes/Locale";
 import type { ResponseData } from "../../typings/utils";
@@ -33,10 +38,10 @@ export class ProfileCommand extends Command {
 
     // Sets pronouns
     const pronouns = [
-      msg.string("global.NO_PREFERENCE"),
-      msg.string("global.PRONOUNS_HE"),
-      msg.string("global.PRONOUNS_SHE"),
-      msg.string("global.PRONOUNS_THEY"),
+      msg.locale("global.NO_PREFERENCE"),
+      msg.locale("global.PRONOUNS_HE"),
+      msg.locale("global.PRONOUNS_SHE"),
+      msg.locale("global.PRONOUNS_THEY"),
     ];
 
     // Sets pronoun reactions
@@ -64,17 +69,17 @@ export class ProfileCommand extends Command {
     function editEmbed(localeSystem?: LocaleSystem) {
       const primaryEmbed = {
         embed: {
-          title: `👤 ${msg.string("general.PROFILE")}`,
-          description: msg.string("general.PROFILE_DESCRIPTION"),
+          title: `👤 ${msg.locale("general.PROFILE")}`,
+          description: msg.locale("general.PROFILE_DESCRIPTION"),
           color: msg.convertHex("general"),
           fields: (items as any)
-            .concat([{ emoji: deleteEmoji, label: msg.string("global.DELETE"), type: "delete", id: "delete" }])
+            .concat([{ emoji: deleteEmoji, label: msg.locale("global.DELETE"), type: "delete", id: "delete" }])
             .map((item: ValidItem) => ({
-              name: `${item.emoji} ${localizeProfileItems(msg.string, item.id, true)}`,
-              value: localizeItem(item, localeSystem) || localizeProfileItems(msg.string, item.id),
+              name: `${item.emoji} ${localizeProfileItems(msg.locale, item.id, true)}`,
+              value: localizeItem(item, localeSystem) || localizeProfileItems(msg.locale, item.id),
             })),
           footer: {
-            text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+            text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
             icon_url: msg.author.dynamicAvatarURL(),
           },
         } as EmbedOptions,
@@ -106,21 +111,21 @@ export class ProfileCommand extends Command {
 
         // Deletes a user's config
         if (emoji.name === deleteEmoji) {
-          omsg.editEmbed(`❓ ${msg.string("global.CONFIRMATION")}`, msg.string("general.PROFILE_DELETE_CONFIRMATION"));
+          omsg.editEmbed(`❓ ${msg.locale("global.CONFIRMATION")}`, msg.locale("general.PROFILE_DELETE_CONFIRMATION"));
           // Waits for response
-          const response = (await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
-            timeoutHandler(err, msg, msg.string),
+          const response = (await askYesNo(this.bot, msg.locale, msg.author.id, msg.channel.id).catch((err) =>
+            timeoutHandler(err, msg, msg.locale),
           )) as ResponseData;
 
           // If the user cancels deleting
           if (!response || response?.response === false) {
-            omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.PROFILE_CANCELLED_DELETING"), "error");
+            omsg.editEmbed(msg.locale("global.CANCELLED"), msg.locale("general.PROFILE_CANCELLED_DELETING"), "error");
           } else {
             // Deletes the config and the askYesNo message
             await this.bot.db.deleteUserConfig(msg.author.id);
             userconfig = { id: msg.author.id };
             omsg.removeReaction(deleteEmoji, user.id);
-            omsg.editEmbed(msg.string("global.SUCCESS"), msg.string("general.PROFILE_DELETED"), "success");
+            omsg.editEmbed(msg.locale("global.SUCCESS"), msg.locale("general.PROFILE_DELETED"), "success");
           }
           setTimeout(() => {
             omsg.edit(editEmbed(this.bot.localeSystem));
@@ -140,9 +145,9 @@ export class ProfileCommand extends Command {
           // Updates the config
           await this.bot.db.updateUserConfig(msg.author.id, userconfig);
           omsg.editEmbed(
-            localizeProfileItems(msg.string, setting.id, true),
-            `${setting.id} ${msg.string("global.HAS_BEEN")} **${
-              userconfig[setting.id] ? `${msg.string("global.ENABLED")}` : `${msg.string("global.DISABLED")}`
+            localizeProfileItems(msg.locale, setting.id, true),
+            `${setting.id} ${msg.locale("global.HAS_BEEN")} **${
+              userconfig[setting.id] ? `${msg.locale("global.ENABLED")}` : `${msg.locale("global.DISABLED")}`
             }**.`,
             "success",
           );
@@ -160,7 +165,7 @@ export class ProfileCommand extends Command {
           emojiArray.forEach(async (emoji) => omsg.addReaction(emoji));
 
           omsg.editEmbed(
-            msg.string("general.PROFILE_REACT_PRONOUNS"),
+            msg.locale("general.PROFILE_REACT_PRONOUNS"),
             Object.entries(pronounEmojis)
               .map((p) => `${p[0]}: ${p[1]}`)
               .join("\n"),
@@ -200,11 +205,11 @@ export class ProfileCommand extends Command {
           reacting = false;
           addEmojis();
         } else {
-          omsg.editEmbed(`👤 ${msg.string("general.PROFILE")}`, localizeItemTypes(msg.string, setting.type));
+          omsg.editEmbed(`👤 ${msg.locale("general.PROFILE")}`, localizeItemTypes(msg.locale, setting.type));
           await askForValue(msg, omsg, this.bot, "profile", userconfig, editEmbed, setting);
         }
       },
       this.bot,
-    ).catch((err) => timeoutHandler(err, omsg, msg.string));
+    ).catch((err) => timeoutHandler(err, omsg, msg.locale));
   }
 }

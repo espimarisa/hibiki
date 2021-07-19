@@ -19,20 +19,20 @@ export class UnverifyCommand extends Command {
 
     // If the role isn't yet yet
     if (!guildconfig?.verifiedRole) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.VERIFY_NOTSET"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.VERIFY_NOTSET"), "error");
     }
 
     // Deletes the role in the guildconfig if it doesn't exist anymore
     const roleCheck = await itemExists(msg.channel.guild, "role", guildconfig.verifiedRole, this.bot.db, "verifiedRole");
     if (!roleCheck) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.VERIFY_NOTSET"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.VERIFY_NOTSET"), "error");
     }
 
     // If the bot's role isn't high enough to update the member's role
     if (!roleHierarchy(msg.channel.guild.members.get(this.bot.user.id), member)) {
       return msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("global.ERROR_ROLEUPDATE_TOOLOW", { member: msg.tagUser(member.user) }),
+        msg.locale("global.ERROR"),
+        msg.locale("global.ERROR_ROLEUPDATE_TOOLOW", { member: msg.tagUser(member.user) }),
         "error",
       );
     }
@@ -40,8 +40,8 @@ export class UnverifyCommand extends Command {
     // If a member doesn't have the role
     if (!member.roles?.includes(guildconfig.verifiedRole)) {
       return msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("moderation.UNVERIFY_DOESNTHAVE", { member: msg.tagUser(member.user) }),
+        msg.locale("global.ERROR"),
+        msg.locale("moderation.UNVERIFY_DOESNTHAVE", { member: msg.tagUser(member.user) }),
         "error",
       );
     }
@@ -50,13 +50,13 @@ export class UnverifyCommand extends Command {
     try {
       await member.removeRole(guildconfig.verifiedRole, `Unverified by ${msg.tagUser(msg.author, true)}`);
     } catch (err) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.UNVERIFY_FAILED"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.UNVERIFY_FAILED"), "error");
     }
 
     this.bot.emit("memberUnverify", msg.channel.guild, member.user, msg.author, reason, guildconfig.verifiedRole);
     msg.createEmbed(
-      msg.string("global.SUCCESS"),
-      msg.string("moderation.UNVERIFY_SUCCESS", { member: msg.tagUser(member.user) }),
+      msg.locale("global.SUCCESS"),
+      msg.locale("moderation.UNVERIFY_SUCCESS", { member: msg.tagUser(member.user) }),
       "success",
     );
   }

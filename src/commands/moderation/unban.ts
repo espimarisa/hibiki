@@ -13,7 +13,7 @@ export class UnbanCommand extends Command {
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Max # of unbans
     if (args.length > 10) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.UNBAN_TOOLONG"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.UNBAN_TOOLONG"), "error");
     }
 
     // Tries to unban the IDs
@@ -51,12 +51,12 @@ export class UnbanCommand extends Command {
     const failed = unbans.filter((b) => !b.unbanned);
 
     // If no members were unbanned
-    if (!unbanned.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.UNBAN_ALLFAILED"), "error");
+    if (!unbanned.length) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.UNBAN_ALLFAILED"), "error");
 
     // If some failed
     if (failed.length) {
       failedField.push({
-        name: msg.string("moderation.UNBAN_FAILED"),
+        name: msg.locale("moderation.UNBAN_FAILED"),
         value: failed.map((b) => `\`${b.user}\``).join(", "),
       });
     }
@@ -64,12 +64,12 @@ export class UnbanCommand extends Command {
     // Sends confirmation
     msg.channel.createMessage({
       embed: {
-        title: `✅ ${msg.string("moderation.UNBAN_UNBANNED", { amount: unbanned.length })}`,
+        title: `✅ ${msg.locale("moderation.UNBAN_UNBANNED", { amount: unbanned.length })}`,
         description: `${usernames.map((u) => `\`${u.name}\``).join(", ")}`,
         fields: failedField,
         color: msg.convertHex("success"),
         footer: {
-          text: `${msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
+          text: `${msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

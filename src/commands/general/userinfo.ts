@@ -1,3 +1,8 @@
+/**
+ * @file User info command
+ * @description Returns information about a member and displays their profile
+ */
+
 import type { Dayjs } from "dayjs";
 import type { EmbedField, Member, Message, Role, TextChannel } from "eris";
 import { Constants } from "eris";
@@ -13,7 +18,7 @@ import utc from "dayjs/plugin/utc";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export class UserinfoCommand extends Command {
+export class UserInfoCommand extends Command {
   description = "Returns information about a member and displays their profile.";
   args = "<member:member&fallback,userFallback>";
   aliases = ["profileinfo", "member", "minfo", "memberinfo", "uinfo", "user"];
@@ -44,10 +49,10 @@ export class UserinfoCommand extends Command {
 
     // Localizes pronouns
     const pronouns = [
-      msg.string("global.NO_PREFERENCE"),
-      msg.string("global.PRONOUNS_HE"),
-      msg.string("global.PRONOUNS_SHE"),
-      msg.string("global.PRONOUNS_THEY"),
+      msg.locale("global.NO_PREFERENCE"),
+      msg.locale("global.PRONOUNS_HE"),
+      msg.locale("global.PRONOUNS_SHE"),
+      msg.locale("global.PRONOUNS_THEY"),
     ];
 
     // Gets user's current time
@@ -56,7 +61,7 @@ export class UserinfoCommand extends Command {
       const currentTime = new Date();
       if (userconfig.timezone) timezone = dayjs(currentTime).tz(userconfig.timezone);
       if (!timezone || !(timezone as any).$d) timezone = null;
-      else timezone = dateFormat((timezone as any).$d, msg.string);
+      else timezone = dateFormat((timezone as any).$d, msg.locale);
     }
 
     // Custom statuses/game
@@ -80,11 +85,11 @@ export class UserinfoCommand extends Command {
       const song = member.activities.find((s) => s.id === "spotify:1");
       const game = member.activities.find((s) => s.id !== "custom");
       if (song) {
-        playing = msg.string("general.USER_SPOTIFY", { name: song.details, artist: song.state, album: song.assets?.large_text });
-        statusType = statusTypeFormat(msg.string, member.game.type, true);
+        playing = msg.locale("general.USER_SPOTIFY", { name: song.details, artist: song.state, album: song.assets?.large_text });
+        statusType = statusTypeFormat(msg.locale, member.game.type, true);
       } else if (game && !song) {
         playing = `${game.name}`;
-        statusType = statusTypeFormat(msg.string, game.type);
+        statusType = statusTypeFormat(msg.locale, game.type);
       }
     }
 
@@ -110,7 +115,7 @@ export class UserinfoCommand extends Command {
     // Cookie amount
     if (cookies?.amount > 0) {
       botStats.push({
-        name: msg.string("fun.COOKIE_TOTAL", { amount: cookies.amount }),
+        name: msg.locale("fun.COOKIE_TOTAL", { amount: cookies.amount }),
         value: `${cookies?.amount}`,
       });
     }
@@ -118,7 +123,7 @@ export class UserinfoCommand extends Command {
     // Member points
     if (points?.length > 0) {
       botStats.push({
-        name: msg.string("fun.POINT_TOTAL", { amount: points.length }),
+        name: msg.locale("fun.POINT_TOTAL", { amount: points.length }),
         value: `${points.length}`,
       });
     }
@@ -126,30 +131,30 @@ export class UserinfoCommand extends Command {
     // Member warnings
     if (warnings?.length > 0) {
       botStats.push({
-        name: msg.string("moderation.WARNING_TOTAL", { amount: warnings.length }),
+        name: msg.locale("moderation.WARNING_TOTAL", { amount: warnings.length }),
         value: `${warnings.length}`,
       });
     }
 
     // User ID
     fields.push({
-      name: msg.string("global.ID"),
+      name: msg.locale("global.ID"),
       value: member.id,
     });
 
     // Account creation & join dates
     fields.push({
-      name: msg.string("general.USER_ACCOUNT"),
+      name: msg.locale("general.USER_ACCOUNT"),
       value:
-        `${msg.string("general.USER_CREATED")} ${dateFormat(member.createdAt, msg.string)}` +
-        (!user ? `\n${msg.string("general.USER_JOINED")} ${dateFormat(member.joinedAt, msg.string)}` : ""),
+        `${msg.locale("general.USER_CREATED")} ${dateFormat(member.createdAt, msg.locale)}` +
+        (!user ? `\n${msg.locale("general.USER_JOINED")} ${dateFormat(member.joinedAt, msg.locale)}` : ""),
     });
 
     // Playing
     if (member.status !== undefined) {
       fields.push({
-        name: msg.string("global.STATUS"),
-        value: `${statusFormat(msg.string, member.status)}`,
+        name: msg.locale("global.STATUS"),
+        value: `${statusFormat(msg.locale, member.status)}`,
         inline: false,
       });
     }
@@ -166,7 +171,7 @@ export class UserinfoCommand extends Command {
     // Nicknames
     if (member.nick) {
       fields.push({
-        name: msg.string("global.NICKNAME"),
+        name: msg.locale("global.NICKNAME"),
         value: `${member.nick}`,
         inline: true,
       });
@@ -183,7 +188,7 @@ export class UserinfoCommand extends Command {
 
       if (role) {
         fields.push({
-          name: msg.string("general.USER_HIGHESTROLE"),
+          name: msg.locale("general.USER_HIGHESTROLE"),
           value: `${role.name}`,
           inline: true,
         });
@@ -194,7 +199,7 @@ export class UserinfoCommand extends Command {
     if (userconfig) {
       if (userconfig.pronouns) {
         fields.push({
-          name: msg.string("global.PRONOUNS"),
+          name: msg.locale("global.PRONOUNS"),
           value: `${pronouns[userconfig.pronouns]}`,
           inline: true,
         });
@@ -203,7 +208,7 @@ export class UserinfoCommand extends Command {
       // Current time
       if (timezone) {
         fields.push({
-          name: msg.string("general.USER_TIME"),
+          name: msg.locale("general.USER_TIME"),
           value: `${timezone}`,
           inline: true,
         });
@@ -212,7 +217,7 @@ export class UserinfoCommand extends Command {
       // Timezone
       if (userconfig.timezone && !userconfig.timezoneHide) {
         fields.push({
-          name: msg.string("global.TIMEZONE"),
+          name: msg.locale("global.TIMEZONE"),
           value: `${userconfig.timezone}`,
           inline: true,
         });
@@ -230,7 +235,7 @@ export class UserinfoCommand extends Command {
 
       if (marriedTo) {
         fields.push({
-          name: msg.string("general.USER_MARRIEDTO"),
+          name: msg.locale("general.USER_MARRIEDTO"),
           value: `${marriedTo}`,
           inline: true,
         });
@@ -240,7 +245,7 @@ export class UserinfoCommand extends Command {
     // Bot stats
     if (botStats.length) {
       fields.push({
-        name: msg.string("general.USER_BOTSTATS"),
+        name: msg.locale("general.USER_BOTSTATS"),
         value: `${botStats.map((s) => `${s.value} ${s.name}`).join("\n")}`,
         inline: false,
       });
@@ -260,9 +265,9 @@ export class UserinfoCommand extends Command {
           url: fallbackAvatar ?? (member.user.dynamicAvatarURL() || defaultAvatar),
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
-            extra: user ? msg.string("general.USER_NOTINGUILD") : undefined,
+            extra: user ? msg.locale("general.USER_NOTINGUILD") : undefined,
           }),
           icon_url: msg.author.dynamicAvatarURL() || defaultAvatar,
         },

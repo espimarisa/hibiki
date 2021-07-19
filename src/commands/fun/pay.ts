@@ -17,8 +17,8 @@ export class PayCommand extends Command {
     const amount = parseInt(pargs[1].value);
 
     // Invalid member or amount
-    if (member.bot) return msg.createEmbed(msg.string("global.ERROR"), msg.string("fun.PAY_BOT"), "error");
-    if (!amount || isNaN(amount) || amount < 0) return msg.createEmbed(msg.string("global.ERROR"), msg.string("fun.PAY_INVALID"), "error");
+    if (member.bot) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("fun.PAY_BOT"), "error");
+    if (!amount || isNaN(amount) || amount < 0) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("fun.PAY_INVALID"), "error");
 
     // Gets cookies
     let memberCookies = await this.bot.db.getUserCookies(member.user.id);
@@ -35,7 +35,7 @@ export class PayCommand extends Command {
     }
 
     if (!authorCookies || amount > authorCookies?.amount || authorCookies?.amount <= 0) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("fun.PAY_NOTENOUGH"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("fun.PAY_NOTENOUGH"), "error");
     }
 
     // Sets the amount
@@ -45,6 +45,6 @@ export class PayCommand extends Command {
     // Updates cookie amounts
     await this.bot.db.updateUserCookies(msg.author.id, authorCookies);
     await this.bot.db.updateUserCookies(member.user.id, memberCookies);
-    msg.createEmbed(`🍪 ${msg.string("fun.PAY")}`, msg.string("fun.PAY_PAYED", { amount: amount, receiver: member.user.username }));
+    msg.createEmbed(`🍪 ${msg.locale("fun.PAY")}`, msg.locale("fun.PAY_PAYED", { amount: amount, receiver: member.user.username }));
   }
 }

@@ -18,21 +18,21 @@ export class DivorceCommand extends Command {
   async run(msg: Message<TextChannel>) {
     // Gets marriage state
     const state = await this.bot.db.getUserMarriage(msg.author.id);
-    if (!state?.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("fun.DIVORCE_NOTMARRIED"), "error");
+    if (!state?.length) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("fun.DIVORCE_NOTMARRIED"), "error");
 
     // Asks for confirmation
-    const divorcemsg = await msg.createEmbed(`💔 ${msg.string("fun.DIVORCE")}`, msg.string("fun.DIVORCE_CONFIRMATION"));
-    const response = (await askYesNo(this.bot, msg.string, msg.author.id, msg.channel.id).catch((err) => {
-      return timeoutHandler(err, divorcemsg, msg.string);
+    const divorcemsg = await msg.createEmbed(`💔 ${msg.locale("fun.DIVORCE")}`, msg.locale("fun.DIVORCE_CONFIRMATION"));
+    const response = (await askYesNo(this.bot, msg.locale, msg.author.id, msg.channel.id).catch((err) => {
+      return timeoutHandler(err, divorcemsg, msg.locale);
     })) as ResponseData;
 
     // If divorce is cancelled
     if (response?.response === false) {
-      return divorcemsg.editEmbed(`💔 ${msg.string("fun.DIVORCE")}`, msg.string("fun.DIVORCE_CANCELLED"));
+      return divorcemsg.editEmbed(`💔 ${msg.locale("fun.DIVORCE")}`, msg.locale("fun.DIVORCE_CANCELLED"));
     }
 
     // Divorces
     await this.bot.db.deleteUserMarriage(msg.author.id);
-    divorcemsg.editEmbed(`💔 ${msg.string("fun.DIVORCE")}`, msg.string("fun.DIVORCE_DIVORCED"));
+    divorcemsg.editEmbed(`💔 ${msg.locale("fun.DIVORCE")}`, msg.locale("fun.DIVORCE_DIVORCED"));
   }
 }

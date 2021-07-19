@@ -26,7 +26,7 @@ export class GitHubCommand extends Command {
 
       // If nothing is found
       if (!body || !body?.data?.id || body?.data?.message) {
-        return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.GITHUB_ERROR"), "error");
+        return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.GITHUB_ERROR"), "error");
       }
 
       // Embed fields
@@ -36,31 +36,31 @@ export class GitHubCommand extends Command {
       // Creation date
       if (body.data.created_at) {
         dates.push({
-          name: msg.string("utility.CREATED_AT"),
-          value: `${dateFormat(body.data.created_at, msg.string)}`,
+          name: msg.locale("utility.CREATED_AT"),
+          value: `${dateFormat(body.data.created_at, msg.locale)}`,
         });
       }
 
       // Last update
       if (body.data.updated_at) {
         dates.push({
-          name: msg.string("utility.UPDATED_AT"),
-          value: `${dateFormat(body.data.updated_at, msg.string)}`,
+          name: msg.locale("utility.UPDATED_AT"),
+          value: `${dateFormat(body.data.updated_at, msg.locale)}`,
         });
       }
 
       // Last push
       if (body.data.pushed_at) {
         dates.push({
-          name: msg.string("utility.GITHUB_LASTPUSH"),
-          value: `${dateFormat(body.data.pushed_at, msg.string)}`,
+          name: msg.locale("utility.GITHUB_LASTPUSH"),
+          value: `${dateFormat(body.data.pushed_at, msg.locale)}`,
         });
       }
 
       // Timestamps
       if (dates.length) {
         fields.push({
-          name: msg.string("utility.GITHUB_REPOSITORY"),
+          name: msg.locale("utility.GITHUB_REPOSITORY"),
           value: `${dates.map((d) => `${d.name} ${d.value}`).join("\n")}`,
         });
       }
@@ -68,7 +68,7 @@ export class GitHubCommand extends Command {
       // Owner info
       if (body.data.owner?.login && !body.data.source) {
         fields.push({
-          name: msg.string("global.OWNER"),
+          name: msg.locale("global.OWNER"),
           value: body.data.owner.login,
           inline: true,
         });
@@ -77,8 +77,8 @@ export class GitHubCommand extends Command {
       // If it's a fork
       if (body.data.fork && body.data.source?.full_name) {
         fields.push({
-          name: msg.string("global.OWNER"),
-          value: msg.string("utility.GITHUB_FORKED_FROM", { repo: body.data.source?.full_name }),
+          name: msg.locale("global.OWNER"),
+          value: msg.locale("utility.GITHUB_FORKED_FROM", { repo: body.data.source?.full_name }),
           inline: true,
         });
       }
@@ -86,7 +86,7 @@ export class GitHubCommand extends Command {
       // Primary language
       if (body.data.language) {
         fields.push({
-          name: msg.string("utility.GITHUB_LANGUAGE"),
+          name: msg.locale("utility.GITHUB_LANGUAGE"),
           value: `${body.data.language}`,
           inline: true,
         });
@@ -95,7 +95,7 @@ export class GitHubCommand extends Command {
       // License
       if (body.data.license?.spdx_id && body.data.license?.spdx_id !== "NOASSERTION")
         fields.push({
-          name: msg.string("utility.LICENSE"),
+          name: msg.locale("utility.LICENSE"),
           value: `${body.data.license.spdx_id}`,
           inline: true,
         });
@@ -103,7 +103,7 @@ export class GitHubCommand extends Command {
       // Total stars
       if (body.data.stargazers_count > 0) {
         fields.push({
-          name: msg.string("utility.GITHUB_STARS"),
+          name: msg.locale("utility.GITHUB_STARS"),
           value: `${body.data.stargazers_count}`,
           inline: true,
         });
@@ -112,7 +112,7 @@ export class GitHubCommand extends Command {
       // Total watchers
       if (body.data.subscribers_count > 0) {
         fields.push({
-          name: msg.string("utility.GITHUB_WATCHING"),
+          name: msg.locale("utility.GITHUB_WATCHING"),
           value: `${body.data.subscribers_count}`,
           inline: true,
         });
@@ -121,7 +121,7 @@ export class GitHubCommand extends Command {
       // Issues open
       if (body.data.open_issues > 0) {
         fields.push({
-          name: msg.string("utility.GITHUB_ISSUES"),
+          name: msg.locale("utility.GITHUB_ISSUES"),
           value: `${body.data.open_issues}`,
           inline: true,
         });
@@ -130,7 +130,7 @@ export class GitHubCommand extends Command {
       // Total forks
       if (body.data.forks > 0) {
         fields.push({
-          name: msg.string("utility.GITHUB_FORKS"),
+          name: msg.locale("utility.GITHUB_FORKS"),
           value: `${body.data.forks}`,
           inline: true,
         });
@@ -139,7 +139,7 @@ export class GitHubCommand extends Command {
       // Homepage
       if (body.data.homepage) {
         fields.push({
-          name: msg.string("utility.HOMEPAGE"),
+          name: msg.locale("utility.HOMEPAGE"),
           value: `${body.data.homepage}`,
           inline: true,
         });
@@ -160,7 +160,7 @@ export class GitHubCommand extends Command {
             url: body.data.owner.avatar_url,
           },
           footer: {
-            text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+            text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
             icon_url: msg.author.dynamicAvatarURL(),
           },
         },
@@ -179,7 +179,7 @@ export class GitHubCommand extends Command {
 
       // If nothing is found
       if (!body || !body?.data?.id || body?.data?.message) {
-        return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.GITHUB_ERROR"), "error");
+        return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.GITHUB_ERROR"), "error");
       }
 
       // Embed fields
@@ -188,17 +188,17 @@ export class GitHubCommand extends Command {
       // Created at
       if (body.data.created_at) {
         fields.push({
-          name: msg.string("general.USER_ACCOUNT"),
+          name: msg.locale("general.USER_ACCOUNT"),
           value:
-            `${msg.string("global.CREATED_AT")} ${dateFormat(body.data.created_at, msg.string)}` +
-            (body.data.updated_at ? `\n${msg.string("utility.UPDATED_AT")} ${dateFormat(body.data.updated_at, msg.string)}` : ""),
+            `${msg.locale("global.CREATED_AT")} ${dateFormat(body.data.created_at, msg.locale)}` +
+            (body.data.updated_at ? `\n${msg.locale("utility.UPDATED_AT")} ${dateFormat(body.data.updated_at, msg.locale)}` : ""),
         });
       }
 
       // Repositories
       if (body.data.public_repos > 0) {
         fields.push({
-          name: msg.string("utility.GITHUB_REPOSITORIES"),
+          name: msg.locale("utility.GITHUB_REPOSITORIES"),
           value: `${body.data.public_repos}`,
           inline: true,
         });
@@ -207,7 +207,7 @@ export class GitHubCommand extends Command {
       // Followers
       if (body.data.followers > 0) {
         fields.push({
-          name: msg.string("utility.FOLLOWERS"),
+          name: msg.locale("utility.FOLLOWERS"),
           value: `${body.data.followers}`,
           inline: true,
         });
@@ -216,7 +216,7 @@ export class GitHubCommand extends Command {
       // Following
       if (body.data.following > 0) {
         fields.push({
-          name: msg.string("utility.FOLLOWING"),
+          name: msg.locale("utility.FOLLOWING"),
           value: `${body.data.following}`,
           inline: true,
         });
@@ -225,7 +225,7 @@ export class GitHubCommand extends Command {
       // Gists
       if (body.data.public_gists > 0) {
         fields.push({
-          name: msg.string("utility.GITHUB_GISTS"),
+          name: msg.locale("utility.GITHUB_GISTS"),
           value: `${body.data.public_gists}`,
           inline: true,
         });
@@ -234,7 +234,7 @@ export class GitHubCommand extends Command {
       // Location
       if (body.data.location) {
         fields.push({
-          name: msg.string("utility.LOCATION"),
+          name: msg.locale("utility.LOCATION"),
           value: `${body.data.location}`,
           inline: true,
         });
@@ -243,7 +243,7 @@ export class GitHubCommand extends Command {
       // Company
       if (body.data.company) {
         fields.push({
-          name: msg.string("utility.GITHUB_COMPANY"),
+          name: msg.locale("utility.GITHUB_COMPANY"),
           value: `${body.data.company}`,
           inline: true,
         });
@@ -252,7 +252,7 @@ export class GitHubCommand extends Command {
       // Website/blog
       if (body.data.blog) {
         fields.push({
-          name: msg.string("utility.WEBSITE"),
+          name: msg.locale("utility.WEBSITE"),
           value: `${body.data.blog}`,
           inline: true,
         });
@@ -261,7 +261,7 @@ export class GitHubCommand extends Command {
       // Twitter
       if (body.data.twitter_username) {
         fields.push({
-          name: msg.string("utility.TWITTER"),
+          name: msg.locale("utility.TWITTER"),
           value: `[@${body.data.twitter_username}](https://twitter.com/${body.data.twitter_username})`,
           inline: true,
         });
@@ -270,7 +270,7 @@ export class GitHubCommand extends Command {
       // Email
       if (body.data.email) {
         fields.push({
-          name: msg.string("utility.EMAIL"),
+          name: msg.locale("utility.EMAIL"),
           value: `${body.data.email}`,
           inline: true,
         });
@@ -291,7 +291,7 @@ export class GitHubCommand extends Command {
             url: body.data.avatar_url,
           },
           footer: {
-            text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+            text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
             icon_url: msg.author.dynamicAvatarURL(),
           },
         },

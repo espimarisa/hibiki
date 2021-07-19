@@ -1,7 +1,7 @@
 import type { EmbedField, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 
-export class RemovewarnCommand extends Command {
+export class RemoveWarnCommand extends Command {
   description = "Removes one or more warnings.";
   requiredperms: ["manageMessages"];
   args = "<ids:string>";
@@ -30,10 +30,10 @@ export class RemovewarnCommand extends Command {
     const failedField: EmbedField[] = [];
     const removed = warnings.filter((w) => w.removed);
     const failed = warnings.filter((w) => !w.removed);
-    if (!removed.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.WARNINGS_ALLFAILED"), "error");
+    if (!removed.length) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.WARNINGS_ALLFAILED"), "error");
     if (failed.length) {
       failedField.push({
-        name: msg.string("moderation.WARNINGS_FAILED"),
+        name: msg.locale("moderation.WARNINGS_FAILED"),
         value: failed.map((w) => w.warning).join(", "),
       });
     }
@@ -41,12 +41,12 @@ export class RemovewarnCommand extends Command {
     // Sends the embed
     msg.channel.createMessage({
       embed: {
-        title: `⚠ ${msg.string("moderation.WARNINGS_REMOVED", { amount: removed.length })}`,
+        title: `⚠ ${msg.locale("moderation.WARNINGS_REMOVED", { amount: removed.length })}`,
         description: `${removed.map((w) => `\`${w.warning}\``).join(", ")}`,
         color: msg.convertHex("general"),
         fields: failedField,
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

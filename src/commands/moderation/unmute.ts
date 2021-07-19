@@ -19,8 +19,8 @@ export class UnmuteCommand extends Command {
     // If the bot's role isn't high enough to update the member's role
     if (!roleHierarchy(msg.channel.guild.members.get(this.bot.user.id), member)) {
       return msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("global.ERROR_ROLEUPDATE_TOOLOW", { member: msg.tagUser(member.user) }),
+        msg.locale("global.ERROR"),
+        msg.locale("global.ERROR_ROLEUPDATE_TOOLOW", { member: msg.tagUser(member.user) }),
         "error",
       );
     }
@@ -28,8 +28,8 @@ export class UnmuteCommand extends Command {
     // If a member already has the role
     if (!member.roles?.includes(guildconfig.mutedRole)) {
       return msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("moderation.UNMUTE_DOESNTHAVE", { member: msg.tagUser(member.user) }),
+        msg.locale("global.ERROR"),
+        msg.locale("moderation.UNMUTE_DOESNTHAVE", { member: msg.tagUser(member.user) }),
         "error",
       );
     }
@@ -49,7 +49,7 @@ export class UnmuteCommand extends Command {
             await msg.channel.guild.addMemberRole(member.id, role, `Unmuted by ${msg.tagUser(msg.author, true)}`);
             added.push(role);
           } catch (err) {
-            failed.push(msg.channel.guild.roles?.get(role).name || msg.string("global.UNKNOWN"));
+            failed.push(msg.channel.guild.roles?.get(role).name || msg.locale("global.UNKNOWN"));
           }
         });
       });
@@ -60,14 +60,14 @@ export class UnmuteCommand extends Command {
     try {
       await member.removeRole(guildconfig.mutedRole, `Unmuted by ${msg.tagUser(msg.author, true)}`);
     } catch (err) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.UNMUTE_FAILED"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.UNMUTE_FAILED"), "error");
     }
 
     // If some roles failed to be removed
     if (failed.length) {
       msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("moderation.UNMUTE_FAILEDROLES", {
+        msg.locale("global.ERROR"),
+        msg.locale("moderation.UNMUTE_FAILEDROLES", {
           member: msg.tagUser(member.user),
           roles: failed.map((f) => `\`${f}\``),
         }),
@@ -76,8 +76,8 @@ export class UnmuteCommand extends Command {
     } else {
       // If no roles failed
       msg.createEmbed(
-        msg.string("global.SUCCESS"),
-        msg.string("moderation.UNMUTE_SUCCESS", { member: msg.tagUser(member.user) }),
+        msg.locale("global.SUCCESS"),
+        msg.locale("moderation.UNMUTE_SUCCESS", { member: msg.tagUser(member.user) }),
         "success",
       );
     }

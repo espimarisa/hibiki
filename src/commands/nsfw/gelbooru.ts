@@ -18,7 +18,7 @@ export class GelbooruCommand extends Command {
 
     // If nothing was found
     if (!body || !body.data[0].file_url) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGEQUERY"), "error");
     }
 
     // Gets post and handles videos
@@ -26,26 +26,26 @@ export class GelbooruCommand extends Command {
 
     // Blacklists bad posts
     if (!blacklistedTags.every((t) => !body.data[random]?.tags?.split(" ")?.includes(t))) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGEQUERY"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGEQUERY"), "error");
     }
 
     if (videoFileRegex.test(body.data[random].file_url)) {
       return msg.createEmbed(
-        msg.string("global.ERROR"),
-        msg.string("global.RESERROR_ATTACHMENT", { url: body.data[random].file_url }),
+        msg.locale("global.ERROR"),
+        msg.locale("global.RESERROR_ATTACHMENT", { url: body.data[random].file_url }),
         "error",
       );
     }
 
     msg.channel.createMessage({
       embed: {
-        title: `🔞 ${msg.string("nsfw.GELBOORU")}`,
+        title: `🔞 ${msg.locale("nsfw.GELBOORU")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data[random].file_url,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "gelbooru.com",
           }),

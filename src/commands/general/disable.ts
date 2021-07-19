@@ -43,12 +43,12 @@ export class DisableCommand extends Command {
 
       // Prevents owner or general commands from being disabled
       if (category === "owner" || category === "general") {
-        return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.DISABLE_CATEGORY_NOTALLOWED"), "error");
+        return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.DISABLE_CATEGORY_NOTALLOWED"), "error");
       }
 
       // If a category is already disabled
       if (guildconfig.disabledCategories && guildconfig.disabledCategories.includes(category)) {
-        return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.DISABLE_ALREADYDISABLED"), "error");
+        return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.DISABLE_ALREADYDISABLED"), "error");
       }
 
       // Updates the guildconfig
@@ -56,19 +56,19 @@ export class DisableCommand extends Command {
       this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);
       this.bot.emit("categoryDisable", msg.channel.guild, msg.member, category);
       return msg.createEmbed(
-        msg.string("global.SUCCESS"),
-        msg.string("general.DISABLE_CATEGORY_DISABLED", { category: category }),
+        msg.locale("global.SUCCESS"),
+        msg.locale("general.DISABLE_CATEGORY_DISABLED", { category: category }),
         "success",
       );
     }
 
     // Sends if a valid command isn't found
-    if (!cmd) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.DISABLE_COMMAND_NOTFOUND"), "error");
+    if (!cmd) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.DISABLE_COMMAND_NOTFOUND"), "error");
     if (!guildconfig.disabledCmds) guildconfig.disabledCmds = [];
 
     // Sends if the command is already disabled
     if (guildconfig.disabledCmds && guildconfig.disabledCmds.includes(cmd.name)) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.DISABLE_ALREADYDISABLED"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.DISABLE_ALREADYDISABLED"), "error");
     }
 
     if (cmd) {
@@ -76,7 +76,7 @@ export class DisableCommand extends Command {
       guildconfig.disabledCmds.push(cmd.name);
       await this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);
       this.bot.emit("commandDisable", msg.channel.guild, msg.member, command);
-      msg.createEmbed(msg.string("global.SUCCESS"), msg.string("general.DISABLE_COMMAND_DISABLED", { command: cmd.name }), "success");
+      msg.createEmbed(msg.locale("global.SUCCESS"), msg.locale("general.DISABLE_COMMAND_DISABLED", { command: cmd.name }), "success");
     }
   }
 }

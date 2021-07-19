@@ -3,7 +3,7 @@ import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import axios from "axios";
 
-export class LewdnekogifCommand extends Command {
+export class LewdNekoGIFCommand extends Command {
   description = "Sends a random neko hentai GIF.";
   aliases = ["lewdcatgirlgif"];
   cooldown = 4000;
@@ -14,18 +14,18 @@ export class LewdnekogifCommand extends Command {
     const body = (await axios.get("https://nekos.life/api/v2/img/nsfw_neko_gif").catch(() => {})) as NekosLifeImage;
 
     if (!body || !body.data?.url) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.RESERROR_IMAGE"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.RESERROR_IMAGE"), "error");
     }
 
     msg.channel.createMessage({
       embed: {
-        title: `🔞 ${msg.string("nsfw.LEWDNEKO")}`,
+        title: `🔞 ${msg.locale("nsfw.LEWDNEKO")}`,
         color: msg.convertHex("general"),
         image: {
           url: body.data.url,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "nekos.life",
           }),

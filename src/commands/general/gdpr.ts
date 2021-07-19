@@ -17,13 +17,13 @@ export class GDPRCommand extends Command {
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Server data dumping
-    if (["server", "guild", msg.string("global.SERVER"), msg.string("global.GUILD")].includes(args?.[0]?.toLowerCase())) {
+    if (["server", "guild", msg.locale("global.SERVER"), msg.locale("global.GUILD")].includes(args?.[0]?.toLowerCase())) {
       if (!msg.channel.guild) {
-        return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.GDPR_NOTSERVER"), "error");
+        return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.GDPR_NOTSERVER"), "error");
       }
 
       if (msg.channel.guild.ownerID !== msg.author.id && !msg.channel.guild.members?.get(msg.author.id)?.permissions.has("administrator")) {
-        return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.GDPR_NOPERMS"), "error");
+        return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.GDPR_NOPERMS"), "error");
       }
 
       // Gets owner DM channel
@@ -32,7 +32,7 @@ export class GDPRCommand extends Command {
         .getDMChannel()
         .catch(() => {});
 
-      if (!ownerDM) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.GDPR_NODMS"), "error");
+      if (!ownerDM) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.GDPR_NODMS"), "error");
       msg.addReaction("📬").catch(() => {});
 
       // Data to get
@@ -54,8 +54,8 @@ export class GDPRCommand extends Command {
         .createMessage(
           {
             embed: {
-              title: `🌐 ${msg.string("general.GDPR")}`,
-              description: msg.string("general.GDPR_DATA_SERVER"),
+              title: `🌐 ${msg.locale("general.GDPR")}`,
+              description: msg.locale("general.GDPR_DATA_SERVER"),
               color: msg.convertHex("general"),
             },
           },
@@ -65,7 +65,7 @@ export class GDPRCommand extends Command {
           },
         )
         .catch(() => {
-          msg.createEmbed(msg.string("global.ERROR"), msg.string("general.GDPR_ERROR"), "error");
+          msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.GDPR_ERROR"), "error");
           return;
         });
     }
@@ -77,7 +77,7 @@ export class GDPRCommand extends Command {
       .catch(() => {});
 
     // Gets user data and handles if the user doesn't have their DMs open
-    if (!userDM) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.GDPR_NODMS"), "error");
+    if (!userDM) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.GDPR_NODMS"), "error");
     msg.addReaction("📬").catch(() => {});
 
     // Data to get
@@ -103,8 +103,8 @@ export class GDPRCommand extends Command {
       .createMessage(
         {
           embed: {
-            title: `🌐 ${msg.string("general.GDPR")}`,
-            description: msg.string("general.GDPR_DATA"),
+            title: `🌐 ${msg.locale("general.GDPR")}`,
+            description: msg.locale("general.GDPR_DATA"),
             color: msg.convertHex("general"),
           },
         },
@@ -114,7 +114,7 @@ export class GDPRCommand extends Command {
         },
       )
       .catch(() => {
-        msg.createEmbed(msg.string("global.ERROR"), msg.string("general.GDPR_ERROR"), "error");
+        msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.GDPR_ERROR"), "error");
         return;
       });
   }

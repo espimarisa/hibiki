@@ -3,7 +3,7 @@ import type { WeebSHImage } from "../../typings/endpoints";
 import { Command } from "../../classes/Command";
 import axios from "axios";
 
-export class HoldhandsCommand extends Command {
+export class HoldHandsCommand extends Command {
   args = "<member:member>";
   aliases = ["handhold", "holdhand"];
   description = "Holds hands with someone else.";
@@ -26,13 +26,13 @@ export class HoldhandsCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        description: `👀 ${msg.string("roleplay.HOLDHANDS", { user: msg.author.username, member: member.user.username })}`,
+        description: `👀 ${msg.locale("roleplay.HOLDHANDS", { user: msg.author.username, member: member.user.username })}`,
         color: msg.convertHex("general"),
         image: {
           url: image,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "weeb.sh",
           }),

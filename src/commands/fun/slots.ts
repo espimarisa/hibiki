@@ -25,9 +25,9 @@ export class SlotsCommand extends Command {
     // Sends modifiers if no args or invalid #
     if (!amount || isNaN(amount) || amount <= 0) {
       return msg.createEmbed(
-        `🎰 ${msg.string("fun.SLOTS")}`,
-        msg.string("fun.SLOTS_PLAY", {
-          worth: EMOTES.map((e) => msg.string("fun.SLOTS_WORTH", { emotes: e, modifier: MODIFIERS[EMOTES.indexOf(e)] })).join("\n"),
+        `🎰 ${msg.locale("fun.SLOTS")}`,
+        msg.locale("fun.SLOTS_PLAY", {
+          worth: EMOTES.map((e) => msg.locale("fun.SLOTS_WORTH", { emotes: e, modifier: MODIFIERS[EMOTES.indexOf(e)] })).join("\n"),
         }),
       );
     }
@@ -59,7 +59,7 @@ export class SlotsCommand extends Command {
 
     // Compares amounts
     if (amount > cookies.amount || amount < 0) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("fun.SLOTS_NOTENOUGH", { amount: cookies.amount }), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("fun.SLOTS_NOTENOUGH", { amount: cookies.amount }), "error");
     }
 
     // Profit calculato
@@ -69,8 +69,8 @@ export class SlotsCommand extends Command {
     // Updates user cookies
     await this.bot.db.updateUserCookies(msg.author.id, cookies);
     msg.createEmbed(
-      `🎰 ${msg.string("fun.SLOTS")}`,
-      `${profit ? msg.string("fun.SLOTS_WON", { amount: profit }) : msg.string("fun.SLOTS_LOST")} \n${slotEmojis.join(" ")}`,
+      `🎰 ${msg.locale("fun.SLOTS")}`,
+      `${profit ? msg.locale("fun.SLOTS_WON", { amount: profit }) : msg.locale("fun.SLOTS_LOST")} \n${slotEmojis.join(" ")}`,
     );
   }
 }

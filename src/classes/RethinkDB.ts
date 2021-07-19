@@ -5,7 +5,7 @@
 
 import { r } from "rethinkdb-ts";
 
-import { setupRethink } from "../scripts/setup";
+import { setupRethink } from "../scripts/setupRethink";
 import { logger } from "../utils/logger";
 
 import config from "../../config.json";

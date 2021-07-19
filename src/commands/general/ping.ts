@@ -1,3 +1,8 @@
+/**
+ * @file Ping command
+ * @description Returns the bot's latency
+ */
+
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 
@@ -9,13 +14,13 @@ export class PingCommand extends Command {
   async run(msg: Message<TextChannel>) {
     const pingmsg = await msg.channel.createMessage({
       embed: {
-        title: `🏓 ${msg.string("general.PING")}`,
-        description: msg.string("general.PING_INITIAL_DESCRIPTION", { latency: msg.channel.guild.shard.latency }),
+        title: `🏓 ${msg.locale("general.PING")}`,
+        description: msg.locale("general.PING_INITIAL_DESCRIPTION", { latency: msg.channel.guild.shard.latency }),
         color: msg.convertHex("general"),
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
-            extra: `${msg.string("global.LATENCY")}: ${msg.channel.guild.shard.latency}ms`,
+            extra: `${msg.locale("global.LATENCY")}: ${msg.channel.guild.shard.latency}ms`,
           }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
@@ -24,13 +29,13 @@ export class PingCommand extends Command {
 
     pingmsg.edit({
       embed: {
-        title: `🏓 ${msg.string("general.PONG")}`,
-        description: msg.string("general.PING_LATENCY", { latency: pingmsg.timestamp - msg.timestamp }),
+        title: `🏓 ${msg.locale("general.PONG")}`,
+        description: msg.locale("general.PING_LATENCY", { latency: pingmsg.timestamp - msg.timestamp }),
         color: msg.convertHex("general"),
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
-            extra: `${msg.string("global.LATENCY")}: ${msg.channel.guild.shard.latency}ms`,
+            extra: `${msg.locale("global.LATENCY")}: ${msg.channel.guild.shard.latency}ms`,
           }),
           icon_url: msg.author.dynamicAvatarURL(),
         },

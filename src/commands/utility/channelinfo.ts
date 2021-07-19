@@ -3,7 +3,7 @@ import { Command } from "../../classes/Command";
 import { defaultAvatar } from "../../utils/constants";
 import { dateFormat } from "../../utils/format";
 
-export class ChannelinfoCommand extends Command {
+export class ChannelInfoCommand extends Command {
   description = "Gets information for a channel.";
   args = "<channel:channel&allowVoice>";
   aliases = ["cinfo"];
@@ -15,28 +15,28 @@ export class ChannelinfoCommand extends Command {
     // Category
     if (channel.parentID)
       fields.push({
-        name: msg.string("global.CATEGORY"),
+        name: msg.locale("global.CATEGORY"),
         value: `${msg.channel.guild.channels.get(channel.parentID).name}`,
       });
 
     // Topic
     if (channel.topic)
       fields.push({
-        name: msg.string("global.TOPIC"),
+        name: msg.locale("global.TOPIC"),
         value: `${channel.topic}`,
       });
 
     // Creation info
     fields.push({
-      name: msg.string("global.CREATED"),
-      value: `${dateFormat(channel.createdAt, msg.string)}`,
+      name: msg.locale("global.CREATED"),
+      value: `${dateFormat(channel.createdAt, msg.locale)}`,
     });
 
     // Info for text channels
     if (channel.type === 0)
       fields.push({
-        name: msg.string("global.INFO"),
-        value: `${msg.string("utility.CHANNELINFO_TEXT", {
+        name: msg.locale("global.INFO"),
+        value: `${msg.locale("utility.CHANNELINFO_TEXT", {
           nsfw: channel.nsfw ? 0 : 1,
           position: channel.position,
         })}`,
@@ -46,8 +46,8 @@ export class ChannelinfoCommand extends Command {
     // Eris typings suck!!!
     if (((channel as unknown) as VoiceChannel).type === 2)
       fields.push({
-        name: msg.string("global.INFO"),
-        value: `${msg.string("utility.CHANNELINFO_VOICE", {
+        name: msg.locale("global.INFO"),
+        value: `${msg.locale("utility.CHANNELINFO_VOICE", {
           bitrate: ((channel as unknown) as VoiceChannel).bitrate / 1000,
           limit: ((channel as unknown) as VoiceChannel).userLimit,
         })}`,
@@ -59,12 +59,12 @@ export class ChannelinfoCommand extends Command {
         fields: fields,
         author: {
           icon_url: msg.channel.guild.iconURL || `${defaultAvatar}`,
-          name: `#${channel.name} (${msg.string("global.CHANNEL_TYPE", {
+          name: `#${channel.name} (${msg.locale("global.CHANNEL_TYPE", {
             type: channel.type === 0 ? 0 : 1,
           })})`,
         },
         footer: {
-          text: `${msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
+          text: `${msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

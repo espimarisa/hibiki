@@ -23,13 +23,13 @@ export class CryCommand extends Command {
 
     msg.channel.createMessage({
       embed: {
-        description: `😢 ${msg.string("roleplay.CRY", { user: msg.author.username })}`,
+        description: `😢 ${msg.locale("roleplay.CRY", { user: msg.author.username })}`,
         color: msg.convertHex("general"),
         image: {
           url: image,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "weeb.sh",
           }),

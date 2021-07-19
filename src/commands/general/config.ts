@@ -68,39 +68,39 @@ export class SetupCommand extends Command {
     function localizeCategories(category: string) {
       switch (category) {
         case "features":
-          return msg.string("global.FEATURES");
+          return msg.locale("global.FEATURES");
         case "roles":
-          return msg.string("global.ROLES");
+          return msg.locale("global.ROLES");
         case "logging":
-          return msg.string("global.LOGGING");
+          return msg.locale("global.LOGGING");
         case "greeting":
-          return msg.string("global.GREETINGS");
+          return msg.locale("global.GREETINGS");
         case "sniping":
-          return msg.string("global.SNIPING");
+          return msg.locale("global.SNIPING");
         case "pinboard":
-          return msg.string("global.PINBOARD");
+          return msg.locale("global.PINBOARD");
         case "delete":
-          return msg.string("global.DELETE");
+          return msg.locale("global.DELETE");
         case "music":
-          return msg.string("global.MUSIC");
+          return msg.locale("global.MUSIC");
         case "automod":
-          return msg.string("global.AUTOMOD");
+          return msg.locale("global.AUTOMOD");
       }
     }
 
     // Sends the original message
     const primaryEmbed = {
       embed: {
-        title: `🔧 ${msg.string("general.CONFIG")}`,
+        title: `🔧 ${msg.locale("general.CONFIG")}`,
         color: msg.convertHex("general"),
         fields: categories.concat([{ emoji: deleteEmoji, name: "delete", items: ["delete"] }]).map((cat) => {
           return {
             name: `${cat.emoji.length > 2 ? "<:" : ""}${cat.emoji}${cat.emoji.length > 2 ? ">" : ""} ${localizeCategories(cat.name)}`,
-            value: `${cat.items.map((i: string) => `\`${localizeSetupItems(msg.string, i, true)}\``).join(", ")}`,
+            value: `${cat.items.map((i: string) => `\`${localizeSetupItems(msg.locale, i, true)}\``).join(", ")}`,
           };
         }),
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },
@@ -114,15 +114,15 @@ export class SetupCommand extends Command {
       if (editMsg) {
         message.edit({
           embed: {
-            title: `🔧 ${msg.string("general.CONFIG")}`,
+            title: `🔧 ${msg.locale("general.CONFIG")}`,
             fields: categories.map((cat) => {
               return {
                 name: `${cat.emoji} ${localizeCategories(cat.name)})`,
-                value: `${cat.items.map((i: string) => `\`${localizeSetupItems(msg.string, i, true)}\``).join(", ")}`,
+                value: `${cat.items.map((i: string) => `\`${localizeSetupItems(msg.locale, i, true)}\``).join(", ")}`,
               };
             }),
             footer: {
-              text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+              text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
               icon_url: msg.author.dynamicAvatarURL(),
             },
           },
@@ -153,21 +153,21 @@ export class SetupCommand extends Command {
         async (m: Message, emoji: Emoji, user: Member) => {
           if (m.id !== message.id || user.id !== msg.author.id || !emoji.name) return;
           if (emoji.name === deleteEmoji) {
-            omsg.editEmbed(`❓ ${msg.string("global.CONFIRMATION")}`, msg.string("general.CONFIG_DELETE_CONFIRMATION"));
+            omsg.editEmbed(`❓ ${msg.locale("global.CONFIRMATION")}`, msg.locale("general.CONFIG_DELETE_CONFIRMATION"));
             // Waits for response
-            const response = (await askYesNo(bot, msg.string, msg.author.id, msg.channel.id).catch((err) =>
-              timeoutHandler(err, msg, msg.string),
+            const response = (await askYesNo(bot, msg.locale, msg.author.id, msg.channel.id).catch((err) =>
+              timeoutHandler(err, msg, msg.locale),
             )) as ResponseData;
 
             // If the user cancels deleting
             if (!response || response.response === false) {
-              return omsg.editEmbed(msg.string("global.CANCELLED"), msg.string("general.CONFIG_CANCELLED_DELETE"), "error");
+              return omsg.editEmbed(msg.locale("global.CANCELLED"), msg.locale("general.CONFIG_CANCELLED_DELETE"), "error");
             }
 
             // Deletes the config and the askYesNo message
             await bot.db.deleteGuildConfig(msg.channel.guild.id);
             omsg.removeReaction(deleteEmoji, user.id);
-            omsg.editEmbed(msg.string("global.SUCCESS"), msg.string("general.CONFIG_DELETED"), "success");
+            omsg.editEmbed(msg.locale("global.SUCCESS"), msg.locale("general.CONFIG_DELETED"), "success");
             setTimeout(() => {
               omsg.edit(primaryEmbed);
             }, 3000);
@@ -185,7 +185,7 @@ export class SetupCommand extends Command {
           return true;
         },
         bot,
-      ).catch((err) => timeoutHandler(err, omsg, msg.string));
+      ).catch((err) => timeoutHandler(err, omsg, msg.locale));
       return category;
     }
 
@@ -193,17 +193,17 @@ export class SetupCommand extends Command {
     function itemsEmbed(category: ValidItemsCategory) {
       return {
         embed: {
-          title: `🔧 ${msg.string("general.CONFIG")}`,
+          title: `🔧 ${msg.locale("general.CONFIG")}`,
           color: msg.convertHex("general"),
           footer: {
-            text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+            text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
             icon_url: msg.author.dynamicAvatarURL(),
           },
           fields: category.items.map((cat: string) => {
             const setting = validItems.find((s) => s.id === cat);
             return {
-              name: `${setting.emoji} ${localizeSetupItems(msg.string, setting.id, true)}`,
-              value: `${localizeSetupItems(msg.string, setting.id)}`,
+              name: `${setting.emoji} ${localizeSetupItems(msg.locale, setting.id, true)}`,
+              value: `${localizeSetupItems(msg.locale, setting.id)}`,
               inline: false,
             };
           }),
@@ -215,7 +215,7 @@ export class SetupCommand extends Command {
     let category = (await getCategory(omsg, this.bot, false)) as any;
     selectingCategory = true;
     if (!category || category?.error === "timeout") {
-      omsg.editEmbed(msg.string("global.ERROR"), msg.string("global.TIMEOUT_REACHED"), "error");
+      omsg.editEmbed(msg.locale("global.ERROR"), msg.locale("global.TIMEOUT_REACHED"), "error");
       return;
     }
 
@@ -268,9 +268,9 @@ export class SetupCommand extends Command {
           // Updates the config
           await this.bot.db.updateGuildConfig(msg.channel.guild.id, guildconfig);
           omsg.editEmbed(
-            localizeSetupItems(msg.string, setting.id, true),
-            `${setting.id} ${msg.string("global.HAS_BEEN")} **${
-              guildconfig[setting.id] ? `${msg.string("global.ENABLED")}` : `${msg.string("global.DISABLED")}`
+            localizeSetupItems(msg.locale, setting.id, true),
+            `${setting.id} ${msg.locale("global.HAS_BEEN")} **${
+              guildconfig[setting.id] ? `${msg.locale("global.ENABLED")}` : `${msg.locale("global.DISABLED")}`
             }**.`,
             "success",
           );
@@ -284,11 +284,11 @@ export class SetupCommand extends Command {
           let punishmentLabels: Record<string, string>;
           let punishmentDescription: Record<string, string>;
           // Gets punishment labels
-          const banLabel = msg.string("moderation.BAN");
-          const kickLabel = msg.string("moderation.KICK");
-          const muteLabel = msg.string("moderation.MUTE");
-          const purgeLabel = msg.string("moderation.PURGE");
-          const warnLabel = msg.string("moderation.WARN");
+          const banLabel = msg.locale("moderation.BAN");
+          const kickLabel = msg.locale("moderation.KICK");
+          const muteLabel = msg.locale("moderation.MUTE");
+          const purgeLabel = msg.locale("moderation.PURGE");
+          const warnLabel = msg.locale("moderation.WARN");
 
           // Raid punishments
           if (setting.type === "raidPunishment") {
@@ -305,12 +305,12 @@ export class SetupCommand extends Command {
           await omsg.removeReactions();
 
           omsg.editEmbed(
-            `🔨 ${msg.string("general.PUNISHMENTS_FOR", { label: localizeSetupItems(msg.string, setting.id, false, true) })}`,
+            `🔨 ${msg.locale("general.PUNISHMENTS_FOR", { label: localizeSetupItems(msg.locale, setting.id, false, true) })}`,
             validpunishments
               .map(
                 (p) =>
                   `${punishments[p]} ${punishmentLabels[p]}${punishmentDescription[p] ? punishmentDescription[p] : ""}:` +
-                  ` **${guildconfig[setting.id]?.includes(p) ? `${msg.string("global.ENABLED")}` : `${msg.string("global.DISABLED")}`}**`,
+                  ` **${guildconfig[setting.id]?.includes(p) ? `${msg.locale("global.ENABLED")}` : `${msg.locale("global.DISABLED")}`}**`,
               )
               .join("\n"),
           );
@@ -353,19 +353,19 @@ export class SetupCommand extends Command {
 
               // Sends punishment toggle message
               omsg.editEmbed(
-                `🔨 ${msg.string("general.PUNISHMENTS_FOR", { label: localizeSetupItems(msg.string, setting.id, false, true) })}`,
+                `🔨 ${msg.locale("general.PUNISHMENTS_FOR", { label: localizeSetupItems(msg.locale, setting.id, false, true) })}`,
                 validpunishments
                   .map(
                     (p) =>
                       `${punishments[p]} ${punishmentLabels[p]}${punishmentDescription[p] ? punishmentDescription[p] : ""}: **${
-                        guildconfig[setting.id].includes(p) ? `${msg.string("global.ENABLED")}` : `${msg.string("global.DISABLED")}`
+                        guildconfig[setting.id].includes(p) ? `${msg.locale("global.ENABLED")}` : `${msg.locale("global.DISABLED")}`
                       }**`,
                   )
                   .join("\n"),
               );
             },
             this.bot,
-          ).catch((err) => timeoutHandler(err, omsg, msg.string));
+          ).catch((err) => timeoutHandler(err, omsg, msg.locale));
         } else if (setting.type === "locale") {
           selectingItem = true;
           await askForLocale(omsg, msg, this.bot, guildconfig, itemsEmbed, category, true);
@@ -375,13 +375,13 @@ export class SetupCommand extends Command {
 
         // Asks for a response if it's anything else
         else {
-          omsg.editEmbed(`🔧 ${msg.string("general.CONFIG")}`, localizeItemTypes(msg.string, setting.type));
+          omsg.editEmbed(`🔧 ${msg.locale("general.CONFIG")}`, localizeItemTypes(msg.locale, setting.type));
           askForValue(msg, omsg, this.bot, category, guildconfig, itemsEmbed, setting);
         }
       },
 
       this.bot,
-    ).catch((err) => timeoutHandler(err, omsg, msg.string));
+    ).catch((err) => timeoutHandler(err, omsg, msg.locale));
 
     // Deletes & reruns the command
     if (category.repeat) {

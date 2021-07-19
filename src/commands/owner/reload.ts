@@ -12,7 +12,7 @@ export class ReloadCommand extends Command {
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[]) {
     // Warn us if we're in nodemon
     if (process.env.NODE_ENV === "development") {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("owner.RELOAD_NODEMON"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("owner.RELOAD_NODEMON"), "error");
     }
 
     // Recompiles everything
@@ -33,7 +33,7 @@ export class ReloadCommand extends Command {
       const cmd = this.bot.commands.find((c) => c.name === arg.toLowerCase() || c.aliases.includes(arg.toLowerCase()));
 
       // Sends if there's no command
-      if (!cmd) return fail.push({ id: arg.toLowerCase(), error: msg.string("owner.COMMAND_NOTFOUND") });
+      if (!cmd) return fail.push({ id: arg.toLowerCase(), error: msg.locale("owner.COMMAND_NOTFOUND") });
 
       // Deletes the cache
       const oldmodule = require(`../${cmd.category}/${cmd.name}`);
@@ -57,7 +57,7 @@ export class ReloadCommand extends Command {
     });
 
     msg.createEmbed(
-      `🔄 ${(msg.string("owner.RELOAD_RELOADED"), { commands: success.length })}`,
+      `🔄 ${(msg.locale("owner.RELOAD_RELOADED"), { commands: success.length })}`,
       fail.length > 0 ? fail.map((failedcmd) => `**${failedcmd.id}**: \`\`\`js\n${failedcmd.error}\`\`\``).join("\n") : null,
       fail.length > 0 ? "error" : "success",
     );

@@ -58,10 +58,7 @@ export class HibikiClient extends Client {
     super(token, options);
 
     // Prototype extensions
-    Eris.Message.prototype.createEmbed = createEmbed;
-    Eris.Message.prototype.editEmbed = editEmbed;
-    Eris.Message.prototype.convertHex = convertHex;
-    Eris.Message.prototype.tagUser = tagUser;
+    [createEmbed, editEmbed, convertHex, tagUser].map(x => Eris.Message.prototype[x.name] = x);
 
     // Handlers & functions
     this.args = new Args(this);

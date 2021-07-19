@@ -5,7 +5,7 @@ import { dateFormat } from "../../utils/format";
 import { timeoutHandler, waitFor } from "../../utils/waitFor";
 import axios from "axios";
 
-export class aurCommand extends Command {
+export class AURCommand extends Command {
   description = "Looks for a package on the Arch Linux User Repository (AUR)";
   args = "<query:string>";
   aliases = ["arch"];
@@ -20,7 +20,7 @@ export class aurCommand extends Command {
 
     // Sends if nothing is found
     if (!body || !body.data || !body?.data?.results || !body?.data?.results?.length) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.PACKAGE_NOTFOUND"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.PACKAGE_NOTFOUND"), "error");
     }
 
     // Single result
@@ -33,7 +33,7 @@ export class aurCommand extends Command {
 
       // Sends multiple results message
       const aurmsg = await msg.createEmbed(
-        `🔎 ${msg.string("utility.MULTIPLE_RESULTS")}`,
+        `🔎 ${msg.locale("utility.MULTIPLE_RESULTS")}`,
         body.data.results.map((r: AURPackageData, i: number) => `**${i + 1}:** ${r.Name}`).join("\n"),
       );
 
@@ -54,17 +54,17 @@ export class aurCommand extends Command {
         },
 
         this.bot,
-      ).catch((err) => timeoutHandler(err, aurmsg, msg.string, false));
+      ).catch((err) => timeoutHandler(err, aurmsg, msg.locale, false));
       if (!pkg && aurmsg) return;
     }
 
     // If no package was found
-    if (!pkg) return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.PACKAGE_NOTFOUND"), "error");
+    if (!pkg) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.PACKAGE_NOTFOUND"), "error");
     const pkginfoReq = await axios.get(`https://aur.archlinux.org/rpc/?v=5&type=info&arg=${pkg.Name}`).catch(() => {});
 
     // Sends if nothing is found
     if (!pkginfoReq || !pkginfoReq.data) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.PACKAGE_NOTFOUND"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.PACKAGE_NOTFOUND"), "error");
     }
 
     // Finds the package
@@ -77,7 +77,7 @@ export class aurCommand extends Command {
     // # of votes
     if (pkg.num) {
       fields.push({
-        name: msg.string("utility.VOTES"),
+        name: msg.locale("utility.VOTES"),
         value: `${pkg.NumVotes}`,
         inline: true,
       });
@@ -86,7 +86,7 @@ export class aurCommand extends Command {
     // Maintainers
     if (pkg.Maintainer)
       fields.push({
-        name: msg.string("utility.MAINTAINERS"),
+        name: msg.locale("utility.MAINTAINERS"),
         value: `${pkg.Maintainer}`,
         inline: true,
       });
@@ -94,16 +94,16 @@ export class aurCommand extends Command {
     // Creation
     if (pkg.FirstSubmitted)
       fields.push({
-        name: msg.string("utility.CREATED_AT"),
-        value: dateFormat(pkg.FirstSubmitted * 1000, msg.string),
+        name: msg.locale("utility.CREATED_AT"),
+        value: dateFormat(pkg.FirstSubmitted * 1000, msg.locale),
         inline: true,
       });
 
     // Modification date
     if (pkg.LastModified)
       fields.push({
-        name: msg.string("utility.UPDATED_AT"),
-        value: dateFormat(pkg.LastModified * 1000, msg.string),
+        name: msg.locale("utility.UPDATED_AT"),
+        value: dateFormat(pkg.LastModified * 1000, msg.locale),
         inline: true,
       });
 
@@ -116,7 +116,7 @@ export class aurCommand extends Command {
     // Dependencies
     if (depends.length) {
       fields.push({
-        name: msg.string("utility.DEPENDENCIES"),
+        name: msg.locale("utility.DEPENDENCIES"),
         value: `${depends.join(", ")}`,
         inline: false,
       });
@@ -129,7 +129,7 @@ export class aurCommand extends Command {
         color: 0x1793d1,
         fields: fields,
         footer: {
-          text: `${msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
+          text: `${msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

@@ -1,3 +1,8 @@
+/**
+ * @file Splash banner command
+ * @description Sends the server's splash page banner
+ */
+
 import type { Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { defaultAvatar } from "../../utils/constants";
@@ -8,7 +13,7 @@ export class SplashBannerCommand extends Command {
 
   async run(msg: Message<TextChannel>) {
     // Sends if a guild has no splash banner
-    if (!msg.channel.guild.splashURL) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.SPLASHBANNER_ERROR"));
+    if (!msg.channel.guild.splashURL) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.SPLASHBANNER_ERROR"));
 
     // Sends the banner
     msg.channel.createMessage({
@@ -23,7 +28,7 @@ export class SplashBannerCommand extends Command {
         },
         footer: {
           icon_url: msg.author.dynamicAvatarURL(),
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
         },
       },
     });

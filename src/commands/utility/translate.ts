@@ -10,7 +10,7 @@ export class TranslateCommand extends Command {
 
   async run(msg: Message<TextChannel>, _pargs: ParsedArgs[], args: string[], easyTranslate = false, easyTranslateUser?: User) {
     // If nothing was given
-    if (!args.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.TRANSLATE_NOTEXT"), "error");
+    if (!args.length) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.TRANSLATE_NOTEXT"), "error");
     let locale = "en";
 
     // Adjusts some locales
@@ -44,20 +44,20 @@ export class TranslateCommand extends Command {
 
     // If nothing was found
     if (!body || !body.data || !body.data?.[0]?.[0]?.[1] || !body.data?.[2]) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.TRANSLATE_NOTRANSLATION"), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.TRANSLATE_NOTRANSLATION"), "error");
     }
 
     // Sends the translation
     msg.channel.createMessage({
       embed: {
-        title: `🌍 ${easyTranslate ? msg.string("utility.EASYTRANSLATE") : msg.string("utility.TRANSLATE")}`,
-        description: `${msg.string("utility.TRANSLATE_DESCRIPTION", {
+        title: `🌍 ${easyTranslate ? msg.locale("utility.EASYTRANSLATE") : msg.locale("utility.TRANSLATE")}`,
+        description: `${msg.locale("utility.TRANSLATE_DESCRIPTION", {
           oldcontent: body.data[0][0][1],
           content: body.data[0][0][0],
         })}`,
         color: msg.convertHex("general"),
         footer: {
-          text: `${msg.string("utility.TRANSLATE_FOOTER", {
+          text: `${msg.locale("utility.TRANSLATE_FOOTER", {
             author: easyTranslate && easyTranslateUser ? msg.tagUser(easyTranslateUser) : msg.tagUser(msg.author),
             from: body.data[2].toUpperCase(),
             to: locale.toUpperCase(),

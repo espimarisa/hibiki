@@ -19,8 +19,8 @@ export class CookiesCommand extends Command {
     if (cookies?.amount) cookieAmount = cookies.amount;
 
     msg.createEmbed(
-      `🍪 ${msg.string("fun.COOKIES")}`,
-      msg.string("fun.COOKIES_AMOUNT", { member: member.user.username, amount: cookieAmount }),
+      `🍪 ${msg.locale("fun.COOKIES")}`,
+      msg.locale("fun.COOKIES_AMOUNT", { member: member.user.username, amount: cookieAmount }),
     );
   }
 }

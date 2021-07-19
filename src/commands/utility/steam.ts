@@ -34,14 +34,14 @@ export class SteamCommand extends Command {
 
       // If nothing was found
       if (!id || !id.data || id.data.response?.success !== 1) {
-        return msg.createEmbed(msg.string("global.ERROR"), msg.string("utility.ACCOUNT_NOTFOUND"), "error");
+        return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("utility.ACCOUNT_NOTFOUND"), "error");
       }
 
       steamid = id.data.response.steamid;
     }
 
     // Gets summary info
-    const steammsg = await msg.createEmbed(`🎮 ${msg.string("utility.STEAM")}`, msg.string("global.PLEASE_WAIT"));
+    const steammsg = await msg.createEmbed(`🎮 ${msg.locale("utility.STEAM")}`, msg.locale("global.PLEASE_WAIT"));
     profile = await axios
       .get(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${key}&steamids=${steamid}`)
       .catch(() => {});
@@ -69,30 +69,30 @@ export class SteamCommand extends Command {
     steamlvl = steamlvl && steamlvl.data?.response?.player_level ? steamlvl.data.response.player_level : null;
 
     // If the profile has no data
-    if (!profile || !bans || !games) return steammsg.editEmbed(msg.string("global.ERROR"), msg.string("utility.ACCOUNT_NOTFOUND"), "error");
+    if (!profile || !bans || !games) return steammsg.editEmbed(msg.locale("global.ERROR"), msg.locale("utility.ACCOUNT_NOTFOUND"), "error");
 
     // Formats statuses
     switch (profile.personastate) {
       case 0:
-        profile.personastate = msg.string("global.OFFLINE");
+        profile.personastate = msg.locale("global.OFFLINE");
         break;
       case 1:
-        profile.personastate = msg.string("global.ONLINE");
+        profile.personastate = msg.locale("global.ONLINE");
         break;
       case 2:
-        profile.personastate = msg.string("utility.STEAM_BUSY");
+        profile.personastate = msg.locale("utility.STEAM_BUSY");
         break;
       case 3:
-        profile.personastate = msg.string("utility.STEAM_AWAY");
+        profile.personastate = msg.locale("utility.STEAM_AWAY");
         break;
       case 4:
-        profile.personastate = msg.string("utility.STEAM_SNOOZE");
+        profile.personastate = msg.locale("utility.STEAM_SNOOZE");
         break;
       case 5:
-        profile.personastate = msg.string("utility.STEAM_TRADE");
+        profile.personastate = msg.locale("utility.STEAM_TRADE");
         break;
       case 6:
-        profile.personastate = msg.string("utility.STEAM_PLAY");
+        profile.personastate = msg.locale("utility.STEAM_PLAY");
         break;
       case undefined:
       default:
@@ -104,7 +104,7 @@ export class SteamCommand extends Command {
     // Steam ID
     if (profile.steamid) {
       fields.push({
-        name: msg.string("global.ID"),
+        name: msg.locale("global.ID"),
         value: profile.steamid,
         inline: false,
       });
@@ -113,8 +113,8 @@ export class SteamCommand extends Command {
     // Creation date
     if (profile.timecreated) {
       fields.push({
-        name: msg.string("global.CREATED_AT"),
-        value: dateFormat(profile.timecreated * 1000, msg.string),
+        name: msg.locale("global.CREATED_AT"),
+        value: dateFormat(profile.timecreated * 1000, msg.locale),
         inline: true,
       });
     }
@@ -122,8 +122,8 @@ export class SteamCommand extends Command {
     // Visibility
     if (profile.personastate) {
       fields.push({
-        name: msg.string("logger.VISIBILITY"),
-        value: profile.personastate || msg.string("utility.STEAM_PRIVATE"),
+        name: msg.locale("logger.VISIBILITY"),
+        value: profile.personastate || msg.locale("utility.STEAM_PRIVATE"),
         inline: true,
       });
     }
@@ -135,8 +135,8 @@ export class SteamCommand extends Command {
 
       if (game) {
         fields.push({
-          name: msg.string("global.PLAYING"),
-          value: `${game?.name || msg.string("global.NOTHING")}`,
+          name: msg.locale("global.PLAYING"),
+          value: `${game?.name || msg.locale("global.NOTHING")}`,
           inline: true,
         });
       }
@@ -145,7 +145,7 @@ export class SteamCommand extends Command {
     // Total games
     if (games.game_count) {
       fields.push({
-        name: msg.string("utility.STEAM_GAMES"),
+        name: msg.locale("utility.STEAM_GAMES"),
         value: games.game_count,
         inline: true,
       });
@@ -154,7 +154,7 @@ export class SteamCommand extends Command {
     // Level
     if (steamlvl) {
       fields.push({
-        name: msg.string("global.LEVEL"),
+        name: msg.locale("global.LEVEL"),
         value: steamlvl,
         inline: true,
       });
@@ -163,8 +163,8 @@ export class SteamCommand extends Command {
     // Last offline
     if (profile.lastlogoff !== undefined) {
       fields.push({
-        name: msg.string("utility.STEAM_OFFLINE"),
-        value: msg.string("global.TIME_AGO", { time: timeFormat(new Date().getTime() / 1000 - profile.lastlogoff, msg.string) }),
+        name: msg.locale("utility.STEAM_OFFLINE"),
+        value: msg.locale("global.TIME_AGO", { time: timeFormat(new Date().getTime() / 1000 - profile.lastlogoff, msg.locale) }),
         inline: true,
       });
     }
@@ -172,7 +172,7 @@ export class SteamCommand extends Command {
     // Country
     if (profile.loccountrycode) {
       fields.push({
-        name: msg.string("utility.STEAM_COUNTRY"),
+        name: msg.locale("utility.STEAM_COUNTRY"),
         value: `:flag_${profile.loccountrycode.toLowerCase()}:`,
         inline: true,
       });
@@ -181,7 +181,7 @@ export class SteamCommand extends Command {
     // Real name
     if (profile.realname) {
       fields.push({
-        name: msg.string("utility.STEAM_REALNAME"),
+        name: msg.locale("utility.STEAM_REALNAME"),
         value: profile.realname,
         inline: true,
       });
@@ -191,25 +191,25 @@ export class SteamCommand extends Command {
     if (bans.NumberOfVACBans > 0 || bans.NumberOfGameBans > 0 || bans.EconomyBan !== "none") {
       // VAC bans
       if (bans.NumberOfVACBans > 0) {
-        banstring += `✅ ${bans.NumberOfVACBans} ${msg.string("utility.STEAM_VACBANS", { amount: bans.NumberOfVACBans })}\n`;
+        banstring += `✅ ${bans.NumberOfVACBans} ${msg.locale("utility.STEAM_VACBANS", { amount: bans.NumberOfVACBans })}\n`;
       } else {
         // No VAC bans
-        banstring += `❌ ${msg.string("utility.STEAM_NOVACBANS")}\n`;
+        banstring += `❌ ${msg.locale("utility.STEAM_NOVACBANS")}\n`;
       }
 
       // Game bans
-      if (bans.NumberOfGameBans > 0) banstring += `✅  ${msg.string("utility.STEAM_GAMEBANS", { amount: bans.NumberOfGameBans })}\n`;
-      else banstring += `❌ ${msg.string("utility.STEAM_NOGAMEBANS")}\n`;
+      if (bans.NumberOfGameBans > 0) banstring += `✅  ${msg.locale("utility.STEAM_GAMEBANS", { amount: bans.NumberOfGameBans })}\n`;
+      else banstring += `❌ ${msg.locale("utility.STEAM_NOGAMEBANS")}\n`;
 
       // Economy bans
-      if (bans.EconomyBan !== "none") banstring += `✅ ${msg.string("utility.STEAM_TRADEBANNED", { status: bans.EconomyBan })}\n`;
-      else banstring += `❌ ${msg.string("utility.STEAM_NOTTRADEBANNED")}\n`;
+      if (bans.EconomyBan !== "none") banstring += `✅ ${msg.locale("utility.STEAM_TRADEBANNED", { status: bans.EconomyBan })}\n`;
+      else banstring += `❌ ${msg.locale("utility.STEAM_NOTTRADEBANNED")}\n`;
     }
 
     // Bans
     if (banstring.length) {
       fields.push({
-        name: msg.string("utility.STEAM_BANSTATUS"),
+        name: msg.locale("utility.STEAM_BANSTATUS"),
         value: banstring,
         inline: false,
       });
@@ -229,7 +229,7 @@ export class SteamCommand extends Command {
           url: profile.avatarfull,
         },
         footer: {
-          text: `${msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
+          text: `${msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) })}`,
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

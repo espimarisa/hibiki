@@ -13,7 +13,7 @@ export class BannerCommand extends Command {
 
   async run(msg: Message<TextChannel>) {
     // Sends if a guild has no banner
-    if (!msg.channel.guild.banner) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.BANNER_ERROR"), "error");
+    if (!msg.channel.guild.banner) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.BANNER_ERROR"), "error");
 
     // Sends the banner
     msg.channel.createMessage({
@@ -28,7 +28,7 @@ export class BannerCommand extends Command {
         },
         footer: {
           icon_url: msg.author.dynamicAvatarURL(),
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
         },
       },
     });

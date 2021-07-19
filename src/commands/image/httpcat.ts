@@ -81,7 +81,7 @@ export class HTTPCatCommand extends Command {
           url: `https://http.cat/${code}.jpg`,
         },
         footer: {
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             poweredBy: "http.cat",
           }),

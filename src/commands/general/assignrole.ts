@@ -1,5 +1,5 @@
 /**
- * @file AssignRole command
+ * @file Assign role command
  * @description Gives executor a role that's set to be assignable
  */
 
@@ -8,7 +8,7 @@ import type { EmbedField, Message, TextChannel } from "eris";
 import { Command } from "../../classes/Command";
 import { itemExists } from "../../utils/itemExists";
 
-export class AssignroleCommand extends Command {
+export class AssignRoleCommand extends Command {
   description = "Gives you a role that's set to be assignable.";
   clientperms = ["manageRoles"];
   args = "[role:role]";
@@ -19,7 +19,7 @@ export class AssignroleCommand extends Command {
 
     // If no roles are set to be assigned
     if (!guildconfig?.assignableRoles?.length) {
-      return msg.createEmbed(`📄 ${msg.string("general.CONFIG_ASSIGNABLEROLES")}`, msg.string("general.ASSIGN_NOTHINGSET"));
+      return msg.createEmbed(`📄 ${msg.locale("general.CONFIG_ASSIGNABLEROLES")}`, msg.locale("general.ASSIGN_NOTHINGSET"));
     }
 
     // Cleans up roles that no longer exist
@@ -34,7 +34,7 @@ export class AssignroleCommand extends Command {
     // List of assignable roles if no args given
     if (!args.length) {
       return msg.createEmbed(
-        `📄 ${msg.string("general.CONFIG_ASSIGNABLEROLES")}`,
+        `📄 ${msg.locale("general.CONFIG_ASSIGNABLEROLES")}`,
         `${guildconfig.assignableRoles.map((role) => `\`${msg.channel.guild.roles.get(role)?.name || role}\``).join(",")}`,
       );
     }
@@ -64,11 +64,11 @@ export class AssignroleCommand extends Command {
     roles = roles.filter((role) => role.role !== undefined);
 
     // If no roles were added
-    if (!roles.length) return msg.createEmbed(msg.string("global.ERROR"), msg.string("general.ASSIGN_NOROLES"), "error");
+    if (!roles.length) return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("general.ASSIGN_NOROLES"), "error");
 
     // If the member already has every role
     if (roles.every((r) => r.alreadyHas === true)) {
-      return msg.createEmbed(msg.string("global.ERROR"), msg.string("global.ROLE_ALREADYHAS", { amount: roles.length }), "error");
+      return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("global.ROLE_ALREADYHAS", { amount: roles.length }), "error");
     }
 
     // finds failed roles
@@ -78,7 +78,7 @@ export class AssignroleCommand extends Command {
 
     if (failed.length) {
       failedField.push({
-        name: msg.string("general.ASSIGN_FAILED"),
+        name: msg.locale("general.ASSIGN_FAILED"),
         value: failed.map((r) => `\`${r.role.name}\``).join(", "),
       });
     }
@@ -86,15 +86,15 @@ export class AssignroleCommand extends Command {
     // Sends added roles
     msg.channel.createMessage({
       embed: {
-        title: msg.string("global.SUCCESS"),
-        description: msg.string("general.ASSIGN_ASSIGNED", {
+        title: msg.locale("global.SUCCESS"),
+        description: msg.locale("general.ASSIGN_ASSIGNED", {
           amount: added.length,
           roles: added.map((a) => `\`${a.role.name}\``).join(", "),
         }),
         color: msg.convertHex("success"),
         fields: failedField,
         footer: {
-          text: msg.string("global.RAN_BY", { author: msg.tagUser(msg.author) }),
+          text: msg.locale("global.RAN_BY", { author: msg.tagUser(msg.author) }),
           icon_url: msg.author.dynamicAvatarURL(),
         },
       },

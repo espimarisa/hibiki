@@ -19,8 +19,8 @@ export class NicknameCommand extends Command {
       // If the bot's role isn't high enough to update the member's role
       if (!roleHierarchy(msg.channel.guild.members.get(this.bot.user.id), member)) {
         return msg.createEmbed(
-          msg.string("global.ERROR"),
-          msg.string("moderation.NICKNAME_TOOLOWROLE", { member: msg.tagUser(member.user) }),
+          msg.locale("global.ERROR"),
+          msg.locale("moderation.NICKNAME_TOOLOWROLE", { member: msg.tagUser(member.user) }),
           "error",
         );
       }
@@ -32,23 +32,23 @@ export class NicknameCommand extends Command {
         } catch (err) {
           // Sends if failed
           return msg.createEmbed(
-            msg.string("global.ERROR"),
-            msg.string("moderation.NICKNAME_FAILED", { member: msg.tagUser(member.user) }),
+            msg.locale("global.ERROR"),
+            msg.locale("moderation.NICKNAME_FAILED", { member: msg.tagUser(member.user) }),
             "error",
           );
         }
 
         // Sends when cleared
         return msg.createEmbed(
-          msg.string("global.SUCCESS"),
-          msg.string("moderation.NICKNAME_CLEARED", { member: msg.tagUser(member.user) }),
+          msg.locale("global.SUCCESS"),
+          msg.locale("moderation.NICKNAME_CLEARED", { member: msg.tagUser(member.user) }),
           "success",
         );
       }
 
       // If nickname is too long
       else if (nickname.length > 32) {
-        return msg.createEmbed(msg.string("global.ERROR"), msg.string("moderation.NICKNAME_TOOLONG"), "error");
+        return msg.createEmbed(msg.locale("global.ERROR"), msg.locale("moderation.NICKNAME_TOOLONG"), "error");
       }
 
       // Updates the nickname
@@ -56,8 +56,8 @@ export class NicknameCommand extends Command {
         await msg.channel.guild.members.get(member.id).edit({ nick: nickname }, `Changed by ${msg.tagUser(msg.author, true)}`);
       } catch (err) {
         return msg.createEmbed(
-          msg.string("global.ERROR"),
-          msg.string("moderation.NICKNAME_FAILED", { member: msg.tagUser(member.user) }),
+          msg.locale("global.ERROR"),
+          msg.locale("moderation.NICKNAME_FAILED", { member: msg.tagUser(member.user) }),
           "error",
         );
       }
@@ -65,16 +65,16 @@ export class NicknameCommand extends Command {
       // Shows user's nickname
       if (member.nick) {
         return msg.createEmbed(
-          `📛 ${msg.string("global.NICKNAME")}`,
-          msg.string("moderation.NICKNAME_MEMBER", { member: msg.tagUser(member.user), nickname: member.nick }),
+          `📛 ${msg.locale("global.NICKNAME")}`,
+          msg.locale("moderation.NICKNAME_MEMBER", { member: msg.tagUser(member.user), nickname: member.nick }),
         );
       }
 
       // If user has no nickname
       else if (!member.nick) {
         return msg.createEmbed(
-          msg.string("global.ERROR"),
-          msg.string("moderation.NICKNAME_NOTSET", { member: msg.tagUser(member.user) }),
+          msg.locale("global.ERROR"),
+          msg.locale("moderation.NICKNAME_NOTSET", { member: msg.tagUser(member.user) }),
           "error",
         );
       }
@@ -82,8 +82,8 @@ export class NicknameCommand extends Command {
 
     // Sends when nickname changed
     msg.createEmbed(
-      msg.string("global.SUCCESS"),
-      msg.string("moderation.NICKNAME_SET", {
+      msg.locale("global.SUCCESS"),
+      msg.locale("moderation.NICKNAME_SET", {
         member: msg.tagUser(member.user),
         length: member.nick?.length ? 0 : 1,
       }),
