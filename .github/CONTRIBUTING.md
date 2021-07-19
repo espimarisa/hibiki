@@ -53,9 +53,9 @@ We probably won't outright reject a PR if it doesn't follow these guidelines, bu
 
 8. When adding a new string, update it in `src/locales/en.json` **only**. Try and follow our naming scheme.
 
-9. When referencing a string, put any emoji it may use before it. This makes translations easier as there's no extra copy-pasting required.
+9. When referencing a locale string, put any emoji it may use before it. This makes translations easier as there's no extra copy-pasting required.
 
-   1. Example: `🐱 ${msg.string("image.CAT")}`
+   1. Example: `🐱 ${msg.locale("image.CAT")}`
 
 10. When referring to a member/user in code, follow the following guideline:
 
@@ -81,7 +81,7 @@ We probably won't outright reject a PR if it doesn't follow these guidelines, bu
         color: msg.convertHex("general"),
         footer: {
           icon_url: msg.author.dynamicAvatarURL(),
-          text: msg.string("global.RAN_BY", {
+          text: msg.locale("global.RAN_BY", {
             author: msg.tagUser(msg.author),
             // poweredBy: "example",
             // extra: "example",
