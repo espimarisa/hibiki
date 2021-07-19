@@ -91,7 +91,7 @@ We probably won't outright reject a PR if it doesn't follow these guidelines, bu
     });
 ```
 
-14. When creating any new TypeScript file, do not forget to include a JSDoc including `@file`, `@description` and optionnaly `@author`.
+14. When creating any new TypeScript file, do not forget to include a JSDoc including `@file`, `@description` and optionally `@author`.
 ```TS
     /**
      * @file My file
