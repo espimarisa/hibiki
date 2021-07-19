@@ -116,24 +116,18 @@ We probably won't outright reject a PR if it doesn't follow these guidelines, bu
     import type { Type } from "abc-external-module";
     import type { Type } from "mno-external-module";
     import type { Type } from "xyz-external-module";
-
     import type { Type } from "./xyz-internal-module";
     import type { Type } from "../mno-internal-module-2";
     import type { Type } from "../../abc-internal-module-3";
-
     import { Export } from "external-module";
     import { Export } from "external-module-2";
-
     import { Export } from "./xyz-internal-module";
     import { Export } from "../mno-internal-module-2";
     import { Export } from "../../abc-internal-module-3";
-
     import fs from "fs";
     import path from "path";
-
     import xyz from "./xyz";
     import abc from "../abc";
-
     const ABC = "def";
     const UVW = "xyz";
 ```
