@@ -111,8 +111,6 @@ We probably won't outright reject a PR if it doesn't follow these guidelines, bu
     7. Other constants in CAPS, alphabetically sorted
 
 ```TS
-   
-    
     import type { Type } from "abc-external-module";
     import type { Type } from "mno-external-module";
     import type { Type } from "xyz-external-module";
