@@ -7,7 +7,7 @@
 import type { Profile } from "passport-discord";
 import type { HibikiClient } from "../../classes/Client";
 import { defaultAvatar } from "../../utils/constants";
-import { checkAuth, getAuthedUser, getManagableGuilds, getWebLocale } from "../../utils/webServer";
+import { checkAuth, getAuthedUser, getManagableGuilds, getWebLocale } from "../../utils/webserver";
 import { localizeProfileItems, localizeSetupItems } from "../../utils/format";
 import { validItems } from "../../utils/validItems";
 import express from "express";

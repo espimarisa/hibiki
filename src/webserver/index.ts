@@ -16,7 +16,7 @@ import { authRoutes } from "./routes/auth";
 import { indexRoutes } from "./routes/index";
 import { manageRoutes } from "./routes/manage";
 import { votingRoutes } from "./routes/voting";
-import { loadIcons } from "../utils/webServer";
+import { loadIcons } from "../utils/webserver";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import crypto from "crypto";
