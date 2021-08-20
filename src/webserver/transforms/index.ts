@@ -1,5 +1,5 @@
 import type { HibikiClient } from "classes/Client";
-import { Guild } from "eris";
+import type { Guild } from "eris";
 import type { GuildInfo } from "passport-discord";
 import { defaultAvatar } from "utils/constants";
 
