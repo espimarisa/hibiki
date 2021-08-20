@@ -1,11 +1,19 @@
 import { UnauthorizedException } from "@fasteerjs/exceptions";
-import type { RouteDef } from "webserver/types";
-import { onlyRoutes } from "webserver/utils";
+import type { preHandlerHookHandler, RouteShorthandOptions } from "fastify";
 
-const ONLY_ROUTES: RouteDef[] = [];
-
-export const authMiddleware = onlyRoutes(async (req) => {
+export const authMiddleware: preHandlerHookHandler = async (req) => {
   if (!req.user) {
-    throw new UnauthorizedException("You are not authenticated.")
+    throw new UnauthorizedException("You are not authenticated.");
   }
-}, ONLY_ROUTES);
+};
+
+export const withAuth = (opts?: RouteShorthandOptions): RouteShorthandOptions => ({
+  ...(opts ?? {}),
+  preHandler: (req, res, done) => {
+    if (!req.user) {
+      throw new UnauthorizedException("You are not authenticated.");
+    }
+
+    typeof opts?.preHandler === "function" && opts.preHandler.call(this, req, res, done);
+  },
+});

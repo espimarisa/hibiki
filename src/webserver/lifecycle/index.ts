@@ -1,9 +1,8 @@
 import type { FasteerInstance } from "@fasteerjs/fasteer";
 import { exceptionHandler } from "./exception";
-import { authMiddleware } from "./middleware/auth";
 import { noCacheMiddleware } from "./middleware/noCache";
 
-const globalMiddlewares = [authMiddleware, noCacheMiddleware];
+const globalMiddlewares = [noCacheMiddleware];
 
 export const lifecycle = (app: FasteerInstance) => {
   app.fastify.addHook("onRequest", async (req, res) => {
