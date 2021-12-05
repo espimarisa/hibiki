@@ -1,112 +1,93 @@
 # Hibiki
 
 [![Build][badge-workflow]][workflow]
-[![Crowdin][badge-crowdin]][translation]
 [![License][badge-license]][license]
-[![Stable][badge-stable]][stable]
-[![Support][badge-support]][support]
 
-[Hibiki][hibiki] is an easy, customizable, and powerful all-in-one Discord bot that does anything that your server needs.
+[license]: LICENSE "Hibiki is licensed under the MIT license."
+[workflow]: https://github.com/sysdotini/hibiki/actions?query=workflow%3Apush "Main GitHub workflow action."
 
-Written in [TypeScript][typescript] and powered by [Eris][eris] and [Node.js][nodejs], Hibiki is designed to have the perfect blend of customizability, ease-of-use, and stability. Unlike most Discord bots, Hibiki is both simple to use but also very tweakable and powerful.
+<!-- Badges -->
 
-## Invite
+[badge-workflow]: https://img.shields.io/github/workflow/status/sysdotini/hibiki/Push "Shields.io badge for workflow status."
+[badge-license]: https://img.shields.io/badge/license-MIT-orange.svg "Shields.io badge for the GNU AGPLv3."
 
-You can invite Hibiki using [this Discord link][invite]. The only official instance of Hibiki is `Hibiki#1448 (493904957523623936)`. By inviting Hibiki, you agree to our [privacy policy][privacy].
-
-Additionally, we don't support self-hosting or give support/answer questions for doing such. However, the bot is easily self hostable with some basic knowledge.
+Hibiki is a powerful and easy-to-use utility and moderation Discord bot written in [TypeScript][typescript].
 
 ## Features
 
-All features are completely **free** with no paywalls in place.
+These are just the highlights of Hibiki - all features are **completely free** with **no paywalls** in place.
 
-- ⏰ Reminder system
-- 🔗 Discord invite lookup utility
-- ❌ User warning/strike system
-- 🌍 Multilingual and translatable
-- ✨ User reputation point system
-- 📃 Assignable and automatic roles
-- 📌 Customizable pinboard/starboard
-- 🐶 Random anime and animal images
-- 👥 Steam, Twitter, and GitHub user info
-- 🎶 Music player supporting multiple sites
-- 🎯 Steam VAC and game ban monitoring
-- 💙 Roleplay & user interaction commands
-- 🌐 Complete configuration web dashboard
-- 🕵️‍♀️ Customizable deleted message sniping
-- 📦 Package information from npm and aur
-- 👤 User and member information commands
-- 💬 Server, role, and channel info commands
-- 🔨 Useful and powerful moderation commands
-- 👥 Member leave, join, and used invite logging
-- 📜 Informative and tweakable server event loggers
-- 🤖 Automod with antiSpam, antiInvite, antiRaid, etc.
+- ⏰ Set and update reminders
+- 🌟 Give members reputation points
+- 🎶 Play music from YouTube and Spotify
+- 👥 Get info about Twitter and GitHub accounts
+- ⭐ Utilise a completely customisable starboard
+- 🔇 Mute members for a specific amount of time
+- 💬 Get info about members, roles, channels, and more
+- 🤖 Automatically moderate your server with AutoMod
+- 🔗 Log what invite a new member used to join the server
+- 📜 Log server, channel, and role creations, deletions, and edits
+- 🌐 Customize Hibiki to the fullest extent with our web dashboard
+- 🌍 Use Hibiki in many different languages - we're fully translatable!
 
-... and many more!
+## Official Instance
+
+You may invite the official instance using [this][invite] link.
+
+**_NO support is given for self-hosted instances._**
+
+The information below only applies to the **official instance** of Hibiki. This includes:
+
+- The Hibiki Discord application: **`Hibiki#1448`** / **`493904957523623936`**
+- The Hibiki website and dashboard: **`hibiki.app`**
+
+## Terms of Service
+
+**_Updated 2021-11-06_**
+
+- Do not try to crash, break, or exploit our application
+- If you find a critical, breaking bug, you must report it to us
+- Usage must obey laws in the **United States**, **Canada**, or **wherever hosted**
+- User data saved must follow Discord's **[Terms of Service][discord_tos]** and **[community guidelines][discord_cg]**
+- Bot collection and bot listing servers or apps are **strictly not allowed** to use our application
+
+## Data Privacy
+
+**_Updated 2021-11-06_**
+
+The following types of data will be stored **on-demand** when some **features are ran** in order for some of our features to work correctly.
+
+- **User ID(s)**: A Discord ID unique to your account (**user configs, etc.**)
+- **Server ID(s)**: A Discord ID unique to your server (**server configs, etc.**)
+- **Message ID(s)**: A message ID corresponding to a message (**reminders, etc.**)
+- **Command Response(s)**: Text responses in slash-commands (**for mute reasons, etc**)
+
+When added or removed from your server, the following information will be logged to a **private** channel:
+
+- Total member amount
+- Server name, icon, and ID
+- Your username, discriminator, and ID
+
+**_No personal or identifying information is stored._**
+
+To view any data that corresponds with your Discord account, run the `/gdpr` command.
+
+- If you are a server owner, you can run `/gdpr [server]` to get data corresponding to your server sent to you.
+
+To request a data deletion, use a link below. State why you're contacting, or include "Hibiki Data Deletion Request" in your subject line.
+
+- **Discord**: `espi#0001`
+- **Telegram**: [@sysdotini][espi-telegram]
+- **Email**: [espi@riseup.net][espi-email]
 
 ## License
 
-Hibiki is licensed under the [GNU AGPL-v3][license] or later. This means that:
+[MIT][license]
 
-- You must disclose your application's source code
-- You must preserve the original copyright/license info
-- You must state any significant changes to the source code
-
-## Contributing
-
-We have guides on how to contribute to the project.
-
-- [Source][source]
-- [Security][security]
-- [Translating][translating]
-
-## Donating
-
-Hibiki (and all of its features) will always be completely free. However, if you really like and appreciate our work, you can donate through [Ko-fi][donate].
-
-All donations will go directly towards hosting, domain renewals, and API keys.
-
-## Translators
-
-Special thanks to these people for fully translating Hibiki into other languages!
-
-- [cth103][cth103] (French)
-- [nephacks][nephacks] (German)
-- [nocturno][nocturno] (Romanian)
-- [resolved][resolved] (Bulgarian)
-- [solelysol][sol] (Russian)
-- [hikari_hoshino][hikari] (Japanese)
-
-[source]: https://github.com/sysdotini/hibiki/blob/main/.github/CONTRIBUTING.md#source-contributions "Source contribution guidelines file."
-[donate]: https://ko-fi.com/sysdotini "Donate thru Ko-fi to help cover Hibiki's expenses."
-[eris]: https://abal.moe/Eris "Eris's documentation website."
-[hibiki]: https://hibiki.app "Hibiki's official website and dashboard."
-[invite]: https://discordapp.com/oauth2/authorize?&client_id=493904957523623936&scope=bot&permissions=1581116663 "A Discord invite for the official Hibiki instance."
-[license]: LICENSE "Hibiki is licensed under the GNU AGPLv3 or later."
-[nodejs]: https://nodejs.org "Node.js's official website."
-[privacy]: https://github.com/sysdotini/hibiki/blob/main/.github/PRIVACY_POLICY.md#hibiki-privacy-policy "Our Privacy Policy."
-[security]: https://github.com/sysdotini/hibiki/blob/main/.github/SECURITY.md#security-policy "Security guidelines file."
-[stable]: https://github.com/sysdotini/hibiki/releases/latest "Latest stable GitHub release."
-[support]: https://discord.gg/gZEj4sM "A Discord invite to the official support server."
-[translating]: https://github.com/sysdotini/hibiki/blob/main/.github/CONTRIBUTING.md#translation-guide "Translation guide."
-[translation]: https://translate.hibiki.app/project/hibiki "Total progress of translations."
-[typescript]: https://www.typescriptlang.org/ "TypeScript's official website."
-[workflow]: https://github.com/sysdotini/hibiki/actions?query=workflow%3Apush "Main GitHub workflow action."
-
-<!-- Badge URLs -->
-
-[badge-workflow]: https://img.shields.io/github/workflow/status/sysdotini/hibiki/Push "Shields.io badge for workflow status."
-[badge-crowdin]: https://badges.crowdin.net/hibiki/localized.svg "Crowdin badge for total localization progress."
-[badge-license]: https://img.shields.io/badge/license-AGPL%20v3-orange.svg "Shields.io badge for the GNU AGPLv3."
-[badge-stable]: https://img.shields.io/github/v/release/sysdotini/hibiki?label=version "Shields.io badge for the latest stable Hibiki release."
-[badge-latest]: https://img.shields.io/github/package-json/v/sysdotini/hibiki/main?color=red&label=latest "Shields.io badge for the latest Hibiki release."
-[badge-support]: https://img.shields.io/discord/620287077778587651?color=purple&label=support "Shields.io badge for the Discord support server information."
-
-<!-- Translator links -->
-
-[cth103]: https://github.com/cthpw103 "cth103's GitHub profile"
-[sol]: https://github.com/solelysol "Sol's GitHub profile"
-[nocturno]: https://github.com/nocturnodev "nocturno's GitHub profile"
-[nephacks]: https://github.com/nepneppynep "nephacks' GitHub profile"
-[resolved]: https://github.com/resolvedxd "resolved's GitHub profile"
-[hikari]: https://crowdin.com/profile/hikari_hoshino "hikari's Crowdin profile"
+[typescript]: https://www.typescriptlang.org/ "TypeScript's website."
+[invite]: https://discord.com/oauth2/authorize?&client_id=864687346977210368&scope=bot%20applications.commands&permissions=1581116663 "Invite the official Hibiki instance."
+[discord_tos]: https://discord.com/terms "Discord's Terms of Service"
+[discord_cg]: https://discord.com/guidelines "Discord's Community Guidelines"
+[espi-telegram]: https://t.me/sysdotini "Contact Espi (sysdotini) on Telegram"
+[espi-email]: mailto:espi@riseup.net
+[license]: LICENSE "MIT License file"
