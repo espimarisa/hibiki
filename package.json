@@ -1,104 +1,38 @@
 {
   "private": "true",
-  "name": "hibikiapp",
-  "version": "3.3.11",
-  "description": "The best all-in-one Discord bot! Automod, fun, music, utilities, and more. Customizable, easy-to-use, and fully translatable.",
+  "name": "@hibikiapp/hibiki",
+  "version": "4.0.0-alpha",
+  "description": "The best all-in-one Discord bot.",
+  "license": "MIT",
   "author": "Espi <espi@riseup.net> (https://espi.me)",
-  "contributors": [
-    "resolved <resolvedxd@gmail.com> (https://github.com/resolvedxd)",
-    "cth103 <cthdev@email.com> (https://github.com/cthpw103)",
-    "TTtie <me@tttie.cz> (https://tttie.cz)"
-  ],
-  "license": "AGPL-3.0-or-later",
-  "homepage": "https://hibiki.app",
-  "main": "dist/src/index.js",
-  "bugs": {
-    "url": "https://github.com/sysdotini/hibiki/issues"
-  },
+  "homepage": "https://github.com/sysdotini/hibiki#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sysdotini/hibiki.git"
   },
+  "bugs": {
+    "url": "https://github.com/sysdotini/hibiki/issues"
+  },
   "engines": {
-    "npm": ">=6.9.0",
-    "node": ">=14.0.0"
+    "node": ">=16.0.0",
+    "pnpm": ">=6.0.0"
   },
   "scripts": {
-    "build": "tsc",
-    "build:purgecss": "cross-env purgecss -c purgecss.config.js -o ./src/webserver/public/css/",
-    "build:scss": "cross-env sass --no-source-map ./src/webserver/public/scss/:./src/webserver/public/css/ && npm run build:purgecss",
-    "build:static": "cross-env copyfiles './src/webserver/**/**/*.{css,liquid,jpg,js,png}' './dist/'",
-    "dev": "cross-env concurrently \"cross-env sass ./src/webserver/public/scss/:./src/webserver/public/css/ --watch\" \"cross-env nodemon\"",
-    "format": "cross-env prettier --config .prettierrc 'src/**/*.{liquid,js,json,scss,ts}' --write",
-    "lint": "eslint --fix .",
-    "prebuild": "cross-env rimraf ./dist/",
-    "postbuild": "npm run build:scss && npm run build:static",
-    "postinstall": "cross-env copyfiles './node_modules/bulmaselect/dist/index.js' './src/webserver/public/js/bulmaselect/' -f",
-    "start": "npm run build && cross-env NODE_ENV=production node dist/src/index.js",
-    "pm2": "npm run build && pm2 start pm2.config.json",
-    "test": "tsc && eslint ."
-  },
-  "dependencies": {
-    "@fortawesome/free-brands-svg-icons": "^5.15.3",
-    "@fortawesome/free-solid-svg-icons": "^5.15.3",
-    "@sentry/node": "^6.3.4",
-    "@sysdotini/erela.js-spotify": "^1.2.4",
-    "axios": "^0.21.1",
-    "bulma": "^0.9.2",
-    "bulma-checkradio": "^1.1.1",
-    "bulmaselect": "^2.0.8",
-    "canvas": "^2.7.0",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "csurf": "^1.11.0",
-    "dayjs": "^1.10.4",
-    "erela.js": "^2.3.3",
-    "eris": "^0.15.0",
-    "express": "^4.17.1",
-    "express-rate-limit": "^5.2.6",
-    "express-session": "^1.17.1",
-    "helmet": "^4.5.0",
-    "liquidjs": "^9.23.4",
-    "passport": "^0.4.1",
-    "passport-discord": "^0.1.4",
-    "rethinkdb-ts": "^2.4.10",
-    "session-rethinkdb-ts": "^1.1.0",
-    "terser": "^5.7.0",
-    "winston": "^3.3.3",
-    "winston-daily-rotate-file": "^4.5.2"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "@sentry/types": "^6.3.5",
-    "@types/cookie-parser": "^1.4.2",
-    "@types/cors": "^2.8.10",
-    "@types/csurf": "^1.11.1",
-    "@types/express": "4.17.11",
-    "@types/express-rate-limit": "^5.1.1",
-    "@types/express-session": "^1.17.3",
-    "@types/node": "^15.0.1",
-    "@types/passport-discord": "^0.1.3",
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "@typescript-eslint/parser": "^4.22.0",
-    "concurrently": "^6.0.2",
-    "copyfiles": "^2.4.1",
-    "cross-env": "^7.0.3",
-    "eslint": "^7.25.0",
+    "@sysdotini/eslint-config": "^3.0.0",
+    "@types/node": "^16.11.11",
+    "@typescript-eslint/eslint-plugin": "^5.5.0",
+    "@typescript-eslint/parser": "^5.5.0",
+    "eslint": "^8.4.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "nodemon": "^2.0.7",
-    "pm2": "^4.5.6",
-    "prettier": "^2.2.1",
-    "purgecss": "^4.0.3",
-    "rimraf": "^3.0.2",
-    "sass": "^1.32.12",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.4"
-  },
-  "optionalDependencies": {
-    "@discordjs/opus": "^0.5.0",
-    "bufferutil": "^4.0.3",
-    "erlpack": "^0.1.3",
-    "eventemitter3": "^4.0.7",
-    "zlib-sync": "^0.1.7"
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-unicorn": "^39.0.0",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.2"
   }
 }
