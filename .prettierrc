@@ -8,13 +8,5 @@
   "tabWidth": 2,
   "semi": true,
   "singleQuote": false,
-  "useTabs": false,
-  "overrides": [
-    {
-      "files": ["*.liquid"],
-      "options": {
-        "parser": "angular"
-      }
-    }
-  ]
+  "useTabs": false
 }
