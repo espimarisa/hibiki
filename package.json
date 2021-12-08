@@ -18,14 +18,36 @@
     "pnpm": ">=6.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "build:static": "cross-env copyfiles './src/web/**/**/*.{css,liquid,jpg,js,png}' './dist/'",
+    "format": "cross-env prettier --write './**/**/*.{css,cjs,js,json,sass,scss,liquid,md,mjs,toml,ts,yml}'",
+    "prebuild": "cross-env rimraf ./dist/",
+    "postbuild": "npm run build:static",
+    "start": "npm run build && cross-env NODE_ENV=production node ./dist/src/index.js",
+    "test": "cross-env tsc --noEmit && eslint . && prettier --c ."
+  },
+  "dependencies": {
+    "fastify": "^3.24.1",
+    "fastify-accepts": "^2.1.0",
+    "fastify-cookie": "^5.4.0",
+    "fastify-cors": "^6.0.2",
+    "fastify-csrf": "^3.1.0",
+    "fastify-helmet": "^5.3.2",
+    "fastify-secure-session": "^3.0.0",
+    "fastify-static": "^4.5.0",
+    "liquidjs": "^9.28.6",
+    "pino": "^7.5.1",
+    "pino-pretty": "^7.2.0",
+    "point-of-view": "^4.16.0"
   },
   "devDependencies": {
-    "@sysdotini/eslint-config": "^3.0.0",
-    "@types/node": "^16.11.11",
-    "@typescript-eslint/eslint-plugin": "^5.5.0",
-    "@typescript-eslint/parser": "^5.5.0",
-    "eslint": "^8.4.0",
+    "@sysdotini/eslint-config": "^3.1.0",
+    "@types/node": "^16.11.12",
+    "@typescript-eslint/eslint-plugin": "^5.6.0",
+    "@typescript-eslint/parser": "^5.6.0",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.4.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-typescript": "^2.5.0",
     "eslint-plugin-import": "^2.25.3",
@@ -33,6 +55,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-unicorn": "^39.0.0",
     "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
     "typescript": "^4.5.2"
   }
 }
