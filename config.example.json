@@ -1,0 +1,13 @@
+{
+  "hibiki": {
+    "token": "",
+    "locale": "en-GB",
+    "testGuildID": ""
+  },
+
+  "options": {},
+
+  "database": {
+    "provider": "json"
+  }
+}
