@@ -1,0 +1,14 @@
+{
+  "delay": 5000,
+  "verbose": true,
+  "ignore": [".git", "node_modules/", "dist/"],
+  "watch": ["src"],
+  "ext": "ts",
+  "execMap": {
+    "ts": "node -r ts-node/register/transpile-only"
+  },
+  "env": {
+    "TS_NODE_FILES": true,
+    "NODE_ENV": "development"
+  }
+}

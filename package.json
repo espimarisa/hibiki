@@ -20,6 +20,7 @@
   "scripts": {
     "build": "tsc",
     "build:static": "cross-env copyfiles './src/web/**/**/*.{css,liquid,jpg,js,png}' './dist/'",
+    "dev": "nodemon ./src/index.ts",
     "format": "cross-env prettier --write './**/**/*.{css,cjs,js,json,sass,scss,liquid,md,mjs,toml,ts,yml}'",
     "prebuild": "cross-env rimraf ./dist/",
     "postbuild": "npm run build:static",
@@ -27,6 +28,9 @@
     "test": "cross-env tsc --noEmit && eslint . && prettier --c ."
   },
   "dependencies": {
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "discord-api-types": "^0.25.2",
+    "discord.js": "^13.3.1",
     "fastify": "^3.24.1",
     "fastify-accepts": "^2.1.0",
     "fastify-cookie": "^5.4.0",
@@ -41,7 +45,7 @@
     "point-of-view": "^4.16.0"
   },
   "devDependencies": {
-    "@sysdotini/eslint-config": "^3.1.0",
+    "@sysdotini/eslint-config": "^3.1.1",
     "@types/node": "^16.11.12",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
@@ -54,8 +58,10 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-unicorn": "^39.0.0",
+    "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
-    "typescript": "^4.5.2"
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.3"
   }
 }
