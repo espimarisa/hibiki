@@ -33,8 +33,6 @@ export function loadCommands(bot: HibikiClient, directory: PathLike) {
       return loadCommands(bot, path.join(directory.toString(), file.name));
     }
 
-    console.log(file);
-
     let command;
     if (!moduleFiletypeRegex.test(file.name)) return;
 
