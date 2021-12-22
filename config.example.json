@@ -7,6 +7,14 @@
 
   "options": {},
 
+  "colours": {
+    "primary": "#648fff",
+    "secondary": "#785ef0",
+    "error": "#fe6100",
+    "success": "#dc267f",
+    "warning": "#ffb000"
+  },
+
   "database": {
     "provider": "json"
   }
