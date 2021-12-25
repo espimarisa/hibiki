@@ -61,10 +61,6 @@ export class AboutCommand extends HibikiCommand {
           thumbnail: {
             url: this.bot.user?.displayAvatarURL({ dynamic: true }),
           },
-          footer: {
-            text: interaction.getLocaleString("global.RAN_BY", { tag: interaction.user.tag }),
-            iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
-          },
         },
       ],
     });
