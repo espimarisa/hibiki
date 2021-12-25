@@ -11,6 +11,7 @@ import type { HibikiLogger } from "../classes/Logger";
 import type { ApplicationCommandData, Collection } from "discord.js";
 import type { PathLike } from "node:fs";
 import { moduleFiletypeRegex } from "../utils/constants";
+import { checkIntent } from "./intents";
 import { logger } from "./logger";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
@@ -85,22 +86,34 @@ export function loadEvents(bot: HibikiClient, directory: string, isLogger = fals
   files.forEach((file) => {
     if (file.isDirectory()) return;
 
-    let event;
+    let eventToLoad;
     if (!moduleFiletypeRegex.test(file.name)) return;
 
     try {
       const importedEvent = require(`${directory}/${file.name}`);
-      event = importedEvent[Object.keys(importedEvent)[0]];
+      eventToLoad = importedEvent[Object.keys(importedEvent)[0]];
     } catch (error) {
       logger.error(`${isLogger ? "Logger" : "Event"} ${file.name} failed to load: ${error}`);
       console.error(error);
     }
 
-    if (!event) return;
+    if (!eventToLoad) return;
+
+    // Creates the event
+    const fileName = file.name.split(moduleFiletypeRegex)[0];
+    const event = new eventToLoad(bot, fileName) as HibikiEvent | HibikiLogger;
+
+    // Checks for missing intents
+    if (event.requiredIntents?.length) {
+      const missingIntents = checkIntent(bot.options, event.requiredIntents);
+      if (missingIntents?.length) {
+        logger.warn(`${isLogger ? "Logger" : "Event"} ${fileName} not loaded: missing intent(s) ${missingIntents.join(", ")}`);
+        return;
+      }
+    }
 
     // Pushes the events and runs them
-    const fileName = file.name.split(moduleFiletypeRegex)[0];
-    (isLogger ? bot.loggers : bot.events).set(fileName, new event(bot, fileName));
+    (isLogger ? bot.loggers : bot.events).set(fileName, event);
   });
 
   subscribeToEvents(isLogger ? bot.loggers : bot.events);

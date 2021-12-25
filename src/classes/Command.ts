@@ -5,7 +5,7 @@
  */
 
 import type { HibikiClient } from "./Client";
-import type { ApplicationCommandOptionData, CommandInteraction } from "discord.js";
+import type { ApplicationCommandOptionData, CommandInteraction, Message } from "discord.js";
 
 export abstract class HibikiCommand {
   options?: ApplicationCommandOptionData[];
@@ -20,12 +20,26 @@ export abstract class HibikiCommand {
    * @param category The command category (matches the directory)
    */
 
-  constructor(protected bot: HibikiClient, public name: string, public category: string) {}
+  protected constructor(protected bot: HibikiClient, public name: string, public category: string) {}
 
   /**
-   * Runs a command
+   * Runs a command via the interaction gateway
    * @param interaction The interaction to handle
    */
 
-  public abstract run(interaction: CommandInteraction, ...args: string[]): Promise<void>;
+  public abstract runWithInteraction(interaction: CommandInteraction, ...args: string[]): Promise<void>;
+
+  /**
+   * Runs a command via the legacy message API
+   * @param msg The message object to utilise
+   */
+
+  public abstract runWithMessage(msg: Message): Promise<void>;
+
+  /**
+   * Gets the message response for a command
+   * @param localeParser The function to return locale strings with
+   */
+
+  public abstract getResponse(localeParser: GetLocaleString): Promise<FullMessageEmbedData>;
 }

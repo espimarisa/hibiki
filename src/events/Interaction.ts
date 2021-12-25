@@ -30,7 +30,7 @@ export class HibikiInteractionEvent extends HibikiEvent {
 
     // Runs the command
     try {
-      await command.run(interaction);
+      await command.runWithInteraction(interaction);
     } catch (error) {
       throw new Error(error as string);
     }

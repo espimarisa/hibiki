@@ -2,7 +2,8 @@
   "hibiki": {
     "token": "",
     "locale": "en-GB",
-    "testGuildID": ""
+    "testGuildID": "",
+    "prefixes": []
   },
 
   "options": {},

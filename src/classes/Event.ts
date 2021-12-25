@@ -7,6 +7,10 @@
 import type { HibikiClient } from "./Client";
 
 export abstract class HibikiEvent {
+  /** An array of required intents for an event to fire */
+  requiredIntents?: ResolvableIntentString[];
+
+  /** An array of event emitters to listen on */
   abstract events: HibikiEventEmitter[];
 
   /**
