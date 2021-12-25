@@ -12,6 +12,7 @@ type HibikiBaseOptions = {
   token: string;
   locale: HibikiLocaleCode;
   testGuildID: string;
+  prefixes?: string[];
 };
 
 // Valid hex colours

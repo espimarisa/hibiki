@@ -4,7 +4,7 @@
  * @module HibikiLocaleSystem
  */
 
-import type { GetLocaleString, HibikiLocaleStrings } from "../typings/locales";
+import type { HibikiLocaleStrings } from "../typings/locales";
 import type { HibikiClient } from "./Client";
 import { logger } from "../utils/logger";
 import fs from "node:fs";
