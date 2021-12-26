@@ -10,4 +10,8 @@ declare module "discord.js" {
   declare interface CommandInteraction {
     getLocaleString: GetLocaleString;
   }
+
+  declare interface Message {
+    getLocaleString: GetLocaleString;
+  }
 }

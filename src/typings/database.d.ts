@@ -11,6 +11,7 @@ type HibikiDatabaseProvider = "json";
 interface HibikiGuildConfig {
   id: DiscordSnowflake;
   locale?: HibikiLocaleCode;
+  prefix?: string;
 }
 
 // A Hibiki user config
