@@ -52,8 +52,12 @@ export function loadCommands(bot: HibikiClient, directory: PathLike) {
     bot.commands.set(fileName, cmd);
   });
 
-  // Converts the command to Discord API-compatible JSON
-  const jsonData = bot.commands.map((command) => commandToJSON(command));
+  // Converts the command to Discord API-compatible JSON and removes messageOnly ones
+  const jsonData = bot.commands
+    .filter((command) => !command.messageOnly && !command.owner)
+    .map((cmd) => {
+      return commandToJSON(cmd);
+    });
 
   // Attempts to register all commands globally
   IS_DEVELOPMENT ? registerGuildCommands(bot, bot.config.hibiki.testGuildID, jsonData) : registerGlobalCommands(bot, jsonData);
