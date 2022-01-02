@@ -11,7 +11,7 @@ import type { HibikiLogger } from "../classes/Logger";
 import type { ApplicationCommandData, Collection } from "discord.js";
 import type { PathLike } from "node:fs";
 import { moduleFiletypeRegex } from "../utils/constants";
-import { checkIntent } from "./intents";
+import { checkIntents } from "./intents";
 import { logger } from "./logger";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
@@ -71,19 +71,6 @@ export function loadCommands(bot: HibikiClient, directory: PathLike) {
  */
 
 export function loadEvents(bot: HibikiClient, directory: string, isLogger = false) {
-  /**
-   * Runs events and loggers
-   * @param events The events to subscribe to
-   */
-
-  function subscribeToEvents(events: Collection<string, HibikiEvent | HibikiLogger>) {
-    events.forEach((event) => {
-      event.events.forEach((individualEvent) => {
-        bot.on(individualEvent, (...eventParameters) => event.run(individualEvent, ...eventParameters));
-      });
-    });
-  }
-
   // Loads each event file
   const files = fs.readdirSync(directory, { withFileTypes: true, encoding: "utf-8" });
 
@@ -109,7 +96,7 @@ export function loadEvents(bot: HibikiClient, directory: string, isLogger = fals
 
     // Checks for missing intents
     if (event.requiredIntents?.length) {
-      const missingIntents = checkIntent(bot.options, event.requiredIntents);
+      const missingIntents = checkIntents(bot.options, event.requiredIntents);
       if (missingIntents?.length) {
         logger.warn(`${isLogger ? "Logger" : "Event"} ${fileName} not loaded: missing intent(s) ${missingIntents.join(", ")}`);
         return;
@@ -120,7 +107,8 @@ export function loadEvents(bot: HibikiClient, directory: string, isLogger = fals
     (isLogger ? bot.loggers : bot.events).set(fileName, event);
   });
 
-  subscribeToEvents(isLogger ? bot.loggers : bot.events);
+  // Subscribes to all of the events
+  subscribeToEvents(bot, isLogger ? bot.loggers : bot.events);
 }
 
 /**
@@ -157,4 +145,17 @@ export function commandToJSON(command: HibikiCommand) {
     description: command.description,
     options: command.options,
   };
+}
+
+/**
+ * Runs events and loggers
+ * @param events The events to subscribe to
+ */
+
+function subscribeToEvents(bot: HibikiClient, events: Collection<string, HibikiEvent | HibikiLogger>) {
+  events.forEach((event) => {
+    event.events.forEach((individualEvent) => {
+      bot.on(individualEvent, (...eventParameters) => event.run(individualEvent, ...eventParameters));
+    });
+  });
 }

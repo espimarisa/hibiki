@@ -11,7 +11,6 @@ export abstract class HibikiCommand {
   /**
    * Whether or not the command is a message-only command
    * Also prevents being deployed as a slash command
-   * @deprecated Since v4.0.0
    * @see MIGRATION.md
    */
 

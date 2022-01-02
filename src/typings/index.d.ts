@@ -4,8 +4,12 @@
  * @typedef index
  */
 
-// Privately imports types to not break global typings
+// Privately imports dependency types
 type PrivateClientEvents = import("discord.js").ClientEvents;
+type PrivateIntentsString = import("discord.js").IntentsString;
+
+// Privately imports local types
+type PrivateHibikiLocaleStrings = import("./locales").HibikiLocaleStrings;
 
 // Hibiki event emitters
 type HibikiEventEmitter = keyof PrivateClientEvents;
@@ -16,15 +20,10 @@ type DiscordSnowflake = import("discord.js").Snowflake;
 // Valid locale codes. This list will need to be updated manually.
 type HibikiLocaleCode = "en-GB";
 
-// Global full message embed data type
-type FullMessageEmbedData = {
-  embeds: (import("discord.js").MessageEmbed | import("discord.js").MessageEmbedOptions | import("discord-api-types").APIEmbed)[];
-};
-
 // Type for getLocaleFunction()
 interface GetLocaleString {
-  (string: import("./locales").HibikiLocaleStrings, args?: Record<string, any>): string;
+  (string: PrivateHibikiLocaleStrings, args?: Record<string, any>): string;
 }
 
-//
-type ResolvableIntentString = import("discord.js").BitFieldResolvable<import("discord.js").IntentsString, number>;
+// A resolvable string of intents
+type ResolvableIntentString = import("discord.js").BitFieldResolvable<PrivateIntentsString, number>;
