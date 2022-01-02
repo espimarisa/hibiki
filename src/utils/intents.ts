@@ -13,7 +13,7 @@ import { BitFieldResolvable, ClientOptions, Intents, IntentsString } from "disco
  * @returns Either an array of missing intents or nothing
  */
 
-export function checkIntent(options: ClientOptions, intentsToCheck: ResolvableIntentString[]) {
+export function checkIntents(options: ClientOptions, intentsToCheck: ResolvableIntentString[]) {
   // Creates a new bitfield out of the client's intents
   const bitfield: BitFieldResolvable<IntentsString, number> = options.intents ?? (options.ws as any)?.intents;
   if (!bitfield) return;
@@ -28,5 +28,6 @@ export function checkIntent(options: ClientOptions, intentsToCheck: ResolvableIn
     if (!clientIntents.has(intent)) missingIntents.push(intent);
   });
 
+  // Returns an array of missing intents
   return missingIntents;
 }

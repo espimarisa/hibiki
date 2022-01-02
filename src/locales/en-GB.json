@@ -1,13 +1,6 @@
 {
   "NAME": "English",
 
-  "global": {
-    "ERROR": "❌ Error",
-    "ID": "ID",
-    "LINKS": "Links",
-    "RAN_BY": "Ran by {tag}"
-  },
-
   "general": {
     "COMMAND_ABOUT_DESCRIPTION": "{username}, by [sysdotini](https://espi.me) and [contributors](https://github.com/sysdotini/hibiki). 💜",
     "COMMAND_ABOUT_LINK_STRING": "[Donate]({donate}) • [GitHub]({github}) • [Invite]({invite}) • [Privacy]({privacy}) • [Translate]({translate})",
@@ -16,16 +9,50 @@
     "COMMAND_ABOUT_STATISTICS": "Stats",
     "COMMAND_ABOUT_STATISTICS_STRING": "{shards} total shards \n{guilds} cached guilds \n{commands} total commands",
     "COMMAND_ABOUT_TITLE": "🤖 About",
+    "COMMAND_CHANNELINFO_ACTIVETHREADS": "Active Threads",
+    "COMMAND_CHANNELINFO_ARCHIVEDTHREADS": "Archived Threads",
+    "COMMAND_CHANNELINFO_FAILED": "Failed to get information about that channel. Try again later.",
     "COMMAND_INVITE_DESCRIPTION": "You can invite me to your server by clicking [here](https://discord.com/oauth2/authorize?&client_id={id}&scope=bot%20applications.commands&permissions=1581116663).",
     "COMMAND_INVITE_TITLE": "🔗 Invite",
     "COMMAND_PING_DESCRIPTION": "This message took {latency}ms to send.",
     "COMMAND_PING_PONG": "🏓 Pong!",
-    "COMMAND_SERVERINFO_FAILED": "Failed to get information about the server. Try again later.",
-    "COMMAND_USERINFO_FAILED": "Failed to get information about that user. Try again later.",
     "COMMAND_ROLEINFO_FAILED": "Failed to get information about that role. Try again later.",
+    "COMMAND_SERVERINFO_FAILED": "Failed to get information about the server. Try again later.",
+    "COMMAND_USERINFO_FAILED": "Failed to get information about that user. Try again later."
+  },
 
-    "COMMAND_CHANNELINFO_ACTIVETHREADS": "Active Threads",
-    "COMMAND_CHANNELINFO_ARCHIVEDTHREADS": "Archived Threads",
-    "COMMAND_CHANNELINFO_FAILED": "Failed to get information about that channel. Try again later."
+  "global": {
+    "ACCOUNT_CREATED": "Account Created",
+    "ACCOUNT_JOINED": "Account Joined",
+    "CATEGORY": "Category",
+    "CHANNEL_TYPE": "Channel Type",
+    "CHANNELS": "Channels",
+    "COLOUR": "Colour",
+    "CREATED_ON": "Created On",
+    "EMOJIS": "Emojis",
+    "ERROR": "❌ Error",
+    "FALSE": "False",
+    "HIGHEST_ROLE": "Highest Role",
+    "HOISTED": "Hoisted",
+    "ID": "ID",
+    "LINKS": "Links",
+    "MANAGED_BY_AN_INTEGRATION": "Managed by an Integration",
+    "MEMBERS": "Members",
+    "NEWS": "News",
+    "NICKNAME": "Nickname",
+    "NO": "No",
+    "NSFW": "NSFW",
+    "OWNER": "Owner",
+    "POSITION": "Position",
+    "RAN_BY": "Ran by {tag}",
+    "ROLES": "Roles",
+    "STAGE": "Stage",
+    "STICKERS": "Stickers",
+    "STORE": "Store",
+    "TEXT": "Text",
+    "TOPIC": "Topic",
+    "TRUE": "True",
+    "VOICE": "Voice",
+    "YES": "Yes"
   }
 }
