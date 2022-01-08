@@ -4,14 +4,14 @@
  * @typedef discord.js
  */
 
-import type { GetLocaleString } from "./locales";
+import type { getString } from "./locales";
 
 declare module "discord.js" {
   declare interface CommandInteraction {
-    getLocaleString: GetLocaleString;
+    getString: getString;
   }
 
   declare interface Message {
-    getLocaleString: GetLocaleString;
+    getString: getString;
   }
 }

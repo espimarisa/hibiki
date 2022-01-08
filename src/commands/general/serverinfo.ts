@@ -16,13 +16,9 @@ export class ServerinfoCommand extends HibikiCommand {
       return interaction.reply({
         embeds: [
           {
-            title: interaction.getLocaleString("global.ERROR"),
-            description: interaction.getLocaleString("general.COMMAND_SERVERINFO_FAILED"),
+            title: interaction.getString("global.ERROR"),
+            description: interaction.getString("general.COMMAND_SERVERINFO_FAILED"),
             color: this.bot.config.colours.error,
-            footer: {
-              text: interaction.getLocaleString("global.RAN_BY", { tag: interaction.user.tag }),
-              iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
-            },
           },
         ],
       });
@@ -33,13 +29,13 @@ export class ServerinfoCommand extends HibikiCommand {
     fields.push(
       {
         // ID
-        name: interaction.getLocaleString("global.ID"),
+        name: interaction.getString("global.ID"),
         value: guild.id,
         inline: false,
       },
       {
         // Creation date
-        name: interaction.getLocaleString("global.CREATED_ON"),
+        name: interaction.getString("global.CREATED_ON"),
         value: `${createFullTimestamp(guild.createdAt)}`,
         inline: false,
       },
@@ -49,7 +45,7 @@ export class ServerinfoCommand extends HibikiCommand {
     const owner = await guild.fetchOwner();
     if (owner.user) {
       fields.push({
-        name: interaction.getLocaleString("global.OWNER"),
+        name: interaction.getString("global.OWNER"),
         value: `${owner.user.tag} (${owner.user.id})`,
         inline: false,
       });
@@ -57,7 +53,7 @@ export class ServerinfoCommand extends HibikiCommand {
 
     // Members
     fields.push({
-      name: interaction.getLocaleString("global.MEMBERS"),
+      name: interaction.getString("global.MEMBERS"),
       value: guild.memberCount.toString(),
       inline: true,
     });
@@ -65,7 +61,7 @@ export class ServerinfoCommand extends HibikiCommand {
     // Channels
     if (guild.channels.cache.size > 0) {
       fields.push({
-        name: interaction.getLocaleString("global.CHANNELS"),
+        name: interaction.getString("global.CHANNELS"),
         value: guild.channels.cache.size.toString(),
         inline: true,
       });
@@ -74,7 +70,7 @@ export class ServerinfoCommand extends HibikiCommand {
     // Roles
     if (guild.roles.cache.size > 0) {
       fields.push({
-        name: interaction.getLocaleString("global.ROLES"),
+        name: interaction.getString("global.ROLES"),
         value: guild.roles.cache.size.toString(),
         inline: true,
       });
@@ -83,7 +79,7 @@ export class ServerinfoCommand extends HibikiCommand {
     // Emojis
     if (guild.emojis.cache.size > 0) {
       fields.push({
-        name: interaction.getLocaleString("global.EMOJIS"),
+        name: interaction.getString("global.EMOJIS"),
         value: guild.emojis.cache.size.toString(),
         inline: true,
       });
@@ -92,7 +88,7 @@ export class ServerinfoCommand extends HibikiCommand {
     // Stickers
     if (guild.stickers.cache.size > 0) {
       fields.push({
-        name: interaction.getLocaleString("global.STICKERS"),
+        name: interaction.getString("global.STICKERS"),
         value: guild.stickers.cache.size.toString(),
         inline: true,
       });
@@ -111,11 +107,7 @@ export class ServerinfoCommand extends HibikiCommand {
             url: guild.iconURL({ dynamic: true }) || undefined,
           },
           image: {
-            url: guild.bannerURL({ format: "png", size: 1024 }) || undefined,
-          },
-          footer: {
-            text: interaction.getLocaleString("global.RAN_BY", { tag: interaction.user.tag }),
-            iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+            url: guild.bannerURL({ size: 1024 }) || undefined,
           },
         },
       ],
