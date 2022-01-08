@@ -22,13 +22,9 @@ export class RoleinfoCommand extends HibikiCommand {
       return interaction.reply({
         embeds: [
           {
-            title: interaction.getLocaleString("global.ERROR"),
-            description: interaction.getLocaleString("general.COMMAND_ROLEINFO_FAILED"),
+            title: interaction.getString("global.ERROR"),
+            description: interaction.getString("general.COMMAND_ROLEINFO_FAILED"),
             color: this.bot.config.colours.error,
-            footer: {
-              text: interaction.getLocaleString("global.RAN_BY", { tag: interaction.user.tag }),
-              iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
-            },
           },
         ],
       });
@@ -40,7 +36,7 @@ export class RoleinfoCommand extends HibikiCommand {
 
     // ID
     fields.push({
-      name: interaction.getLocaleString("global.ID"),
+      name: interaction.getString("global.ID"),
       value: role.id,
       inline: false,
     });
@@ -48,7 +44,7 @@ export class RoleinfoCommand extends HibikiCommand {
     // Created
     if (guildRole?.createdAt) {
       fields.push({
-        name: interaction.getLocaleString("global.CREATED_ON"),
+        name: interaction.getString("global.CREATED_ON"),
         value: createFullTimestamp(guildRole.createdAt),
         inline: false,
       });
@@ -57,7 +53,7 @@ export class RoleinfoCommand extends HibikiCommand {
     // Colour
     if (role.color) {
       fields.push({
-        name: interaction.getLocaleString("global.COLOUR"),
+        name: interaction.getString("global.COLOUR"),
         value: `#${role.color.toString(16)}`,
         inline: false,
       });
@@ -66,8 +62,8 @@ export class RoleinfoCommand extends HibikiCommand {
     // Managed
     if (role.managed) {
       fields.push({
-        name: interaction.getLocaleString("global.MANAGED_BY_AN_INTEGRATION"),
-        value: interaction.getLocaleString("global.YES"),
+        name: interaction.getString("global.MANAGED_BY_AN_INTEGRATION"),
+        value: interaction.getString("global.YES"),
         inline: false,
       });
     }
@@ -77,8 +73,8 @@ export class RoleinfoCommand extends HibikiCommand {
       // Hoisted
       if (guildRole.hoist) {
         fields.push({
-          name: interaction.getLocaleString("global.HOISTED"),
-          value: interaction.getLocaleString("global.YES"),
+          name: interaction.getString("global.HOISTED"),
+          value: interaction.getString("global.YES"),
           inline: true,
         });
       }
@@ -86,7 +82,7 @@ export class RoleinfoCommand extends HibikiCommand {
       // Position
       if (guildRole.position) {
         fields.push({
-          name: interaction.getLocaleString("global.POSITION"),
+          name: interaction.getString("global.POSITION"),
           value: guildRole.position.toString(),
           inline: true,
         });
@@ -101,10 +97,6 @@ export class RoleinfoCommand extends HibikiCommand {
           author: {
             name: role.name,
             icon_url: interaction.guild?.iconURL({ dynamic: true }) || undefined,
-          },
-          footer: {
-            text: interaction.getLocaleString("global.RAN_BY", { tag: interaction.user.tag }),
-            iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
           },
         },
       ],

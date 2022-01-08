@@ -25,8 +25,8 @@ export class HibikiInteractionEvent extends HibikiEvent {
     else if (guildconfig?.locale && !userLocale) locale = guildconfig.locale;
 
     // Wrapper for getLocaleFunction();
-    const getLocaleStringFunction = this.bot.localeSystem.getLocaleFunction(locale);
-    interaction.getLocaleString = getLocaleStringFunction;
+    const getStringFunction = this.bot.localeSystem.getLocaleFunction(locale);
+    interaction.getString = getStringFunction;
 
     // Runs the command
     try {

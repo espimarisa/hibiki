@@ -15,10 +15,24 @@
     "COMMAND_INVITE_DESCRIPTION": "You can invite me to your server by clicking [here](https://discord.com/oauth2/authorize?&client_id={id}&scope=bot%20applications.commands&permissions=1581116663).",
     "COMMAND_INVITE_TITLE": "🔗 Invite",
     "COMMAND_PING_DESCRIPTION": "This message took {latency}ms to send.",
-    "COMMAND_PING_PONG": "🏓 Pong!",
+    "COMMAND_PING_PONG": "🏓Pong!",
     "COMMAND_ROLEINFO_FAILED": "Failed to get information about that role. Try again later.",
     "COMMAND_SERVERINFO_FAILED": "Failed to get information about the server. Try again later.",
-    "COMMAND_USERINFO_FAILED": "Failed to get information about that user. Try again later."
+    "COMMAND_USERINFO_FAILED": "Failed to get information about that user. Try again later.",
+    "COMMAND_AVATAR_FAILED": "Failed to get that member's avatar. Try again later.",
+    "COMMAND_BANNER_FAILED": "Failed to get that member's banner. Try again later.",
+    "COMMAND_BANNER_EMPTY": "{username} does not have a custom banner set.",
+    "COMMAND_URBAN_NODEFINITION": "No definition for `{word}` was found on the Urban Dictionary. Maybe be more specific?",
+    "COMMAND_URBAN_EXAMPLE": "Example",
+    "COMMAND_URBAN_WRITTENON": "Written",
+    "COMMAND_URBAN_UPVOTES": "Upvotes",
+    "COMMAND_URBAN_DOWNVOTES": "Downvotes",
+    "COMMAND_SHARD_TITLE": "🌐 Shard",
+    "COMMAND_SHARD_DESCRIPTION": "This server is running on shard **#{shard}**.",
+    "COMMAND_SHARD_ERROR": "Failed to fetch the current shard's info. Try again later.",
+    "COMMAND_BANNER_DESCRIPTION": "{username}'s banner",
+
+    "COMMAND_AVATAR_DESCRIPTION": "{username}'s {type:#default avatar#!avatar!}"
   },
 
   "global": {
@@ -53,6 +67,19 @@
     "TOPIC": "Topic",
     "TRUE": "True",
     "VOICE": "Voice",
-    "YES": "Yes"
+    "YES": "Yes",
+    "PING": "Ping",
+    "SHARD": "Shard",
+    "STATUS": "Status",
+    "MILLISECOND_INFO": "{amount}ms",
+    "SHARD_STATUS_CONNECTING": "Connecting",
+    "SHARD_STATUS_NEARLY": "Nearly Connected",
+    "SHARD_STATUS_READY": "Ready",
+    "SHARD_STATUS_RECONNECTING": "Reconnecting",
+    "SHARD_STATUS_IDLE": "Idle",
+    "SHARD_STATUS_DISCONNECTED": "Disconnected",
+    "SHARD_STATUS_WAITING": "Waiting for Guilds",
+    "SHARD_STATUS_IDENTIFYING": "Identifying",
+    "SHARD_STATUS_RESUMING": "Resuming"
   }
 }

@@ -80,7 +80,8 @@ export class HibikiShardingManager {
  */
 
 export async function fetchTotalCachedGuilds(shard: ShardClientUtil | null) {
-  const values = await shard?.fetchClientValues("guilds.cache.size");
+  if (!shard) return;
+  const values = await shard.fetchClientValues("guilds.cache.size");
   if (!values?.length) return;
   return values.reduce((a, b) => (a as number) + (b as number)) as number;
 }
@@ -92,7 +93,8 @@ export async function fetchTotalCachedGuilds(shard: ShardClientUtil | null) {
  */
 
 export async function fetchTotalCachedUsers(shard: ShardClientUtil | null) {
-  const values = await shard?.fetchClientValues("users.cache.size");
+  if (!shard) return;
+  const values = await shard.fetchClientValues("users.cache.size");
   if (!values?.length) return;
   return values.reduce((a, b) => (a as number) + (b as number)) as number;
 }

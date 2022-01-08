@@ -8,8 +8,8 @@ export class PingCommand extends HibikiCommand {
     await interaction.reply({
       embeds: [
         {
-          title: interaction.getLocaleString("general.COMMAND_PING_PONG"),
-          description: interaction.getLocaleString("general.COMMAND_PING_DESCRIPTION", { latency: this.bot.ws.ping }),
+          title: interaction.getString("general.COMMAND_PING_PONG"),
+          description: interaction.getString("general.COMMAND_PING_DESCRIPTION", { latency: this.bot.ws.ping }),
           color: this.bot.config.colours.primary,
         },
       ],

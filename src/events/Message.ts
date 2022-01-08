@@ -38,14 +38,14 @@ export class HibikiMessageEvent extends HibikiEvent {
     // If the command isn't a message only, return
     if (typeof command.runWithMessage !== "function") return;
 
-    // Finds what locale to use and sets msg.getLocaleString
+    // Finds what locale to use and sets msg.getString
     let locale = this.bot.config.hibiki.locale;
     const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild ? msg.channel.guild.id : "");
     const userLocale = await this.bot.localeSystem.getUserLocale(msg.author.id, this.bot);
     if (userLocale) locale = userLocale;
     else if (guildconfig?.locale && !userLocale) locale = guildconfig.locale;
     const string = this.bot.localeSystem.getLocaleFunction(locale);
-    msg.getLocaleString = string;
+    msg.getString = string;
 
     // Handles owner commands
     if (command.owner) {
