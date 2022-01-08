@@ -4,7 +4,7 @@
  * @module HibikiLocaleSystem
  */
 
-import type { HibikiLocaleStrings } from "../typings/locales";
+import type { getString, HibikiLocaleStrings } from "../typings/locales";
 import type { HibikiClient } from "./Client";
 import { logger } from "../utils/logger";
 import fs from "node:fs";
@@ -92,7 +92,7 @@ export class HibikiLocaleSystem {
    * @param args Any arguments to pass to the locale
    */
 
-  public getLocaleFunction(language: HibikiLocaleCode): GetLocaleString {
+  public getLocaleFunction(language: HibikiLocaleCode): getString {
     return (fieldName: HibikiLocaleStrings, args?: Record<string, any>) => this.getLocale(language, fieldName, args);
   }
 

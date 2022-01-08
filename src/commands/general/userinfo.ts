@@ -17,15 +17,13 @@ export class UserinfoCommand extends HibikiCommand {
     // Gets the raw member user info
     const member = await interaction.options.getUser(this.options[0].name)?.fetch();
 
-    console.log(member);
-
     // Handler for if a member failed to fetch
     if (!member) {
       return interaction.reply({
         embeds: [
           {
-            title: interaction.getLocaleString("global.ERROR"),
-            description: interaction.getLocaleString("general.COMMAND_USERINFO_FAILED"),
+            title: interaction.getString("global.ERROR"),
+            description: interaction.getString("general.COMMAND_USERINFO_FAILED"),
             color: this.bot.config.colours.error,
           },
         ],
@@ -39,13 +37,13 @@ export class UserinfoCommand extends HibikiCommand {
     fields.push(
       {
         // ID
-        name: interaction.getLocaleString("global.ID"),
+        name: interaction.getString("global.ID"),
         value: member.id,
         inline: false,
       },
       {
         // Account creation date
-        name: interaction.getLocaleString("global.ACCOUNT_CREATED"),
+        name: interaction.getString("global.ACCOUNT_CREATED"),
         value: `${createFullTimestamp(member.createdAt)}`,
         inline: false,
       },
@@ -54,7 +52,7 @@ export class UserinfoCommand extends HibikiCommand {
     // Join date
     if (guildMember?.joinedAt) {
       fields.push({
-        name: interaction.getLocaleString("global.ACCOUNT_JOINED"),
+        name: interaction.getString("global.ACCOUNT_JOINED"),
         value: `${createFullTimestamp(guildMember.joinedAt)}`,
         inline: false,
       });
@@ -63,7 +61,7 @@ export class UserinfoCommand extends HibikiCommand {
     // Nickname
     if (guildMember?.nickname) {
       fields.push({
-        name: interaction.getLocaleString("global.NICKNAME"),
+        name: interaction.getString("global.NICKNAME"),
         value: guildMember.nickname,
         inline: true,
       });
@@ -72,7 +70,7 @@ export class UserinfoCommand extends HibikiCommand {
     // Highest role
     if (guildMember?.roles.highest) {
       fields.push({
-        name: interaction.getLocaleString("global.HIGHEST_ROLE"),
+        name: interaction.getString("global.HIGHEST_ROLE"),
         value: guildMember.roles.highest.name,
         inline: true,
       });
@@ -89,14 +87,10 @@ export class UserinfoCommand extends HibikiCommand {
           },
 
           thumbnail: {
-            url: member.displayAvatarURL({ dynamic: true }),
+            url: member.displayAvatarURL({ dynamic: true, size: 1024 }),
           },
           image: {
             url: member.bannerURL({ dynamic: true, size: 1024 }) || undefined,
-          },
-          footer: {
-            text: interaction.getLocaleString("global.RAN_BY", { tag: interaction.user.tag }),
-            iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
           },
         },
       ],
