@@ -49,6 +49,14 @@ export abstract class HibikiCommand {
   public runWithMessage?(msg: Message, args?: string[]): Promise<void>;
 
   /**
+   * Gets a specific subcommand's response
+   * @param commandName The subcommand name to get
+   * @param args Additional arguments
+   */
+
+  public getSubCommandResponse?(commandName: string, ...args: string[]): Promise<any>;
+
+  /**
    * Runs a command via the interaction gateway
    * @param interaction The interaction to handle
    * @param args Additional arguments
