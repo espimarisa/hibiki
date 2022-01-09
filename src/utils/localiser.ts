@@ -4,6 +4,7 @@
  * @module localiser
  */
 
+import type { ANIMAL_TYPES } from "../commands/image/animal";
 import type { getString } from "../typings/locales";
 import type { Status } from "discord.js";
 
@@ -45,5 +46,32 @@ export function localiseShardStatus(fn: getString, status: Status) {
     case undefined:
     default:
       return `${status}`;
+  }
+}
+
+/**
+ * Localises a type of animal's name
+ * @param fn The function to fetch a string with
+ * @param type The type of animal to localise
+ * @returns An array of strings
+ */
+
+export function localiseAnimalCommandTitle(fn: getString, type: ANIMAL_TYPES) {
+  switch (type) {
+    case "cat": {
+      return [fn("image.COMMAND_ANIMAL_CAT_TITLE"), fn("global.POWERED_BY", { url: "random.cat" })];
+    }
+
+    case "dog": {
+      return [fn("image.COMMAND_ANIMAL_DOG_TITLE"), fn("global.POWERED_BY", { url: "random.dog" })];
+    }
+
+    case "fox": {
+      return [fn("image.COMMAND_ANIMAL_FOX_TITLE"), fn("global.POWERED_BY", { url: "randomfox.ca" })];
+    }
+
+    case undefined:
+    default:
+      return [type, undefined];
   }
 }

@@ -32,6 +32,9 @@
     "COMMAND_SHARD_ERROR": "Failed to fetch the current shard's info. Try again later.",
     "COMMAND_BANNER_DESCRIPTION": "{username}'s banner",
 
+    "COMMAND_SERVERICON_ERROR": "Failed to fetch the server's icon. Try again later.",
+    "COMMAND_SERVERICON_NOICON": "{server} does not currently have an icon set.",
+    "COMMAND_SERVERICON_DESCRIPTION": "{server}'s icon",
     "COMMAND_AVATAR_DESCRIPTION": "{username}'s {type:#default avatar#!avatar!}"
   },
 
@@ -80,6 +83,15 @@
     "SHARD_STATUS_DISCONNECTED": "Disconnected",
     "SHARD_STATUS_WAITING": "Waiting for Guilds",
     "SHARD_STATUS_IDENTIFYING": "Identifying",
-    "SHARD_STATUS_RESUMING": "Resuming"
+    "SHARD_STATUS_RESUMING": "Resuming",
+    "POWERED_BY": "Powered by {url}"
+  },
+
+  "image": {
+    "COMMAND_ANIMAL_NOSUBCOMMAND": "No animal type was provided.",
+    "COMMAND_ANIMAL_ERROR": "Failed to get the image. Try again later.",
+    "COMMAND_ANIMAL_DOG_TITLE": "🐶 Dog",
+    "COMMAND_ANIMAL_CAT_TITLE": "😺 Cat",
+    "COMMAND_ANIMAL_FOX_TITLE": "🦊 Fox"
   }
 }

@@ -6,7 +6,11 @@
 
 import type * as en from "../locales/en-GB.json";
 
-type HibikiLocaleStrings = "NAME" | `general.${keyof typeof en.general}` | `global.${keyof typeof en.global}`;
+type HibikiLocaleStrings =
+  | "NAME"
+  | `general.${keyof typeof en.general}`
+  | `global.${keyof typeof en.global}`
+  | `image.${keyof typeof en.image}`;
 
 // Type for getLocaleFunction()
 type getString = {
