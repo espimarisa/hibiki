@@ -1,6 +1,6 @@
 {
   "exclude": ["*.d.ts", "dist", "node_modules"],
-  "include": ["./src/**/**/*", "./src/**/**/*.json"],
+  "include": ["./src/**/**/*", "./src/**/**/*.json", "*.ts"],
 
   "compilerOptions": {
     "allowJs": false,
