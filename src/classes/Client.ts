@@ -30,6 +30,11 @@ export class HibikiClient extends Client {
   readonly db: HibikiProvider;
   readonly localeSystem: HibikiLocaleSystem;
 
+  /**
+   * Creates a new instance of the Hibiki client
+   * @param config A valid Hibiki config to utilize
+   */
+
   constructor(config: HibikiConfig) {
     super({ ...config.options, intents: [Intents.FLAGS.GUILDS] });
 
@@ -42,6 +47,10 @@ export class HibikiClient extends Client {
     this.db = new HibikiDatabaseProvider(this);
     this.localeSystem = new HibikiLocaleSystem(LOCALES_DIRECTORY, this.config.hibiki.locale);
   }
+
+  /**
+   * Starts the client
+   */
 
   public init() {
     this.login(this.config.hibiki.token).then(async () => {

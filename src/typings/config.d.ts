@@ -6,33 +6,112 @@
 
 type PrivateClientOptions = import("discord.js").ClientOptions;
 type PrivateColorResolvable = import("discord.js").ColorResolvable & `0x${string}`;
+type PrivateApplicationCommandData = import("discord.js").ApplicationCommandData;
 
-// Options for Hibiki itself
+/**
+ * Hibiki's core options
+ */
+
 type HibikiBaseOptions = {
+  // A Discord bot token to login with
   token: string;
+
+  // A valid default Hibiki locale code to utilize
   locale: HibikiLocaleCode;
+
+  // A guild ID to deploy test commands in
   testGuildID: string;
+
+  // An optional array of prefixes for legacy text-only commands to utilise
   prefixes?: string[];
 };
 
-// Valid hex colours
+/**
+ * Hibiki hex colour config
+ */
+
 type HibikiColourOptions = {
+  // Primary hex colour
   primary: PrivateColorResolvable;
+
+  // Secondary hex colour
   secondary: PrivateColorResolvable;
+
+  // Error hex colour
   error: PrivateColorResolvable;
+
+  // Success hex colour
   success: PrivateColorResolvable;
+
+  // Warning hex colour
   warning: PrivateColorResolvable;
 };
 
-// A valid Hibiki database config
+/**
+ * Hibiki database config
+ */
+
 interface HibikiDatabaseOptions {
+  // The database provider to use
   provider: HibikiDatabaseProvider;
 }
 
-// A valid config.json
+/**
+ * Hibiki webserver config
+ */
+
+interface HibikiWebserverConfig {
+  // The base URL that the index page is located on
+  baseURL: string;
+
+  // The bot's client ID to use for Oauth2
+  clientID: DiscordSnowflake;
+
+  // The bot's client secret to use for Oauth2
+  clientSecret: string;
+
+  // A secret (32 characters at minimum) for cookies / sessions
+  sessionSecret: string;
+
+  // The callback URI to listen on for Oauth2 responses
+  callbackURI: string;
+
+  // The port to listen on
+  port: RangeOf<1, 65_535>;
+}
+
+/**
+ * A validated Hibiki config
+ */
+
 interface HibikiConfig {
+  // Database options
   database: HibikiDatabaseOptions;
+
+  // Core Hibiki options
   hibiki: HibikiBaseOptions;
-  options: PrivateClientOptions;
+
+  // Discord.js client options
+  options?: PrivateClientOptions | Record<string, never>;
+
+  // Colour options
   colours: HibikiColourOptions;
+
+  // Webserver config options
+  webserver: HibikiWebserverConfig;
+}
+
+/**
+ * Hibiki command data in JSON form for slash command registration
+ */
+
+interface HibikiCommandJSON {
+  // The command name, inherited from the filename
+  name: string;
+
+  // The command description
+  description: string;
+
+  // Slash command options
+  options?: ApplicationCommandData[];
 }

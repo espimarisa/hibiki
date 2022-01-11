@@ -57,6 +57,19 @@ export abstract class HibikiCommand {
   public getSubCommandResponse?(commandName: string, ...args: string[]): Promise<any>;
 
   /**
+   * Converts a Hibiki command to Discord API-compatible JSON
+   * @returns A JSON object for a valid slash command
+   */
+
+  public toJSON(): HibikiCommandJSON {
+    return {
+      name: this.name,
+      description: this.description,
+      options: this.options?.length ? this.options : [],
+    };
+  }
+
+  /**
    * Runs a command via the interaction gateway
    * @param interaction The interaction to handle
    * @param args Additional arguments

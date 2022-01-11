@@ -35,6 +35,9 @@
     "COMMAND_SERVERICON_ERROR": "Failed to fetch the server's icon. Try again later.",
     "COMMAND_SERVERICON_NOICON": "{server} does not currently have an icon set.",
     "COMMAND_SERVERICON_DESCRIPTION": "{server}'s icon",
+    "COMMAND_SERVERBANNER_ERROR": "Failed to fetch the server's banner. Try again later.",
+    "COMMAND_SERVERBANNER_NOBANNER": "{server} does not currently have an banner set.",
+    "COMMAND_SERVERBANNER_DESCRIPTION": "{server}'s banner",
     "COMMAND_AVATAR_DESCRIPTION": "{username}'s {type:#default avatar#!avatar!}"
   },
 
