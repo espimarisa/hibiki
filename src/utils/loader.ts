@@ -56,7 +56,7 @@ export function loadCommands(bot: HibikiClient, directory: PathLike) {
   const jsonData = bot.commands
     .filter((command) => !command.messageOnly && !command.owner)
     .map((cmd) => {
-      return commandToJSON(cmd);
+      return cmd.toJSON();
     });
 
   // Attempts to register all commands globally
@@ -132,19 +132,6 @@ export async function registerGuildCommands(bot: HibikiClient, guild: DiscordSno
 export async function registerGlobalCommands(bot: HibikiClient, commands: ApplicationCommandData[]) {
   const rest = new REST({ version: "9" }).setToken(bot.config.hibiki.token);
   await rest.put(Routes.applicationCommands(bot.user?.id as DiscordSnowflake), { body: commands });
-}
-
-/**
- * Converts a Hibiki command to Discord API-compatible JSON
- * @param command The command to register
- */
-
-export function commandToJSON(command: HibikiCommand) {
-  return {
-    name: command.name,
-    description: command.description,
-    options: command.options,
-  };
 }
 
 /**

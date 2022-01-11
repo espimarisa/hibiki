@@ -5,6 +5,7 @@ application.yml
 .hibiki-secret-key
 app.config.*
 web.config.*
+config.ts
 
 # Binaries
 *.jar

@@ -7,15 +7,26 @@
 // Valid database providers
 type HibikiDatabaseProvider = "json";
 
-// A Hibiki guild config
+/**
+ * Hibiki guild config options
+ */
+
 interface HibikiGuildConfig {
+  // The guild's ID
   id: DiscordSnowflake;
+
+  // Configured default locale for all new users to use
   locale?: HibikiLocaleCode;
-  prefix?: string;
 }
 
-// A Hibiki user config
+/**
+ * Hibiki user config options
+ */
+
 interface HibikiUserConfig {
+  // The user's ID
   id: DiscordSnowflake;
+
+  // Configured locale for the user; overrides guild & default one
   locale?: HibikiLocaleCode;
 }

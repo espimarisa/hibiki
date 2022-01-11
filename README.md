@@ -34,7 +34,7 @@ These are just the highlights of Hibiki - all features are **completely free** w
 
 You may invite the official instance using [this][invite] link.
 
-**_NO support is given for self-hosted instances._**
+**_NO support is given for self-hosted instances._** <!-- unless you're cute -->
 
 The information below only applies to the **official instance** of Hibiki. This includes:
 

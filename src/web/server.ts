@@ -6,18 +6,20 @@
 
 import type { FastifyInstance } from "fastify";
 import type { Server, IncomingMessage, ServerResponse } from "node:http";
+import config from "../../config";
 import { logger } from "../utils/logger";
 import { authRoutes } from "./routes/auth";
 import { indexRoutes } from "./routes/index";
+import fastifySession from "@fastify/session";
 import { fastify } from "fastify";
 import fastifyAccepts from "fastify-accepts";
+import { fastifyCookie } from "fastify-cookie";
 import fastifyCors from "fastify-cors";
 import fastifyCsrf from "fastify-csrf";
 import fastifyHelmet from "fastify-helmet";
-import fastifySecureSession from "fastify-secure-session";
+import { fastifyOauth2 } from "fastify-oauth2";
 import fastifyStatic from "fastify-static";
 import { Liquid } from "liquidjs";
-import crypto from "node:crypto";
 import path from "node:path";
 import pointOfView from "point-of-view";
 
@@ -27,21 +29,46 @@ const PUBLIC_DIRECTORY = path.join(__dirname, "public");
 const VIEWS_DIRECTORY = path.join(__dirname, "views");
 const isProduction = process.env.NODE_ENV === "production";
 
-const HIBIKI_SECRET = crypto.randomBytes(32).toString();
-const HIBIKI_SALT = crypto.randomBytes(16);
-
 export type FastifyServer = FastifyInstance<Server, IncomingMessage, ServerResponse>;
-
-export type FastifyGenericRouteOptions = {
-  prefix: string;
-};
-
+export type FastifyGenericRouteOptions = { prefix: string };
 export type FastifyNextFunction = () => void;
 
 export function startWebserver() {
   const app: FastifyServer = fastify({
     logger: logger,
     disableRequestLogging: true,
+  });
+
+  // Registers fastifyCookie
+  app.register(fastifyCookie, { secret: config.webserver.sessionSecret });
+
+  // Registers fastifySession
+  app.register(fastifySession, {
+    secret: config.webserver.sessionSecret,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      // signed: true,
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      // If you're getting infinite redirects and *NOT* running in HTTPS mode, set this to false
+      secure: isProduction,
+    },
+  });
+
+  // Registers oauth2 plugin
+  app.register(fastifyOauth2, {
+    name: "discordOauth2",
+    callbackUri: config.webserver.callbackURI,
+    startRedirectPath: "/auth",
+    scope: ["identify", "guilds"],
+    credentials: {
+      auth: fastifyOauth2.DISCORD_CONFIGURATION,
+      client: {
+        id: config.webserver.clientID,
+        secret: config.webserver.clientSecret,
+      },
+    },
   });
 
   // Creates a new Liquid engine
@@ -63,20 +90,6 @@ export function startWebserver() {
         "img-src": ["'self'", "cdn.discordapp.com", "data:"],
         "script-src": ["'self'"],
       },
-    },
-  });
-
-  app.register(fastifySecureSession, {
-    salt: HIBIKI_SALT,
-    secret: HIBIKI_SECRET,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      signed: true,
-      path: "/",
-      httpOnly: true,
-      sameSite: "lax",
-      // If you are getting infinite redirects, set this to "false" if you don't have a HTTPS-only environment setup.
-      secure: isProduction,
     },
   });
 
@@ -108,5 +121,5 @@ export function startWebserver() {
   app.register(indexRoutes, { prefix: "/" });
   app.register(authRoutes, { prefix: "/auth" });
 
-  app.listen(4000);
+  app.listen(config.webserver.port ?? 4000);
 }
