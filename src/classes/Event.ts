@@ -7,10 +7,10 @@
 import type { HibikiClient } from "./Client";
 
 export abstract class HibikiEvent {
-  /** An array of required intents for an event to fire */
+  // An array of required intents for an event to listen on
   requiredIntents?: ResolvableIntentString[];
 
-  /** An array of event emitters to listen on */
+  // An array of event emitters to listen on
   abstract events: HibikiEventEmitter[];
 
   /**
@@ -24,7 +24,7 @@ export abstract class HibikiEvent {
   /**
    * Runs an event
    * @param event The event to run
-   * @param params Event params
+   * @param params Additional event params
    */
 
   public abstract run(event: HibikiEventEmitter, ...parameters: any[]): Promise<void>;

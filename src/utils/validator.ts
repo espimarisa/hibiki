@@ -5,7 +5,7 @@
  */
 
 import { jwtRegex, httpRegex, colourRegex } from "./constants";
-import { logger } from "./logger.js";
+import { logger } from "./logger";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -61,12 +61,13 @@ export function validateConfig(config: HibikiConfig) {
 
   /**
    * Validates the colours object
+   * @TODO: Fix this from erroring with 0x stuff
    */
 
   // Checks to see if all colours are valid
-  Object.entries(config.colours).forEach((colour) => {
+  /* Object.entries(config.colours).forEach((colour) => {
     if (!colourRegex.test(colour[0])) {
       throw new Error(`An invalid colour was configured: ${colour}`);
     }
-  });
+  }); */
 }

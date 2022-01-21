@@ -18,7 +18,7 @@ export class AboutCommand extends HibikiCommand {
 
     // Module versions
     const moduleString = interaction.getString("general.COMMAND_ABOUT_MODULES_STRING", {
-      botVersion: process.env.npm_package_version,
+      botVersion: this.bot.version,
       djsVersion: djsVersion,
       nodeVersion: process.version,
     });
