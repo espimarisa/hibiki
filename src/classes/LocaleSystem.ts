@@ -6,13 +6,16 @@
 
 import type { getString, HibikiLocaleStrings } from "../typings/locales";
 import type { HibikiClient } from "./Client";
+import type { PathLike } from "node:fs";
 import { logger } from "../utils/logger";
 import fs from "node:fs";
 
 export class HibikiLocaleSystem {
+  // A JSON object containing locale names & strings
   readonly locales: { [k: string]: { [k: string]: any } } = {};
+
+  // The default locale to fall back to
   readonly defaultLocale: HibikiLocaleCode;
-  private readonly _path: string;
 
   /**
    * Creates a new Locale system and loads any locales
@@ -20,10 +23,9 @@ export class HibikiLocaleSystem {
    * @param defaultLocale The locale code to use
    */
 
-  constructor(path: string, defaultLocale: HibikiLocaleCode) {
+  constructor(path: PathLike, defaultLocale: HibikiLocaleCode) {
     this.defaultLocale = defaultLocale;
-    this._path = path;
-    this._updateLocales(this._path);
+    this._loadLocales(path);
   }
 
   /**
@@ -37,51 +39,70 @@ export class HibikiLocaleSystem {
     const category = fieldName.split(".");
     let output = "";
 
+    //  Gets the string output using the specified locale
     output = this._findLocaleString(language, fieldName, category);
+
+    // If there's nothing for the specified locale, try the default one
     if (!output) output = this._findLocaleString(this.defaultLocale, fieldName, category);
 
-    // Search for the default entry if the string doesn't exist, sends a warning each time no entry is found
+    // Throws an error if the string wasn't found
     if (!output) {
-      const defaultLocale: HibikiLocaleCode = this.defaultLocale || "en-GB";
-      const isDefault = language === defaultLocale;
-      if (language) {
-        logger.warn(`${fieldName} is missing in the string table for ${language}.`);
-      }
+      // Checks to see if the language is using the default locale
+      const isDefault = language === this.defaultLocale;
 
-      return isDefault ? fieldName : this.getLocale(defaultLocale, fieldName, args);
+      // Throws the error with what field is missing
+      if (language) logger.warn(`${fieldName} is missing in the string table for ${language}.`);
+      return isDefault ? fieldName : this.getLocale(this.defaultLocale, fieldName, args);
     }
 
-    // Passes arguments to the string
+    // Handles arguments provided
     if (args) {
-      for (const argument of Object.getOwnPropertyNames(args)) {
-        // Handles plurals/non-plural and arguments/optionals
+      // Checks each argument in "args"
+      Object.getOwnPropertyNames(args).forEach((argument) => {
+        // A regex for parsing provided arguments in a string
         const argumentRegex = new RegExp(`{${argument}}`);
+
+        // A regex for parsing plural options in a string
         const pluralRegex = new RegExp(`{${argument}:#([^{}]+)#!([^{}]+)!(?:\\?([^{}]+)\\?)?}`);
-        const optionalRegex = new RegExp(`({optional:${argument}:(.+)(?:{\\w})?})`);
+
+        // A regex for parsing optional arguments in a string
+        const optionalArgumentRegex = new RegExp(`({optional:${argument}:(.+)(?:{\\w})?})`);
 
         // Replaces optional strings with content
-        const optional = optionalRegex.exec(output);
-        if (optional) output = output.replace(optional[1], typeof args[argument] != "undefined" ? optional[2] : "");
+        const isOptional = optionalArgumentRegex.exec(output);
+
+        // Optional argument support
+        if (isOptional) output = output.replace(isOptional[1], typeof args[argument] != "undefined" ? isOptional[2] : "");
         output = output.replace(argumentRegex, args[argument]);
 
-        // Handles plurals
+        // Checks to see if there are any plurals in the string
         const plurals = pluralRegex.exec(output);
 
-        // Sends the output with the correct grammar
         if (plurals) {
+          // Plural option
           let plural = "";
           if (args[argument] === 1 || (args[argument] > 1 && args[argument] < 2)) plural = plurals[2];
+          // Additional plural options for weird languages
           else if (plurals[3] && args[argument] >= 2 && args[argument] <= 4) plural = plurals[3];
+          // Singular option
           else plural = plurals[1];
 
+          // Fixes up plural
           output = output.replace(plurals[0], plural);
-        } else if (!plurals) output = output.replace(`{${argument}}`, args[argument]);
-      }
+        } else if (!plurals) {
+          // Replaces dummy arguments with provided ones
+          output = output.replace(`{${argument}}`, args[argument]);
+        }
+      });
     }
 
-    // Handles optional input
-    const optionalRegex = new RegExp("({optional:.+:(.+)})");
+    // A regex to check to see if any optional arguments were provided
+    const optionalRegex = /({optional:.+:(.+)})/;
+
+    // Checks to see if there are any optional items in the output
     const optional = optionalRegex.exec(output);
+
+    // Replaces optional dummies with content; sends the output
     if (optional) output = output.replace(optional[1], "");
     return output;
   }
@@ -102,47 +123,49 @@ export class HibikiLocaleSystem {
    */
 
   public async getUserLocale(user: DiscordSnowflake, bot: HibikiClient) {
-    let locale = this.defaultLocale;
     const userConfig = await bot.db.getUserConfig(user);
-    if (userConfig?.locale) locale = userConfig.locale;
-    return locale;
+    return userConfig.locale || this.defaultLocale;
   }
 
   /**
-   * Loads locales & updates them
+   * Loads locales from a given path
    * @param path The path to look for locales in
    */
 
-  private _updateLocales(path: string) {
-    fs.readdir(path, { withFileTypes: true }, (error, files) => {
-      if (error) throw error;
+  private _loadLocales(path: PathLike) {
+    const files = fs.readdirSync(path, { withFileTypes: true, encoding: "utf8" });
 
-      // Loads each locale
-      for (const file of files) {
-        if (file.isDirectory()) this._updateLocales(`${path}/${file.name}`);
-        else if (file.isFile()) {
-          fs.readFile(`${path}/${file.name}`, { encoding: "utf8" }, (_error, fileData) => {
-            if (error) throw error;
-            const localeObject: Record<string, any> = {};
-            const data: Record<string, string> = JSON.parse(fileData);
+    files.forEach((file) => {
+      // Scans each locale file and loads it
+      if (file.isDirectory()) this._loadLocales(`${path}/${file.name}`);
+      else if (file.isFile()) {
+        // Reads the actual locale file
+        const subfile = fs.readFileSync(`${path}/${file.name}`)?.toString();
 
-            // Parses each individual locale
-            for (const locale of Object.entries(data)) {
-              // If the locale exists
-              if (typeof locale[1] === "object") {
-                localeObject[locale[0]] = {};
-                for (const string of Object.entries(locale[1])) {
-                  if ((string as [string, string])[1].length > 0) localeObject[locale[0]][string[0]] = string[1];
-                }
-              } else {
-                // Replaces empty strings
-                localeObject[locale[0]] = locale[1];
-              }
-            }
+        // Creates an empty locale object
+        const localeObject: Record<string, any> = {};
 
-            this.locales[file.name.replace(/.json/, "")] = localeObject;
-          });
-        }
+        // Parses the locale's JSON
+        const data: Record<string, string> = JSON.parse(subfile);
+
+        // Looks through each specific locale in the data object
+        Object.entries(data).forEach((locale) => {
+          // Locale "categories"
+          if (typeof locale[1] === "object") {
+            localeObject[locale[0]] = {};
+
+            // Reads each string in the category
+            Object.entries(locale[1]).forEach((string) => {
+              if ((string as [string, string])[1].length > 0) localeObject[locale[0]][string[0]] = string[1];
+            });
+          } else {
+            // Replaces empty strings
+            localeObject[locale[0]] = locale[1];
+          }
+        });
+
+        // Loads the locale object
+        this.locales[file.name.replace(/.json/, "")] = localeObject;
       }
     });
   }
@@ -160,11 +183,13 @@ export class HibikiLocaleSystem {
 
     // Attempts to find the string if the category isn't provided
     if (!this.locales?.[language]?.[category[0]] && !this.locales?.[fieldName]) {
-      for (const category of Object.getOwnPropertyNames(this.locales[language])) {
-        for (const locale of Object.getOwnPropertyNames(this.locales[language][category])) {
-          if (locale === fieldName) output = this.locales[language][category][locale];
-        }
-      }
+      // Looks through each language
+      Object.getOwnPropertyNames(this.locales[language]).forEach((localeCategory) => {
+        // Looks through the categories
+        Object.getOwnPropertyNames(this.locales[language][localeCategory]).forEach((locale) => {
+          if (locale === fieldName) output = this.locales[language][localeCategory][locale];
+        });
+      });
 
       // Sets the output if the category exists
     } else if (this.locales?.[language]?.[category[0]] && this.locales?.[language]?.[category[0]]?.[category[1]]) {

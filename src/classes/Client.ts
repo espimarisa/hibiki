@@ -23,12 +23,26 @@ const PROVIDERS_DIRECTORY = path.join(__dirname, "../providers");
 const LOCALES_DIRECTORY = path.join(__dirname, "../locales");
 
 export class HibikiClient extends Client {
+  // Hibiki's config file
   readonly config: HibikiConfig;
+
+  // A collection of commands
   readonly commands: Collection<string, HibikiCommand> = new Collection();
+
+  // A collection of events
   readonly events: Collection<string, HibikiEvent> = new Collection();
+
+  // A collection of loggers
   readonly loggers: Collection<string, HibikiLogger> = new Collection();
+
+  // Null database provider to be loaded later
   readonly db: HibikiProvider;
+
+  // Hibiki's locale system
   readonly localeSystem: HibikiLocaleSystem;
+
+  // Hibiki's current version, defined in package.json
+  readonly version: string = process.env.npm_package_version ?? "develop";
 
   /**
    * Creates a new instance of the Hibiki client

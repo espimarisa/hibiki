@@ -6,7 +6,7 @@ import fetch from "cross-fetch";
 export type ANIMAL_TYPES = "cat" | "dog" | "fox";
 
 export class AnimalCommand extends HibikiCommand {
-  description = "Gets a random picture of different animals.";
+  description = "Sends a random picture of different animals.";
 
   options: ApplicationCommandOptionData[] = [
     {
@@ -56,7 +56,7 @@ export class AnimalCommand extends HibikiCommand {
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
-            description: interaction.getString("image.COMMAND_ANIMAL_ERROR"),
+            description: interaction.getString("image.COMMAND_IMAGE_FAILED"),
             color: this.bot.config.colours.error,
           },
         ],
@@ -91,7 +91,12 @@ export class AnimalCommand extends HibikiCommand {
        */
 
       case "cat": {
-        const body = await fetch("https://aws.random.cat/meow");
+        const body = await fetch("https://aws.random.cat/meow", {
+          headers: {
+            "User-Agent": `hibiki/${this.bot.version} (https://github.com/sysdotini/hibiki)`,
+          },
+        });
+
         const response = await body.json();
         return response.file ? response.file : undefined;
       }
@@ -101,7 +106,12 @@ export class AnimalCommand extends HibikiCommand {
        */
 
       case "dog": {
-        const body = await fetch("https://random.dog/woof.json");
+        const body = await fetch("https://random.dog/woof.json", {
+          headers: {
+            "User-Agent": `hibiki/${this.bot.version} (https://github.com/sysdotini/hibiki)`,
+          },
+        });
+
         const response = await body.json();
         return response.url ? response.url : undefined;
       }
@@ -111,7 +121,12 @@ export class AnimalCommand extends HibikiCommand {
        */
 
       case "fox": {
-        const body = await fetch("https://randomfox.ca/floof/");
+        const body = await fetch("https://randomfox.ca/floof/", {
+          headers: {
+            "User-Agent": `hibiki/${this.bot.version} (https://github.com/sysdotini/hibiki)`,
+          },
+        });
+
         const response = await body.json();
         return response.image ? response.image : undefined;
       }

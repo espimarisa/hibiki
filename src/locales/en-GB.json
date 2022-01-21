@@ -36,8 +36,11 @@
     "COMMAND_SERVERICON_NOICON": "{server} does not currently have an icon set.",
     "COMMAND_SERVERICON_DESCRIPTION": "{server}'s icon",
     "COMMAND_SERVERBANNER_ERROR": "Failed to fetch the server's banner. Try again later.",
+    "COMMAND_INVITEBANNER_ERROR": "Failed to fetch the server's invite splash banner. Try again later.",
+    "COMMAND_INVITEBANNER_NOBANNER": "{server} does not currently have an invite splash banner set.",
     "COMMAND_SERVERBANNER_NOBANNER": "{server} does not currently have an banner set.",
     "COMMAND_SERVERBANNER_DESCRIPTION": "{server}'s banner",
+    "COMMAND_INVITEBANNER_DESCRIPTION": "{server}'s invite splash banner",
     "COMMAND_AVATAR_DESCRIPTION": "{username}'s {type:#default avatar#!avatar!}"
   },
 
@@ -92,9 +95,11 @@
 
   "image": {
     "COMMAND_ANIMAL_NOSUBCOMMAND": "No animal type was provided.",
-    "COMMAND_ANIMAL_ERROR": "Failed to get the image. Try again later.",
+    "COMMAND_IMAGE_FAILED": "Failed to get an image to send. Try again later.",
     "COMMAND_ANIMAL_DOG_TITLE": "🐶 Dog",
     "COMMAND_ANIMAL_CAT_TITLE": "😺 Cat",
-    "COMMAND_ANIMAL_FOX_TITLE": "🦊 Fox"
+    "COMMAND_ANIMAL_FOX_TITLE": "🦊 Fox",
+    "COMMAND_FOXGIRL_TITLE": "🦊 Foxgirl",
+    "COMMAND_CATGIRL_TITLE": "🐱 Catgirl"
   }
 }
