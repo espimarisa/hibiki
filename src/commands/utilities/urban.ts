@@ -34,7 +34,12 @@ export class UrbanCommand extends HibikiCommand {
 
     // Encodes the word and fetches it
     const encodedQuery = encodeURIComponent(query);
-    const response = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodedQuery}`);
+    const response = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodedQuery}`, {
+      headers: {
+        "User-Agent": `hibiki/${this.bot.version} (https://github.com/sysdotini/hibiki)`,
+      },
+    });
+
     const body = await response?.json();
 
     // Handler if the word doesn't exist
