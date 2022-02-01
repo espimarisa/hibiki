@@ -9,7 +9,7 @@
 <!-- Badges -->
 
 [badge-workflow]: https://img.shields.io/github/workflow/status/sysdotini/hibiki/Push "Shields.io badge for workflow status."
-[badge-license]: https://img.shields.io/badge/license-MIT-orange.svg "Shields.io badge for the GNU AGPLv3."
+[badge-license]: https://img.shields.io/badge/license-zlib-orange.svg "Shields.io badge for the zlib license."
 
 Hibiki is a powerful and easy-to-use utility and moderation Discord bot written in [TypeScript][typescript].
 
@@ -82,7 +82,7 @@ To request a data deletion, use a link below. State why you're contacting, or in
 
 ## License
 
-[MIT][license]
+[zlib][license]
 
 [typescript]: https://www.typescriptlang.org/ "TypeScript's website."
 [invite]: https://discord.com/oauth2/authorize?&client_id=864687346977210368&scope=bot%20applications.commands&permissions=1581116663 "Invite the official Hibiki instance."
@@ -90,4 +90,4 @@ To request a data deletion, use a link below. State why you're contacting, or in
 [discord_cg]: https://discord.com/guidelines "Discord's Community Guidelines"
 [espi-telegram]: https://t.me/sysdotini "Contact Espi (sysdotini) on Telegram"
 [espi-email]: mailto:espi@riseup.net
-[license]: LICENSE "MIT License file"
+[license]: LICENSE "zlib/libpng license file"
