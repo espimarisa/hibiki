@@ -4,7 +4,7 @@
  * @module utils/validator
  */
 
-import { jwtRegex, httpRegex, colourRegex } from "./constants";
+import { jwtRegex, httpRegex } from "./constants";
 import { logger } from "./logger";
 import fs from "node:fs";
 import path from "node:path";

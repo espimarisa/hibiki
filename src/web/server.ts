@@ -16,12 +16,13 @@ import fastifyAccepts from "fastify-accepts";
 import { fastifyCookie } from "fastify-cookie";
 import fastifyCors from "fastify-cors";
 import fastifyCsrf from "fastify-csrf";
-import fastifyHelmet from "fastify-helmet";
+import { fastifyHelmet } from "fastify-helmet";
 import { fastifyOauth2 } from "fastify-oauth2";
 import fastifyStatic from "fastify-static";
 import { Liquid } from "liquidjs";
-import path from "node:path";
 import pointOfView from "point-of-view";
+// eslint-disable-next-line import/order
+import path from "node:path";
 
 const LAYOUTS_DIRECTORY = path.join(__dirname, "layouts");
 const PARTIALS_DIRECTORY = path.join(__dirname, "partials");
