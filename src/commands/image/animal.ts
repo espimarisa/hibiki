@@ -1,7 +1,7 @@
 import type { ApplicationCommandOptionData, CommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
+import fetch from "../../utils/fetch";
 import { localiseAnimalCommandTitle } from "../../utils/localiser";
-import fetch from "cross-fetch";
 
 export type ANIMAL_TYPES = "cat" | "dog" | "fox";
 
@@ -91,11 +91,7 @@ export class AnimalCommand extends HibikiCommand {
        */
 
       case "cat": {
-        const body = await fetch("https://aws.random.cat/meow", {
-          headers: {
-            "User-Agent": `hibiki/${this.bot.version} (https://github.com/sysdotini/hibiki)`,
-          },
-        });
+        const body = await fetch("https://aws.random.cat/meow");
 
         const response = await body.json();
         return response.file ? response.file : undefined;
@@ -106,11 +102,7 @@ export class AnimalCommand extends HibikiCommand {
        */
 
       case "dog": {
-        const body = await fetch("https://random.dog/woof.json", {
-          headers: {
-            "User-Agent": `hibiki/${this.bot.version} (https://github.com/sysdotini/hibiki)`,
-          },
-        });
+        const body = await fetch("https://random.dog/woof.json");
 
         const response = await body.json();
         return response.url ? response.url : undefined;
@@ -121,11 +113,7 @@ export class AnimalCommand extends HibikiCommand {
        */
 
       case "fox": {
-        const body = await fetch("https://randomfox.ca/floof/", {
-          headers: {
-            "User-Agent": `hibiki/${this.bot.version} (https://github.com/sysdotini/hibiki)`,
-          },
-        });
+        const body = await fetch("https://randomfox.ca/floof/");
 
         const response = await body.json();
         return response.image ? response.image : undefined;

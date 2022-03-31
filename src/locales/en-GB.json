@@ -1,37 +1,47 @@
 {
   "NAME": "English",
-
   "general": {
-    "COMMAND_ABOUT_DESCRIPTION": "{username}, by [sysdotini](https://espi.me) and [contributors](https://github.com/sysdotini/hibiki). 💜",
+    "COMMAND_ABOUT_DESCRIPTION": "{username}, by [sysdotini](https://espi.me), [flleeppyy](https://fleepy.tv), and [contributors](https://github.com/sysdotini/hibiki). 💜",
     "COMMAND_ABOUT_LINK_STRING": "[Donate]({donate}) • [GitHub]({github}) • [Invite]({invite}) • [Privacy]({privacy}) • [Translate]({translate})",
     "COMMAND_ABOUT_MODULES": "Modules",
     "COMMAND_ABOUT_MODULES_STRING": "Hibiki v{botVersion} \nNode.js {nodeVersion} \nDiscord.js v{djsVersion}",
     "COMMAND_ABOUT_STATISTICS": "Stats",
     "COMMAND_ABOUT_STATISTICS_STRING": "{shards} total shards \n{guilds} cached guilds \n{commands} total commands",
     "COMMAND_ABOUT_TITLE": "🤖 About",
-    "COMMAND_CHANNELINFO_ACTIVETHREADS": "Active Threads",
-    "COMMAND_CHANNELINFO_ARCHIVEDTHREADS": "Archived Threads",
-    "COMMAND_CHANNELINFO_FAILED": "Failed to get information about that channel. Try again later.",
     "COMMAND_INVITE_DESCRIPTION": "You can invite me to your server by clicking [here](https://discord.com/oauth2/authorize?&client_id={id}&scope=bot%20applications.commands&permissions=1581116663).",
     "COMMAND_INVITE_TITLE": "🔗 Invite",
     "COMMAND_PING_DESCRIPTION": "This message took {latency}ms to send.",
     "COMMAND_PING_PONG": "🏓Pong!",
+    "COMMAND_SHARD_TITLE": "🌐 Shard",
+    "COMMAND_SHARD_DESCRIPTION": "This server is running on shard **#{shard}**.",
+    "COMMAND_SHARD_ERROR": "Failed to fetch the current shard's info. Try again later.",
+    "COMMAND_OWOIFY_TITLE": "OwOified message",
+    "COMMAND_DONATE_TITLE": "💜 Donate",
+    "COMMAND_DONATE_DESCRIPTION": "Hibiki will always be free with no paid options. However, if you'd like to support the development of the bot, you can donate through [Ko-fi]({link}). All donations will go towards hosting, domain renewals, and API keys. Please keep in mind that **no bot incentives** will be given for donating. Thank you for your support!"
+  },
+  "fun": {
+    "COMMAND_URBAN_NODEFINITION": "No definition for `{word}` was found on the Urban Dictionary. Maybe be more specific?",
+    "COMMAND_URBAN_EXAMPLE": "Example",
+    "COMMAND_URBAN_WRITTENON": "Written",
+    "COMMAND_URBAN_UPVOTES": "Upvotes",
+    "COMMAND_URBAN_DOWNVOTES": "Downvotes",
+    "COMMAND_FACT_TITLE": "Fact",
+    "COMMAND_FACT_ERROR": "Failed to fetch a random fact. Try again later.",
+    "COMMAND_DICE_TITLE": "🎲 Dice",
+    "COMMAND_DICE_DESCRIPTION": "You rolled a D{sides} -  Its {roll}!",
+		"COMMAND_COIN_DESCRIPTION": "You flipped a coin and got **{coin}**!"
+  },
+  "nsfw": {
+    "NOT_NSFW_CHANNEL_OR_DM": "This command can only be used in an NSFW channel or in DMs."
+  },
+  "utilities": {
     "COMMAND_ROLEINFO_FAILED": "Failed to get information about that role. Try again later.",
     "COMMAND_SERVERINFO_FAILED": "Failed to get information about the server. Try again later.",
     "COMMAND_USERINFO_FAILED": "Failed to get information about that user. Try again later.",
     "COMMAND_AVATAR_FAILED": "Failed to get that member's avatar. Try again later.",
     "COMMAND_BANNER_FAILED": "Failed to get that member's banner. Try again later.",
     "COMMAND_BANNER_EMPTY": "{username} does not have a custom banner set.",
-    "COMMAND_URBAN_NODEFINITION": "No definition for `{word}` was found on the Urban Dictionary. Maybe be more specific?",
-    "COMMAND_URBAN_EXAMPLE": "Example",
-    "COMMAND_URBAN_WRITTENON": "Written",
-    "COMMAND_URBAN_UPVOTES": "Upvotes",
-    "COMMAND_URBAN_DOWNVOTES": "Downvotes",
-    "COMMAND_SHARD_TITLE": "🌐 Shard",
-    "COMMAND_SHARD_DESCRIPTION": "This server is running on shard **#{shard}**.",
-    "COMMAND_SHARD_ERROR": "Failed to fetch the current shard's info. Try again later.",
     "COMMAND_BANNER_DESCRIPTION": "{username}'s banner",
-
     "COMMAND_SERVERICON_ERROR": "Failed to fetch the server's icon. Try again later.",
     "COMMAND_SERVERICON_NOICON": "{server} does not currently have an icon set.",
     "COMMAND_SERVERICON_DESCRIPTION": "{server}'s icon",
@@ -41,10 +51,13 @@
     "COMMAND_SERVERBANNER_NOBANNER": "{server} does not currently have an banner set.",
     "COMMAND_SERVERBANNER_DESCRIPTION": "{server}'s banner",
     "COMMAND_INVITEBANNER_DESCRIPTION": "{server}'s invite splash banner",
-    "COMMAND_AVATAR_DESCRIPTION": "{username}'s {type:#default avatar#!avatar!}"
+    "COMMAND_AVATAR_DESCRIPTION": "{username}'s {type:#default avatar#!avatar!}",
+    "COMMAND_CHANNELINFO_ACTIVETHREADS": "Active Threads",
+    "COMMAND_CHANNELINFO_ARCHIVEDTHREADS": "Archived Threads",
+    "COMMAND_CHANNELINFO_FAILED": "Failed to get information about that channel. Try again later."
   },
-
   "global": {
+    "COMMAND_COOLDOWN": "This command ({command}) is on a cooldown. Please wait **{cooldown}** seconds before using this command again.",
     "ACCOUNT_CREATED": "Account Created",
     "ACCOUNT_JOINED": "Account Joined",
     "CATEGORY": "Category",
@@ -55,6 +68,8 @@
     "EMOJIS": "Emojis",
     "ERROR": "❌ Error",
     "FALSE": "False",
+    "GUILD": "Guild",
+    "GUILDS": "Guilds",
     "HIGHEST_ROLE": "Highest Role",
     "HOISTED": "Hoisted",
     "ID": "ID",
@@ -74,12 +89,15 @@
     "STORE": "Store",
     "TEXT": "Text",
     "TOPIC": "Topic",
+    "TYPE": "Type",
     "TRUE": "True",
     "VOICE": "Voice",
     "YES": "Yes",
     "PING": "Ping",
+    "POWERED_BY": "Powered by {url}",
     "SHARD": "Shard",
     "STATUS": "Status",
+    "REASON": "Reason",
     "MILLISECOND_INFO": "{amount}ms",
     "SHARD_STATUS_CONNECTING": "Connecting",
     "SHARD_STATUS_NEARLY": "Nearly Connected",
@@ -90,9 +108,11 @@
     "SHARD_STATUS_WAITING": "Waiting for Guilds",
     "SHARD_STATUS_IDENTIFYING": "Identifying",
     "SHARD_STATUS_RESUMING": "Resuming",
-    "POWERED_BY": "Powered by {url}"
+    "SUCCESS": "✅ Success",
+    "USER": "User",
+    "INVALID_TYPE": "Invalid Type",
+    "INVALID_ID": "Invalid ID"
   },
-
   "image": {
     "COMMAND_ANIMAL_NOSUBCOMMAND": "No animal type was provided.",
     "COMMAND_IMAGE_FAILED": "Failed to get an image to send. Try again later.",
@@ -101,5 +121,12 @@
     "COMMAND_ANIMAL_FOX_TITLE": "🦊 Fox",
     "COMMAND_FOXGIRL_TITLE": "🦊 Foxgirl",
     "COMMAND_CATGIRL_TITLE": "🐱 Catgirl"
+  },
+  "owner": {
+    "COMMAND_BLACKLIST_TITLE": "🔒 Blacklist",
+    "COMMAND_BLACKLIST_GUILD": "Successfully blacklisted guild {guild} (id).",
+    "COMMAND_BLACKLIST_USER": "Successfully blacklisted user {user} (id).",
+    "COMMAND_BLACKLIST_NO_REASON": "No reason provided.",
+    "COMMAND_BLACKLIST_INVALID_TYPE": "Invalid type provided."
   }
 }

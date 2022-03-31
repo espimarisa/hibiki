@@ -5,7 +5,7 @@
  */
 
 type PrivateClientOptions = import("discord.js").ClientOptions;
-type PrivateColorResolvable = import("discord.js").ColorResolvable & `0x${string}`;
+type PrivateColorResolvable = (import("discord.js").ColorResolvable & `0x${string}`) | `#${string}`;
 type PrivateApplicationCommandData = import("discord.js").ApplicationCommandData;
 
 /**
@@ -115,3 +115,5 @@ interface HibikiCommandJSON {
   // Slash command options
   options?: ApplicationCommandData[];
 }
+
+type HibikiCommandCategory = "fun" | "moderation" | "utilities" | "owner" | "image" | "music" | "nsfw" | "roleplay" | "general";
