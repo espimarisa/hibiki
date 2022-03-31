@@ -8,7 +8,7 @@ import type { HibikiCommand } from "./Command";
 import type { HibikiEvent } from "./Event";
 import type { HibikiLogger } from "./Logger";
 import type { HibikiProvider } from "./Provider";
-import { loadCommands, loadEvents } from "../utils/loader";
+import { loadCommands, loadEvents, processGuilds } from "../utils/loader";
 import { logger } from "../utils/logger";
 import { HibikiLocaleSystem } from "./LocaleSystem";
 import { getDatabaseProvider } from "./Provider";
@@ -34,6 +34,9 @@ export class HibikiClient extends Client {
 
   // A collection of loggers
   readonly loggers: Collection<string, HibikiLogger> = new Collection();
+
+  // A collection of cooldowns
+  readonly cooldowns: Collection<string, Date> = new Collection();
 
   // Null database provider to be loaded later
   readonly db: HibikiProvider;
@@ -74,6 +77,9 @@ export class HibikiClient extends Client {
       loadCommands(this, COMMANDS_DIRECTORY);
       loadEvents(this, EVENTS_DIRECTORY);
       loadEvents(this, LOGGERS_DIRECTORY, true);
+
+      // Process guilds
+      processGuilds(this);
 
       logger.info(`Logged in as ${this.user?.tag} in ${this.guilds.cache.size} guilds on shard #${this.shard?.ids[0]}`);
       logger.info(`${this.commands.size} commands; ${this.events.size} events loaded on shard #${this.shard?.ids[0]}`);

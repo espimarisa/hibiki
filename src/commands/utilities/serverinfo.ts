@@ -17,7 +17,7 @@ export class ServerinfoCommand extends HibikiCommand {
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
-            description: interaction.getString("general.COMMAND_SERVERINFO_FAILED"),
+            description: interaction.getString("utilities.COMMAND_SERVERINFO_FAILED"),
             color: this.bot.config.colours.error,
           },
         ],

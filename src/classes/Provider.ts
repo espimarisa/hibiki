@@ -15,6 +15,7 @@ export enum TABLES {
   GUILD_CONFIGS = "GUILD_CONFIGS",
   USER_CONFIGS = "USER_CONFIGS",
   USER_WARNINGS = "USER_WARNINGS",
+  BLACKLIST = "BLACKLIST",
 }
 
 // Type for a callable Hibiki provider
@@ -121,4 +122,29 @@ export abstract class HibikiProvider {
    */
 
   public abstract updateUserConfig(user: DiscordSnowflake, config: HibikiUserConfig): Promise<any>;
+
+  /**
+   * Adds an ID to the blacklist
+   * @param id The ID to add to the blacklist
+   * @param reason The reason for adding the ID to the blacklist
+   * @param type The type of blacklist to add to (GUILD or USER)
+   **/
+  public abstract insertBlacklistItem(id: DiscordSnowflake, reason: string, type: HibikiGuildOrUser): Promise<any>;
+
+  /**
+   * Deletes an ID from the blacklist
+   * @param id The ID to delete from the blacklist
+   */
+  public abstract deleteBlacklistItem(id: DiscordSnowflake): Promise<any>;
+
+  /**
+   * Gets the blacklist
+   */
+  public abstract getBlacklist(type?: HibikiGuildOrUser): Promise<HibikiBlacklist>;
+
+  /**
+   * Gets a blacklist item
+   * @param id The ID to lookup
+   **/
+  public abstract getBlacklistItem(id: DiscordSnowflake, type: HibikiGuildOrUser): Promise<HibikiBlacklistItem | undefined>;
 }

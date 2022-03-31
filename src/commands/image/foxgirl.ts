@@ -1,16 +1,12 @@
 import type { CommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
-import fetch from "cross-fetch";
+import fetch from "../../utils/fetch";
 
 export class FoxgirlCommand extends HibikiCommand {
   description = "Sends a random picture of a foxgirl.";
 
   public async runWithInteraction(interaction: CommandInteraction) {
-    const body = await fetch("https://nekos.life/api/v2/img/fox_girl", {
-      headers: {
-        "User-Agent": `hibiki/${this.bot.version} (https://github.com/sysdotini/hibiki)`,
-      },
-    });
+    const body = await fetch("https://nekos.life/api/v2/img/fox_girl");
 
     const response: NekosLifeImage = await body.json();
 
