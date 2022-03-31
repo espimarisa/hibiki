@@ -40,6 +40,7 @@ export function loadCommands(bot: HibikiClient, directory: PathLike) {
     try {
       const importedCommand = require(`${directory}/${file.name}`);
       command = importedCommand[Object.keys(importedCommand)[0]];
+      command.category = directory;
     } catch (error) {
       console.error(error);
     }
@@ -144,5 +145,17 @@ function subscribeToEvents(bot: HibikiClient, events: Collection<string, HibikiE
     event.events.forEach((individualEvent) => {
       bot.on(individualEvent, (...eventParameters) => event.run(individualEvent, ...eventParameters));
     });
+  });
+}
+
+/**
+ * Processes guilds and checks if they're in the blacklist
+ */
+export function processGuilds(bot: HibikiClient) {
+  bot.guilds.cache.forEach(async (guild) => {
+    if (await bot.db.getBlacklistItem(guild.id, "GUILD")) {
+      guild.leave();
+      bot.guilds.cache.delete(guild.id);
+    }
   });
 }

@@ -1,7 +1,7 @@
 import type { ApplicationCommandOptionData, CommandInteraction, EmbedField } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
+import fetch from "../../utils/fetch";
 import { createFullTimestamp } from "../../utils/timestamp";
-import fetch from "cross-fetch";
 
 // Urban dictionary word type definition
 interface UrbanWord {
@@ -34,11 +34,7 @@ export class UrbanCommand extends HibikiCommand {
 
     // Encodes the word and fetches it
     const encodedQuery = encodeURIComponent(query);
-    const response = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodedQuery}`, {
-      headers: {
-        "User-Agent": `hibiki/${this.bot.version} (https://github.com/sysdotini/hibiki)`,
-      },
-    });
+    const response = await fetch(`http://api.urbandictionary.com/v0/define?term=${encodedQuery}`);
 
     const body = await response?.json();
 
@@ -48,7 +44,7 @@ export class UrbanCommand extends HibikiCommand {
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
-            description: interaction.getString("general.COMMAND_URBAN_NODEFINITION", { word: query }),
+            description: interaction.getString("fun.COMMAND_URBAN_NODEFINITION", { word: query }),
             color: this.bot.config.colours.error,
           },
         ],
@@ -65,7 +61,7 @@ export class UrbanCommand extends HibikiCommand {
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
-            description: interaction.getString("general.COMMAND_URBAN_NODEFINITION", { word: word }),
+            description: interaction.getString("fun.COMMAND_URBAN_NODEFINITION", { word: word }),
             color: this.bot.config.colours.error,
           },
         ],
@@ -87,7 +83,7 @@ export class UrbanCommand extends HibikiCommand {
     // Example
     if (word.example) {
       fields.push({
-        name: interaction.getString("general.COMMAND_URBAN_EXAMPLE"),
+        name: interaction.getString("fun.COMMAND_URBAN_EXAMPLE"),
         value: `${word.example}`,
         inline: false,
       });
@@ -96,7 +92,7 @@ export class UrbanCommand extends HibikiCommand {
     // Written on
     if (word.written_on) {
       fields.push({
-        name: interaction.getString("general.COMMAND_URBAN_WRITTENON"),
+        name: interaction.getString("fun.COMMAND_URBAN_WRITTENON"),
         value: createFullTimestamp(new Date(word.written_on)),
         inline: false,
       });
@@ -105,7 +101,7 @@ export class UrbanCommand extends HibikiCommand {
     // Thumbs up
     if (word.thumbs_up) {
       fields.push({
-        name: interaction.getString("general.COMMAND_URBAN_UPVOTES"),
+        name: interaction.getString("fun.COMMAND_URBAN_UPVOTES"),
         value: `${word.thumbs_up}`,
         inline: true,
       });
@@ -114,7 +110,7 @@ export class UrbanCommand extends HibikiCommand {
     // Thumbs down
     if (word.thumbs_down) {
       fields.push({
-        name: interaction.getString("general.COMMAND_URBAN_DOWNVOTES"),
+        name: interaction.getString("fun.COMMAND_URBAN_DOWNVOTES"),
         value: `${word.thumbs_down}`,
         inline: true,
       });

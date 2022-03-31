@@ -23,7 +23,7 @@ export class RoleinfoCommand extends HibikiCommand {
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
-            description: interaction.getString("general.COMMAND_ROLEINFO_FAILED"),
+            description: interaction.getString("utilities.COMMAND_ROLEINFO_FAILED"),
             color: this.bot.config.colours.error,
           },
         ],

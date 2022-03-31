@@ -24,6 +24,12 @@ export abstract class HibikiCommand {
 
   owner = false;
 
+  /**
+   * How long the user has to wait before reusing the command
+   */
+
+  cooldown = 0;
+
   // An array of slash command options
   options?: ApplicationCommandOptionData[];
 
@@ -37,7 +43,7 @@ export abstract class HibikiCommand {
    * @param category The command category (matches the directory)
    */
 
-  protected constructor(protected bot: HibikiClient, public name: string, public category: string) {}
+  protected constructor(protected bot: HibikiClient, public name: string, public category: HibikiCommandCategory) {}
 
   /**
    * Runs a command via the legacy message API
@@ -75,5 +81,5 @@ export abstract class HibikiCommand {
    * @param args Additional arguments
    */
 
-  public abstract runWithInteraction(interaction: CommandInteraction, ...args: string[]): Promise<void>;
+  public runWithInteraction?(interaction: CommandInteraction, ...args: string[]): Promise<void>;
 }

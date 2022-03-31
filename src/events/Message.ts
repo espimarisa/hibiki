@@ -38,6 +38,12 @@ export class HibikiMessageEvent extends HibikiEvent {
     // If the command isn't a message only, return
     if (typeof command.runWithMessage !== "function") return;
 
+    // Check if the user is in the blacklist
+    const blacklisted = await this.bot.db.getBlacklistItem(msg.author.id, "USER");
+    if (blacklisted) {
+      return;
+    }
+
     // Finds what locale to use and sets msg.getString
     let locale = this.bot.config.hibiki.locale;
     const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild ? msg.channel.guild.id : "");
@@ -58,6 +64,28 @@ export class HibikiMessageEvent extends HibikiEvent {
 
     // Logs when a command is run
     logger.info(`${msg.author.tag}-${msg.author.id} ran ${command.name} in ${msg.guild?.name}-${msg.guild?.id} with the arguments ${args}`);
+
+    // Check for command cooldowns
+    if (command.cooldown) {
+      const cooldown = this.bot.cooldowns.get(command.name + msg.author.id);
+      if (cooldown) {
+        msg.channel.send({
+          embeds: [
+            {
+              title: msg.getString("global.ERROR"),
+              description: msg.getString("general.COMMAND_COOLDOWN", {
+                command: command.name,
+                time: Math.ceil((cooldown.getTime() - Date.now()) / 1000),
+              }),
+              color: this.bot.config.colours.error,
+            },
+          ],
+        });
+        return;
+      }
+      this.bot.cooldowns.set(command.name + msg.author.id, new Date());
+      setTimeout(() => this.bot.cooldowns.delete(command.name + msg.author.id), command.cooldown);
+    }
 
     // Tries to run the command
     try {
