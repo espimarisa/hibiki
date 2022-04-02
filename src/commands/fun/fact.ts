@@ -5,12 +5,12 @@ import fetch from "../../utils/fetch";
 export class FactCommand extends HibikiCommand {
   description = "Get a random fact.";
 
-  options?: ApplicationCommandOptionData[] | undefined = [
+  options: ApplicationCommandOptionData[] = [
     {
       name: "Category",
-      description: "The category of the fact to get.",
+      description: "The type of fact to get.",
       required: false,
-      type: "STRING",
+      type: 3,
       choices: [
         {
           name: "Cat",
@@ -48,26 +48,19 @@ export class FactCommand extends HibikiCommand {
     ];
 
     const api =
-      factApis.find((api) => api.category === interaction.options.getString("category")) ||
+      factApis.find((a) => a.category === interaction.options.getString("category")) ||
       factApis[Math.floor(Math.random() * factApis.length)];
 
     const body = await fetch(api.url);
 
+    // TODO: Type this response
     const response: any = await body.json();
-    // eslint-disable-next-line unicorn/no-null
-    let fact = null;
+    let fact;
 
-    if (response["facts"]) {
-      fact = response["facts"][0];
-    }
-
-    if (response["data"]) {
-      fact = response["data"];
-    }
-
-    if (response["fact"]) {
-      fact = response["fact"];
-    }
+    // NOTE: Else if is faster here
+    if (response["facts"]) fact = response["facts"][0];
+    else if (response["data"]) fact = response["data"];
+    else if (response["fact"]) fact = response["fact"];
 
     if (!fact) {
       return interaction.reply({
@@ -86,10 +79,11 @@ export class FactCommand extends HibikiCommand {
         {
           title: interaction.getString("fun.COMMAND_FACT_TITLE"),
           description: fact,
+          color: this.bot.config.colours.primary,
         },
       ],
     };
 
-    interaction?.channel?.send(messageResponse) || interaction.reply(messageResponse);
+    interaction.channel?.send(messageResponse) || interaction.reply(messageResponse);
   }
 }

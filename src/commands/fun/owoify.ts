@@ -2,12 +2,12 @@ import type { ApplicationCommandOptionData, CommandInteraction } from "discord.j
 import { HibikiCommand } from "../../classes/Command";
 
 export class OwoifyCommand extends HibikiCommand {
-  description = "OwOify a message.";
+  description = "OwOifys some text.";
 
   options: ApplicationCommandOptionData[] = [
     {
       name: "text",
-      type: "STRING",
+      type: 3,
       required: true,
       description: "The text to owoify.",
     },

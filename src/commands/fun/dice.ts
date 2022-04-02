@@ -7,7 +7,7 @@ export class DiceCommand extends HibikiCommand {
   options: ApplicationCommandOptionData[] = [
     {
       name: "sides",
-      type: "INTEGER",
+      type: 4,
       required: false,
       description: "The number of sides on the die.",
       minValue: 1,
@@ -16,8 +16,10 @@ export class DiceCommand extends HibikiCommand {
   ];
 
   public async runWithInteraction(interaction: CommandInteraction) {
+    // Gets the number of sides
     const sides = interaction.options.getInteger("sides") || 6;
 
+    // Rolls the die
     const roll = Math.floor(Math.random() * sides) + 1;
 
     await interaction.reply({

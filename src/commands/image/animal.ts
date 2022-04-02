@@ -119,7 +119,6 @@ export class AnimalCommand extends HibikiCommand {
         return response.image ? response.image : undefined;
       }
 
-      case undefined:
       default:
         return;
     }

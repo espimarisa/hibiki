@@ -4,17 +4,25 @@ import { HibikiCommand } from "../../classes/Command";
 export class GdprCommand extends HibikiCommand {
   description = "Returns GDPR information.";
 
-  options?: ApplicationCommandOptionData[] | undefined = [
+  options: ApplicationCommandOptionData[] = [
     {
-      name: "Guild ID",
-      type: "STRING",
+      // NOTE: *Always* refer to guilds as *servers* to end-users. You can use guild internally, but keep it consistent - Espi
+      // TODO: We currently have to hardcode this to the values in https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
+      // We should use strings and format them in the .toJson() method for my sanity sake
+      // Using strings here will break everything!! Don't do it <3
+
+      name: "Server ID",
+      type: 3,
       description: "The ID Of the guild you want to fetch data for. Leave blank to get user data.",
       required: false,
     },
   ];
 
   public async runWithInteraction(interaction: CommandInteraction): Promise<void> {
-    if (interaction.options.getString("Guild ID")) {
+    // NOTE: Always call the name[] directly to avoid breakage if we rename the actual var
+    // Damn you, JS
+
+    if (interaction.options.getString(this.options[0].name)) {
       const guild = await interaction.client.guilds.fetch(<string>interaction.options.getString("Guild ID"));
       if (!guild) {
         return interaction.reply({
@@ -28,6 +36,7 @@ export class GdprCommand extends HibikiCommand {
         });
       }
 
+      // Gets the guild owner
       const owner = await guild.fetchOwner();
 
       if (!owner) {
@@ -36,10 +45,13 @@ export class GdprCommand extends HibikiCommand {
             {
               title: interaction.getString("global.ERROR"),
               description: interaction.getString("utilities.COMMAND_GDPR_NOOWNER_ERROR"),
+              color: this.bot.config.colours.error,
             },
           ],
         });
       }
+
+      // Ensures that the guild owner is the command runner
       if (owner.id !== interaction.user.id) {
         return interaction.reply({
           embeds: [
@@ -52,6 +64,7 @@ export class GdprCommand extends HibikiCommand {
         });
       }
 
+      // Gets guild configuration data
       const guildConfig = await this.bot.db.getGuildConfig(guild.id);
       if (!guildConfig) {
         await interaction.reply({
@@ -59,20 +72,25 @@ export class GdprCommand extends HibikiCommand {
             {
               title: interaction.getString("global.ERROR"),
               description: interaction.getString("utilities.COMMAND_GDPR_NOGUILDDATA_ERROR"),
+              color: this.bot.config.colours.error,
             },
           ],
         });
       }
-      const data = {
+
+      // Creates the guildData object
+      const guildData = {
         guild_config: guildConfig,
       };
 
-      const gdprResponse = await this.bot.web.generateGdprData(data, {
+      // Creates a GDPR response
+      // @ts-expect-error Why can this be undefined? I'm not familiar w/ this yet, so please fix <3 - Espi
+      const gdprResponse = await this.bot.web.generateGdprData(guildData, {
         initiatedBy: interaction.user.id,
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
       });
 
-      const expiryString = `<t:${gdprResponse.expires.getTime() / 1000}:R>`;
+      const guildGDPRExpiryString = `<t:${gdprResponse.expires.getTime() / 1000}:R>`;
       await interaction.reply({
         embeds: [
           {
@@ -81,8 +99,9 @@ export class GdprCommand extends HibikiCommand {
               name: guild.name,
               link: gdprResponse.url,
               deleteLink: gdprResponse.deletion_url,
-              expires: expiryString,
+              expires: guildGDPRExpiryString,
             }),
+            color: this.bot.config.colours.primary,
           },
         ],
       });
@@ -97,34 +116,37 @@ export class GdprCommand extends HibikiCommand {
           {
             title: interaction.getString("global.ERROR"),
             description: interaction.getString("utilities.COMMAND_GDPR_NOUSERDATA_ERROR"),
+            color: this.bot.config.colours.error,
           },
         ],
       });
     }
 
-    const data = {
+    const userData = {
       user_config: userConfig,
     };
 
-    const gdprResponse = await this.bot.web.generateGdprData(data, {
+    // @ts-expect-error Why can this be undefined? Shouldn't it always exist w/ the webserver? We *rely* on it - don't let selfhosters cut it off pls. I'm not familiar w/ this yet, so please fix <3 - Espi
+    const userGDPRDataResponse = await this.bot.web.generateGdprData(userData, {
       initiatedBy: interaction.user.id,
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
     });
 
-    const expiryString = `<t:${gdprResponse.expires.getTime() / 1000}:R>`;
+    // NOTE: Reminder that we have utilities/timestamp
+    // We should add these to it eventually - Espi
+    const expiryString = `<t:${userGDPRDataResponse.expires.getTime() / 1000}:R>`;
+
     await interaction.reply({
       embeds: [
         {
           title: interaction.getString("global.SUCCESS"),
           description: interaction.getString("utilities.COMMAND_GDPR_USERDATA_DESCRIPTION", {
-            link: gdprResponse.url,
-            deleteLink: gdprResponse.deletion_url,
+            link: userGDPRDataResponse.url,
+            deleteLink: userGDPRDataResponse.deletion_url,
             expiration: expiryString,
           }),
         },
       ],
     });
-
-    return;
   }
 }
