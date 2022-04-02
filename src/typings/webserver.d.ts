@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as fastify from "fastify";
 // A returned profile from Oauth
 type DiscordOauthProfile = {
