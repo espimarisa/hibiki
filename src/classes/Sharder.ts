@@ -5,6 +5,7 @@
  */
 
 import type { PathLike } from "node:fs";
+import type WebInternalApi from "web/internalApi/api";
 import { logger } from "../utils/logger";
 import { ShardClientUtil, ShardingManager } from "discord.js";
 const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
@@ -15,6 +16,7 @@ export class HibikiShardingManager {
   private readonly _mainFile: PathLike;
   private readonly _token: string;
   private readonly _shardCount: Auto;
+  private readonly _internalWebApi: WebInternalApi;
 
   /**
    * Creates a new Hibiki sharding manager
@@ -23,10 +25,11 @@ export class HibikiShardingManager {
    * @param shardCount The amount of shards to launch
    */
 
-  constructor(file: PathLike, token: string, shardCount: Auto = "auto") {
+  constructor(file: PathLike, token: string, shardCount: Auto = "auto", internalWebApi: WebInternalApi) {
     this._mainFile = file;
     this._shardCount = shardCount;
     this._token = token;
+    this._internalWebApi = internalWebApi;
 
     this.shardingManager = new ShardingManager(this._mainFile.toString(), {
       token: this._token,
@@ -43,7 +46,6 @@ export class HibikiShardingManager {
 
   public spawn() {
     this.shardingManager.spawn({ amount: this._shardCount });
-
     // Shard event listeners
     this.shardingManager.on("shardCreate", (shard) => {
       shard.on("death", () => {
@@ -60,6 +62,8 @@ export class HibikiShardingManager {
 
       shard.on("ready", () => {
         logger.info(`Shard #${shard.id} is ready`);
+        // Send the internal web api to the shard
+        shard.emit("hibiki_internal_web_api", this._internalWebApi);
       });
 
       shard.on("reconnection", () => {

@@ -8,6 +8,7 @@ import type { HibikiCommand } from "./Command";
 import type { HibikiEvent } from "./Event";
 import type { HibikiLogger } from "./Logger";
 import type { HibikiProvider } from "./Provider";
+import type WebInternalApi from "web/internalApi/api";
 import { loadCommands, loadEvents, processGuilds } from "../utils/loader";
 import { logger } from "../utils/logger";
 import { HibikiLocaleSystem } from "./LocaleSystem";
@@ -39,6 +40,7 @@ export class HibikiClient extends Client {
   readonly cooldowns: Collection<string, Date> = new Collection();
 
   // Null database provider to be loaded later
+
   readonly db: HibikiProvider;
 
   // Hibiki's locale system
@@ -47,6 +49,8 @@ export class HibikiClient extends Client {
   // Hibiki's current version, defined in package.json
   readonly version: string = process.env.npm_package_version ?? "develop";
 
+  // Interal Web API instance
+  web?: WebInternalApi;
   /**
    * Creates a new instance of the Hibiki client
    * @param config A valid Hibiki config to utilize
@@ -61,7 +65,7 @@ export class HibikiClient extends Client {
     const HibikiDatabaseProvider = getDatabaseProvider(this.config.database?.provider ?? "json", PROVIDERS_DIRECTORY);
 
     // Handlers & functions
-    this.db = new HibikiDatabaseProvider(this);
+    this.db = new HibikiDatabaseProvider(this);;
     this.localeSystem = new HibikiLocaleSystem(LOCALES_DIRECTORY, this.config.hibiki.locale);
   }
 
@@ -70,6 +74,10 @@ export class HibikiClient extends Client {
    */
 
   public init() {
+    this.on("hibiki_internal_web_api", (data) => {
+      this.web = data as WebInternalApi;
+    });
+
     this.login(this.config.hibiki.token).then(async () => {
       await this.db.init();
 
@@ -81,9 +89,10 @@ export class HibikiClient extends Client {
       // Process guilds
       processGuilds(this);
 
-      logger.info(`Logged in as ${this.user?.tag} in ${this.guilds.cache.size} guilds on shard #${this.shard?.ids[0]}`);
-      logger.info(`${this.commands.size} commands; ${this.events.size} events loaded on shard #${this.shard?.ids[0]}`);
-      logger.info(`${Object.keys(this.localeSystem.locales).length} locales loaded on shard #${this.shard?.ids[0]}`);
+      const shardString = this.shard ? `on shard #${this.shard?.ids[0]}` : "on main";
+      logger.info(`Logged in as ${this.user?.tag} in ${this.guilds.cache.size} guilds ${shardString}`);
+      logger.info(`${this.commands.size} commands; ${this.events.size} events loaded ${shardString}`);
+      logger.info(`${Object.keys(this.localeSystem.locales).length} locales loaded ${shardString}`);
     });
   }
 }
