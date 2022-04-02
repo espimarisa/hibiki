@@ -15,9 +15,7 @@ export class HibikiInteractionEvent extends HibikiEvent {
 
     // Check if the user is in the blacklist
     const blacklisted = await this.bot.db.getBlacklistItem(interaction.user.id, "USER");
-    if (blacklisted) {
-      return;
-    }
+    if (blacklisted) return;
 
     // Finds the command
     const command = this.bot.commands.find((c) => c.name === interaction.commandName);
@@ -36,7 +34,10 @@ export class HibikiInteractionEvent extends HibikiEvent {
 
     // Check for command cooldowns
     if (command.cooldown > 0) {
+      // Gets the cooldown
       const cooldown = this.bot.cooldowns.get(command.name + interaction.user.id);
+
+      // Sends a message if the command is under cooldown
       if (cooldown) {
         interaction.reply({
           embeds: [
@@ -50,12 +51,22 @@ export class HibikiInteractionEvent extends HibikiEvent {
             },
           ],
         });
+
         return;
       }
+
+      // Sets the cooldown
       this.bot.cooldowns.set(command.name + interaction.user.id, new Date());
       setTimeout(() => this.bot.cooldowns.delete(command.name + interaction.user.id), command.cooldown);
     }
 
+    /**
+     * @todo Remove this. Hibiki v4 will not ship *any* NSFW commands.
+     * Keeping this here temporarily.
+     * - @sysdotini
+     */
+
+    /*
     if (command.category === "nsfw" && interaction.channel?.type === "GUILD_TEXT" && !interaction.channel.nsfw) {
       interaction.reply({
         embeds: [
@@ -66,8 +77,9 @@ export class HibikiInteractionEvent extends HibikiEvent {
           },
         ],
       });
+
       return;
-    }
+    } */
 
     // Runs the command
     try {

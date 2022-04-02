@@ -125,6 +125,7 @@ export function startWebserver(webInternalApi: WebInternalApi) {
 
   webInternalApi.init(app);
 
+  // wait, why? is this just for our convenience? - espi
   app.config = config.webserver;
 
   app.listen(config.webserver.port ?? 4000);

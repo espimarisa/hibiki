@@ -43,7 +43,7 @@ export function localiseShardStatus(fn: getString, status: Status) {
     // "RESUMING"
     case 8:
       return fn("global.SHARD_STATUS_RESUMING");
-    case undefined:
+
     default:
       return `${status}`;
   }
@@ -70,7 +70,6 @@ export function localiseAnimalCommandTitle(fn: getString, type: ANIMAL_TYPES) {
       return [fn("image.COMMAND_ANIMAL_FOX_TITLE"), fn("global.POWERED_BY", { url: "randomfox.ca" })];
     }
 
-    case undefined:
     default:
       return [type, undefined];
   }

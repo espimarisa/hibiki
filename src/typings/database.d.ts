@@ -5,13 +5,16 @@
  */
 
 // Valid database providers
-type HibikiDatabaseProvider = "json";
+type HibikiDatabaseProvider = "json" | "rethinkdb" | "mongodb";
 
 /**
  * Hibiki guild config options
  */
 
 interface HibikiGuildConfig {
+  // Fixes some TypeScript bullshittery
+  [k: string]: string;
+
   // The guild's ID
   id: DiscordSnowflake;
 
@@ -19,13 +22,14 @@ interface HibikiGuildConfig {
   locale?: HibikiLocaleCode;
 }
 
-type HibikiGuildConfigs = HibikiGuildConfig[];
-
 /**
  * Hibiki user config options
  */
 
 interface HibikiUserConfig {
+  // Fixes some TypeScript bullshittery
+  [k: string]: string;
+
   // The user's ID
   id: DiscordSnowflake;
 
@@ -43,7 +47,5 @@ interface HibikiBlacklistItem {
   reason?: string;
   type: "GUILD" | "USER";
 }
-
-type HibikiBlacklist = HibikiBlacklistItem[];
 
 type HibikiGuildOrUser = "GUILD" | "USER";

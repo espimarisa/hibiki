@@ -52,6 +52,23 @@ type HibikiColourOptions = {
  */
 
 interface HibikiDatabaseOptions {
+  // The database to connect to (for RethinkDB)
+  db?: string;
+
+  // The host IP to connect the database to
+  host?: string;
+
+  // The port the database is listening on
+  port?: RangeOf<1, 65_535>;
+
+  // The user to try to connect to
+  user?: string;
+
+  // The password to attempt to use
+  password?: string;
+
+  url?: string;
+
   // The database provider to use
   provider: HibikiDatabaseProvider;
 }

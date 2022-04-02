@@ -9,15 +9,13 @@ export class ServerinfoCommand extends HibikiCommand {
     // Gets the guild
     const guild = await interaction.guild?.fetch();
 
-    console.log(guild);
-
     // Handler for if a server failed to fetch
     if (!guild) {
       return interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
-            description: interaction.getString("utilities.COMMAND_SERVERINFO_FAILED"),
+            description: interaction.getString("general.COMMAND_SERVERINFO_FAILED"),
             color: this.bot.config.colours.error,
           },
         ],
@@ -43,7 +41,7 @@ export class ServerinfoCommand extends HibikiCommand {
 
     // Owner
     const owner = await guild.fetchOwner();
-    if (owner.user) {
+    if (owner?.user) {
       fields.push({
         name: interaction.getString("global.OWNER"),
         value: `${owner.user.tag} (${owner.user.id})`,

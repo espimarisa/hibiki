@@ -1,8 +1,8 @@
 import type { CommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
 
-export class ServerbannerCommand extends HibikiCommand {
-  description = "Displays the server's banner.";
+export class ServericonCommand extends HibikiCommand {
+  description = "Displays the server's icon.";
 
   public async runWithInteraction(interaction: CommandInteraction) {
     const guild = await interaction.guild?.fetch();
@@ -13,40 +13,40 @@ export class ServerbannerCommand extends HibikiCommand {
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
-            description: interaction.getString("utilities.COMMAND_SERVERBANNER_ERROR"),
+            description: interaction.getString("general.COMMAND_SERVERICON_ERROR"),
             color: this.bot.config.colours.error,
           },
         ],
       });
     }
 
-    // Gets the banner
-    const banner = guild?.bannerURL({ format: "png", size: 2048 });
+    // Gets the icon
+    const icon = guild?.iconURL({ dynamic: true, size: 1024 });
 
-    // Handler for if the guild doesn't have an banner
-    if (!banner) {
+    // Handler for if the guild doesn't have an icon
+    if (!icon) {
       return interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
-            description: interaction.getString("utilities.COMMAND_SERVERBANNER_NOBANNER", { server: guild.name }),
+            description: interaction.getString("general.COMMAND_SERVERICON_NOICON", { server: guild.name }),
             color: this.bot.config.colours.error,
           },
         ],
       });
     }
 
-    // Sends the banner
+    // Sends the icon
     await interaction.reply({
       embeds: [
         {
           color: this.bot.config.colours.primary,
           author: {
-            icon_url: banner,
-            name: interaction.getString("utilities.COMMAND_SERVERBANNER_DESCRIPTION", { server: guild.name }),
+            icon_url: icon.toString(),
+            name: interaction.getString("general.COMMAND_SERVERICON_DESCRIPTION", { server: guild.name }),
           },
           image: {
-            url: banner,
+            url: icon,
           },
         },
       ],

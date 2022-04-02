@@ -66,7 +66,7 @@ export class BlacklistCommand extends HibikiCommand {
     }
 
     let reason = args.slice(2).join(" ");
-    if (reason.length === 0) reason = message.getString("owner.COMMAND_BLACKLIST_NO_REASON");
+    if (reason.length === 0) reason = message.getString("global.NO_REASON_PROVIDED");
 
     // Blacklists guilds
     if (blacklistType === "GUILD") {

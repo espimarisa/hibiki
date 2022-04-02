@@ -23,7 +23,7 @@ export class UserinfoCommand extends HibikiCommand {
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
-            description: interaction.getString("utilities.COMMAND_USERINFO_FAILED"),
+            description: interaction.getString("general.COMMAND_USERINFO_FAILED"),
             color: this.bot.config.colours.error,
           },
         ],

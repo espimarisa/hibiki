@@ -69,7 +69,7 @@ export abstract class HibikiCommand {
 
   public toJSON(): HibikiCommandJSON {
     return {
-      name: this.name,
+      name: this.name.toLowerCase(),
       description: this.description,
       options: this.options?.length ? this.options : [],
     };

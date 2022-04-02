@@ -40,7 +40,6 @@ export class HibikiClient extends Client {
   readonly cooldowns: Collection<string, Date> = new Collection();
 
   // Null database provider to be loaded later
-
   readonly db: HibikiProvider;
 
   // Hibiki's locale system
@@ -49,8 +48,9 @@ export class HibikiClient extends Client {
   // Hibiki's current version, defined in package.json
   readonly version: string = process.env.npm_package_version ?? "develop";
 
-  // Interal Web API instance
+  // Internal Web API instance
   web?: WebInternalApi;
+
   /**
    * Creates a new instance of the Hibiki client
    * @param config A valid Hibiki config to utilize
@@ -74,8 +74,8 @@ export class HibikiClient extends Client {
    */
 
   public init() {
-    this.on("hibiki_internal_web_api", (data) => {
-      this.web = data as WebInternalApi;
+    this.on("hibiki_internal_web_api", (data: WebInternalApi) => {
+      this.web = data;
     });
 
     this.login(this.config.hibiki.token).then(async () => {
