@@ -11,7 +11,7 @@ import { logger } from "../utils/logger";
 import fs from "node:fs";
 
 // Database table layout
-export enum TABLES {
+export enum DATABASE_TABLES {
   GUILD_CONFIGS = "GUILD_CONFIGS",
   USER_CONFIGS = "USER_CONFIGS",
   USER_WARNINGS = "USER_WARNINGS",
@@ -34,7 +34,7 @@ export function getDatabaseProvider(provider: HibikiDatabaseProvider, directory:
   let providerToLoad;
 
   // Looks through providers and finds the matching one
-  const providers = fs.readdirSync(directory, { withFileTypes: true, encoding: "utf-8" });
+  const providers = fs.readdirSync(directory, { withFileTypes: true, encoding: "utf8" });
   const providerFile = providers.find((file) => file.name.replace(moduleFiletypeRegex, "")?.toLowerCase() === provider.toLowerCase())?.name;
 
   // Tries to load the provider
@@ -128,23 +128,27 @@ export abstract class HibikiProvider {
    * @param id The ID to add to the blacklist
    * @param reason The reason for adding the ID to the blacklist
    * @param type The type of blacklist to add to (GUILD or USER)
-   **/
+   */
+
   public abstract insertBlacklistItem(id: DiscordSnowflake, reason: string, type: HibikiGuildOrUser): Promise<any>;
 
   /**
    * Deletes an ID from the blacklist
    * @param id The ID to delete from the blacklist
    */
+
   public abstract deleteBlacklistItem(id: DiscordSnowflake): Promise<any>;
 
   /**
    * Gets the blacklist
    */
-  public abstract getBlacklist(type?: HibikiGuildOrUser): Promise<HibikiBlacklist>;
+
+  public abstract getBlacklist(type?: HibikiGuildOrUser): Promise<HibikiBlacklistItem[]>;
 
   /**
    * Gets a blacklist item
    * @param id The ID to lookup
    **/
+
   public abstract getBlacklistItem(id: DiscordSnowflake, type: HibikiGuildOrUser): Promise<HibikiBlacklistItem | undefined>;
 }

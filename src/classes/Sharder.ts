@@ -46,6 +46,7 @@ export class HibikiShardingManager {
 
   public spawn() {
     this.shardingManager.spawn({ amount: this._shardCount });
+
     // Shard event listeners
     this.shardingManager.on("shardCreate", (shard) => {
       shard.on("death", () => {

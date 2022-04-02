@@ -4,6 +4,11 @@
  * @module HibikiLocaleSystem
  */
 
+/**
+ * @TODO: https://discord.com/developers/docs/interactions/application-commands#localization
+ * Localise our slash command stuff...
+ */
+
 import type { getString, HibikiLocaleStrings } from "../typings/locales";
 import type { HibikiClient } from "./Client";
 import type { PathLike } from "node:fs";
@@ -110,7 +115,6 @@ export class HibikiLocaleSystem {
   /**
    * Returns an individual locale string
    * @param language The 2-letter locale code to utilize
-   * @param args Any arguments to pass to the locale
    */
 
   public getLocaleFunction(language: HibikiLocaleCode): getString {
@@ -124,7 +128,7 @@ export class HibikiLocaleSystem {
 
   public async getUserLocale(user: DiscordSnowflake, bot: HibikiClient) {
     const userConfig = await bot.db.getUserConfig(user);
-    return userConfig.locale || this.defaultLocale;
+    return userConfig?.locale || this.defaultLocale;
   }
 
   /**

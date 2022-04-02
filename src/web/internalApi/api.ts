@@ -1,7 +1,14 @@
+/**
+ * @todo MOVE THIS TO THE *MAIN* WEBSERVER ROUTES WHEN WE GET IT UP
+ * @todo THIS WILL PREVENT WEIRD PORT ISSUES
+ * @note HAVE A SEP. BACKEND ROUTE OR SOMETHING FUCK IF I KNOW LOLOL
+ */
+
 import type { FastifyInstance } from "fastify";
 import archiver from "archiver";
 import { randomBytes } from "node:crypto";
 
+// why is this a class lol
 export default class WebInternalApi {
   // private app: FastifyInstance;
   // private bot: Discord.Client;
@@ -18,7 +25,7 @@ export default class WebInternalApi {
 
   public async init(app: FastifyInstance) {
     this._app = app;
-    this.registerGdprRoutes();
+    this._registerGdprRoutes();
     this._registeredRoutes = true;
   }
 
@@ -57,7 +64,7 @@ export default class WebInternalApi {
     };
   }
 
-  private async registerGdprRoutes() {
+  private async _registerGdprRoutes() {
     const res404 = {
       success: false,
       message: "GDPR not found or has expired.",

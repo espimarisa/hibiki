@@ -1,3 +1,9 @@
+/**
+ * @file Message
+ * @description Handles legacy message-based commands
+ * @module HibikiMessageEvent
+ */
+
 import type { Message } from "discord.js";
 import { HibikiEvent } from "../classes/Event";
 import { logger } from "../utils/logger";
@@ -16,6 +22,7 @@ export class HibikiMessageEvent extends HibikiEvent {
     // Gets configured prefixes
     const configPrefixes = this.bot.config.hibiki.prefixes;
     let prefix = "";
+
     // Sets the prefix to a mention if it was one
     if (mentionPrefix?.index === 0) prefix = mentionPrefix?.[0];
 
@@ -67,13 +74,15 @@ export class HibikiMessageEvent extends HibikiEvent {
 
     // Check for command cooldowns
     if (command.cooldown) {
+      // Looks for the cooldown
       const cooldown = this.bot.cooldowns.get(command.name + msg.author.id);
+
       if (cooldown) {
-        msg.channel.send({
+        await msg.channel.send({
           embeds: [
             {
               title: msg.getString("global.ERROR"),
-              description: msg.getString("general.COMMAND_COOLDOWN", {
+              description: msg.getString("global.COMMAND_COOLDOWN", {
                 command: command.name,
                 time: Math.ceil((cooldown.getTime() - Date.now()) / 1000),
               }),
@@ -81,8 +90,11 @@ export class HibikiMessageEvent extends HibikiEvent {
             },
           ],
         });
+
         return;
       }
+
+      // Sets the cooldown
       this.bot.cooldowns.set(command.name + msg.author.id, new Date());
       setTimeout(() => this.bot.cooldowns.delete(command.name + msg.author.id), command.cooldown);
     }

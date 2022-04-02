@@ -4,7 +4,7 @@
  * @module JSONProvider
  */
 
-import { HibikiProvider, TABLES } from "../classes/Provider";
+import { HibikiProvider, DATABASE_TABLES } from "../classes/Provider";
 import { logger } from "../utils/logger";
 import fs from "node:fs";
 import path from "node:path";
@@ -14,10 +14,10 @@ const HIBIKI_DATABASE_FILE = path.join(__dirname, IS_PRODUCTION ? "../../../hibi
 
 // A type that emulates a Hibiki JSON database structure
 type HibikiJSONDatabaseStructure = {
-  [TABLES.BLACKLIST]: HibikiBlacklist;
-  [TABLES.GUILD_CONFIGS]: HibikiGuildConfig[];
-  [TABLES.USER_CONFIGS]: HibikiUserConfig[];
-  [TABLES.USER_WARNINGS]: any[];
+  [DATABASE_TABLES.BLACKLIST]: HibikiBlacklistItem[];
+  [DATABASE_TABLES.GUILD_CONFIGS]: HibikiGuildConfig[];
+  [DATABASE_TABLES.USER_CONFIGS]: HibikiUserConfig[];
+  [DATABASE_TABLES.USER_WARNINGS]: any[];
 };
 
 export class JSONProvider extends HibikiProvider {
@@ -27,9 +27,9 @@ export class JSONProvider extends HibikiProvider {
     const guildConfig = this.db.GUILD_CONFIGS.find((g: HibikiGuildConfig) => g.id === guild);
     if (!guildConfig) {
       await this.insertBlankGuildConfig(guild);
-      // eslint-disable-next-line no-return-await
-      return await this.getGuildConfig(guild);
+      return this.getGuildConfig(guild);
     }
+
     return guildConfig;
   }
 
@@ -37,12 +37,11 @@ export class JSONProvider extends HibikiProvider {
     const guildConfig = this.db.GUILD_CONFIGS.find((g: HibikiGuildConfig) => g.id === guild);
     if (!guildConfig) {
       await this.insertBlankGuildConfig(guild);
-      // eslint-disable-next-line no-return-await
-      return await this.updateGuildConfig(guild, config);
+      return this.updateGuildConfig(guild, config);
     }
+
     // assign each property of the config to the guild config
     Object.keys(config).forEach((key) => {
-      // @ts-expect-error shut
       guildConfig[key] = config[key];
     });
 
@@ -65,9 +64,9 @@ export class JSONProvider extends HibikiProvider {
     const userConfig = this.db.USER_CONFIGS.find((u: HibikiUserConfig) => u.id === user);
     if (!userConfig) {
       await this.insertBlankUserConfig(user);
-      // eslint-disable-next-line no-return-await
-      return await this.getUserConfig(user);
+      return this.getUserConfig(user);
     }
+
     return userConfig;
   }
 
@@ -75,12 +74,11 @@ export class JSONProvider extends HibikiProvider {
     const userConfig = this.db.USER_CONFIGS.find((u: HibikiUserConfig) => u.id === user);
     if (!userConfig) {
       await this.insertBlankUserConfig(user);
-      // eslint-disable-next-line no-return-await
-      return await this.updateUserConfig(user, config);
+      return this.updateUserConfig(user, config);
     }
+
     // assign each property of the config to the user config
     Object.keys(config).forEach((key) => {
-      // @ts-expect-error shut
       userConfig[key] = config[key];
     });
 
@@ -91,18 +89,16 @@ export class JSONProvider extends HibikiProvider {
     const userConfig = this.db.USER_CONFIGS.find((u: HibikiUserConfig) => u.id === user);
     if (!userConfig) {
       await this.insertBlankUserConfig(user);
-      // eslint-disable-next-line no-return-await
-      return await this.replaceUserConfig(user, config);
+      return this.replaceUserConfig(user, config);
     }
+
     // Delete all keys in the user config
     Object.keys(userConfig).forEach((key) => {
-      // @ts-expect-error shut
       delete userConfig[key];
     });
 
     // assign each property of the config to the user config
     Object.keys(config).forEach((key) => {
-      // @ts-expect-error shut
       userConfig[key] = config[key];
     });
 
@@ -121,7 +117,7 @@ export class JSONProvider extends HibikiProvider {
     this._updateJSON();
   }
 
-  public async insertBlacklistItem(id: string, reason: string, type: HibikiGuildOrUser): Promise<void> {
+  public async insertBlacklistItem(id: string, reason: string, type: HibikiGuildOrUser) {
     this.db.BLACKLIST.push({ id, reason, type });
     this._updateJSON();
   }
@@ -134,17 +130,13 @@ export class JSONProvider extends HibikiProvider {
   }
 
   public async getBlacklist(type?: HibikiGuildOrUser) {
-    if (type) return this.db.BLACKLIST.filter((item: HibikiBlacklistItem) => item.type === type);
+    if (type) return this.db.BLACKLIST.filter((item) => item.type === type);
     return this.db.BLACKLIST;
   }
 
   public async getBlacklistItem(id: string, type: HibikiGuildOrUser): Promise<HibikiBlacklistItem | undefined> {
-    const item = this.db.BLACKLIST.find((item: HibikiBlacklistItem) => item.id === id && item.type === type);
-
-    if (!item) {
-      return;
-    }
-
+    const item = this.db.BLACKLIST.find((i) => i.id === id && i.type === type);
+    if (!item) return;
     return item;
   }
 
@@ -165,11 +157,11 @@ export class JSONProvider extends HibikiProvider {
     }
 
     // Ensures the config isn't empty
-    const HIBIKI_DATABASE_FILE_CONTENTS = fs.readFileSync(HIBIKI_DATABASE_FILE, { encoding: "utf-8" })?.toString();
+    const HIBIKI_DATABASE_FILE_CONTENTS = fs.readFileSync(HIBIKI_DATABASE_FILE, { encoding: "utf8" })?.toString();
     if (!HIBIKI_DATABASE_FILE_CONTENTS?.length) fs.writeFileSync(HIBIKI_DATABASE_FILE, "{}");
 
     this.db = JSON.parse(HIBIKI_DATABASE_FILE_CONTENTS);
-    for (const name of Object.values(TABLES)) {
+    for (const name of Object.values(DATABASE_TABLES)) {
       if (!this.db[name]) {
         this.db[name] = [];
         logger.info(`Created the ${name} table in the database`);
@@ -183,6 +175,6 @@ export class JSONProvider extends HibikiProvider {
    */
 
   private async _updateJSON() {
-    fs.writeFileSync(HIBIKI_DATABASE_FILE, JSON.stringify(this.db), { encoding: "utf-8" });
+    fs.writeFileSync(HIBIKI_DATABASE_FILE, JSON.stringify(this.db), { encoding: "utf8" });
   }
 }
