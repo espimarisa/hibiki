@@ -65,7 +65,7 @@ export class HibikiClient extends Client {
     const HibikiDatabaseProvider = getDatabaseProvider(this.config.database?.provider ?? "json", PROVIDERS_DIRECTORY);
 
     // Handlers & functions
-    this.db = new HibikiDatabaseProvider(this);;
+    this.db = new HibikiDatabaseProvider(this);
     this.localeSystem = new HibikiLocaleSystem(LOCALES_DIRECTORY, this.config.hibiki.locale);
   }
 

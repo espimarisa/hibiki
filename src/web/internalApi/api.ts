@@ -5,25 +5,25 @@ import { randomBytes } from "node:crypto";
 export default class WebInternalApi {
   // private app: FastifyInstance;
   // private bot: Discord.Client;
-  private gdprStore: GdprStore = {};
-  private interval: NodeJS.Timeout;
-  private app?: FastifyInstance
-  private registeredRoutes = false;
+  private _gdprStore: GdprStore = {};
+  private _interval: NodeJS.Timeout;
+  private _app?: FastifyInstance;
+  private _registeredRoutes = false;
 
   constructor() {
     // this.registerGdprRoutes();
     // Every hour
-    this.interval = setTimeout(this._checkGdprData, 1000 * 60 * 60);
+    this._interval = setTimeout(this._checkGdprData, 1000 * 60 * 60);
   }
 
   public async init(app: FastifyInstance) {
-    this.app = app;
+    this._app = app;
     this.registerGdprRoutes();
-    this.registeredRoutes = true;
+    this._registeredRoutes = true;
   }
 
   public async generateGdprData(data: GdprData, options: GdprDataOptions): Promise<generateGdprDataResponse> {
-    if (!this.registeredRoutes || !this.app) {
+    if (!this._registeredRoutes || !this._app) {
       throw new RoutesNotRegistedError();
     }
 
@@ -42,7 +42,7 @@ export default class WebInternalApi {
 
     const buffer = Buffer.from(await archive.read());
 
-    this.gdprStore[id] = {
+    this._gdprStore[id] = {
       data: buffer,
       expires,
       initiatedAt,
@@ -52,8 +52,8 @@ export default class WebInternalApi {
     return {
       id,
       expires,
-      url: `${this.app.config.baseURL}/gdpr/${id}`,
-      deletion_url: `${this.app.config.baseURL}/gdpr/${id}/delete`,
+      url: `${this._app.config.baseURL}/gdpr/${id}`,
+      deletion_url: `${this._app.config.baseURL}/gdpr/${id}/delete`,
     };
   }
 
@@ -62,7 +62,7 @@ export default class WebInternalApi {
       success: false,
       message: "GDPR not found or has expired.",
     };
-    if (!this.app) {
+    if (!this._app) {
       throw new RoutesNotRegistedError();
     }
     /**
@@ -70,13 +70,13 @@ export default class WebInternalApi {
      * @apiName GetGdprData
      * @apiGroup WebInternalApi
      */
-    this.app.get<{
+    this._app.get<{
       Params: {
         id: string;
       };
     }>("/gdpr/:id", async (req, res) => {
       const id = req.params.id;
-      const gdpr = this.gdprStore[id];
+      const gdpr = this._gdprStore[id];
 
       if (!gdpr) {
         res.send(res404);
@@ -87,13 +87,13 @@ export default class WebInternalApi {
       const now = new Date();
       if (now > gdpr.expires) {
         res.send(res404);
-        delete this.gdprStore[id];
+        delete this._gdprStore[id];
         return;
       }
 
       // if the path ends with /delete
       if (req.url.endsWith("/delete")) {
-        delete this.gdprStore[id];
+        delete this._gdprStore[id];
         res.send({
           success: true,
           message: "GDPR data deleted.",
@@ -121,10 +121,10 @@ export default class WebInternalApi {
   }
 
   private _checkGdprData() {
-    Object.keys(this.gdprStore).forEach((key: string) => {
-      const item = this.gdprStore[key];
+    Object.keys(this._gdprStore).forEach((key: string) => {
+      const item = this._gdprStore[key];
       if (item.expires < new Date()) {
-        delete this.gdprStore[key];
+        delete this._gdprStore[key];
       }
     });
   }

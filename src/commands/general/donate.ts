@@ -1,4 +1,4 @@
-import type { CommandInteraction, CacheType } from "discord.js";
+import type { CommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
 
 export class DonateCommand extends HibikiCommand {

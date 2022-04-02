@@ -4,6 +4,7 @@
  * @module web/server
  */
 
+import type WebInternalApi from "./internalApi/api";
 import type { FastifyInstance } from "fastify";
 import type { Server, IncomingMessage, ServerResponse } from "node:http";
 import config from "../../config";
@@ -23,7 +24,6 @@ import { Liquid } from "liquidjs";
 import pointOfView from "point-of-view";
 // eslint-disable-next-line import/order
 import path from "node:path";
-import type WebInternalApi from "./internalApi/api";
 
 const LAYOUTS_DIRECTORY = path.join(__dirname, "layouts");
 const PARTIALS_DIRECTORY = path.join(__dirname, "partials");
