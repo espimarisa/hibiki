@@ -1,3 +1,4 @@
+import * as fastify from "fastify";
 // A returned profile from Oauth
 type DiscordOauthProfile = {
   id: DiscordSnowflake;
@@ -13,3 +14,10 @@ type DiscordOauthProfile = {
   mfa_enabled: boolean;
   premium_type: number | undefined;
 };
+
+// Add "config" to FastifyInstance
+declare module "fastify" {
+  export interface FastifyInstance {
+    config: HibikiConfig["webserver"];
+  }
+}

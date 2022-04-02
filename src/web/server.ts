@@ -23,6 +23,7 @@ import { Liquid } from "liquidjs";
 import pointOfView from "point-of-view";
 // eslint-disable-next-line import/order
 import path from "node:path";
+import type WebInternalApi from "./internalApi/api";
 
 const LAYOUTS_DIRECTORY = path.join(__dirname, "layouts");
 const PARTIALS_DIRECTORY = path.join(__dirname, "partials");
@@ -34,7 +35,7 @@ export type FastifyServer = FastifyInstance<Server, IncomingMessage, ServerRespo
 export type FastifyGenericRouteOptions = { prefix: string };
 export type FastifyNextFunction = () => void;
 
-export function startWebserver() {
+export function startWebserver(webInternalApi: WebInternalApi) {
   const app: FastifyServer = fastify({
     logger: logger,
     disableRequestLogging: true,
@@ -121,6 +122,10 @@ export function startWebserver() {
   // Registers routes
   app.register(indexRoutes, { prefix: "/" });
   app.register(authRoutes, { prefix: "/auth" });
+
+  webInternalApi.init(app);
+
+  app.config = config.webserver;
 
   app.listen(config.webserver.port ?? 4000);
 }
