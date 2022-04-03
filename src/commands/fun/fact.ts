@@ -7,7 +7,7 @@ export class FactCommand extends HibikiCommand {
 
   options: ApplicationCommandOptionData[] = [
     {
-      name: "Category",
+      name: "category",
       description: "The type of fact to get.",
       required: false,
       type: 3,
