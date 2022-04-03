@@ -50,7 +50,7 @@ The information below only applies to the **official instance** of Hibiki. This 
 - Usage must obey laws in the **United States**, **Canada**, or **wherever hosted**
 - User data saved must follow Discord's **[Terms of Service][discord_tos]** and **[community guidelines][discord_cg]**
 - Bot collection and bot listing servers or apps are **strictly not allowed** to use our application
-- NFT (Non Fungible Token), NFT-related servers, or NFT-sponsored servers are **strictly not allowed** to use our application
+- NFT, NFT-related servers, or NFT-sponsored servers are **strictly not allowed** to use our application
 
 ## Data Privacy
 
