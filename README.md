@@ -43,13 +43,14 @@ The information below only applies to the **official instance** of Hibiki. This 
 
 ## Terms of Service
 
-**_Updated 2021-11-06_**
+**_Updated 2022-04-03_**
 
 - Do not try to crash, break, or exploit our application
 - If you find a critical, breaking bug, you must report it to us
 - Usage must obey laws in the **United States**, **Canada**, or **wherever hosted**
 - User data saved must follow Discord's **[Terms of Service][discord_tos]** and **[community guidelines][discord_cg]**
 - Bot collection and bot listing servers or apps are **strictly not allowed** to use our application
+- NFT (Non Fungible Token), NFT-related servers, or NFT-sponsored servers are **strictly not allowed** to use our application
 
 ## Data Privacy
 
@@ -89,5 +90,5 @@ To request a data deletion, use a link below. State why you're contacting, or in
 [discord_tos]: https://discord.com/terms "Discord's Terms of Service"
 [discord_cg]: https://discord.com/guidelines "Discord's Community Guidelines"
 [espi-telegram]: https://t.me/sysdotini "Contact Espi (sysdotini) on Telegram"
-[espi-email]: mailto:espi@riseup.net
-[license]: LICENSE "zlib/libpng license file"
+[espi-email]: mailto:espi@riseup.net "A mailto link redirecting to the project owner's email"
+[license]: LICENSE.md "zlib/libpng license file"
