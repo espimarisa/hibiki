@@ -3,7 +3,7 @@
 [![Build][badge-workflow]][workflow]
 [![License][badge-license]][license]
 
-[license]: LICENSE "Hibiki is licensed under the MIT license."
+[license]: LICENSE "Hibiki is licensed under the zlib/libpng license."
 [workflow]: https://github.com/sysdotini/hibiki/actions?query=workflow%3Apush "Main GitHub workflow action."
 
 <!-- Badges -->
