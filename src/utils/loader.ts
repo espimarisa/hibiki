@@ -8,7 +8,7 @@ import type { HibikiClient } from "../classes/Client";
 import type { HibikiCommand } from "../classes/Command";
 import type { HibikiEvent } from "../classes/Event";
 import type { HibikiLogger } from "../classes/Logger";
-import type { ApplicationCommandData, Collection } from "discord.js";
+import type { Collection } from "discord.js";
 import type { PathLike } from "node:fs";
 import { moduleFiletypeRegex } from "../utils/constants";
 import { checkIntents } from "./intents";
@@ -17,8 +17,6 @@ import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
 import fs from "node:fs";
 import path from "node:path";
-
-const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
 
 /**
  * Loads all commands
@@ -47,20 +45,11 @@ export function loadCommands(bot: HibikiClient, directory: PathLike) {
     if (!command) return;
     const splitPath = directory.toString().split("/");
     const fileName = file.name.split(moduleFiletypeRegex)[0];
+    const category = splitPath[splitPath.length - 1];
 
-    const cmd = new command(bot, fileName, splitPath[splitPath.length - 1]) as HibikiCommand;
+    const cmd = new command(bot, fileName, category) as HibikiCommand;
     bot.commands.set(fileName, cmd);
   });
-
-  // Converts the command to Discord API-compatible JSON and removes messageOnly ones
-  const jsonData = bot.commands
-    .filter((command) => !command.messageOnly && !command.owner)
-    .map((cmd) => {
-      return cmd.toJSON();
-    });
-
-  // Attempts to register all commands globally
-  IS_DEVELOPMENT ? registerGuildCommands(bot, bot.config.hibiki.testGuildID, jsonData) : registerGlobalCommands(bot, jsonData);
 }
 
 /**
@@ -114,24 +103,24 @@ export function loadEvents(bot: HibikiClient, directory: string, isLogger = fals
 /**
  * Registers commands via the Discord API
  * @param bot Main bot object
- * @param guild The guild ID to update commands in
- * @param commands An array of JSON command data to register
+ * @param guild An optional guild ID to push commands to, used for dev mode
  */
 
-export async function registerGuildCommands(bot: HibikiClient, guild: DiscordSnowflake, commands: ApplicationCommandData[]) {
-  const rest = new REST({ version: "9" }).setToken(bot.config.hibiki.token);
-  await rest.put(Routes.applicationGuildCommands(bot.user?.id as DiscordSnowflake, guild), { body: commands });
-}
+export async function registerSlashCommands(bot: HibikiClient, guild?: DiscordSnowflake) {
+  // Converts the command to Discord API-compatible JSON and removes messageOnly ones
+  const jsonData = bot.commands
+    .filter((command) => !command.messageOnly && !command.owner)
+    .map((cmd) => {
+      return cmd.toJSON();
+    });
 
-/**
- * Registers global slash commands via the Discord API
- * @param bot Main bot object
- * @param commands An array of JSON command data to register
- */
-
-export async function registerGlobalCommands(bot: HibikiClient, commands: ApplicationCommandData[]) {
+  // Creates a new REST instance
   const rest = new REST({ version: "9" }).setToken(bot.config.hibiki.token);
-  await rest.put(Routes.applicationCommands(bot.user?.id as DiscordSnowflake), { body: commands });
+
+  // If a guild ID was provided, load per-guild. Else, we should load globally
+  guild?.length
+    ? rest.put(Routes.applicationGuildCommands(bot.user?.id as DiscordSnowflake, guild), { body: jsonData })
+    : rest.put(Routes.applicationCommands(bot.user?.id as DiscordSnowflake), { body: [] });
 }
 
 /**

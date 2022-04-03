@@ -11,7 +11,7 @@ export class GdprCommand extends HibikiCommand {
       // We should use strings and format them in the .toJson() method for my sanity sake
       // Using strings here will break everything!! Don't do it <3
 
-      name: "Server ID",
+      name: "server_id",
       type: 3,
       description: "The ID Of the guild you want to fetch data for. Leave blank to get user data.",
       required: false,

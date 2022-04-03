@@ -9,7 +9,7 @@ import type { HibikiEvent } from "./Event";
 import type { HibikiLogger } from "./Logger";
 import type { HibikiProvider } from "./Provider";
 import type WebInternalApi from "web/internalApi/api";
-import { loadCommands, loadEvents, processGuilds } from "../utils/loader";
+import { loadCommands, loadEvents, processGuilds, registerSlashCommands } from "../utils/loader";
 import { logger } from "../utils/logger";
 import { HibikiLocaleSystem } from "./LocaleSystem";
 import { getDatabaseProvider } from "./Provider";
@@ -22,6 +22,8 @@ const EVENTS_DIRECTORY = path.join(__dirname, "../events");
 const LOGGERS_DIRECTORY = path.join(__dirname, "../loggers");
 const PROVIDERS_DIRECTORY = path.join(__dirname, "../providers");
 const LOCALES_DIRECTORY = path.join(__dirname, "../locales");
+
+const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
 
 export class HibikiClient extends Client {
   // Hibiki's config file
@@ -85,6 +87,9 @@ export class HibikiClient extends Client {
       loadCommands(this, COMMANDS_DIRECTORY);
       loadEvents(this, EVENTS_DIRECTORY);
       loadEvents(this, LOGGERS_DIRECTORY, true);
+
+      // Registers commands, push to only one guild if we're in development
+      registerSlashCommands(this, IS_DEVELOPMENT ? this.config.hibiki.testGuildID : undefined);
 
       // Process guilds
       processGuilds(this);

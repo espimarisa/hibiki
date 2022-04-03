@@ -71,6 +71,11 @@ export abstract class HibikiCommand {
     return {
       name: this.name.toLowerCase(),
       description: this.description,
+
+      // TODO: Add a validator here.
+      // Be sure to follow slash command option validation. For example, ALL names must be lowercase with no spaces.
+      // Correct: guild_id : incorrect: Guild ID
+      // Also: Use the enum for the type for ease-of-use
       options: this.options?.length ? this.options : [],
     };
   }
