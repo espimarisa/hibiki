@@ -5,7 +5,7 @@
  */
 
 type PrivateClientOptions = import("discord.js").ClientOptions;
-type PrivateColorResolvable = (import("discord.js").ColorResolvable & `0x${string}`) | `#${string}`;
+type PrivateColorResolvable = import("discord.js").ColorResolvable & `0x${string}`;
 type PrivateApplicationCommandData = import("discord.js").ApplicationCommandData;
 
 /**
@@ -31,6 +31,9 @@ type HibikiBaseOptions = {
  */
 
 type HibikiColourOptions = {
+  // eat shit batman
+  [key: string]: PrivateColorResolvable;
+  
   // Primary hex colour
   primary: PrivateColorResolvable;
 
