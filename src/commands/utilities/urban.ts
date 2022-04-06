@@ -1,7 +1,8 @@
-import type { ApplicationCommandOptionData, CommandInteraction, EmbedField } from "discord.js";
+import type { CommandInteraction, EmbedField } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
 import { createFullTimestamp } from "../../utils/timestamp";
 import fetch from "cross-fetch";
+import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v9";
 
 // Urban dictionary word type definition
 interface UrbanWord {
@@ -20,9 +21,9 @@ interface UrbanWord {
 
 export class UrbanCommand extends HibikiCommand {
   description = "Looks up the definition of a word from the Urban Dictionary.";
-  options: ApplicationCommandOptionData[] = [
+  options: APIApplicationCommandOption[] = [
     {
-      type: 3,
+      type: ApplicationCommandOptionType.String,
       name: "word",
       description: "The word to get a definition for.",
       required: true,

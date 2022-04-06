@@ -1,5 +1,6 @@
 import type { CommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
+import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v9";
 import fetch from "../../utils/fetch";
 
 export class FoxgirlCommand extends HibikiCommand {

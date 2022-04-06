@@ -4,8 +4,8 @@ import util from "node:util";
 
 export class EvalCommand extends HibikiCommand {
   description = "Evaluates some code.";
-  messageOnly = true;
-  owner = true;
+  // messageOnly = true;
+  ownerOnly = true;
 
   public async runWithMessage(msg: Message, args: string[]) {
     try {
@@ -19,7 +19,7 @@ export class EvalCommand extends HibikiCommand {
     }
   }
 
-  public async runWithInteraction() {
+  public async runWithInteraction(): Promise<void> {
     throw new Error("This is a message-only command. If you are seeing this, something has seriously gone wrong.");
   }
 }
