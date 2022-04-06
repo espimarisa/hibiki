@@ -109,9 +109,24 @@ export function loadEvents(bot: HibikiClient, directory: string, isLogger = fals
 export async function registerSlashCommands(bot: HibikiClient, guild?: DiscordSnowflake) {
   // Converts the command to Discord API-compatible JSON and removes messageOnly ones
   const jsonData = bot.commands
-    .filter((command) => !command.messageOnly && !command.owner)
+    .filter((command) => !command.messageOnly && !command.ownerOnly)
     .map((cmd) => {
       return cmd.toJSON();
+    })
+    .filter((cmd) => {
+      let valid = true;
+      const nameRegex = /^[-_\p{L}\p{N}\p{sc=Deva}\p{sc=Thai}]{1,32}$/u;
+      if (!nameRegex.test(cmd.name)) {
+        logger.warn(`Command ${cmd.name} failed to register: invalid name`);
+        valid = false;
+      }
+      cmd.options?.forEach((option) => {
+        if (!nameRegex.test(option.name)) {
+          logger.warn(`Command ${cmd.name} failed to register: invalid option name: ${option.name}`);
+          valid = false;
+        }
+      });
+      return valid;
     });
 
   // Creates a new REST instance
