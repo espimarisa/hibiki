@@ -59,7 +59,13 @@ export class HibikiClient extends Client {
    */
 
   constructor(config: HibikiConfig) {
-    super({ ...config.options, intents: [Intents.FLAGS.GUILDS] });
+    // super({ ...config.options, intents});
+    super({
+      ...config.options,
+      intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+      // ts-expect-error never do this lmao
+      // intents: Object.keys(Intents.FLAGS).filter((key) => Intents.FLAGS[key] && typeof Intents.FLAGS[key] == "number"),
+    });
 
     this.config = config;
 
