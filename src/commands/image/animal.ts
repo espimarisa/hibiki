@@ -1,33 +1,34 @@
-import type { ApplicationCommandOptionData, CommandInteraction } from "discord.js";
+import type { CommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
 import fetch from "../../utils/fetch";
 import { localiseAnimalCommandTitle } from "../../utils/localiser";
+import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v9";
 
 export type ANIMAL_TYPES = "cat" | "dog" | "fox";
 
 export class AnimalCommand extends HibikiCommand {
   description = "Sends a random picture of different animals.";
 
-  options: ApplicationCommandOptionData[] = [
+  options: APIApplicationCommandOption[] = [
     {
       name: "type",
       description: "The type of animal to get a picture of.",
-      type: 2,
+      type: ApplicationCommandOptionType.SubcommandGroup,
       options: [
         {
           name: "cat",
           description: "Sends a random picture of a cat.",
-          type: 1,
+          type: ApplicationCommandOptionType.Subcommand,
         },
         {
           name: "dog",
           description: "Sends a random picture of a dog.",
-          type: 1,
+          type: ApplicationCommandOptionType.Subcommand,
         },
         {
           name: "fox",
           description: "Sends a random picture of a fox.",
-          type: 1,
+          type: ApplicationCommandOptionType.Subcommand,
         },
       ],
     },

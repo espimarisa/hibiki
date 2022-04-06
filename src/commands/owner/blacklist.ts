@@ -3,7 +3,7 @@ import { HibikiCommand } from "../../classes/Command";
 
 export class BlacklistCommand extends HibikiCommand {
   description = "Adds a guild or user to the blacklist.";
-  owner = true;
+  ownerOnly = true;
   messageOnly = true;
 
   public async runWithMessage(message: Message, args: string[]) {

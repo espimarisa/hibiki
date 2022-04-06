@@ -1,17 +1,18 @@
-import type { ApplicationCommandOptionData, CommandInteraction } from "discord.js";
+import type { CommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
+import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v9";
 
 export class AvatarCommand extends HibikiCommand {
   description = "Display's a member's account avatar.";
-  options: ApplicationCommandOptionData[] = [
+  options: APIApplicationCommandOption[] = [
     {
-      type: 6,
+      type: ApplicationCommandOptionType.User,
       name: "member",
       description: "The member to pull an avatar from.",
       required: true,
     },
     {
-      type: 5,
+      type: ApplicationCommandOptionType.Boolean,
       name: "default",
       description: "Whether or not to display the member's default Discord avatar.",
       required: false,

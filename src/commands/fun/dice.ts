@@ -1,23 +1,24 @@
-import type { ApplicationCommandOptionData, CommandInteraction } from "discord.js";
+import type { CommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
+import { APIApplicationCommandOption, ApplicationCommandOptionType } from "discord-api-types/v9";
 
 export class DiceCommand extends HibikiCommand {
   description = "Rolls an x sided die (defaults to 6; maximum is 120).";
 
-  options: ApplicationCommandOptionData[] = [
+  options: APIApplicationCommandOption[] = [
     {
       name: "sides",
-      type: 4,
+      type: ApplicationCommandOptionType.Number,
       required: false,
       description: "The number of sides on the die.",
-      minValue: 1,
-      maxValue: 120,
+      min_value: 1,
+      max_value: 120,
     },
   ];
 
   public async runWithInteraction(interaction: CommandInteraction) {
     // Gets the number of sides
-    const sides = interaction.options.getInteger("sides") || 6;
+    const sides = interaction.options.getInteger(this.options[0].name) || 6;
 
     // Rolls the die
     const roll = Math.floor(Math.random() * sides) + 1;

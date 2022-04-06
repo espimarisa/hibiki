@@ -1,10 +1,11 @@
-import type { ApplicationCommandOptionData, CommandInteraction } from "discord.js";
+import type { CommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
+import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v9";
 
 export class GdprCommand extends HibikiCommand {
   description = "Returns GDPR information.";
 
-  options: ApplicationCommandOptionData[] = [
+  options: APIApplicationCommandOption[] = [
     {
       // NOTE: *Always* refer to guilds as *servers* to end-users. You can use guild internally, but keep it consistent - Espi
       // TODO: We currently have to hardcode this to the values in https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
@@ -12,8 +13,8 @@ export class GdprCommand extends HibikiCommand {
       // Using strings here will break everything!! Don't do it <3
 
       name: "server_id",
-      type: 3,
-      description: "The ID Of the guild you want to fetch data for. Leave blank to get user data.",
+      type: ApplicationCommandOptionType.String,
+      description: "The ID Of the server you want to fetch data for. Leave blank to get user data.",
       required: false,
     },
   ];

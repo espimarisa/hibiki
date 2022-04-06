@@ -1,13 +1,14 @@
-import type { ApplicationCommandOptionData, CommandInteraction } from "discord.js";
+import type { CommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
+import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v9";
 
 export class OwoifyCommand extends HibikiCommand {
   description = "OwOifys some text.";
 
-  options: ApplicationCommandOptionData[] = [
+  options: APIApplicationCommandOption[] = [
     {
       name: "text",
-      type: 3,
+      type: ApplicationCommandOptionType.String,
       required: true,
       description: "The text to owoify.",
     },
@@ -16,6 +17,8 @@ export class OwoifyCommand extends HibikiCommand {
   public async runWithInteraction(interaction: CommandInteraction) {
     const text = <string>interaction.options.getString("text");
 
+    // honest to god I have no idea if this even works and im too lazy to test it
+    // lets just hope it fucks up their speech at least
     const owoified = text
       .replace(/r/g, "w")
       .replace(/R/g, "W")

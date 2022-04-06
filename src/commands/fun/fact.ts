@@ -1,16 +1,17 @@
-import type { ApplicationCommandOptionData, CommandInteraction, MessageOptions } from "discord.js";
+import type { CommandInteraction, MessageOptions } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
 import fetch from "../../utils/fetch";
+import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v9";
 
 export class FactCommand extends HibikiCommand {
   description = "Get a random fact.";
 
-  options: ApplicationCommandOptionData[] = [
+  options: APIApplicationCommandOption[] = [
     {
       name: "category",
       description: "The type of fact to get.",
       required: false,
-      type: 3,
+      type: ApplicationCommandOptionType.String,
       choices: [
         {
           name: "Cat",
@@ -46,18 +47,15 @@ export class FactCommand extends HibikiCommand {
         factObject: "data",
       },
     ];
+    const category = interaction.options.getString(this.options[0].name) || "random";
 
-    const api =
-      factApis.find((a) => a.category === interaction.options.getString("category")) ||
-      factApis[Math.floor(Math.random() * factApis.length)];
+    const api = factApis.find((a) => a.category === category) || factApis[Math.floor(Math.random() * factApis.length)];
 
     const body = await fetch(api.url);
 
-    // TODO: Type this response
-    const response: any = await body.json();
+    const response: FactApiResponse = await body.json();
     let fact;
 
-    // NOTE: Else if is faster here
     if (response["facts"]) fact = response["facts"][0];
     else if (response["data"]) fact = response["data"];
     else if (response["fact"]) fact = response["fact"];
@@ -87,3 +85,9 @@ export class FactCommand extends HibikiCommand {
     interaction.channel?.send(messageResponse) || interaction.reply(messageResponse);
   }
 }
+
+type FactApiResponse = {
+  facts?: string[];
+  data?: string;
+  fact?: string;
+};

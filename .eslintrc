@@ -1,3 +1,8 @@
 {
-  "extends": "@sysdotini/eslint-config"
+  "extends": "@sysdotini/eslint-config",
+  "rules": {
+    "node/no-extraneous-import": ["error", {
+      "allowModules": ["discord-api-types"]
+    }],
+  }
 }
