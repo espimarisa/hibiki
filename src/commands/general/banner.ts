@@ -1,11 +1,12 @@
-import type { ApplicationCommandOptionData, CommandInteraction } from "discord.js";
+import type { CommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command";
+import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v9";
 
 export class BannerCommand extends HibikiCommand {
   description = "Displays a member's profile banner.";
-  options: ApplicationCommandOptionData[] = [
+  options: APIApplicationCommandOption[] = [
     {
-      type: 6,
+      type: ApplicationCommandOptionType.User,
       name: "member",
       description: "The member to get a banner from.",
       required: true,

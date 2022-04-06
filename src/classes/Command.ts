@@ -5,7 +5,8 @@
  */
 
 import type { HibikiClient } from "./Client";
-import type { ApplicationCommandOptionData, CommandInteraction, Message } from "discord.js";
+import type { APIApplicationCommandOption } from "discord-api-types/v9";
+import type { CommandInteraction, Message } from "discord.js";
 
 export abstract class HibikiCommand {
   /**
@@ -22,7 +23,7 @@ export abstract class HibikiCommand {
    * MUST be used with messageOnly!
    */
 
-  owner = false;
+  ownerOnly = false;
 
   /**
    * How long the user has to wait before reusing the command
@@ -31,7 +32,7 @@ export abstract class HibikiCommand {
   cooldown = 0;
 
   // An array of slash command options
-  options?: ApplicationCommandOptionData[];
+  options?: APIApplicationCommandOption[];
 
   // A short description of a command
   abstract description: string;
