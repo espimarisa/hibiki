@@ -61,7 +61,7 @@ export class HibikiMessageEvent extends HibikiEvent {
     msg.getString = string;
 
     // Handles owner commands
-    if (command.owner) {
+    if (command.ownerOnly) {
       if (!this.bot.application?.owner?.id) await this.bot.application?.fetch();
 
       // TODO: Type this
