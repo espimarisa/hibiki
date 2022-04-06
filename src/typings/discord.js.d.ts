@@ -7,6 +7,8 @@
 import type { getString } from "./locales";
 
 declare module "discord.js" {
+  declare type ColorResolvable = PrivateColorResolvable;
+
   declare interface CommandInteraction {
     getString: getString;
   }
