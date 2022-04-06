@@ -4,7 +4,7 @@
  * @module utils/validator
  */
 
-import { jwtRegex, httpRegex } from "./constants";
+import { jwtRegex, httpRegex, colourRegex } from "./constants";
 import { logger } from "./logger";
 import fs from "node:fs";
 import path from "node:path";
@@ -69,11 +69,12 @@ export function validateConfig(config: HibikiConfig) {
    */
 
   // Checks to see if all colours are valid
-  /* Object.entries(config.colours).forEach((colour) => {
-    if (!colourRegex.test(colour[0])) {
+  for (const colour in config.colours) {
+    console.log(config.colours[colour]);
+    if (!colourRegex.test(<string>config.colours[colour])) {
       throw new ConfigError(`An invalid colour was configured: ${colour}`);
     }
-  }); */
+  }
 }
 
 class ConfigError extends Error {
