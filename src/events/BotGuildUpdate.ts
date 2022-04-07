@@ -24,7 +24,6 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
         guild.leave();
         return;
       }
-      console.log(guild.id);
     }
   }
 }
