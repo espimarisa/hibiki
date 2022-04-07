@@ -10,5 +10,6 @@ declare module "fastify" {
   interface FastifyInstance {
     config: HibikiConfig["webserver"];
     discordOauth2: OAuth2Namespace;
+    apiTokens: string[];
   }
 }
