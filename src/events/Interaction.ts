@@ -60,27 +60,6 @@ export class HibikiInteractionEvent extends HibikiEvent {
       setTimeout(() => this.bot.cooldowns.delete(command.name + interaction.user.id), command.cooldown);
     }
 
-    /**
-     * @todo Remove this. Hibiki v4 will not ship *any* NSFW commands.
-     * Keeping this here temporarily.
-     * - @sysdotini
-     */
-
-    /*
-    if (command.category === "nsfw" && interaction.channel?.type === "GUILD_TEXT" && !interaction.channel.nsfw) {
-      interaction.reply({
-        embeds: [
-          {
-            title: getStringFunction("global.ERROR"),
-            description: getStringFunction("nsfw.NOT_NSFW_CHANNEL_OR_DM"),
-            color: this.bot.config.colours.error,
-          },
-        ],
-      });
-
-      return;
-    } */
-
     // Runs the command
     try {
       // @ts-expect-error This whole function wouldn't even run if there was no interaction.
