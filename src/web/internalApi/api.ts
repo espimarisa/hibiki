@@ -30,10 +30,6 @@ export default class WebInternalApi {
   }
 
   public async generateGdprData(data: GdprData, options: GdprDataOptions): Promise<generateGdprDataResponse> {
-    if (!this._registeredRoutes || !this._app) {
-      throw new RoutesNotRegistedError();
-    }
-
     const id = randomBytes(9).toString("hex");
     const expires = new Date(options?.expires || Date.now() + 1000 * 60 * 60 * 24);
     const initiatedAt = new Date();
@@ -128,12 +124,13 @@ export default class WebInternalApi {
   }
 
   private _checkGdprData() {
-    Object.keys(this._gdprStore).forEach((key: string) => {
+    console.log("Checking gdpr data", this._gdprStore);
+    for (const key in this._gdprStore) {
       const item = this._gdprStore[key];
       if (item.expires < new Date()) {
         delete this._gdprStore[key];
       }
-    });
+    }
   }
 }
 

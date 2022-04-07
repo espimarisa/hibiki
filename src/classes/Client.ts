@@ -8,7 +8,6 @@ import type { HibikiCommand } from "./Command";
 import type { HibikiEvent } from "./Event";
 import type { HibikiLogger } from "./Logger";
 import type { HibikiProvider } from "./Provider";
-import type WebInternalApi from "web/internalApi/api";
 import { loadCommands, loadEvents, processGuilds, registerSlashCommands } from "../utils/loader";
 import { logger } from "../utils/logger";
 import { HibikiLocaleSystem } from "./LocaleSystem";
@@ -50,9 +49,6 @@ export class HibikiClient extends Client {
   // Hibiki's current version, defined in package.json
   readonly version: string = process.env.npm_package_version ?? "develop";
 
-  // Internal Web API instance
-  web?: WebInternalApi;
-
   /**
    * Creates a new instance of the Hibiki client
    * @param config A valid Hibiki config to utilize
@@ -82,10 +78,6 @@ export class HibikiClient extends Client {
    */
 
   public init() {
-    this.on("hibiki_internal_web_api", (data: WebInternalApi) => {
-      this.web = data;
-    });
-
     this.login(this.config.hibiki.token).then(async () => {
       await this.db.init();
 
