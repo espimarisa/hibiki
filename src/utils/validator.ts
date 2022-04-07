@@ -70,7 +70,6 @@ export function validateConfig(config: HibikiConfig) {
 
   // Checks to see if all colours are valid
   for (const colour in config.colours) {
-    console.log(config.colours[colour]);
     if (!colourRegex.test(<string>config.colours[colour])) {
       throw new ConfigError(`An invalid colour was configured: ${colour}`);
     }
