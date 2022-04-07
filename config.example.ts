@@ -23,7 +23,12 @@ const config: HibikiConfig = {
     error: "#fe6100",
     success: "#dc267f",
     warning: "#ffb000",
-  },
+    /*
+    I really dont feel like explaining this.
+    remove the type assignments and see for yourself. its annoying,
+    and I hate typings surrounding strings with a passion. - Chen
+    */
+  } as unknown as HibikiColourOptions,
 
   database: {
     provider: "json",
