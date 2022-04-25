@@ -7,7 +7,7 @@ export class UserinfoCommand extends HibikiCommand {
   description = "Returns information about a member's account.";
   options: APIApplicationCommandOption[] = [
     {
-    type: ApplicationCommandOptionType.User,
+      type: ApplicationCommandOptionType.User,
       name: "member",
       description: "The member to get information about.",
       required: true,

@@ -33,7 +33,7 @@ type HibikiBaseOptions = {
 type HibikiColourOptions = {
   // eat shit batman
   [key: string]: PrivateColorResolvable;
-  
+
   // Primary hex colour
   primary: PrivateColorResolvable;
 
