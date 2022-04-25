@@ -8,8 +8,8 @@ import config from "../config";
 import { HibikiShardingManager } from "./classes/Sharder";
 import { validateConfig } from "./utils/validator";
 import { startWebserver } from "./web/server";
-import path from "node:path";
 import { randomBytes } from "node:crypto";
+import path from "node:path";
 
 // Checks to see if the config is valid
 validateConfig(config);
