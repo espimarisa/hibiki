@@ -145,6 +145,10 @@
     "COMMAND_URBAN_EXAMPLE": "Example",
     "COMMAND_URBAN_NODEFINITION": "No definition for `{word}` was found on the Urban Dictionary. Maybe be more specific?",
     "COMMAND_URBAN_UPVOTES": "Upvotes",
-    "COMMAND_URBAN_WRITTENON": "Written"
+    "COMMAND_URBAN_WRITTENON": "Written",
+    "COMMAND_TWITTER_FAILED": "Failed to get information about that user. Try again later.",
+    "COMMAND_TWITTER_NO_RESULTS": "No results found for that username.",
+    "COMMAND_GITHUB_NO_RESULTS": "No results found for that repo.",
+    "COMMAND_NPM_NO_RESULTS": "No results found for that package."
   }
 }
