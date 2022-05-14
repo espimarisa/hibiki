@@ -4,7 +4,7 @@
  * @module HibikiEvent
  */
 
-import type { HibikiClient } from "./Client";
+import type { HibikiClient } from "./Client.js";
 
 export abstract class HibikiEvent {
   // An array of required intents for an event to listen on

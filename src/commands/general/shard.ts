@@ -1,6 +1,6 @@
 import type { CommandInteraction } from "discord.js";
-import { HibikiCommand } from "../../classes/Command";
-import { localiseShardStatus } from "../../utils/localiser";
+import { HibikiCommand } from "../../classes/Command.js";
+import { localiseShardStatus } from "../../utils/localiser.js";
 
 export class ShardCommand extends HibikiCommand {
   description = "Checks what shard the server is on and its status.";

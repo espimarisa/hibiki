@@ -2,9 +2,6 @@
 config.json
 config.toml
 application.yml
-.hibiki-secret-key
-app.config.*
-web.config.*
 config.ts
 
 # Binaries

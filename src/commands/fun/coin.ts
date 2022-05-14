@@ -1,5 +1,5 @@
 import type { CommandInteraction } from "discord.js";
-import { HibikiCommand } from "../../classes/Command";
+import { HibikiCommand } from "../../classes/Command.js";
 
 export class CoinCommand extends HibikiCommand {
   description = "Flips a coin.";

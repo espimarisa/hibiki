@@ -4,8 +4,8 @@
  * @module JSONProvider
  */
 
-import { HibikiProvider, DATABASE_TABLES } from "../classes/Provider";
-import { logger } from "../utils/logger";
+import { HibikiProvider, DATABASE_TABLES } from "../classes/Provider.js";
+import { logger } from "../utils/logger.js";
 import fs from "node:fs";
 import path from "node:path";
 

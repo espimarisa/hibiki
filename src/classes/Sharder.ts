@@ -5,7 +5,7 @@
  */
 
 import type { PathLike } from "node:fs";
-import { logger } from "../utils/logger";
+import { logger } from "../utils/logger.js";
 import { ShardClientUtil, ShardingManager } from "discord.js";
 const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
 type Auto = number | "auto";

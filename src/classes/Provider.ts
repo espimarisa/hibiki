@@ -6,8 +6,8 @@
 
 import type { HibikiClient } from "./Client";
 import type { PathLike } from "node:fs";
-import { moduleFiletypeRegex } from "../utils/constants";
-import { logger } from "../utils/logger";
+import { moduleFiletypeRegex } from "../utils/constants.js";
+import { logger } from "../utils/logger.js";
 import fs from "node:fs";
 
 // Database table layout

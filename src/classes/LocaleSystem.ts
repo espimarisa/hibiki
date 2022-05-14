@@ -9,10 +9,10 @@
  * Localise our slash command stuff...
  */
 
-import type { getString, HibikiLocaleStrings } from "../typings/locales";
-import type { HibikiClient } from "./Client";
+import type { getString, HibikiLocaleStrings } from "../typings/locales.js";
+import type { HibikiClient } from "./Client.js";
 import type { PathLike } from "node:fs";
-import { logger } from "../utils/logger";
+import { logger } from "../utils/logger.js";
 import fs from "node:fs";
 
 export class HibikiLocaleSystem {

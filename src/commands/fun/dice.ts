@@ -1,6 +1,6 @@
 import type { CommandInteraction } from "discord.js";
-import { HibikiCommand } from "../../classes/Command";
-import { APIApplicationCommandOption, ApplicationCommandOptionType } from "discord-api-types/v9";
+import { HibikiCommand } from "../../classes/Command.js";
+import { APIApplicationCommandOption, ApplicationCommandOptionType } from "discord-api-types/v10";
 
 export class DiceCommand extends HibikiCommand {
   description = "Rolls an x sided die (defaults to 6; maximum is 120).";

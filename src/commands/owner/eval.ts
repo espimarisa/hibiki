@@ -1,6 +1,6 @@
 import type { Message } from "discord.js";
-import { HibikiCommand } from "../../classes/Command";
-import { clean } from "../../utils/strings";
+import { HibikiCommand } from "../../classes/Command.js";
+import { clean } from "../../utils/strings.js";
 import util from "node:util";
 
 export class EvalCommand extends HibikiCommand {

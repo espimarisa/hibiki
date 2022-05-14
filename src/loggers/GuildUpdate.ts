@@ -5,7 +5,7 @@
  */
 
 import type { Guild } from "discord.js";
-import { HibikiEvent } from "../classes/Event";
+import { HibikiEvent } from "../classes/Event.js";
 
 export class HibikiGuildUpdateLogger extends HibikiEvent {
   events: HibikiEventEmitter[] = ["guildUpdate"];

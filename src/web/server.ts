@@ -6,11 +6,11 @@
 
 import type { FastifyInstance } from "fastify";
 import type { Server, IncomingMessage, ServerResponse } from "node:http";
-import config from "../../config";
-import { logger } from "../utils/logger";
-import { gdprRoutes } from "./routes/api/gdpr";
-import { authRoutes } from "./routes/auth";
-import { indexRoutes } from "./routes/index";
+import config from "../../config.js";
+import { logger } from "../utils/logger.js";
+import { gdprRoutes } from "./routes/api/gdpr.js";
+import { authRoutes } from "./routes/auth.js";
+import { indexRoutes } from "./routes/index.js";
 import fastifySession from "@fastify/session";
 import { fastify } from "fastify";
 import fastifyAccepts from "fastify-accepts";
