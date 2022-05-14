@@ -5,7 +5,7 @@
  */
 
 import type { FastifyGenericRouteOptions, FastifyNextFunction, FastifyServer } from "../server.js";
-import type { OAuth2Token } from "fastify-oauth2";
+import type { OAuth2Token } from "@fastify/oauth2";
 import { getOauthUserProfile } from "../utils/auth.js";
 
 export function indexRoutes(app: FastifyServer, options: FastifyGenericRouteOptions, next: FastifyNextFunction) {

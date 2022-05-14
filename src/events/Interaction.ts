@@ -13,10 +13,6 @@ export class HibikiInteractionEvent extends HibikiEvent {
   public async run(_event: HibikiEventEmitter, interaction: CommandInteraction) {
     if (!interaction || !interaction.isCommand()) return;
 
-    // Check if the user is in the blacklist
-    const blacklisted = await this.bot.db.getBlacklistItem(interaction.user.id, "USER");
-    if (blacklisted) return;
-
     // Finds the command
     const command = this.bot.commands.find((c) => c.name === interaction.commandName);
     if (!command) return;

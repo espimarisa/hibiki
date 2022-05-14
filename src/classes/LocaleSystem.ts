@@ -176,7 +176,7 @@ export class HibikiLocaleSystem {
 
   /**
    * Finds a locale string
-   * @param string The 2 letter locale code to use
+   * @param language The 2 letter locale code to use
    * @param fieldName The string to return
    * @param category The categories to search in
    */

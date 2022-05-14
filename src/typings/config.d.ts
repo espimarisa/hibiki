@@ -135,5 +135,3 @@ interface HibikiCommandJSON {
   // Slash command options
   options?: ApplicationCommandData[];
 }
-
-type HibikiCommandCategory = "fun" | "moderation" | "utilities" | "owner" | "image" | "music" | "nsfw" | "roleplay" | "general";

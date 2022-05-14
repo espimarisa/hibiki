@@ -1,6 +1,5 @@
 import type { Message } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
-import { clean } from "../../utils/strings.js";
 import util from "node:util";
 
 export class EvalCommand extends HibikiCommand {
@@ -12,7 +11,7 @@ export class EvalCommand extends HibikiCommand {
     try {
       const evaluated = await eval(`(async () => {\n${args.join(" ")}\n})()`);
       const evalstring = typeof evaluated === "string" ? evaluated : util.inspect(evaluated);
-      const returning = `\`\`\`js\n${clean(evalstring)}\n\`\`\``;
+      const returning = `\`\`\`js\n${evalstring}\n\`\`\``;
       await msg.reply(returning);
     } catch (error) {
       await msg.reply((error as Error).message);
