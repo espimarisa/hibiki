@@ -6,6 +6,7 @@ export class FoxgirlCommand extends HibikiCommand {
   description = "Sends a random picture of a foxgirl.";
 
   public async runWithInteraction(interaction: CommandInteraction) {
+    // TODO:: Use our own API.
     const body = await fetch("https://nekos.life/api/v2/img/fox_girl");
 
     const response: NekosLifeImage = await body.json();

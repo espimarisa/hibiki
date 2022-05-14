@@ -8,7 +8,6 @@ import config from "../config.js";
 import { HibikiShardingManager } from "./classes/Sharder.js";
 import { validateConfig } from "./utils/validator.js";
 import { startWebserver } from "./web/server.js";
-import { randomBytes } from "node:crypto";
 import path from "node:path";
 
 // Checks to see if the config is valid
@@ -17,11 +16,8 @@ validateConfig(config);
 // Finds the index file
 const HIBIKI_INDEX_FILE = path.join(__dirname, `hibiki.${process.env.NODE_ENV === "development" ? "ts" : "js"}`);
 
-const apiTokens = [];
-apiTokens.push("hibiki_" + randomBytes(32).toString("hex"));
-
 // Creates and spawns the sharding manager
-const manager = new HibikiShardingManager(HIBIKI_INDEX_FILE, config.hibiki.token, "auto", apiTokens);
+const manager = new HibikiShardingManager(HIBIKI_INDEX_FILE, config.hibiki.token, "auto");
 manager.spawn();
 
 // Starts the webserver
@@ -29,5 +25,5 @@ manager.spawn();
 // or join the 2, webserver stuff is a pain
 
 if (process.uptime() < 30) {
-  startWebserver(apiTokens);
+  startWebserver();
 }

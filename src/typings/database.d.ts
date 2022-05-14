@@ -36,16 +36,3 @@ interface HibikiUserConfig {
   // Configured locale for the user; overrides guild & default one
   locale?: HibikiLocaleCode;
 }
-
-type HibikiUserConfigs = HibikiUserConfig[];
-
-/**
- * Hibiki blacklist
- */
-interface HibikiBlacklistItem {
-  id: DiscordSnowflake;
-  reason?: string;
-  type: "GUILD" | "USER";
-}
-
-type HibikiGuildOrUser = "GUILD" | "USER";

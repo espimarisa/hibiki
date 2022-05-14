@@ -9,11 +9,12 @@ export class NpmCommand extends HibikiCommand {
   options: APIApplicationCommandOption[] = [
     {
       name: "package",
-      description: "Path to the package you want to look up. Ex: `discord.js` or `@discordjs/voice`",
+      description: "The package to return information about. Ex: `discord.js` or `@discordjs/voice`",
       required: true,
       type: ApplicationCommandOptionType.String,
     },
   ];
+
   public async runWithInteraction(interaction: CommandInteraction) {
     const packageName = await interaction.options.getString("package");
     if (!packageName) {

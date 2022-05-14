@@ -8,7 +8,7 @@ import type { HibikiCommand } from "./Command.js";
 import type { HibikiEvent } from "./Event.js";
 import type { HibikiLogger } from "./Logger.js";
 import type { HibikiProvider } from "./Provider.js";
-import { loadCommands, loadEvents, processGuilds, registerSlashCommands } from "../utils/loader.js";
+import { loadCommands, loadEvents, registerSlashCommands } from "../utils/loader.js";
 import { logger } from "../utils/logger.js";
 import { HibikiLocaleSystem } from "./LocaleSystem.js";
 import { getDatabaseProvider } from "./Provider.js";
@@ -59,8 +59,6 @@ export class HibikiClient extends Client {
     super({
       ...config.options,
       intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
-      // ts-expect-error never do this lmao
-      // intents: Object.keys(Intents.FLAGS).filter((key) => Intents.FLAGS[key] && typeof Intents.FLAGS[key] == "number"),
     });
 
     this.config = config;
@@ -88,9 +86,6 @@ export class HibikiClient extends Client {
 
       // Registers commands, push to only one guild if we're in development
       registerSlashCommands(this, IS_DEVELOPMENT ? this.config.hibiki.testGuildID : undefined);
-
-      // Process guilds
-      processGuilds(this);
 
       const shardString = this.shard ? `on shard #${this.shard?.ids[0]}` : "on main";
       logger.info(`Logged in as ${this.user?.tag} in ${this.guilds.cache.size} guilds ${shardString}`);

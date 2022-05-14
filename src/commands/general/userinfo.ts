@@ -1,7 +1,8 @@
+import type { APIApplicationCommandOption } from "discord-api-types/v10";
 import type { CommandInteraction, EmbedField } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import { createFullTimestamp } from "../../utils/timestamp.js";
-import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v10";
+import { ApplicationCommandOptionType } from "discord-api-types/v10";
 
 export class UserinfoCommand extends HibikiCommand {
   description = "Returns information about a member's account.";

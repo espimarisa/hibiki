@@ -2,9 +2,9 @@ import type { CommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 
 export class DonateCommand extends HibikiCommand {
-  description = "Returns donation information.";
+  description = "Returns information on how you can donate to the Hibiki project.";
 
-  public async runWithInteraction(interaction: CommandInteraction): Promise<void> {
+  public async runWithInteraction(interaction: CommandInteraction) {
     await interaction.reply({
       embeds: [
         {

@@ -6,11 +6,10 @@
     "COMMAND_COIN_DESCRIPTION": "You flipped a coin and it landed on **{coin}**.",
     "COMMAND_COIN_HEADS": "heads",
     "COMMAND_COIN_TAILS": "tails",
-    "COMMAND_DICE_DESCRIPTION": "You rolled a D{sides} -  It's {roll}!",
+    "COMMAND_DICE_DESCRIPTION": "You rolled a **D{sides}** that landed on **{roll}**.",
     "COMMAND_DICE_TITLE": "🎲 Dice",
     "COMMAND_FACT_ERROR": "Failed to fetch a random fact. Try again later.",
     "COMMAND_FACT_TITLE": "Fact",
-    "COMMAND_OWOIFY_TITLE": "🥺 OwO",
     "COMMAND_URBAN_DOWNVOTES": "Downvotes",
     "COMMAND_URBAN_EXAMPLE": "Example",
     "COMMAND_URBAN_NODEFINITION": "No definition for `{word}` was found on the Urban Dictionary. Maybe be more specific?",
@@ -123,10 +122,6 @@
   },
 
   "owner": {
-    "COMMAND_BLACKLIST_GUILD": "Successfully blacklisted guild {guild} (id).",
-    "COMMAND_BLACKLIST_INVALID_TYPE": "Invalid type provided.",
-    "COMMAND_BLACKLIST_TITLE": "🔒 Blacklist",
-    "COMMAND_BLACKLIST_USER": "Successfully blacklisted user {user} (id)."
   },
 
   "utilities": {

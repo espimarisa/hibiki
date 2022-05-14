@@ -2,19 +2,22 @@ import type { CommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import fetch from "../../utils/fetch.js";
 import { APIApplicationCommandOption, ApplicationCommandOptionType } from "discord-api-types/v10";
+
 export class GithubCommand extends HibikiCommand {
   description = "Fetches information about a Github repository";
 
   options: APIApplicationCommandOption[] = [
     {
       name: "repo",
-      description: "Path to the repository you want to look up. Ex: sysdotini/hibiki",
+      description: "The repository to return information about. Ex: sysdotini/hibiki",
       required: true,
       type: ApplicationCommandOptionType.String,
     },
   ];
+
   public async runWithInteraction(interaction: CommandInteraction) {
-    const repo = await interaction.options.getString("repo");
+    const repo = interaction.options.getString("repo");
+
     if (!repo) {
       return interaction.reply({
         embeds: [

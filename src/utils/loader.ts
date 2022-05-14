@@ -150,21 +150,3 @@ function subscribeToEvents(bot: HibikiClient, events: Collection<string, HibikiE
     });
   });
 }
-
-/**
- * Processes guilds and checks if they're in the blacklist
- * This is pretty unnecesary, IMO. The way prod checks is on guildAdd, and since the blacklist command makes it leave the guild,
- * There's not really a reason to add a few seconds of latency here. The only time it *would* matter is if they added it when the bot is down,
- * but hibiki neeeever goes down I promiseee
- * - espi
- * @todo look into this
- */
-
-export function processGuilds(bot: HibikiClient) {
-  bot.guilds.cache.forEach(async (guild) => {
-    if (await bot.db.getBlacklistItem(guild.id, "GUILD")) {
-      guild.leave();
-      bot.guilds.cache.delete(guild.id);
-    }
-  });
-}

@@ -4,7 +4,7 @@
  * @module web/utils/auth
  */
 
-import type { OAuth2Token } from "fastify-oauth2";
+import type { OAuth2Token } from "@fastify/oauth2";
 import fetch from "../../utils/fetch.js";
 
 /**

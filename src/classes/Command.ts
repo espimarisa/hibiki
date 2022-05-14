@@ -41,10 +41,10 @@ export abstract class HibikiCommand {
    * Creates a new Hibiki command
    * @param bot Main bot object
    * @param name The command name (matches the filename)
-   * @param category The command category (matches the directory)
+   * @param category The command category (matches the directory, can be anything)
    */
 
-  protected constructor(protected bot: HibikiClient, public name: string, public category: HibikiCommandCategory) {}
+  protected constructor(protected bot: HibikiClient, public name: string, public category: string) {}
 
   /**
    * Runs a command via the legacy message API

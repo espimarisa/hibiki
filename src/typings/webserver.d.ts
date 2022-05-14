@@ -1,3 +1,9 @@
+/**
+ * @file Webserver
+ * @description Typings for the webserver
+ * @typedef webserver
+ */
+
 // A returned profile from Oauth
 type DiscordOauthProfile = {
   id: DiscordSnowflake;

@@ -8,22 +8,19 @@ import type { FastifyInstance } from "fastify";
 import type { Server, IncomingMessage, ServerResponse } from "node:http";
 import config from "../../config.js";
 import { logger } from "../utils/logger.js";
-import { gdprRoutes } from "./routes/api/gdpr.js";
 import { authRoutes } from "./routes/auth.js";
 import { indexRoutes } from "./routes/index.js";
+import fastifyAccepts from "@fastify/accepts";
+import { fastifyCookie } from "@fastify/cookie";
+import fastifyCors from "@fastify/cors";
+import fastifyCsrf from "@fastify/csrf";
+import { fastifyHelmet } from "@fastify/helmet";
+import { fastifyOauth2 } from "@fastify/oauth2";
 import fastifySession from "@fastify/session";
+import fastifyStatic from "@fastify/static";
 import { fastify } from "fastify";
-import fastifyAccepts from "fastify-accepts";
-import { fastifyCookie } from "fastify-cookie";
-import fastifyCors from "fastify-cors";
-import fastifyCsrf from "fastify-csrf";
-import { fastifyHelmet } from "fastify-helmet";
-import { fastifyOauth2 } from "fastify-oauth2";
-import fastifyStatic from "fastify-static";
 import { Liquid } from "liquidjs";
 import pointOfView from "point-of-view";
-
-// eslint-disable-next-line import/order
 import path from "node:path";
 
 const LAYOUTS_DIRECTORY = path.join(__dirname, "layouts");
@@ -36,7 +33,7 @@ export type FastifyServer = FastifyInstance<Server, IncomingMessage, ServerRespo
 export type FastifyGenericRouteOptions = { prefix: string };
 export type FastifyNextFunction = () => void;
 
-export function startWebserver(apiTokens: string[]) {
+export function startWebserver() {
   const app: FastifyServer = fastify({
     logger: logger,
     disableRequestLogging: true,
@@ -46,6 +43,7 @@ export function startWebserver(apiTokens: string[]) {
   app.register(fastifyCookie, { secret: config.webserver.sessionSecret });
 
   // Registers fastifySession
+  // @ts-expect-error remove me in a minute
   app.register(fastifySession, {
     secret: config.webserver.sessionSecret,
     cookie: {
@@ -123,11 +121,8 @@ export function startWebserver(apiTokens: string[]) {
   // Registers routes
   app.register(indexRoutes, { prefix: "/" });
   app.register(authRoutes, { prefix: "/auth" });
-  app.register(gdprRoutes);
 
   app.config = config.webserver;
-
-  app.apiTokens = apiTokens;
 
   app.listen(config.webserver.port ?? 4000);
 }

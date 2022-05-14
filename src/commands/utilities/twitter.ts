@@ -1,8 +1,15 @@
+import type { APIApplicationCommandOption } from "discord-api-types/v10";
 import type { CommandInteraction, EmbedField } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import fetch from "../../utils/fetch.js";
-import { tagsToMarkdownLinks } from "../../utils/twitterparser";
-import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v10";
+import { ApplicationCommandOptionType } from "discord-api-types/v10";
+
+// Replaces text with markdown links for URLs
+function tagsToMarkdownLinks(text: string) {
+  return text.replace(/\B@(\w+)/gi, (_match, username) => {
+    return `[@${username}](https://twitter.com/${username})`;
+  });
+}
 
 export class TwitterCommand extends HibikiCommand {
   description = "Returns information about a Twitter user.";
@@ -20,6 +27,7 @@ export class TwitterCommand extends HibikiCommand {
     const headers = {
       "Content-Type": "application/json",
       // "X-Twitter-Active-User": "yes",
+      // TODO: Not do this, user our own token..
       "Authorization": "Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA",
     };
 

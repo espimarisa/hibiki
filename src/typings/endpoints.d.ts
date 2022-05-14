@@ -237,32 +237,32 @@ interface GithubRepository {
  */
 
 interface NpmPackage {
-  _id: string;
-  _rev: string;
-  name: string;
-  description: string;
-  repository: string;
-  author: string;
-  license: string;
-  versions: {
+  "_id": string;
+  "_rev": string;
+  "name": string;
+  "description": string;
+  "repository": string;
+  "author": string;
+  "license": string;
+  "versions": {
     [version: string]: NpmPackageVersion;
   };
-  maintainers: NpmPackageAuthor[];
+  "maintainers": NpmPackageAuthor[];
   "dist-tags": {
     [version: string]: string;
     latest: string;
     beta?: string;
     unsupported?: string;
   };
-  time: {
+  "time": {
     [key: string]: string;
     modified: string;
     created: string;
   };
-  users: {
+  "users": {
     [user: string]: boolean;
   };
-  keywords: string[];
+  "keywords": string[];
 }
 
 // I'm not typing (haha get it) all this
@@ -270,7 +270,7 @@ interface NpmPackageVersion {
   name: string;
   description?: string;
   version?: string;
-  author?: NpmPackageAuthor
+  author?: NpmPackageAuthor;
   repository?: NpmPackageRepository;
   main?: string;
   dependencies?: {
@@ -291,7 +291,6 @@ interface NpmPackageVersion {
   maintainers?: NpmPackageAuthor[];
   keywords?: string[];
   license?: string;
-
 }
 
 interface NpmPackageRepository {
