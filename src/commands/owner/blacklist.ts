@@ -1,5 +1,5 @@
 import type { Message } from "discord.js";
-import { HibikiCommand } from "../../classes/Command";
+import { HibikiCommand } from "../../classes/Command.js";
 
 export class BlacklistCommand extends HibikiCommand {
   description = "Adds a guild or user to the blacklist.";

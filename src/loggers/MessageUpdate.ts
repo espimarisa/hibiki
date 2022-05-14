@@ -5,7 +5,7 @@
  */
 
 import type { Message } from "discord.js";
-import { HibikiEvent } from "../classes/Event";
+import { HibikiEvent } from "../classes/Event.js";
 
 export class HibikiMessageUpdateLogger extends HibikiEvent {
   events: HibikiEventEmitter[] = ["messageUpdate", "messageDelete", "messageDeleteBulk"];

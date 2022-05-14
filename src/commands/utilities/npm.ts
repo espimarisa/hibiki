@@ -1,7 +1,7 @@
 import type { CommandInteraction } from "discord.js";
-import { HibikiCommand } from "../../classes/Command";
-import fetch from "../../utils/fetch";
-import { APIApplicationCommandOption, ApplicationCommandOptionType } from "discord-api-types/v9";
+import { HibikiCommand } from "../../classes/Command.js";
+import fetch from "../../utils/fetch.js";
+import { APIApplicationCommandOption, ApplicationCommandOptionType } from "discord-api-types/v10";
 
 export class NpmCommand extends HibikiCommand {
   description = "Fetches information about a NPM package";

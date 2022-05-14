@@ -4,8 +4,8 @@
  * @module localiser
  */
 
-import type { ANIMAL_TYPES } from "../commands/image/animal";
-import type { getString } from "../typings/locales";
+import type { ANIMAL_TYPES } from "../commands/image/animal.js";
+import type { getString } from "../typings/locales.js";
 import type { Status } from "discord.js";
 
 /**

@@ -4,14 +4,14 @@
  * @module HibikiClient
  */
 
-import type { HibikiCommand } from "./Command";
-import type { HibikiEvent } from "./Event";
-import type { HibikiLogger } from "./Logger";
-import type { HibikiProvider } from "./Provider";
-import { loadCommands, loadEvents, processGuilds, registerSlashCommands } from "../utils/loader";
-import { logger } from "../utils/logger";
-import { HibikiLocaleSystem } from "./LocaleSystem";
-import { getDatabaseProvider } from "./Provider";
+import type { HibikiCommand } from "./Command.js";
+import type { HibikiEvent } from "./Event.js";
+import type { HibikiLogger } from "./Logger.js";
+import type { HibikiProvider } from "./Provider.js";
+import { loadCommands, loadEvents, processGuilds, registerSlashCommands } from "../utils/loader.js";
+import { logger } from "../utils/logger.js";
+import { HibikiLocaleSystem } from "./LocaleSystem.js";
+import { getDatabaseProvider } from "./Provider.js";
 import { Client, Collection, Intents } from "discord.js";
 import path from "node:path";
 

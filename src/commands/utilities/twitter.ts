@@ -1,8 +1,8 @@
 import type { CommandInteraction, EmbedField } from "discord.js";
-import { HibikiCommand } from "../../classes/Command";
-import fetch from "../../utils/fetch";
+import { HibikiCommand } from "../../classes/Command.js";
+import fetch from "../../utils/fetch.js";
 import { tagsToMarkdownLinks } from "../../utils/twitterparser";
-import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v9";
+import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v10";
 
 export class TwitterCommand extends HibikiCommand {
   description = "Returns information about a Twitter user.";

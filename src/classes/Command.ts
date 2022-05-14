@@ -4,8 +4,8 @@
  * @module HibikiCommand
  */
 
-import type { HibikiClient } from "./Client";
-import type { APIApplicationCommandOption } from "discord-api-types/v9";
+import type { HibikiClient } from "./Client.js";
+import type { APIApplicationCommandOption } from "discord-api-types/v10";
 import type { CommandInteraction, Message } from "discord.js";
 
 export abstract class HibikiCommand {

@@ -2,6 +2,10 @@
   "exclude": ["*.d.ts", "dist", "node_modules"],
   "include": ["./src/**/**/*", "./src/**/**/*.json", "*.ts"],
 
+  "ts-node": {
+    "esm": true
+  },
+
   "compilerOptions": {
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
@@ -19,8 +23,8 @@
     "inlineSources": false,
     "jsx": "react-jsx",
     "lib": ["DOM", "DOM.Iterable", "ES2020"],
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "noEmit": false,
     "noEmitHelpers": true,
     "noEmitOnError": true,
@@ -43,7 +47,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "suppressImplicitAnyIndexErrors": false,
-    "target": "ES2020",
+    "target": "ES2022",
     "useDefineForClassFields": true
   }
 }

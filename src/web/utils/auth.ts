@@ -5,7 +5,7 @@
  */
 
 import type { OAuth2Token } from "fastify-oauth2";
-import fetch from "../../utils/fetch";
+import fetch from "../../utils/fetch.js";
 
 /**
  * Gets a user's profile via an Oauth2 token
