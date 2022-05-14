@@ -45,12 +45,6 @@ export class HibikiMessageEvent extends HibikiEvent {
     // If the command isn't a message only, return
     if (typeof command.runWithMessage !== "function") return;
 
-    // Check if the user is in the blacklist
-    const blacklisted = await this.bot.db.getBlacklistItem(msg.author.id, "USER");
-    if (blacklisted) {
-      return;
-    }
-
     // Finds what locale to use and sets msg.getString
     let locale = this.bot.config.hibiki.locale;
     const guildconfig = await this.bot.db.getGuildConfig(msg.channel.guild ? msg.channel.guild.id : "");

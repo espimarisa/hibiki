@@ -1,7 +1,8 @@
+import type { APIApplicationCommandOption } from "discord-api-types/v10";
 import type { CommandInteraction, EmbedField } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import { createFullTimestamp } from "../../utils/timestamp.js";
-import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v10";
+import { ApplicationCommandOptionType } from "discord-api-types/v10";
 
 export class RoleinfoCommand extends HibikiCommand {
   description = "Returns information about a role.";
@@ -9,7 +10,7 @@ export class RoleinfoCommand extends HibikiCommand {
     {
       type: ApplicationCommandOptionType.Role,
       name: "role",
-      description: "The role to get information about.",
+      description: "The role to return information about.",
       required: true,
     },
   ];

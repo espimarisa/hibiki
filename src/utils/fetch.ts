@@ -4,8 +4,7 @@
  * @module utilities/fetch
  */
 
-import { version } from "../../package.json";
-import fetch from "cross-fetch";
+const { version } = require("../../package.json");
 
 /**
  * Wraps around fetch() and adds our User-Agent, etc

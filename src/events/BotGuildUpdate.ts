@@ -18,12 +18,7 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
      */
 
     if (event === "guildCreate") {
-      // Check if the guild is blacklisted
-      const blacklisted = await this.bot.db.getBlacklistItem(guild.id, "GUILD");
-      if (blacklisted) {
-        guild.leave();
-        return;
-      }
+      // todo do this
     }
   }
 }

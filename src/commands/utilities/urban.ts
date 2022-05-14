@@ -1,8 +1,9 @@
+import type { APIApplicationCommandOption } from "discord-api-types/v10";
 import type { CommandInteraction, EmbedField } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
+import fetch from "../../utils/fetch.js";
 import { createFullTimestamp } from "../../utils/timestamp.js";
-import fetch from "cross-fetch";
-import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v10";
+import { ApplicationCommandOptionType } from "discord-api-types/v10";
 
 // Urban dictionary word type definition
 interface UrbanWord {

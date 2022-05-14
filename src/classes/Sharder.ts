@@ -15,7 +15,6 @@ export class HibikiShardingManager {
   private readonly _mainFile: PathLike;
   private readonly _token: string;
   private readonly _shardCount: Auto;
-  private readonly _apiTokens: string[];
 
   /**
    * Creates a new Hibiki sharding manager
@@ -24,12 +23,10 @@ export class HibikiShardingManager {
    * @param shardCount The amount of shards to launch
    */
 
-  constructor(file: PathLike, token: string, shardCount: Auto = "auto", apiTokens: string[] = []) {
+  constructor(file: PathLike, token: string, shardCount: Auto = "auto") {
     this._mainFile = file;
     this._shardCount = shardCount;
     this._token = token;
-    this._apiTokens = apiTokens;
-    // logger.info(internalWebApi);
 
     this.shardingManager = new ShardingManager(this._mainFile.toString(), {
       token: this._token,
@@ -63,7 +60,6 @@ export class HibikiShardingManager {
 
       shard.on("ready", () => {
         logger.info(`Shard #${shard.id} is ready`);
-        shard.eval(`this.apiToken = "${this._apiTokens}"`);
       });
 
       shard.on("reconnection", () => {

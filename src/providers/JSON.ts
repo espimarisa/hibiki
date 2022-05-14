@@ -10,11 +10,12 @@ import fs from "node:fs";
 import path from "node:path";
 
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
+
+// Decides which file to store a "database" in
 const HIBIKI_DATABASE_FILE = path.join(__dirname, IS_PRODUCTION ? "../../../hibiki.db.json" : "../../hibiki.db.json");
 
 // A type that emulates a Hibiki JSON database structure
-type HibikiJSONDatabaseStructure = {
-  [DATABASE_TABLES.BLACKLIST]: HibikiBlacklistItem[];
+export type HibikiJSONDatabaseStructure = {
   [DATABASE_TABLES.GUILD_CONFIGS]: HibikiGuildConfig[];
   [DATABASE_TABLES.USER_CONFIGS]: HibikiUserConfig[];
   [DATABASE_TABLES.USER_WARNINGS]: any[];
@@ -23,70 +24,81 @@ type HibikiJSONDatabaseStructure = {
 export class JSONProvider extends HibikiProvider {
   db = {} as HibikiJSONDatabaseStructure;
 
-  public async getGuildConfig(guild: DiscordSnowflake): Promise<HibikiGuildConfig> {
-    const guildConfig = this.db.GUILD_CONFIGS.find((g: HibikiGuildConfig) => g.id === guild);
-    if (!guildConfig) {
-      await this.insertBlankGuildConfig(guild);
-      return this.getGuildConfig(guild);
-    }
-
+  // Gets a guild config
+  public async getGuildConfig(guild: DiscordSnowflake): Promise<HibikiGuildConfig | undefined> {
+    const guildConfig = this.db.GUILD_CONFIGS.find((g) => g.id === guild);
+    if (!guildConfig) return;
     return guildConfig;
   }
 
+  // Updates a guild config
   public async updateGuildConfig(guild: DiscordSnowflake, config: HibikiGuildConfig): Promise<void> {
-    const guildConfig = this.db.GUILD_CONFIGS.find((g: HibikiGuildConfig) => g.id === guild);
+    const guildConfig = this.db.GUILD_CONFIGS.find((g) => g.id === guild);
+
     if (!guildConfig) {
       await this.insertBlankGuildConfig(guild);
       return this.updateGuildConfig(guild, config);
     }
 
-    // assign each property of the config to the guild config
+    // Assign each property of the config to the guild config
     Object.keys(config).forEach((key) => {
       guildConfig[key] = config[key];
     });
 
+    // Saves changes
     this._updateJSON();
   }
 
+  // Deletes a guild config
   public async deleteGuildConfig(guild: DiscordSnowflake) {
-    const guildConfigIndex = this.db.GUILD_CONFIGS.findIndex((g: HibikiGuildConfig) => g.id === guild);
+    // Gets the index of the guild config
+    const guildConfigIndex = this.db.GUILD_CONFIGS.findIndex((g) => g.id === guild);
     if (guildConfigIndex === -1) return;
+
+    // Deletes the guild config
     this.db.GUILD_CONFIGS.splice(guildConfigIndex, 1);
+
+    // Saves changes
     this._updateJSON();
   }
 
+  // Inserts a blank guild config
   public async insertBlankGuildConfig(guild: DiscordSnowflake) {
     this.db.GUILD_CONFIGS.push({ id: guild });
     this._updateJSON();
   }
 
-  public async getUserConfig(user: DiscordSnowflake): Promise<HibikiUserConfig> {
+  // Gets a user's config
+  public async getUserConfig(user: DiscordSnowflake) {
     const userConfig = this.db.USER_CONFIGS.find((u: HibikiUserConfig) => u.id === user);
-    if (!userConfig) {
-      await this.insertBlankUserConfig(user);
-      return this.getUserConfig(user);
-    }
-
+    if (!userConfig) return;
     return userConfig;
   }
 
+  // Updates a user's config
   public async updateUserConfig(user: DiscordSnowflake, config: HibikiUserConfig): Promise<void> {
     const userConfig = this.db.USER_CONFIGS.find((u: HibikiUserConfig) => u.id === user);
+
+    // Inserts a blank config if need be
     if (!userConfig) {
       await this.insertBlankUserConfig(user);
       return this.updateUserConfig(user, config);
     }
 
-    // assign each property of the config to the user config
+    // Assign each property of the config to the user config
     Object.keys(config).forEach((key) => {
       userConfig[key] = config[key];
     });
 
+    // Saves changesS
     this._updateJSON();
   }
 
+  // Replaces a user's config
   public async replaceUserConfig(user: DiscordSnowflake, config: HibikiUserConfig): Promise<void> {
     const userConfig = this.db.USER_CONFIGS.find((u: HibikiUserConfig) => u.id === user);
+
+    // Inserts a blank config if need be
     if (!userConfig) {
       await this.insertBlankUserConfig(user);
       return this.replaceUserConfig(user, config);
@@ -97,47 +109,32 @@ export class JSONProvider extends HibikiProvider {
       delete userConfig[key];
     });
 
-    // assign each property of the config to the user config
+    // Assign each property of the config to the user config
     Object.keys(config).forEach((key) => {
       userConfig[key] = config[key];
     });
 
+    // Saves changes
     this._updateJSON();
   }
 
+  // Deletes a user's config
   public async deleteUserConfig(user: DiscordSnowflake) {
+    // Find's the config's index
     const userConfig = this.db.USER_CONFIGS.findIndex((u: HibikiUserConfig) => u.id === user);
     if (userConfig === -1) return;
+
+    // Deletes the config
     this.db.USER_CONFIGS.splice(userConfig, 1);
+
+    // Saves changes
     this._updateJSON();
   }
 
+  // Inserts a blank user config
   public async insertBlankUserConfig(user: DiscordSnowflake) {
     this.db.USER_CONFIGS.push({ id: user });
     this._updateJSON();
-  }
-
-  public async insertBlacklistItem(id: string, reason: string, type: HibikiGuildOrUser) {
-    this.db.BLACKLIST.push({ id, reason, type });
-    this._updateJSON();
-  }
-
-  public async deleteBlacklistItem(id: string) {
-    const item = this.db.BLACKLIST.findIndex((item: HibikiBlacklistItem) => item.id === id);
-    if (item === -1) return;
-    this.db.BLACKLIST.splice(item, 1);
-    this._updateJSON();
-  }
-
-  public async getBlacklist(type?: HibikiGuildOrUser) {
-    if (type) return this.db.BLACKLIST.filter((item) => item.type === type);
-    return this.db.BLACKLIST;
-  }
-
-  public async getBlacklistItem(id: string, type: HibikiGuildOrUser): Promise<HibikiBlacklistItem | undefined> {
-    const item = this.db.BLACKLIST.find((i) => i.id === id && i.type === type);
-    if (!item) return;
-    return item;
   }
 
   /**

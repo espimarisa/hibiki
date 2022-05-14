@@ -4,7 +4,7 @@
  * @module HibikiProvider
  */
 
-import type { HibikiClient } from "./Client";
+import type { HibikiClient } from "./Client.js";
 import type { PathLike } from "node:fs";
 import { moduleFiletypeRegex } from "../utils/constants.js";
 import { logger } from "../utils/logger.js";
@@ -15,7 +15,6 @@ export enum DATABASE_TABLES {
   GUILD_CONFIGS = "GUILD_CONFIGS",
   USER_CONFIGS = "USER_CONFIGS",
   USER_WARNINGS = "USER_WARNINGS",
-  BLACKLIST = "BLACKLIST",
 }
 
 // Type for a callable Hibiki provider
@@ -69,7 +68,7 @@ export abstract class HibikiProvider {
    * @returns A guild's config
    */
 
-  public abstract getGuildConfig(guild: DiscordSnowflake): Promise<HibikiGuildConfig>;
+  public abstract getGuildConfig(guild: DiscordSnowflake): Promise<HibikiGuildConfig | undefined>;
 
   /**
    * Deletes a guild's config
@@ -99,7 +98,7 @@ export abstract class HibikiProvider {
    * @returns A guild's config
    */
 
-  public abstract getUserConfig(guild: DiscordSnowflake): Promise<HibikiUserConfig>;
+  public abstract getUserConfig(guild: DiscordSnowflake): Promise<HibikiUserConfig | undefined>;
 
   /**
    * Deletes a user's config
@@ -117,38 +116,17 @@ export abstract class HibikiProvider {
 
   /**
    * Updates a user's config
-   * @param guild The user ID to update a config in
+   * @param user The user ID to update a config in
    * @param config The config to insert
    */
 
   public abstract updateUserConfig(user: DiscordSnowflake, config: HibikiUserConfig): Promise<any>;
 
   /**
-   * Adds an ID to the blacklist
-   * @param id The ID to add to the blacklist
-   * @param reason The reason for adding the ID to the blacklist
-   * @param type The type of blacklist to add to (GUILD or USER)
+   * Replaces a user's config
+   * @param user The user ID to update a config in
+   * @param config The config to insert
    */
 
-  public abstract insertBlacklistItem(id: DiscordSnowflake, reason: string, type: HibikiGuildOrUser): Promise<any>;
-
-  /**
-   * Deletes an ID from the blacklist
-   * @param id The ID to delete from the blacklist
-   */
-
-  public abstract deleteBlacklistItem(id: DiscordSnowflake): Promise<any>;
-
-  /**
-   * Gets the blacklist
-   */
-
-  public abstract getBlacklist(type?: HibikiGuildOrUser): Promise<HibikiBlacklistItem[]>;
-
-  /**
-   * Gets a blacklist item
-   * @param id The ID to lookup
-   **/
-
-  public abstract getBlacklistItem(id: DiscordSnowflake, type: HibikiGuildOrUser): Promise<HibikiBlacklistItem | undefined>;
+  public abstract updateUserConfig(user: DiscordSnowflake, config: HibikiUserConfig): Promise<any>;
 }

@@ -1,5 +1,5 @@
 import { HibikiCommand } from "../../classes/Command.js";
-import { fetchTotalCachedGuilds } from "../../classes/Sharder";
+import { fetchTotalCachedGuilds } from "../../classes/Sharder.js";
 import { CommandInteraction, version as djsVersion } from "discord.js";
 
 export class AboutCommand extends HibikiCommand {
