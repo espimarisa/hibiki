@@ -1,6 +1,6 @@
 import type { CommandInteraction, EmbedField } from "discord.js";
-import { HibikiCommand } from "../../classes/Command";
-import { createFullTimestamp } from "../../utils/timestamp";
+import { HibikiCommand } from "../../classes/Command.js";
+import { createFullTimestamp } from "../../utils/timestamp.js";
 
 export class ServerinfoCommand extends HibikiCommand {
   description = "Returns information about the server.";

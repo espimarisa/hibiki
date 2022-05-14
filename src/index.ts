@@ -4,10 +4,10 @@
  * @module index
  */
 
-import config from "../config";
-import { HibikiShardingManager } from "./classes/Sharder";
-import { validateConfig } from "./utils/validator";
-import { startWebserver } from "./web/server";
+import config from "../config.js";
+import { HibikiShardingManager } from "./classes/Sharder.js";
+import { validateConfig } from "./utils/validator.js";
+import { startWebserver } from "./web/server.js";
 import { randomBytes } from "node:crypto";
 import path from "node:path";
 

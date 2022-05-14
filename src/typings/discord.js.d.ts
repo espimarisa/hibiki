@@ -4,7 +4,7 @@
  * @typedef discord.js
  */
 
-import type { getString } from "./locales";
+import type { getString } from "./locales.js";
 
 declare module "discord.js" {
   declare type ColorResolvable = PrivateColorResolvable;

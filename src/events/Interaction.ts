@@ -5,7 +5,7 @@
  */
 
 import type { CommandInteraction } from "discord.js";
-import { HibikiEvent } from "../classes/Event";
+import { HibikiEvent } from "../classes/Event.js";
 
 export class HibikiInteractionEvent extends HibikiEvent {
   events: HibikiEventEmitter[] = ["interactionCreate"];

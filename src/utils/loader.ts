@@ -4,17 +4,17 @@
  * @module loader
  */
 
-import type { HibikiClient } from "../classes/Client";
-import type { HibikiCommand } from "../classes/Command";
-import type { HibikiEvent } from "../classes/Event";
-import type { HibikiLogger } from "../classes/Logger";
+import type { HibikiClient } from "../classes/Client.js";
+import type { HibikiCommand } from "../classes/Command.js";
+import type { HibikiEvent } from "../classes/Event.js";
+import type { HibikiLogger } from "../classes/Logger.js";
 import type { Collection } from "discord.js";
 import type { PathLike } from "node:fs";
-import { moduleFiletypeRegex } from "../utils/constants";
-import { checkIntents } from "./intents";
-import { logger } from "./logger";
+import { moduleFiletypeRegex } from "../utils/constants.js";
+import { checkIntents } from "./intents.js";
+import { logger } from "./logger.js";
 import { REST } from "@discordjs/rest";
-import { Routes } from "discord-api-types/v9";
+import { Routes } from "discord-api-types/v10";
 import fs from "node:fs";
 import path from "node:path";
 

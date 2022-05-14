@@ -1,8 +1,8 @@
 import type { CommandInteraction } from "discord.js";
-import { HibikiCommand } from "../../classes/Command";
-import fetch from "../../utils/fetch";
+import { HibikiCommand } from "../../classes/Command.js";
+import fetch from "../../utils/fetch.js";
 import { localiseAnimalCommandTitle } from "../../utils/localiser";
-import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v9";
+import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v10";
 
 export type ANIMAL_TYPES = "cat" | "dog" | "fox";
 

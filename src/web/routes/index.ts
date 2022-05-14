@@ -4,9 +4,9 @@
  * @module web/routes/index
  */
 
-import type { FastifyGenericRouteOptions, FastifyNextFunction, FastifyServer } from "../server";
+import type { FastifyGenericRouteOptions, FastifyNextFunction, FastifyServer } from "../server.js";
 import type { OAuth2Token } from "fastify-oauth2";
-import { getOauthUserProfile } from "../utils/auth";
+import { getOauthUserProfile } from "../utils/auth.js";
 
 export function indexRoutes(app: FastifyServer, options: FastifyGenericRouteOptions, next: FastifyNextFunction) {
   app.get("/test", async (req, res) => {

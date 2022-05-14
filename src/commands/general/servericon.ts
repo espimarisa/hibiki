@@ -1,5 +1,5 @@
 import type { CommandInteraction } from "discord.js";
-import { HibikiCommand } from "../../classes/Command";
+import { HibikiCommand } from "../../classes/Command.js";
 
 export class ServericonCommand extends HibikiCommand {
   description = "Displays the server's icon.";

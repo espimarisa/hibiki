@@ -1,7 +1,8 @@
+import type { APIApplicationCommandOption } from "discord-api-types/v10";
 import type { CommandInteraction, MessageOptions } from "discord.js";
-import { HibikiCommand } from "../../classes/Command";
-import fetch from "../../utils/fetch";
-import { ApplicationCommandOptionType, type APIApplicationCommandOption } from "discord-api-types/v9";
+import { HibikiCommand } from "../../classes/Command.js";
+import fetch from "../../utils/fetch.js";
+import { ApplicationCommandOptionType } from "discord-api-types/v10";
 
 export class FactCommand extends HibikiCommand {
   description = "Get a random fact.";

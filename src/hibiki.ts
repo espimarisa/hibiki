@@ -4,9 +4,9 @@
  * @module hibiki
  */
 
-import config from "../config";
-import { HibikiClient } from "./classes/Client";
-import { validateConfig } from "./utils/validator";
+import config from "../config.js";
+import { HibikiClient } from "./classes/Client.js";
+import { validateConfig } from "./utils/validator.js";
 
 // Checks to see if the config is valid
 validateConfig(config);

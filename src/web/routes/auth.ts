@@ -4,7 +4,7 @@
  * @module web/routes/auth
  */
 
-import type { FastifyGenericRouteOptions, FastifyNextFunction, FastifyServer } from "../server";
+import type { FastifyGenericRouteOptions, FastifyNextFunction, FastifyServer } from "../server.js";
 
 export function authRoutes(app: FastifyServer, _options: FastifyGenericRouteOptions, next: FastifyNextFunction) {
   app.get("/callback", async (req, res) => {
