@@ -9,12 +9,16 @@ import { HibikiShardingManager } from "./classes/Sharder.js";
 import { validateConfig } from "./utils/validator.js";
 import { startWebserver } from "./web/server.js";
 import path from "node:path";
+import url from "node:url";
 
 // Checks to see if the config is valid
 validateConfig(config);
 
 // Finds the index file
-const HIBIKI_INDEX_FILE = path.join(__dirname, `hibiki.${process.env.NODE_ENV === "development" ? "ts" : "js"}`);
+const HIBIKI_INDEX_FILE = path.join(
+  path.dirname(url.fileURLToPath(import.meta.url)),
+  `hibiki.${process.env.NODE_ENV === "development" ? "ts" : "js"}`,
+);
 
 // Creates and spawns the sharding manager
 const manager = new HibikiShardingManager(HIBIKI_INDEX_FILE, config.hibiki.token, "auto");

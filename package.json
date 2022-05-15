@@ -29,7 +29,7 @@
     "format": "cross-env prettier --write './**/**/*.{js,json,sass,scss,liquid,md,ts,yml}'",
     "prebuild": "cross-env rimraf ./dist/",
     "postbuild": "npm run build:static",
-    "start": "npm run build && cross-env NODE_ENV=production node ./dist/src/index.js",
+    "start": "npm run build && cross-env NODE_ENV=production node --experimental-modules ./dist/src/index.js",
     "test": "cross-env tsc --noEmit && eslint . && prettier --c ."
   },
   "dependencies": {

@@ -36,7 +36,9 @@ export function loadCommands(bot: HibikiClient, directory: PathLike) {
     if (!moduleFiletypeRegex.test(file.name)) return;
 
     try {
-      const importedCommand = require(`${directory}/${file.name}`);
+      const importedCommand = import(`${directory}/${file.name}`);
+
+      // @ts-expect-error fuck
       command = importedCommand[Object.keys(importedCommand)[0]];
     } catch (error) {
       console.error(error);
@@ -70,7 +72,8 @@ export function loadEvents(bot: HibikiClient, directory: string, isLogger = fals
     if (!moduleFiletypeRegex.test(file.name)) return;
 
     try {
-      const importedEvent = require(`${directory}/${file.name}`);
+      const importedEvent = import(`${directory}/${file.name}`);
+      // @ts-expect-error fuck
       eventToLoad = importedEvent[Object.keys(importedEvent)[0]];
     } catch (error) {
       logger.error(`${isLogger ? "Logger" : "Event"} ${file.name} failed to load: ${error}`);

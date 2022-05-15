@@ -4,7 +4,9 @@
  * @module utilities/fetch
  */
 
-const { version } = require("../../package.json");
+// eslint-disable-next-line unicorn/prefer-module
+// @ts-expect-error idc
+import packageJSON from "../../package.json" assert { type: "json" };
 
 /**
  * Wraps around fetch() and adds our User-Agent, etc
@@ -17,7 +19,7 @@ export default (url: string, options: RequestInit = {}): Promise<Response> => {
     ...options,
     headers: {
       ...options?.headers,
-      "User-Agent": `hibiki/${version} (https://github.com/sysdotini/hibiki)`,
+      "User-Agent": `hibiki/${packageJSON.version} (https://github.com/sysdotini/hibiki)`,
     },
   });
 };
