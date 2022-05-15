@@ -8,11 +8,15 @@ import { HibikiProvider, DATABASE_TABLES } from "../classes/Provider.js";
 import { logger } from "../utils/logger.js";
 import fs from "node:fs";
 import path from "node:path";
+import url from "node:url";
 
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
 // Decides which file to store a "database" in
-const HIBIKI_DATABASE_FILE = path.join(__dirname, IS_PRODUCTION ? "../../../hibiki.db.json" : "../../hibiki.db.json");
+const HIBIKI_DATABASE_FILE = path.join(
+  path.dirname(url.fileURLToPath(import.meta.url)),
+  IS_PRODUCTION ? "../../../hibiki.db.json" : "../../hibiki.db.json",
+);
 
 // A type that emulates a Hibiki JSON database structure
 export type HibikiJSONDatabaseStructure = {
@@ -21,7 +25,7 @@ export type HibikiJSONDatabaseStructure = {
   [DATABASE_TABLES.USER_WARNINGS]: any[];
 };
 
-export class JSONProvider extends HibikiProvider {
+export default class JSONProvider extends HibikiProvider {
   db = {} as HibikiJSONDatabaseStructure;
 
   // Gets a guild config

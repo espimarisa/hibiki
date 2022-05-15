@@ -38,13 +38,14 @@ export function getDatabaseProvider(provider: HibikiDatabaseProvider, directory:
 
   // Tries to load the provider
   try {
-    providerToLoad = require(`${directory}/${providerFile}`);
+    providerToLoad = import(`${directory}/${providerFile}`);
   } catch (error) {
     logger.error(`Failed to load the database provider ${providerFile}, falling back to JSON: ${error}`);
-    providerToLoad = require(`${directory}/JSON`);
+    providerToLoad = import(`${directory}/JSON`);
   }
 
   // Returns the loaded provider
+  // @ts-expect-error boohoo
   return providerToLoad[Object.keys(providerToLoad)[0]] as CallableHibikiProvider;
 }
 
