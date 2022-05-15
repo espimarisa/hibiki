@@ -8,7 +8,6 @@ import type { OAuth2Namespace } from "@fastify/oauth2";
 
 declare module "fastify" {
   interface FastifyInstance {
-    config: HibikiConfig["webserver"];
     discordOauth2: OAuth2Namespace;
   }
 }

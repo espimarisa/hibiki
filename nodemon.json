@@ -5,7 +5,7 @@
   "watch": ["src"],
   "ext": "ts",
   "execMap": {
-    "ts": "node -r ts-node/register"
+    "ts": "node -r ts-node/register --experimental-modules"
   },
   "env": {
     "TS_NODE_FILES": true,

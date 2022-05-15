@@ -14,13 +14,14 @@ import { HibikiLocaleSystem } from "./LocaleSystem.js";
 import { getDatabaseProvider } from "./Provider.js";
 import { Client, Collection, Intents } from "discord.js";
 import path from "node:path";
+import url from "node:url";
 
 // Directories to crawl
-const COMMANDS_DIRECTORY = path.join(__dirname, "../commands");
-const EVENTS_DIRECTORY = path.join(__dirname, "../events");
-const LOGGERS_DIRECTORY = path.join(__dirname, "../loggers");
-const PROVIDERS_DIRECTORY = path.join(__dirname, "../providers");
-const LOCALES_DIRECTORY = path.join(__dirname, "../locales");
+const COMMANDS_DIRECTORY = path.join(path.dirname(url.fileURLToPath(import.meta.url)), "../commands");
+const EVENTS_DIRECTORY = path.join(path.dirname(url.fileURLToPath(import.meta.url)), "../events");
+const LOGGERS_DIRECTORY = path.join(path.dirname(url.fileURLToPath(import.meta.url)), "../loggers");
+const PROVIDERS_DIRECTORY = path.join(path.dirname(url.fileURLToPath(import.meta.url)), "../providers");
+const LOCALES_DIRECTORY = path.join(path.dirname(url.fileURLToPath(import.meta.url)), "../locales");
 
 const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
 

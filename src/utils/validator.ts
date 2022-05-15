@@ -8,8 +8,9 @@ import { jwtRegex, httpRegex, colourRegex } from "./constants.js";
 import { logger } from "./logger.js";
 import fs from "node:fs";
 import path from "node:path";
+import url from "node:url";
 
-const LOCALES_DIRECTORY = path.join(__dirname, "../locales");
+const LOCALES_DIRECTORY = path.join(path.dirname(url.fileURLToPath(import.meta.url)), "../locales");
 
 /**
  * Validates a Hibii config
