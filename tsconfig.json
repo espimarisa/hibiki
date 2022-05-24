@@ -41,6 +41,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "sourceRoot": "./src",
+    "typeRoots": ["./src/typings"],
     "strict": true,
     "strictBindCallApply": true,
     "strictFunctionTypes": true,

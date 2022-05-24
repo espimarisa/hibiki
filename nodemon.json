@@ -5,7 +5,7 @@
   "watch": ["src"],
   "ext": "ts",
   "execMap": {
-    "ts": "node -r ts-node/register --experimental-modules"
+    "ts": "node --loader ts-node/esm -r ts-node/register --experimental-modules"
   },
   "env": {
     "TS_NODE_FILES": true,
