@@ -5,7 +5,7 @@
   "version": "5.0.0-alpha",
   "description": "The best all-in-one Discord bot.",
   "license": "zlib",
-  "author": "Espi <espi@riseup.net> (https://espi.me)",
+  "author": "Espi Marisa <espi@riseup.net> (https://espi.me)",
   "contributors": [
     "Flleeppyy <flleeppyybusiness@gmail.com> (https://fleepy.tv/)"
   ],
@@ -23,27 +23,32 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon ./src/index.ts",
+    "dev": "npm run prisma:dev && nodemon ./src/index.ts",
     "lint": "cross-env eslint --fix .",
     "format": "cross-env prettier --write './**/**/*.{js,json,sass,scss,liquid,md,ts,yml}'",
     "prebuild": "cross-env rimraf ./dist/",
-    "start": "npm run build && cross-env NODE_ENV=production node --experimental-modules ./dist/src/index.js",
+    "prisma:dev": "cross-env prisma db push",
+    "prisma:dev:reset": "prisma migrate reset",
+    "prisma:prod": "cross-env prisma migrate deploy",
+    "start": "npm run build && npm run prisma:prod && cross-env NODE_ENV=production node ./dist/src/index.js",
     "test": "cross-env tsc --noEmit && eslint . && prettier --c ."
   },
   "dependencies": {
     "@discordjs/rest": "^0.4.1",
-    "discord-api-types": "^0.33.0",
+    "@prisma/client": "^3.14.0",
+    "discord-api-types": "^0.33.2",
     "discord.js": "^13.7.0",
-    "pino": "^7.11.0",
-    "pino-pretty": "^7.6.1",
-    "sequelize": "^6.20.0",
-    "sqlite3": "^5.0.8"
+    "pg": "^8.7.3",
+    "pino": "^8.0.0",
+    "pino-pretty": "^8.0.0",
+    "prisma": "^3.14.0"
   },
   "devDependencies": {
     "@sysdotini/eslint-config": "^3.1.1",
-    "@types/node": "^17.0.35",
-    "@typescript-eslint/eslint-plugin": "^5.26.0",
-    "@typescript-eslint/parser": "^5.26.0",
+    "@types/node": "^17.0.39",
+    "@types/pg": "^8.6.5",
+    "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "@typescript-eslint/parser": "^5.27.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "eslint": "^8.16.0",
@@ -56,7 +61,7 @@
     "nodemon": "^2.0.16",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
-    "ts-node": "^10.8.0",
-    "typescript": "4.7.0-beta"
+    "ts-node": "^10.8.1",
+    "typescript": "4.7.3"
   }
 }
