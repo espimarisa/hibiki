@@ -19,6 +19,9 @@ model GuildConfig {
 
   // The guild's ID
   guild_id String? @unique @db.VarChar(18)
+
+  // Guild's default locale code
+  locale String?
 }
 
 // User configs
@@ -28,4 +31,7 @@ model UserConfig {
 
   // The user's ID
   user_id String? @unique @db.VarChar(18)
+
+  // User's preferred locale code
+  locale String?
 }

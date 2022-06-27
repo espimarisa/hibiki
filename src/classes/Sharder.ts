@@ -62,7 +62,7 @@ export class HibikiShardingManager {
         logger.info(`Shard #${shard.id} is ready`);
       });
 
-      shard.on("reconnection", () => {
+      shard.on("reconnecting", () => {
         logger.warn(`Shard #${shard.id} is reconnecting`);
       });
 

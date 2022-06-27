@@ -3,9 +3,28 @@
  * @description Connects to Discord and handles global functions
  */
 
+import type { HibikiCommand } from "./Command.js";
+import type { HibikiEvent } from "./Event.js";
+import type { HibikiLogger } from "./Logger.js";
+import { loadCommands, loadEvents, registerSlashCommands } from "../utils/loader.js";
 import { logger } from "../utils/logger.js";
 import { DatabaseManager } from "./Database.js";
-import { Client, Intents } from "discord.js";
+import { HibikiLocaleSystem } from "./LocaleSystem.js";
+import { Client, Collection, Intents } from "discord.js";
+import path from "node:path";
+import url from "node:url";
+
+// Are we being sane or not?
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
+
+// __dirname replacement in ESM
+const pathDirname = path.dirname(url.fileURLToPath(import.meta.url));
+
+// Directories to crawl
+const COMMANDS_DIRECTORY = path.join(pathDirname, "../commands");
+const EVENTS_DIRECTORY = path.join(pathDirname, "../events");
+const LOGGERS_DIRECTORY = path.join(pathDirname, "../loggers");
+const LOCALES_DIRECTORY = path.join(pathDirname, "../locales");
 
 export class HibikiClient extends Client {
   readonly config: HibikiConfig;
@@ -13,8 +32,23 @@ export class HibikiClient extends Client {
   // Hibiki's current version, defined in package.json
   readonly version: string = process.env.npm_package_version ?? "develop";
 
+  // A collection of cooldowns
+  readonly cooldowns: Collection<string, Date> = new Collection();
+
   // A Prisma + Hibiki Database Manager
   readonly db: DatabaseManager = new DatabaseManager();
+
+  // A collection of commands
+  readonly commands: Collection<string, HibikiCommand> = new Collection();
+
+  // A collection of events
+  readonly events: Collection<string, HibikiEvent> = new Collection();
+
+  // A collection of loggers
+  readonly loggers: Collection<string, HibikiLogger> = new Collection();
+
+  // Hibiki's locale system
+  readonly localeSystem: HibikiLocaleSystem;
 
   constructor(config: HibikiConfig) {
     super({
@@ -24,16 +58,27 @@ export class HibikiClient extends Client {
 
     this.config = config;
 
-    this.once("ready", async () => this.init());
+    this.localeSystem = new HibikiLocaleSystem(LOCALES_DIRECTORY, this.config.hibiki.locale);
+
+    this.once("ready", () => this.init());
   }
 
   /**
    * Initialises Hibiki
    */
 
-  public async init() {
-    this.login(this.config.hibiki.token).then(async () => {
-      logger.info(`Logged in as ${this.user?.tag} in ${this.guilds.cache.size} guilds on shard #${this.shard?.ids[0]}}`);
-    });
+  public init() {
+    // Logs into the Discord API
+    // Loads all commands, events, and loggers
+    loadCommands(this, COMMANDS_DIRECTORY);
+    loadEvents(this, EVENTS_DIRECTORY);
+    loadEvents(this, LOGGERS_DIRECTORY, true);
+
+    // Registers commands, push to only one guild if we're in development
+    registerSlashCommands(this, !IS_PRODUCTION ? this.config.hibiki.testGuildID : undefined);
+
+    logger.info(`Logged in as ${this.user?.tag} in ${this.guilds.cache.size} guilds on shard #${this.shard?.ids[0]}`);
+    logger.info(`${this.commands.size} commands loaded on shard #${this.shard?.ids[0]}`);
+    logger.info(`${this.events.size} events loaded on shard #${this.shard?.ids[0]}`);
   }
 }
