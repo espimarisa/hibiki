@@ -29,7 +29,7 @@ export class DatabaseManager {
     });
 
     if (!config || !config?.guild_id?.length) return;
-    return JSON.stringify(config);
+    return JSON.stringify(config) as HibikiGuildConfig;
   }
 
   /**
@@ -102,7 +102,7 @@ export class DatabaseManager {
     });
 
     if (!config || !config?.user_id?.length) return;
-    return JSON.stringify(config);
+    return JSON.stringify(config) as HibikiUserConfig;
   }
 
   /**

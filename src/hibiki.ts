@@ -9,4 +9,4 @@ import { HibikiClient } from "./classes/Client.js";
 
 // Spawns a new instance of Hibiki
 const bot = new HibikiClient(config);
-await bot.init();
+bot.login(config.hibiki.token);

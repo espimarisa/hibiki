@@ -5,7 +5,7 @@
   "watch": ["src"],
   "ext": "ts",
   "execMap": {
-    "ts": "node --loader ts-node/esm -r ts-node/register"
+    "ts": "node --no-warnings --loader ts-node/esm -r ts-node/register"
   },
   "env": {
     "TS_NODE_FILES": true,
