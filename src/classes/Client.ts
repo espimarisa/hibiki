@@ -60,7 +60,10 @@ export class HibikiClient extends Client {
 
     this.localeSystem = new HibikiLocaleSystem(LOCALES_DIRECTORY, this.config.hibiki.locale);
 
-    this.once("ready", () => this.init());
+    this.once("ready", () => {
+      console.log("ready listener has run, hmmm");
+      this.init();
+    });
   }
 
   /**
@@ -68,17 +71,19 @@ export class HibikiClient extends Client {
    */
 
   public init() {
-    // Logs into the Discord API
-    // Loads all commands, events, and loggers
-    loadCommands(this, COMMANDS_DIRECTORY);
-    loadEvents(this, EVENTS_DIRECTORY);
-    loadEvents(this, LOGGERS_DIRECTORY, true);
+    // Logs into the Discord API, I guess
+    this.login(this.config.hibiki.token).then(() => {
+      // Loads all commands, events, and loggers
+      loadCommands(this, COMMANDS_DIRECTORY);
+      loadEvents(this, EVENTS_DIRECTORY);
+      loadEvents(this, LOGGERS_DIRECTORY, true);
 
-    // Registers commands, push to only one guild if we're in development
-    registerSlashCommands(this, !IS_PRODUCTION ? this.config.hibiki.testGuildID : undefined);
+      // Registers commands, push to only one guild if we're in development
+      registerSlashCommands(this, !IS_PRODUCTION ? this.config.hibiki.testGuildID : undefined);
 
-    logger.info(`Logged in as ${this.user?.tag} in ${this.guilds.cache.size} guilds on shard #${this.shard?.ids[0]}`);
-    logger.info(`${this.commands.size} commands loaded on shard #${this.shard?.ids[0]}`);
-    logger.info(`${this.events.size} events loaded on shard #${this.shard?.ids[0]}`);
+      logger.info(`Logged in as ${this.user?.tag} in ${this.guilds.cache.size} guilds on shard #${this.shard?.ids[0]}`);
+      logger.info(`${this.commands.size} commands loaded on shard #${this.shard?.ids[0]}`);
+      logger.info(`${this.events.size} events loaded on shard #${this.shard?.ids[0]}`);
+    });
   }
 }
