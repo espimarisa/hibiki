@@ -24,7 +24,7 @@ import path from "node:path";
  * @param directory The directory to look for commands in
  */
 
-export async function loadCommands(bot: HibikiClient, directory: PathLike) {
+export function loadCommands(bot: HibikiClient, directory: PathLike) {
   // Iterates through files/folders in the directory
   const files = fs.readdirSync(directory, { withFileTypes: true });
 
@@ -60,7 +60,6 @@ export async function loadCommands(bot: HibikiClient, directory: PathLike) {
   });
 
   // BOT.COMMANDS IS EMPTY OUT OF SCOPE, SEND FUCKING HELP!!! FUCK MEEEE - ESPI
-  
 }
 
 /**
