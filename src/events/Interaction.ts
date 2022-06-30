@@ -35,19 +35,18 @@ export class HibikiInteractionEvent extends HibikiEvent {
 
       // Sends a message if the command is under cooldown
       if (cooldown) {
-        return interaction.reply("cooldown");
+        // Sets the cooldown
+        this.bot.cooldowns.set(command.name + interaction.user.id, new Date());
+        setTimeout(() => this.bot.cooldowns.delete(command.name + interaction.user.id), command.cooldown);
+        return interaction.reply("cooldown uwu");
       }
-
-      // Sets the cooldown
-      this.bot.cooldowns.set(command.name + interaction.user.id, new Date());
-      setTimeout(() => this.bot.cooldowns.delete(command.name + interaction.user.id), command.cooldown);
     }
 
-    // Runs the command
     try {
+      // Runs the command
       await command.runWithInteraction?.(interaction);
     } catch (error) {
-      throw new Error(error as string);
+      throw new Error(`${error}`);
     }
   }
 }
