@@ -26,7 +26,7 @@ import path from "node:path";
 
 export function loadCommands(bot: HibikiClient, directory: PathLike) {
   // Iterates through files/folders in the directory
-  const files = fs.readdirSync(directory, { withFileTypes: true });
+  const files = fs.readdirSync(directory, { withFileTypes: true, encoding: "utf8" });
 
   files.forEach(async (file) => {
     if (file.isDirectory()) {
@@ -40,7 +40,7 @@ export function loadCommands(bot: HibikiClient, directory: PathLike) {
 
     // Tries to load the command
     try {
-      const importedCommand = await import(`file://${directory}/${file.name}`);
+      const importedCommand: Record<string, CallableHibikiCommand> = await import(`file://${directory}/${file.name}`);
       commandToLoad = importedCommand[Object.keys(importedCommand)[0]];
     } catch (error) {
       logger.warn(`Command ${file.name} failed to load, see stack trace below:`);
@@ -53,13 +53,10 @@ export function loadCommands(bot: HibikiClient, directory: PathLike) {
     const fileName = file.name.split(moduleFiletypeRegex)[0];
     const category = splitPath[splitPath.length - 1];
 
+    // Loads the command
     const command = new commandToLoad(bot, fileName, category);
-
-    // NOTE: THIS WORKS FUCKING FINE HERE!!!!! LOG IT
     bot.commands.set(fileName, command);
   });
-
-  // BOT.COMMANDS IS EMPTY OUT OF SCOPE, SEND FUCKING HELP!!! FUCK MEEEE - ESPI
 }
 
 /**
@@ -81,7 +78,7 @@ export function loadEvents(bot: HibikiClient, directory: string, isLogger = fals
     if (!moduleFiletypeRegex.test(file.name)) return;
 
     try {
-      const importedEvent = await import(`file://${directory}/${file.name}`);
+      const importedEvent: Record<string, CallableHibikiEvent> = await import(`file://${directory}/${file.name}`);
       eventToLoad = importedEvent[Object.keys(importedEvent)[0]];
     } catch (error) {
       logger.error(`${isLogger ? "Logger" : "Event"} ${file.name} failed to load, see stack trace below:`);
@@ -158,8 +155,13 @@ export function registerSlashCommands(bot: HibikiClient, guild?: DiscordSnowflak
   // Creates a new REST instance
   const rest = new REST({ version: "10" }).setToken(bot.config.hibiki.token);
 
-  // If a guild ID was provided, load per-guild. Else, we should load globally
-  guild?.length
-    ? rest.put(Routes.applicationGuildCommands(bot.user?.id as DiscordSnowflake, guild), { body: jsonData })
-    : rest.put(Routes.applicationCommands(bot.user?.id as DiscordSnowflake), { body: [] });
+  try {
+    // If a guild ID was provided, load per-guild. Else, we should load globally
+    return guild?.length
+      ? rest.put(Routes.applicationGuildCommands(bot.user?.id as DiscordSnowflake, guild), { body: jsonData })
+      : rest.put(Routes.applicationCommands(bot.user?.id as DiscordSnowflake), { body: [] });
+  } catch (error) {
+    logger.error(`Error while registering slash commands ${error}`);
+    return;
+  }
 }
