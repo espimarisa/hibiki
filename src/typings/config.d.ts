@@ -14,5 +14,5 @@ type HibikiCoreOptions = {
 
 interface HibikiConfig {
   hibiki: HibikiCoreOptions;
-  options?: PrivateClientOptions | Record<string, never>;
+  options?: PrivateClientOptions | Record<string, unknown>;
 }

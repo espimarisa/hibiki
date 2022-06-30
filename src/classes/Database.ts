@@ -9,6 +9,10 @@ import { PrismaClient } from "@prisma/client";
 export class DatabaseManager {
   protected readonly client: PrismaClient;
 
+  /**
+   * Creates a new Hibiki database manaer
+   */
+
   constructor() {
     this.client = new PrismaClient();
   }
@@ -29,7 +33,15 @@ export class DatabaseManager {
     });
 
     if (!config || !config?.guild_id?.length) return;
-    return JSON.stringify(config) as HibikiGuildConfig;
+
+    try {
+      // Parses the config and returns it
+      const parsedConfig = JSON.stringify(config);
+      if (!parsedConfig) return;
+      return parsedConfig as HibikiGuildConfig;
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
   }
 
   /**
@@ -102,7 +114,15 @@ export class DatabaseManager {
     });
 
     if (!config || !config?.user_id?.length) return;
-    return JSON.stringify(config) as HibikiUserConfig;
+
+    try {
+      // Parses the config and returns it
+      const parsedConfig = JSON.stringify(config);
+      if (!parsedConfig) return;
+      return parsedConfig as HibikiUserConfig;
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
   }
 
   /**

@@ -81,7 +81,7 @@ export abstract class HibikiCommand {
       // Be sure to follow slash command option validation. For example, ALL names must be lowercase with no spaces.
       // Correct: guild_id : incorrect: Guild ID
       // Also: Use the enum for the type for ease-of-use
-      options: this.options,
+      options: this.options ?? [],
     };
   }
   /**
