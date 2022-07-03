@@ -8,7 +8,7 @@ import type { HibikiClient } from "../classes/Client.js";
 import type { CallableHibikiCommand } from "../classes/Command.js";
 import type { CallableHibikiEvent, HibikiEvent } from "../classes/Event.js";
 import type { HibikiLogger } from "../classes/Logger.js";
-import type { Collection } from "@discordjs/collection";
+import type { Collection } from "discord.js";
 import type { PathLike } from "node:fs";
 import { moduleFiletypeRegex, slashCommandNameRegex } from "./constants.js";
 import { logger } from "./logger.js";
