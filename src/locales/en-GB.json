@@ -3,7 +3,10 @@
 
   "fun": {},
 
-  "general": {},
+  "general": {
+    "COMMAND_PING_DESCRIPTION": "This message took {latency}ms to send.",
+    "COMMAND_PING_PONG": "🏓 Pong!"
+  },
 
   "global": {},
 
