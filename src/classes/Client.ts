@@ -72,9 +72,11 @@ export class HibikiClient extends Client {
       this.once("ready", async () => {
         // Loads all commands, events, and loggers
         // TODO: Figure out weird jank async shit. TLDR promises suck
-        loadCommands(this, COMMANDS_DIRECTORY);
-        loadEvents(this, EVENTS_DIRECTORY);
-        loadEvents(this, LOGGERS_DIRECTORY, true);
+
+        // ASYNCRONOUS CODE IS THE FUTUREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+        await loadCommands(this, COMMANDS_DIRECTORY);
+        await loadEvents(this, EVENTS_DIRECTORY);
+        await loadEvents(this, LOGGERS_DIRECTORY, true);
 
         // Registers commands; pushes to only one guild if we're in development
         registerSlashCommands(this, !IS_PRODUCTION ? this.config.hibiki.testGuildID : undefined);

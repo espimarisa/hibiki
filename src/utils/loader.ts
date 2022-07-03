@@ -1,6 +1,6 @@
 /**
  * @file Loader
- * @description Loads modules into Hibiki
+ * @description Loads commands, events, and loggers; registers slash commands
  * @module loader
  */
 
@@ -24,11 +24,11 @@ import path from "node:path";
  * @param directory The directory to look for commands in
  */
 
-export function loadCommands(bot: HibikiClient, directory: PathLike) {
-  // Iterates through files/folders in the directory
+export async function loadCommands(bot: HibikiClient, directory: PathLike): Promise<any> {
+  // todo: re-evaluate my life decisions
   const files = fs.readdirSync(directory, { withFileTypes: true, encoding: "utf8" });
 
-  files.forEach(async (file) => {
+  for (const file of files) {
     if (file.isDirectory()) {
       // If there's a subfolder, re-run it inside it
       return loadCommands(bot, path.join(directory.toString(), file.name));
@@ -56,7 +56,7 @@ export function loadCommands(bot: HibikiClient, directory: PathLike) {
     // Loads the command
     const command = new commandToLoad(bot, fileName, category);
     bot.commands.set(fileName, command);
-  });
+  }
 }
 
 /**
@@ -66,11 +66,11 @@ export function loadCommands(bot: HibikiClient, directory: PathLike) {
  * @param isLogger Whether or not the item is a logger or not
  */
 
-export function loadEvents(bot: HibikiClient, directory: string, isLogger = false) {
+export async function loadEvents(bot: HibikiClient, directory: PathLike, isLogger = false) {
   // Loads each event file
   const files = fs.readdirSync(directory, { withFileTypes: true, encoding: "utf8" });
 
-  files.forEach(async (file) => {
+  for (const file of files) {
     // Don't try to load source mappings or subdirectories
     if (file.isDirectory() || file.name.endsWith(".map")) return;
 
@@ -102,7 +102,7 @@ export function loadEvents(bot: HibikiClient, directory: string, isLogger = fals
 
     // Pushes the events and runs them
     (isLogger ? bot.loggers : bot.events).set(fileName, event);
-  });
+  }
 
   // Subscribes to all of the events
   subscribeToEvents(bot, isLogger ? bot.loggers : bot.events);
@@ -115,9 +115,9 @@ export function loadEvents(bot: HibikiClient, directory: string, isLogger = fals
  */
 
 function subscribeToEvents(bot: HibikiClient, events: Collection<string, HibikiEvent | HibikiLogger>) {
-  events.forEach((eventToListen) => {
-    eventToListen.events.forEach((individualEvent) => {
-      bot.on(individualEvent, (...eventParameters) => eventToListen.run(individualEvent, ...eventParameters));
+  events.forEach((eventToListenOn) => {
+    eventToListenOn.events.forEach((individualEvent) => {
+      bot.on(individualEvent, (...eventParameters) => eventToListenOn.run(individualEvent, ...eventParameters));
     });
   });
 }
@@ -129,6 +129,9 @@ function subscribeToEvents(bot: HibikiClient, events: Collection<string, HibikiE
  */
 
 export function registerSlashCommands(bot: HibikiClient, guild?: DiscordSnowflake) {
+  // This shouldn't happen - but I guess it *can* happen per v10 caching
+  if (!bot.user?.id) throw new Error("Failed to register slash commands: Client user field exists on the logged in account.");
+
   // Converts the command to Discord API-compatible JSON and removes messageOnly ones
   const jsonData = bot.commands
     .filter((command) => !command.messageOnly && !command.ownerOnly)
@@ -154,14 +157,15 @@ export function registerSlashCommands(bot: HibikiClient, guild?: DiscordSnowflak
 
   // Creates a new REST instance
   const rest = new REST({ version: "10" }).setToken(bot.config.hibiki.token);
+  if (!rest) throw new Error("Failed to create a Discord REST instance");
 
   try {
     // If a guild ID was provided, load per-guild. Else, we should load globally
     return guild?.length
-      ? rest.put(Routes.applicationGuildCommands(bot.user?.id as DiscordSnowflake, guild), { body: jsonData })
-      : rest.put(Routes.applicationCommands(bot.user?.id as DiscordSnowflake), { body: [] });
+      ? rest.put(Routes.applicationGuildCommands(bot.user.id, guild), { body: jsonData })
+      : rest.put(Routes.applicationCommands(bot.user.id), { body: jsonData });
   } catch (error) {
-    logger.error(`Error while registering slash commands ${error}`);
-    return;
+    logger.error(`Error while registering slash commands: ${error}`);
+    throw new Error(`${error}`);
   }
 }
