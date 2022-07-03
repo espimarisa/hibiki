@@ -16,7 +16,6 @@ type HibikiEventEmitter = keyof PrivateClientEvents;
 type DiscordSnowflake = PrivateSnowflake;
 
 // A resolvable string of intents
-// NOTE: Our hacky global import won't work on this type - so don't even think about it
 type ResolvableIntentString = import("discord.js").BitFieldResolvable<PrivateIntentsString, number>;
 
 // Valid locale codes. This list will need to be updated manually.

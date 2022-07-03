@@ -34,7 +34,7 @@
     "test": "cross-env tsc --noEmit && eslint . && prettier --c ."
   },
   "dependencies": {
-    "@discordjs/collection": "^0.7.0",
+    "@discordjs/opus": "^0.8.0",
     "@discordjs/rest": "^0.5.0",
     "@discordjs/voice": "^0.10.0",
     "@prisma/client": "^4.0.0",
@@ -43,19 +43,26 @@
     "pg": "^8.7.3",
     "pino": "^8.1.0",
     "pino-pretty": "^8.1.0",
-    "prisma": "^4.0.0"
+    "prisma": "^4.0.0",
+    "sodium-native": "^3.3.0"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.6",
+    "utf-8-validate": "^5.0.9",
+    "zlib-sync": "^0.1.7",
+    "erlpack": "github:discord/erlpack"
   },
   "devDependencies": {
     "@sysdotini/eslint-config": "^3.1.1",
-    "@types/node": "^18.0.0",
+    "@types/node": "^18.0.1",
     "@types/pg": "^8.6.5",
-    "@typescript-eslint/eslint-plugin": "^5.30.3",
-    "@typescript-eslint/parser": "^5.30.3",
+    "@typescript-eslint/eslint-plugin": "^5.30.4",
+    "@typescript-eslint/parser": "^5.30.4",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-import-resolver-typescript": "^3.1.5",
+    "eslint-import-resolver-typescript": "^3.2.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
