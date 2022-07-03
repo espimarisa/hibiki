@@ -1,0 +1,29 @@
+name: "Push Testing"
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      # Sets up pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.2
+
+      # Sets up Node.js
+      - uses: actions/checkout@v2.4.2
+      - name: Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v3.3.0
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Runs any test scripts
+      - name: Unit Tests
+        run: |
+          pnpm install
+          pnpm test --if-present
+        env:
+          CI: true
