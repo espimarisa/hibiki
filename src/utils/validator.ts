@@ -1,7 +1,7 @@
 /**
  * @file Validator
  * @description Utilities for verification and parsing
- * @module Validator
+ * @module validator
  */
 
 import { BitFieldResolvable, ClientOptions, Intents, IntentsString } from "discord.js";

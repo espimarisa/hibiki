@@ -47,6 +47,7 @@ export class DatabaseManager {
   /**
    * Updates a guildConfig
    * @param guild The guild ID to create a config for
+   * @param config The config to insert
    */
 
   public async updateGuildConfig(guild: DiscordSnowflake, config: HibikiGuildConfig) {
@@ -128,6 +129,7 @@ export class DatabaseManager {
   /**
    * Updates a userConfig
    * @param user The user ID to create a config for
+   * @param config The config to insert
    */
 
   public async updateUserConfig(user: DiscordSnowflake, config: HibikiUserConfig) {
@@ -165,7 +167,7 @@ export class DatabaseManager {
 
   /**
    * Deletes a a userConfig
-   * @param guild The user ID to delete a config for
+   * @param user The user ID to delete a config for
    */
 
   public async deleteUserConfig(user: DiscordSnowflake) {

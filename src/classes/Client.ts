@@ -28,10 +28,6 @@ const LOCALES_DIRECTORY = path.join(pathDirname, "../locales");
 
 export class HibikiClient extends Client {
   readonly config: HibikiConfig;
-
-  // Hibiki's current version, defined in package.json
-  readonly version: string = process.env.npm_package_version ?? "develop";
-
   // A collection of cooldowns
   readonly cooldowns: Collection<string, Date> = new Collection();
 
@@ -71,9 +67,6 @@ export class HibikiClient extends Client {
       // Wait for the initial login before loading modules
       this.once("ready", async () => {
         // Loads all commands, events, and loggers
-        // TODO: Figure out weird jank async shit. TLDR promises suck
-
-        // ASYNCRONOUS CODE IS THE FUTUREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
         await loadCommands(this, COMMANDS_DIRECTORY);
         await loadEvents(this, EVENTS_DIRECTORY);
         await loadEvents(this, LOGGERS_DIRECTORY, true);
