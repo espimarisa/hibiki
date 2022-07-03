@@ -1,10 +1,17 @@
 const config: HibikiConfig = {
-  // @ts-expect-error shut up
-  hibiki: {
-    token: "",
-  },
+  token: "",
+  defaultLocale: "en-GB",
+  testGuildID: "",
 
-  options: {},
+  clientOptions: {},
+
+  colours: {
+    primary: "#648FFF",
+    secondary: "#785EF0",
+    error: "#FE6100",
+    success: "#DC267F",
+    warning: "#FFB000",
+  },
 };
 
 export default config;
