@@ -16,5 +16,5 @@ const HIBIKI_INDEX_FILE = path.join(
 );
 
 // Creates and spawns the sharding manager
-const manager = new HibikiShardingManager(HIBIKI_INDEX_FILE, config.hibiki.token, "auto");
+const manager = new HibikiShardingManager(HIBIKI_INDEX_FILE, config.token, "auto");
 manager.spawn();

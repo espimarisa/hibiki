@@ -156,7 +156,7 @@ export function registerSlashCommands(bot: HibikiClient, guild?: DiscordSnowflak
     });
 
   // Creates a new REST instance
-  const rest = new REST({ version: "10" }).setToken(bot.config.hibiki.token);
+  const rest = new REST({ version: "10" }).setToken(bot.config.token);
   if (!rest) throw new Error("Failed to create a Discord REST instance");
 
   try {

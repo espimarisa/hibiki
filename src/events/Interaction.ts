@@ -18,7 +18,7 @@ export class HibikiInteractionEvent extends HibikiEvent {
     if (!command) return;
 
     // Gets the user's locale
-    let locale = this.bot.config.hibiki.locale;
+    let locale = this.bot.config.defaultLocale;
     const guildconfig = await this.bot.db.getGuildConfig(interaction.guild?.id as DiscordSnowflake);
     const userLocale = await this.bot.localeSystem.getUserLocale(interaction.user.id, this.bot);
     if (userLocale) locale = userLocale;

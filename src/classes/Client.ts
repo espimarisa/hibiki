@@ -47,12 +47,12 @@ export class HibikiClient extends Client {
   readonly localeSystem: HibikiLocaleSystem;
 
   constructor(config: HibikiConfig) {
-    super({ ...config.options, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+    super({ ...config.clientOptions, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
     this.config = config;
 
     // Creates a new Locale System engine
-    this.localeSystem = new HibikiLocaleSystem(LOCALES_DIRECTORY, this.config.hibiki.locale);
+    this.localeSystem = new HibikiLocaleSystem(LOCALES_DIRECTORY, this.config.defaultLocale);
   }
 
   /**
@@ -62,7 +62,7 @@ export class HibikiClient extends Client {
   public init() {
     try {
       // Logs into the Discord API, I guess
-      this.login(this.config.hibiki.token);
+      this.login(this.config.token);
 
       // Wait for the initial login before loading modules
       this.once("ready", async () => {
@@ -72,7 +72,7 @@ export class HibikiClient extends Client {
         await loadEvents(this, LOGGERS_DIRECTORY, true);
 
         // Registers commands; pushes to only one guild if we're in development
-        registerSlashCommands(this, !IS_PRODUCTION ? this.config.hibiki.testGuildID : undefined);
+        registerSlashCommands(this, !IS_PRODUCTION ? this.config.testGuildID : undefined);
 
         logger.info(`Logged in as ${this.user?.tag} in ${this.guilds.cache.size} guilds on shard #${this.shard?.ids[0]}`);
         logger.info(`${this.commands.size} commands loaded on shard #${this.shard?.ids[0]}`);
