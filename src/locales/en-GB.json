@@ -8,7 +8,16 @@
     "COMMAND_PING_PONG": "🏓 Pong!"
   },
 
-  "global": {},
+  "global": {
+    "COMMAND_COOLDOWN": "Please wait **{cooldown}** seconds before running the **{command}** command again.",
+    "CREATED_ON": "Created On",
+    "ERROR": "❌ Error",
+    "MEMBERS": "Members",
+    "ID": "ID",
+    "OWNER": "Owner",
+    "ADDED_TO_GUILD": "📈 Added to {guild}",
+    "REMOVED_FROM_GUILD": "📉 Removed from {guild}"
+  },
 
   "image": {},
 
