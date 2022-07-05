@@ -5,6 +5,7 @@
  */
 
 import type { HibikiClient } from "./Client.js";
+import type { APIApplicationCommandOption } from "discord-api-types/v10";
 import type { ApplicationCommandOption, CommandInteraction, Message } from "discord.js";
 
 /**
@@ -19,7 +20,7 @@ export interface HibikiCommandJSON {
   description: string;
 
   // Slash command options
-  options?: ApplicationCommandOption[];
+  options?: APIApplicationCommandOption[];
 }
 
 // A callable type for an abstract Hibiki command, including the constructor
@@ -53,7 +54,7 @@ export abstract class HibikiCommand {
   cooldown = 0;
 
   // An array of slash command options
-  options?: ApplicationCommandOption[];
+  options?: APIApplicationCommandOption[];
 
   // A short description of a command
   abstract description: string;

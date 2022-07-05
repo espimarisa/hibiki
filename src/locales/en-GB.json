@@ -13,7 +13,10 @@
     "COMMAND_ABOUT_MODULES_STRING": "Hibiki v{botVersion} \nNode.js {nodeVersion} \nDiscord.js v{djsVersion}",
     "COMMAND_ABOUT_STATISTICS": "Stats",
     "COMMAND_ABOUT_STATISTICS_STRING": "{shards} total {shards:#shards#!shard!} \n{guilds} cached guilds \n{commands} total commands",
-    "COMMAND_ABOUT_TITLE": "🤖 About"
+    "COMMAND_ABOUT_TITLE": "🤖 About",
+    "COMMAND_BANNER_DESCRIPTION": "{username}'s banner",
+    "COMMAND_BANNER_EMPTY": "{username} does not have a custom banner set.",
+    "COMMAND_BANNER_FAILED": "Failed to get that member's banner. Try again later."
   },
 
   "global": {
