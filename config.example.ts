@@ -1,6 +1,7 @@
 const config: HibikiConfig = {
   token: "",
   defaultLocale: "en-GB",
+  loggingChannelID: "",
   testGuildID: "",
 
   clientOptions: {},

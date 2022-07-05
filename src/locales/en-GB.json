@@ -5,7 +5,15 @@
 
   "general": {
     "COMMAND_PING_DESCRIPTION": "This message took {latency}ms to send.",
-    "COMMAND_PING_PONG": "🏓 Pong!"
+    "COMMAND_PING_PONG": "🏓 Pong!",
+
+    "COMMAND_ABOUT_DESCRIPTION": "{username}, by [sysdotini](https://espi.me) and [contributors](https://github.com/sysdotini/hibiki). 💜",
+    "COMMAND_ABOUT_LINK_STRING": "[Donate]({donate}) • [GitHub]({github}) • [Invite]({invite}) • [Privacy]({privacy}) • [Translate]({translate})",
+    "COMMAND_ABOUT_MODULES": "Modules",
+    "COMMAND_ABOUT_MODULES_STRING": "Hibiki v{botVersion} \nNode.js {nodeVersion} \nDiscord.js v{djsVersion}",
+    "COMMAND_ABOUT_STATISTICS": "Stats",
+    "COMMAND_ABOUT_STATISTICS_STRING": "{shards} total {shards:#shards#!shard!} \n{guilds} cached guilds \n{commands} total commands",
+    "COMMAND_ABOUT_TITLE": "🤖 About"
   },
 
   "global": {
@@ -15,6 +23,7 @@
     "MEMBERS": "Members",
     "ID": "ID",
     "OWNER": "Owner",
+    "LINKS": "Links",
     "ADDED_TO_GUILD": "📈 Added to {guild}",
     "REMOVED_FROM_GUILD": "📉 Removed from {guild}"
   },
