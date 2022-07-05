@@ -35,7 +35,7 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
     if (!channel || channel?.type !== "GUILD_TEXT") return;
 
     // The function to get strings
-    const localeFunction = this.bot.localeSystem.getLocaleFunction(this.bot.config.defaultLocale);
+    const getStringFunction = this.bot.localeSystem.getLocaleFunction(this.bot.config.defaultLocale);
 
     /**
      * Logs to the logging channel ID on guildCreate
@@ -49,13 +49,13 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
         fields.push(
           {
             // Guild ID
-            name: localeFunction("global.ID"),
+            name: getStringFunction("global.ID"),
             value: guild.id,
             inline: false,
           },
           {
             // Guild creation date
-            name: localeFunction("global.CREATED_ON"),
+            name: getStringFunction("global.CREATED_ON"),
             value: createFullTimestamp(guild.createdAt),
             inline: false,
           },
@@ -64,7 +64,7 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
         // Guild owner
         if (owner) {
           fields.push({
-            name: localeFunction("global.OWNER"),
+            name: getStringFunction("global.OWNER"),
             value: `${owner.user.tag} (${owner.user.id})`,
             inline: false,
           });
@@ -73,7 +73,7 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
         // Guild member count
         if (guild.memberCount) {
           fields.push({
-            name: localeFunction("global.MEMBERS"),
+            name: getStringFunction("global.MEMBERS"),
             value: guild.memberCount.toString(),
             inline: false,
           });
@@ -83,7 +83,7 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
         await channel.send({
           embeds: [
             {
-              title: localeFunction("global.ADDED_TO_GUILD", { guild: guild.name }),
+              title: getStringFunction("global.ADDED_TO_GUILD", { guild: guild.name }),
               color: this.bot.config.colours.success,
               fields: fields,
               image: {
@@ -112,13 +112,13 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
         fields.push(
           {
             // Guild ID
-            name: localeFunction("global.ID"),
+            name: getStringFunction("global.ID"),
             value: guild.id,
             inline: false,
           },
           {
             // Guild creation date
-            name: localeFunction("global.CREATED_ON"),
+            name: getStringFunction("global.CREATED_ON"),
             value: createFullTimestamp(guild.createdAt),
             inline: false,
           },
@@ -127,7 +127,7 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
         // Guild owner
         if (owner) {
           fields.push({
-            name: localeFunction("global.OWNER"),
+            name: getStringFunction("global.OWNER"),
             value: `${owner.user.tag} (${owner.user.id})`,
             inline: false,
           });
@@ -136,7 +136,7 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
         // Guild member count
         if (guild.memberCount) {
           fields.push({
-            name: localeFunction("global.MEMBERS"),
+            name: getStringFunction("global.MEMBERS"),
             value: guild.memberCount.toString(),
             inline: false,
           });
@@ -146,7 +146,7 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
         await channel.send({
           embeds: [
             {
-              title: localeFunction("global.REMOVED_FROM_GUILD", { guild: guild.name }),
+              title: getStringFunction("global.REMOVED_FROM_GUILD", { guild: guild.name }),
               color: this.bot.config.colours.error,
               fields: fields,
               image: {
