@@ -17,6 +17,9 @@ interface HibikiConfig {
   // A guild ID to push commands to when running in development mode
   testGuildID?: DiscordSnowflake;
 
+  // A guild channel ID to log administrative events to (i.e guild adds/joins)
+  loggingChannelID?: DiscordSnowflake;
+
   // An object of Discord.js Client options
   clientOptions?: PrivateClientOptions | Record<string, unknown>;
 
