@@ -63,7 +63,7 @@
     "passport-discord": "^0.1.4",
     "rethinkdb-ts": "^2.4.10",
     "session-rethinkdb-ts": "^1.1.0",
-    "terser": "^5.7.0",
+    "terser": "^5.14.2",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.2"
   },
