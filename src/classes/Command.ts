@@ -6,7 +6,7 @@
 
 import type { HibikiClient } from "./Client.js";
 import type { APIApplicationCommandOption } from "discord-api-types/v10";
-import type { ApplicationCommandOption, CommandInteraction, Message } from "discord.js";
+import type { CommandInteraction, Message } from "discord.js";
 
 /**
  * Hibiki command data in JSON form for slash command registration
@@ -92,6 +92,14 @@ export abstract class HibikiCommand {
    */
 
   public runWithInteraction?(interaction: CommandInteraction, ...args: string[]): Promise<void>;
+
+  /**
+   * Gets a specific subcommand's response
+   * @param commandName The subcommand name to get
+   * @param args Additional arguments
+   */
+
+  public getSubCommandResponse?(commandName: string, ...args: string[]): Promise<unknown>;
 
   /**
    * Runs a command via the legacy message API
