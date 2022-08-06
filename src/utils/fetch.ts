@@ -12,12 +12,22 @@ import { hibikiVersion } from "./constants.js";
  * @param options Any additional options to add
  */
 
-export default (url: string, options: RequestInit = {}): Promise<Response> => {
-  return fetch(url, {
-    ...options,
-    headers: {
-      ...options?.headers,
-      "User-Agent": `hibiki/${hibikiVersion} (https://github.com/sysdotini/hibiki)`,
-    },
-  });
+export default async (url: string, options?: RequestInit): Promise<any> => {
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        ...options?.headers,
+        "User-Agent": `hibiki/${hibikiVersion} (https://github.com/sysdotini/hibiki)`,
+      },
+    });
+
+    // Return undefined if no response
+    if (!response) return;
+
+    // Else, return a JSON response
+    if (response) return response.json();
+  } catch (error) {
+    throw new Error(`${error}`);
+  }
 };

@@ -12,7 +12,7 @@ export class HibikiMessageEvent extends HibikiEvent {
   requiredIntents?: ResolvableIntentString[] = ["GUILD_MESSAGES"];
 
   public async run(_event: HibikiEventEmitter, msg: Message) {
-    if (!msg?.content || !msg.author || msg.author.bot || !msg.channel || msg.channel.type === "DM") return;
+    if (!msg?.content || !msg.author || msg.author.bot || !msg.channel || msg.channel.type === "") return;
     console.log(msg.content);
   }
 }

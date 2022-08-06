@@ -10,7 +10,7 @@ import { loadCommands, loadEvents, registerSlashCommands } from "../utils/loader
 import { logger } from "../utils/logger.js";
 import { DatabaseManager } from "./Database.js";
 import { HibikiLocaleSystem } from "./LocaleSystem.js";
-import { Client, Collection, Intents } from "discord.js";
+import { Client, Collection, GatewayIntentBits } from "discord.js";
 import path from "node:path";
 import url from "node:url";
 
@@ -47,7 +47,7 @@ export class HibikiClient extends Client {
   readonly localeSystem: HibikiLocaleSystem;
 
   constructor(config: HibikiConfig) {
-    super({ ...config.clientOptions, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+    super({ ...config.clientOptions, intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 
     this.config = config;
 
