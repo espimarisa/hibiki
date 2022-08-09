@@ -1,5 +1,5 @@
 import type { APIApplicationCommandOption } from "discord-api-types/v10";
-import type { CommandInteraction, EmbedField } from "discord.js";
+import type { ChatInputCommandInteraction, EmbedField } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import { hibikiVersion } from "../../utils/constants.js";
 import fetch from "../../utils/fetch.js";
@@ -32,7 +32,7 @@ export class UrbanCommand extends HibikiCommand {
     },
   ];
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     const query = interaction.options.getString(this.options[0].name, true);
 
     // Encodes the word and fetches it
@@ -47,7 +47,7 @@ export class UrbanCommand extends HibikiCommand {
 
     // Handler if the word doesn't exist
     if (!body || !body.list) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -56,6 +56,8 @@ export class UrbanCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     // Finds the top word
@@ -64,7 +66,7 @@ export class UrbanCommand extends HibikiCommand {
 
     // If the word has no definition
     if (!topword || !word || !word?.definition) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -73,6 +75,8 @@ export class UrbanCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     // Removes [] from definitions and examples

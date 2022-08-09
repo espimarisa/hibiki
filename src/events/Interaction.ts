@@ -4,14 +4,14 @@
  * @module HibikiInteractionEvent
  */
 
-import type { CommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
 import { HibikiEvent } from "../classes/Event.js";
 
 export class HibikiInteractionEvent extends HibikiEvent {
   events: HibikiEventEmitter[] = ["interactionCreate"];
 
-  public async run(_event: HibikiEventEmitter, interaction: CommandInteraction) {
-    if (!interaction || !interaction.isCommand()) return;
+  public async run(_event: HibikiEventEmitter, interaction: ChatInputCommandInteraction) {
+    if (!interaction || !interaction.isCommand() || !interaction.isChatInputCommand()) return;
 
     // Finds the command
     const command = this.bot.commands.find((c) => c.name === interaction.commandName);
@@ -39,7 +39,7 @@ export class HibikiInteractionEvent extends HibikiEvent {
         this.bot.cooldowns.set(command.name + interaction.user.id, new Date());
         setTimeout(() => this.bot.cooldowns.delete(command.name + interaction.user.id), command.cooldown);
 
-        interaction.reply({
+        await interaction.reply({
           embeds: [
             {
               title: getStringFunction("global.ERROR"),

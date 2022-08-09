@@ -1,16 +1,16 @@
-import type { CommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import { localiseShardStatus } from "../../utils/localiser.js";
 
 export class ShardCommand extends HibikiCommand {
   description = "Checks what shard the server is on and its status.";
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     const shard = interaction.guild?.shard;
 
     // Sends if the shard doesn't exist..?
     if (!shard) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -19,6 +19,8 @@ export class ShardCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     await interaction.reply({

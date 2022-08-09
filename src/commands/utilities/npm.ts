@@ -1,4 +1,4 @@
-import type { CommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import fetch from "../../utils/fetch.js";
 import { APIApplicationCommandOption, ApplicationCommandOptionType } from "discord-api-types/v10";
@@ -15,10 +15,14 @@ export class NpmCommand extends HibikiCommand {
     },
   ];
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
+    if (!interaction.isChatInputCommand) return;
+
     const packageName = await interaction.options.getString("package");
+
+    // If the package doesn't exist
     if (!packageName) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -27,11 +31,13 @@ export class NpmCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
     const data = await fetch(`https://registry.npmjs.com/${packageName}`);
     const packageInfo: NpmPackage = await data.json();
 
-    interaction.reply({
+    await interaction.reply({
       embeds: [
         {
           title: `:package: ${packageInfo.name}`,

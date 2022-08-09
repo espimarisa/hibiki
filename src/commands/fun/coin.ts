@@ -1,10 +1,10 @@
-import type { CommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 
 export class CoinCommand extends HibikiCommand {
   description = "Flips a coin.";
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     const coin = Math.random() < 0.5 ? interaction.getString("fun.COMMAND_COIN_HEADS") : interaction.getString("fun.COMMAND_COIN_TAILS");
 
     await interaction.reply({

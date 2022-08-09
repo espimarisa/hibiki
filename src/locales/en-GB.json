@@ -38,7 +38,7 @@
     "COMMAND_INVITEBANNER_ERROR": "Failed to fetch the server's invite splash banner. Try again later.",
     "COMMAND_INVITEBANNER_NOBANNER": "{server} does not currently have an invite splash banner set.",
     "COMMAND_PING_DESCRIPTION": "This message took {latency}ms to send.",
-    "COMMAND_PING_PONG": "🏓Pong!",
+    "COMMAND_PING_PONG": "🏓 Pong!",
     "COMMAND_SERVERBANNER_DESCRIPTION": "{server}'s banner",
     "COMMAND_SERVERBANNER_ERROR": "Failed to fetch the server's banner. Try again later.",
     "COMMAND_SERVERBANNER_NOBANNER": "{server} does not currently have an banner set.",
