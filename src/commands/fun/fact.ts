@@ -1,5 +1,5 @@
 import type { APIApplicationCommandOption } from "discord-api-types/v10";
-import type { CommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import fetch from "../../utils/fetch.js";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
@@ -36,7 +36,7 @@ export class FactCommand extends HibikiCommand {
     },
   ];
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     // An array of API information to fetch
     const factApis = [
       {
@@ -71,7 +71,7 @@ export class FactCommand extends HibikiCommand {
 
     // Sends if no fact was found
     if (!response || !fact) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -80,6 +80,8 @@ export class FactCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     // todo type

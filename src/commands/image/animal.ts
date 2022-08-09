@@ -1,5 +1,5 @@
 import type { APIApplicationCommandOption } from "discord-api-types/v10";
-import type { CommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import fetch from "../../utils/fetch.js";
 import { localiseAnimalCommandTitle } from "../../utils/localiser.js";
@@ -35,12 +35,12 @@ export class AnimalCommand extends HibikiCommand {
     },
   ];
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     const subcommand = interaction.options.getSubcommand() as ANIMAL_TYPES | null;
 
     // Handler for if no option was provided
     if (!subcommand) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -49,12 +49,14 @@ export class AnimalCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     // Returns a URL
     const animalURL = await this.getSubCommandResponse(subcommand);
     if (!animalURL) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -63,6 +65,8 @@ export class AnimalCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     // Gets locale
@@ -78,8 +82,8 @@ export class AnimalCommand extends HibikiCommand {
             url: animalURL,
           },
           footer: {
-            icon_url: this.bot.user?.displayAvatarURL({ dynamic: true }),
-            text: animalLocaleData[1],
+            icon_url: this.bot.user?.displayAvatarURL(),
+            text: animalLocaleData[1] ?? "",
           },
         },
       ],

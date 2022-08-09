@@ -1,5 +1,5 @@
 import type { APIApplicationCommandOption } from "discord-api-types/v10";
-import type { CommandInteraction, EmbedField } from "discord.js";
+import type { ChatInputCommandInteraction, EmbedField } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import { createFullTimestamp } from "../../utils/timestamp.js";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
@@ -15,13 +15,13 @@ export class UserinfoCommand extends HibikiCommand {
     },
   ];
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     // Gets the raw member user info
     const member = await interaction.options.getUser(this.options[0].name)?.fetch();
 
     // Handler for if a member failed to fetch
     if (!member) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -30,6 +30,8 @@ export class UserinfoCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     // Gets the guild member info
@@ -78,21 +80,21 @@ export class UserinfoCommand extends HibikiCommand {
       });
     }
 
-    interaction.reply({
+    await interaction.reply({
       embeds: [
         {
           color: member.accentColor || this.bot.config.colours.primary,
           fields: fields,
           author: {
             name: member.tag,
-            icon_url: member.displayAvatarURL({ dynamic: true }),
+            icon_url: member.displayAvatarURL(),
           },
 
           thumbnail: {
-            url: member.displayAvatarURL({ dynamic: true, size: 1024 }),
+            url: member.displayAvatarURL({ size: 1024 }),
           },
           image: {
-            url: member.bannerURL({ dynamic: true, size: 1024 }) ?? undefined,
+            url: member.bannerURL({ size: 1024 }) ?? "",
           },
         },
       ],

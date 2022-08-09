@@ -1,5 +1,5 @@
 import type { APIApplicationCommandOption } from "discord-api-types/v10";
-import type { CommandInteraction, EmbedField } from "discord.js";
+import type { ChatInputCommandInteraction, EmbedField } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import { createFullTimestamp } from "../../utils/timestamp.js";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
@@ -15,13 +15,13 @@ export class RoleinfoCommand extends HibikiCommand {
     },
   ];
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     // Gets the raw role info
     const role = interaction.options.getRole(this.options[0].name);
 
     // Handler for if a role failed to fetch
     if (!role) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -30,6 +30,8 @@ export class RoleinfoCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     // Gets guild role info
@@ -98,7 +100,7 @@ export class RoleinfoCommand extends HibikiCommand {
           color: role.color || this.bot.config.colours.primary,
           author: {
             name: role.name,
-            icon_url: interaction.guild?.iconURL({ dynamic: true }) ?? undefined,
+            icon_url: interaction.guild?.iconURL() ?? undefined,
           },
         },
       ],

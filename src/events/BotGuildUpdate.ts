@@ -4,10 +4,10 @@
  * @module BotGuildUpdateEvent
  */
 
-import type { EmbedField, Guild } from "discord.js";
 import { HibikiEvent } from "../classes/Event.js";
 import { logger } from "../utils/logger.js";
 import { createFullTimestamp } from "../utils/timestamp.js";
+import { ChannelType, EmbedField, Guild } from "discord.js";
 
 export class HibikiBotGuildUpdateEvent extends HibikiEvent {
   events: HibikiEventEmitter[] = ["guildCreate", "guildDelete"];
@@ -32,7 +32,7 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
     // Gets the logging channel information
     if (!this.bot.config.loggingChannelID) return;
     const channel = await this.bot.channels.fetch(this.bot.config.loggingChannelID);
-    if (!channel || channel?.type !== "GUILD_TEXT") return;
+    if (!channel || channel?.type !== ChannelType.GuildText) return;
 
     // The function to get strings
     const getStringFunction = this.bot.localeSystem.getLocaleFunction(this.bot.config.defaultLocale);
@@ -87,10 +87,10 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
               color: this.bot.config.colours.success,
               fields: fields,
               image: {
-                url: guild.bannerURL({ size: 1024 }) ?? undefined,
+                url: guild.bannerURL({ size: 1024 }) ?? "",
               },
               thumbnail: {
-                url: guild.iconURL({ dynamic: true, size: 1024 }) ?? undefined,
+                url: guild.iconURL({ size: 1024 }) ?? "",
               },
             },
           ],
@@ -150,10 +150,10 @@ export class HibikiBotGuildUpdateEvent extends HibikiEvent {
               color: this.bot.config.colours.error,
               fields: fields,
               image: {
-                url: guild.bannerURL({ size: 1024 }) ?? undefined,
+                url: guild.bannerURL({ size: 1024 }) ?? "",
               },
               thumbnail: {
-                url: guild.iconURL({ dynamic: true, size: 1024 }) ?? undefined,
+                url: guild.iconURL({ size: 1024 }) ?? "",
               },
             },
           ],

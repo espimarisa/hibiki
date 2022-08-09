@@ -1,15 +1,15 @@
-import type { CommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 
 export class InvitebannerCommand extends HibikiCommand {
   description = "Displays the server's invite splash banner.";
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     const guild = await interaction.guild?.fetch();
 
     // Handler for if no guild was fetched?
     if (!guild) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -18,14 +18,16 @@ export class InvitebannerCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     // Gets the banner
-    const banner = guild?.splashURL({ format: "png", size: 2048 });
+    const banner = guild?.splashURL({ size: 2048 });
 
     // Handler for if the guild doesn't have an banner
     if (!banner) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -34,6 +36,8 @@ export class InvitebannerCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     // Sends the banner

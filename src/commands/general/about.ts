@@ -1,12 +1,12 @@
 import { HibikiCommand } from "../../classes/Command.js";
 import { fetchTotalCachedGuilds } from "../../classes/Sharder.js";
 import { hibikiVersion } from "../../utils/constants.js";
-import { CommandInteraction, version as djsVersion } from "discord.js";
+import { ChatInputCommandInteraction, version as djsVersion } from "discord.js";
 
 export class AboutCommand extends HibikiCommand {
   description = "Returns information and statistics about the bot.";
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     // Gets cached guilds
     const guildCount = await fetchTotalCachedGuilds(this.bot.shard);
 
@@ -57,7 +57,7 @@ export class AboutCommand extends HibikiCommand {
             },
           ],
           thumbnail: {
-            url: this.bot.user?.displayAvatarURL({ dynamic: true }),
+            url: this.bot.user?.displayAvatarURL() ?? "",
           },
         },
       ],

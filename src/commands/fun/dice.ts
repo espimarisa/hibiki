@@ -1,4 +1,4 @@
-import type { CommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import { APIApplicationCommandOption, ApplicationCommandOptionType } from "discord-api-types/v10";
 
@@ -16,7 +16,7 @@ export class DiceCommand extends HibikiCommand {
     },
   ];
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     // Gets the number of sides
     const sides = interaction.options.getInteger(this.options[0].name) || 6;
 
