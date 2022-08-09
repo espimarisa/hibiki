@@ -1,17 +1,17 @@
-import type { CommandInteraction, EmbedField } from "discord.js";
+import type { ChatInputCommandInteraction, EmbedField } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import { createFullTimestamp } from "../../utils/timestamp.js";
 
 export class ServerinfoCommand extends HibikiCommand {
   description = "Returns information about the server.";
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     // Gets the guild
     const guild = await interaction.guild?.fetch();
 
     // Handler for if a server failed to fetch
     if (!guild) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -20,6 +20,8 @@ export class ServerinfoCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     const fields: EmbedField[] = [];
@@ -92,20 +94,20 @@ export class ServerinfoCommand extends HibikiCommand {
       });
     }
 
-    interaction.reply({
+    await interaction.reply({
       embeds: [
         {
           color: this.bot.config.colours.primary,
           fields: fields,
           author: {
             name: guild.name,
-            icon_url: guild.iconURL({ dynamic: true }) ?? undefined,
+            icon_url: guild.iconURL() ?? undefined,
           },
           thumbnail: {
-            url: guild.iconURL({ dynamic: true }) ?? undefined,
+            url: guild.iconURL() ?? "",
           },
           image: {
-            url: guild.bannerURL({ size: 1024 }) ?? undefined,
+            url: guild.bannerURL({ size: 1024 }) ?? "",
           },
         },
       ],

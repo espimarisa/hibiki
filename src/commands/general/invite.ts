@@ -1,10 +1,10 @@
-import type { CommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 
 export class InviteCommand extends HibikiCommand {
   description = "Gives a link to invite the bot to a server.";
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     await interaction.reply({
       embeds: [
         {

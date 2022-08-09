@@ -1,16 +1,16 @@
-import type { CommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import fetch from "../../utils/fetch.js";
 
 export class CatgirlCommand extends HibikiCommand {
   description = "Sends a random picture of a catgirl.";
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     // TODO: Use our own API
     const body: NekobotImage = await fetch("https://nekobot.xyz/api/image?type=neko");
 
     if (!body || !body?.message) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -19,6 +19,8 @@ export class CatgirlCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     await interaction.reply({
@@ -30,7 +32,7 @@ export class CatgirlCommand extends HibikiCommand {
             url: body.message,
           },
           footer: {
-            icon_url: this.bot.user?.displayAvatarURL({ dynamic: true }),
+            icon_url: this.bot.user?.displayAvatarURL(),
             text: interaction.getString("global.POWERED_BY", { url: "api.nekobot.xyz" }),
           },
         },

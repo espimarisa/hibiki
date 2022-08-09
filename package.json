@@ -44,7 +44,7 @@
     "pino": "^8.4.0",
     "pino-pretty": "^8.1.0",
     "prisma": "^4.1.1",
-    "sodium-native": "^3.3.0"
+    "sodium-native": "^3.4.0"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.6",
@@ -54,10 +54,10 @@
   },
   "devDependencies": {
     "@sysdotini/eslint-config": "^3.1.1",
-    "@types/node": "^18.6.4",
+    "@types/node": "^18.6.5",
     "@types/pg": "^8.6.5",
-    "@typescript-eslint/eslint-plugin": "^5.32.0",
-    "@typescript-eslint/parser": "^5.32.0",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "eslint": "^8.21.0",

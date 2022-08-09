@@ -1,4 +1,4 @@
-import type { CommandInteraction, EmbedField } from "discord.js";
+import type { ChatInputCommandInteraction, EmbedField } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 import fetch from "../../utils/fetch.js";
 import { createFullTimestamp } from "../../utils/timestamp.js";
@@ -16,12 +16,12 @@ export class GithubCommand extends HibikiCommand {
     },
   ];
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     // Gets the query
     const query = interaction.options.getString(this.options[0].name);
 
     if (!query) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -30,6 +30,8 @@ export class GithubCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     // Searches for a repository
@@ -162,7 +164,7 @@ export class GithubCommand extends HibikiCommand {
         });
       }
 
-      interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: data.full_name,

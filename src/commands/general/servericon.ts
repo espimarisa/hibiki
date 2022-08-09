@@ -1,15 +1,15 @@
-import type { CommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
 import { HibikiCommand } from "../../classes/Command.js";
 
 export class ServericonCommand extends HibikiCommand {
   description = "Displays the server's icon.";
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     const guild = await interaction.guild?.fetch();
 
     // Handler for if no guild was fetched?
     if (!guild) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -18,14 +18,16 @@ export class ServericonCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     // Gets the icon
-    const icon = guild?.iconURL({ dynamic: true, size: 1024 });
+    const icon = guild?.iconURL({ size: 1024 });
 
     // Handler for if the guild doesn't have an icon
     if (!icon) {
-      return interaction.reply({
+      await interaction.reply({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -34,6 +36,8 @@ export class ServericonCommand extends HibikiCommand {
           },
         ],
       });
+
+      return;
     }
 
     // Sends the icon

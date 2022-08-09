@@ -5,7 +5,6 @@
  */
 
 type PrivateClientOptions = import("discord.js").ClientOptions;
-type PrivateColorResolvable = import("discord.js").ColorResolvable & `#${string}`;
 
 interface HibikiConfig {
   // A Discord bot token to login with
@@ -30,20 +29,20 @@ interface HibikiConfig {
 // Valid config.colours options
 type HibikiColourOptions = {
   // Indexing type
-  [key: string]: PrivateColorResolvable;
+  [key: string]: number;
 
   // Primary hex colour
-  primary: PrivateColorResolvable;
+  primary: number;
 
   // Secondary hex colour
-  secondary: PrivateColorResolvable;
+  secondary: number;
 
   // Error hex colour
-  error: PrivateColorResolvable;
+  error: number;
 
   // Success hex colour
-  success: PrivateColorResolvable;
+  success: number;
 
   // Warning hex colour
-  warning: PrivateColorResolvable;
+  warning: number;
 };
