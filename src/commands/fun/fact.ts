@@ -71,7 +71,7 @@ export class FactCommand extends HibikiCommand {
 
     // Sends if no fact was found
     if (!response || !fact) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -95,6 +95,6 @@ export class FactCommand extends HibikiCommand {
       ],
     };
 
-    await interaction.reply(messageResponse);
+    await interaction.followUp(messageResponse);
   }
 }

@@ -21,7 +21,7 @@ export class GithubCommand extends HibikiCommand {
     const query = interaction.options.getString(this.options[0].name);
 
     if (!query) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -164,7 +164,7 @@ export class GithubCommand extends HibikiCommand {
         });
       }
 
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: data.full_name,

@@ -40,7 +40,7 @@ export class AnimalCommand extends HibikiCommand {
 
     // Handler for if no option was provided
     if (!subcommand) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -56,7 +56,7 @@ export class AnimalCommand extends HibikiCommand {
     // Returns a URL
     const animalURL = await this.getSubCommandResponse(subcommand);
     if (!animalURL) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -73,7 +73,7 @@ export class AnimalCommand extends HibikiCommand {
     const animalLocaleData = localiseAnimalCommandTitle(interaction.getString, subcommand);
 
     // Sends the image
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           title: animalLocaleData[0],
