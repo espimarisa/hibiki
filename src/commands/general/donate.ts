@@ -5,7 +5,7 @@ export class DonateCommand extends HibikiCommand {
   description = "Returns information on how you can donate to the Hibiki project.";
 
   public async runWithInteraction(interaction: ChatInputCommandInteraction) {
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           title: interaction.getString("general.COMMAND_DONATE_TITLE"),

@@ -10,7 +10,7 @@ export class ShardCommand extends HibikiCommand {
 
     // Sends if the shard doesn't exist..?
     if (!shard) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -23,7 +23,7 @@ export class ShardCommand extends HibikiCommand {
       return;
     }
 
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           title: interaction.getString("general.COMMAND_SHARD_TITLE"),

@@ -21,7 +21,7 @@ export class UserinfoCommand extends HibikiCommand {
 
     // Handler for if a member failed to fetch
     if (!member) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -80,7 +80,7 @@ export class UserinfoCommand extends HibikiCommand {
       });
     }
 
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           color: member.accentColor || this.bot.config.colours.primary,

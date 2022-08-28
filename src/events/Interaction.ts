@@ -58,6 +58,7 @@ export class HibikiInteractionEvent extends HibikiEvent {
 
     try {
       // Runs the command
+      await interaction.deferReply();
       await command.runWithInteraction?.(interaction);
     } catch (error) {
       throw new Error(`${error}`);

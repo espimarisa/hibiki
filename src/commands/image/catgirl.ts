@@ -10,7 +10,7 @@ export class CatgirlCommand extends HibikiCommand {
     const body: NekobotImage = await fetch("https://nekobot.xyz/api/image?type=neko");
 
     if (!body || !body?.message) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -23,7 +23,7 @@ export class CatgirlCommand extends HibikiCommand {
       return;
     }
 
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           title: interaction.getString("image.COMMAND_CATGIRL_TITLE"),
