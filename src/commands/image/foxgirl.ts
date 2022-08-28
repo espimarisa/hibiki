@@ -10,7 +10,7 @@ export class FoxgirlCommand extends HibikiCommand {
     const body = await fetch("https://nekos.life/api/v2/img/fox_girl");
 
     if (!body || body?.msg || !body.url) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -23,7 +23,7 @@ export class FoxgirlCommand extends HibikiCommand {
       return;
     }
 
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           title: interaction.getString("image.COMMAND_FOXGIRL_TITLE"),

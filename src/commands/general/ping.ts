@@ -5,7 +5,7 @@ export class PingCommand extends HibikiCommand {
   description = "Checks the current status of the bot and returns current shard latency.";
 
   public async runWithInteraction(interaction: ChatInputCommandInteraction) {
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           title: interaction.getString("general.COMMAND_PING_PONG"),

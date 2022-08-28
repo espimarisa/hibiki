@@ -9,7 +9,7 @@ export class ServericonCommand extends HibikiCommand {
 
     // Handler for if no guild was fetched?
     if (!guild) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -27,7 +27,7 @@ export class ServericonCommand extends HibikiCommand {
 
     // Handler for if the guild doesn't have an icon
     if (!icon) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -41,7 +41,7 @@ export class ServericonCommand extends HibikiCommand {
     }
 
     // Sends the icon
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           color: this.bot.config.colours.primary,

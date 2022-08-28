@@ -5,7 +5,7 @@ export class InviteCommand extends HibikiCommand {
   description = "Gives a link to invite the bot to a server.";
 
   public async runWithInteraction(interaction: ChatInputCommandInteraction) {
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           title: interaction.getString("general.COMMAND_INVITE_TITLE"),

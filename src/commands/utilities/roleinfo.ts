@@ -21,7 +21,7 @@ export class RoleinfoCommand extends HibikiCommand {
 
     // Handler for if a role failed to fetch
     if (!role) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -93,7 +93,7 @@ export class RoleinfoCommand extends HibikiCommand {
       }
     }
 
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           fields: fields,

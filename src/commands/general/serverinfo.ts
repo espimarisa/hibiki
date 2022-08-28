@@ -11,7 +11,7 @@ export class ServerinfoCommand extends HibikiCommand {
 
     // Handler for if a server failed to fetch
     if (!guild) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -94,7 +94,7 @@ export class ServerinfoCommand extends HibikiCommand {
       });
     }
 
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           color: this.bot.config.colours.primary,

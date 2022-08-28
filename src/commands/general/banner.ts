@@ -20,7 +20,7 @@ export class BannerCommand extends HibikiCommand {
 
     // Handler for if a member failed to fetch
     if (!member) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -35,7 +35,7 @@ export class BannerCommand extends HibikiCommand {
 
     // Handler for if the member doesn't have a banner
     if (!member.bannerURL()) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -49,7 +49,7 @@ export class BannerCommand extends HibikiCommand {
     }
 
     // Sends the banner
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           color: this.bot.config.colours.primary,

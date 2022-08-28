@@ -7,7 +7,7 @@ export class CoinCommand extends HibikiCommand {
   public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     const coin = Math.random() < 0.5 ? interaction.getString("fun.COMMAND_COIN_HEADS") : interaction.getString("fun.COMMAND_COIN_TAILS");
 
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           title: interaction.getString("fun.COMMAND_COIN_TITLE"),

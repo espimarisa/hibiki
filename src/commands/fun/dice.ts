@@ -23,7 +23,7 @@ export class DiceCommand extends HibikiCommand {
     // Rolls the die
     const roll = Math.floor(Math.random() * sides) + 1;
 
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           title: interaction.getString("fun.COMMAND_DICE_TITLE"),

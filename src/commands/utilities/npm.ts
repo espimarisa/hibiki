@@ -22,7 +22,7 @@ export class NpmCommand extends HibikiCommand {
 
     // If the package doesn't exist
     if (!packageName) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -37,7 +37,7 @@ export class NpmCommand extends HibikiCommand {
     const data = await fetch(`https://registry.npmjs.com/${packageName}`);
     const packageInfo: NpmPackage = await data.json();
 
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           title: `:package: ${packageInfo.name}`,

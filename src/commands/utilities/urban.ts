@@ -47,7 +47,7 @@ export class UrbanCommand extends HibikiCommand {
 
     // Handler if the word doesn't exist
     if (!body || !body.list) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -66,7 +66,7 @@ export class UrbanCommand extends HibikiCommand {
 
     // If the word has no definition
     if (!topword || !word || !word?.definition) {
-      await interaction.reply({
+      await interaction.followUp({
         embeds: [
           {
             title: interaction.getString("global.ERROR"),
@@ -128,7 +128,7 @@ export class UrbanCommand extends HibikiCommand {
     }
 
     // Sends info about the word
-    await interaction.reply({
+    await interaction.followUp({
       embeds: [
         {
           title: `📘 ${word.word}`,
