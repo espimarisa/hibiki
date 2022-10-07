@@ -28,9 +28,6 @@ const LOCALES_DIRECTORY = path.join(pathDirname, "../locales");
 
 export class HibikiClient extends Client {
   readonly config: HibikiConfig;
-  // A collection of cooldowns
-  readonly cooldowns: Collection<string, Date> = new Collection();
-
   // A Prisma + Hibiki Database Manager
   readonly db: DatabaseManager = new DatabaseManager();
 

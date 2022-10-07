@@ -4,12 +4,6 @@ import { HibikiCommand } from "../../classes/Command.js";
 import fetch from "../../utils/fetch.js";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
 
-type FactApiResponse = {
-  facts?: string[];
-  data?: string;
-  fact?: string;
-};
-
 export class FactCommand extends HibikiCommand {
   description = "Get a random fact.";
 
@@ -61,16 +55,17 @@ export class FactCommand extends HibikiCommand {
     const api = factApis.find((a) => a.category === category) || factApis[Math.floor(Math.random() * factApis.length)];
 
     // Fetches the fact information
-    const response: FactApiResponse = await fetch(api.url);
+    const response = await fetch(api.url);
+    const body = await response?.json();
     let fact;
 
     // Figures out what to set the fact info to
-    if (response?.["facts"]) fact = response["facts"][0];
-    else if (response?.["data"]) fact = response?.["data"];
-    else if (response?.["fact"]) fact = response?.["fact"];
+    if (body?.["facts"]) fact = body["facts"][0];
+    else if (body?.["data"]) fact = body?.["data"];
+    else if (body?.["fact"]) fact = body?.["fact"];
 
     // Sends if no fact was found
-    if (!response || !fact) {
+    if (!body || !fact) {
       await interaction.followUp({
         embeds: [
           {

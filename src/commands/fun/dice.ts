@@ -3,7 +3,7 @@ import { HibikiCommand } from "../../classes/Command.js";
 import { APIApplicationCommandOption, ApplicationCommandOptionType } from "discord-api-types/v10";
 
 export class DiceCommand extends HibikiCommand {
-  description = "Rolls an x sided die (defaults to 6; maximum is 120).";
+  description = "Rolls an x-sided die (defaults to 6; maximum is 120).";
 
   options: APIApplicationCommandOption[] = [
     {
@@ -17,10 +17,8 @@ export class DiceCommand extends HibikiCommand {
   ];
 
   public async runWithInteraction(interaction: ChatInputCommandInteraction) {
-    // Gets the number of sides
+    // Gets the number of sides and rolls the die
     const sides = interaction.options.getInteger(this.options[0].name) || 6;
-
-    // Rolls the die
     const roll = Math.floor(Math.random() * sides) + 1;
 
     await interaction.followUp({

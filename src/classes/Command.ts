@@ -47,12 +47,6 @@ export abstract class HibikiCommand {
 
   ownerOnly = false;
 
-  /**
-   * How long a user has to wait before re-running a command
-   */
-
-  cooldown = 0;
-
   // An array of slash command options
   options?: APIApplicationCommandOption[];
 
