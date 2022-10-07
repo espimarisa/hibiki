@@ -6,28 +6,13 @@ import fetch from "../../utils/fetch.js";
 import { createFullTimestamp } from "../../utils/timestamp.js";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
 
-// Urban dictionary word type definition
-interface UrbanWord {
-  definition: string;
-  permalink: string;
-  thumbs_up: number;
-  sound_urls: string[];
-  author: string;
-  word: string;
-  defid: number;
-  current_vote: string;
-  written_on: Date;
-  example: string;
-  thumbs_down: number;
-}
-
 export class UrbanCommand extends HibikiCommand {
-  description = "Looks up the definition of a word from the Urban Dictionary.";
+  description = "Gets the definition of a word from the Urban Dictionary.";
   options: APIApplicationCommandOption[] = [
     {
       type: ApplicationCommandOptionType.String,
       name: "word",
-      description: "The word to get a definition for.",
+      description: "The word to search for a definition for.",
       required: true,
     },
   ];
@@ -112,7 +97,7 @@ export class UrbanCommand extends HibikiCommand {
     // Thumbs up
     if (word.thumbs_up) {
       fields.push({
-        name: interaction.getString("utilities.COMMAND_URBAN_UPVOTES"),
+        name: interaction.getString("global.UPVOTES"),
         value: `${word.thumbs_up}`,
         inline: true,
       });
@@ -121,7 +106,7 @@ export class UrbanCommand extends HibikiCommand {
     // Thumbs down
     if (word.thumbs_down) {
       fields.push({
-        name: interaction.getString("utilities.COMMAND_URBAN_DOWNVOTES"),
+        name: interaction.getString("global.DOWNVOTES"),
         value: `${word.thumbs_down}`,
         inline: true,
       });
@@ -133,7 +118,7 @@ export class UrbanCommand extends HibikiCommand {
         {
           title: `📘 ${word.word}`,
           description: `${word.definition}`,
-          fields: fields.length > 0 ? fields : undefined,
+          fields: fields ?? undefined,
           color: this.bot.config.colours.primary,
         },
       ],

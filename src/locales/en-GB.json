@@ -2,19 +2,12 @@
   "NAME": "English",
 
   "fun": {
-    "COMMAND_COIN_DESCRIPTION": "You flipped a coin and it landed on **{coin}**.",
-    "COMMAND_COIN_HEADS": "heads",
-    "COMMAND_COIN_TAILS": "tails",
+    "COMMAND_COIN_DESCRIPTION": "The coin landed on **{side:#heads#!tails!}**.",
     "COMMAND_COIN_TITLE": "🪙 Coin",
     "COMMAND_DICE_DESCRIPTION": "You rolled a **D{sides}** that landed on **{roll}**.",
     "COMMAND_DICE_TITLE": "🎲 Dice",
-    "COMMAND_FACT_ERROR": "Failed to fetch a random fact. Try again later.",
-    "COMMAND_FACT_TITLE": "Fact",
-    "COMMAND_URBAN_DOWNVOTES": "Downvotes",
-    "COMMAND_URBAN_EXAMPLE": "Example",
-    "COMMAND_URBAN_NODEFINITION": "No definition for `{word}` was found on the Urban Dictionary. Maybe be more specific?",
-    "COMMAND_URBAN_UPVOTES": "Upvotes",
-    "COMMAND_URBAN_WRITTENON": "Written"
+    "COMMAND_FACT_ERROR": "Failed to fetch a fact. Try again later.",
+    "COMMAND_FACT_TITLE": "Fact"
   },
 
   "general": {
@@ -32,12 +25,12 @@
     "COMMAND_BANNER_FAILED": "Failed to get that member's banner. Try again later.",
     "COMMAND_DONATE_DESCRIPTION": "Hibiki will always be free with no paid options. However, if you'd like to support the development of the bot, you can donate through [Ko-fi]({link}). All donations will go towards hosting, domain renewals, and API keys. Please keep in mind that **no bot incentives** will be given for donating. Thank you for your support!",
     "COMMAND_DONATE_TITLE": "💜 Donate",
-    "COMMAND_INVITE_DESCRIPTION": "You can invite me to your server by clicking [here](https://discord.com/oauth2/authorize?&client_id={id}&scope=bot%20applications.commands&permissions=1581116663).",
+    "COMMAND_INVITE_DESCRIPTION": "You can invite Hibiki by clicking the \"Add to Server\" button on Hibiki's user profile.",
     "COMMAND_INVITE_TITLE": "🔗 Invite",
     "COMMAND_INVITEBANNER_DESCRIPTION": "{server}'s invite splash banner",
     "COMMAND_INVITEBANNER_ERROR": "Failed to fetch the server's invite splash banner. Try again later.",
     "COMMAND_INVITEBANNER_NOBANNER": "{server} does not currently have an invite splash banner set.",
-    "COMMAND_PING_DESCRIPTION": "This message took {latency}ms to send.",
+    "COMMAND_PING_DESCRIPTION": "This interaction took **{latency}ms** to send.",
     "COMMAND_PING_PONG": "🏓 Pong!",
     "COMMAND_SERVERBANNER_DESCRIPTION": "{server}'s banner",
     "COMMAND_SERVERBANNER_ERROR": "Failed to fetch the server's banner. Try again later.",
@@ -55,12 +48,13 @@
   "global": {
     "ACCOUNT_CREATED": "Account Created",
     "ACCOUNT_JOINED": "Account Joined",
+    "ADDED_TO_GUILD": "Added to {guild}",
     "CATEGORY": "Category",
     "CHANNEL_TYPE": "Channel Type",
     "CHANNELS": "Channels",
     "COLOUR": "Colour",
-    "COMMAND_COOLDOWN": "Please wait **{cooldown}** seconds before running the **{command}** command again.",
     "CREATED_ON": "Created On",
+    "DOWNVOTES": "Downvotes",
     "EMOJIS": "Emojis",
     "ERROR": "❌ Error",
     "FALSE": "False",
@@ -86,6 +80,7 @@
     "POWERED_BY": "Powered by {url}",
     "RAN_BY": "Ran by {tag}",
     "REASON": "Reason",
+    "REMOVED_FROM_GUILD": "Removed from {guild}",
     "ROLES": "Roles",
     "SHARD": "Shard",
     "SHARD_STATUS_CONNECTING": "Connecting",
@@ -106,6 +101,8 @@
     "TOPIC": "Topic",
     "TRUE": "True",
     "TYPE": "Type",
+    "UPDATED_ON": "Updated On",
+    "UPVOTES": "Upvotes",
     "USER": "User",
     "VOICE": "Voice",
     "YES": "Yes"
@@ -123,6 +120,8 @@
 
   "moderation": {},
 
+  "music": {},
+
   "owner": {},
 
   "roleplay": {},
@@ -131,22 +130,12 @@
     "COMMAND_CHANNELINFO_ACTIVETHREADS": "Active Threads",
     "COMMAND_CHANNELINFO_ARCHIVEDTHREADS": "Archived Threads",
     "COMMAND_CHANNELINFO_FAILED": "Failed to get information about that channel. Try again later.",
-    "COMMAND_GDPR_GUILDDATA_DESCRIPTION": "Your guild data for ${name} has been generated and can be accessed at {link}. The link expires in {expiration}\n*To delete your requested archive, click the following link or wait the 24 hours:\n{deleteLink}",
-    "COMMAND_GDPR_NOGUILD_ERROR": "Guild not found, or bot not in guild.",
-    "COMMAND_GDPR_NOGUILDDATA_ERROR": "No data found for specified guild.",
-    "COMMAND_GDPR_NOOWNER_ERROR": "Server owner for guild was not found. This is usually because the owner's account is terminated.",
-    "COMMAND_GDPR_NOTOWNER_ERROR": "Only the server owner can use this command.",
-    "COMMAND_GDPR_NOUSERDATA_ERROR": "You do not have any personal user data stored.",
-    "COMMAND_GDPR_USERDATA_DESCRIPTION": "Your user data has been generated and can be accessed at {link}. The link expires in {expiration}\n*To delete your requested archive, click the following link or wait the 24 hours:\n{deleteLink}",
     "COMMAND_GITHUB_NO_RESULTS": "No results found for that repo.",
-    "COMMAND_NPM_NO_RESULTS": "No results found for that package.",
     "COMMAND_ROLEINFO_FAILED": "Failed to get information about that role. Try again later.",
     "COMMAND_TWITTER_FAILED": "Failed to get information about that user. Try again later.",
     "COMMAND_TWITTER_NO_RESULTS": "No results found for that username.",
-    "COMMAND_URBAN_DOWNVOTES": "Downvotes",
     "COMMAND_URBAN_EXAMPLE": "Example",
-    "COMMAND_URBAN_NODEFINITION": "No definition for `{word}` was found on the Urban Dictionary. Maybe be more specific?",
-    "COMMAND_URBAN_UPVOTES": "Upvotes",
-    "COMMAND_URBAN_WRITTENON": "Written"
+    "COMMAND_URBAN_NODEFINITION": "No definition for that word was found on the Urban Dictionary. Maybe be more specific?",
+    "COMMAND_URBAN_WRITTENON": "Written on"
   }
 }

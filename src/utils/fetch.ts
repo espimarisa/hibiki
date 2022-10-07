@@ -12,7 +12,9 @@ import { hibikiVersion } from "./constants.js";
  * @param options Any additional options to add
  */
 
-export default async (url: string, options?: RequestInit): Promise<any> => {
+export default async (url: string, options?: RequestInit): Promise<Response | undefined> => {
+  if (!url) return;
+
   try {
     const response = await fetch(url, {
       ...options,
@@ -22,11 +24,9 @@ export default async (url: string, options?: RequestInit): Promise<any> => {
       },
     });
 
-    // Return undefined if no response
+    // Return the response to JSOn
     if (!response) return;
-
-    // Else, return a JSON response
-    if (response) return response.json();
+    return response;
   } catch (error) {
     throw new Error(`${error}`);
   }

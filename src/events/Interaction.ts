@@ -28,34 +28,6 @@ export class HibikiInteractionEvent extends HibikiEvent {
     const getStringFunction = this.bot.localeSystem.getLocaleFunction(locale);
     interaction.getString = getStringFunction;
 
-    // Check for command cooldowns
-    if (command.cooldown > 0) {
-      // Gets the cooldown
-      const cooldown = this.bot.cooldowns.get(command.name + interaction.user.id);
-
-      // Sends a message if the command is under cooldown
-      if (cooldown) {
-        // Sets the cooldown
-        this.bot.cooldowns.set(command.name + interaction.user.id, new Date());
-        setTimeout(() => this.bot.cooldowns.delete(command.name + interaction.user.id), command.cooldown);
-
-        await interaction.reply({
-          embeds: [
-            {
-              title: getStringFunction("global.ERROR"),
-              description: getStringFunction("global.COMMAND_COOLDOWN", {
-                command: command.name,
-                time: Math.ceil((cooldown.getTime() - Date.now()) / 1000),
-              }),
-              color: this.bot.config.colours.error,
-            },
-          ],
-        });
-
-        return;
-      }
-    }
-
     try {
       // Runs the command
       await interaction.deferReply();
