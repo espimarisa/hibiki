@@ -7,7 +7,8 @@ export class FoxgirlCommand extends HibikiCommand {
 
   public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     // TODO:: Use our own API.
-    const body = await fetch("https://nekos.life/api/v2/img/fox_girl");
+    const response = await fetch("https://nekos.life/api/v2/img/fox_girl");
+    const body = await response?.json();
 
     if (!body || body?.msg || !body.url) {
       await interaction.followUp({

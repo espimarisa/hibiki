@@ -97,8 +97,9 @@ export class AnimalCommand extends HibikiCommand {
        */
 
       case "cat": {
-        const body = await fetch("https://aws.random.cat/meow");
-        if (!body) return;
+        const response = await fetch("https://aws.random.cat/meow");
+        const body = await response?.json();
+        if (!response || !body) return;
         return body?.file;
       }
 
@@ -107,8 +108,9 @@ export class AnimalCommand extends HibikiCommand {
        */
 
       case "dog": {
-        const body = await fetch("https://random.dog/woof.json");
-        if (!body) return;
+        const response = await fetch("https://random.dog/woof.json");
+        const body = await response?.json();
+        if (!response || !body) return;
         return body?.url;
       }
 
@@ -117,13 +119,15 @@ export class AnimalCommand extends HibikiCommand {
        */
 
       case "fox": {
-        const body = await fetch("https://randomfox.ca/floof/");
-        if (!body) return;
+        const response = await fetch("https://randomfox.ca/floof/");
+        const body = await response?.json();
+        if (!response || !body) return;
         return body?.image;
       }
 
-      default:
+      default: {
         return;
+      }
     }
   }
 }

@@ -7,7 +7,8 @@ export class CatgirlCommand extends HibikiCommand {
 
   public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     // TODO: Use our own API
-    const body: NekobotImage = await fetch("https://nekobot.xyz/api/image?type=neko");
+    const response = await fetch("https://nekobot.xyz/api/image?type=neko");
+    const body: NekobotImage | undefined = await response?.json();
 
     if (!body || !body?.message) {
       await interaction.followUp({
