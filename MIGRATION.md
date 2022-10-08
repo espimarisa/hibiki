@@ -68,9 +68,9 @@ The following other modules have been removed due to TOS changes and privacy con
 - `snipe` has been removed due to the "Message Sniping" feature being discontinued due to privacy concerns.
 - `verify` and `unverify` have been removed due to Discord introducing their own native Verification system.
 
-11 commands formerly from the **roleplay** category have been removed.
+15 commands formerly from the **roleplay** category have been removed.
 
-- `banghead`, `bite`, `cry`, `lewd`, `poke`, `pout`, `punch`, `sleepy`, `smile`, `smug`, and `tickle` have all been removed.
+- `banghead`, `blush`, `bite`, `cry`, `holdhands`, `highfive`, `lewd`, `lick`, `poke`, `pout`, `punch`, `sleepy`, `smile`, `smug`, and `tickle` have all been removed.
 
 The **entire NSFW category** has been discontinued and Hibiki will not have another NSFW feature.
 
