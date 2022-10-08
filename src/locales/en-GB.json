@@ -57,6 +57,7 @@
     "DOWNVOTES": "Downvotes",
     "EMOJIS": "Emojis",
     "ERROR": "❌ Error",
+    "ERROR_NO_MEMBER_PROVIDED": "You did not provide a **member**.",
     "FALSE": "False",
     "GUILD": "Guild",
     "GUILDS": "Guilds",
@@ -124,7 +125,13 @@
 
   "owner": {},
 
-  "roleplay": {},
+  "roleplay": {
+    "COMMAND_KISS_DESCRIPTION": "💕 **{author}** gave **{member}** a kiss!",
+    "COMMAND_CUDDLE_DESCRIPTION": "❤️ **{author}** cuddled **{member}**!",
+    "COMMAND_HEADPAT_DESCRIPTION": "💚 **{author}** gave **{member}** a headpat!",
+    "COMMAND_SLAP_DESCRIPTION": "💢 **{author}** slapped **{member}**!",
+    "COMMAND_HUG_DESCRIPTION": "💙 **{author}** gave **{member}** a hug!"
+  },
 
   "utilities": {
     "COMMAND_CHANNELINFO_ACTIVETHREADS": "Active Threads",
