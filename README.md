@@ -1,5 +1,7 @@
 # Hibiki
 
+## This branch is a work-in-progress! Don't try to self-host just yet :)
+
 [![Build][badge-workflow]][workflow]
 [![License][badge-license]][license]
 
@@ -43,14 +45,13 @@ The information below only applies to the **official instance** of Hibiki. This 
 
 ## Terms of Service
 
-**_Updated 2022-04-03_**
+**_Updated 2022-10-10_**
 
 - Do not try to crash, break, or exploit our application
 - If you find a critical, breaking bug, you must report it to us
 - Usage must obey laws in the **United States**, **Canada**, or **wherever hosted**
 - User data saved must follow Discord's **[Terms of Service][discord_tos]** and **[community guidelines][discord_cg]**
 - Bot collection and bot listing servers or apps are **strictly not allowed** to use our application
-- NFT, NFT-related servers, or NFT-sponsored servers are **strictly not allowed** to use our application
 
 ## Data Privacy
 
