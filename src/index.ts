@@ -6,6 +6,7 @@
 
 import config from "../config.js";
 import { HibikiShardingManager } from "./classes/Sharder.js";
+import { startWebserver } from "./web/server.js";
 import path from "node:path";
 import url from "node:url";
 
@@ -18,3 +19,6 @@ const HIBIKI_INDEX_FILE = path.join(
 // Creates and spawns the sharding manager
 const manager = new HibikiShardingManager(HIBIKI_INDEX_FILE, config.token, "auto");
 manager.spawn();
+
+// Starts the Hibiki webserver
+startWebserver();
