@@ -4,7 +4,10 @@
  * @module web/server
  */
 
+import { hibikiVersion } from "../utils/constants.js";
 import { logger } from "../utils/logger.js";
+import fastifyCors from "@fastify/cors";
+import fastifyStatic from "@fastify/static";
 import pointOfView from "@fastify/view";
 import { fastify } from "fastify";
 import { Liquid } from "liquidjs";
@@ -18,13 +21,16 @@ const pathDirname = path.dirname(url.fileURLToPath(import.meta.url));
 const LAYOUTS_DIRECTORY = path.join(pathDirname, "./layouts");
 const PARTIALS_DIRECTORY = path.join(pathDirname, "./partials");
 const VIEWS_DIRECTORY = path.join(pathDirname, "./views");
+const STATIC_DIRECTORY = path.join(pathDirname, "./public");
 
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
 const app = fastify({
   logger: logger,
+  disableRequestLogging: true,
 });
 
+// Creates a new Liquid engine
 const liquidEngine = new Liquid({
   root: [LAYOUTS_DIRECTORY, PARTIALS_DIRECTORY, VIEWS_DIRECTORY],
   cache: IS_PRODUCTION,
@@ -33,7 +39,20 @@ const liquidEngine = new Liquid({
   extname: ".liquid",
 });
 
-// @ts-expect-error The typing in this doesn't support NodeNext yet
+// Enables CORS
+// @ts-expect-error Typing not updated for NodeNext yet
+app.register(fastifyCors, {
+  credentials: true,
+});
+
+// Registers fastify-static
+app.register(fastifyStatic, {
+  root: STATIC_DIRECTORY,
+  prefix: "/",
+});
+
+// Registers point-of-view for template processing
+// @ts-expect-error Typing not updated for NodeNext yet
 app.register(pointOfView, {
   root: VIEWS_DIRECTORY,
   viewExt: "liquid",
@@ -42,10 +61,19 @@ app.register(pointOfView, {
   },
 });
 
-app.get("/", async (req, res) => {
-  await res.view("index");
+// Renders the index page
+app.get("/", async (_req, res) => {
+  await res.view("index", {
+    // The current version of Hibiki
+    hibikiVersion: hibikiVersion,
+  });
 });
 
-export function startWebserver() {
-  app.listen({ port: 4000 });
+/**
+ * Starts the webserver
+ * @param port The port to listen on
+ */
+
+export function startWebserver(port = 4000) {
+  app.listen({ port: port });
 }

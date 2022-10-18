@@ -3,6 +3,7 @@ const config: HibikiConfig = {
   defaultLocale: "en-GB",
   loggingChannelID: "",
   testGuildID: "",
+  webserverPort: 4000,
 
   clientOptions: {},
 

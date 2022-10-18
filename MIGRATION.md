@@ -58,12 +58,13 @@ The following other modules have been removed due to TOS changes and privacy con
 - `duck`, `engineeredcatgirls`, `goose`, `lizard` have all been removed due to taking up command space.
 - `megumin`, `miku`, and `rem` have all been removed due to TOS changes.
 
-11 commands formerly from the **moderation** category have been removed:
+13 commands formerly from the **moderation** category have been removed:
 
 - `addcommand` and `removecommand` have been removed due to switching to Slash commands.
 - `embed` and `simpleembed` have been removed due to switching to Slash commands.
 - `filter` has been removed due to Discord implementing their own native Automod system.
 - `mute` and `unmute` have been removed due to Discord implementing a native "Time-out" system.
+- `kick` and `ban` have been removed due to Discord's implementation being better.
 - `nickname` has been removed due to Discord adding their own Slash command version.
 - `snipe` has been removed due to the "Message Sniping" feature being discontinued due to privacy concerns.
 - `verify` and `unverify` have been removed due to Discord introducing their own native Verification system.
