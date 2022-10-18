@@ -21,4 +21,6 @@ const manager = new HibikiShardingManager(HIBIKI_INDEX_FILE, config.token, "auto
 manager.spawn();
 
 // Starts the Hibiki webserver
-startWebserver();
+if (process.uptime() < 30) {
+  startWebserver(config.webserverPort ?? 4000);
+}

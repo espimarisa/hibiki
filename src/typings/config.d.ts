@@ -22,6 +22,9 @@ interface HibikiConfig {
   // An object of Discord.js Client options
   clientOptions?: PrivateClientOptions | Record<string, unknown>;
 
+  // A valid port for the webserver to listen on
+  webserverPort?: number;
+
   // An object of valid hex colours
   colours: HibikiColourOptions;
 }
