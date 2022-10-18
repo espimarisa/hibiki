@@ -221,4 +221,4 @@ Temporary Items
 .routify
 
 # Static generated files
-public/**
+src/web/public/**
