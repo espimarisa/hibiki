@@ -219,3 +219,6 @@ Temporary Items
 # Svelte
 .svelte-kit
 .routify
+
+# Static generated files
+public/**

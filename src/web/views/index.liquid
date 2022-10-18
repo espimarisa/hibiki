@@ -5,10 +5,15 @@
 {% block content %}
 
 <!-- HTML SEO Metadata -->
-{% render "head" %}
+{% render "head", hibikiVersion: hibikiVersion %}
+
+<!-- CSS -->
+<link rel="stylesheet" href="/css/index.css">
 
 <!-- Main body start -->
-<h1>Hello, Hibiki v5.0.0!</h1>
+<h1>Hello, Hibiki {{ hibikiVersion }}</h1>
+<h2>We're back wow isn't this so fancy and cool</h2>
+<h3>Hibiki {{ hibikiVersion }} isn't dead I'm just depressed</h3>
 
 <!-- Content end -->
 {% endblock %}
