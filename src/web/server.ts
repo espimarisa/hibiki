@@ -40,7 +40,6 @@ const liquidEngine = new Liquid({
 });
 
 // Enables CORS
-// @ts-expect-error Typing not updated for NodeNext yet
 app.register(fastifyCors, {
   credentials: true,
 });
