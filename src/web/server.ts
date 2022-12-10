@@ -51,7 +51,6 @@ app.register(fastifyStatic, {
 });
 
 // Registers point-of-view for template processing
-// @ts-expect-error Typing not updated for NodeNext yet
 app.register(pointOfView, {
   root: VIEWS_DIRECTORY,
   viewExt: "liquid",

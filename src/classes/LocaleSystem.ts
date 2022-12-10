@@ -77,7 +77,7 @@ export class HibikiLocaleSystem {
         const isOptional = optionalArgumentRegex.exec(output);
 
         // Optional argument support
-        if (isOptional) output = output.replace(isOptional[1], typeof args[argument] != "undefined" ? isOptional[2] : "");
+        if (isOptional) output = output.replace(isOptional[1], args[argument] === undefined ? "" : isOptional[2]);
         output = output.replace(argumentRegex, args[argument]);
 
         // Checks to see if there are any plurals in the string
