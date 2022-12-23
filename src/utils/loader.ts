@@ -70,11 +70,8 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike, isLogge
   // Loads each event file
   const files = fs.readdirSync(directory, { withFileTypes: true, encoding: "utf8" });
 
-  files.forEach(async (file) => {
+  for (const file of files) {
     // Don't try to load source mappings or subdirectories
-    if (file.isDirectory() || file.name.endsWith(".map")) return;
-
-    // Don't try to load source mappings or other jank stuff
     if (file.name.endsWith(".map") || !moduleFiletypeRegex.test(file.name)) return;
     let eventToLoad: CallableHibikiEvent;
 
@@ -92,8 +89,6 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike, isLogge
     const fileName = file.name.split(moduleFiletypeRegex)[0];
     const event = new eventToLoad(bot, fileName) as HibikiEvent | HibikiLogger;
 
-    console.log(event);
-
     // Checks for missing intents
     if (event.requiredIntents?.length) {
       const missingIntents = checkIntents(bot.options, event.requiredIntents);
@@ -105,7 +100,7 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike, isLogge
 
     // Pushes the events and runs them
     (isLogger ? bot.loggers : bot.events).set(fileName, event);
-  });
+  }
 
   // Subscribes to all of the events
   subscribeToEvents(bot, isLogger ? bot.loggers : bot.events);
