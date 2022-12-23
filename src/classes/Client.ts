@@ -69,7 +69,7 @@ export class HibikiClient extends Client {
         await loadEvents(this, LOGGERS_DIRECTORY, true);
 
         // Registers commands; pushes to only one guild if we're in development
-        await registerSlashCommands(this, IS_PRODUCTION ? undefined : this.config.testGuildID);
+        registerSlashCommands(this, IS_PRODUCTION ? undefined : this.config.testGuildID);
 
         logger.info(`Logged in as ${this.user?.tag} in ${this.guilds.cache.size} guilds on shard #${this.shard?.ids[0]}`);
         logger.info(`${this.commands.size} commands loaded on shard #${this.shard?.ids[0]}`);
