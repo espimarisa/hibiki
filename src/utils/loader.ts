@@ -131,7 +131,7 @@ function subscribeToEvents(bot: HibikiClient, events: Collection<string, HibikiE
  * @param guild An optional guild ID to push commands to, used for dev mode
  */
 
-export async function registerSlashCommands(bot: HibikiClient, guild?: DiscordSnowflake) {
+export function registerSlashCommands(bot: HibikiClient, guild?: DiscordSnowflake) {
   // This shouldn't happen - but I guess it *can* happen per v10 caching
   if (!bot.user?.id) throw new Error("Failed to register slash commands: Client user field exists on the logged in account.");
 
