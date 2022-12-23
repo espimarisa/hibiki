@@ -70,12 +70,13 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike, isLogge
   // Loads each event file
   const files = fs.readdirSync(directory, { withFileTypes: true, encoding: "utf8" });
 
-  for (const file of files) {
+  files.forEach(async (file) => {
     // Don't try to load source mappings or subdirectories
     if (file.isDirectory() || file.name.endsWith(".map")) return;
 
+    // Don't try to load source mappings or other jank stuff
+    if (file.name.endsWith(".map") || !moduleFiletypeRegex.test(file.name)) return;
     let eventToLoad: CallableHibikiEvent;
-    if (!moduleFiletypeRegex.test(file.name)) return;
 
     try {
       const importedEvent: Record<string, CallableHibikiEvent> = await import(`file://${directory}/${file.name}`);
@@ -91,6 +92,8 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike, isLogge
     const fileName = file.name.split(moduleFiletypeRegex)[0];
     const event = new eventToLoad(bot, fileName) as HibikiEvent | HibikiLogger;
 
+    console.log(event);
+
     // Checks for missing intents
     if (event.requiredIntents?.length) {
       const missingIntents = checkIntents(bot.options, event.requiredIntents);
@@ -102,7 +105,7 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike, isLogge
 
     // Pushes the events and runs them
     (isLogger ? bot.loggers : bot.events).set(fileName, event);
-  }
+  });
 
   // Subscribes to all of the events
   subscribeToEvents(bot, isLogger ? bot.loggers : bot.events);
@@ -128,7 +131,7 @@ function subscribeToEvents(bot: HibikiClient, events: Collection<string, HibikiE
  * @param guild An optional guild ID to push commands to, used for dev mode
  */
 
-export function registerSlashCommands(bot: HibikiClient, guild?: DiscordSnowflake) {
+export async function registerSlashCommands(bot: HibikiClient, guild?: DiscordSnowflake) {
   // This shouldn't happen - but I guess it *can* happen per v10 caching
   if (!bot.user?.id) throw new Error("Failed to register slash commands: Client user field exists on the logged in account.");
 

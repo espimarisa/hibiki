@@ -73,5 +73,5 @@ app.get("/", async (_req, res) => {
  */
 
 export function startWebserver(port = 4000) {
-  app.listen({ port: port });
+  app.listen({ host: "0.0.0.0", port: port });
 }
