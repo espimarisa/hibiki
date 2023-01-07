@@ -47,6 +47,9 @@ export abstract class HibikiCommand {
 
   ownerOnly = false;
 
+  // Whether or not the command should be seen by other members; aka private response.
+  ephemeral = false;
+
   // An array of slash command options
   options?: APIApplicationCommandOption[];
 
