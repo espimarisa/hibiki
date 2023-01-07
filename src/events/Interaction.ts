@@ -35,7 +35,7 @@ export class HibikiInteractionEvent extends HibikiEvent {
       });
       await command.runWithInteraction?.(interaction);
     } catch (error) {
-      throw new Error(`${error}`);
+      throw new Error(`An error occured with the command "${command.name}"\n${error}`);
     }
   }
 }
