@@ -36,12 +36,16 @@ export class HibikiInteractionEvent extends HibikiEvent {
       });
       await command.runWithInteraction?.(interaction);
     } catch (error) {
-      logger.error(`An error occured running the command ${command.name}\n${error}`);
+      logger.error(
+        `An error occured running the command ${command.name}\n${(error as Error).stack}`,
+      );
       await interaction.followUp({
         embeds: [
           new EmbedBuilder()
             .setTitle("Error")
-            .setDescription("An error occured running the command\n```" + error + "```")
+            .setDescription(
+              "An error occured running the command\n```" + (error as Error).stack + "```",
+            )
             .setColor(this.bot.config.colours.error),
         ],
       });
