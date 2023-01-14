@@ -5,6 +5,7 @@
  */
 
 import type { ChatInputCommandInteraction } from "discord.js";
+import { logger } from "../utils/logger.js";
 import { HibikiEvent } from "../classes/Event.js";
 
 export class HibikiInteractionEvent extends HibikiEvent {
@@ -30,10 +31,24 @@ export class HibikiInteractionEvent extends HibikiEvent {
 
     try {
       // Runs the command
-      await interaction.deferReply();
+      await interaction.deferReply({
+        ephemeral: command.ephemeral,
+      });
       await command.runWithInteraction?.(interaction);
     } catch (error) {
-      throw new Error(`${error}`);
+      logger.error(
+        `An error occured running the command ${command.name}\n${(error as Error).stack}`,
+      );
+      await interaction.followUp({
+        embeds: [
+          new EmbedBuilder()
+            .setTitle("Error")
+            .setDescription(
+              "An error occured running the command\n```" + (error as Error).stack + "```",
+            )
+            .setColor(this.bot.config.colours.error),
+        ],
+      });
     }
   }
 }

@@ -27,11 +27,11 @@ import path from "node:path";
 export async function loadCommands(bot: HibikiClient, directory: PathLike): Promise<any> {
   const files = fs.readdirSync(directory, { withFileTypes: true, encoding: "utf8" });
 
-  files.forEach(async (file) => {
+  for (const file of files) {
     if (file.isDirectory()) {
       // If there's a subfolder, re-run it inside it
       await loadCommands(bot, path.join(directory.toString(), file.name));
-      return;
+      continue;
     }
 
     // Don't try to load source mappings or other jank stuff
@@ -47,16 +47,16 @@ export async function loadCommands(bot: HibikiClient, directory: PathLike): Prom
       throw new Error(`${error}`);
     }
 
-    // Gets the filename, category, and path
+    // Gets the name, category, and path
     if (!commandToLoad) return;
     const splitPath = directory.toString().split("/");
-    const fileName = file.name.split(moduleFiletypeRegex)[0];
+    const name = file.name.split(moduleFiletypeRegex)[0].toLowerCase();
     const category = splitPath[splitPath.length - 1];
 
     // Loads the command
-    const command = new commandToLoad(bot, fileName, category);
-    bot.commands.set(fileName, command);
-  });
+    const command = new commandToLoad(bot, name, category);
+    bot.commands.set(name, command);
+  }
 }
 
 /**
