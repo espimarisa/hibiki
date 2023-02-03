@@ -35,7 +35,7 @@ export async function loadCommands(bot: HibikiClient, directory: PathLike): Prom
     }
 
     // Don't try to load source mappings or other jank stuff
-    if (file.name.endsWith(".map") || !moduleFiletypeRegex.test(file.name)) return;
+    if (file.name.endsWith(".map") || !moduleFiletypeRegex.test(file.name)) continue;
     let commandToLoad: CallableHibikiCommand;
 
     // Tries to load the command
@@ -77,7 +77,7 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike, isLogge
       continue;
     }
     // Don't try to load source mappings or subdirectories
-    if (file.name.endsWith(".map") || !moduleFiletypeRegex.test(file.name)) return;
+    if (file.name.endsWith(".map") || !moduleFiletypeRegex.test(file.name)) continue;
     let eventToLoad: CallableHibikiEvent;
 
     try {
@@ -88,7 +88,7 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike, isLogge
       throw new Error(`${error}`);
     }
 
-    if (!eventToLoad) return;
+    if (!eventToLoad) continue;
 
     // Creates the event
     const fileName = file.name.split(moduleFiletypeRegex)[0];
@@ -99,7 +99,7 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike, isLogge
       const missingIntents = checkIntents(bot.options, event.requiredIntents);
       if (missingIntents?.length) {
         logger.warn(`${isLogger ? "Logger" : "Event"} ${fileName} not loaded: missing intent(s) ${missingIntents.join(", ")}`);
-        return;
+        continue;
       }
     }
 
@@ -118,11 +118,13 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike, isLogge
  */
 
 function subscribeToEvents(bot: HibikiClient, events: Collection<string, HibikiEvent | HibikiLogger>) {
-  events.forEach((eventToListenOn) => {
-    eventToListenOn.events.forEach((individualEvent) => {
-      bot.on(individualEvent, (...eventParameters) => eventToListenOn.run(individualEvent, ...eventParameters));
-    });
-  });
+  for (const eventToListenOn of events.values()) {
+    for (const individualEvent of eventToListenOn.events) {
+      bot.on(individualEvent, (...eventParameters) =>
+        eventToListenOn.run(individualEvent, ...eventParameters),
+      );
+    }
+  }
 }
 
 /**
