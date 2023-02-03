@@ -71,6 +71,11 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike, isLogge
   const files = fs.readdirSync(directory, { withFileTypes: true, encoding: "utf8" });
 
   for (const file of files) {
+    if (file.isDirectory()) {
+      // If there's a subfolder, re-run it inside it
+      await loadEvents(bot, path.join(directory.toString(), file.name));
+      continue;
+    }
     // Don't try to load source mappings or subdirectories
     if (file.name.endsWith(".map") || !moduleFiletypeRegex.test(file.name)) return;
     let eventToLoad: CallableHibikiEvent;
