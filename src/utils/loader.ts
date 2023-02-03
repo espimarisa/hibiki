@@ -48,7 +48,7 @@ export async function loadCommands(bot: HibikiClient, directory: PathLike): Prom
     }
 
     // Gets the name, category, and path
-    if (!commandToLoad) return;
+    if (!commandToLoad) continue;
     const splitPath = directory.toString().split("/");
     const name = file.name.split(moduleFiletypeRegex)[0].toLowerCase();
     const category = splitPath[splitPath.length - 1];
@@ -150,13 +150,14 @@ export function registerSlashCommands(bot: HibikiClient, guild?: DiscordSnowflak
         valid = false;
       }
 
-      cmd.options?.forEach((option) => {
-        if (!slashCommandNameRegex.test(option.name)) {
-          logger.warn(`Command ${cmd.name} failed to register: invalid option name: ${option.name}`);
-          valid = false;
+      if (cmd.options) {
+        for (const option of cmd.options) {
+          if (!slashCommandNameRegex.test(option.name)) {
+            logger.warn(`Command ${cmd.name} failed to register: invalid option name: ${option.name}`);
+            valid = false;
+          }
         }
-      });
-
+      }
       return valid;
     });
 
