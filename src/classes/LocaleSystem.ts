@@ -63,7 +63,7 @@ export class HibikiLocaleSystem {
     // Handles arguments provided
     if (args) {
       // Checks each argument in "args"
-      Object.getOwnPropertyNames(args).forEach((argument) => {
+      for (const argument of Object.getOwnPropertyNames(args)) {
         // A regex for parsing provided arguments in a string
         const argumentRegex = new RegExp(`{${argument}}`);
 
@@ -98,7 +98,7 @@ export class HibikiLocaleSystem {
           // Replaces dummy arguments with provided ones
           output = output.replace(`{${argument}}`, args[argument]);
         }
-      });
+      };
     }
 
     // A regex to check to see if any optional arguments were provided
@@ -139,7 +139,7 @@ export class HibikiLocaleSystem {
   private _loadLocales(path: PathLike) {
     const files = fs.readdirSync(path, { withFileTypes: true, encoding: "utf8" });
 
-    files.forEach((file) => {
+    for (const file of files) {
       // Scans each locale file and loads it
       if (file.isDirectory()) this._loadLocales(`${path}/${file.name}`);
       else if (file.isFile()) {
@@ -153,25 +153,26 @@ export class HibikiLocaleSystem {
         const data: Record<string, string> = JSON.parse(subfile);
 
         // Looks through each specific locale in the data object
-        Object.entries(data).forEach((locale) => {
+        for (const locale of Object.entries(data)) {
           // Locale "categories"
           if (typeof locale[1] === "object") {
             localeObject[locale[0]] = {};
 
             // Reads each string in the category
-            Object.entries(locale[1]).forEach((string) => {
-              if ((string as [string, string])[1].length > 0) localeObject[locale[0]][string[0]] = string[1];
-            });
+            for (const string of Object.entries(locale[1])) {
+              if ((string as [string, string])[1].length > 0)
+                localeObject[locale[0]][string[0]] = string[1];
+            }
           } else {
             // Replaces empty strings
             localeObject[locale[0]] = locale[1];
           }
-        });
+        }
 
         // Loads the locale object
         this.locales[file.name.replace(/.json/, "")] = localeObject;
       }
-    });
+    }
   }
 
   /**
@@ -188,12 +189,12 @@ export class HibikiLocaleSystem {
     // Attempts to find the string if the category isn't provided
     if (!this.locales?.[language]?.[category[0]] && !this.locales?.[fieldName]) {
       // Looks through each language
-      Object.getOwnPropertyNames(this.locales[language]).forEach((localeCategory) => {
+      for (const localeCategory of Object.getOwnPropertyNames(this.locales[language])) {
         // Looks through the categories
-        Object.getOwnPropertyNames(this.locales[language][localeCategory]).forEach((locale) => {
+        for (const locale of Object.getOwnPropertyNames(this.locales[language][localeCategory])) {
           if (locale === fieldName) output = this.locales[language][localeCategory][locale];
-        });
-      });
+        }
+      }
 
       // Sets the output if the category exists
     } else if (this.locales?.[language]?.[category[0]] && this.locales?.[language]?.[category[0]]?.[category[1]]) {

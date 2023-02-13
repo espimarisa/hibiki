@@ -23,10 +23,10 @@ export function checkIntents(options: ClientOptions, intentsToCheck: ResolvableI
   const missingIntents: ResolvableIntentString[] = [];
 
   // Checks each intent
-  intentsToCheck.forEach((intent) => {
+  for (const intent of intentsToCheck) {
     // Pushes missing intents to the array
     if (!clientIntents.has(intent)) missingIntents.push(intent);
-  });
+  }
 
   // Returns an array of missing intents
   return missingIntents;
