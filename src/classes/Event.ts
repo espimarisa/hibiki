@@ -12,11 +12,8 @@ export interface CallableHibikiEvent {
 }
 
 export abstract class HibikiEvent {
-  // An array of required intents for an event to listen on
-  requiredIntents?: ResolvableIntentString[];
-
   // An array of event emitters to listen on
-  abstract events: HibikiEventEmitter[];
+  abstract events: HibikiEventListener[];
 
   /**
    * Creates a new Hibiki event
@@ -32,5 +29,5 @@ export abstract class HibikiEvent {
    * @param params Additional event params
    */
 
-  public abstract run(event: HibikiEventEmitter, ...params: any[]): Promise<void>;
+  public abstract run(event: HibikiEventListener[], ...params: any[]): Promise<void>;
 }

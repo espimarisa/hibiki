@@ -1,26 +1,22 @@
 /**
  * @file Index
- * @description Creates a new sharding manager and webserver
+ * @description Creates a new Hibiki instance
  * @module index
  */
 
-import config from "../config.js";
-import { HibikiShardingManager } from "./classes/Sharder.js";
-import { startWebserver } from "./web/server.js";
-import path from "node:path";
-import url from "node:url";
+import type { ClientOptions } from "@projectdysnomia/dysnomia";
+import { HibikiClient } from "./classes/Client.js";
+import { env } from "./utils/env.js";
 
-// Finds the index file
-const HIBIKI_INDEX_FILE = path.join(
-  path.dirname(url.fileURLToPath(import.meta.url)),
-  `hibiki.${process.env.NODE_ENV === "development" ? "ts" : "js"}`,
-);
+// Client options
+const options: ClientOptions = {
+  defaultImageSize: 256,
+  gateway: {
+    compress: true,
+    intents: ["all"],
+  },
+};
 
-// Creates and spawns the sharding manager
-const manager = new HibikiShardingManager(HIBIKI_INDEX_FILE, config.token, "auto");
-manager.spawn();
-
-// Starts the Hibiki webserver
-if (process.uptime() < 30) {
-  startWebserver(config.webserverPort ?? 4000);
-}
+// Creates a new Hibiki instance
+const bot = new HibikiClient(env.BOT_TOKEN, options);
+bot.init();

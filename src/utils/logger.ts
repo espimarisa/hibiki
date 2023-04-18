@@ -1,7 +1,7 @@
 /**
  * @file Logger
  * @description Handles console logging and transports
- * @module logger
+ * @module utils/logger
  */
 
 import { pino } from "pino";

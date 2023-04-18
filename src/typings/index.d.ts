@@ -1,22 +1,11 @@
 /**
- * @file Index
- * @description Global Hibiki typings used throughout the app
+ * @file index.d.ts
+ * @description Global Hibiki typings
  * @typedef index
  */
 
-// Privately imports dependencies
-type PrivateIntentsString = import("discord.js").GatewayIntentBits;
-type PrivateClientEvents = import("discord.js").ClientEvents;
-type PrivateSnowflake = import("discord.js").Snowflake;
+// "Private" import loophole for global types
+type PrivateEventListeners = import("@projectdysnomia/dysnomia").EventListeners;
 
-// Hibiki event emitters
-type HibikiEventEmitter = keyof PrivateClientEvents;
-
-// A Discord Snowflake ID
-type DiscordSnowflake = PrivateSnowflake;
-
-// A resolvable string of intents
-type ResolvableIntentString = import("discord.js").GatewayIntentsString;
-
-// Valid locale codes. This list will need to be updated manually.
-type HibikiLocaleCode = "en-GB";
+// An individual event listener
+type HibikiEventListener = keyof PrivateEventListeners;

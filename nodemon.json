@@ -1,7 +1,7 @@
 {
   "delay": 5000,
   "verbose": true,
-  "ignore": [".git", "node_modules/", "dist/", "*.liquid"],
+  "ignore": [".git", "node_modules/", "dist/"],
   "watch": ["src"],
   "ext": "ts",
   "execMap": {
