@@ -1,17 +1,17 @@
 # Hibiki
 
-> This branch is not fully functional nor a representation of a final product. Things may change at any time, and this branch is not hostable on it's own.
+This branch is not fully functional nor a representation of a final product. Things may change at any time, and this branch is not hostable on it's own.
 
 [![Build][badge-workflow]][workflow]
 [![License][badge-license]][license]
 
-[license]: LICENSE "Hibiki is licensed under the zlib/libpng license."
-[workflow]: https://github.com/sysdotini/hibiki/actions?query=workflow%3Apush "Main GitHub workflow action."
+[license]: LICENSE "Hibiki is licensed under the zlib/libpng license"
+[workflow]: https://github.com/sysdotini/hibiki/actions?query=workflow%3Apush "GitHub workflow showing latest push status"
 
 <!-- Badges -->
 
-[badge-workflow]: https://img.shields.io/github/workflow/status/sysdotini/hibiki/Push "Shields.io badge for workflow status."
-[badge-license]: https://img.shields.io/badge/license-zlib-orange.svg "Shields.io badge for the zlib license."
+[badge-workflow]: https://img.shields.io/github/workflow/status/sysdotini/hibiki/Push "Shields.io badge for workflow status"
+[badge-license]: https://img.shields.io/badge/license-zlib-orange.svg "Shields.io badge for the zlib license"
 
 Hibiki is a a Discord bot jam-packed with useful utilities for everyone written in [TypeScript][typescript].
 
