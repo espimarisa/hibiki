@@ -5,14 +5,12 @@
  */
 
 import { HibikiEvent } from "../classes/Event.js";
-import { ChannelType, Message } from "discord.js";
+import { Message } from "@projectdysnomia/dysnomia";
 
 export class HibikiMessageEvent extends HibikiEvent {
-  events: HibikiEventEmitter[] = ["messageCreate"];
-  requiredIntents?: ResolvableIntentString[] = ["GuildMessages"];
+  events: HibikiEventListener[] = ["messageCreate"];
 
-  public async run(_event: HibikiEventEmitter, msg: Message) {
-    if (!msg?.content || !msg.author || msg.author.bot || !msg.channel || msg.channel.type !== ChannelType.GuildText) return;
-    console.log(msg.content);
+  public async run(_event: HibikiEventListener[], msg: Message) {
+    if (!msg?.content || !msg.author || msg.author.bot || !msg.channel) return;
   }
 }

@@ -1,7 +1,7 @@
 /**
  * @file Fetch
  * @description A custom wrapper around native fetch for Hibiki
- * @module fetch
+ * @module utils/fetch
  */
 
 import { hibikiVersion } from "./constants.js";
