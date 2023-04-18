@@ -8,17 +8,23 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
+        os: [ubuntu-latest]
     steps:
-      # Sets up pnpm
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-
-      # Sets up Node.js
+      # Checks out git
       - uses: actions/checkout@v3
-      - name: Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        with:
+          fetch-depth: 0
+
+      # Installs PNPM
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.4
+
+      # Sets Node.js up
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
 
       # Runs any test scripts
       - name: Unit Tests
