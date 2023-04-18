@@ -10,7 +10,7 @@ This branch is not fully functional nor a representation of a final product. Thi
 
 <!-- Badges -->
 
-[badge-workflow]: https://img.shields.io/github/workflow/status/sysdotini/hibiki/Push "Shields.io badge for workflow status"
+[badge-workflow]: https://img.shields.io/github/actions/workflow/status/sysdotini/hibiki/push.yml?branch=develop "Shields.io badge for workflow status"
 [badge-license]: https://img.shields.io/badge/license-zlib-orange.svg "Shields.io badge for the zlib license"
 
 Hibiki is a a Discord bot jam-packed with useful utilities for everyone written in [TypeScript][typescript].
