@@ -1,7 +1,7 @@
 {
   "type": "module",
   "private": "true",
-  "name": "@sysdotini/project-phoenix",
+  "name": "@sysdotini/hibiki",
   "version": "6.0.0-alpha",
   "description": "A Discord bot jam-packed with useful utilities for everyone!",
   "license": "zlib",
