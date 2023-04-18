@@ -11,12 +11,12 @@ jobs:
     steps:
       # Sets up pnpm
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2.2.2
+        uses: pnpm/action-setup@v2.2.4
 
       # Sets up Node.js
-      - uses: actions/checkout@v2.4.2
+      - uses: actions/checkout@v3.5.2
       - name: Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3.3.0
+        uses: actions/setup-node@v3.5.2
         with:
           node-version: ${{ matrix.node-version }}
 
