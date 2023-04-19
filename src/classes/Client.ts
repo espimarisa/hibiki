@@ -9,6 +9,7 @@ import type { HibikiEvent } from "./Event.js";
 import { tagUser } from "../utils/format.js";
 import { loadCommands, loadEvents } from "../utils/loader.js";
 import { logger } from "../utils/logger.js";
+import { DatabaseManager } from "./Database.js";
 import { Client, type ClientOptions } from "@projectdysnomia/dysnomia";
 import path from "node:path";
 import url from "node:url";
@@ -24,6 +25,9 @@ const EVENTS_DIRECTORY = path.join(pathDirname, "../events");
 export class HibikiClient extends Client {
   readonly commands: Map<string, HibikiCommand> = new Map();
   readonly events: Map<string, HibikiEvent> = new Map();
+
+  // A Prisma + Hibiki Database Manager
+  readonly db: DatabaseManager = new DatabaseManager();
 
   constructor(token: string, options: ClientOptions) {
     super(token, options);

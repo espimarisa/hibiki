@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Database options
+datasource db {
+  // The provider to use. You can change this, but YMMV. Good luck lol
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Guild configs
+model GuildConfig {
+  // Incrementing ID
+  id Int @id @default(autoincrement())
+
+  // The guild's ID
+  guild_id String? @unique @db.VarChar()
+}
+
+// User configs
+model UserConfig {
+  // Incrementing ID
+  id Int @id @default(autoincrement())
+
+  // The user's ID
+  user_id String? @unique @db.VarChar()
+}
