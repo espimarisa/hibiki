@@ -4,10 +4,14 @@
  * @typedef database.d.ts
  */
 
+import type { HibikiLocaleCode } from "./locales.js";
+
 interface HibikiGuildConfig {
   guild_id: DiscordSnowflake;
+  locale?: HibikiLocaleCode;
 }
 
 interface HibikiUserConfig {
   user_id: DiscordSnowflake;
+  locale?: HibikiLocaleCode;
 }
