@@ -15,4 +15,5 @@ export const env = cleanEnv(process.env, {
   // This should always match anything we append to .env
   // TODO: Properly type
   BOT_TOKEN: str({ default: undefined }),
+  TEST_GUILD_ID: str({ default: undefined }),
 });

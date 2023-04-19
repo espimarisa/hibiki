@@ -12,3 +12,14 @@ export const slashCommandNameRegex = /^[-_\p{L}\p{N}\p{sc=Deva}\p{sc=Thai}]{1,32
 
 // The version of Hibiki currently running
 export const hibikiVersion = process.env.npm_package_version ?? "develop";
+
+export enum HibikiColors {
+  // Gold primary
+  GENERAL = 0xff_b0_00,
+
+  // Success pink
+  SUCCESS = 0xdc_26_7f,
+
+  // Orange error
+  ERROR = 0xfe_61_00,
+}

@@ -7,8 +7,9 @@
 import type { HibikiClient } from "../classes/Client.js";
 import type { CallableHibikiCommand } from "../classes/Command.js";
 import type { CallableHibikiEvent, HibikiEvent } from "../classes/Event.js";
+import type { ApplicationCommandStructure } from "@projectdysnomia/dysnomia";
 import type { PathLike } from "node:fs";
-import { moduleFiletypeRegex } from "./constants.js";
+import { moduleFiletypeRegex, slashCommandNameRegex } from "./constants.js";
 import { logger } from "./logger.js";
 import fs from "node:fs";
 import util from "node:util";
@@ -84,6 +85,38 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike) {
 
   // Subscribes to all of the events
   subscribeToEvents(bot, bot.events);
+}
+
+/**
+ * Registers slash commands with the Discord gateway
+ * @param bot Main bot object
+ * @param guild A guild ID if editing guild commands
+ */
+
+export function registerSlashCommands(bot: HibikiClient, guild?: DiscordSnowflake) {
+  if (!bot.user?.id) throw new Error("This really shouldn't happen. How.");
+  const jsonData = [];
+
+  for (const command of bot.commands.values()) {
+    // Doesn't load messageOnly or ownerOnly commands
+    if (command.messageOnly || command.ownerOnly) return;
+
+    // Checks to verify the slash command name
+    if (!slashCommandNameRegex.test(command.name)) {
+      logger.error("Name is not valid.");
+      return;
+    }
+
+    jsonData.push(command.toJSON());
+  }
+
+  // Registers commands to a specific guild
+  if (guild) {
+    bot.bulkEditGuildCommands(guild, jsonData as ApplicationCommandStructure[]);
+  } else {
+    // Registers commands to the entire app
+    bot.bulkEditCommands(jsonData as ApplicationCommandStructure[]);
+  }
 }
 
 /**

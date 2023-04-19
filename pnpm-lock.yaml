@@ -7,6 +7,9 @@ dependencies:
   '@projectdysnomia/dysnomia':
     specifier: ^0.1.1
     version: 0.1.1
+  discord-api-types:
+    specifier: ^0.37.39
+    version: 0.37.39
   dotenv:
     specifier: ^16.0.3
     version: 16.0.3
@@ -839,6 +842,10 @@ packages:
     dependencies:
       path-type: 4.0.0
     dev: true
+
+  /discord-api-types@0.37.39:
+    resolution: {integrity: sha512-hkhQsQyzsTJITp311WXvHZh9j4RAMfIk2hPmsWeOTN50QTpg6zqmJNfel9D/8lYNvsU01wzw9281Yke8NhYyHg==}
+    dev: false
 
   /doctrine@2.1.0:
     resolution: {integrity: sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw==}
