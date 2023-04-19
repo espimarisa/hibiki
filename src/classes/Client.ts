@@ -6,8 +6,9 @@
 
 import type { HibikiCommand } from "./Command.js";
 import type { HibikiEvent } from "./Event.js";
+import { env } from "../utils/env.js";
 import { tagUser } from "../utils/format.js";
-import { loadCommands, loadEvents } from "../utils/loader.js";
+import { loadCommands, loadEvents, registerSlashCommands } from "../utils/loader.js";
 import { logger } from "../utils/logger.js";
 import { DatabaseManager } from "./Database.js";
 import { Client, type ClientOptions } from "@projectdysnomia/dysnomia";
@@ -59,6 +60,9 @@ export class HibikiClient extends Client {
         logger.info(`Logged in to Discord as ${tagUser(this.user)}`);
         logger.info(`${this.commands.size} commands loaded`);
         logger.info(`${this.events.size} events loaded`);
+
+        // Registers commands; pushes to only one guild if we're in development
+        registerSlashCommands(this, !env.isProduction ? env.TEST_GUILD_ID : undefined);
       });
     } catch (error) {
       logger.error(`An error occured while starting: ${util.inspect(error)}`);
