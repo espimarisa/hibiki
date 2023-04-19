@@ -1,7 +1,7 @@
 /**
- * @file config.d.ts
- * @description Typings for guild and user configs
- * @typedef config.d.ts
+ * @file database.d.ts
+ * @description Typings for any database items
+ * @typedef database.d.ts
  */
 
 interface HibikiGuildConfig {
