@@ -4,6 +4,7 @@
  * @module Database
  */
 
+import type { HibikiGuildConfig, HibikiUserConfig } from "../typings/database.js";
 import { PrismaClient } from "@prisma/client";
 import util from "node:util";
 
@@ -113,7 +114,7 @@ export class DatabaseManager {
    * @param user The user ID to search for a config for
    */
 
-  public async getUserConfig(user: DiscordSnowflake) {
+  public async getUserConfig(user: DiscordSnowflake): Promise<HibikiUserConfig | undefined> {
     if (!user?.length) return;
 
     // Looks for the guildconfig
@@ -129,7 +130,7 @@ export class DatabaseManager {
       // Parses the config and returns it
       const parsedConfig = JSON.stringify(config);
       if (!parsedConfig) return;
-      return parsedConfig;
+      return parsedConfig as unknown as HibikiUserConfig;
     } catch (error) {
       throw new Error(`${util.inspect(error)}`);
     }
