@@ -16,8 +16,8 @@ export class HibikiPingCommand extends HibikiCommand {
       embeds: [
         {
           // TODO: Localise
-          title: "Pinging....",
-          description: "If you see this for more than a few seconds, something has gone seriously wrong...",
+          title: interaction.getString("COMMAND_PING_PINGING"),
+          description: interaction.getString("COMMAND_PING_ERROR"),
           color: HibikiColors.GENERAL,
         },
       ],
@@ -31,16 +31,16 @@ export class HibikiPingCommand extends HibikiCommand {
       embeds: [
         {
           // TODO: Localise
-          title: "🏓 Pong!",
+          title: interaction.getString("COMMAND_PING_PONG"),
           color: HibikiColors.GENERAL,
           fields: [
             {
-              name: "Client Uptime",
+              name: interaction.getString("COMMAND_PING_UPTIME"),
               value: `${new Date(this.bot.uptime).getMinutes()} min`,
               inline: true,
             },
             {
-              name: "Roundtrip Latency",
+              name: interaction.getString("COMMAND_PING_LATENCY"),
               value: `${originalMessage.createdAt - interaction.createdAt}ms`,
               inline: true,
             },
