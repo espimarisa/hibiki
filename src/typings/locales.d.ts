@@ -10,7 +10,7 @@ const en = defaultLocaleFile.default;
 // Valid locale codes. This list will need to be updated manually.
 type HibikiLocaleCode = "en-GB";
 
-type HibikiLocaleStrings = "NAME" | `global.${keyof typeof en.global}`;
+type HibikiLocaleStrings = `${keyof typeof en}`;
 
 // Type for getLocaleFunction()
 type getString = {

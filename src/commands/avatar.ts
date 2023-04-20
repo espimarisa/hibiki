@@ -23,8 +23,8 @@ export class HibikiAvatarCommand extends HibikiCommand {
         embeds: [
           {
             // TODO: Localise
-            title: "❌ Error",
-            description: "Failed to send that user's avatar. Try again later.",
+            title: interaction.getString("ERROR"),
+            description: interaction.getString("COMMAND_AVATAR_ERROR"),
             color: HibikiColors.ERROR,
           },
         ],
@@ -37,7 +37,7 @@ export class HibikiAvatarCommand extends HibikiCommand {
     await interaction.createFollowup({
       embeds: [
         {
-          title: `${tagUser(user)}'s avatar`,
+          title: tagUser(user),
           color: HibikiColors.GENERAL,
           image: {
             url: user.dynamicAvatarURL(undefined, 2048),

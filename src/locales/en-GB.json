@@ -1,7 +1,13 @@
 {
   "NAME": "English",
 
-  "global": {
-    "test": "testing"
-  }
+  "ERROR": "❌ Error",
+
+  "COMMAND_AVATAR_ERROR": "Failed to send that user's avatar. Try again later.",
+
+  "COMMAND_PING_PINGING": "🏓 Pinging...",
+  "COMMAND_PING_PONG": "🏓 Pong!",
+  "COMMAND_PING_ERROR": "If you see this for more than a few seconds, something has gone seriously wrong...",
+  "COMMAND_PING_UPTIME": "Client Uptime",
+  "COMMAND_PING_LATENCY": "Roundtrip Latency"
 }
