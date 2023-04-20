@@ -29,6 +29,7 @@ jobs:
       # Runs any test scripts
       - name: Unit Tests
         run: |
+          pnpm exec prisma generate
           pnpm install
           pnpm test --if-present
         env:
