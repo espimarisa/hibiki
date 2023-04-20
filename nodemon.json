@@ -4,11 +4,9 @@
   "ignore": [".git", "node_modules/", "dist/"],
   "watch": ["src"],
   "ext": "ts",
-  "execMap": {
-    "ts": "node --no-warnings --loader ts-node/esm -r ts-node/register"
-  },
   "env": {
     "TS_NODE_FILES": true,
+    "NODE_OPTIONS": "--loader ts-node/esm",
     "NODE_ENV": "development"
   }
 }

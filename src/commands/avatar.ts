@@ -10,7 +10,7 @@ import { Constants, type CommandInteraction } from "@projectdysnomia/dysnomia";
 
 export class HibikiAvatarCommand extends HibikiCommand {
   description = "Displays a user's avatar.";
-  commandType = Constants.ApplicationCommandTypes.USER;
+  interactionType = Constants.ApplicationCommandTypes.USER;
   ephemeral = true;
 
   public async runWithInteraction(interaction: CommandInteraction) {
