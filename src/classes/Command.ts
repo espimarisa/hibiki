@@ -9,7 +9,8 @@ import type { APIApplicationCommandOption } from "discord-api-types/v10";
 import { Constants, CommandInteraction, type ApplicationCommandTypes } from "@projectdysnomia/dysnomia";
 
 export abstract class HibikiCommand {
-  commandType?: ApplicationCommandTypes = Constants.ApplicationCommandTypes.CHAT_INPUT;
+  // The type of interaction type. Defaults to CHAT_INPUT.
+  interactionType?: ApplicationCommandTypes = Constants.ApplicationCommandTypes.CHAT_INPUT;
 
   // An array of slash command options
   options?: APIApplicationCommandOption[];
@@ -50,9 +51,9 @@ export abstract class HibikiCommand {
   public toJSON() {
     return {
       name: this.name.toLowerCase(),
-      description: this.commandType === Constants.ApplicationCommandTypes.CHAT_INPUT ? this.description : undefined,
+      description: this.interactionType === Constants.ApplicationCommandTypes.CHAT_INPUT ? this.description : undefined,
       options: this.options,
-      type: this.commandType,
+      type: this.interactionType,
     };
   }
 

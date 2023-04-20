@@ -8,12 +8,12 @@ import type { HibikiCommand } from "./Command.js";
 import type { HibikiEvent } from "./Event.js";
 import type { HibikiLocaleCode } from "../typings/locales.js";
 import { env } from "../utils/env.js";
-import { tagUser } from "../utils/format.js";
 import { loadCommands, loadEvents, registerSlashCommands } from "../utils/loader.js";
 import { logger } from "../utils/logger.js";
 import { DatabaseManager } from "./Database.js";
 import { HibikiLocaleSystem } from "./LocaleSystem.js";
 import { Client, type ClientOptions } from "@projectdysnomia/dysnomia";
+import { ClusterClient } from "discord-hybrid-sharding";
 import path from "node:path";
 import url from "node:url";
 import util from "node:util";
@@ -33,8 +33,11 @@ export class HibikiClient extends Client {
   // A Prisma + Hibiki Database Manager
   readonly db: DatabaseManager = new DatabaseManager();
 
-  // A Hibiki localeSYstem
+  // Creates a new Hibiki locale system
   readonly localeSystem: HibikiLocaleSystem;
+
+  // Creates a new sharding management client
+  readonly cluster: ClusterClient<HibikiClient> = new ClusterClient(this);
 
   constructor(token: string, options: ClientOptions) {
     super(token, options);
@@ -51,6 +54,11 @@ export class HibikiClient extends Client {
     this.on("error", (err) => {
       logger.error(util.inspect(err));
     });
+
+    // Connects & initializes when ready
+    this.connect().then(() => {
+      this.init();
+    });
   }
 
   /**
@@ -59,14 +67,13 @@ export class HibikiClient extends Client {
 
   public init() {
     try {
-      this.connect();
       this.once("ready", async () => {
         // Loads all commands and events
         await loadCommands(this, COMMANDS_DIRECTORY);
         await loadEvents(this, EVENTS_DIRECTORY);
 
         // Logs statistics and other stuff
-        logger.info(`Logged in to Discord as ${tagUser(this.user)}`);
+        logger.info("Logged in to Discord");
         logger.info(`${this.commands.size} commands loaded`);
         logger.info(`${this.events.size} events loaded`);
 

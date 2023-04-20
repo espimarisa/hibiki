@@ -14,6 +14,7 @@ dotenv.config();
 export const env = cleanEnv(process.env, {
   // This should always match anything we append to .env
   // TODO: Properly type
+  DATABASE_URL: str({ default: "" }),
   BOT_TOKEN: str({ default: undefined }),
   TEST_GUILD_ID: str({ default: undefined }),
   DEFAULT_LOCALE: str({ default: "en-GB" }),
