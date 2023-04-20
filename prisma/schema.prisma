@@ -20,6 +20,8 @@ model GuildConfig {
 
   // The guild's ID
   guild_id String? @unique @db.VarChar()
+
+  locale String? @unique
 }
 
 // User configs
@@ -29,4 +31,6 @@ model UserConfig {
 
   // The user's ID
   user_id String? @unique @db.VarChar()
+
+  locale String? @unique
 }

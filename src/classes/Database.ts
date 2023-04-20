@@ -24,7 +24,7 @@ export class DatabaseManager {
    * @param guild The guild ID to search for a config for
    */
 
-  public async getGuildConfig(guild: DiscordSnowflake) {
+  public async getGuildConfig(guild: DiscordSnowflake): Promise<HibikiGuildConfig | undefined> {
     if (!guild?.length) return;
 
     // Looks for the guildconfig
@@ -40,7 +40,7 @@ export class DatabaseManager {
       // Parses the config and returns it
       const parsedConfig = JSON.stringify(config);
       if (!parsedConfig) return;
-      return parsedConfig;
+      return parsedConfig as unknown as HibikiGuildConfig;
     } catch (error) {
       throw new Error(`${util.inspect(error)}`);
     }
