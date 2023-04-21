@@ -1,6 +1,4 @@
-# Hibiki
-
-This branch is not fully functional nor a representation of a final product. Things may change at any time, and this branch is not hostable on it's own.
+# Hibiki v6.0.0-alpha
 
 [![Build][badge-workflow]][workflow]
 [![License][badge-license]][license]
@@ -61,7 +59,7 @@ To start a data deletion request, please contact the application maintainer usin
 
 ## License
 
-[zlib][license]
+[zlib/libpng][license]
 
 [typescript]: https://www.typescriptlang.org/ "TypeScript's website"
 [invite]: https://discord.com/oauth2/authorize?&client_id=864687346977210368&scope=bot%20applications.commands&permissions=1581116663 "Invite the official Hibiki instance"
