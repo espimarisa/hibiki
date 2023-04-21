@@ -30,7 +30,6 @@ jobs:
       - name: Unit Tests
         run: |
           pnpm install
-          pnpm exec prisma generate
           pnpm test --if-present
         env:
           CI: true
