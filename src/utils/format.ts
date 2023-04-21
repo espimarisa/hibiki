@@ -1,16 +1,11 @@
 /**
  * @file Format
- * @description Utilities to format various things
- * @module utils/format
+ * @description Utilities to format or cleanup various things
  */
 
 import type { User } from "@projectdysnomia/dysnomia";
 
-/**
- * Turns a user object into user#discriminator
- * @param user The user object to tag
- */
-
+// Turns a user object into user#discriminator
 export function tagUser(user: User) {
   return `${user.username}#${user.discriminator}`;
 }

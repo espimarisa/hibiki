@@ -1,7 +1,6 @@
 /**
  * @file Message
  * @description Handles legacy message-based commands
- * @module HibikiMessageEvent
  */
 
 import { HibikiEvent } from "../classes/Event.js";
