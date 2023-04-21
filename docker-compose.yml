@@ -22,8 +22,6 @@ services:
     container_name: hibiki
     depends_on:
       - postgres
-    ports:
-      - "4000:4000"
     restart: always
 
 volumes:
