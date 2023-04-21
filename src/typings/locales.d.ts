@@ -1,18 +1,18 @@
 /**
- * @file Locale types
- * @description Pulls strings from the default locale file and generates typings
- * @typedef locales
+ * @file locales.d.ts
+ * @description Pulls strings from the default dictionary and generates typings
  */
 
 import * as defaultLocaleFile from "../locales/en-GB.json";
 const en = defaultLocaleFile.default;
 
-// Valid locale codes. This list will need to be updated manually.
+// Valid locale codes. This list will need to be updated manually to match ../locales
 type HibikiLocaleCode = "en-GB";
 
-type HibikiLocaleStrings = `${keyof typeof en}`;
+// Valid dictionary strings
+type HibikiDictionaryStrings = `${keyof typeof en}`;
 
 // Type for getLocaleFunction()
 type getString = {
-  (string: HibikiLocaleStrings, args?: Record<string, any>): string;
+  (string: HibikiDictionaryStrings, args?: Record<string, any>): string;
 };

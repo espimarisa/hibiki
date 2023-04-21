@@ -1,7 +1,6 @@
 /**
  * @file Database
  * @description Creates a new Database connection
- * @module Database
  */
 
 import type { HibikiGuildConfig, HibikiUserConfig } from "../typings/database.js";
@@ -11,19 +10,11 @@ import util from "node:util";
 export class DatabaseManager {
   protected readonly client: PrismaClient;
 
-  /**
-   * Creates a new Hibiki database manaer
-   */
-
   constructor() {
     this.client = new PrismaClient();
   }
 
-  /**
-   * Gets a guildConfig
-   * @param guild The guild ID to search for a config for
-   */
-
+  // Gets a guildConfig
   public async getGuildConfig(guild: DiscordSnowflake): Promise<HibikiGuildConfig | undefined> {
     if (!guild?.length) return;
 
@@ -46,12 +37,7 @@ export class DatabaseManager {
     }
   }
 
-  /**
-   * Updates a guildConfig
-   * @param guild The guild ID to create a config for
-   * @param config The config to insert
-   */
-
+  // Updates a guildConfig
   public async updateGuildConfig(guild: DiscordSnowflake, config: HibikiGuildConfig) {
     if (!guild?.length) return;
 
@@ -63,11 +49,7 @@ export class DatabaseManager {
     });
   }
 
-  /**
-   * Creates a blank guildConfig
-   * @param guild The guild ID to create a config for
-   */
-
+  // Creates a blank guildConfig
   public async createBlankGuildConfig(guild: DiscordSnowflake) {
     if (!guild?.length) return;
 
@@ -89,11 +71,7 @@ export class DatabaseManager {
     }
   }
 
-  /**
-   * Deletes a a guildConfig
-   * @param guild The guild ID to delete a config for
-   */
-
+  // Deletes a a guildConfig
   public async deleteGuildConfig(guild: DiscordSnowflake) {
     if (!guild?.length) return;
 
@@ -109,11 +87,7 @@ export class DatabaseManager {
     }
   }
 
-  /**
-   * Gets a userConfig
-   * @param user The user ID to search for a config for
-   */
-
+  // Gets a userConfig
   public async getUserConfig(user: DiscordSnowflake): Promise<HibikiUserConfig | undefined> {
     if (!user?.length) return;
 
@@ -136,12 +110,7 @@ export class DatabaseManager {
     }
   }
 
-  /**
-   * Updates a userConfig
-   * @param user The user ID to create a config for
-   * @param config The config to insert
-   */
-
+  // Updates a userConfig
   public async updateUserConfig(user: DiscordSnowflake, config: HibikiUserConfig) {
     if (!user?.length) return;
 
@@ -158,11 +127,7 @@ export class DatabaseManager {
     }
   }
 
-  /**
-   * Creates a blank userConfig
-   * @param user The user ID to create a config for
-   */
-
+  // Creates a blank userConfig
   public async createBlankUserConfig(user: DiscordSnowflake) {
     if (!user?.length) return;
 
@@ -184,11 +149,7 @@ export class DatabaseManager {
     }
   }
 
-  /**
-   * Deletes a userConfig
-   * @param user The user ID to delete a config for
-   */
-
+  // Deletes a userConfig
   public async deleteUserConfig(user: DiscordSnowflake) {
     if (!user?.length) return;
 

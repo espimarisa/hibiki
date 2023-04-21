@@ -1,16 +1,10 @@
 /**
  * @file LocaleSystem
  * @description Handles loading, parsing, and getting locales
- * @module HibikiLocaleSystem
- */
-
-/**
- * @TODO: https://discord.com/developers/docs/interactions/application-commands#localization
- * Localise our slash command stuff...
  */
 
 import type { HibikiClient } from "./Client.js";
-import type { getString, HibikiLocaleCode, HibikiLocaleStrings } from "../typings/locales.js";
+import type { getString, HibikiLocaleCode, HibikiDictionaryStrings } from "../typings/locales.js";
 import type { PathLike } from "node:fs";
 import { logger } from "../utils/logger.js";
 import fs from "node:fs";
@@ -22,25 +16,14 @@ export class HibikiLocaleSystem {
   // The default locale to fall back to
   readonly defaultLocale: HibikiLocaleCode;
 
-  /**
-   * Creates a new Locale system and loads any locales
-   * @param path The path to search for locales in
-   * @param defaultLocale The locale code to use
-   */
-
+  // Creates a new localeSystem and loads the locales
   constructor(path: PathLike, defaultLocale: HibikiLocaleCode) {
     this.defaultLocale = defaultLocale;
     this._loadLocales(path);
   }
 
-  /**
-   * Gets an individual locale and parses its content
-   * @param language The 2-letter locale code to use
-   * @param fieldName The locale field to search for
-   * @param args Any args to pass to the string
-   */
-
-  public getLocale(language: HibikiLocaleCode, fieldName: HibikiLocaleStrings, args?: { [x: string]: any }): string {
+  // Gets an individual locale and parses the content returned
+  public getLocale(language: HibikiLocaleCode, fieldName: HibikiDictionaryStrings, args?: { [x: string]: any }): string {
     const category = fieldName.split(".");
     let output = "";
 
@@ -112,30 +95,18 @@ export class HibikiLocaleSystem {
     return output;
   }
 
-  /**
-   * Returns an individual locale string
-   * @param language The 2-letter locale code to utilize
-   */
-
+  // Returns an individual string
   public getLocaleFunction(language: HibikiLocaleCode): getString {
-    return (fieldName: HibikiLocaleStrings, args?: Record<string, any>) => this.getLocale(language, fieldName, args);
+    return (fieldName: HibikiDictionaryStrings, args?: Record<string, any>) => this.getLocale(language, fieldName, args);
   }
 
-  /**
-   * Returns what locale a user uses
-   * @param user The User ID to search for a set locale for
-   */
-
+  // Returns what locale a user has set in the database
   public async getUserLocale(user: DiscordSnowflake, bot: HibikiClient) {
     const userConfig = await bot.db.getUserConfig(user);
-    return userConfig?.locale || this.defaultLocale;
+    return userConfig?.locale ?? this.defaultLocale;
   }
 
-  /**
-   * Loads locales from a given path
-   * @param path The path to look for locales in
-   */
-
+  // Loads all locales in a given path
   private _loadLocales(path: PathLike) {
     const files = fs.readdirSync(path, { withFileTypes: true, encoding: "utf8" });
 
@@ -174,14 +145,8 @@ export class HibikiLocaleSystem {
     }
   }
 
-  /**
-   * Finds a locale string
-   * @param language The 2 letter locale code to use
-   * @param fieldName The string to return
-   * @param category The categories to search in
-   */
-
-  private _findLocaleString(language: HibikiLocaleCode, fieldName: HibikiLocaleStrings, category: string[]) {
+  // Finds a specific locale string
+  private _findLocaleString(language: HibikiLocaleCode, fieldName: HibikiDictionaryStrings, category: string[]) {
     if (!this.locales?.[language]) return;
     let output;
 

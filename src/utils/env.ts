@@ -1,7 +1,6 @@
 /**
  * @file env
  * @description Sanitizes and sets up our environment variables
- * @module utils/env
  */
 
 import * as dotenv from "dotenv";
@@ -11,12 +10,17 @@ import { cleanEnv, str } from "envalid";
 dotenv.config();
 
 // Cleans our environment variables up
-export const env = cleanEnv(process.env, {
-  // This should always match anything we append to .env
-  // TODO: Properly type
-  DATABASE_URL: str({ default: "" }),
+export const sanitizedEnv = cleanEnv(process.env, {
+  // Hibiki config items
   BOT_TOKEN: str({ default: undefined }),
-  TEST_GUILD_ID: str({ default: undefined }),
   DEFAULT_LOCALE: str({ default: "en-GB" }),
+  TEST_GUILD_ID: str({ default: undefined }),
   SENTRY_DSN: str({ default: undefined }),
+
+  // Prisma config items
+  DATABASE_URL: str({ default: undefined }),
+
+  // Default Node.js env variables
+  NODE_ENV: str({ default: undefined }),
+  npm_package_version: str({ default: "string" }),
 });
