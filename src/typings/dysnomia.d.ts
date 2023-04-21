@@ -1,7 +1,6 @@
 /**
- * @file Discord.js
- * @description Extended Hibiki types for Discord.js
- * @typedef discord.js
+ * @file dysnomia.d.ts
+ * @description Extended Hibiki types for Dysnomia
  */
 
 import type { getString } from "./locales.js";

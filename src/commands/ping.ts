@@ -15,7 +15,6 @@ export class HibikiPingCommand extends HibikiCommand {
     await interaction.createFollowup({
       embeds: [
         {
-          // TODO: Localise
           title: interaction.getString("COMMAND_PING_PINGING"),
           description: interaction.getString("COMMAND_PING_ERROR"),
           color: HibikiColors.GENERAL,
@@ -30,13 +29,12 @@ export class HibikiPingCommand extends HibikiCommand {
     await interaction.editOriginalMessage({
       embeds: [
         {
-          // TODO: Localise
           title: interaction.getString("COMMAND_PING_PONG"),
           color: HibikiColors.GENERAL,
           fields: [
             {
               name: interaction.getString("COMMAND_PING_UPTIME"),
-              value: `${new Date(this.bot.uptime).getMinutes()} min`,
+              value: `${new Date(this.bot.uptime).getMinutes()}`,
               inline: true,
             },
             {

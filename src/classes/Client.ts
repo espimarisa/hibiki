@@ -1,14 +1,13 @@
 /**
  * @file HibikiClient
  * @description Connects to Discord and handles all internal modules
- * @module HibikiClient
  */
 
 import type { HibikiCommand } from "./Command.js";
 import type { HibikiEvent } from "./Event.js";
 import type { HibikiLocaleCode } from "../typings/locales.js";
-import { env } from "../utils/env.js";
-import { loadCommands, loadEvents, registerSlashCommands } from "../utils/loader.js";
+import { sanitizedEnv } from "../utils/env.js";
+import { loadCommands, loadEvents, registerInteractions } from "../utils/loader.js";
 import { logger } from "../utils/logger.js";
 import { DatabaseManager } from "./Database.js";
 import { HibikiLocaleSystem } from "./LocaleSystem.js";
@@ -43,7 +42,7 @@ export class HibikiClient extends Client {
     super(token, options);
 
     // Creates a new Locale system
-    this.localeSystem = new HibikiLocaleSystem(LOCALES_DIRECTORY, env.DEFAULT_LOCALE as HibikiLocaleCode);
+    this.localeSystem = new HibikiLocaleSystem(LOCALES_DIRECTORY, sanitizedEnv.DEFAULT_LOCALE as HibikiLocaleCode);
 
     // Logs when a specific shard is ready
     this.on("shardReady", (id) => {
@@ -61,10 +60,7 @@ export class HibikiClient extends Client {
     });
   }
 
-  /**
-   * Initializes Hibiki
-   */
-
+  // Starts Hibiki
   public init() {
     try {
       this.once("ready", async () => {
@@ -78,7 +74,7 @@ export class HibikiClient extends Client {
         logger.info(`${this.events.size} events loaded`);
 
         // Registers commands; pushes to only one guild if we're in development
-        registerSlashCommands(this, !env.isProduction ? env.TEST_GUILD_ID : undefined);
+        registerInteractions(this, !sanitizedEnv.isProduction ? sanitizedEnv.TEST_GUILD_ID : undefined);
       });
     } catch (error) {
       logger.error(`An error occured while starting: ${util.inspect(error)}`);

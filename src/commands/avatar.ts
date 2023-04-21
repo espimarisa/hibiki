@@ -22,7 +22,6 @@ export class HibikiAvatarCommand extends HibikiCommand {
       await interaction.createFollowup({
         embeds: [
           {
-            // TODO: Localise
             title: interaction.getString("ERROR"),
             description: interaction.getString("COMMAND_AVATAR_ERROR"),
             color: HibikiColors.ERROR,

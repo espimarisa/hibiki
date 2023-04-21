@@ -1,16 +1,13 @@
 /**
  * @file Logger
  * @description Handles console logging and transports
- * @module utils/logger
  */
 
+import { sanitizedEnv } from "./env.js";
 import { pino } from "pino";
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const IS_PRODUCTION = sanitizedEnv.isProduction;
 
-/**
- * Creates a new pino logger
- */
-
+// Options for the pino logger
 const pinoOptions: pino.LoggerOptions = {
   transport: {
     target: "pino-pretty",
@@ -21,4 +18,5 @@ const pinoOptions: pino.LoggerOptions = {
   },
 };
 
+// Creates the new Pino logger
 export const logger = pino(IS_PRODUCTION ? {} : pinoOptions);

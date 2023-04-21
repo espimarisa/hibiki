@@ -1,7 +1,6 @@
 /**
  * @file index.d.ts
  * @description Global Hibiki typings
- * @typedef index
  */
 
 // "Private" import loophole for global types
