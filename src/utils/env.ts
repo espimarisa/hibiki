@@ -18,4 +18,5 @@ export const env = cleanEnv(process.env, {
   BOT_TOKEN: str({ default: undefined }),
   TEST_GUILD_ID: str({ default: undefined }),
   DEFAULT_LOCALE: str({ default: "en-GB" }),
+  SENTRY_DSN: str({ default: undefined }),
 });
