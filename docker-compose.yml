@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    hostname: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: hibiki
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  hibiki:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hibiki
+    depends_on:
+      - postgres
+    ports:
+      - "4000:4000"
+    restart: always
+
+volumes:
+  postgres-data:
+  hibiki:

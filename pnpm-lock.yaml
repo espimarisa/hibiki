@@ -28,9 +28,6 @@ dependencies:
   pino-pretty:
     specifier: ^10.0.0
     version: 10.0.0
-  prisma:
-    specifier: ^4.13.0
-    version: 4.13.0
 
 devDependencies:
   '@sysdotini/eslint-config':
@@ -60,6 +57,9 @@ devDependencies:
   prettier:
     specifier: ^2.8.7
     version: 2.8.7
+  prisma:
+    specifier: ^4.13.0
+    version: 4.13.0
   rimraf:
     specifier: ^5.0.0
     version: 5.0.0
@@ -234,7 +234,6 @@ packages:
   /@prisma/engines@4.13.0:
     resolution: {integrity: sha512-HrniowHRZXHuGT9XRgoXEaP2gJLXM5RMoItaY2PkjvuZ+iHc0Zjbm/302MB8YsPdWozAPHHn+jpFEcEn71OgPw==}
     requiresBuild: true
-    dev: false
 
   /@projectdysnomia/dysnomia@0.1.1:
     resolution: {integrity: sha512-6865gwvTNMNrL5xOUMgJ9Uf8i+S1lx+7nHYYd6rstTd2WayUBJFSkxdYTHu9hTqbLdDvmdFzaY6sNJbrcK01Iw==}
@@ -2356,7 +2355,6 @@ packages:
     requiresBuild: true
     dependencies:
       '@prisma/engines': 4.13.0
-    dev: false
 
   /process-warning@2.2.0:
     resolution: {integrity: sha512-/1WZ8+VQjR6avWOgHeEPd7SDQmFQ1B5mC1eRXsCm5TarlNmx/wCsa5GEaxGm05BORRtyG/Ex/3xq3TuRvq57qg==}
