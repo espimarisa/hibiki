@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   # Builds everything
-  build:
+  build-eleventy:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -53,7 +53,7 @@ jobs:
 
   # Deploy to GH pages
   deploy:
-    needs: build
+    needs: build-eleventy
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
