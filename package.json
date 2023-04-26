@@ -21,6 +21,9 @@
   },
   "scripts": {
     "build": "tsc",
+    "build:eleventy": "cross-env NODE_ENV=production ELEVENTY_ENV=production eleventy",
+    "build:css": "cross-env NODE_ENV=production postcss './_site/css/**/*.css' -d './_site/css'",
+    "build:web": "pnpm run build:eleventy && pnpm run build:css",
     "dev": "concurrently \"pnpm prisma:push\" \"nodemon ./src/index.ts\"",
     "format": "prettier --write './**/**/*.{js,json,md,ts,yml}'",
     "prebuild": "rimraf ./dist/",
@@ -29,9 +32,13 @@
     "prisma:push": "prisma db push",
     "prisma:reset": "prisma migrate reset",
     "start": "pnpm build && pnpm prisma:push && cross-env NODE_ENV=production node --no-warnings ./dist/index.js",
-    "test": "pnpm prisma:generate && tsc --noEmit && eslint . && prettier --c ."
+    "test": "pnpm prisma:generate && tsc --noEmit && eslint . && prettier --c .",
+    "web:dev:css": "cross-env NODE_ENV=development postcss './_site/css/**/*.css' -d './_site/css' -w",
+    "web:dev:eleventy": "cross-env NODE_ENV=development ELEVENTY_ENV=development eleventy --watch --serve",
+    "web:dev": "cross-env concurrently \"pnpm run web:dev:eleventy\" \"pnpm run web:dev:css\""
   },
   "dependencies": {
+    "@fontsource/atkinson-hyperlegible": "^4.5.11",
     "@prisma/client": "^4.13.0",
     "@projectdysnomia/dysnomia": "^0.1.1",
     "@sentry/node": "^7.49.0",
@@ -40,7 +47,7 @@
     "discord-hybrid-sharding": "^2.1.2",
     "dotenv": "^16.0.3",
     "envalid": "^7.3.1",
-    "pg": "^8.10.0",
+    "modern-normalize": "^1.1.0",
     "pino": "^8.11.0",
     "pino-pretty": "^10.0.0"
   },
@@ -51,13 +58,23 @@
     "zlib-sync": "^0.1.8"
   },
   "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@fullhuman/postcss-purgecss": "^5.0.0",
+    "@sardine/eleventy-plugin-tinyhtml": "^0.2.0",
     "@sysdotini/eslint-config": "^3.1.3",
     "@types/node": "^18.15.12",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
+    "autoprefixer": "^10.4.14",
     "concurrently": "^8.0.1",
+    "cssnano": "^6.0.0",
+    "eleventy-plugin-external-links": "^1.1.2",
+    "eleventy-sass": "^2.2.1",
     "eslint-import-resolver-typescript": "^3.5.5",
     "nodemon": "^2.0.22",
+    "postcss": "^8.4.23",
+    "postcss-cli": "^10.1.0",
+    "postcss-import": "^15.1.0",
     "prettier": "^2.8.7",
     "prisma": "^4.13.0",
     "rimraf": "^5.0.0",
