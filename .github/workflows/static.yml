@@ -50,7 +50,7 @@ jobs:
       - name: Eleventy Build
         run: |
           pnpm install
-          pnpm build:eleventy
+          pnpm build:web
         env:
           CI: true
 
