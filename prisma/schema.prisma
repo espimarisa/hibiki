@@ -7,8 +7,7 @@ generator client {
 
 // Database options
 datasource db {
-  // The provider to use. You can change this, but YMMV. Good luck lol
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -18,7 +17,7 @@ model GuildConfig {
   id Int @id @default(autoincrement())
 
   // The guild's ID
-  guild_id String? @unique @db.VarChar()
+  guild_id String? @unique
 
   // The custom locale set for all new guild members to use
   locale String? @unique
@@ -30,7 +29,7 @@ model UserConfig {
   id Int @id @default(autoincrement())
 
   // The user's ID
-  user_id String? @unique @db.VarChar()
+  user_id String? @unique
 
   // The custom locale set for use by the user
   locale String? @unique
