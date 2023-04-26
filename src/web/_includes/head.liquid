@@ -1,8 +1,8 @@
 <!-- General stuff -->
 <meta charset="utf-8" />
-<meta content="#dc267f" name="theme-color" />
-<meta content="#dc267f" name="msapplication-navbutton-color" />
-<meta content="#dc267f" name="apple-mobile-web-app-status-bar-style" />
+<meta content="#ffb000" name="theme-color" />
+<meta content="#ffb000" name="msapplication-navbutton-color" />
+<meta content="#ffb000" name="apple-mobile-web-app-status-bar-style" />
 <meta content="width=device-width, initial-scale=1" name="viewport" />
 
 <!-- Resources -->
@@ -14,68 +14,35 @@ rel="stylesheet"
 <!-- Default SEO stuff -->
 <meta content="{{ description }}" name="description" />
 <meta content="index,follow" name="robots" />
-<meta content="Espi" name="author" />
-<link href="https://espi.me/" rel="canonical" />
+<meta content="Hibiki" name="author" />
+<link href="https://hibiki.app" rel="canonical" />
 
 <!-- Open Graph SEO -->
-<meta content="https://espi.me/" property="og:url" />
+<meta content="https://hibiki.app" property="og:url" />
 <meta content="{{ description }}" property="og:description" />
 <meta content="{{ title }}" property="og:title" />
 <meta content="article" property="og:type" />
 
 <!-- Twitter SEO -->
-<meta content="https://espi.me/" name="twitter:url" />
+<meta content="https://hibiki.app" name="twitter:url" />
 <meta content="{{ description }}" name="twitter:description" />
 <meta content="@sysdotini" name="twitter:site" />
 <meta content="{{ title }}" name="twitter:title" />
 <meta content="summary_large_image" name="twitter:card" />
 
 <!-- Open graph favicon -->
-<meta content="https://www.espi.me/img/ini-256x256.png" property="og:image" />
+<meta content="{{ "./img/logo-256x256.png" | url }}" property="og:image" />
 
 <!-- Twitter favicon -->
-<meta content="https://www.espi.me/img/ini-256x256.png" name="twitter:image" />
+<meta content="{{ "./img/logo-256x256.png" | url }}" name="twitter:image" />
 
 <!-- Browser favicon -->
 <link
-href="{{ "./img/ini-256x256.png" | url }}"
+href="{{ "./img/logo-256x256.png" | url }}"
   rel="icon"
   type="image/png" />
 
-<!-- Apple touch icon -->
-<link
-rel="apple-touch-icon"
-  sizes="180x180"
-  href="{{ "./img/favicons/apple-touch-icon.png" | url }}" />
-
-<!-- 32x32 icon -->
-<link
-rel="icon"
-  type="image/png"
-  sizes="32x32"
-  href="{{ "./img/favicons/favicon-32x32.png" | url }}" />
-
-<!-- 16x16 icon  -->
-<link
-rel="icon"
-  type="image/png"
-  sizes="16x16"
-  href="{{ "./img/favicons/favicon-16x16.png" | url }}" />
-
-<!-- WebManifest -->
-<link rel="manifest" href="{{ "./img/favicons/site.webmanifest" | url }}" />
-
-<!-- Safari masked icon -->
-<link
-rel="mask-icon"
-  href="{{ "./img/favicons/safari-pinned-tab.svg" }}"
-  color="#5bbad5" />
-
 <!-- Shortcut icon -->
 <link rel="shortcut icon" href="{{ "./img/favicons/favicon.ico" | url }}" />
-
-<!-- Metro stuff...? -->
-<meta name="msapplication-TileColor" content="#ffc40d" />
-<meta name="msapplication-config" content="{{ "./img/favicons/browserconfig.xml" | url }}" />
 
 <title>{{ title }}</title>
