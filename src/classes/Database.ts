@@ -1,8 +1,3 @@
-/**
- * @file Database
- * @description Creates a new Database connection
- */
-
 import type { HibikiGuildConfig, HibikiUserConfig } from "../typings/database.js";
 import { PrismaClient } from "@prisma/client";
 import util from "node:util";
@@ -25,7 +20,7 @@ export class DatabaseManager {
       },
     });
 
-    if (!config || !config?.guild_id?.length) return;
+    if (!config?.guild_id?.length) return;
 
     try {
       // Parses the config and returns it
@@ -98,7 +93,7 @@ export class DatabaseManager {
       },
     });
 
-    if (!config || !config?.user_id?.length) return;
+    if (!config?.user_id?.length) return;
 
     try {
       // Parses the config and returns it

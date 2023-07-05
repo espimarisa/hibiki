@@ -1,8 +1,3 @@
-/**
- * @file env
- * @description Sanitizes and sets up our environment variables
- */
-
 import * as dotenv from "dotenv";
 import { cleanEnv, str } from "envalid";
 

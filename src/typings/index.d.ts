@@ -1,10 +1,5 @@
-/**
- * @file index.d.ts
- * @description Global Hibiki typings
- */
-
 // "Private" import loophole for global types
-type PrivateEventListeners = import("@projectdysnomia/dysnomia").EventListeners;
+type PrivateEventListeners = import("discord.js").ClientEvents;
 
 // An individual event listener
 type HibikiEventListener = keyof PrivateEventListeners;

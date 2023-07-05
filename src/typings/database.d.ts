@@ -1,8 +1,3 @@
-/**
- * @file database.d.ts
- * @description Typings for database items
- */
-
 import type { HibikiLocaleCode } from "./locales.js";
 
 interface HibikiGuildConfig {

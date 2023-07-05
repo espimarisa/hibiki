@@ -1,8 +1,3 @@
-/**
- * @file Fetch
- * @description A custom wrapper around native fetch for Hibiki
- */
-
 import { hibikiVersion } from "./constants.js";
 
 export default async (url: string, options?: RequestInit): Promise<Response | undefined> => {

@@ -1,18 +1,13 @@
-/**
- * @file Ping
- * @description Ping command
- */
-
-import type { CommandInteraction } from "@projectdysnomia/dysnomia";
+import type { ChatInputCommandInteraction } from "discord.js";
 import { HibikiCommand } from "../classes/Command.js";
 import { HibikiColors } from "../utils/constants.js";
 
 export class HibikiPingCommand extends HibikiCommand {
   description = "Checks the current status and latency.";
 
-  public async runWithInteraction(interaction: CommandInteraction) {
+  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
     // Sends the initial message
-    await interaction.createFollowup({
+    await interaction.followUp({
       embeds: [
         {
           title: interaction.getString("COMMAND_PING_PINGING"),
@@ -22,11 +17,8 @@ export class HibikiPingCommand extends HibikiCommand {
       ],
     });
 
-    // Gets the original message
-    const originalMessage = await interaction.getOriginalMessage();
-
     // Sends the edited timestamp
-    await interaction.editOriginalMessage({
+    await interaction.editReply({
       embeds: [
         {
           title: interaction.getString("COMMAND_PING_PONG"),
@@ -34,12 +26,17 @@ export class HibikiPingCommand extends HibikiCommand {
           fields: [
             {
               name: interaction.getString("COMMAND_PING_UPTIME"),
-              value: `${new Date(this.bot.uptime).getMinutes()}`,
+              value: `${Math.round(this.bot.ws.client.uptime as number) / 60_000}`,
               inline: true,
             },
             {
-              name: interaction.getString("COMMAND_PING_LATENCY"),
-              value: `${originalMessage.createdAt - interaction.createdAt}ms`,
+              name: interaction.getString("COMMAND_PING_API"),
+              value: `${interaction.client.ws.ping}`,
+              inline: true,
+            },
+            {
+              name: interaction.getString("COMMAND_PING_ROUNDTRIP"),
+              value: `${Math.round(Date.now() - interaction.createdTimestamp)}`,
               inline: true,
             },
           ],

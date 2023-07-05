@@ -1,8 +1,3 @@
-/**
- * @file Constants
- * @description Globally used strings and regexes
- */
-
 import { sanitizedEnv } from "./env.js";
 
 // A regex for file types that can be modules
