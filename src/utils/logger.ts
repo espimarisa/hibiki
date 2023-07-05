@@ -1,8 +1,3 @@
-/**
- * @file Logger
- * @description Handles console logging and transports
- */
-
 import { sanitizedEnv } from "./env.js";
 import { pino } from "pino";
 const IS_PRODUCTION = sanitizedEnv.isProduction;

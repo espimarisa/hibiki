@@ -3,7 +3,10 @@
   "include": ["./src/**/**/*", "./src/**/**/*.json", "*.ts"],
 
   "ts-node": {
-    "esm": true
+    "esm": true,
+    // TODO: Stop doing this! This is a temp fix to a ts-node issue
+    "transpileOnly": true,
+    "files": true
   },
 
   "compilerOptions": {

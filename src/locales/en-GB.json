@@ -9,5 +9,6 @@
   "COMMAND_PING_PONG": "🏓 Pong!",
   "COMMAND_PING_ERROR": "If you see this for more than a few seconds, something has gone seriously wrong...",
   "COMMAND_PING_UPTIME": "Client Uptime",
-  "COMMAND_PING_LATENCY": "Roundtrip Latency"
+  "COMMAND_PING_ROUNDTRIP": "Roundtrip Latency",
+  "COMMAND_PING_API": "API Latency"
 }

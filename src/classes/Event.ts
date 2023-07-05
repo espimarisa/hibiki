@@ -1,8 +1,3 @@
-/**
- * @file Event
- * @description Base class for all Hibiki events to extend from
- */
-
 import type { HibikiClient } from "./Client.js";
 
 // A callable type for an abstract Hibiki event, including the constructor

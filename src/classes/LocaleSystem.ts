@@ -1,8 +1,3 @@
-/**
- * @file LocaleSystem
- * @description Handles loading, parsing, and getting locales
- */
-
 import type { HibikiClient } from "./Client.js";
 import type { getString, HibikiLocaleCode, HibikiDictionaryStrings } from "../typings/locales.js";
 import type { PathLike } from "node:fs";

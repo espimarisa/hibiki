@@ -6,7 +6,7 @@
   "ext": "ts",
   "env": {
     "TS_NODE_FILES": true,
-    "NODE_OPTIONS": "--loader ts-node/esm",
+    "NODE_OPTIONS": "--loader ts-node/esm -r ts-node/register",
     "NODE_ENV": "development"
   }
 }

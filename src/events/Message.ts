@@ -1,10 +1,5 @@
-/**
- * @file Message
- * @description Handles legacy message-based commands
- */
-
 import { HibikiEvent } from "../classes/Event.js";
-import { Message } from "@projectdysnomia/dysnomia";
+import { Message } from "discord.js";
 
 export class HibikiMessageEvent extends HibikiEvent {
   events: HibikiEventListener[] = ["messageCreate"];
