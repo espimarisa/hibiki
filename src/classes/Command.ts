@@ -1,15 +1,10 @@
-/**
- * @file HibikiCommand
- * @description Base class for all commands to extend from
- */
-
 import type { HibikiClient } from "./Client.js";
 import type { APIApplicationCommandOption } from "discord-api-types/v10";
-import { Constants, CommandInteraction, type ApplicationCommandTypes } from "@projectdysnomia/dysnomia";
+import { CommandInteraction, ApplicationCommandType } from "discord.js";
 
 export abstract class HibikiCommand {
   // The type of interaction type. Defaults to CHAT_INPUT.
-  interactionType?: ApplicationCommandTypes = Constants.ApplicationCommandTypes.CHAT_INPUT;
+  interactionType?: ApplicationCommandType = ApplicationCommandType.ChatInput;
 
   // An array of interaction options
   options?: APIApplicationCommandOption[];
@@ -27,7 +22,7 @@ export abstract class HibikiCommand {
   public toJSON() {
     return {
       name: this.name.toLowerCase(),
-      description: this.interactionType === Constants.ApplicationCommandTypes.CHAT_INPUT ? this.description : undefined,
+      description: this.interactionType === ApplicationCommandType.ChatInput ? this.description : undefined,
       options: this.options,
       type: this.interactionType,
     };

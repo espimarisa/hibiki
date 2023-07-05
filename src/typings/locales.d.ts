@@ -1,8 +1,3 @@
-/**
- * @file locales.d.ts
- * @description Pulls strings from the default dictionary and generates typings
- */
-
 import * as defaultLocaleFile from "../locales/en-GB.json";
 const en = defaultLocaleFile.default;
 

@@ -1,15 +1,14 @@
-/**
- * @file Loader
- * @description Loads commands and registers slash commands
- */
-
 import type { HibikiClient } from "../classes/Client.js";
 import type { CallableHibikiCommand } from "../classes/Command.js";
 import type { CallableHibikiEvent, HibikiEvent } from "../classes/Event.js";
-import type { ApplicationCommandStructure } from "@projectdysnomia/dysnomia";
+import type {} from "discord.js";
 import type { PathLike } from "node:fs";
 import { moduleFiletypeRegex } from "./constants.js";
+import { sanitizedEnv } from "./env.js";
 import { logger } from "./logger.js";
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v10";
+import { json } from "envalid";
 import fs from "node:fs";
 import util from "node:util";
 
@@ -82,12 +81,15 @@ export function registerInteractions(bot: HibikiClient, guild?: DiscordSnowflake
     jsonData.push(command.toJSON());
   }
 
+  const rest = new REST({ version: "10" }).setToken(sanitizedEnv.BOT_TOKEN);
+  if (!rest) throw new Error("Failed to create a Discord REST instance.");
+
   // Registers commands to a specific guild
   if (guild) {
-    bot.bulkEditGuildCommands(guild, jsonData as ApplicationCommandStructure[]);
+    rest.put(Routes.applicationGuildCommands(bot.user.id, guild), { body: json });
   } else {
     // Registers commands to the entire app
-    bot.bulkEditCommands(jsonData as ApplicationCommandStructure[]);
+    rest.put(Routes.applicationCommands(bot.user.id), { body: jsonData });
   }
 }
 
