@@ -42,8 +42,7 @@
     "i18next": "^23.2.11",
     "i18next-fs-backend": "^2.1.5",
     "pino": "^8.14.1",
-    "pino-pretty": "^10.0.1",
-    "tsx": "^3.12.7"
+    "pino-pretty": "^10.0.1"
   },
   "optionalDependencies": {
     "erlpack": "github:discord/erlpack",
@@ -66,6 +65,7 @@
     "prettier": "^3.0.0",
     "prisma": "^5.0.0",
     "rimraf": "^5.0.1",
+    "tsx": "^3.12.7",
     "typescript": "^5.1.6"
   }
 }
