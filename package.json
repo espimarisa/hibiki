@@ -1,55 +1,47 @@
 {
   "type": "module",
   "private": "true",
-  "name": "@sysdotini/hibiki",
+  "name": "@espimarisa/hibiki",
   "version": "6.0.0-alpha",
   "description": "A Discord bot jam-packed with useful utilities for everyone!",
   "license": "zlib",
   "author": "Espi Marisa <espi@riseup.net> (https://espi.me)",
-  "homepage": "https://github.com/sysdotini/hibiki#readme",
+  "homepage": "https://github.com/espimarisa/hibiki#readme",
   "packageManager": "pnpm@8.0.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sysdotini/hibiki.git"
+    "url": "git+https://github.com/espimarisa/hibiki.git"
   },
   "bugs": {
-    "url": "https://github.com/sysdotini/hibiki/issues"
+    "url": "https://github.com/espimarisa/hibiki/issues"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.0.0",
     "pnpm": ">=8.0.0"
   },
   "scripts": {
     "build": "tsc",
-    "build:eleventy": "cross-env NODE_ENV=production ELEVENTY_ENV=production eleventy",
-    "build:css": "cross-env NODE_ENV=production postcss './_site/css/**/*.css' -d './_site/css'",
-    "build:web": "pnpm run build:eleventy && pnpm run build:css",
-    "dev": "concurrently \"pnpm prisma:push\" \"nodemon ./src/index.ts\"",
+    "dev": "concurrently \"pnpm prisma:push\" \"cross-env NODE_ENV=development tsx ./src/index.ts\"",
     "format": "prettier --write './**/**/*.{js,json,md,ts,yml}'",
     "prebuild": "rimraf ./dist/",
-    "preinstall": "npx -y only-allow pnpm",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:reset": "prisma migrate reset",
     "start": "pnpm build && pnpm prisma:push && cross-env NODE_ENV=production node --no-warnings ./dist/index.js",
-    "test": "pnpm prisma:generate && tsc --noEmit && eslint . && prettier --c .",
-    "web:dev:css": "cross-env NODE_ENV=development postcss './_site/css/**/*.css' -d './_site/css' -w",
-    "web:dev:eleventy": "cross-env NODE_ENV=development ELEVENTY_ENV=development eleventy --watch --serve",
-    "web:dev": "cross-env concurrently \"pnpm run web:dev:eleventy\" \"pnpm run web:dev:css\""
+    "test": "pnpm prisma:generate && tsc --noEmit && eslint . && prettier --c ."
   },
   "dependencies": {
     "@discordjs/rest": "^1.7.1",
-    "@fontsource/atkinson-hyperlegible": "^4.5.11",
-    "@prisma/client": "^4.16.1",
-    "@sentry/node": "^7.56.0",
+    "@prisma/client": "^5.0.0",
+    "@sentry/node": "^7.59.3",
     "cross-env": "^7.0.3",
-    "discord-api-types": "^0.37.46",
+    "discord-api-types": "^0.37.50",
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
     "envalid": "^7.3.1",
-    "modern-normalize": "^1.1.0",
     "pino": "^8.14.1",
-    "pino-pretty": "^10.0.0"
+    "pino-pretty": "^10.0.1",
+    "tsx": "^3.12.7"
   },
   "optionalDependencies": {
     "erlpack": "github:discord/erlpack",
@@ -58,27 +50,13 @@
     "zlib-sync": "^0.1.8"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^2.0.1",
-    "@fullhuman/postcss-purgecss": "^5.0.0",
-    "@sardine/eleventy-plugin-tinyhtml": "^0.2.0",
-    "@sysdotini/eslint-config": "^3.1.3",
-    "@types/node": "^18.16.18",
-    "@typescript-eslint/eslint-plugin": "^5.60.1",
-    "@typescript-eslint/parser": "^5.60.1",
-    "autoprefixer": "^10.4.14",
+    "@types/node": "^20.4.2",
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
+    "@typescript-eslint/parser": "^6.1.0",
     "concurrently": "^8.2.0",
-    "cssnano": "^6.0.1",
-    "eleventy-plugin-external-links": "^1.1.2",
-    "eleventy-sass": "^2.2.3",
-    "eslint-import-resolver-typescript": "^3.5.5",
-    "nodemon": "^2.0.22",
-    "postcss": "^8.4.24",
-    "postcss-cli": "^10.1.0",
-    "postcss-import": "^15.1.0",
-    "prettier": "^2.8.8",
-    "prisma": "^4.16.1",
+    "prettier": "^3.0.0",
+    "prisma": "^5.0.0",
     "rimraf": "^5.0.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.1.5"
+    "typescript": "^5.1.6"
   }
 }

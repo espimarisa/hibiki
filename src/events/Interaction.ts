@@ -10,7 +10,7 @@ export class HibikiInteractionEvent extends HibikiEvent {
 
   public async run(_event: HibikiEventListener[], interaction: CommandInteraction) {
     // Don't run any interactions that aren't commands or that don't actually exist
-    if (!interaction || !interaction?.commandName) return;
+    if (!interaction?.commandName) return;
 
     // Searches for the right command to run
     const command = this.bot.commands.get(interaction.commandName);
@@ -43,7 +43,7 @@ export class HibikiInteractionEvent extends HibikiEvent {
             color: HibikiColors.ERROR,
             footer: {
               // TODO: Localise
-              text: "Found a bug? - https://github.com/sysdotini/hibiki/issues",
+              text: "Found a bug? - https://github.com/espimarisa/hibiki/issues",
             },
           },
         ],

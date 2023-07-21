@@ -81,7 +81,7 @@ export function registerInteractions(bot: HibikiClient, guild?: DiscordSnowflake
     jsonData.push(command.toJSON());
   }
 
-  const rest = new REST({ version: "10" }).setToken(sanitizedEnv.BOT_TOKEN);
+  const rest = new REST({ version: "10" }).setToken(sanitizedEnv.TOKEN);
   if (!rest) throw new Error("Failed to create a Discord REST instance.");
 
   // Registers commands to a specific guild
