@@ -4,11 +4,11 @@
 [![License][badge-license]][license]
 
 [license]: LICENSE "Hibiki is licensed under the zlib/libpng license"
-[workflow]: https://github.com/sysdotini/hibiki/actions?query=workflow%3Apush "GitHub workflow showing latest push status"
+[workflow]: https://github.com/espimarisa/hibiki/actions?query=workflow%3Apush "GitHub workflow showing latest push status"
 
 <!-- Badges -->
 
-[badge-workflow]: https://img.shields.io/github/actions/workflow/status/sysdotini/hibiki/push.yml?branch=develop "Shields.io badge for workflow status"
+[badge-workflow]: https://img.shields.io/github/actions/workflow/status/espimarisa/hibiki/push.yml?branch=develop "Shields.io badge for workflow status"
 [badge-license]: https://img.shields.io/badge/license-zlib-orange.svg "Shields.io badge for the zlib license"
 
 Hibiki is a a Discord bot jam-packed with useful utilities for everyone written in [TypeScript][typescript].
@@ -54,7 +54,7 @@ When added or removed from your server, the following information will be logged
 To start a data deletion request, please contact the application maintainer using a link below. In order to process your request, please state why you're contacting, what data you wish to be removed, and your User or Server ID.
 
 - Discord - `espi#0001`
-- Telegram - [@sysdotini][espi-telegram]
+- Telegram - [@espimarisa][espi-telegram]
 - Email - [espi@riseup.net][espi-email]
 
 ## License
@@ -65,6 +65,6 @@ To start a data deletion request, please contact the application maintainer usin
 [invite]: https://discord.com/oauth2/authorize?&client_id=864687346977210368&scope=bot%20applications.commands&permissions=1581116663 "Invite the official Hibiki instance"
 [discord_tos]: https://discord.com/terms "Discord's Terms of Service"
 [discord_cg]: https://discord.com/guidelines "Discord's Community Guidelines"
-[espi-telegram]: https://t.me/sysdotini "Contact Espi (sysdotini) on Telegram"
+[espi-telegram]: https://t.me/espimarisa "Contact Espi (espimarisa) on Telegram"
 [espi-email]: mailto:espi@riseup.net "A mailto link redirecting to the project owner's email"
 [license]: LICENSE.md "zlib/libpng license file"

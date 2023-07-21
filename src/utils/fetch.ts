@@ -8,7 +8,7 @@ export default async (url: string, options?: RequestInit): Promise<Response | un
       ...options,
       headers: {
         ...options?.headers,
-        "User-Agent": `hibiki/${hibikiVersion} (https://github.com/sysdotini/hibiki)`,
+        "User-Agent": `hibiki/${hibikiVersion} (https://github.com/espimarisa/hibiki)`,
       },
     });
 

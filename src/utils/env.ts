@@ -7,7 +7,7 @@ dotenv.config();
 // Cleans our environment variables up
 export const sanitizedEnv = cleanEnv(process.env, {
   // Hibiki config items
-  BOT_TOKEN: str({ default: undefined }),
+  TOKEN: str({ default: undefined }),
   DEFAULT_LOCALE: str({ default: "en-GB" }),
   TEST_GUILD_ID: str({ default: undefined }),
   SENTRY_DSN: str({ default: undefined }),
