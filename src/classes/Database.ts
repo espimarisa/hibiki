@@ -1,4 +1,3 @@
-import type { HibikiGuildConfig, HibikiUserConfig } from "../typings/database.js";
 import { PrismaClient } from "@prisma/client";
 import util from "node:util";
 

@@ -1,6 +1,5 @@
-import { sanitizedEnv } from "./env.js";
+import { IS_PRODUCTION } from "./constants.js";
 import { pino } from "pino";
-const IS_PRODUCTION = sanitizedEnv.isProduction;
 
 // Options for the pino logger
 const pinoOptions: pino.LoggerOptions = {
