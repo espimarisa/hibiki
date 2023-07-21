@@ -1,9 +1,3 @@
-# Configs
-config.json
-config.toml
-application.yml
-config.ts
-
 # Binaries
 *.jar
 *.exe
@@ -219,10 +213,3 @@ Temporary Items
 # Svelte
 .svelte-kit
 .routify
-
-# Static generated files
-src/web/public/**
-
-# Static website
-_site/*
-

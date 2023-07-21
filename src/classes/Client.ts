@@ -40,7 +40,7 @@ export class HibikiClient extends Client {
   // Starts Hibiki
   public init() {
     try {
-      this.login(sanitizedEnv.BOT_TOKEN);
+      this.login(sanitizedEnv.TOKEN);
 
       this.once("ready", async () => {
         // Loads all commands and events
