@@ -1,4 +1,4 @@
-# Hibiki v6.0.0-alpha
+# Hibiki Testing
 
 [![Build][badge-workflow]][workflow]
 [![License][badge-license]][license]
@@ -23,37 +23,36 @@ You may invite the official Hibiki instance using [this Discord invite][invite].
 
 > "Application" or "official instance" refers to the Hibiki bot application with the ID `493904957523623936`.
 
-**Updated on April 18th, 2023**
+**Updated on July 11th, 2023**
 
 - Do not try to intentionally crash, break, or exploit the application
-- If you find a critical, application-breaking bug, you must report it
-- Usage must obey all laws in the **United States of America** (our host is USA-based)
+- If you find a critical, application-breaking bug, you must report it to the maintainers
+- Usage must obey all laws in the **United States of America** or where the application is hosted
 - Data processed by the application must follow Discord's **[Terms of Service][discord_tos]** and **[Community Guidelines][discord_cg]**
-- Bot collection, bot listing servers, or bot listing websites are **strictly not allowed** to utilize the application
 
 ## Data Privacy
 
 > **_No personal or identifying information is stored._**
 
-**Updated on April 18th, 2023**
+**Updated on July 11th, 2023**
 
-The following types of data can be stored **on-demand** when some **features are ran** in order for some of our features to work correctly.
+The following types of data can be stored **on-demand** in order for some of our features to work correctly.
 
 - **User ID(s)**: A Discord ID unique to your account
 - **Server ID(s)**: A Discord ID unique to your server
-- **Message ID(s)**: A message ID corresponding to a message
+- **Message ID(s)**: A message ID identifying a message
 - **Command Response(s)**: Text responses in slash-commands
 
-When added or removed from your server, the following information will be logged to a **private** channel that only the application maintainer can view:
+When added or removed from your server, the following information will be logged to a private log that only the application maintainers can view:
 
 - The server's creation date
 - The server name, icon, and ID
-- The server owner's username, discriminator, and ID
-- Total member count at the time of addition/removal
+- The server owner's username, possible discriminator, and ID
+- The total server member count at the time of addition or removal
 
-To start a data deletion request, please contact the application maintainer using a link below. In order to process your request, please state why you're contacting, what data you wish to be removed, and your User or Server ID.
+To start a data deletion request, please contact the application maintainer using a link below. In order to process your request, please state why you're contacting, what data you wish to be removed, and your Discord user or Discord server ID.
 
-- Discord - `espi#0001`
+- Discord - `@espimarisa`
 - Telegram - [@espimarisa][espi-telegram]
 - Email - [espi@riseup.net][espi-email]
 
@@ -62,7 +61,7 @@ To start a data deletion request, please contact the application maintainer usin
 [zlib/libpng][license]
 
 [typescript]: https://www.typescriptlang.org/ "TypeScript's website"
-[invite]: https://discord.com/oauth2/authorize?&client_id=864687346977210368&scope=bot%20applications.commands&permissions=1581116663 "Invite the official Hibiki instance"
+[invite]: https://discord.com/oauth2/authorize?&client_id=493904957523623936&scope=bot%20applications.commands&permissions=27929605435126 "Invite the official Hibiki instance"
 [discord_tos]: https://discord.com/terms "Discord's Terms of Service"
 [discord_cg]: https://discord.com/guidelines "Discord's Community Guidelines"
 [espi-telegram]: https://t.me/espimarisa "Contact Espi (espimarisa) on Telegram"
