@@ -61,7 +61,7 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike) {
     // Creates the event
     if (!eventToLoad) continue;
     const name = file.name.split(moduleFiletypeRegex)[0];
-    const event = new eventToLoad(bot, name) as HibikiEvent;
+    const event = new eventToLoad(bot, name);
 
     // Pushes the events and runs them
     bot.events.set(name, event);

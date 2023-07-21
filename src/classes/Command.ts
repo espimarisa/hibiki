@@ -16,7 +16,10 @@ export abstract class HibikiCommand {
   abstract description: string;
 
   // Creates a new Hibiki command
-  protected constructor(protected bot: HibikiClient, public name: string) {}
+  protected constructor(
+    protected bot: HibikiClient,
+    public name: string,
+  ) {}
 
   // Converts a Hibiki command to Discord API-compatible JSON
   public toJSON() {
@@ -33,6 +36,4 @@ export abstract class HibikiCommand {
 }
 
 // A callable type for an abstract Hibiki command
-export interface CallableHibikiCommand {
-  new (bot: HibikiClient, name: string): HibikiCommand;
-}
+export type CallableHibikiCommand = new (bot: HibikiClient, name: string) => HibikiCommand;

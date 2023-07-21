@@ -1,15 +1,15 @@
 import type { HibikiCommand } from "./Command.js";
 import type { HibikiEvent } from "./Event.js";
+import type { HibikiLocaleCode } from "../typings/locales.js";
 import { sanitizedEnv } from "../utils/env.js";
 import { loadCommands, loadEvents } from "../utils/loader.js";
 import { logger } from "../utils/logger.js";
+import { DatabaseManager } from "./Database.js";
+import { HibikiLocaleSystem } from "./LocaleSystem.js";
 import { Client, type ClientOptions } from "discord.js";
 import path from "node:path";
 import url from "node:url";
 import util from "node:util";
-import { DatabaseManager } from "./Database.js";
-import { HibikiLocaleSystem } from "./LocaleSystem.js";
-import type { HibikiLocaleCode } from "../typings/locales.js";
 
 // __dirname replacement in ESM
 const pathDirname = path.dirname(url.fileURLToPath(import.meta.url));
