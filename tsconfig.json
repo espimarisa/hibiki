@@ -1,6 +1,6 @@
 {
   "exclude": ["*.d.ts", "dist", "node_modules"],
-  "include": ["./src/**/**/*", "./src/**/**/*.json", "*.ts"],
+  "include": ["./locales/**.json", "./src/**/**/*", "./src/**/**/*.json", "*.ts"],
 
   "ts-node": {
     "esm": true,

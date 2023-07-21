@@ -24,7 +24,6 @@ export class HibikiClient extends Client {
 
   constructor(options: ClientOptions) {
     super(options);
-
     // Logs errors
     this.on("error", (err) => {
       logger.error(util.inspect(err));
