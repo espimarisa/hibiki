@@ -1,0 +1,30 @@
+{
+  "type": "module",
+  "private": "true",
+  "name": "@espimarisa/hibiki-web",
+  "version": "2.0.0-alpha",
+  "description": "The web UI for Hibiki!",
+  "license": "zlib",
+  "author": "Espi Marisa <espi@riseup.net> (https://espi.me)",
+  "homepage": "https://github.com/espimarisa/hibiki#readme",
+  "packageManager": "pnpm@8.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/espimarisa/hibiki.git"
+  },
+  "bugs": {
+    "url": "https://github.com/espimarisa/hibiki/issues"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "cross-env NODE_ENV=development tsx ./src/index.ts",
+    "start": "pnpm build && && cross-env NODE_ENV=production node --no-warnings ../../dist/web/src/index.js"
+  },
+  "dependencies": {},
+  "optionalDependencies": {},
+  "devDependencies": {}
+}
