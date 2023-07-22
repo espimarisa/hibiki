@@ -8,7 +8,6 @@ import { sanitizedEnv } from "./env.js";
 import { logger } from "./logger.js";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
-import { json } from "envalid";
 import fs from "node:fs";
 import util from "node:util";
 
@@ -86,7 +85,7 @@ export function registerInteractions(bot: HibikiClient, guild?: DiscordSnowflake
 
   // Registers commands to a specific guild
   if (guild) {
-    rest.put(Routes.applicationGuildCommands(bot.user.id, guild), { body: json });
+    rest.put(Routes.applicationGuildCommands(bot.user.id, guild), { body: jsonData });
   } else {
     // Registers commands to the entire app
     rest.put(Routes.applicationCommands(bot.user.id), { body: jsonData });
