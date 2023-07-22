@@ -4,107 +4,112 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  '@discordjs/rest':
-    specifier: ^1.7.1
-    version: 1.7.1
-  '@prisma/client':
-    specifier: ^5.0.0
-    version: 5.0.0(prisma@5.0.0)
-  '@sentry/node':
-    specifier: ^7.59.3
-    version: 7.59.3
-  cross-env:
-    specifier: ^7.0.3
-    version: 7.0.3
-  discord-api-types:
-    specifier: ^0.37.50
-    version: 0.37.50
-  discord.js:
-    specifier: ^14.11.0
-    version: 14.11.0
-  dotenv:
-    specifier: ^16.3.1
-    version: 16.3.1
-  envalid:
-    specifier: ^7.3.1
-    version: 7.3.1
-  i18next:
-    specifier: ^23.2.11
-    version: 23.2.11
-  i18next-fs-backend:
-    specifier: ^2.1.5
-    version: 2.1.5
-  pino:
-    specifier: ^8.14.1
-    version: 8.14.1
-  pino-pretty:
-    specifier: ^10.0.1
-    version: 10.0.1
+importers:
 
-optionalDependencies:
-  erlpack:
-    specifier: github:discord/erlpack
-    version: github.com/discord/erlpack/cbe76be04c2210fc9cb6ff95910f0937c1011d04
-  eventemitter3:
-    specifier: ^5.0.1
-    version: 5.0.1
-  sodium-native:
-    specifier: ^4.0.4
-    version: 4.0.4
-  zlib-sync:
-    specifier: ^0.1.8
-    version: 0.1.8
+  .:
+    devDependencies:
+      '@types/node':
+        specifier: ^20.4.2
+        version: 20.4.2
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^6.1.0
+        version: 6.1.0(@typescript-eslint/parser@6.1.0)(eslint@8.45.0)(typescript@5.1.6)
+      '@typescript-eslint/parser':
+        specifier: ^6.1.0
+        version: 6.1.0(eslint@8.45.0)(typescript@5.1.6)
+      concurrently:
+        specifier: ^8.2.0
+        version: 8.2.0
+      eslint:
+        specifier: ^8.45.0
+        version: 8.45.0
+      eslint-config-prettier:
+        specifier: ^8.8.0
+        version: 8.8.0(eslint@8.45.0)
+      eslint-import-resolver-typescript:
+        specifier: ^3.5.5
+        version: 3.5.5(@typescript-eslint/parser@6.1.0)(eslint-plugin-import@2.27.5)(eslint@8.45.0)
+      eslint-plugin-import:
+        specifier: ^2.27.5
+        version: 2.27.5(@typescript-eslint/parser@6.1.0)(eslint-import-resolver-typescript@3.5.5)(eslint@8.45.0)
+      eslint-plugin-node:
+        specifier: ^11.1.0
+        version: 11.1.0(eslint@8.45.0)
+      eslint-plugin-prettier:
+        specifier: ^5.0.0
+        version: 5.0.0(eslint-config-prettier@8.8.0)(eslint@8.45.0)(prettier@3.0.0)
+      eslint-plugin-unicorn:
+        specifier: ^47.0.0
+        version: 47.0.0(eslint@8.45.0)
+      prettier:
+        specifier: ^3.0.0
+        version: 3.0.0
+      prisma:
+        specifier: ^5.0.0
+        version: 5.0.0
+      rimraf:
+        specifier: ^5.0.1
+        version: 5.0.1
+      tsx:
+        specifier: ^3.12.7
+        version: 3.12.7
+      typescript:
+        specifier: ^5.1.6
+        version: 5.1.6
 
-devDependencies:
-  '@types/node':
-    specifier: ^20.4.2
-    version: 20.4.2
-  '@typescript-eslint/eslint-plugin':
-    specifier: ^6.1.0
-    version: 6.1.0(@typescript-eslint/parser@6.1.0)(eslint@8.45.0)(typescript@5.1.6)
-  '@typescript-eslint/parser':
-    specifier: ^6.1.0
-    version: 6.1.0(eslint@8.45.0)(typescript@5.1.6)
-  concurrently:
-    specifier: ^8.2.0
-    version: 8.2.0
-  eslint:
-    specifier: ^8.45.0
-    version: 8.45.0
-  eslint-config-prettier:
-    specifier: ^8.8.0
-    version: 8.8.0(eslint@8.45.0)
-  eslint-import-resolver-typescript:
-    specifier: ^3.5.5
-    version: 3.5.5(@typescript-eslint/parser@6.1.0)(eslint-plugin-import@2.27.5)(eslint@8.45.0)
-  eslint-plugin-import:
-    specifier: ^2.27.5
-    version: 2.27.5(@typescript-eslint/parser@6.1.0)(eslint-import-resolver-typescript@3.5.5)(eslint@8.45.0)
-  eslint-plugin-node:
-    specifier: ^11.1.0
-    version: 11.1.0(eslint@8.45.0)
-  eslint-plugin-prettier:
-    specifier: ^5.0.0
-    version: 5.0.0(eslint-config-prettier@8.8.0)(eslint@8.45.0)(prettier@3.0.0)
-  eslint-plugin-unicorn:
-    specifier: ^47.0.0
-    version: 47.0.0(eslint@8.45.0)
-  prettier:
-    specifier: ^3.0.0
-    version: 3.0.0
-  prisma:
-    specifier: ^5.0.0
-    version: 5.0.0
-  rimraf:
-    specifier: ^5.0.1
-    version: 5.0.1
-  tsx:
-    specifier: ^3.12.7
-    version: 3.12.7
-  typescript:
-    specifier: ^5.1.6
-    version: 5.1.6
+  apps/bot:
+    dependencies:
+      '@discordjs/rest':
+        specifier: ^1.7.1
+        version: 1.7.1
+      '@prisma/client':
+        specifier: ^5.0.0
+        version: 5.0.0(prisma@5.0.0)
+      '@sentry/node':
+        specifier: ^7.59.3
+        version: 7.59.3
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+      discord-api-types:
+        specifier: ^0.37.50
+        version: 0.37.50
+      discord.js:
+        specifier: ^14.11.0
+        version: 14.11.0
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.3.1
+      envalid:
+        specifier: ^7.3.1
+        version: 7.3.1
+      i18next:
+        specifier: ^23.2.11
+        version: 23.2.11
+      i18next-fs-backend:
+        specifier: ^2.1.5
+        version: 2.1.5
+      pino:
+        specifier: ^8.14.1
+        version: 8.14.1
+      pino-pretty:
+        specifier: ^10.0.1
+        version: 10.0.1
+    optionalDependencies:
+      erlpack:
+        specifier: github:discord/erlpack
+        version: github.com/discord/erlpack/cbe76be04c2210fc9cb6ff95910f0937c1011d04
+      eventemitter3:
+        specifier: ^5.0.1
+        version: 5.0.1
+      sodium-native:
+        specifier: ^4.0.4
+        version: 4.0.4
+      zlib-sync:
+        specifier: ^0.1.8
+        version: 0.1.8
+
+  apps/web: {}
 
 packages:
 

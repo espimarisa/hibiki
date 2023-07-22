@@ -1,20 +1,12 @@
 {
   "exclude": ["*.d.ts", "dist", "node_modules"],
-  "include": ["./locales/**.json", "./src/**/**/*", "./src/**/**/*.json", "*.ts"],
-
-  "ts-node": {
-    "esm": true,
-    // TODO: Stop doing this! This is a temp fix to a ts-node issue
-    "transpileOnly": true,
-    "files": true
-  },
 
   "compilerOptions": {
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "allowArbitraryExtensions": true,
     "alwaysStrict": true,
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "checkJs": false,
     "downlevelIteration": true,
     "declaration": false,
@@ -45,8 +37,6 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "sourceRoot": "./src",
-    "typeRoots": ["./src/typings"],
     "strict": true,
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
