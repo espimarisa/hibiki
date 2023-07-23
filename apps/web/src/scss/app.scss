@@ -1,5 +1,179 @@
+@import url("modern-normalize");
+@import url("@fontsource/atkinson-hyperlegible");
+
 html,
 body {
-  width: 100%;
-  height: 100%;
+  font-family:
+    "Atkinson Hyperlegible",
+    -apple-system,
+    system-ui,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  height: 100;
+  width: 100;
+  color: $black;
+  background-color: $white;
+  margin: 0;
+  padding: 0;
+}
+
+// Text styling
+
+a {
+  color: $black;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 3.5rem;
+}
+
+.subtitle {
+  font-weight: semibold;
+  font-size: 1.25rem;
+}
+
+.small-title {
+  font-weight: bold;
+  font-size: 2.5rem;
+}
+
+.small-subtitle {
+  font-weight: semibold;
+  font-size: 1.15rem;
+}
+
+// Utilities
+.centered {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+  float: right;
+}
+
+// Element styling
+.button {
+  color: $black;
+  border: 0.01rem solid $black;
+  border-radius: 0.25rem;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.2rem;
+  cursor: pointer;
+
+  a {
+    text-decoration: none;
+  }
+}
+.button:hover {
+  border: 0.01rem solid $primary;
+}
+
+// Main hero styling
+.large-hero {
+  max-height: 40vh;
+  padding: 5rem;
+  background-color: $grey;
+}
+
+// Main hero styling
+.small-hero {
+  padding: 5rem;
+  max-width: 50rem;
+}
+
+.navbar-right {
+  float: right;
+}
+
+// Navbar styles
+#navbar {
+  background-color: $white;
+  overflow: hidden;
+
+  a {
+    float: left;
+    text-align: center;
+    padding: 1rem;
+    text-decoration: none;
+    font-size: 1.15rem;
+  }
+
+  a:hover {
+    background-color: $grey;
+    color: black;
+  }
+}
+
+// Dark mode overrides
+@media (prefers-color-scheme: dark) {
+  // Body darkmode
+  html,
+  body {
+    color: $white;
+    background-color: $black;
+  }
+
+  // Title darkmode
+  .title {
+    text-shadow: 0 0 0.5rem $primary;
+  }
+
+  // Link darkmode
+  a {
+    color: $white;
+  }
+
+  // Button darkmode
+  .button {
+    border: 0.01rem solid $white;
+    color: $white;
+    background-color: $dark;
+  }
+
+  // Hero darkmode
+  .large-hero {
+    color: $white;
+    background-color: $dark;
+  }
+
+  // Navbar darkmode
+  #navbar {
+    background-color: $black;
+
+    a:hover {
+      background-color: $dark;
+      color: $white;
+    }
+  }
+}
+
+// Tablet padding support
+@media only screen and (max-width: 950px) {
+  .container {
+    padding-left: 2rem;
+  }
+}
+
+// Phone padding support
+@media only screen and (max-width: 600px) {
+  .container {
+    padding-left: 1rem;
+  }
+}
+
+// Small phone padding support
+@media (max-width: 382px) {
+  .container {
+    padding-left: 0.5rem;
+  }
 }
