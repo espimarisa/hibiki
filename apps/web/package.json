@@ -3,7 +3,7 @@
   "private": "true",
   "name": "@espimarisa/hibiki-web",
   "version": "2.0.0-alpha",
-  "description": "The web UI and dashboard for Hibiki!",
+  "description": "The web UI and dashboard for Hibiki.",
   "license": "zlib",
   "author": "Espi Marisa <espi@riseup.net> (https://espi.me)",
   "homepage": "https://github.com/espimarisa/hibiki#readme",
@@ -35,11 +35,13 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@fontsource/atkinson-hyperlegible": "^5.0.5",
     "@sveltejs/adapter-auto": "^2.1.0",
     "@sveltejs/kit": "^1.22.3",
     "eslint-plugin-svelte": "^2.32.4",
+    "modern-normalize": "^2.0.0",
     "prettier-plugin-svelte": "^3.0.0",
-    "sass": "^1.64.1",
+    "sass": "^1.63.6",
     "svelte": "^4.1.1",
     "svelte-check": "^3.4.6",
     "tslib": "^2.6.0",
