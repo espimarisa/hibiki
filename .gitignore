@@ -213,3 +213,6 @@ Temporary Items
 # Svelte
 .svelte-kit
 .routify
+/package
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
