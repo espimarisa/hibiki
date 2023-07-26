@@ -1,0 +1,35 @@
+{
+  "type": "module",
+  "private": "true",
+  "name": "@espimarisa/hibiki-shared",
+  "version": "1.0.0-alpha",
+  "description": "Modules shared between Hibiki's bot module and Hibiki's web module.",
+  "license": "zlib",
+  "author": "Espi Marisa <espi@riseup.net> (https://espi.me)",
+  "homepage": "https://github.com/espimarisa/hibiki#readme",
+  "packageManager": "pnpm@8.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/espimarisa/hibiki.git"
+  },
+  "bugs": {
+    "url": "https://github.com/espimarisa/hibiki/issues"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.0.0",
+    "dotenv": "^16.3.1",
+    "envalid": "^7.3.1",
+    "i18next": "^23.2.11",
+    "i18next-fs-backend": "^2.1.5",
+    "pino": "^8.14.1",
+    "pino-pretty": "^10.0.1",
+    "prisma": "^5.0.0"
+  }
+}
