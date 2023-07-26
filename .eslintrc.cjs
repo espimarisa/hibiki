@@ -130,7 +130,7 @@ module.exports = {
           order: "asc",
           caseInsensitive: true,
         },
-        groups: ["type", "parent", "sibling", "internal", "external", "builtin", "index", "object"],
+        groups: ["type", "internal", "parent", "sibling", "external", "builtin", "index", "object"],
       },
     ],
   },
@@ -169,7 +169,8 @@ module.exports = {
         // Enables TypeScript import resolving
         "import/resolver": {
           typescript: {
-            project: "./tsconfig.json",
+            alwaysTryTypes: true,
+            project: ["./tsconfig.json", "./packages/*/tsconfig.json"],
           },
         },
       },
