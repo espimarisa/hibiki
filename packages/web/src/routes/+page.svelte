@@ -1,10 +1,14 @@
+<script>
+  import { page } from "$app/stores";
+</script>
+
 <nav id="navbar">
   <a href="/invite">Invite</a>
   <a href="/support">Support</a>
   <a href="/donate">Donate</a>
   <a href="/github">GitHub</a>
   <div class="navbar-right">
-    <a href="/dashboard">Login</a>
+    <a href="/dashboard">Login with Discord</a>
   </div>
 </nav>
 
@@ -17,6 +21,15 @@
     <a href="/invite">Invite to server</a>
   </button>
   <br />
+</div>
+
+<!-- testing  -->
+<div>
+  {#if $page.data.session}
+    <p>hello {$page.data.session.user?.name}</p>
+    <p>your id is {$page.data.session.user?.id}</p>
+    <p>this session expires at {$page.data.session.expires}</p>
+  {/if}
 </div>
 
 <div class="small-hero">
