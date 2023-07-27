@@ -1,4 +1,4 @@
-# Hibiki Testing
+# Hibiki Development
 
 > This branch is experimental and not at all ready for self-hosting or production use.
 
