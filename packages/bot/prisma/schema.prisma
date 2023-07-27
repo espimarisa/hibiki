@@ -13,11 +13,8 @@ datasource db {
 
 // Guild configs
 model GuildConfig {
-  // Incrementing ID
-  id Int @id @default(autoincrement())
-
   // The guild's ID
-  guild_id String? @unique
+  guild_id String @id
 
   // The custom locale set for all new guild members to use
   locale String? @unique
@@ -25,11 +22,8 @@ model GuildConfig {
 
 // User configs
 model UserConfig {
-  // Incrementing ID
-  id Int @id @default(autoincrement())
-
   // The user's ID
-  user_id String? @unique
+  user_id String @id
 
   // The custom locale set for use by the user
   locale String? @unique
