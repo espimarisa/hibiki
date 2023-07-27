@@ -24,9 +24,10 @@
   },
   "scripts": {
     "build": "pnpm -r build",
+    "clean": "pnpm -r clean",
     "format": "prettier --write .",
-    "prebuild": "rimraf ./dist/",
-    "test": "tsc --noEmit && eslint . && prettier --c ."
+    "lint": "pnpm run -r lint",
+    "test": "pnpm run -r test"
   },
   "devDependencies": {
     "@types/node": "^20.4.5",
@@ -41,7 +42,6 @@
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-unicorn": "^48.0.1",
     "prettier": "^3.0.0",
-    "prisma": "^5.0.0",
     "rimraf": "^5.0.1",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6"
