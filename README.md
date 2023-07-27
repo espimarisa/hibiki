@@ -1,5 +1,7 @@
 # Hibiki Testing
 
+> This branch is experimental and not at all ready for self-hosting or production use.
+
 [![Build][badge-workflow]][workflow]
 [![License][badge-license]][license]
 

@@ -1,9 +1,9 @@
 import type { HibikiCommand } from "./Command.js";
 import type { HibikiEvent } from "./Event.js";
 import { loadCommands, loadEvents } from "../utils/loader.js";
+import { DatabaseManager } from "./Database.js";
 import { sanitizedEnv } from "$shared/env.js";
 import { logger } from "$shared/logger.js";
-import { DatabaseManager } from "$shared/prisma.js";
 import { Client, type ClientOptions } from "discord.js";
 import path from "node:path";
 import url from "node:url";
