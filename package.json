@@ -25,6 +25,7 @@
   "scripts": {
     "build": "pnpm -r build",
     "clean": "pnpm -r clean",
+    "deps:update": "pnpm up -r -L",
     "format": "prettier --write .",
     "lint": "pnpm run -r lint",
     "test": "pnpm run -r test"
@@ -35,7 +36,7 @@
     "@typescript-eslint/parser": "^6.2.0",
     "concurrently": "^8.2.0",
     "eslint": "^8.45.0",
-    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-prettier": "^8.9.0",
     "eslint-import-resolver-typescript": "^3.5.5",
     "eslint-plugin-import": "npm:eslint-plugin-i@2.27.5-4",
     "eslint-plugin-node": "^11.1.0",
