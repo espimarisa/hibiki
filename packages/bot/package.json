@@ -23,8 +23,9 @@
     "build": "pnpm prisma:generate && tsc",
     "clean": "rimraf ./dist",
     "dev": "concurrently \"pnpm prisma:push\" \"cross-env NODE_ENV=development tsx ./src/index.ts\"",
-    "lint": "prettier --c . && eslint .",
+    "lint": "prettier --c . && eslint . && pnpm prisma:lint",
     "prisma:generate": "prisma generate",
+    "prisma:lint": "prisma-lint",
     "prisma:push": "prisma db push",
     "prisma:reset": "prisma migrate reset",
     "start": "pnpm build && pnpm prisma:push && cross-env NODE_ENV=production node --no-warnings ../../dist/bot/src/index.js",
@@ -39,6 +40,9 @@
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
     "prisma": "^5.0.0"
+  },
+  "devDependencies": {
+    "prisma-lint": "^0.0.18"
   },
   "optionalDependencies": {
     "erlpack": "github:discord/erlpack",
