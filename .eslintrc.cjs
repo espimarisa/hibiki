@@ -170,19 +170,8 @@ module.exports = {
         "import/resolver": {
           typescript: {
             alwaysTryTypes: true,
-            project: ["./tsconfig.json", "./packages/*/tsconfig.json"],
           },
         },
-      },
-
-      /**
-       * Parser options
-       * NOTE: You may need to override this in your local .eslintrc!
-       * @type {Record<string, any>}
-       */
-
-      parserOptions: {
-        project: "./tsconfig.json",
       },
 
       /**

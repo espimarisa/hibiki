@@ -20,13 +20,15 @@
     "pnpm": ">=8.0.0"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "pnpm prisma:generate && tsc",
+    "clean": "rimraf ./dist",
     "dev": "concurrently \"pnpm prisma:push\" \"cross-env NODE_ENV=development tsx ./src/index.ts\"",
+    "lint": "prettier --c . && eslint .",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:reset": "prisma migrate reset",
     "start": "pnpm build && pnpm prisma:push && cross-env NODE_ENV=production node --no-warnings ../../dist/bot/src/index.js",
-    "test": "tsc --noEmit && eslint . && prettier --c ."
+    "test": "pnpm lint && pnpm build"
   },
   "dependencies": {
     "@discordjs/rest": "^1.7.1",
