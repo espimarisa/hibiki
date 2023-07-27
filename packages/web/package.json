@@ -26,7 +26,7 @@
     "dev": "vite dev",
     "lint": "prettier --c . && eslint .",
     "preview": "vite preview",
-    "test": "pnpm lint && pnpm check && pnpm build"
+    "test": "pnpm check && pnpm build && pnpm lint"
   },
   "dependencies": {
     "@auth/core": "^0.10.0",
