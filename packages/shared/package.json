@@ -20,7 +20,7 @@
     "pnpm": ">=8.0.0"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "clean": "rimraf ./dist/ .svelte-kit/",
     "lint": "prettier --c . && eslint .",
     "test": "pnpm lint && pnpm build"
