@@ -28,7 +28,7 @@
     "prisma:lint": "prisma-lint",
     "prisma:push": "prisma db push",
     "prisma:reset": "prisma migrate reset",
-    "start": "pnpm build && pnpm prisma:push && cross-env NODE_ENV=production node --no-warnings ../../dist/packages/bot/src/index.js",
+    "start": "pnpm build && pnpm prisma:push && cross-env NODE_ENV=production node --no-warnings ../dist/packages/bot/src/index.js",
     "test": "pnpm lint && pnpm build"
   },
   "dependencies": {
