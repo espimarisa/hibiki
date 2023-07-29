@@ -20,7 +20,7 @@
     "pnpm": ">=8.0.0"
   },
   "scripts": {
-    "build": "pnpm prisma:generate && tsc",
+    "build": "pnpm prisma:generate && tsc && tsc-alias",
     "clean": "rimraf ./dist",
     "dev": "concurrently \"pnpm prisma:push\" \"cross-env NODE_ENV=development tsx ./src/index.ts\"",
     "lint": "prettier --c . && eslint . && pnpm prisma:lint",
@@ -28,7 +28,7 @@
     "prisma:lint": "prisma-lint",
     "prisma:push": "prisma db push",
     "prisma:reset": "prisma migrate reset",
-    "start": "pnpm build && pnpm prisma:push && cross-env NODE_ENV=production node --no-warnings ../../dist/bot/src/index.js",
+    "start": "pnpm build && pnpm prisma:push && cross-env NODE_ENV=production node --no-warnings ../../dist/packages/bot/src/index.js",
     "test": "pnpm lint && pnpm build"
   },
   "dependencies": {
