@@ -1,6 +1,6 @@
 import type { CommandInteraction } from "discord.js";
 import { HibikiEvent } from "../classes/Event.js";
-import { HibikiColors } from "../utils/constants.js";
+import { HibikiColors } from "$shared/constants.js";
 import util from "node:util";
 
 export class HibikiInteractionEvent extends HibikiEvent {

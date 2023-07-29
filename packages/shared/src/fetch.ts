@@ -1,4 +1,4 @@
-import { hibikiVersion } from "$bot/utils/constants.js";
+import { hibikiVersion } from "$shared/constants.js";
 
 export default async (url: string, options?: RequestInit): Promise<Response | undefined> => {
   if (!url) return;
