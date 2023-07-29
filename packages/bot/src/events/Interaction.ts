@@ -1,6 +1,7 @@
 import type { CommandInteraction } from "discord.js";
 import { HibikiEvent } from "../classes/Event.js";
 import { HibikiColors } from "$shared/constants.js";
+import { defaultLocale } from "$shared/i18n.js";
 import util from "node:util";
 
 export class HibikiInteractionEvent extends HibikiEvent {
@@ -14,6 +15,10 @@ export class HibikiInteractionEvent extends HibikiEvent {
     const command = this.bot.commands.get(interaction.commandName);
     if (!command) return;
 
+    // Gets the user's locale and appends it into CommandInteraction
+    const userConfig = await this.bot.db.getUserConfig(interaction.user?.id);
+    interaction.lng = userConfig?.locale ?? defaultLocale;
+
     try {
       // Defers the command for a followup. If ephemeral is set, set the flag
       await interaction.deferReply({ ephemeral: command.ephemeral });
@@ -24,7 +29,7 @@ export class HibikiInteractionEvent extends HibikiEvent {
       await interaction.followUp({
         embeds: [
           {
-            // TODO: Localise
+            // TODO: Not throw the entire stack - no-no!
             title: `❌ Error while running ${command.name}`,
             description: "```TS\n" + `${(error as Error).stack}` + "```",
             color: HibikiColors.ERROR,
