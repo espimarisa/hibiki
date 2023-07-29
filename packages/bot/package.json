@@ -34,7 +34,6 @@
   "dependencies": {
     "@discordjs/rest": "^1.7.1",
     "@prisma/client": "^5.0.0",
-    "@sentry/node": "^7.60.1",
     "cross-env": "^7.0.3",
     "discord-api-types": "^0.37.50",
     "discord.js": "^14.11.0",

@@ -2,7 +2,7 @@ import type { HibikiClient } from "../classes/Client.js";
 import type { CallableHibikiCommand, HibikiCommandJSON } from "../classes/Command.js";
 import type { CallableHibikiEvent, HibikiEvent } from "../classes/Event.js";
 import type { PathLike } from "node:fs";
-import { moduleFiletypeRegex } from "./constants.js";
+import { moduleFiletypeRegex } from "$shared/constants.js";
 import { sanitizedEnv } from "$shared/env.js";
 import { logger } from "$shared/logger.js";
 import { REST } from "@discordjs/rest";

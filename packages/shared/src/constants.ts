@@ -1,7 +1,4 @@
-import { sanitizedEnv } from "$shared/env.js";
-
-// Are we actually in production or not?
-export const IS_PRODUCTION = sanitizedEnv.isProduction;
+import { sanitizedEnv } from "./env.js";
 
 // A regex for file types that can be modules
 export const moduleFiletypeRegex = /\.(cjs|mjs|js|mts|cts|ts)$/i;
