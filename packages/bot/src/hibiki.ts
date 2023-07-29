@@ -1,22 +1,8 @@
 import { HibikiClient } from "./classes/Client.js";
-import { sanitizedEnv } from "$shared/env.js";
-import { logger } from "$shared/logger.js";
-import * as Sentry from "@sentry/node";
-import util from "node:util";
+import { initSentry } from "$shared/sentry.js";
 
 // Tries to initialize Sentry
-if (sanitizedEnv.SENTRY_DSN) {
-  try {
-    Sentry.init({
-      dsn: sanitizedEnv.SENTRY_DSN,
-      environment: sanitizedEnv.NODE_ENV,
-      release: sanitizedEnv.npm_package_version,
-    });
+initSentry();
 
-    logger.info(`Sentry connected to DSN ${sanitizedEnv.SENTRY_DSN}`);
-  } catch (error) {
-    logger.error(`Failed to initialize sentry: ${util.inspect(error)}`);
-  }
-}
-
+// Creates a new Hibiki client
 new HibikiClient({ intents: ["GuildMembers"] }).init();

@@ -1,9 +1,8 @@
 import type { PathLike } from "node:fs";
+import { sanitizedEnv } from "$shared/env.js";
 import { logger } from "$shared/logger.js";
 import { ShardClientUtil, ShardingManager } from "discord.js";
 
-// TODO: Use constants typing
-const IS_DEVELOPMENT = process.env.NODE_ENV === "development";
 type Auto = number | "auto";
 
 export class HibikiShardingManager {
@@ -21,7 +20,7 @@ export class HibikiShardingManager {
     this.shardingManager = new ShardingManager(this._mainFile.toString(), {
       token: this._token,
       totalShards: this._shardCount,
-      mode: IS_DEVELOPMENT ? "process" : "worker",
+      mode: sanitizedEnv.isProduction ? "worker" : "process",
       execArgv: process.execArgv,
       respawn: false,
     });

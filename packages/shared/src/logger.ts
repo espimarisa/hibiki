@@ -1,4 +1,4 @@
-import { IS_PRODUCTION } from "$bot/utils/constants.js";
+import { sanitizedEnv } from "./env.js";
 import { pino } from "pino";
 
 // Options for the pino logger
@@ -13,4 +13,4 @@ const pinoOptions: pino.LoggerOptions = {
 };
 
 // Creates the new Pino logger
-export const logger = pino(IS_PRODUCTION ? {} : pinoOptions);
+export const logger = pino(sanitizedEnv.isProduction ? {} : pinoOptions);

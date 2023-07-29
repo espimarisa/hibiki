@@ -14,5 +14,5 @@ export abstract class HibikiEvent {
   ) {}
 
   // Runs an event
-  public abstract run(event: HibikiEventListener[], ...params: any[]): Promise<void>;
+  public abstract run(event: HibikiEventListener[], ...params: unknown[]): Promise<void>;
 }
