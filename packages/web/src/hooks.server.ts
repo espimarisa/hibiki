@@ -28,33 +28,64 @@ export const authorization = async ({ event, resolve }) => {
 
 export const handle: Handle = sequence(
   SvelteKitAuth({
+    // Session options
+    session: {
+      maxAge: 604_800,
+    },
     providers: [
+      // Discord oAuth provider
       discordProvider({
         clientId: sanitizedEnv.DISCORD_CLIENT_ID,
         clientSecret: sanitizedEnv.DISCORD_CLIENT_SECRET,
         redirectProxyUrl: sanitizedEnv.DISCORD_REDIRECT_URL,
-        authorization: { params: { scope: "identify" } },
+        authorization: "https://discord.com/api/oauth2/authorize?scope=identify+guilds",
+
+        // Profile callback
+        profile(profile) {
+          // Gets profile avatar
+          if (profile.avatar) {
+            const format = profile.avatar.startsWith("a_") ? "gif" : "png";
+            profile.image_url = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.${format}`;
+          } else {
+            const defaultAvatar = Number.parseInt(profile.discriminator) % 5;
+            profile.image_url = `https://cdn.discordapp.com/embed/avatars/${defaultAvatar}.png`;
+          }
+
+          // Discord profile data
+          return {
+            id: profile.id,
+            name: profile.username,
+            discriminator: profile.discriminator,
+            image: profile.image_url,
+            accentColor: profile.accentColor,
+          };
+        },
       }),
     ],
-    session: {
-      // Roughly 7 days
-      maxAge: 604_800,
-    },
     callbacks: {
+      // JWT handler
       async jwt({ token, account, profile }) {
-        // Sets our access token
-        if (account) token.accessToken = account.access_token;
+        if (account) {
+          // Sets token data
+          token.acccessToken = account.access_token;
+          token.tokenType = account.token_type;
+        }
 
-        // Sets our Discord user ID
-        if (profile) token.id = profile.id;
+        // Returns profile & token data
+        if (profile) token.profile = profile;
         return token;
       },
 
       // Sets session data
       async session({ session, token }) {
-        if (token?.accessToken) session.user.accessToken = JSON.stringify(token.accessToken);
-        if (token?.id) session.user.id = token.id as string;
-        return session;
+        const mutatedSession = {
+          ...session,
+          accessToken: token.accessToken,
+          tokenType: token.tokenType,
+          discordUser: token.profile,
+        };
+
+        return mutatedSession;
       },
     },
   }),

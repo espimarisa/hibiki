@@ -30,7 +30,7 @@
     "@sentry/node": "^7.60.1",
     "dotenv": "^16.3.1",
     "envalid": "^7.3.1",
-    "i18next": "^23.3.0",
+    "i18next": "^23.4.1",
     "i18next-fs-backend": "^2.1.5",
     "pino": "^8.14.2",
     "pino-pretty": "^10.2.0",
