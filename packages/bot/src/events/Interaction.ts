@@ -9,14 +9,14 @@ export class HibikiInteractionEvent extends HibikiEvent {
 
   public async run(_event: HibikiEventListener[], interaction: CommandInteraction) {
     // Don't run any interactions that aren't commands or that don't actually exist
-    if (!interaction?.commandName) return;
+    if (!interaction.commandName) return;
 
     // Searches for the right command to run
     const command = this.bot.commands.get(interaction.commandName);
     if (!command) return;
 
     // Gets the user's locale and appends it into CommandInteraction
-    const userConfig = await this.bot.db.getUserConfig(interaction.user?.id);
+    const userConfig = await this.bot.db.getUserConfig(interaction.user.id);
     interaction.lng = userConfig?.locale ?? defaultLocale;
 
     try {

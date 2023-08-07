@@ -1,6 +1,7 @@
+import type { PageServerLoad } from "./$types.js";
 import { getAPIGuilds } from "../utils/api.js";
 
-export const load = async ({ parent }) => {
+export const load: PageServerLoad = async ({ parent }) => {
   const { session } = await parent();
 
   if (session?.accessToken) {
