@@ -1,6 +1,6 @@
 import { hibikiVersion } from "$shared/constants.js";
 
-export default async (url: string, options?: RequestInit): Promise<Response | undefined> => {
+export default async (url: string, options?: RequestInit) => {
   if (!url) return;
 
   try {
@@ -16,5 +16,6 @@ export default async (url: string, options?: RequestInit): Promise<Response | un
     return response;
   } catch (error) {
     if (error instanceof Error) throw new TypeError(`${error.message}`);
+    return;
   }
 };
