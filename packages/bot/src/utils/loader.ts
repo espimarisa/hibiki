@@ -12,7 +12,7 @@ import util from "node:util";
 
 // Loads all commands
 export async function loadCommands(bot: HibikiClient, directory: PathLike) {
-  const files = fs.readdirSync(directory, { withFileTypes: true, encoding: "utf8" });
+  const files = fs.readdirSync(directory.toString(), { withFileTypes: true, encoding: "utf8" });
 
   for (const file of files) {
     // Don't try to load source mappings or other jank stuff
@@ -21,7 +21,7 @@ export async function loadCommands(bot: HibikiClient, directory: PathLike) {
 
     // Tries to load the command
     try {
-      const importedCommand: Record<string, CallableHibikiCommand> = await import(`file://${directory}/${file.name}`);
+      const importedCommand: Record<string, CallableHibikiCommand> = await import(`file://${directory.toString()}/${file.name}`);
       commandToLoad = importedCommand[Object.keys(importedCommand)[0]];
     } catch (error) {
       // Catches and logs the error but allows the bot to still run
@@ -30,7 +30,6 @@ export async function loadCommands(bot: HibikiClient, directory: PathLike) {
     }
 
     // Creates the command
-    if (!commandToLoad) continue;
     const name = file.name.split(moduleFiletypeRegex)[0].toLowerCase();
     const command = new commandToLoad(bot, name);
     bot.commands.set(name, command);
@@ -48,7 +47,7 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike) {
     let eventToLoad: CallableHibikiEvent;
 
     try {
-      const importedEvent: Record<string, CallableHibikiEvent> = await import(`file://${directory}/${file.name}`);
+      const importedEvent: Record<string, CallableHibikiEvent> = await import(`file://${directory.toString()}/${file.name}`);
       eventToLoad = importedEvent[Object.keys(importedEvent)[0]];
     } catch (error) {
       // Catches and logs the error but allows the bot to still run
@@ -56,8 +55,6 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike) {
       return;
     }
 
-    // Creates the event
-    if (!eventToLoad) continue;
     const name = file.name.split(moduleFiletypeRegex)[0];
     const event = new eventToLoad(bot, name);
 
@@ -70,7 +67,7 @@ export async function loadEvents(bot: HibikiClient, directory: PathLike) {
 }
 
 // Registers all interactions to the Discord gateway
-export function registerInteractions(bot: HibikiClient, guild?: DiscordSnowflake) {
+export async function registerInteractions(bot: HibikiClient, guild?: DiscordSnowflake) {
   if (!bot.user?.id) throw new Error("No user object is ready, have you logged into a valid token yet?");
   const jsonData: HibikiCommandJSON[] = [];
 
@@ -80,15 +77,11 @@ export function registerInteractions(bot: HibikiClient, guild?: DiscordSnowflake
   }
 
   const rest = new REST({ version: "10" }).setToken(sanitizedEnv.TOKEN);
-  if (!rest) throw new Error("Failed to create a Discord REST instance.");
 
   // Registers commands to a specific guild
-  if (guild) {
-    rest.put(Routes.applicationGuildCommands(bot.user.id, guild), { body: jsonData });
-  } else {
-    // Registers commands to the entire app
-    rest.put(Routes.applicationCommands(bot.user.id), { body: jsonData });
-  }
+  guild
+    ? await rest.put(Routes.applicationGuildCommands(bot.user.id, guild), { body: jsonData })
+    : await rest.put(Routes.applicationCommands(bot.user.id), { body: jsonData });
 }
 
 // Subscribes to event listeners and fires an event when needed

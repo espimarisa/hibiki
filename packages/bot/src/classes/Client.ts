@@ -17,8 +17,8 @@ const COMMANDS_DIRECTORY = path.join(pathDirname, "../commands");
 const EVENTS_DIRECTORY = path.join(pathDirname, "../events");
 
 export class HibikiClient extends Client {
-  readonly commands: Map<string, HibikiCommand> = new Map();
-  readonly events: Map<string, HibikiEvent> = new Map();
+  readonly commands = new Map<string, HibikiCommand>();
+  readonly events = new Map<string, HibikiEvent>();
 
   readonly db: DatabaseManager = new DatabaseManager();
 
@@ -33,7 +33,9 @@ export class HibikiClient extends Client {
   // Starts Hibiki
   public init() {
     try {
-      this.login(sanitizedEnv.TOKEN);
+      this.login(sanitizedEnv.TOKEN).catch((error) => {
+        throw new Error(`${error}`);
+      });
 
       this.once("ready", async () => {
         // Loads all commands and events

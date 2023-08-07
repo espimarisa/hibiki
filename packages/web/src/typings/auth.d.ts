@@ -1,4 +1,5 @@
 import type { DiscordProfile } from "@auth/core/providers/discord";
+
 type tokenType = "bearer" | "bot";
 
 declare module "@auth/core/types" {

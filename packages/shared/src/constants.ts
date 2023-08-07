@@ -4,7 +4,7 @@ import { sanitizedEnv } from "./env.js";
 export const moduleFiletypeRegex = /\.(cjs|mjs|js|mts|cts|ts)$/i;
 
 // The version of Hibiki currently running
-export const hibikiVersion = sanitizedEnv.npm_package_version ?? "develop";
+export const hibikiVersion = sanitizedEnv.npm_package_version || "develop";
 
 // Hex colors used throughout the app
 export enum HibikiColors {

@@ -28,7 +28,9 @@ export class HibikiShardingManager {
 
   // Spawns all shards
   public spawn() {
-    this.shardingManager.spawn({ amount: this._shardCount });
+    this.shardingManager.spawn({ amount: this._shardCount }).catch((error) => {
+      throw new Error(`${error}`);
+    });
 
     // Shard event listeners
     this.shardingManager.on("shardCreate", (shard) => {
@@ -41,7 +43,7 @@ export class HibikiShardingManager {
       });
 
       shard.on("error", (error) => {
-        logger.error(`Shard #${shard.id} encountered an error: ${error}`);
+        logger.error(`Shard #${shard.id} encountered an error: ${error.stack}`);
       });
 
       shard.on("ready", () => {
@@ -63,14 +65,14 @@ export class HibikiShardingManager {
 export async function fetchTotalCachedGuilds(shard: ShardClientUtil | null) {
   if (!shard) return;
   const values = await shard.fetchClientValues("guilds.cache.size");
-  if (!values?.length) return;
-  return values.reduce((a, b) => (a as number) + (b as number)) as number;
+  if (values.length === 0) return;
+  return values.reduce((a, b) => (a as number) + (b as number));
 }
 
 // Returns the amount of total cached users on every shard
 export async function fetchTotalCachedUsers(shard: ShardClientUtil | null) {
   if (!shard) return;
   const values = await shard.fetchClientValues("users.cache.size");
-  if (!values?.length) return;
-  return values.reduce((a, b) => (a as number) + (b as number)) as number;
+  if (values.length === 0) return;
+  return values.reduce((a, b) => (a as number) + (b as number));
 }

@@ -10,7 +10,7 @@ export class DatabaseManager {
 
   // Gets a guildConfig
   public async getGuildConfig(guild: DiscordSnowflake): Promise<HibikiGuildConfig | undefined> {
-    if (!guild?.length) return;
+    if (guild.length === 0) return;
 
     // Looks for the guildconfig
     const config = await this.client.guildConfig.findUnique({
@@ -19,7 +19,7 @@ export class DatabaseManager {
       },
     });
 
-    if (!config?.guild_id?.length) return;
+    if (!config?.guild_id) return;
 
     try {
       // Parses the config and returns it
@@ -33,7 +33,7 @@ export class DatabaseManager {
 
   // Updates a guildConfig
   public async updateGuildConfig(guild: DiscordSnowflake, config: HibikiGuildConfig) {
-    if (!guild?.length) return;
+    if (guild.length === 0) return;
 
     await this.client.guildConfig.update({
       where: {
@@ -45,7 +45,7 @@ export class DatabaseManager {
 
   // Creates a blank guildConfig
   public async createBlankGuildConfig(guild: DiscordSnowflake) {
-    if (!guild?.length) return;
+    if (guild.length === 0) return;
 
     try {
       // Creates the guildConfig entry if it doesn't exist
@@ -67,7 +67,7 @@ export class DatabaseManager {
 
   // Deletes a a guildConfig
   public async deleteGuildConfig(guild: DiscordSnowflake) {
-    if (!guild?.length) return;
+    if (guild.length === 0) return;
 
     try {
       // Deletes the entry
@@ -83,7 +83,7 @@ export class DatabaseManager {
 
   // Gets a userConfig
   public async getUserConfig(user: DiscordSnowflake): Promise<HibikiUserConfig | undefined> {
-    if (!user?.length) return;
+    if (user.length === 0) return;
 
     // Looks for the guildconfig
     const config = await this.client.userConfig.findUnique({
@@ -92,7 +92,7 @@ export class DatabaseManager {
       },
     });
 
-    if (!config?.user_id?.length) return;
+    if (!config?.user_id) return;
 
     try {
       // Parses the config and returns it
@@ -106,7 +106,7 @@ export class DatabaseManager {
 
   // Updates a userConfig
   public async updateUserConfig(user: DiscordSnowflake, config: HibikiUserConfig) {
-    if (!user?.length) return;
+    if (user.length === 0) return;
 
     try {
       // Updates the userConfig
@@ -123,7 +123,7 @@ export class DatabaseManager {
 
   // Creates a blank userConfig
   public async createBlankUserConfig(user: DiscordSnowflake) {
-    if (!user?.length) return;
+    if (user.length === 0) return;
 
     try {
       // Creates the blank userConfig
@@ -145,7 +145,7 @@ export class DatabaseManager {
 
   // Deletes a userConfig
   public async deleteUserConfig(user: DiscordSnowflake) {
-    if (!user?.length) return;
+    if (user.length === 0) return;
 
     try {
       // Deletes the userConfig
