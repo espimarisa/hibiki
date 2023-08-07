@@ -39,9 +39,9 @@ export abstract class HibikiCommand {
 export type CallableHibikiCommand = new (bot: HibikiClient, name: string) => HibikiCommand;
 
 // Valid Command JSON type
-export type HibikiCommandJSON = {
+export interface HibikiCommandJSON {
   name: string;
   description?: string;
   options?: APIApplicationCommandOption[];
   type?: ApplicationCommandType;
-};
+}

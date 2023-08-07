@@ -13,9 +13,8 @@ export default async (url: string, options?: RequestInit): Promise<Response | un
     });
 
     // Return the response to JSON
-    if (!response) return;
     return response;
   } catch (error) {
-    throw new Error(`${error}`);
+    if (error instanceof Error) throw new TypeError(`${error.message}`);
   }
 };

@@ -1,7 +1,3 @@
-<script lang="ts">
-  import { page } from "$app/stores";
-</script>
-
 <nav id="navbar">
   <a href="/invite">Invite</a>
   <a href="/support">Support</a>

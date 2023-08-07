@@ -1,12 +1,11 @@
+import type { DiscordProfile } from "@auth/core/providers/discord";
 import { sanitizedEnv } from "$shared/env.js";
 import discordProvider from "@auth/core/providers/discord";
 import { SvelteKitAuth } from "@auth/sveltekit";
 import { redirect, type Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
 
-// Checks for authorization on specific routes
-// @ts-expect-error This is not currently typed, cry about it
-export const authorization = async ({ event, resolve }) => {
+export const authorization: Handle = async ({ event, resolve }) => {
   if (event.url.pathname.startsWith("/api") || event.url.pathname.startsWith("/dashboard")) {
     // Gets the session
     const session = await event.locals.getSession();
@@ -18,7 +17,7 @@ export const authorization = async ({ event, resolve }) => {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 403 });
       } else {
         // Force a re-log for everything else
-        throw redirect(303, "/auth/signin");
+        redirect(303, "/auth/signin");
       }
     }
   }
@@ -41,7 +40,7 @@ export const handle: Handle = sequence(
         authorization: "https://discord.com/api/oauth2/authorize?scope=identify+guilds",
 
         // Profile callback
-        profile(profile) {
+        profile(profile: DiscordProfile) {
           // Gets profile avatar
           if (profile.avatar) {
             const format = profile.avatar.startsWith("a_") ? "gif" : "png";
@@ -57,14 +56,13 @@ export const handle: Handle = sequence(
             name: profile.username,
             discriminator: profile.discriminator,
             image: profile.image_url,
-            accentColor: profile.accentColor,
           };
         },
       }),
     ],
     callbacks: {
       // JWT handler
-      async jwt({ token, account, profile }) {
+      jwt({ token, account, profile }) {
         if (account) {
           // Sets token data
           token.acccessToken = account.access_token;
@@ -77,7 +75,7 @@ export const handle: Handle = sequence(
       },
 
       // Sets session data
-      async session({ session, token }) {
+      session({ session, token }) {
         const mutatedSession = {
           ...session,
           accessToken: token.accessToken,

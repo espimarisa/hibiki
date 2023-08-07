@@ -9,10 +9,10 @@ import url from "node:url";
 const pathDirname = path.dirname(url.fileURLToPath(import.meta.url));
 const LOCALES_DIRECTORY = path.join(pathDirname, "../../../locales");
 
-export const defaultLocale = sanitizedEnv.DEFAULT_LOCALE ?? "en";
+export const defaultLocale = sanitizedEnv.DEFAULT_LOCALE || "en";
 
 try {
-  i18n.use(I18NexFsBackend).init({
+  await i18n.use(I18NexFsBackend).init({
     initImmediate: false,
     lng: defaultLocale,
     fallbackLng: defaultLocale,
@@ -27,7 +27,7 @@ try {
 
   logger.info("i18n-next has been initialized");
 } catch (error) {
-  throw new Error(`${error}`);
+  if (error instanceof Error) throw new TypeError(`${error.message}`);
 }
 
 // Shortcut

@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   extends: ["plugin:svelte/recommended", "../../.eslintrc.cjs"],
   parserOptions: {
+    project: ["./tsconfig.json", "../../tsconfig.json"],
     extraFileExtensions: [".svelte"],
   },
   env: {
