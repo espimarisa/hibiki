@@ -2,7 +2,7 @@ import { HibikiClient } from "./classes/Client.js";
 import { initSentry } from "$shared/sentry.js";
 import { GatewayIntentBits } from "discord.js";
 
-export const subscribedIntents = [
+export const subscribedIntents: GatewayIntentBits[] = [
   // Required for guild, channel, and role objects
   GatewayIntentBits.Guilds,
 

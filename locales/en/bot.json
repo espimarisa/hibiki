@@ -1,4 +1,14 @@
 {
-  "test": "Test 1",
-  "vartest": "Test 2 {{vartest}}"
+  "COMMAND_PING_API_LATENCY": "API Latency",
+  "COMMAND_PING_INITIAL_DESCRIPTION": "Please wait, calculating roundtrip latency...",
+  "COMMAND_PING_LATENCY": "Latency",
+  "COMMAND_PING_PINGING": "⏳ Pinging...",
+  "COMMAND_PING_PONG": "🏓 Pong!",
+  "COMMAND_PING_ROUNDTRIP_LATENCY": "Roundtrip Latency",
+
+  "ERROR_DESCRIPTION": "An internal error occurred while trying to do that. Please try again later.",
+  "ERROR_TITLE": "❌ Error",
+
+  "MILLISECONDS": "{{time}}ms",
+  "SECONDS": "{{time}}s"
 }
