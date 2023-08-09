@@ -5,7 +5,7 @@
   "version": "1.0.0-alpha",
   "description": "Modules shared between Hibiki's bot module and Hibiki's web module.",
   "license": "zlib",
-  "author": "Espi Marisa <espi@riseup.net> (https://espi.me)",
+  "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "homepage": "https://github.com/espimarisa/hibiki#readme",
   "packageManager": "pnpm@8.0.0",
   "repository": {
@@ -16,7 +16,7 @@
     "url": "https://github.com/espimarisa/hibiki/issues"
   },
   "engines": {
-    "node": ">=20.0.0",
+    "node": ">=18.0.0",
     "pnpm": ">=8.0.0"
   },
   "scripts": {

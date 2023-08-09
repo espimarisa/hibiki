@@ -5,7 +5,7 @@
   "version": "6.0.0-alpha",
   "description": "A Discord bot jam-packed with useful utilities for everyone!",
   "license": "zlib",
-  "author": "Espi Marisa <espi@riseup.net> (https://espi.me)",
+  "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "homepage": "https://github.com/espimarisa/hibiki#readme",
   "packageManager": "pnpm@8.0.0",
   "repository": {
@@ -32,9 +32,9 @@
   },
   "devDependencies": {
     "@espimarisa/eslint-config": "^4.1.2",
-    "@types/node": "^20.4.8",
-    "@typescript-eslint/eslint-plugin": "^6.2.1",
-    "@typescript-eslint/parser": "^6.2.1",
+    "@types/node": "^20.4.9",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
     "concurrently": "^8.2.0",
     "eslint": "^8.46.0",
     "eslint-config-prettier": "^9.0.0",

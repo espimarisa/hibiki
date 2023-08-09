@@ -1,6 +1,6 @@
 # The zlib/libpng License
 
-Copyright (c) 2023 Espi Marisa ("espimarisa") <espi@riseup.net>
+Copyright (c) 2023 Espi Marisa <contact@espi.me>
 
 This software is provided 'as-is', without any express or implied warranty. In
 no event will the authors be held liable for any damages arising from the use of

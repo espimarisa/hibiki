@@ -56,7 +56,7 @@ To start a data deletion request, please contact the application maintainer usin
 
 - Discord - `@espimarisa`
 - Telegram - [@espimarisa][espi-telegram]
-- Email - [espi@riseup.net][espi-email]
+- Email - [contact@espi.me][espi-email]
 
 ## License
 
@@ -67,5 +67,5 @@ To start a data deletion request, please contact the application maintainer usin
 [discord_tos]: https://discord.com/terms "Discord's Terms of Service"
 [discord_cg]: https://discord.com/guidelines "Discord's Community Guidelines"
 [espi-telegram]: https://t.me/espimarisa "Contact Espi (espimarisa) on Telegram"
-[espi-email]: mailto:espi@riseup.net "A mailto link redirecting to the project owner's email"
+[espi-email]: mailto:contact@espi.me "A mailto link redirecting to the project owner's email"
 [license]: LICENSE.md "zlib/libpng license file"
