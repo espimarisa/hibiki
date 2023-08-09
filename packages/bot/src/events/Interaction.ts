@@ -1,7 +1,7 @@
 import type { CommandInteraction } from "discord.js";
 import { HibikiEvent } from "../classes/Event.js";
 import { HibikiColors } from "$shared/constants.js";
-import { defaultLocale } from "$shared/i18n.js";
+import { t, defaultLocale } from "$shared/i18n.js";
 import util from "node:util";
 
 export class HibikiInteractionEvent extends HibikiEvent {
@@ -29,14 +29,9 @@ export class HibikiInteractionEvent extends HibikiEvent {
       await interaction.followUp({
         embeds: [
           {
-            // TODO: Not throw the entire stack - no-no!
-            title: `❌ Error while running ${command.name}`,
-            description: "```TS\n" + `${(error as Error).stack}` + "```",
+            title: t("ERROR_TITLE", { lng: interaction.lng }),
+            description: t("ERROR_DESCRIPTION", { lng: interaction.lng }),
             color: HibikiColors.ERROR,
-            footer: {
-              // TODO: Localise
-              text: "Found a bug? - https://github.com/espimarisa/hibiki/issues",
-            },
           },
         ],
       });

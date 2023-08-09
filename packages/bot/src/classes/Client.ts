@@ -1,6 +1,6 @@
 import type { HibikiCommand } from "./Command.js";
 import type { HibikiEvent } from "./Event.js";
-import { loadCommands, loadEvents } from "../utils/loader.js";
+import { loadCommands, loadEvents, registerInteractions } from "../utils/loader.js";
 import { DatabaseManager } from "./Database.js";
 import { sanitizedEnv } from "$shared/env.js";
 import { logger } from "$shared/logger.js";
@@ -46,6 +46,9 @@ export class HibikiClient extends Client {
         logger.info("Logged in to Discord");
         logger.info(`${this.commands.size} commands loaded`);
         logger.info(`${this.events.size} events loaded`);
+
+        // Registers commands; pushes to only one guild if we're in development
+       await registerInteractions(this, !sanitizedEnv.isProduction ? sanitizedEnv.TEST_GUILD_ID : undefined);
       });
     } catch (error) {
       logger.error(`An error occured while starting: ${util.inspect(error)}`);
