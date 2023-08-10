@@ -27,7 +27,7 @@ export class HibikiPingCommand extends HibikiCommand {
           fields: [
             {
               name: t("COMMAND_PING_LATENCY", { lng: interaction.lng }),
-              value: t("MILLISECONDS", { time: this.bot.ws.client.uptime ?? 60000 / 60000, lng: interaction.lng }),
+              value: t("MILLISECONDS", { time: this.bot.ws.client.uptime ?? 60_000 / 60_000, lng: interaction.lng }),
               inline: true,
             },
             {
