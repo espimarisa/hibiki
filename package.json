@@ -1,6 +1,6 @@
 {
+  "private": true,
   "type": "module",
-  "private": "true",
   "name": "@espimarisa/hibiki",
   "version": "6.0.0-alpha",
   "description": "A Discord bot jam-packed with useful utilities for everyone!",
@@ -23,20 +23,18 @@
     "pnpm": ">=8.0.0"
   },
   "scripts": {
-    "build": "pnpm -r build",
-    "clean": "pnpm -r clean",
+    "build": "pnpm turbo run build",
     "deps:update": "pnpm up -r -L",
     "format": "prettier --write .",
-    "lint": "pnpm run -r lint",
-    "test": "pnpm run -r test"
+    "lint": "pnpm turbo run lint",
+    "test": "pnpm turbo run test"
   },
   "devDependencies": {
     "@espimarisa/eslint-config": "^4.1.2",
-    "@types/node": "^20.4.9",
-    "@typescript-eslint/eslint-plugin": "^6.3.0",
-    "@typescript-eslint/parser": "^6.3.0",
-    "concurrently": "^8.2.0",
-    "eslint": "^8.46.0",
+    "@types/node": "^20.5.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-import-resolver-typescript": "^3.6.0",
     "eslint-plugin-import": "npm:eslint-plugin-i@2.28.0-2",
@@ -45,10 +43,11 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-security": "^1.7.1",
     "eslint-plugin-unicorn": "^48.0.1",
-    "prettier": "^3.0.1",
+    "prettier": "^3.0.2",
     "rimraf": "^5.0.1",
     "tsc-alias": "^1.8.7",
     "tsx": "^3.12.7",
+    "turbo": "^1.10.12",
     "typescript": "^5.1.6"
   }
 }

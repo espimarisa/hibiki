@@ -1,4 +1,4 @@
-import { hibikiVersion } from "$shared/constants.js";
+import { sanitizedEnv } from "./env.js";
 
 export default async (url: string, options?: RequestInit) => {
   if (!url) return;
@@ -8,7 +8,7 @@ export default async (url: string, options?: RequestInit) => {
       ...options,
       headers: {
         ...options?.headers,
-        "User-Agent": `hibiki/${hibikiVersion} (https://github.com/espimarisa/hibiki)`,
+        "User-Agent": `${sanitizedEnv.npm_package_name}/${sanitizedEnv.npm_package_version} (https://github.com/espimarisa/hibiki)`,
       },
     });
 

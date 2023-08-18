@@ -76,7 +76,7 @@ export async function registerInteractions(bot: HibikiClient, guild?: DiscordSno
     jsonData.push(command.toJSON());
   }
 
-  const rest = new REST({ version: "10" }).setToken(sanitizedEnv.TOKEN);
+  const rest = new REST({ version: "10" }).setToken(sanitizedEnv.BOT_TOKEN);
 
   // Registers commands to a specific guild
   guild

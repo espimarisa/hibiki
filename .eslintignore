@@ -1,7 +1,8 @@
-.vscode
-.github
-dist
-node_modules
-package-lock.json
-pnpm-lock.yaml
-yarn.lock
+node_modules/
+dist/
+build/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+.routify/

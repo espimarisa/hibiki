@@ -33,7 +33,7 @@ export class HibikiClient extends Client {
   // Starts Hibiki
   public init() {
     try {
-      this.login(sanitizedEnv.TOKEN).catch((error) => {
+      this.login(sanitizedEnv.BOT_TOKEN).catch((error) => {
         throw new Error(`${error}`);
       });
 
@@ -48,7 +48,7 @@ export class HibikiClient extends Client {
         logger.info(`${this.events.size} events loaded`);
 
         // Registers commands; pushes to only one guild if we're in development
-        await registerInteractions(this, sanitizedEnv.isProduction ? undefined : sanitizedEnv.TEST_GUILD_ID);
+        await registerInteractions(this, sanitizedEnv.isProduction ? undefined : sanitizedEnv.BOT_TEST_GUILD_ID);
       });
     } catch (error) {
       logger.error(`An error occured while starting: ${util.inspect(error)}`);

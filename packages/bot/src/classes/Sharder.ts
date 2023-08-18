@@ -64,15 +64,15 @@ export class HibikiShardingManager {
 // Returns the amount of total cached guilds on every shard
 export async function fetchTotalCachedGuilds(shard: ShardClientUtil | null) {
   if (!shard) return;
-  const values = await shard.fetchClientValues("guilds.cache.size");
+  const values = (await shard.fetchClientValues("guilds.cache.size")) as number[];
   if (values.length === 0) return;
-  return values.reduce((a, b) => (a as number) + (b as number));
+  return values.reduce((a, b) => a + b);
 }
 
 // Returns the amount of total cached users on every shard
 export async function fetchTotalCachedUsers(shard: ShardClientUtil | null) {
   if (!shard) return;
-  const values = await shard.fetchClientValues("users.cache.size");
+  const values = (await shard.fetchClientValues("users.cache.size")) as number[];
   if (values.length === 0) return;
-  return values.reduce((a, b) => (a as number) + (b as number));
+  return values.reduce((a, b) => a + b);
 }

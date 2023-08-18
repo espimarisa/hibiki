@@ -6,6 +6,15 @@
   "COMMAND_PING_PONG": "🏓 Pong!",
   "COMMAND_PING_ROUNDTRIP_LATENCY": "Roundtrip Latency",
 
+  "COMMAND_ABOUT_TITLE": "✨ About {{username}}",
+  "COMMAND_ABOUT_DESCRIPTION": "{{username}}, by [Espi Marisa](https://espi.me).",
+  "COMMAND_ABOUT_CACHED_GUILDS": "Cached Guilds",
+  "COMMAND_ABOUT_CACHED_USERS": "Cached Users",
+  "COMMAND_ABOUT_UPTIME": "Uptime",
+  "COMMAND_ABOUT_HIBIKI_VERSION": "Hibiki Version",
+  "COMMAND_ABOUT_DISCORDJS_VERSION": "Discord.js Version",
+  "COMMAND_ABOUT_NODEJS_VERSION": "Node.js Version",
+
   "ERROR_DESCRIPTION": "An internal error occurred while trying to do that. Please try again later.",
   "ERROR_TITLE": "❌ Error",
 

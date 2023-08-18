@@ -9,7 +9,6 @@
     "checkJs": true,
     "moduleResolution": "NodeNext",
     "noImplicitAny": true,
-    "importsNotUsedAsValues": "preserve",
     "verbatimModuleSyntax": false
   }
 }

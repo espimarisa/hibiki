@@ -34,9 +34,9 @@ export const handle: Handle = sequence(
     providers: [
       // Discord oAuth provider
       discordProvider({
-        clientId: sanitizedEnv.DISCORD_CLIENT_ID,
-        clientSecret: sanitizedEnv.DISCORD_CLIENT_SECRET,
-        redirectProxyUrl: sanitizedEnv.DISCORD_REDIRECT_URL,
+        clientId: sanitizedEnv.BOT_OAUTH_CLIENT_ID,
+        clientSecret: sanitizedEnv.BOT_OAUTH_CLIENT_SECRET,
+        redirectProxyUrl: sanitizedEnv.BOT_OAUTH_REDIRECT_URI,
         authorization: "https://discord.com/api/oauth2/authorize?scope=identify+guilds",
 
         // Profile callback
