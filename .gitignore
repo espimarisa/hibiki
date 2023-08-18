@@ -117,6 +117,7 @@ web_modules/
 
 # Next.js
 .next/
+next-env.d.ts
 
 # Nuxt.js
 .nuxt/

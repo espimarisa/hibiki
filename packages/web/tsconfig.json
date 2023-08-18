@@ -1,14 +1,13 @@
 {
-  "extends": ["./.svelte-kit/tsconfig.json", "../../tsconfig.json"],
-  "include": ["./src/**/*", "../shared/src/typings/*"],
-
-  "rootDirs": ["..", "./types"],
+  "extends": ["../../tsconfig.json"],
+  "include": ["./src/**/*", ".next/types/**/*.ts", "next-env.d.ts"],
 
   "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true,
-    "moduleResolution": "NodeNext",
-    "noImplicitAny": true,
-    "verbatimModuleSyntax": false
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "jsx": "preserve"
   }
 }

@@ -1,6 +1,6 @@
 {
   "extends": ["../../tsconfig.json"],
-  "include": ["./src/**/*", "../shared/src/typings/*", "../db/src/typings/*"],
+  "include": ["./src/**/*", "../shared/src/typings/*"],
 
   "compilerOptions": {
     "outDir": "./dist"

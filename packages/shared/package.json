@@ -22,8 +22,8 @@
   "scripts": {
     "build": "pnpm clean && tsc && tsc-alias",
     "clean": "rimraf ./dist",
-    "lint": "prettier --c . && eslint .",
-    "test": "pnpm lint && pnpm build"
+    "lint": "tsc --noEmit && prettier --c . && eslint .",
+    "test": "pnpm lint"
   },
   "dependencies": {
     "@sentry/node": "^7.64.0",
