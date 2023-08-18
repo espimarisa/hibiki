@@ -24,13 +24,15 @@
   },
   "scripts": {
     "build": "pnpm turbo run build",
+    "dev": "pnpm turbo run dev",
     "deps:update": "pnpm up -r -L",
     "format": "prettier --write .",
     "lint": "pnpm turbo run lint",
+    "start": "pnpm turbo run start",
     "test": "pnpm turbo run test"
   },
   "devDependencies": {
-    "@espimarisa/eslint-config": "^4.1.2",
+    "@espimarisa/eslint-config": "^4.1.4",
     "@types/node": "^20.5.0",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
