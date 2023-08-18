@@ -30,6 +30,6 @@ jobs:
       - name: Unit Tests
         run: |
           pnpm install
-          pnpm test --if-present
+          pnpm turbo run test
         env:
           CI: true
