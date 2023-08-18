@@ -1,6 +1,6 @@
 {
+  "private": true,
   "type": "module",
-  "private": "true",
   "name": "@espimarisa/hibiki-web",
   "version": "2.0.0-alpha",
   "description": "The web UI and dashboard for Hibiki.",
@@ -20,7 +20,8 @@
     "pnpm": ">=8.0.0"
   },
   "scripts": {
-    "build": "vite build",
+    "clean": "rimraf .svelte-kit",
+    "build": "pnpm clean && vite build",
     "check": "svelte-kit sync && svelte-check --ignore 'dist' --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "dev": "vite dev",
@@ -29,21 +30,21 @@
     "test": "pnpm check && pnpm build && pnpm lint"
   },
   "dependencies": {
-    "@auth/core": "^0.10.2",
+    "@auth/core": "^0.12.0",
     "@auth/sveltekit": "^0.3.6",
-    "@discordjs/rest": "^2.0.0",
+    "@discordjs/rest": "^2.0.1",
     "@sveltejs/adapter-node": "^1.3.1",
-    "discord-api-types": "^0.37.52"
+    "discord-api-types": "^0.37.54"
   },
   "devDependencies": {
-    "@fontsource/atkinson-hyperlegible": "^5.0.8",
-    "@sveltejs/kit": "^1.22.4",
+    "@fontsource/atkinson-hyperlegible": "^5.0.9",
+    "@sveltejs/kit": "^1.22.6",
     "eslint-plugin-svelte": "^2.32.4",
     "modern-normalize": "^2.0.0",
     "prettier-plugin-svelte": "^3.0.3",
-    "sass": "^1.65.1",
-    "svelte": "^4.1.2",
-    "svelte-check": "^3.4.6",
+    "sass": "^1.66.0",
+    "svelte": "^4.2.0",
+    "svelte-check": "^3.5.0",
     "tslib": "^2.6.1",
     "vite": "^4.4.9"
   }
