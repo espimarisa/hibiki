@@ -1,7 +1,7 @@
 import type { HibikiCommand } from "./Command.js";
 import type { HibikiEvent } from "./Event.js";
 import { loadCommands, loadEvents, registerInteractions } from "../utils/loader.js";
-import { DatabaseManager } from "./Database.js";
+import { DatabaseManager } from "$db/index.js";
 import { sanitizedEnv } from "$shared/env.js";
 import { logger } from "$shared/logger.js";
 import { Client, type ClientOptions } from "discord.js";

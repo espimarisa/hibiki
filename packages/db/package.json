@@ -1,9 +1,9 @@
 {
   "private": true,
   "type": "module",
-  "name": "@espimarisa/hibiki-web",
+  "name": "@espimarisa/db",
   "version": "2.0.0-alpha",
-  "description": "Hibiki's landing page and dashboard.",
+  "description": "The database client for Hibiki.",
   "license": "zlib",
   "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "homepage": "https://github.com/espimarisa/hibiki#readme",
@@ -20,20 +20,19 @@
     "pnpm": ">=8.0.0"
   },
   "scripts": {
-    "build": "pnpm clean && next build",
-    "clean": "rimraf .next",
-    "dev": "next dev",
-    "lint": "next lint && prettier --c . && eslint .",
-    "start": "next start",
+    "clean": "rimraf ./dist/",
+    "build": "pnpm clean && pnpm db:generate && tsc && tsc-alias",
+    "lint": "tsc --noEmit && prettier --c . && eslint . && prisma-lint",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "db:reset": "prisma migrate reset",
     "test": "pnpm lint"
   },
+  "dependencies": {
+    "@prisma/client": "^5.1.1"
+  },
   "devDependencies": {
-    "next": "^13.4.18",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@types/react": "^18.2.20",
-    "@types/react-dom": "^18.2.7",
-    "eslint-config-next": "^13.4.18",
-    "eslint-plugin-next": "^0.0.0"
+    "prisma": "^5.1.1",
+    "prisma-lint": "^0.0.19"
   }
 }
