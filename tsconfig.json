@@ -11,7 +11,9 @@
       "$web/*": ["./packages/web/src/*"],
       "$web": ["./packages/web/src"],
       "$bot": ["./packages/bot/src"],
-      "$bot/*": ["./packages/bot/src/*"]
+      "$bot/*": ["./packages/bot/src/*"],
+      "$root": ["./"],
+      "$root/*": ["./*"]
     },
 
     "allowJs": false,

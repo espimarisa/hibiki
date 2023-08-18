@@ -1,9 +1,9 @@
 {
+  "private": true,
   "type": "module",
-  "private": "true",
   "name": "@espimarisa/hibiki-shared",
   "version": "1.0.0-alpha",
-  "description": "Modules shared between Hibiki's bot module and Hibiki's web module.",
+  "description": "Modules shared between multiple packages.",
   "license": "zlib",
   "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "homepage": "https://github.com/espimarisa/hibiki#readme",
@@ -20,20 +20,18 @@
     "pnpm": ">=8.0.0"
   },
   "scripts": {
-    "build": "tsc && tsc-alias",
-    "clean": "rimraf ./dist/ .svelte-kit/",
+    "build": "pnpm clean && tsc && tsc-alias",
+    "clean": "rimraf ./dist",
     "lint": "prettier --c . && eslint .",
     "test": "pnpm lint && pnpm build"
   },
   "dependencies": {
-    "@prisma/client": "^5.1.1",
-    "@sentry/node": "^7.62.0",
+    "@sentry/node": "^7.64.0",
     "dotenv": "^16.3.1",
     "envalid": "^7.3.1",
     "i18next": "^23.4.4",
     "i18next-fs-backend": "^2.1.5",
     "pino": "^8.15.0",
-    "pino-pretty": "^10.2.0",
-    "prisma": "^5.1.1"
+    "pino-pretty": "^10.2.0"
   }
 }
