@@ -11,6 +11,7 @@ export function initSentry(options?: Sentry.NodeOptions) {
       dsn: sanitizedEnv.SENTRY_DSN,
       environment: sanitizedEnv.NODE_ENV,
       release: sanitizedEnv.npm_package_version,
+      tracesSampleRate: 0.2,
       ...options,
     });
 

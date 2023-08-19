@@ -1,6 +1,6 @@
 {
   "extends": ["../../tsconfig.json"],
-  "include": ["./src/**/*", ".next/types/**/*.ts", "next-env.d.ts"],
+  "include": ["*.ts", "./src/**/*", ".next/types/**/*.ts", "next-env.d.ts"],
 
   "compilerOptions": {
     "plugins": [
