@@ -27,4 +27,4 @@ export const HibikiInviteScope = ["bot", "applications.commands"];
 // Invite URI
 export const HibikiInviteURI =
   "https://discord.com/oauth2/authorize?&client_id=" +
-  `${sanitizedEnv.BOT_OAUTH_CLIENT_ID}&scope=${encodeURIComponent(HibikiInviteScope.join(" "))}&permissions=${HibikiInvitePermissions}`;
+  `${sanitizedEnv.BOT_CLIENT_ID}&scope=${encodeURIComponent(HibikiInviteScope.join(" "))}&permissions=${HibikiInvitePermissions}`;

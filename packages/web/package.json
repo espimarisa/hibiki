@@ -35,5 +35,8 @@
     "next": "^13.4.19",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "@sentry/nextjs": "^7.64.0"
   }
 }
