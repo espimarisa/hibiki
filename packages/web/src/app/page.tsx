@@ -1,3 +1,8 @@
 export default function page() {
-  return <h1>Hello, Next.js!</h1>;
+  return (
+    <>
+      <h1>OwO</h1>
+      <p>owo</p>
+    </>
+  );
 }

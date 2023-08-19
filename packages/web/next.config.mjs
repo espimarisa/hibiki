@@ -1,3 +1,5 @@
+import { withSentryConfig } from "@sentry/nextjs";
+
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   webpack: (config) => {
@@ -6,8 +8,14 @@ const nextConfig = {
     config.resolve.extensionAlias = {
       ".js": [".ts", ".tsx", ".js"],
     };
+
     return config;
+  },
+
+  // TODO: Source mappings
+  sentry: {
+    hideSourceMaps: true,
   },
 };
 
-export default nextConfig;
+export default withSentryConfig(nextConfig);
