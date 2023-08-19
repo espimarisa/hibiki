@@ -3,6 +3,7 @@
   "include": ["./src/**/*", "../shared/src/typings/*"],
 
   "compilerOptions": {
+    "baseUrl": ".",
     "outDir": "./dist"
   }
 }
