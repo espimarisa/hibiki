@@ -7,6 +7,10 @@ const pathDirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
+  experimental: {
+    serverActions: true,
+  },
+
   webpack: (config) => {
     // Fixes a really annoying Next.JS bug that Vercel doesn't want to fix
     // https://github.com/vercel/next.js/discussions/32237#discussioncomment-4793595

@@ -16,7 +16,7 @@ export default function rootLayout({ children }: { children: React.ReactNode }) 
 
 // Index page metadata
 export const metadata: Metadata = {
-  metadataBase: sanitizedEnv.isProduction ? new URL(sanitizedEnv.WEB_PRODUCTION_URL) : undefined,
+  metadataBase: sanitizedEnv.isProduction ? new URL(sanitizedEnv.NEXTAUTH_URL) : undefined,
   title: lng.TITLE,
   openGraph: {
     title: lng.TITLE,
