@@ -14,12 +14,12 @@ export const sanitizedEnv = cleanEnv(process.env, {
   BOT_OAUTH_CLIENT_SECRET: str({ default: undefined }),
   BOT_OAUTH_REDIRECT_URI: str({ default: undefined }),
 
-  WEB_COOKIE_SECRET: str(),
-  WEB_PRODUCTION_URL: str({ default: undefined }),
-
   DATABASE_URL: str(),
   DEFAULT_LOCALE: str(),
   SENTRY_DSN: str({ default: undefined }),
+
+  NEXTAUTH_SECRET: str(),
+  NEXTAUTH_URL: str(),
 
   // Default Node.js env variables
   NODE_ENV: str(),
