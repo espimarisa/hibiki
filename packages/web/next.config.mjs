@@ -1,4 +1,9 @@
 import { withSentryConfig } from "@sentry/nextjs";
+import path from "node:path";
+import url from "node:url";
+
+// __dirname replacement in ESM
+const pathDirname = path.dirname(url.fileURLToPath(import.meta.url));
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
@@ -10,6 +15,10 @@ const nextConfig = {
     };
 
     return config;
+  },
+
+  sassOptions: {
+    includePaths: [path.join(pathDirname, "src/scss")],
   },
 
   // TODO: Source mappings
