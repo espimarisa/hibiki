@@ -1,0 +1,104 @@
+@import url("modern-normalize");
+@import url("@fontsource/atkinson-hyperlegible");
+
+// Primary colours
+$white: #fff;
+$black: #000;
+
+// Accents
+$dark: #111;
+$light: #fafafa;
+$grey: whitesmoke;
+
+// Main branding colours
+$primary: #ffb000;
+
+html,
+body {
+  height: 100;
+  width: 100;
+  margin: 0;
+  padding: 0;
+  color: $dark;
+  background-color: $light;
+  font-family:
+    "Atkinson Hyperlegible",
+    -apple-system,
+    system-ui,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+}
+
+//////////////////////
+// Layout styling
+//////////////////////
+
+.container {
+  margin: 0 auto;
+  padding-top: 3rem;
+  padding-left: 8rem;
+  padding-right: 8rem;
+  max-width: 70rem;
+}
+
+//////////////////////
+// High contrast
+//////////////////////
+
+@media (prefers-contrast: more) {
+  html,
+  body {
+    color: $black;
+    background-color: $white;
+  }
+}
+
+//////////////////////
+// Dark mode
+//////////////////////
+
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    color: $light;
+    background-color: $dark;
+
+    // Darkmode + high contrast
+    @media (prefers-contrast: more) {
+      color: $white;
+      background-color: $black;
+    }
+  }
+}
+
+//////////////////////
+// Screen scaling
+//////////////////////
+
+// Tablet padding support
+@media only screen and (max-width: 950px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+// Phone padding support
+@media only screen and (max-width: 600px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+// Small phone padding support
+@media (max-width: 382px) {
+  .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}

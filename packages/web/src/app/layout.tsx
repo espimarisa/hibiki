@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 
-// TODO: use i18next
-import { sanitizedEnv } from "../../../shared/src/env.js";
+// Styles
+import "$web/scss/index.scss";
+
 import lng from "$locales/en/web.json";
+import { sanitizedEnv } from "$shared/env.js";
 
 export default function rootLayout({ children }: { children: React.ReactNode }) {
   return (
