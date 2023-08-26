@@ -30,7 +30,7 @@
   "dependencies": {
     "@discordjs/rest": "^2.0.1",
     "cross-env": "^7.0.3",
-    "discord-api-types": "^0.37.54",
+    "discord-api-types": "^0.37.55",
     "discord.js": "^14.13.0",
     "dotenv": "^16.3.1"
   },

@@ -28,15 +28,18 @@
     "test": "pnpm lint"
   },
   "devDependencies": {
-    "@types/react": "^18.2.20",
+    "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "eslint-config-next": "^13.4.19",
     "eslint-plugin-next": "^0.0.0",
     "next": "^13.4.19",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "sass": "^1.66.1"
   },
   "dependencies": {
-    "@sentry/nextjs": "^7.64.0"
+    "@fontsource/atkinson-hyperlegible": "^5.0.9",
+    "@sentry/nextjs": "^7.64.0",
+    "modern-normalize": "^2.0.0"
   }
 }
