@@ -1,6 +1,5 @@
 import { HibikiShardingManager } from "./classes/Sharder.js";
 import { sanitizedEnv } from "$shared/env.js";
-import fs from "node:fs";
 import path from "node:path";
 import url from "node:url";
 
@@ -14,6 +13,3 @@ const HIBIKI_INDEX_FILE = `${pathDirname}/hibiki.${sanitizedEnv.isProduction ? "
 // Creates a new sharding manager
 const manager = new HibikiShardingManager(HIBIKI_INDEX_FILE, sanitizedEnv.BOT_TOKEN, "auto");
 manager.spawn();
-
-const h = "owo";
-
