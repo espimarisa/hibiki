@@ -1,7 +1,6 @@
 import type { HibikiCommand } from "./Command.js";
 import type { HibikiEvent } from "./Event.js";
 import { loadCommands, loadEvents, registerInteractions } from "../utils/loader.js";
-import { DatabaseManager } from "$db/index.js";
 import { sanitizedEnv } from "$shared/env.js";
 import { logger } from "$shared/logger.js";
 import { Client, type ClientOptions } from "discord.js";
@@ -19,8 +18,6 @@ const EVENTS_DIRECTORY = path.join(pathDirname, "../events");
 export class HibikiClient extends Client {
   readonly commands = new Map<string, HibikiCommand>();
   readonly events = new Map<string, HibikiEvent>();
-
-  readonly db: DatabaseManager = new DatabaseManager();
 
   constructor(options: ClientOptions) {
     super(options);
