@@ -1,5 +1,6 @@
 import type { CommandInteraction } from "discord.js";
 import { HibikiEvent } from "../classes/Event.js";
+import { getUserConfig } from "$db/index.js";
 import { HibikiColors } from "$shared/constants.js";
 import { t, defaultLocale } from "$shared/i18n.js";
 import { logger } from "$shared/logger.js";
@@ -17,7 +18,7 @@ export class HibikiInteractionEvent extends HibikiEvent {
     if (!command) return;
 
     // Gets the user's locale and appends it into CommandInteraction
-    const userConfig = await this.bot.db.getUserConfig(interaction.user.id);
+    const userConfig = await getUserConfig(interaction.user.id);
     interaction.lng = userConfig?.locale ?? defaultLocale;
 
     // Logs when an interaction is ran
