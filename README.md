@@ -1,71 +1,66 @@
 # Hibiki Development
 
-> This branch is experimental and not at all ready for self-hosting or production use.
+> This branch is in active development and is not ready for self-hosting or production use.
 
 [![Build][badge-workflow]][workflow]
 [![License][badge-license]][license]
 
-[license]: LICENSE "Hibiki is licensed under the zlib/libpng license"
-[workflow]: https://github.com/espimarisa/hibiki/actions?query=workflow%3Apush "GitHub workflow showing latest push status"
+## About
 
-<!-- Badges -->
+Hibiki is a Discord bot jam-packed with useful utilities for everyone.
 
-[badge-workflow]: https://img.shields.io/github/actions/workflow/status/espimarisa/hibiki/push.yml?branch=develop "Shields.io badge for workflow status"
-[badge-license]: https://img.shields.io/badge/license-zlib-orange.svg "Shields.io badge for the zlib license"
+You can invite the official Hibiki instance using [this Discord invite][invite].
 
-Hibiki is a a Discord bot jam-packed with useful utilities for everyone written in [TypeScript][typescript].
-
-## Invite & Support
-
-You may invite the official Hibiki instance using [this Discord invite][invite].
-
-**_NO support is given for self-hosted instances._ The information below only applies to the **official instance** of Hibiki.**
+**_NO support is given for self-hosted instances._**
 
 ## Terms of Service
 
-> "Application" or "official instance" refers to the Hibiki bot application with the ID `493904957523623936`.
+The information below applies to the official instance of Hibiki. Self-hosted instances or forks may not respect our official Terms of Service or privacy guidelines.
 
-**Updated on July 11th, 2023**
+> "Application" or "official instance" refers to the Hibiki bot application with the Discord user ID of `493904957523623936`.
+
+**Updated on August 26th, 2023**
 
 - Do not try to intentionally crash, break, or exploit the application
-- If you find a critical, application-breaking bug, you must report it to the maintainers
-- Usage must obey all laws in the **United States of America** or where the application is hosted
-- Data processed by the application must follow Discord's **[Terms of Service][discord_tos]** and **[Community Guidelines][discord_cg]**
+- If you find a critical bug or security vulnerability, you must report it
+- Usage must follow Discord's **[Terms of Service][discord_tos]** and **[Community Guidelines][discord_cg]**
+- Usage must obey all laws in the **United States** (host location) and the country of the end-user
 
 ## Data Privacy
 
-> **_No personal or identifying information is stored._**
+**Updated on August 26th, 2023**
 
-**Updated on July 11th, 2023**
+The following types of user data are stored when needed:
 
-The following types of data can be stored **on-demand** in order for some of our features to work correctly.
+- **User ID(s)**: A Discord ID pointing to a unique user
+- **Server ID(s)**: A Discord ID pointing to a unique server
+- **Message ID(s)**: A message ID pointing to a specific message
+- **Command Response(s)**: Responses in commands and other input forms
 
-- **User ID(s)**: A Discord ID unique to your account
-- **Server ID(s)**: A Discord ID unique to your server
-- **Message ID(s)**: A message ID identifying a message
-- **Command Response(s)**: Text responses in slash-commands
-
-When added or removed from your server, the following information will be logged to a private log that only the application maintainers can view:
+When added or removed from a server, the following information will be logged to a private Discord channel that only maintainers can access:
 
 - The server's creation date
-- The server name, icon, and ID
-- The server owner's username, possible discriminator, and ID
-- The total server member count at the time of addition or removal
+- The server name, icon, and guild ID
+- The server owner's username and user ID
+- The total number of unique members in the server
 
-To start a data deletion request, please contact the application maintainer using a link below. In order to process your request, please state why you're contacting, what data you wish to be removed, and your Discord user or Discord server ID.
+To request user or server data deletion, please contact the primary maintainer:
 
-- Discord - `@espimarisa`
-- Telegram - [@espimarisa][espi-telegram]
-- Email - [contact@espi.me][espi-email]
+- Discord - [@espimarisa][espi-discord] - please state why you added me after a friend request
+- Telegram - [@espimarisa][espi-telegram] - please include why you messaged me in your message
+- Email - [contact@espi.me][espi-email] - please include "Hibiki Data Deletion" in the contact line
 
 ## License
 
 [zlib/libpng][license]
 
-[typescript]: https://www.typescriptlang.org/ "TypeScript's website"
-[invite]: https://discord.com/oauth2/authorize?&client_id=493904957523623936&scope=bot%20applications.commands&permissions=27929605435126 "Invite the official Hibiki instance"
-[discord_tos]: https://discord.com/terms "Discord's Terms of Service"
-[discord_cg]: https://discord.com/guidelines "Discord's Community Guidelines"
-[espi-telegram]: https://t.me/espimarisa "Contact Espi (espimarisa) on Telegram"
-[espi-email]: mailto:contact@espi.me "A mailto link redirecting to the project owner's email"
-[license]: LICENSE.md "zlib/libpng license file"
+[badge-license]: https://img.shields.io/badge/license-zlib-orange.svg "Shields.io badge displaying the zlib license."
+[badge-workflow]: https://img.shields.io/github/actions/workflow/status/espimarisa/hibiki/push.yml?branch=develop "Shields.io badge showing the latest workflow status."
+[discord_tos]: https://discord.com/terms "A link to Discord's Terms of Service."
+[discord_cg]: https://discord.com/guidelines "A link to Discord's Community Guidelines."
+[espi-discord]: https://discord.com/users/647269760782041133 "A link to the project maintainer's Discord profile."
+[espi-email]: mailto:contact@espi.me "A link to email the primary project maintainer."
+[espi-telegram]: https://t.me/espimarisa "A link to message the primary project maintainer on Telegram."
+[invite]: https://discord.com/oauth2/authorize?&client_id=493904957523623936&scope=bot%20applications.commands&permissions=28307378007798 "An invite for the official instance of Hibiki."
+[license]: LICENSE.md "A link to the LICENSE file."
+[workflow]: https://github.com/espimarisa/hibiki/actions?query=workflow%3Apush "GitHub workflow showing the latest push status."
