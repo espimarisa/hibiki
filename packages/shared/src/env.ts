@@ -9,13 +9,12 @@ dotenv.config({ path: path.resolve("../../.env") });
 export const sanitizedEnv = cleanEnv(process.env, {
   BOT_TOKEN: str(),
   BOT_CLIENT_ID: str(),
-  BOT_TEST_GUILD_ID: str(),
-  BOT_LOGGING_CHANNEL_ID: str(),
+  BOT_TEST_GUILD_ID: str({ default: undefined }),
+  BOT_LOGGING_CHANNEL_ID: str({ default: undefined }),
 
   BOT_OAUTH_CLIENT_SECRET: str({ default: undefined }),
   BOT_OAUTH_REDIRECT_URI: str({ default: undefined }),
 
-  DATABASE_URL: str(),
   DEFAULT_LOCALE: str(),
   SENTRY_DSN: str({ default: undefined }),
 

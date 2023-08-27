@@ -14,7 +14,9 @@
       "persistent": true
     },
     "start": {
-      "dependsOn": ["db:push", "deploy"]
+      "dependsOn": ["db:push", "deploy"],
+      "cache": true,
+      "persistent": true
     },
     "db:generate": {
       "cache": false
