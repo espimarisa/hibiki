@@ -15,7 +15,7 @@
       "$shared": ["./packages/shared/src"],
       "$shared/*": ["./packages/shared/src/*"],
       "$web/*": ["./packages/web/src/*"],
-      "$web": ["./packages/web/src"],
+      "$web": ["./packages/web/src"]
     },
 
     "allowJs": false,
