@@ -22,7 +22,7 @@
   "scripts": {
     "clean": "rimraf ./dist/",
     "build": "pnpm clean && pnpm db:generate && tsc && tsc-alias",
-    "lint": "tsc --noEmit && prettier --c . && eslint . && prisma-lint",
+    "lint": "tsc --noEmit && pnpm db:generate &&  prettier --c . && eslint . && prisma-lint",
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate",
     "db:reset": "prisma migrate reset",
