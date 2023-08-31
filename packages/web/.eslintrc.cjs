@@ -1,4 +1,15 @@
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-  extends: ["../../.eslintrc.cjs", "plugin:@next/next/core-web-vitals"],
+  extends: ["../../.eslintrc.cjs"],
+
+  overrides: [
+    {
+      files: ["*.svelte"],
+      parser: "svelte-eslint-parser",
+      rules: {
+        // Broken
+        "no-inner-declarations": 0,
+      },
+    },
+  ],
 };

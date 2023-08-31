@@ -15,6 +15,9 @@ export enum HibikiColors {
   ERROR = 0xfe_61_00,
 }
 
+// Donate URL
+export const HibikiDonateURL = "https://github.com/sponsors/espimarisa";
+
 // Support invite
 export const HibikiSupportInvite = "https://discord.gg/VpRscV3mdn";
 
