@@ -20,29 +20,38 @@
     "pnpm": ">=8.0.0"
   },
   "scripts": {
-    "build": "pnpm clean && next build",
-    "clean": "rimraf .next",
-    "dev": "next dev",
-    "lint": "next lint && prettier --c . && eslint .",
+    "build": "pnpm clean && vite build",
+    "clean": "rimraf .svelte-kit",
+    "check": "svelte-kit sync && svelte-check --ignore 'dist' --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "dev": "svelte-kit sync && vite dev",
+    "lint": "prettier --c . && eslint .",
+    "preview": "vite preview",
     "start": "next start",
-    "test": "pnpm lint"
+    "test": "pnpm check && pnpm lint"
   },
   "dependencies": {
+    "@auth/core": "^0.12.0",
+    "@auth/sveltekit": "^0.3.6",
     "@discordjs/rest": "^2.0.1",
-    "@fontsource/atkinson-hyperlegible": "^5.0.9",
-    "@sentry/nextjs": "^7.64.0",
+    "@fontsource/atkinson-hyperlegible": "^5.0.11",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/svelte-fontawesome": "^0.2.0",
+    "@sveltejs/adapter-node": "^1.3.1",
     "discord-api-types": "^0.37.55",
-    "modern-normalize": "^2.0.0",
-    "next-auth": "^4.23.1"
+    "modern-normalize": "^2.0.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.21",
-    "@types/react-dom": "^18.2.7",
-    "eslint-config-next": "^13.4.19",
-    "eslint-plugin-next": "^0.0.0",
-    "next": "^13.4.19",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "sass": "^1.66.1"
+    "@sveltejs/kit": "^1.24.0",
+    "eslint": "^8.48.0",
+    "eslint-plugin-svelte": "^2.33.0",
+    "postcss": "^8.4.29",
+    "prettier-plugin-svelte": "^3.0.3",
+    "sass": "^1.66.1",
+    "svelte": "^4.2.0",
+    "svelte-check": "^3.5.1",
+    "svelte-eslint-parser": "^0.33.0",
+    "vite": "^4.4.9"
   }
 }
