@@ -1,12 +1,8 @@
 {
-  "extends": ["../../tsconfig.json"],
-  "include": ["*.ts", "./src/**/*", ".next/types/**/*.ts", "next-env.d.ts"],
+  "extends": ["./.svelte-kit/tsconfig.json", "../../tsconfig.json"],
+  "include": ["*.ts", "./src/**/*"],
 
   "compilerOptions": {
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "verbatimModuleSyntax": false
   }
 }

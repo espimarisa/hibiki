@@ -1,0 +1,13 @@
+//////////////////////
+// Utilities styling
+//////////////////////
+
+.grid {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.is-centered {
+  text-align: center;
+}
