@@ -33,6 +33,9 @@ export abstract class HibikiCommand {
 
   // Runs a command via the interaction gateway
   public runWithInteraction?(interaction: CommandInteraction, ...args: string[]): Promise<void>;
+
+  // Gets a specific subcommand's response
+  public getSubCommandResponse?(commandName: string, ...args: string[]): Promise<unknown>;
 }
 
 // A callable type for an abstract Hibiki command
