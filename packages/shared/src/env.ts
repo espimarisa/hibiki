@@ -18,8 +18,8 @@ export const sanitizedEnv = cleanEnv(process.env, {
   DEFAULT_LOCALE: str(),
   SENTRY_DSN: str({ default: undefined }),
 
-  NEXTAUTH_SECRET: str(),
-  NEXTAUTH_URL: str(),
+  AUTH_SECRET: str(),
+  WEB_BASE_URL: str(),
 
   // Default Node.js env variables
   NODE_ENV: str(),
