@@ -1,5 +1,6 @@
 <script lang="ts">
-  export let metadata: SvelteMetadata;
+  import type { SvelteMetadata } from "../typings/index.js";
+  export let metadata: SvelteMetadata = {};
 </script>
 
 <svelte:head>

@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { faDiscord } from "@fortawesome/free-brands-svg-icons";
-  import { faCat } from "@fortawesome/free-solid-svg-icons";
-  import { FontAwesomeIcon } from "@fortawesome/svelte-fontawesome";
+  import type { SvelteMetadata } from "../typings/index.js";
   import Footer from "../components/Footer.svelte";
   import Link from "../components/Link.svelte";
   import Meta from "../components/Meta.svelte";
   import Navbar from "../components/Navbar.svelte";
+  import { faDiscord } from "@fortawesome/free-brands-svg-icons";
+  import { faCat } from "@fortawesome/free-solid-svg-icons";
+  import { FontAwesomeIcon } from "@fortawesome/svelte-fontawesome";
   import "../scss/index.scss";
 
   // Page metadata

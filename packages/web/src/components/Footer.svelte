@@ -1,14 +1,14 @@
 <script lang="ts">
+  import Link from "./Link.svelte";
   import { faHeart } from "@fortawesome/free-solid-svg-icons";
   import { FontAwesomeIcon } from "@fortawesome/svelte-fontawesome";
   import { onMount } from "svelte";
-  import Link from "./Link.svelte";
 
   const date = new Date().getFullYear();
 
   onMount(() => {
     // Silly little easter egg
-    const cuteElement = document.getElementById("readIfCute");
+    const cuteElement = document.querySelector("#readIfCute");
     if (cuteElement) {
       cuteElement.addEventListener("click", () => {
         cuteElement.textContent = "read if cute :3";
