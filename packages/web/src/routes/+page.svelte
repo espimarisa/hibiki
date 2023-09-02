@@ -1,25 +1,40 @@
 <script lang="ts">
-  import Navbar from "../components/Navbar.svelte";
   import { faDiscord } from "@fortawesome/free-brands-svg-icons";
   import { faCat } from "@fortawesome/free-solid-svg-icons";
   import { FontAwesomeIcon } from "@fortawesome/svelte-fontawesome";
-
+  import Footer from "../components/Footer.svelte";
+  import Link from "../components/Link.svelte";
+  import Meta from "../components/Meta.svelte";
+  import Navbar from "../components/Navbar.svelte";
   import "../scss/index.scss";
+
+  // Page metadata
+  const metadata = {
+    title: "Hibiki",
+    description: "A Discord bot jam-packed with useful utilities for everyone!",
+
+    // TODO: Add this to shared/constants
+    themeColor: "FFB000",
+
+    // TODO: Implement URL
+    url: "",
+  } satisfies SvelteMetadata;
 </script>
+
+<Meta {metadata} />
 
 <Navbar />
 
 <div class="large-hero">
-  <span class="title" id="hibiki-title">Hibiki</span>
-  <br />
-  <span class="subtitle">A Discord bot jam-packed with useful utilities for everyone.</span>
-  <br />
-  <a href="/invite">
+  <p class="title" id="hibiki-title">Hibiki</p>
+  <p class="subtitle">A Discord bot jam-packed with useful utilities for everyone.</p>
+
+  <Link href="/invite" outbound>
     <button>
       <FontAwesomeIcon icon={faDiscord} />
       <span>Add to Discord</span>
     </button>
-  </a>
+  </Link>
 
   <br />
 </div>
@@ -42,3 +57,5 @@
     </div>
   </div>
 </div>
+
+<Footer />
