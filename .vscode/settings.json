@@ -1,0 +1,23 @@
+{
+  "eslint.validate": ["typescript", "javascript", "svelte"],
+  "svelte.enable-ts-plugin": true,
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "typescript.preferences.importModuleSpecifierEnding": "js",
+
+  "[svelte]": {
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  },
+
+  "[sass]": {
+    "editor.defaultFormatter": "syler.sass-indented"
+  },
+
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}

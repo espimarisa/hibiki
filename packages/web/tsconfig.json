@@ -1,6 +1,6 @@
 {
   "extends": ["./.svelte-kit/tsconfig.json", "../../tsconfig.json"],
-  "include": ["*.ts", "./src/**/*"],
+  "include": ["./src/**/*"],
 
   "compilerOptions": {
     "verbatimModuleSyntax": false
