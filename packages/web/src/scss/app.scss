@@ -9,7 +9,7 @@
 @import url("./typography.scss");
 
 html {
-  font-size: 16px;
+  font-size: 18px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -43,6 +43,10 @@ a {
   color: $black;
 }
 
+p {
+  margin: auto;
+}
+
 button {
   color: $black;
   border: 0.01rem solid $black;
@@ -52,7 +56,7 @@ button {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   cursor: pointer;
 
   a {
@@ -62,6 +66,14 @@ button {
 
 button:hover {
   border: 0.01rem solid $primary;
+}
+
+footer {
+  font-size: 1rem;
+  padding: 1rem;
+  margin-top: auto;
+  background-color: $grey;
+  text-align: center;
 }
 
 //////////////////////
@@ -82,5 +94,9 @@ button:hover {
     border: 0.01rem solid $white;
     color: $white;
     background-color: $dark;
+  }
+
+  footer {
+    background-color: $black;
   }
 }

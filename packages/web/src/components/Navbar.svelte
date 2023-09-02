@@ -1,7 +1,9 @@
 <script lang="ts">
   import { faGithub } from "@fortawesome/free-brands-svg-icons";
-  import { faBars, faDonate, faGlobe, faQuestionCircle, faSignIn } from "@fortawesome/free-solid-svg-icons";
+  import { faBars, faDonate, faGlobe, faQuestionCircle, faSignIn, faSignOut, faWrench } from "@fortawesome/free-solid-svg-icons";
   import { FontAwesomeIcon } from "@fortawesome/svelte-fontawesome";
+  import { page } from "$app/stores";
+  import Link from "./Link.svelte";
 
   // Navbar styling
   import "../scss/navbar.scss";
@@ -15,43 +17,69 @@
   }
 </script>
 
-<div class="navbar" id="navbar">
-  <a href="/support">
-    <span>
-      <FontAwesomeIcon icon={faQuestionCircle} />
-    </span>
-    <span>Support</span>
-  </a>
+<!-- Navbar for guild picker -->
+{#if $page.url.pathname === "/notYetImplemented"}
+  <!-- Not yet implemented -->
+{:else if $page.url.pathname === "/alsoNotYetImplemented"}
+  <!-- Not yet implemented -->
+{:else}
+  <!-- Index page -->
+  <nav class="navbar" id="navbar">
+    <Link href="/support" outbound>
+      <span>
+        <FontAwesomeIcon icon={faQuestionCircle} />
+      </span>
+      <span>Support</span>
+    </Link>
 
-  <a href="/donate">
-    <span>
-      <FontAwesomeIcon icon={faDonate} />
-    </span>
-    <span>Donate</span>
-  </a>
+    <Link href="/donate" outbound>
+      <span>
+        <FontAwesomeIcon icon={faDonate} />
+      </span>
+      <span>Donate</span>
+    </Link>
 
-  <a href="/github">
-    <span>
-      <FontAwesomeIcon icon={faGithub} />
-    </span>
-    <span>GitHub</span>
-  </a>
+    <Link href="/github" outbound>
+      <span>
+        <FontAwesomeIcon icon={faGithub} />
+      </span>
+      <span>GitHub</span>
+    </Link>
 
-  <a href="/translate">
-    <span>
-      <FontAwesomeIcon icon={faGlobe} />
-    </span>
-    <span>Translate</span>
-  </a>
+    <Link href="/translate" outbound>
+      <span>
+        <FontAwesomeIcon icon={faGlobe} />
+      </span>
+      <span>Translate</span>
+    </Link>
 
-  <a href="/dashboard" class="navbar-right">
-    <span>
-      <FontAwesomeIcon icon={faSignIn} />
-    </span>
-    <span>Login with Discord</span>
-  </a>
+    <!-- Signed in -->
+    {#if $page.data.session?.discordUser}
+      <Link href="/auth/signout" className="navbar-right">
+        <span>
+          <FontAwesomeIcon icon={faSignOut} />
+        </span>
+        <span>Logout</span>
+      </Link>
 
-  <a href="#navbar-toggle" class="navbar-toggle" on:click={toggleNav}>
-    <FontAwesomeIcon icon={faBars} />
-  </a>
-</div>
+      <Link href="/dashboard" className="navbar-right">
+        <span>
+          <FontAwesomeIcon icon={faWrench} />
+        </span>
+        <span>Dashboard</span>
+      </Link>
+    {:else}
+      <!-- Not signed in -->
+      <Link href="/auth/signin" className="navbar-right">
+        <span>
+          <FontAwesomeIcon icon={faSignIn} />
+        </span>
+        <span>Login with Discord</span>
+      </Link>
+    {/if}
+
+    <a href="#navbar-toggle" class="navbar-toggle" on:click={toggleNav}>
+      <FontAwesomeIcon icon={faBars} />
+    </a>
+  </nav>
+{/if}
