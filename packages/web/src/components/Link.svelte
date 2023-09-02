@@ -3,14 +3,14 @@
   export let href = "javascript:void(0);";
 
   // Set to 'false' to disable target=_blank and rel=noopener noreferrer
-  export let outbound: boolean | undefined = undefined;
+  export let outbound = false;
 
-  export let target: string | undefined = undefined;
-  export let rel: string | undefined = undefined;
+  export let target = "";
+  export let rel = "";
   export let active = false;
 
-  export let className: string | undefined = undefined;
-  export let idName: string | undefined = undefined;
+  export let className = "";
+  export let idName = "";
 
   $: if (typeof window !== "undefined") {
     const isExternal = new URL(href, `${location.protocol}//${location.host}`).host !== location.host;

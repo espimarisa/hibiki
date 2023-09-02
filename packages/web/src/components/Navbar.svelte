@@ -1,9 +1,9 @@
 <script lang="ts">
+  import Link from "./Link.svelte";
   import { faGithub } from "@fortawesome/free-brands-svg-icons";
   import { faBars, faDonate, faGlobe, faQuestionCircle, faSignIn, faSignOut, faWrench } from "@fortawesome/free-solid-svg-icons";
   import { FontAwesomeIcon } from "@fortawesome/svelte-fontawesome";
   import { page } from "$app/stores";
-  import Link from "./Link.svelte";
 
   // Navbar styling
   import "../scss/navbar.scss";
