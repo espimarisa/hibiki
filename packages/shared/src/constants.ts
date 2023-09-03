@@ -18,6 +18,10 @@ export enum HibikiColors {
 // Donate URL
 export const HibikiDonateURL = "https://github.com/sponsors/espimarisa";
 
+// Translate URL
+// TODO: Add a URL
+export const HibikiTranslateURL = "https://github.com/espimarisa/hibiki";
+
 // License URL
 export const HibikiLicenseURL = "https://github.com/espimarisa/hibiki/blob/develop/LICENSE.md";
 
