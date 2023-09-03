@@ -11,3 +11,11 @@
 .is-centered {
   text-align: center;
 }
+
+.is-fully-centered-body {
+  height: 100vh;
+  margin: auto;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
