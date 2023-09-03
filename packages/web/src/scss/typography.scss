@@ -11,3 +11,15 @@
   font-weight: semibold;
   font-size: 1.25rem;
 }
+
+.has-text-warning {
+  color: $warning;
+}
+
+.has-text-error {
+  color: $error;
+}
+
+.has-text-primary {
+  color: $primary;
+}

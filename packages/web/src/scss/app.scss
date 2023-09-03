@@ -43,6 +43,12 @@ a {
   color: $black;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
 p {
   margin: auto;
 }
@@ -51,6 +57,7 @@ button {
   color: $black;
   border: 0.01rem solid $black;
   border-radius: 0.25rem;
+  margin: auto;
   margin-top: 1rem;
   padding: 0.5rem;
   text-align: center;
@@ -92,8 +99,8 @@ footer {
 
   button {
     border: 0.01rem solid $white;
-    color: $white;
-    background-color: $dark;
+    color: inherit;
+    background-color: inherit;
   }
 
   footer {

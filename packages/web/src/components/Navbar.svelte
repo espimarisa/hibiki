@@ -55,7 +55,7 @@
 
     <!-- Signed in -->
     {#if $page.data.session?.discordUser}
-      <Link href="/auth/signout" className="navbar-right">
+      <Link href="/auth/logout" className="navbar-right">
         <span>
           <FontAwesomeIcon icon={faSignOut} />
         </span>
@@ -70,7 +70,7 @@
       </Link>
     {:else}
       <!-- Not signed in -->
-      <Link href="/auth/signin" className="navbar-right">
+      <Link href="/auth/login" className="navbar-right">
         <span>
           <FontAwesomeIcon icon={faSignIn} />
         </span>

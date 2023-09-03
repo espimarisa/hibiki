@@ -5,8 +5,11 @@ import { SvelteKitAuth } from "@auth/sveltekit";
 import { redirect, type Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
 
+// Routes to protect behind Discord oAuth2
+const PROTECTED_ROUTES = new Set(["/api", "/dashboard"]);
+
 export const authorization = (async ({ event, resolve }) => {
-  if (event.url.pathname.startsWith("/api") || event.url.pathname.startsWith("/dashboard")) {
+  if (PROTECTED_ROUTES.has(event.url.pathname)) {
     // Gets the session
     const session = await event.locals.getSession();
 
@@ -17,7 +20,8 @@ export const authorization = (async ({ event, resolve }) => {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 403 });
       } else {
         // Force a re-log for everything else
-        redirect(303, "/auth/signin");
+        // eslint-disable-next-line @typescript-eslint/no-throw-literal
+        throw redirect(303, "/auth/login");
       }
     }
   }
@@ -27,6 +31,12 @@ export const authorization = (async ({ event, resolve }) => {
 
 export const handle = sequence(
   SvelteKitAuth({
+    pages: {
+      signIn: "/auth/login",
+      signOut: "/auth/logout",
+      error: "/auth/fail",
+    },
+
     secret: sanitizedEnv.AUTH_SECRET,
     trustHost: true,
     // Session options
