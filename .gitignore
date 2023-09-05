@@ -80,6 +80,9 @@ Temporary Items
 .Trash-*
 .nfs*
 
+# WSL
+*Zone.Identifier
+
 # Windows
 Thumbs.db
 Thumbs.db:encryptable
