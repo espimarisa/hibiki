@@ -1,6 +1,6 @@
 {
   "include": ["./packages/**/*", "./locales/**/*"],
-  "exclude": ["*.d.ts", "./dist/*", "./*/**/dist/*", "node_modules", "./*/**/node_modules/*"],
+  "exclude": ["*.d.ts", "./dist/*", "./*/**/dist/*", "node_modules"],
 
   "compilerOptions": {
     "paths": {

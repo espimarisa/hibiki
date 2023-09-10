@@ -9,7 +9,7 @@ export function initSentry(options?: Sentry.NodeOptions) {
   try {
     Sentry.init({
       dsn: sanitizedEnv.SENTRY_DSN,
-      environment: sanitizedEnv.NODE_ENV,
+      environment: sanitizedEnv.NODE_ENV || "develop",
       release: sanitizedEnv.npm_package_version,
       tracesSampleRate: 0.2,
       ...options,

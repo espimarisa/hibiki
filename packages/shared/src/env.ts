@@ -21,8 +21,11 @@ export const sanitizedEnv = cleanEnv(process.env, {
   AUTH_SECRET: str(),
   WEB_BASE_URL: str(),
 
+  // Database URL
+  DATABASE_URL: str(),
+
   // Default Node.js env variables
-  NODE_ENV: str(),
-  npm_package_name: str(),
-  npm_package_version: str(),
+  NODE_ENV: str({ default: "develop" }),
+  npm_package_name: str({ default: undefined }),
+  npm_package_version: str({ default: "develop" }),
 });

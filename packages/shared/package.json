@@ -7,7 +7,7 @@
   "license": "zlib",
   "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "homepage": "https://github.com/espimarisa/hibiki#readme",
-  "packageManager": "pnpm@8.0.0",
+  "packageManager": "pnpm@8.7.4",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/espimarisa/hibiki.git"
@@ -16,7 +16,7 @@
     "url": "https://github.com/espimarisa/hibiki/issues"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.6.0",
     "pnpm": ">=8.0.0"
   },
   "scripts": {
@@ -26,12 +26,12 @@
     "test": "pnpm lint"
   },
   "dependencies": {
-    "@sentry/node": "^7.66.0",
+    "@sentry/node": "^7.68.0",
     "dotenv": "^16.3.1",
     "envalid": "^7.3.1",
-    "i18next": "^23.4.6",
+    "i18next": "^23.5.1",
     "i18next-fs-backend": "^2.1.5",
-    "pino": "^8.15.0",
+    "pino": "^8.15.1",
     "pino-pretty": "^10.2.0"
   }
 }

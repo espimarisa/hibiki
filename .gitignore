@@ -131,3 +131,6 @@ next-env.d.ts
 
 # Sass
 .sass-cache/
+
+# Vite
+vite.config.mjs.timestamp*
