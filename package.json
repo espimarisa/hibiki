@@ -7,7 +7,7 @@
   "license": "zlib",
   "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "homepage": "https://github.com/espimarisa/hibiki#readme",
-  "packageManager": "pnpm@8.0.0",
+  "packageManager": "pnpm@8.7.4",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/espimarisa/hibiki.git"
@@ -19,30 +19,36 @@
     "./packages/"
   ],
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.6.0",
     "pnpm": ">=8.0.0"
   },
   "scripts": {
-    "build": "pnpm turbo run build",
-    "dev": "pnpm turbo run dev",
+    "build": "pnpm dotenv -- turbo run build",
+    "dev": "pnpm dotenv -- turbo run dev",
+    "dev:bot": "pnpm dotenv -- turbo run dev --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
+    "dev:web": "pnpm dotenv -- turbo run dev --filter=@espimarisa/hibiki-web --filter=@espimarisa/hibiki-db",
     "deps:update": "pnpm up -r -L",
     "format": "prettier --write .",
-    "lint": "pnpm turbo run lint",
-    "start": "pnpm turbo run start",
-    "test": "pnpm turbo run test"
+    "lint": "pnpm dotenv -- turbo run lint",
+    "start": "pnpm dotenv -- turbo run start",
+    "start:bot": "pnpm dotenv -- turbo run start --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
+    "start:web": "pnpm dotenv -- turbo run start --filter=@espimarisa/hibiki-web --filter=@espimarisa/hibiki-db",
+    "test": "pnpm dotenv -- turbo run test"
   },
   "dependencies": {
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@espimarisa/eslint-config": "^4.1.5",
-    "@types/node": "^20.5.9",
-    "@typescript-eslint/eslint-plugin": "^6.5.0",
-    "@typescript-eslint/parser": "^6.5.0",
-    "eslint": "^8.48.0",
+    "@espimarisa/eslint-config": "^4.1.6",
+    "@types/node": "^20.6.0",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "cross-env": "^7.0.3",
+    "dotenv-cli": "^7.3.0",
+    "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-import-resolver-typescript": "^3.6.0",
-    "eslint-plugin-import": "npm:eslint-plugin-i@2.28.0-2",
+    "eslint-plugin-import": "npm:eslint-plugin-i@^2.28.1",
     "eslint-plugin-n": "^16.0.2",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-promise": "^6.1.1",

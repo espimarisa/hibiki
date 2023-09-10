@@ -8,7 +8,7 @@ export default async (url: string, options?: RequestInit) => {
       ...options,
       headers: {
         ...options?.headers,
-        "User-Agent": `${sanitizedEnv.npm_package_name}/${sanitizedEnv.npm_package_version} (https://github.com/espimarisa/hibiki)`,
+        "User-Agent": `${sanitizedEnv.npm_package_name}/${sanitizedEnv.npm_package_version} (github.com/espimarisa/hibiki)`,
       },
     });
 

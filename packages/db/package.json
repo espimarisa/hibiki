@@ -1,13 +1,13 @@
 {
   "private": true,
   "type": "module",
-  "name": "@espimarisa/db",
+  "name": "@espimarisa/hibiki-db",
   "version": "2.0.0-alpha",
   "description": "The database client for Hibiki.",
   "license": "zlib",
   "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "homepage": "https://github.com/espimarisa/hibiki#readme",
-  "packageManager": "pnpm@8.0.0",
+  "packageManager": "pnpm@8.7.4",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/espimarisa/hibiki.git"
@@ -16,7 +16,7 @@
     "url": "https://github.com/espimarisa/hibiki/issues"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.6.0",
     "pnpm": ">=8.0.0"
   },
   "scripts": {
