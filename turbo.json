@@ -1,15 +1,16 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDotEnv": [".env"],
   "pipeline": {
     "build": {
       "dependsOn": ["db:generate", "^build"],
-      "outputs": [".dist/**", ".next/**"]
+      "outputs": ["dist/**", ".svelte-kit/**"]
     },
     "deploy": {
-      "dependsOn": ["lint", "build"]
+      "dependsOn": ["build"]
     },
     "dev": {
-      "dependsOn": ["db:push"],
+      "dependsOn": ["db:generate", "db:push"],
       "cache": false,
       "persistent": true
     },
