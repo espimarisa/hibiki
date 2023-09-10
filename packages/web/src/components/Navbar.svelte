@@ -78,7 +78,7 @@
       </Link>
     {/if}
 
-    <a href="#navbar-toggle" class="navbar-toggle" on:click={toggleNav}>
+    <a href="#navbar-toggle" class="navbar-toggle" on:click={toggleNav} aria-label="Toggle navigation">
       <FontAwesomeIcon icon={faBars} />
     </a>
   </nav>

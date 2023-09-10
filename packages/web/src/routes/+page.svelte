@@ -41,20 +41,75 @@
 </div>
 
 <div class="small-hero">
+  <p class="title">Why Hibiki?</p>
+  <p class="subtitle">Because I said so retard</p>
+  <br />
+
   <div class="grid">
     <div class="tile is-centered">
       <FontAwesomeIcon icon={faCat} size="3x" class="tile-icon" />
-      <p>TODO: Add things</p>
+      <p>meow :3</p>
     </div>
 
     <div class="tile is-centered">
       <FontAwesomeIcon icon={faCat} size="3x" class="tile-icon" />
-      <p>TODO: Add things</p>
+      <p>meow :3</p>
     </div>
 
     <div class="tile is-centered">
       <FontAwesomeIcon icon={faCat} size="3x" class="tile-icon" />
-      <p>TODO: Add things</p>
+      <p>meow :3</p>
+    </div>
+
+    <div class="tile is-centered">
+      <FontAwesomeIcon icon={faCat} size="3x" class="tile-icon" />
+      <p>meow :3</p>
+    </div>
+
+    <div class="tile is-centered">
+      <FontAwesomeIcon icon={faCat} size="3x" class="tile-icon" />
+      <p>meow :3</p>
+    </div>
+
+    <div class="tile is-centered">
+      <FontAwesomeIcon icon={faCat} size="3x" class="tile-icon" />
+      <p>meow :3</p>
+    </div>
+
+    <div class="tile is-centered">
+      <FontAwesomeIcon icon={faCat} size="3x" class="tile-icon" />
+      <p>meow :3</p>
+    </div>
+
+    <div class="tile is-centered">
+      <FontAwesomeIcon icon={faCat} size="3x" class="tile-icon" />
+      <p>meow :3</p>
+    </div>
+
+    <div class="tile is-centered">
+      <FontAwesomeIcon icon={faCat} size="3x" class="tile-icon" />
+      <p>meow :3</p>
+    </div>
+  </div>
+</div>
+
+<div class="small-hero">
+  <p class="title">What makes Hibiki special?</p>
+
+  <div class="grid">
+    <div class="tile is-centered">
+      <FontAwesomeIcon icon={faCat} size="3x" class="tile-icon" />
+      <p>meow :3</p>
+    </div>
+
+    <div class="tile is-centered">
+      <FontAwesomeIcon icon={faCat} size="3x" class="tile-icon" />
+      <p>meow :3</p>
+    </div>
+
+    <div class="tile is-centered">
+      <FontAwesomeIcon icon={faCat} size="3x" class="tile-icon" />
+      <p>meow :3</p>
     </div>
   </div>
 </div>

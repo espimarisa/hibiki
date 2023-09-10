@@ -4,7 +4,7 @@
 
 .grid {
   display: grid;
-  gap: 1px;
+  gap: 2rem;
   grid-template-columns: repeat(3, 1fr);
 }
 
@@ -12,6 +12,7 @@
   text-align: center;
 }
 
+// todo: stop doing this
 .is-fully-centered-body {
   height: 100vh;
   margin: auto;
