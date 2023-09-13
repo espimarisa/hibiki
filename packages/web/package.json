@@ -43,7 +43,7 @@
     "modern-normalize": "^2.0.0"
   },
   "devDependencies": {
-    "@sveltejs/kit": "^1.24.1",
+    "@sveltejs/kit": "^1.25.0",
     "eslint": "^8.49.0",
     "eslint-plugin-svelte": "^2.33.1",
     "postcss": "^8.4.29",

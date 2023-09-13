@@ -4,7 +4,7 @@ import { fetchTotalCachedGuilds, fetchTotalCachedUsers } from "../classes/Sharde
 import { HibikiColors } from "$shared/constants.js";
 import { sanitizedEnv } from "$shared/env.js";
 import { t } from "$shared/i18n.js";
-import { version as discordJSVersion } from "discord.js";
+import { version } from "discord.js";
 
 export class HibikiAboutCommand extends HibikiCommand {
   description = "Provides information and statistics about the bot.";
@@ -44,7 +44,7 @@ export class HibikiAboutCommand extends HibikiCommand {
             },
             {
               name: t("COMMAND_ABOUT_DISCORDJS_VERSION", { lng: interaction.lng }),
-              value: discordJSVersion,
+              value: version,
               inline: true,
             },
             {
