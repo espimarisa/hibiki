@@ -14,9 +14,6 @@ datasource db {
 model GuildConfig {
   // The guild's ID
   guild_id String @id
-
-  // The custom locale set for all new guild members to use
-  locale String? @unique
 }
 
 // User configs
