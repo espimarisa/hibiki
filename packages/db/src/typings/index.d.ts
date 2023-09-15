@@ -8,5 +8,5 @@ interface HibikiUserConfig {
   user_id: DiscordSnowflake;
 
   // A custom locale
-  locale?: string;
+  locale?: string | null;
 }
