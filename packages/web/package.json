@@ -31,7 +31,7 @@
     "test": "pnpm check && pnpm lint"
   },
   "dependencies": {
-    "@auth/core": "^0.14.0",
+    "@auth/core": "^0.15.0",
     "@auth/sveltekit": "^0.3.7",
     "@discordjs/rest": "^2.0.1",
     "@fontsource/atkinson-hyperlegible": "^5.0.12",

@@ -4,16 +4,16 @@ import { sanitizedEnv } from "./env.js";
 export const moduleFiletypeRegex = /\.(cjs|mjs|js|mts|cts|ts)$/i;
 
 // Hex colors used throughout the app
-export enum HibikiColors {
+export const HibikiColors = {
   // Gold primary
-  GENERAL = 0xff_b0_00,
+  GENERAL: 0xff_b0_00,
 
   // Success pink
-  SUCCESS = 0xdc_26_7f,
+  SUCCESS: 0xdc_26_7f,
 
   // Orange error
-  ERROR = 0xfe_61_00,
-}
+  ERROR: 0xfe_61_00,
+};
 
 // Donate URL
 export const HibikiDonateURL = "https://github.com/sponsors/espimarisa";
