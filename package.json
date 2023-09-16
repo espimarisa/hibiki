@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@espimarisa/eslint-config": "^4.1.6",
-    "@types/node": "^20.6.0",
+    "@types/node": "^20.6.2",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",
     "cross-env": "^7.0.3",
@@ -59,7 +59,7 @@
     "rimraf": "^5.0.1",
     "tsc-alias": "^1.8.7",
     "tsx": "^3.12.10",
-    "turbo": "^1.10.13",
+    "turbo": "^1.10.14",
     "typescript": "^5.2.2"
   }
 }
