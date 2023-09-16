@@ -13,9 +13,7 @@
   const metadata = {
     title: "Hibiki",
     description: "A Discord bot jam-packed with useful utilities for everyone!",
-
-    // TODO: Add this to shared/constants
-    themeColor: "FFB000",
+    themeColor: "#FFB000",
 
     // TODO: Implement URL
     url: "",

@@ -1,4 +1,5 @@
 import { sanitizedEnv } from "./env.js";
+import util from "node:util";
 
 export default async (url: string, options?: RequestInit) => {
   if (!url) return;
@@ -15,7 +16,7 @@ export default async (url: string, options?: RequestInit) => {
     // Return the response to JSON
     return response;
   } catch (error) {
-    if (error instanceof Error) throw new TypeError(`${error.message}`);
+    if (error) throw new Error(`${util.inspect(error)}`);
     return;
   }
 };

@@ -4,12 +4,13 @@ import * as i18n from "i18next";
 import I18NexFsBackend from "i18next-fs-backend";
 import path from "node:path";
 import url from "node:url";
+import util from "node:util";
 
 // __dirname replacement in ESM
 const pathDirname = path.dirname(url.fileURLToPath(import.meta.url));
 const LOCALES_DIRECTORY = path.join(pathDirname, "../../../locales");
 
-export const defaultLocale = sanitizedEnv.DEFAULT_LOCALE || "en";
+export const defaultLocale = sanitizedEnv.DEFAULT_LOCALE;
 
 try {
   await i18n.use(I18NexFsBackend).init({
@@ -27,7 +28,7 @@ try {
 
   logger.info("i18n-next has been initialized");
 } catch (error) {
-  if (error instanceof Error) throw new TypeError(`${error.message}`);
+  if (error) throw new Error(util.inspect(error));
 }
 
 // Shortcut
