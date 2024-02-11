@@ -1,7 +1,4 @@
 # Change this to the domain you reverse proxy from
-# By default, Hibiki production uses hibiki.app
-# This should also match env.WEB_BASE_URL unless you're being very weird
-
 localhost {
 	# Creates the reverse proxy on the "hibiki" container, running on port 3000
 	reverse_proxy hibiki:3000 {

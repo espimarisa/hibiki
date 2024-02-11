@@ -1,0 +1,58 @@
+{
+  "rules": {
+    "field-order": [
+      "error",
+      {
+        "order": ["tenantQid", "..."]
+      }
+    ],
+    "forbid-field": [
+      "error",
+      {
+        "forbid": ["/^(?!.*[aA]mountD6$).*D6$/", "id"]
+      }
+    ],
+    "model-name-grammatical-number": [
+      "error",
+      {
+        "style": "singular"
+      }
+    ],
+    "require-field-index": [
+      "error",
+      {
+        "forAllRelations": true
+      }
+    ],
+    "require-field-type": [
+      "error",
+      {
+        "require": [
+          {
+            "type": "BigInt",
+            "ifName": "/[Aa]mountD6$/"
+          },
+          {
+            "type": "String",
+            "ifName": "/Date$/"
+          },
+          {
+            "type": "DateTime",
+            "ifName": "/At$/"
+          }
+        ]
+      }
+    ],
+    "require-field": [
+      "error",
+      {
+        "require": [
+          {
+            "name": "currencyCode",
+            "ifSibling": "/[Aa]mountD6$/"
+          }
+        ]
+      }
+    ]
+  }
+}
