@@ -1,0 +1,5 @@
+[install]
+
+# Don't install optional dependencies
+# TODO: Enable this when Bun supports dgram
+optional = false
