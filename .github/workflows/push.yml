@@ -7,7 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x]
         os: [ubuntu-latest]
     steps:
       # Checks out git
@@ -15,21 +14,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Installs PNPM
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2.4.0
-
-      # Sets Node.js up
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
+      # Sets Bun.js up
+      - name: Use Bun.js
+        uses: oven-sh/setup-bun@v1
 
       # Runs any test scripts
       - name: Unit Tests
         run: |
-          pnpm install
-          pnpm turbo run test
+          bun install
+          bun run test
         env:
           CI: true
