@@ -1,26 +1,34 @@
 # Base
-FROM node:20-alpine
-
-# Adds make dependencies for node-gyp
-RUN apk add --no-cache curl make gcc g++ python3
-
-# Installs pnpm
-RUN corepack enable pnpm
-
-# Uses the node user
-ENV USER=node
-
-# All subsequent commands are run as the "node" user.
-USER "${USER}"
-
-# Sets working directory
+FROM oven/bun:alpine as base
 WORKDIR /usr/src/app
 
-# Copies everything
-COPY --chown=node . .
+# Installs to temp directory for caching purposes
+FROM base AS install
+RUN mkdir -p /temp/dev
+COPY package.json bun.lockb /temp/dev/
+RUN cd /temp/dev && bun install --frozen-lockfile
 
-# Installs all dependencies
-RUN pnpm install --frozen-lockfile
+# Installs to production
+RUN mkdir -p /temp/prod
+COPY package.json bun.lockb /temp/prod/
+RUN cd /temp/prod && bun install --frozen-lockfile
 
-# Starts pnpm
-CMD pnpm start
+# Copies from temp directory
+FROM base AS prerelease
+COPY --from=install /temp/dev/node_modules node_modules
+COPY . .
+
+# Tests & builds
+ENV NODE_ENV=production
+RUN bun run test
+RUN bun run build
+
+# Copies production dependencies and source into the final image
+FROM base AS release
+COPY --from=install /temp/prod/node_modules node_modules
+COPY --from=prerelease /usr/src/app .
+
+# Runs
+USER bun
+EXPOSE 3000/tcp
+ENTRYPOINT [ "bun", "run", "start" ]
