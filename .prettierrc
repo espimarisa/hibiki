@@ -1,6 +1,8 @@
 {
+  "plugins": ["prettier-plugin-sh", "prettier-plugin-pkg"],
   "arrowParens": "always",
   "bracketSameLine": true,
+  "bracketSpacing": true,
   "endOfLine": "lf",
   "htmlWhitespaceSensitivity": "ignore",
   "proseWrap": "preserve",

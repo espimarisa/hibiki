@@ -1,9 +1,0 @@
-node_modules/
-dist/
-build/
-out/
-.next/
-.nuxt/
-.svelte-kit/
-.routify/
-next-env.d.ts

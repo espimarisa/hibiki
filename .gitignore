@@ -10,6 +10,7 @@
 # Lockfiles for other package managers
 yarn.lock
 package-lock.json
+pnpm-lock.yaml
 
 # Logs
 logs/
@@ -110,27 +111,7 @@ $RECYCLE.BIN/
 *.vsix
 
 # Compiled output
-dist/
 build/
-out/
-web_modules/
-
-# Turbo
+dist/
 .turbo/
-
-# Next.js
-.next/
-next-env.d.ts
-
-# Nuxt.js
-.nuxt/
-
-# Svelte
 .svelte-kit/
-.routify/
-
-# Sass
-.sass-cache/
-
-# Vite
-vite.config.mjs.timestamp*
