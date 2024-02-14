@@ -23,7 +23,6 @@
     "test": "bun run lint"
   },
   "dependencies": {
-    "discord-hybrid-sharding": "^2.1.4",
-    "oceanic.js": "^1.9.0"
+    "discord.js": "^14.14.1"
   }
 }
