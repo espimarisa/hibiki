@@ -1,0 +1,15 @@
+{
+  "include": ["./src/**/*"],
+  "extends": ["../../tsconfig.json"],
+
+  "compilerOptions": {
+    "baseUrl": ".",
+
+    "paths": {
+      "$bot/*": ["../bot/src/*"],
+      "$db/*": ["../db/src/*"],
+      "$locales/*": ["../../locales/*"],
+      "$shared/*": ["./src/*"]
+    }
+  }
+}

@@ -1,15 +1,13 @@
-import prisma from "$db/index.js";
+import prisma from "$db/index.ts";
 
 export default async (guild: string) => {
   try {
-    const config: HibikiGuildConfig | null = await prisma.guildConfig.findUnique({
+    // Deletes the entry
+    await prisma.guildConfig.delete({
       where: {
         guild_id: guild,
       },
     });
-
-    if (!config?.guild_id) return;
-    return config;
   } catch (error) {
     throw new Error(Bun.inspect(error));
   }
