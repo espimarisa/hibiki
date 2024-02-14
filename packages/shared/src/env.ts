@@ -8,7 +8,9 @@ dotenv.config({ path: path.resolve("../../.env") });
 // Cleans our environment variables up
 const sanitizedEnv = cleanEnv(process.env, {
   // Bot settings
+  // TODO: Regexp test this
   BOT_TOKEN: str(),
+  BOT_TEST_GUILD_ID: str(),
 
   // Database settings
   POSTGRES_USER: str(),
