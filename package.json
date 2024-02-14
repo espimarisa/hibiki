@@ -14,32 +14,25 @@
   "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "license": "zlib",
   "private": true,
+  "workspaces": [
+    "./packages/*"
+  ],
   "scripts": {
-    "build": "bun run check && bun run db:generate",
+    "build": "bun run --env-file .env turbo run build",
     "check": "tsc --noEmit",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push --skip-generate",
-    "db:reset": "prisma migrate reset",
-    "dev": "bun run build && NODE_ENV=development bun run --hot ./src/index.ts",
+    "dev:bot": "bun run --env-file .env turbo run dev --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
     "format": "prettier --write .",
-    "lint": "tsc --noEmit && prettier --c . && eslint . && prisma-lint",
-    "start": "bun run build && NODE_ENV=production bun run ./src/index.ts",
-    "test": "bun run lint"
-  },
-  "dependencies": {
-    "@prisma/client": "^5.9.1",
-    "discord-hybrid-sharding": "^2.1.4",
-    "oceanic.js": "^1.9.0",
-    "pino": "^8.18.0",
-    "pino-pretty": "^10.3.1",
-    "zod": "^3.22.4",
-    "zod-error": "^1.5.0"
+    "lint": "bun run --env-file .env turbo run lint",
+    "start": "bun run --env-file .env turbo run start",
+    "start:bot": "bun run --env-file .env turbo run start --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
+    "test": "bun run --env-file .env turbo run test"
   },
   "devDependencies": {
     "@espimarisa/eslint-config": "^4.2.4",
     "@types/bun": "^1.0.5",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "dotenv-cli": "^7.3.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -48,12 +41,10 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-security": "^2.1.0",
     "eslint-plugin-unicorn": "^51.0.1",
-    "oceanic.js": "^1.9.0",
     "prettier": "^3.2.5",
     "prettier-plugin-pkg": "^0.18.1",
     "prettier-plugin-sh": "^0.14.0",
-    "prisma": "^5.9.1",
-    "prisma-lint": "^0.1.0",
+    "turbo": "^1.12.3",
     "typescript": "^5.3.3"
   }
 }

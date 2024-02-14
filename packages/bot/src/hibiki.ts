@@ -1,5 +1,5 @@
+import env from "$shared/env.ts";
 import { HibikiClient } from "$classes/Client.ts";
-import { env } from "./utils/env.ts";
 
 new HibikiClient({
   auth: `Bot ${env.BOT_TOKEN}`,

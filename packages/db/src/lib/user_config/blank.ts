@@ -1,15 +1,18 @@
-import prisma from "$db/index.js";
+import prisma from "$db/index.ts";
 
 export default async (user: string) => {
   try {
-    const config: HibikiUserConfig | null = await prisma.userConfig.findUnique({
+    await prisma.userConfig.upsert({
       where: {
         user_id: user,
       },
+      update: {
+        user_id: user,
+      },
+      create: {
+        user_id: user,
+      },
     });
-
-    if (!config?.user_id) return;
-    return config;
   } catch (error) {
     throw new Error(Bun.inspect(error));
   }

@@ -1,17 +1,13 @@
 {
   "exclude": ["*.d.ts", "./dist/*", "node_modules"],
-  "include": ["./src/**/*"],
+  "include": ["./packages/**/*", "./locales/**/*"],
 
   "compilerOptions": {
     "paths": {
-      "$root": ["./src"],
-      "$root/*": ["./src/*"],
-      "$db": ["./src/db"],
-      "$db/*": ["./src/db/*"],
-      "$classes": ["./src/classes"],
-      "$classes/*": ["./src/classes/*"],
-      "$utils": ["./src/utils"],
-      "$utils/*": ["./src/utils/*"]
+      "$locales/*": ["./locales/*"],
+      "$bot/*": ["./packages/bot/src/*"],
+      "$db/*": ["./packages/db/src/*"],
+      "$shared/*": ["./packages/shared/src/*"]
     },
 
     "allowArbitraryExtensions": true,
@@ -52,6 +48,7 @@
     "resolveJsonModule": true,
     "resolvePackageJsonExports": true,
     "resolvePackageJsonImports": true,
+    "rootDir": "./packages",
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,

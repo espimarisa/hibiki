@@ -1,4 +1,4 @@
-import logger from "$utils/logger.ts";
+import logger from "$shared/logger.ts";
 import { ClusterManager, HeartbeatManager, ReClusterManager } from "discord-hybrid-sharding";
 type Auto = number | "auto";
 

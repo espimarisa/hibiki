@@ -1,10 +1,15 @@
-import prisma from "$db/index.js";
+import prisma from "$db/index.ts";
 
 export default async (guild: string) => {
   try {
-    // Deletes the entry
-    await prisma.guildConfig.delete({
+    await prisma.guildConfig.upsert({
       where: {
+        guild_id: guild,
+      },
+      update: {
+        guild_id: guild,
+      },
+      create: {
         guild_id: guild,
       },
     });

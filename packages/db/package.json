@@ -1,0 +1,34 @@
+{
+  "name": "@espimarisa/hibiki-db",
+  "version": "7.0.0-alpha",
+  "type": "module",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/espimarisa/hibiki.git"
+  },
+  "homepage": "https://github.com/espimarisa/hibiki#readme",
+  "bugs": {
+    "url": "https://github.com/espimarisa/hibiki/issues"
+  },
+  "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
+  "license": "zlib",
+  "private": true,
+  "scripts": {
+    "build": "bun run db:generate",
+    "check": "tsc --noEmit",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "db:reset": "prisma migrate reset",
+    "format": "prettier --write .",
+    "lint": "tsc --noEmit && prettier --c . && eslint . && prisma-lint",
+    "test": "bun run lint"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.9.1"
+  },
+  "devDependencies": {
+    "prisma": "^5.9.1",
+    "prisma-lint": "^0.1.0"
+  }
+}

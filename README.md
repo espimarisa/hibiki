@@ -1,4 +1,4 @@
-# Hibiki Development
+# Hibiki Development ("Project Phoenix")
 
 This branch is currently in active development and is in no means ready for production.
 
@@ -9,7 +9,7 @@ This branch tracks the eventual "refresh" of the Hibiki project. More documentat
 ## TL;DR
 
 - Ditch Node.js, use Bun.js
-- Ditch Eris, use Oceanic.js
+- Ditch Eris, use Oceanic.js or Discordeno
 - Ditch RethinkDB, use PostgreSQL
 - Ditch nginx, use Caddy
 - Swap to slash commands (5 years too late)

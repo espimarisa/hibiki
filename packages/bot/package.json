@@ -1,0 +1,29 @@
+{
+  "name": "@espimarisa/hibiki-bot",
+  "version": "7.0.0-alpha",
+  "type": "module",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/espimarisa/hibiki.git"
+  },
+  "homepage": "https://github.com/espimarisa/hibiki#readme",
+  "bugs": {
+    "url": "https://github.com/espimarisa/hibiki/issues"
+  },
+  "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
+  "license": "zlib",
+  "private": true,
+  "scripts": {
+    "check": "tsc --noEmit",
+    "dev": "NODE_ENV=development bun run --hot ./src/index.ts",
+    "format": "prettier --write .",
+    "lint": "tsc --noEmit && prettier --c . && eslint .",
+    "start": "NODE_ENV=production bun run ./src/index.ts",
+    "test": "bun run lint"
+  },
+  "dependencies": {
+    "discord-hybrid-sharding": "^2.1.4",
+    "oceanic.js": "^1.9.0"
+  }
+}
