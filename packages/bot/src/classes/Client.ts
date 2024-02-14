@@ -1,4 +1,4 @@
-import logger from "$utils/logger.ts";
+import logger from "$shared/logger.ts";
 import { Client, type ClientOptions } from "oceanic.js";
 
 export class HibikiClient extends Client {

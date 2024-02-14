@@ -1,15 +1,9 @@
-import prisma from "$db/index.js";
+import prisma from "$db/index.ts";
 
 export default async (user: string) => {
   try {
-    await prisma.userConfig.upsert({
+    await prisma.userConfig.delete({
       where: {
-        user_id: user,
-      },
-      update: {
-        user_id: user,
-      },
-      create: {
         user_id: user,
       },
     });
