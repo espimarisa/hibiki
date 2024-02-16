@@ -1,0 +1,7 @@
+{
+  "COMMAND_TEST_NAME": "test",
+  "COMMAND_TEST_DESCRIPTION": "This is a test in English.",
+
+  "COMMAND_TESTING_NAME": "testing",
+  "COMMAND_TESTING_DESCRIPTION": "This is testing something in English."
+}
