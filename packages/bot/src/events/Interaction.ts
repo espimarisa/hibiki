@@ -1,6 +1,6 @@
 import type { CommandInteraction } from "discord.js";
-import logger from "$shared/logger.ts";
 import { HibikiEvent } from "$classes/Event.ts";
+import logger from "$shared/logger.ts";
 
 export class HibikiInteractionEvent extends HibikiEvent {
   events: HibikiEventListener[] = ["interactionCreate"];

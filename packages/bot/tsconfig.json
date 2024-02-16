@@ -11,8 +11,7 @@
       "$db/*": ["../db/src/*"],
       "$locales/*": ["../../locales/*"],
       "$shared/*": ["../shared/src/*"],
-      "$utils/*": ["./src/utils/*"],
-
+      "$utils/*": ["./src/utils/*"]
     }
   }
 }

@@ -30,8 +30,8 @@
   "devDependencies": {
     "@espimarisa/eslint-config": "^4.2.4",
     "@types/bun": "^1.0.5",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "@typescript-eslint/parser": "^7.0.1",
     "dotenv-cli": "^7.3.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",

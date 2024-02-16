@@ -1,10 +1,10 @@
 import type { HibikiCommand } from "$classes/Command.ts";
 import type { HibikiEvent } from "$classes/Event.ts";
+import { loadCommands, loadEvents, registerInteractions } from "$utils/loader.ts";
 import env from "$shared/env.ts";
 import logger from "$shared/logger.ts";
 import { Client, type ClientOptions } from "discord.js";
 import path from "node:path";
-import { loadCommands, loadEvents, registerInteractions } from "$utils/loader.ts";
 
 // __dirname replacement in ESM
 const pathDirname = path.dirname(Bun.fileURLToPath(new URL(import.meta.url)));
