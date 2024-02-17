@@ -21,6 +21,7 @@
     "test": "bun run lint"
   },
   "dependencies": {
+    "@chatsift/pino-rotate-file": "^0.3.0",
     "dotenv": "^16.4.4",
     "envalid": "^8.0.0",
     "i18next": "^23.8.2",
