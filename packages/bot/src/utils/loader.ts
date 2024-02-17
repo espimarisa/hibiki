@@ -1,26 +1,20 @@
 import type { HibikiClient } from "$classes/Client.ts";
-import type { CallableHibikiCommand } from "$classes/Command.ts";
+import type { CallableHibikiCommand, CommandLocalization, RESTCommandOptions } from "$classes/Command.ts";
 import type { CallableHibikiEvent, HibikiEvent } from "$classes/Event.ts";
 import { MODULE_FILE_TYPE_REGEX } from "$shared/constants.ts";
 import env from "$shared/env.js";
 import { t, getListOfLocales } from "$shared/i18n.ts";
 import logger from "$shared/logger.js";
 import { REST } from "@discordjs/rest";
-import { Routes, type APIApplicationCommandOption } from "discord-api-types/v10";
+import { Routes } from "discord-api-types/v10";
 import { ApplicationCommandType } from "discord.js";
 import fs from "node:fs/promises";
 
+// Localization stuff
+const commandNames: string[] = [];
 const localizedNames = new Map<string, string>();
 const localizedDescriptions = new Map<string, string>();
-const commandNames: string[] = [];
-
-// Valid localization data
-const commandLocalizationData: {
-  command: string;
-  locale: string;
-  name: string;
-  description: string;
-}[] = [];
+const commandLocalizationData: CommandLocalization[] = [];
 
 // Loads all commands
 export async function loadCommands(bot: HibikiClient, directory: string) {
@@ -86,14 +80,7 @@ export async function registerInteractions(bot: HibikiClient, guild?: string) {
   // TODO: Update this to match a real type from Discord.js
   // A JSON array of application commands
   // https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
-  const commandData: {
-    name?: string;
-    description?: string;
-    name_localizations?: Record<string, string>;
-    description_localizations?: Record<string, string>;
-    options?: APIApplicationCommandOption[];
-    type?: ApplicationCommandType;
-  }[] = [];
+  const commandData: RESTCommandOptions[] = [];
 
   // Gets a list of locales to search for
   const locales = await getListOfLocales();
@@ -140,7 +127,6 @@ export async function registerInteractions(bot: HibikiClient, guild?: string) {
 function subscribeToEvents(bot: HibikiClient, events: Map<string, HibikiEvent>) {
   for (const eventToListenOn of events.values()) {
     for (const individualEvent of eventToListenOn.events) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       bot.on(individualEvent, (...eventParameters) => eventToListenOn.run([individualEvent], ...eventParameters));
     }
   }

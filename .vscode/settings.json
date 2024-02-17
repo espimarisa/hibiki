@@ -1,5 +1,6 @@
 {
   "eslint.validate": ["typescript", "javascript", "svelte"],
+  "eslint.workingDirectories": [{ "mode": "auto" }],
   "svelte.enable-ts-plugin": true,
   "typescript.preferences.importModuleSpecifier": "relative",
   "javascript.preferences.importModuleSpecifierEnding": "js",
