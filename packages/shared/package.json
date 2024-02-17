@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@chatsift/pino-rotate-file": "^0.3.0",
+    "@sentry/bun": "^7.101.1",
     "dotenv": "^16.4.4",
     "envalid": "^8.0.0",
     "i18next": "^23.8.2",

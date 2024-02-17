@@ -15,6 +15,9 @@ const sanitizedEnv = cleanEnv(process.env, {
   // Default locale. Valid entries are in locales/*. Defaults to en-US.
   DEFAULT_LOCALE: str({ default: "en-US" }),
 
+  // Sentry settings
+  SENTRY_DSN: str({ default: undefined }),
+
   // Database settings
   POSTGRES_USER: str(),
   POSTGRES_PASSWORD: str(),
