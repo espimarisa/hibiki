@@ -1,5 +1,6 @@
 import type { HibikiCommand } from "$classes/Command.ts";
 import type { HibikiEvent } from "$classes/Event.ts";
+// eslint-disable-next-line import/order
 import { loadCommands, loadEvents, registerInteractions } from "$utils/loader.ts";
 import env from "$shared/env.ts";
 import logger from "$shared/logger.ts";
@@ -50,3 +51,4 @@ export class HibikiClient extends Client {
     }
   }
 }
+//

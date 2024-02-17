@@ -1,18 +1,56 @@
-import { pino } from "pino";
+import type { PinoRotateFileOptions } from "@chatsift/pino-rotate-file";
+import type { PrettyOptions } from "pino-pretty";
+import env from "$shared/env.ts";
+import createLogger, { multistream, transport } from "pino";
+import path from "node:path";
 
-// Options for the pino logger
-// TODO: Implement FS logs
-const pinoOptions: pino.LoggerOptions = {
-  transport: {
-    target: "pino-pretty",
-    options: {
-      translateTime: "yyyy-mm-dd HH:MM:ss",
-      colorize: true,
-    },
+// __dirname replacement in ESM
+const pathDirname = path.dirname(Bun.fileURLToPath(new URL(import.meta.url)));
+
+// Directories to crawl
+const LOGS_DIRECTORY = path.join(pathDirname, "../../../logs");
+
+// Pino-pretty options
+const pinoPrettyOptions = {
+  levelFirst: true,
+  translateTime: "yyyy-mm-dd HH:MM:ss",
+  colorize: true,
+} satisfies PrettyOptions;
+
+// Pino rotation options
+const pinoRotateFileOptions = {
+  dir: LOGS_DIRECTORY,
+  mkdir: true,
+  maxAgeDays: 14,
+  prettyOptions: {
+    ...pinoPrettyOptions,
+    // Disable colorization for fs log files
+    colorize: false,
   },
-};
+} satisfies PinoRotateFileOptions;
 
-// Creates the new Pino logger
-const logger = pino(Bun.env["isProduction"] ? {} : pinoOptions);
+const logger = createLogger(
+  {
+    // Sets name to package name
+    name: env.npm_package_name || undefined,
+    level: "trace",
+  },
+  multistream([
+    {
+      level: "trace",
+      stream: transport({
+        target: "pino-pretty",
+        options: pinoPrettyOptions,
+      }),
+    },
+    {
+      level: "trace",
+      stream: transport({
+        target: "@chatsift/pino-rotate-file",
+        options: pinoRotateFileOptions,
+      }),
+    },
+  ]),
+);
 
 export default logger;
