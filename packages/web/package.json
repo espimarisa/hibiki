@@ -1,0 +1,42 @@
+{
+  "name": "@espimarisa/hibiki-web",
+  "version": "2.0.0-alpha",
+  "type": "module",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/espimarisa/hibiki.git"
+  },
+  "homepage": "https://github.com/espimarisa/hibiki#readme",
+  "bugs": {
+    "url": "https://github.com/espimarisa/hibiki/issues"
+  },
+  "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
+  "license": "zlib",
+  "private": true,
+  "scripts": {
+    "build": "bun run clean && svelte-kit sync && bunx --bun vite build",
+    "check": "svelte-kit sync && svelte-check --ignore 'dist' --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "clean": "rimraf .svelte-kit",
+    "dev": "svelte-kit sync && bunx --bun vite dev",
+    "lint": "prettier --c . && eslint .",
+    "preview": "bunx --bun vite preview",
+    "start": "NODE_ENV=production bun build/index.js",
+    "test": "bun run check && pnpm lint"
+  },
+  "dependencies": {
+    "svelte-adapter-bun": "^0.5.1"
+  },
+  "devDependencies": {
+    "@sveltejs/kit": "^1.25.0",
+    "eslint": "^8.49.0",
+    "eslint-plugin-svelte": "^2.33.1",
+    "postcss": "^8.4.29",
+    "sass": "^1.67.0",
+    "svelte": "^4.2.0",
+    "svelte-check": "^3.5.1",
+    "svelte-eslint-parser": "^0.33.0",
+    "vite": "^4.4.9"
+  }
+}

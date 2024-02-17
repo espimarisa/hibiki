@@ -4,13 +4,13 @@
   "pipeline": {
     "build": {
       "dependsOn": ["db:generate", "^build"],
-      "outputs": []
+      "outputs": ["./build/**"]
     },
     "deploy": {
       "dependsOn": ["build"]
     },
     "dev": {
-      "dependsOn": ["db:generate", "db:push"],
+      "dependsOn": ["db:generate", "db:push", "deploy"],
       "cache": false,
       "persistent": true
     },

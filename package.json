@@ -21,11 +21,16 @@
     "build": "bun run --env-file .env turbo run build",
     "check": "tsc --noEmit",
     "dev:bot": "bun run --env-file .env turbo run dev --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
+    "dev:web": "bun run --env-file .env -- turbo run dev --filter=@espimarisa/hibiki-web --filter=@espimarisa/hibiki-db",
     "format": "prettier --write .",
     "lint": "bun run --env-file .env turbo run lint",
     "start": "bun run --env-file .env turbo run start",
     "start:bot": "bun run --env-file .env turbo run start --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
+    "start:web": "bun run --env-file .env -- turbo run start --filter=@espimarisa/hibiki-web --filter=@espimarisa/hibiki-db",
     "test": "bun run --env-file .env turbo run test"
+  },
+  "dependencies": {
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@espimarisa/eslint-config": "^4.2.4",
@@ -44,6 +49,7 @@
     "prettier": "^3.2.5",
     "prettier-plugin-pkg": "^0.18.1",
     "prettier-plugin-sh": "^0.14.0",
+    "prettier-plugin-svelte": "^3.2.1",
     "turbo": "^1.12.3",
     "typescript": "^5.3.3"
   }
