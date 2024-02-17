@@ -1,7 +1,7 @@
 import { HibikiClient } from "./classes/Client.ts";
 import { GatewayIntentBits } from "discord.js";
 
-export const subscribedIntents: GatewayIntentBits[] = [
+export const subscribedIntents = [
   // Required for guild, channel, and role objects
   GatewayIntentBits.Guilds,
 
@@ -10,7 +10,7 @@ export const subscribedIntents: GatewayIntentBits[] = [
 
   // PRIVILEGED: Required for getting guild member data
   GatewayIntentBits.GuildMembers,
-];
+] satisfies GatewayIntentBits[];
 
 // Creates a new Hibiki client
 new HibikiClient({
