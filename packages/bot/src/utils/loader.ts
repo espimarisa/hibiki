@@ -77,8 +77,6 @@ export async function loadEvents(bot: HibikiClient, directory: string) {
 export async function registerInteractions(bot: HibikiClient, guild?: string) {
   if (!bot.user?.id) throw new Error("No user object is ready, have you logged into a valid token yet?");
 
-  // TODO: Update this to match a real type from Discord.js
-  // A JSON array of application commands
   // https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
   const commandData: RESTCommandOptions[] = [];
 
@@ -100,10 +98,10 @@ export async function registerInteractions(bot: HibikiClient, guild?: string) {
     }
 
     // Gets a default localization
-    const defaultLocalization = commandToLocalize.find((c) => c.command === command.name && c.locale === "en-US");
+    const defaultLocalization = commandToLocalize.find((c) => c.command === command.name && c.locale === env.DEFAULT_LOCALE);
     const description = command.interactionType === ApplicationCommandType.ChatInput ? defaultLocalization?.description : undefined;
 
-    // TODO: More properties
+    // Pushes REST data to the array
     commandData.push({
       name: command.name.toLowerCase(),
       description: description,
@@ -111,6 +109,7 @@ export async function registerInteractions(bot: HibikiClient, guild?: string) {
       description_localizations: Object.fromEntries(localizedDescriptions),
       options: command.options,
       type: command.interactionType,
+      nsfw: command.nsfw,
     });
   }
 
