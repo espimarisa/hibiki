@@ -23,7 +23,7 @@
     "lint": "prettier --c . && eslint .",
     "preview": "bunx --bun vite preview",
     "start": "NODE_ENV=production bun build/index.js",
-    "test": "bun run check && pnpm lint"
+    "test": "bun run check && bun run lint"
   },
   "dependencies": {
     "svelte-adapter-bun": "^0.5.1"
