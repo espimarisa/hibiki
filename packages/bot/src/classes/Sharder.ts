@@ -19,7 +19,7 @@ export class HibikiShardingManager {
     this.shardingManager = new ShardingManager(this._mainFile, {
       token: this._token,
       totalShards: this._shardCount,
-      mode: env.isProduction ? "worker" : "process",
+      mode: env.NODE_ENV === "production" ? "worker" : "process",
       execArgv: process.execArgv,
       respawn: false,
     });
