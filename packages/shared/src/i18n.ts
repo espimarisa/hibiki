@@ -1,3 +1,4 @@
+import env from "$shared/env.ts";
 import * as i18n from "i18next";
 import i18NexFsBackend from "i18next-fs-backend";
 import fs from "node:fs/promises";
@@ -12,9 +13,9 @@ await i18n
   .use(i18NexFsBackend)
   .init({
     initImmediate: false,
-    fallbackLng: "en-US",
+    fallbackLng: env.DEFAULT_LOCALE,
     load: "all",
-    lng: "en-US",
+    lng: env.DEFAULT_LOCALE,
     ns: ["bot"],
     defaultNS: "bot",
     preload: await getListOfLocales(),

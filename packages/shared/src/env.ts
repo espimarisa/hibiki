@@ -12,6 +12,9 @@ const sanitizedEnv = cleanEnv(process.env, {
   BOT_TOKEN: str(),
   BOT_TEST_GUILD_ID: str(),
 
+  // Default locale. Valid entries are in locales/*. Defaults to en-US.
+  DEFAULT_LOCALE: str({ default: "en-US" }),
+
   // Database settings
   POSTGRES_USER: str(),
   POSTGRES_PASSWORD: str(),

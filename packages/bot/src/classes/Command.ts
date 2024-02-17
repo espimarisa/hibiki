@@ -10,7 +10,7 @@ export interface RESTCommandOptions {
   description_localizations?: Record<string, string>;
   options?: APIApplicationCommandOption[];
   type: ApplicationCommandType;
-  nsfw?: false;
+  nsfw?: boolean;
 }
 
 // Localization data
