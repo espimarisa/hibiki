@@ -22,14 +22,14 @@
     "check": "tsc --noEmit",
     "db:generate": "bun run --env-file .env -- turbo run db:generate --filter=@espimarisa/hibiki-db",
     "db:studio": "bun run --env-file .env -- turbo run studio --filter=@espimarisa/hibiki-db",
-    "dev:bot": "bun run --env-file .env turbo run dev --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
+    "dev:bot": "bun run --env-file .env -- turbo run dev --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
     "dev:web": "bun run --env-file .env -- turbo run dev --filter=@espimarisa/hibiki-web --filter=@espimarisa/hibiki-db",
     "format": "prettier --write .",
-    "lint": "bun run --env-file .env turbo run lint",
-    "start": "bun run --env-file .env turbo run start",
-    "start:bot": "bun run --env-file .env turbo run start --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
+    "lint": "bun run --env-file .env -- turbo run lint",
+    "start": "bun run --env-file .env -- turbo run start",
+    "start:bot": "bun run --env-file .env -- turbo run start --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
     "start:web": "bun run --env-file .env -- turbo run start --filter=@espimarisa/hibiki-web --filter=@espimarisa/hibiki-db",
-    "test": "bun run --env-file .env turbo run test"
+    "test": "bun run --env-file .env -- turbo run test"
   },
   "dependencies": {
     "tslib": "^2.6.2"
