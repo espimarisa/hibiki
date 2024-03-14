@@ -5,7 +5,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 // __dirname replacement in ESM
-const pathDirname = path.dirname(Bun.fileURLToPath(new URL(import.meta.url)));
+const pathDirname = path.dirname(Bun.fileURLToPath(new URL(import.meta.url) as URL));
 const LOCALES_DIRECTORY = path.join(pathDirname, "../../../locales");
 
 // Inits i18next
