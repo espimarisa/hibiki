@@ -5,7 +5,7 @@ import createLogger, { multistream, transport } from "pino";
 import path from "node:path";
 
 // __dirname replacement in ESM
-const pathDirname = path.dirname(Bun.fileURLToPath(new URL(import.meta.url)));
+const pathDirname = path.dirname(Bun.fileURLToPath(new URL(import.meta.url) as URL));
 
 // Directories to crawl
 const LOGS_DIRECTORY = path.join(pathDirname, "../../../logs");
