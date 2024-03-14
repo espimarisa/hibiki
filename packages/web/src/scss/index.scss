@@ -1,0 +1,44 @@
+////////////////////////
+// Universal stylesheet
+////////////////////////
+
+@import url("modern-normalize");
+@import url("@fontsource/atkinson-hyperlegible");
+
+html {
+  font-size: 18px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family:
+    "Atkinson Hyperlegible",
+    -apple-system,
+    system-ui,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  color: $black;
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  height: 100;
+  width: 100;
+  margin: 0 auto;
+  padding: 0 auto;
+}
+
+//////////////////////
+// Dark mode styling
+//////////////////////
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: $white;
+    background-color: $black;
+  }
+}

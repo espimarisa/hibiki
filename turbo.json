@@ -3,19 +3,19 @@
   "globalDotEnv": [".env"],
   "pipeline": {
     "build": {
-      "dependsOn": ["db:generate", "^build"],
+      "dependsOn": ["db:generate", "db:push", "^build"],
       "outputs": ["./build/**"]
     },
     "deploy": {
       "dependsOn": ["build"]
     },
     "dev": {
-      "dependsOn": ["db:generate", "db:push", "deploy"],
+      "dependsOn": ["deploy"],
       "cache": false,
       "persistent": true
     },
     "start": {
-      "dependsOn": ["db:push", "deploy"],
+      "dependsOn": ["deploy"],
       "cache": true,
       "persistent": true
     },
@@ -26,6 +26,10 @@
       "cache": false
     },
     "lint": {},
+    "studio": {
+      "dependsOn": ["db:generate", "db:push"],
+      "cache": false
+    },
     "test": {
       "dependsOn": ["db:generate"]
     }

@@ -1,4 +1,4 @@
-import { vitePreprocess } from "@sveltejs/kit/vite";
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import adapter from "svelte-adapter-bun";
 
 /** @type {import("@sveltejs/kit").Config} */
@@ -7,6 +7,14 @@ const config = {
   preprocess: [vitePreprocess({})],
 
   kit: {
+    csp: {
+      mode: "auto",
+      directives: {
+        "default-src": ["'self'"],
+        "upgrade-insecure-requests": true,
+      },
+    },
+
     alias: {
       $web: "./src",
     },
