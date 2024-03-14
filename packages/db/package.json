@@ -19,7 +19,6 @@
     "db:generate": "bun drizzle-kit generate:pg",
     "db:push": "bun drizzle-kit push:pg",
     "format": "prettier --write .",
-    "h": "bun run ./src/test.ts",
     "lint": "tsc --noEmit && prettier --c . && eslint .",
     "studio": "bun run db:generate && drizzle-kit studio",
     "test": "bun run lint"
