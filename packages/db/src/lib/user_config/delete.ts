@@ -1,11 +1,11 @@
-import prisma from "$db/index.ts";
+import db from "$db/client.ts";
+import { userConfig } from "$db/schema/user_config.ts";
+import { eq } from "drizzle-orm";
 
 export default async (user: string) => {
   try {
-    await prisma.userConfig.delete({
-      where: {
-        user_id: user,
-      },
+    await db.transaction(async (query) => {
+      await query.delete(userConfig).where(eq(userConfig.user_id, user));
     });
   } catch (error) {
     throw new Error(Bun.inspect(error));

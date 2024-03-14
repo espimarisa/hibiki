@@ -4,4 +4,5 @@ interface HibikiGuildConfig {
 
 interface HibikiUserConfig {
   user_id: string;
+  locale?: string;
 }

@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@discordjs/rest": "^2.2.0",
-    "discord-api-types": "^0.37.69",
+    "discord-api-types": "^0.37.71",
     "discord.js": "^14.14.1",
-    "i18next": "^23.8.2"
+    "i18next": "^23.10.0"
   }
 }

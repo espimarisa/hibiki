@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
-export default prisma;
+// Re-exports the client
+export { default } from "$db/client.ts";
 
 // Guild config functions
 export { default as createBlankGuildConfig } from "$db/lib/guild_config/blank.ts";

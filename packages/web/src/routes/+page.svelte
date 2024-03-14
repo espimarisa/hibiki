@@ -1,5 +1,16 @@
-<h1>Welcome to SvelteKit</h1>
-<p>
-  Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a>
-  to read the documentation
-</p>
+<script lang="ts">
+  import Meta from "../components/Meta.svelte";
+  import "../scss/index.scss";
+
+  // Page metadata
+  const metadata = {
+    title: "Title",
+    description: "Description",
+    themeColor: "#FFB000",
+    url: "",
+  } satisfies SvelteMetadata;
+</script>
+
+<Meta {metadata} />
+
+<p>hewwo</p>

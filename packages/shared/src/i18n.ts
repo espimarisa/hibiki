@@ -19,6 +19,9 @@ await i18n
     ns: ["bot"],
     defaultNS: "bot",
     preload: await getListOfLocales(),
+    interpolation: {
+      skipOnVariables: false,
+    },
     backend: {
       skipOnVariables: false,
       loadPath: `${LOCALES_DIRECTORY}/{{lng}}/{{ns}}.json`,

@@ -1,5 +1,5 @@
 {
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "../shared/src/typings/**/*"],
   "extends": ["../../tsconfig.json"],
 
   "compilerOptions": {

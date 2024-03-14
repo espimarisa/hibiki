@@ -6,7 +6,7 @@ import path from "node:path";
 dotenv.config({ path: path.resolve("../../.env") });
 
 // Cleans our environment variables up
-const sanitizedEnv = cleanEnv(process.env, {
+const env = cleanEnv(process.env, {
   // Bot settings
   // TODO: Regexp test this
   BOT_TOKEN: str(),
@@ -33,4 +33,4 @@ const sanitizedEnv = cleanEnv(process.env, {
   npm_package_version: str({ default: "development" }),
 });
 
-export default sanitizedEnv;
+export default env;

@@ -1,7 +1,24 @@
 {
-  "COMMAND_TEST_NAME": "test",
-  "COMMAND_TEST_DESCRIPTION": "This is a test in English.",
+  "COMMAND_PING_NAME": "Ping",
+  "COMMAND_PING_DESCRIPTION": "Checks the current status and latency.",
+  "COMMAND_PING_PINGING": "⏳ Pinging...",
+  "COMMAND_PING_PONG": "🏓 Pong!",
+  "COMMAND_PING_LATENCY": "This message took {{latency}}ms to send. All seems OK!",
 
-  "COMMAND_TESTING_NAME": "testing",
-  "COMMAND_TESTING_DESCRIPTION": "This is testing something in English."
+  "COMMAND_ABOUT_NAME": "About",
+  "COMMAND_ABOUT_DESCRIPTION": "Returns information and statistics about the bot.",
+
+  "COMMAND_ABOUT_TITLE": "✨ About {{username}}",
+  "COMMAND_ABOUT_DETAILS": "{{username}}, made with 💖 by [Espi Marisa](https://espi.me).",
+  "COMMAND_ABOUT_CACHED_GUILDS": "Cached Guilds",
+  "COMMAND_ABOUT_CACHED_USERS": "Cached Users",
+  "COMMAND_ABOUT_UPTIME": "Uptime",
+  "COMMAND_ABOUT_HIBIKI_VERSION": "Hibiki Version",
+  "COMMAND_ABOUT_DISCORDJS_VERSION": "Discord.js Version",
+  "COMMAND_ABOUT_BUN_VERSION": "Bun Version",
+
+  "DAYS": "{{days}} dasy",
+  "HOURS": "{{amount}} hours",
+  "MINUTES": "{{minutes}} minutes",
+  "SECONDS": "{{amount}} seconds"
 }

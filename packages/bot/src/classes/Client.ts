@@ -3,8 +3,12 @@ import type { HibikiEvent } from "$classes/Event.ts";
 import { loadCommands, loadEvents, registerInteractions } from "$utils/loader.ts";
 import env from "$shared/env.ts";
 import logger from "$shared/logger.ts";
-import { Client, type ClientOptions } from "discord.js";
+import { ActivityType, Client, type ClientOptions } from "discord.js";
 import path from "node:path";
+
+// List of custom statuses to cycle thru
+const activities = ["read if h", "meow", "guh"];
+let activityState = 0;
 
 // __dirname replacement in ESM
 const pathDirname = path.dirname(Bun.fileURLToPath(new URL(import.meta.url)));
@@ -43,6 +47,13 @@ export class HibikiClient extends Client {
 
         // Registers commands; pushes to only one guild if we're in development
         await registerInteractions(this, env.NODE_ENV === "production" ? undefined : env.BOT_TEST_GUILD_ID);
+
+        // Cycles through statuses
+        setInterval(() => {
+          activityState = (activityState + 1) % activities.length;
+          const presence = activities[`${activityState}`];
+          this.user?.setActivity(`${presence} | v${env.npm_package_version}`, { type: ActivityType.Custom });
+        }, 60_000);
       });
     } catch (error) {
       logger.error(`An error occured while starting:`);
@@ -50,4 +61,3 @@ export class HibikiClient extends Client {
     }
   }
 }
-//
