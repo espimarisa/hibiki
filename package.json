@@ -20,6 +20,7 @@
   "scripts": {
     "build": "bun run --env-file .env turbo run build",
     "check": "tsc --noEmit",
+    "db:generate": "bun run --env-file .env -- turbo run db:generate --filter=@espimarisa/hibiki-db",
     "db:studio": "bun run --env-file .env -- turbo run studio --filter=@espimarisa/hibiki-db",
     "dev:bot": "bun run --env-file .env turbo run dev --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
     "dev:web": "bun run --env-file .env -- turbo run dev --filter=@espimarisa/hibiki-web --filter=@espimarisa/hibiki-db",
