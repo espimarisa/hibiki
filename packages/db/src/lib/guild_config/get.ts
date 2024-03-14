@@ -1,11 +1,9 @@
-import prisma from "$db/index.ts";
+import db from "$db/client.ts";
 
 export default async (guild: string) => {
   try {
-    const config: HibikiGuildConfig | null = await prisma.guildConfig.findUnique({
-      where: {
-        guild_id: guild,
-      },
+    const config = await db.query.guildConfig.findFirst({
+      where: (guildConfig, { eq }) => eq(guildConfig.guild_id, guild),
     });
 
     if (!config?.guild_id) return;

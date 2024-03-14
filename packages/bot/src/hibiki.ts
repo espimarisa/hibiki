@@ -1,12 +1,9 @@
 import { HibikiClient } from "./classes/Client.ts";
-import { GatewayIntentBits } from "discord.js";
+import { GatewayIntentBits, Options } from "discord.js";
 
-export const subscribedIntents = [
+const subscribedIntents = [
   // Required for guild, channel, and role objects
   GatewayIntentBits.Guilds,
-
-  // Required for incoming messages
-  GatewayIntentBits.GuildMessages,
 
   // PRIVILEGED: Required for getting guild member data
   GatewayIntentBits.GuildMembers,
@@ -14,5 +11,21 @@ export const subscribedIntents = [
 
 // Creates a new Hibiki client
 new HibikiClient({
+  // Cache sweeping options
+  sweepers: {
+    ...Options.DefaultSweeperSettings,
+  },
+
+  // Cache options
+  makeCache: Options.cacheWithLimits({
+    ...Options.DefaultMakeCacheSettings,
+    ReactionManager: 0,
+    GuildMemberManager: {
+      maxSize: 200,
+      keepOverLimit: (member) => member.id === member.client.user.id,
+    },
+  }),
+
+  // Intents
   intents: subscribedIntents,
 }).init();

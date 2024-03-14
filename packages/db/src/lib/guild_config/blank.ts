@@ -1,18 +1,9 @@
-import prisma from "$db/index.ts";
+import db from "$db/client.ts";
+import { guildConfig } from "$db/schema/guild_config.ts";
 
 export default async (guild: string) => {
   try {
-    await prisma.guildConfig.upsert({
-      where: {
-        guild_id: guild,
-      },
-      update: {
-        guild_id: guild,
-      },
-      create: {
-        guild_id: guild,
-      },
-    });
+    await db.insert(guildConfig).values({ guild_id: guild }).onConflictDoNothing();
   } catch (error) {
     throw new Error(Bun.inspect(error));
   }
