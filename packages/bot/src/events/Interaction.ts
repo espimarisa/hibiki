@@ -1,4 +1,5 @@
 import type { CommandInteraction } from "discord.js";
+
 import { HibikiEvent } from "$classes/Event.ts";
 import { getUserConfig } from "$db/index.ts";
 import env from "$shared/env.ts";
@@ -24,7 +25,7 @@ export class HibikiInteractionEvent extends HibikiEvent {
     // Logs when an interaction is ran
     // TODO: Implement arguments
     logger.info(
-      `${interaction.user.tag}/${interaction.user.id} ran ${interaction.commandName} in ${interaction.guild?.name}/${interaction.guildId}`,
+      `${interaction.user.tag}/${interaction.user.id} ran ${interaction.commandName} in ${interaction.guild?.name ?? "unknown"}/${interaction.guild?.id ?? "unknown"}`,
     );
 
     try {

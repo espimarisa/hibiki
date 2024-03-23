@@ -1,4 +1,4 @@
-import { uuid, text, pgTable } from "drizzle-orm/pg-core";
+import { pgTable, text, uuid } from "drizzle-orm/pg-core";
 
 export const guildConfig = pgTable("guild_config", {
   id: uuid("id").primaryKey().defaultRandom(),

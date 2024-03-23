@@ -17,15 +17,17 @@
   "scripts": {
     "check": "tsc --noEmit",
     "db:generate": "bun drizzle-kit generate:pg",
+    "db:prepare": "bun run db:generate && bun run db:push",
     "db:push": "bun drizzle-kit push:pg",
+    "db:studio": "bun run db:push && bun run db:generate && drizzle-kit studio",
     "format": "prettier --write .",
-    "lint": "tsc --noEmit && prettier --c . && eslint .",
-    "studio": "bun run db:generate && drizzle-kit studio",
-    "test": "bun run lint"
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "test": "bun run check && bun run lint"
   },
   "dependencies": {
-    "drizzle-orm": "^0.30.1",
-    "postgres": "^3.4.3"
+    "drizzle-orm": "^0.30.4",
+    "postgres": "^3.4.4"
   },
   "devDependencies": {
     "drizzle-kit": "^0.20.14"

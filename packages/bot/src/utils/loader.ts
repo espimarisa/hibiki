@@ -1,14 +1,17 @@
+import fs from "node:fs/promises";
+
+import { REST } from "@discordjs/rest";
+import { ApplicationCommandType } from "discord.js";
+import { Routes } from "discord-api-types/v10";
+
 import type { HibikiClient } from "$classes/Client.ts";
 import type { CallableHibikiCommand, CommandLocalization, RESTCommandOptions } from "$classes/Command.ts";
 import type { CallableHibikiEvent, HibikiEvent } from "$classes/Event.ts";
+import en from "$locales/en-US/bot.json";
 import { MODULE_FILE_TYPE_REGEX } from "$shared/constants.ts";
-import env from "$shared/env.js";
-import { t, getListOfLocales } from "$shared/i18n.ts";
-import logger from "$shared/logger.js";
-import { REST } from "@discordjs/rest";
-import { Routes } from "discord-api-types/v10";
-import { ApplicationCommandType } from "discord.js";
-import fs from "node:fs/promises";
+import env from "$shared/env.ts";
+import { getListOfLocales, t } from "$shared/i18n.ts";
+import logger from "$shared/logger.ts";
 
 // Localization stuff
 const commandNames: string[] = [];
@@ -18,6 +21,7 @@ const commandLocalizationData: CommandLocalization[] = [];
 
 // Loads all commands
 export async function loadCommands(bot: HibikiClient, directory: string) {
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   const files = await fs.readdir(directory, { withFileTypes: true, encoding: "utf8" });
 
   for (const file of files) {
@@ -27,7 +31,15 @@ export async function loadCommands(bot: HibikiClient, directory: string) {
 
     // Tries to load the command
     try {
-      const importedCommand: Record<string, CallableHibikiCommand> = await import(`file://${directory}/${file.name}`);
+      const importedCommand: Record<string, CallableHibikiCommand> | undefined = await import(`file://${directory}/${file.name}`);
+
+      // Handler for if the import is null/undefined
+      if (!importedCommand) {
+        logger.error(`Commmand ${file.name} failed to import`);
+        return;
+      }
+
+      // @ts-expect-error We can reasonably expect that this won't be null, as it is caught by the above check
       commandToLoad = importedCommand[Object.keys(importedCommand)[0]];
     } catch (error) {
       // Catches and logs the error but allows the bot to still run
@@ -35,8 +47,14 @@ export async function loadCommands(bot: HibikiClient, directory: string) {
       return;
     }
 
-    // Creates the command
-    const name = file.name.split(MODULE_FILE_TYPE_REGEX)[0].toLowerCase();
+    // Gets the command name
+    const name = file.name.split(MODULE_FILE_TYPE_REGEX)[0]?.toLowerCase();
+    if (!name) {
+      logger.error(`Command ${file.name} failed to load: Could not generate filename`);
+      return;
+    }
+
+    // Loads the command
     const command = new commandToLoad(bot, name);
     bot.commands.set(name, command);
     commandNames.push(name);
@@ -46,6 +64,7 @@ export async function loadCommands(bot: HibikiClient, directory: string) {
 // Loads all events
 export async function loadEvents(bot: HibikiClient, directory: string) {
   // Loads each event file
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   const files = await fs.readdir(directory, { withFileTypes: true, encoding: "utf8" });
 
   for (const file of files) {
@@ -54,7 +73,15 @@ export async function loadEvents(bot: HibikiClient, directory: string) {
     let eventToLoad: CallableHibikiEvent;
 
     try {
-      const importedEvent: Record<string, CallableHibikiEvent> = await import(`file://${directory}/${file.name}`);
+      const importedEvent: Record<string, CallableHibikiEvent> | undefined = await import(`file://${directory}/${file.name}`);
+
+      // Handler for if the import is null/undefined
+      if (!importedEvent) {
+        logger.error(`Event ${file.name} failed to import`);
+        return;
+      }
+
+      // @ts-expect-error We can reasonably expect that this won't be null, as it is caught by the above check
       eventToLoad = importedEvent[Object.keys(importedEvent)[0]];
     } catch (error) {
       // Catches and logs the error but allows the bot to still run
@@ -62,10 +89,15 @@ export async function loadEvents(bot: HibikiClient, directory: string) {
       return;
     }
 
+    // Gets the event name
     const name = file.name.split(MODULE_FILE_TYPE_REGEX)[0];
-    const event = new eventToLoad(bot, name);
+    if (!name) {
+      logger.error(`Event ${file.name} failed to load: Could not generate filename`);
+      return;
+    }
 
-    // Pushes the events and runs them
+    // Loads the event
+    const event = new eventToLoad(bot, name);
     bot.events.set(name, event);
   }
 
@@ -113,7 +145,7 @@ export async function registerInteractions(bot: HibikiClient, guild?: string) {
     });
   }
 
-  const rest = new REST({ version: "10" }).setToken(env.BOT_TOKEN);
+  const rest = new REST({ version: "10" }).setToken(env.DISCORD_TOKEN);
 
   // Registers commands to a specific guild
   // TODO: Make a delete-all-slash-commands command to clean up my mess
@@ -135,8 +167,8 @@ function subscribeToEvents(bot: HibikiClient, events: Map<string, HibikiEvent>) 
 function generateCommandLocalizations(commands: string[], locales: string[]) {
   // Gets what locale string to look up
   for (const command of commands) {
-    const commandName = `COMMAND_${command.toUpperCase()}_NAME`;
-    const commandDescription = `COMMAND_${command.toUpperCase()}_DESCRIPTION`;
+    const commandName = `COMMAND_${command.toUpperCase()}_NAME` as keyof typeof en;
+    const commandDescription = `COMMAND_${command.toUpperCase()}_DESCRIPTION` as keyof typeof en;
 
     for (const locale of locales) {
       // Gets localized name and description

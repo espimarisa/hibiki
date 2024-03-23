@@ -1,6 +1,6 @@
 {
-  "exclude": ["*.d.ts", "./dist/*", "node_modules"],
-  "include": ["./packages/**/*", "./locales/**/*"],
+  "exclude": ["./dist/*", "node_modules"],
+  "include": ["./packages/**/*", "./locales/*"],
 
   "compilerOptions": {
     "paths": {
@@ -40,6 +40,7 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "outDir": "./dist",
