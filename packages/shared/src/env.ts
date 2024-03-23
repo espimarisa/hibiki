@@ -1,36 +1,32 @@
-import * as dotenv from "dotenv";
-import { cleanEnv, num, str } from "envalid";
-import path from "node:path";
+import { z } from "zod";
 
-// Sets up our environment variables
-dotenv.config({ path: path.resolve("../../.env") });
+const envSchema = z.object({
+  // A valid Discord token
+  DISCORD_TOKEN: z.string().trim().min(1, { message: "Missing Discord token" }),
 
-// Cleans our environment variables up
-const env = cleanEnv(process.env, {
-  // Bot settings
-  // TODO: Regexp test this
-  BOT_TOKEN: str(),
-  BOT_TEST_GUILD_ID: str(),
+  // Testing Guild ID
+  DISCORD_TEST_GUILD_ID: z.string().trim(),
 
-  // Default locale. Valid entries are in locales/*. Defaults to en-US.
-  DEFAULT_LOCALE: str({ default: "en-US" }),
+  // Default locale, defaults to en-US
+  DEFAULT_LOCALE: z.string().trim().default("en-US"),
 
-  // Sentry settings
-  SENTRY_DSN: str({ default: undefined }),
+  SENTRY_DSN: z.string(),
 
-  // Database settings
-  POSTGRES_USER: str(),
-  POSTGRES_PASSWORD: str(),
-  POSTGRES_HOST: str(),
-  POSTGRES_PORT: num(),
-  POSTGRES_DB: str(),
-  POSTGRES_SCHEMA: str(),
-  DATABASE_URL: str(),
+  // PostgreSQL options
+  POSTGRES_USER: z.string().trim().min(1, { message: "Missing PostgreSQL user" }),
+  POSTGRES_PASSWORD: z.string().trim().min(1, { message: "Missing PostgreSQL password" }),
+  POSTGRES_PORT: z.string().trim().min(1, { message: "Missing PostgreSQL port" }),
+  POSTGRES_HOST: z.string().trim().min(1, { message: "Missing PostgreSQL host" }),
+  POSTGRES_DB: z.string().trim().min(1, { message: "Missing PostgreSQL DB" }),
+  POSTGRES_URL: z.string().trim().min(1, { message: "Missing PostgreSQL URL" }),
 
-  // Default Node.js env variables
-  NODE_ENV: str({ default: "development" }),
-  npm_package_name: str(),
-  npm_package_version: str({ default: "development" }),
+  // Node/Bun stuff
+  NODE_ENV: z.string().default("DEVELOPMENT"),
+  npm_package_name: z.string().default("develop"),
+  npm_package_version: z.string().default("develop"),
 });
+
+// Validates environment variables
+const env = envSchema.parse(process.env);
 
 export default env;

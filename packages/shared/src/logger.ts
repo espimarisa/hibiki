@@ -1,8 +1,10 @@
-import type { PinoRotateFileOptions } from "@chatsift/pino-rotate-file";
-import type { PrettyOptions } from "pino-pretty";
-import env from "$shared/env.ts";
-import createLogger, { multistream, transport } from "pino";
 import path from "node:path";
+
+import type { PinoRotateFileOptions } from "@chatsift/pino-rotate-file";
+import createLogger, { multistream, transport } from "pino";
+import type { PrettyOptions } from "pino-pretty";
+
+import env from "$shared/env.ts";
 
 // __dirname replacement in ESM
 const pathDirname = path.dirname(Bun.fileURLToPath(new URL(import.meta.url) as URL));

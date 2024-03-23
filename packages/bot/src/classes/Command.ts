@@ -1,6 +1,7 @@
-import type { HibikiClient } from "$classes/Client.ts";
+import { ApplicationCommandType, CommandInteraction } from "discord.js";
 import type { APIApplicationCommandOption } from "discord-api-types/v10";
-import { CommandInteraction, ApplicationCommandType } from "discord.js";
+
+import type { HibikiClient } from "$classes/Client.ts";
 
 // REST command options
 export interface RESTCommandOptions {

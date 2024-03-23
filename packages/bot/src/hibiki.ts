@@ -1,5 +1,6 @@
-import { HibikiClient } from "./classes/Client.ts";
 import { GatewayIntentBits, Options } from "discord.js";
+
+import { HibikiClient } from "./classes/Client.ts";
 
 const subscribedIntents = [
   // Required for guild, channel, and role objects

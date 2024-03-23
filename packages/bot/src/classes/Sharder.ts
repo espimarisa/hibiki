@@ -1,6 +1,7 @@
+import { ShardClientUtil, ShardingManager } from "discord.js";
+
 import env from "$shared/env.ts";
 import logger from "$shared/logger.ts";
-import { ShardClientUtil, ShardingManager } from "discord.js";
 
 type Auto = number | "auto";
 
@@ -27,35 +28,35 @@ export class HibikiShardingManager {
 
   // Spawns all shards
   public spawn() {
-    this.shardingManager.spawn({ amount: this._shardCount }).catch((error) => {
+    this.shardingManager.spawn({ amount: this._shardCount }).catch((error: unknown) => {
       throw new Error(Bun.inspect(error));
     });
 
     // Shard event listeners
     this.shardingManager.on("shardCreate", (shard) => {
       shard.on("death", () => {
-        logger.error(`Shard #${shard.id} died`);
+        logger.error(`Shard #${shard.id.toString()} died`);
       });
 
       shard.on("disconnect", () => {
-        logger.warn(`Shard #${shard.id} disconnected`);
+        logger.warn(`Shard #${shard.id.toString()} disconnected`);
       });
 
       shard.on("error", (error) => {
-        logger.error(`Shard #${shard.id} encountered an error:`);
+        logger.error(`Shard #${shard.id.toString()} encountered an error:`);
         throw new Error(Bun.inspect(error));
       });
 
       shard.on("ready", () => {
-        logger.info(`Shard #${shard.id} is ready`);
+        logger.info(`Shard #${shard.id.toString()} is ready`);
       });
 
       shard.on("reconnecting", () => {
-        logger.warn(`Shard #${shard.id} is reconnecting`);
+        logger.warn(`Shard #${shard.id.toString()} is reconnecting`);
       });
 
       shard.on("spawn", () => {
-        logger.info(`Shard #${shard.id} was spawned`);
+        logger.info(`Shard #${shard.id.toString()} was spawned`);
       });
     });
   }

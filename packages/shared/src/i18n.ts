@@ -1,8 +1,10 @@
-import env from "$shared/env.ts";
-import * as i18n from "i18next";
-import i18NexFsBackend from "i18next-fs-backend";
 import fs from "node:fs/promises";
 import path from "node:path";
+
+import * as i18n from "i18next";
+import i18NexFsBackend from "i18next-fs-backend";
+
+import env from "$shared/env.ts";
 
 // __dirname replacement in ESM
 const pathDirname = path.dirname(Bun.fileURLToPath(new URL(import.meta.url) as URL));
@@ -27,12 +29,13 @@ await i18n
       loadPath: `${LOCALES_DIRECTORY}/{{lng}}/{{ns}}.json`,
     },
   })
-  .catch((error) => {
+  .catch((error: unknown) => {
     throw new Error(Bun.inspect(error));
   });
 
 // Returns an array of languages in the locales/ directory
 export async function getListOfLocales() {
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   const languages = await fs.readdir(LOCALES_DIRECTORY, { encoding: "utf8" });
   return languages;
 }
