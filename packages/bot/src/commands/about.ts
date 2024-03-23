@@ -1,9 +1,10 @@
+import { type ChatInputCommandInteraction, version } from "discord.js";
+
 import { HibikiCommand } from "$classes/Command.ts";
-import { fetchTotalCachedUsers, fetchTotalCachedGuilds } from "$classes/Sharder.ts";
+import { fetchTotalCachedGuilds, fetchTotalCachedUsers } from "$classes/Sharder.ts";
 import { HibikiColors } from "$shared/constants.ts";
 import env from "$shared/env.ts";
 import { t } from "$shared/i18n.ts";
-import { version, type ChatInputCommandInteraction } from "discord.js";
 
 export class HibikiPingCommand extends HibikiCommand {
   public async runWithInteraction(interaction: ChatInputCommandInteraction, locale: string) {
@@ -20,18 +21,18 @@ export class HibikiPingCommand extends HibikiCommand {
           fields: [
             {
               name: t("COMMAND_ABOUT_CACHED_GUILDS", { lng: locale }),
-              value: `${totalCachedGuilds}`,
+              value: totalCachedGuilds?.toString() ?? "idk",
               inline: true,
             },
             {
               name: t("COMMAND_ABOUT_CACHED_USERS", { lng: locale }),
-              value: `${totalCachedUsers}`,
+              value: totalCachedUsers?.toString() ?? "idk",
               inline: true,
             },
             {
               // TODO: Localize
               name: t("COMMAND_ABOUT_UPTIME", { lng: locale }),
-              value: `${Math.floor(process.uptime())} seconds`,
+              value: `${Math.floor(process.uptime()).toString()} seconds`,
               inline: true,
             },
             {

@@ -18,14 +18,15 @@
     "check": "tsc --noEmit",
     "dev": "NODE_ENV=development bun run --hot ./src/index.ts",
     "format": "prettier --write .",
-    "lint": "tsc --noEmit && prettier --c . && eslint .",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "start": "NODE_ENV=production bun run ./src/index.ts",
-    "test": "bun run lint"
+    "test": "bun run check && bun run lint"
   },
   "dependencies": {
     "@discordjs/rest": "^2.2.0",
-    "discord-api-types": "^0.37.71",
+    "discord-api-types": "^0.37.76",
     "discord.js": "^14.14.1",
-    "i18next": "^23.10.0"
+    "i18next": "^23.10.1"
   }
 }

@@ -1,5 +1,6 @@
+import { type Config, defineConfig } from "drizzle-kit";
+
 import env from "$shared/env.ts";
-import { defineConfig, type Config } from "drizzle-kit";
 
 export default defineConfig({
   out: "./drizzle",
@@ -7,7 +8,7 @@ export default defineConfig({
   driver: "pg",
   dbCredentials: {
     host: env.POSTGRES_HOST,
-    port: env.POSTGRES_PORT,
+    port: Number.parseInt(env.POSTGRES_PORT),
     user: env.POSTGRES_USER,
     password: env.POSTGRES_PASSWORD,
     database: env.POSTGRES_DB,
