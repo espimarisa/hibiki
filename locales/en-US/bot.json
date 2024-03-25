@@ -17,8 +17,26 @@
   "COMMAND_ABOUT_DISCORDJS_VERSION": "Discord.js Version",
   "COMMAND_ABOUT_BUN_VERSION": "Bun Version",
 
-  "DAYS": "{{days}} dasy",
-  "HOURS": "{{amount}} hours",
-  "MINUTES": "{{minutes}} minutes",
-  "SECONDS": "{{amount}} seconds"
+  "YEARS": "{{count}} years",
+  "YEARS_one": "{{count}} year",
+
+  "MOMTHS": "{{count}} months",
+  "MONTHS_one": "{{count}} month",
+
+  "WEEKS": "{{count}} weeks",
+  "WEEKS_one": "{{count}} week",
+
+  "DAYS": "{{count}} days",
+  "DAYS_one": "{{count}} day",
+
+  "HOURS": "{{count}} hours",
+  "HOURS_one": "{{count}} hour",
+
+  "MINUTES": "{{count}} minutes",
+  "MINUTES_one": "{{count}} minute",
+
+  "SECONDS": "{{count}} seconds",
+  "SECONDS_one": "{{count}} second",
+
+  "ERROR": "❌ Error"
 }
