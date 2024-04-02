@@ -4,8 +4,8 @@ import { ActivityType, Client, type ClientOptions } from "discord.js";
 
 import type { HibikiCommand } from "$classes/Command.ts";
 import type { HibikiEvent } from "$classes/Event.ts";
-import env from "$shared/env.ts";
-import logger from "$shared/logger.ts";
+import { env } from "$shared/env.ts";
+import { logger } from "$shared/logger.ts";
 import { loadCommands, loadEvents, registerInteractions } from "$utils/loader.ts";
 
 // List of custom statuses to cycle thru
@@ -32,7 +32,7 @@ export class HibikiClient extends Client {
     });
   }
 
-  public init() {
+  init() {
     try {
       this.login(env.DISCORD_TOKEN).catch((error: unknown) => {
         throw new Error(Bun.inspect(error));
@@ -54,11 +54,13 @@ export class HibikiClient extends Client {
         setInterval(() => {
           activityState = (activityState + 1) % activities.length;
           const presence = activities[activityState];
-          this.user?.setActivity(`${presence?.toString() ?? "unknown"} | v${env.npm_package_version}`, { type: ActivityType.Custom });
+          this.user?.setActivity(`${presence?.toString() ?? "unknown"} | v${env.npm_package_version}`, {
+            type: ActivityType.Custom,
+          });
         }, 60_000);
       });
     } catch (error) {
-      logger.error(`An error occured while starting:`);
+      logger.error("An error occured while starting:");
       throw new Error(Bun.inspect(error));
     }
   }

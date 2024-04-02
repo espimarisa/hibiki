@@ -1,7 +1,7 @@
-import { ShardClientUtil, ShardingManager } from "discord.js";
+import { type ShardClientUtil, ShardingManager } from "discord.js";
 
-import env from "$shared/env.ts";
-import logger from "$shared/logger.ts";
+import { env } from "$shared/env.ts";
+import { logger } from "$shared/logger.ts";
 
 type Auto = number | "auto";
 
@@ -27,7 +27,7 @@ export class HibikiShardingManager {
   }
 
   // Spawns all shards
-  public spawn() {
+  spawn() {
     this.shardingManager.spawn({ amount: this._shardCount }).catch((error: unknown) => {
       throw new Error(Bun.inspect(error));
     });
@@ -64,16 +64,28 @@ export class HibikiShardingManager {
 
 // Returns the amount of total cached guilds on every shard
 export async function fetchTotalCachedGuilds(shard: ShardClientUtil | null) {
-  if (!shard) return;
+  if (!shard) {
+    return;
+  }
+
   const values = (await shard.fetchClientValues("guilds.cache.size")) as number[];
-  if (values.length === 0) return;
+  if (values.length === 0) {
+    return;
+  }
+
   return values.reduce((a, b) => a + b);
 }
 
 // Returns the amount of total cached users on every shard
 export async function fetchTotalCachedUsers(shard: ShardClientUtil | null) {
-  if (!shard) return;
+  if (!shard) {
+    return;
+  }
+
   const values = (await shard.fetchClientValues("users.cache.size")) as number[];
-  if (values.length === 0) return;
+  if (values.length === 0) {
+    return;
+  }
+
   return values.reduce((a, b) => a + b);
 }

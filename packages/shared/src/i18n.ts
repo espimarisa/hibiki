@@ -4,7 +4,7 @@ import path from "node:path";
 import * as i18n from "i18next";
 import i18NexFsBackend from "i18next-fs-backend";
 
-import env from "$shared/env.ts";
+import { env } from "$shared/env.ts";
 
 // __dirname replacement in ESM
 const pathDirname = path.dirname(Bun.fileURLToPath(new URL(import.meta.url) as URL));
@@ -42,4 +42,4 @@ export async function getListOfLocales() {
 
 // Shortcut for translate
 export const t = i18n.t;
-export default i18n;
+export { i18n };

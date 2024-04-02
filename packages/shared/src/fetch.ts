@@ -1,10 +1,12 @@
-import env from "$shared/env.ts";
+import { env } from "$shared/env.ts";
 
-export default async (url: string, options?: RequestInit) => {
-  if (!url) return;
+export async function fetch(url: string, options?: RequestInit): Promise<Response | undefined> {
+  if (!url) {
+    return;
+  }
 
   try {
-    const response = await fetch(url, {
+    const response: Response | undefined = await fetch(url, {
       ...options,
       headers: {
         ...options?.headers,
@@ -15,7 +17,10 @@ export default async (url: string, options?: RequestInit) => {
     // Return the response to JSON
     return response;
   } catch (error) {
-    if (error) throw new Error(Bun.inspect(error));
+    if (error) {
+      throw new Error(Bun.inspect(error));
+    }
+
     return;
   }
-};
+}

@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 
-import db from "$db/index.ts";
+import { db } from "$db/index.ts";
 import { userConfig } from "$db/schema/user_config.ts";
 
 import type { HibikiUserConfig } from "../typings/index";
@@ -12,7 +12,10 @@ export async function getUserConfig(user: string) {
       where: (userConfig, { eq }) => eq(userConfig.user_id, user),
     });
 
-    if (!config?.user_id) return;
+    if (!config?.user_id) {
+      return;
+    }
+
     return config;
   } catch (error) {
     throw new Error(Bun.inspect(error));

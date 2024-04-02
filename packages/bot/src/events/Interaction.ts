@@ -2,20 +2,25 @@ import type { CommandInteraction } from "discord.js";
 
 import { HibikiEvent } from "$classes/Event.ts";
 import { getUserConfig } from "$db/index.ts";
-import env from "$shared/env.ts";
-import logger from "$shared/logger.ts";
+import { env } from "$shared/env.ts";
+import { logger } from "$shared/logger.ts";
+import type { HibikiEventListener } from "$typings/index.d.ts";
 
 export class HibikiInteractionEvent extends HibikiEvent {
   locale?: string;
   events: HibikiEventListener[] = ["interactionCreate"];
 
-  public async run(_event: HibikiEventListener[], interaction: CommandInteraction) {
+  async run(_event: HibikiEventListener[], interaction: CommandInteraction) {
     // Don't run any interactions that aren't commands or that don't actually exist
-    if (!interaction.commandName) return;
+    if (!interaction.commandName) {
+      return;
+    }
 
     // Searches for the right command to run
     const command = this.bot.commands.get(interaction.commandName);
-    if (!command) return;
+    if (!command) {
+      return;
+    }
 
     // Gets the user's locale and appends it to the class
     // TODO: Caching
@@ -25,7 +30,9 @@ export class HibikiInteractionEvent extends HibikiEvent {
     // Logs when an interaction is ran
     // TODO: Implement arguments
     logger.info(
-      `${interaction.user.tag}/${interaction.user.id} ran ${interaction.commandName} in ${interaction.guild?.name ?? "unknown"}/${interaction.guild?.id ?? "unknown"}`,
+      `${interaction.user.tag}/${interaction.user.id} ran ${interaction.commandName} in ${
+        interaction.guild?.name ?? "unknown"
+      }/${interaction.guild?.id ?? "unknown"}`,
     );
 
     try {

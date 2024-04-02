@@ -1,5 +1,5 @@
-import { ApplicationCommandType, CommandInteraction } from "discord.js";
 import type { APIApplicationCommandOption } from "discord-api-types/v10";
+import { ApplicationCommandType, type CommandInteraction } from "discord.js";
 
 import type { HibikiClient } from "$classes/Client.ts";
 
@@ -37,16 +37,17 @@ export abstract class HibikiCommand {
 
   // Creates a new Hibiki command
   protected constructor(
-    protected bot: HibikiClient,
+    public bot: HibikiClient,
     public name: string,
+    // biome-ignore lint/suspicious/noEmptyBlockStatements: Abstract constructor
   ) {}
 
   // Runs a command via the interaction gateway
   public runWithInteraction?(interaction: CommandInteraction, ...args: string[]): Promise<void>;
 
   // Gets a specific subcommand's response
-  public getSubCommandResponse?(commandName: string, ...args: string[]): Promise<unknown>;
+  getSubCommandResponse?(commandName: string, ...args: string[]): Promise<unknown>;
 }
 
 // A callable type for an abstract Hibiki command
-export type CallableHibikiCommand = new (bot: HibikiClient, name: string) => HibikiCommand;
+export type CallableHibikiCommand = new (_bot: HibikiClient, _name: string) => HibikiCommand;
