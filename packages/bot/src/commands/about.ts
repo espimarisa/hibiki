@@ -3,7 +3,7 @@ import { type ChatInputCommandInteraction, type EmbedField, version } from "disc
 import { HibikiCommand } from "$classes/Command.ts";
 import { fetchTotalCachedGuilds, fetchTotalCachedUsers } from "$classes/Sharder.ts";
 import { HibikiColors } from "$shared/constants.ts";
-import env from "$shared/env.ts";
+import { env } from "$shared/env.ts";
 import { t } from "$shared/i18n.ts";
 import { getTimeSince } from "$utils/format.ts";
 import { localizeTimeSince } from "$utils/localize.ts";
@@ -12,7 +12,7 @@ import { localizeTimeSince } from "$utils/localize.ts";
 const startupTimestamp = new Date();
 
 export class HibikiPingCommand extends HibikiCommand {
-  public async runWithInteraction(interaction: ChatInputCommandInteraction, locale: string) {
+  async runWithInteraction(interaction: ChatInputCommandInteraction, locale: string) {
     // Gets the amount of cached guilds and users
     const totalCachedGuilds = await fetchTotalCachedGuilds(this.bot.shard);
     const totalCachedUsers = await fetchTotalCachedUsers(this.bot.shard);

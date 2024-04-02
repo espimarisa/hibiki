@@ -1,8 +1,8 @@
 import "$shared/i18n.ts";
 
 import { HibikiShardingManager } from "$classes/Sharder.ts";
-import env from "$shared/env.ts";
-import initSentry from "$shared/sentry.ts";
+import { env } from "$shared/env.ts";
+import { initSentry } from "$shared/sentry.ts";
 
 // Tries to initialize Sentry
 initSentry();

@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 
-import db from "$db/index.ts";
+import { db } from "$db/index.ts";
 import { guildConfig } from "$db/schema/guild_config.ts";
 
 import type { HibikiGuildConfig } from "../typings/index";
@@ -12,7 +12,10 @@ export async function getGuildConfig(guild: string) {
       where: (guildConfig, { eq }) => eq(guildConfig.guild_id, guild),
     });
 
-    if (!config?.guild_id) return;
+    if (!config?.guild_id) {
+      return;
+    }
+
     return config;
   } catch (error) {
     throw new Error(Bun.inspect(error));

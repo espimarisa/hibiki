@@ -7,7 +7,8 @@
       "$locales/*": ["./locales/*"],
       "$bot/*": ["./packages/bot/src/*"],
       "$db/*": ["./packages/db/src/*"],
-      "$shared/*": ["./packages/shared/src/*"]
+      "$shared/*": ["./packages/shared/src/*"],
+      "$web/*": ["./packages/web/src/*"]
     },
 
     "allowArbitraryExtensions": true,

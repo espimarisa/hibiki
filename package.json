@@ -14,17 +14,16 @@
   "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "license": "zlib",
   "private": true,
-  "workspaces": [
-    "./packages/*"
-  ],
+  "workspaces": ["./packages/*"],
   "scripts": {
     "build": "bun run --env-file .env turbo run build",
     "check": "bun run --env-file .env -- turbo run check",
     "db:generate": "bun run --env-file .env -- turbo run db:generate --filter=@espimarisa/hibiki-db",
     "db:studio": "bun run --env-file .env -- turbo run studio --filter=@espimarisa/hibiki-db",
+    "deps:update": "bunx npm-check-updates --target latest --workspaces --root --upgrade",
     "dev:bot": "bun run --env-file .env -- turbo run dev --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
     "dev:web": "bun run --env-file .env -- turbo run dev --filter=@espimarisa/hibiki-web --filter=@espimarisa/hibiki-db",
-    "format": "prettier --write .",
+    "format": "biome format --write .",
     "lint": "bun run --env-file .env -- turbo run lint",
     "lint:fix": "bun run --env-file .env -- turbo run lint:fix",
     "start": "bun run --env-file .env -- turbo run start",
@@ -36,24 +35,9 @@
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@types/bun": "^1.0.10",
-    "@typescript-eslint/eslint-plugin": "^7.3.1",
-    "@typescript-eslint/parser": "^7.3.1",
-    "dotenv-cli": "^7.4.1",
-    "eslint": "^8.57.0",
-    "eslint-config-ks": "^5.0.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-import-resolver-typescript": "^3.6.1",
-    "eslint-plugin-import": "npm:eslint-plugin-i@^2.29.1",
-    "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-security": "^2.1.1",
-    "eslint-plugin-unicorn": "^51.0.1",
-    "prettier": "^3.2.5",
-    "prettier-plugin-pkg": "^0.18.1",
-    "prettier-plugin-sh": "^0.14.0",
-    "prettier-plugin-svelte": "^3.2.2",
-    "turbo": "^1.13.0",
+    "@biomejs/biome": "^1.6.3",
+    "@types/bun": "^1.0.12",
+    "turbo": "^1.13.1",
     "typescript": "^5.4.3"
   }
 }
