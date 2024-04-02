@@ -5,7 +5,7 @@ import { HibikiColors } from "$shared/constants.ts";
 import { t } from "$shared/i18n.ts";
 
 export class HibikiPingCommand extends HibikiCommand {
-  public async runWithInteraction(interaction: ChatInputCommandInteraction, locale: string) {
+  async runWithInteraction(interaction: ChatInputCommandInteraction, locale: string) {
     const initialInteraction = await interaction.followUp({
       fetchReply: true,
       embeds: [

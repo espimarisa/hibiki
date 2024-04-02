@@ -1,9 +1,8 @@
 {
-  // Run ESLint on save
-  "eslint.experimental.useFlatConfig": true,
-  "eslint.workingDirectories": ["./src/*"],
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
-  },
-  "typescript.tsserver.log": "verbose"
+    "source.organizeImports.biome": "explicit",
+    "quickfix.biome": "explicit"
+  }
 }

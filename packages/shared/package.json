@@ -16,14 +16,14 @@
   "private": true,
   "scripts": {
     "check": "tsc --noEmit",
-    "format": "prettier --write .",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
+    "format": "biome format --write .",
+    "lint": "biome check .",
+    "lint:fix": "biome check --apply .",
     "test": "bun run check && bun run lint"
   },
   "dependencies": {
     "@chatsift/pino-rotate-file": "^0.3.0",
-    "@sentry/bun": "^7.108.0",
+    "@sentry/bun": "^7.109.0",
     "i18next": "^23.10.1",
     "i18next-fs-backend": "^2.3.1",
     "pino": "^8.19.0",

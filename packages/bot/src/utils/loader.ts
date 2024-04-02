@@ -1,17 +1,17 @@
 import fs from "node:fs/promises";
 
 import { REST } from "@discordjs/rest";
-import { ApplicationCommandType } from "discord.js";
 import { Routes } from "discord-api-types/v10";
+import { ApplicationCommandType } from "discord.js";
 
 import type { HibikiClient } from "$classes/Client.ts";
 import type { CallableHibikiCommand, CommandLocalization, RESTCommandOptions } from "$classes/Command.ts";
 import type { CallableHibikiEvent, HibikiEvent } from "$classes/Event.ts";
-import en from "$locales/en-US/bot.json";
+import type en from "$locales/en-US/bot.json";
 import { MODULE_FILE_TYPE_REGEX } from "$shared/constants.ts";
-import env from "$shared/env.ts";
+import { env } from "$shared/env.ts";
 import { getListOfLocales, t } from "$shared/i18n.ts";
-import logger from "$shared/logger.ts";
+import { logger } from "$shared/logger.ts";
 
 // Localization stuff
 const commandNames: string[] = [];
@@ -26,12 +26,17 @@ export async function loadCommands(bot: HibikiClient, directory: string) {
 
   for (const file of files) {
     // Don't try to load source mappings or other jank stuff
-    if (file.name.endsWith(".map") || !MODULE_FILE_TYPE_REGEX.test(file.name)) continue;
+    if (file.name.endsWith(".map") || !MODULE_FILE_TYPE_REGEX.test(file.name)) {
+      continue;
+    }
+
     let commandToLoad: CallableHibikiCommand;
 
     // Tries to load the command
     try {
-      const importedCommand: Record<string, CallableHibikiCommand> | undefined = await import(`file://${directory}/${file.name}`);
+      const importedCommand: Record<string, CallableHibikiCommand> | undefined = await import(
+        `file://${directory}/${file.name}`
+      );
 
       // Handler for if the import is null/undefined
       if (!importedCommand) {
@@ -69,11 +74,16 @@ export async function loadEvents(bot: HibikiClient, directory: string) {
 
   for (const file of files) {
     // Don't try to load source mappings or subdirectories
-    if (file.name.endsWith(".map") || !MODULE_FILE_TYPE_REGEX.test(file.name)) continue;
+    if (file.name.endsWith(".map") || !MODULE_FILE_TYPE_REGEX.test(file.name)) {
+      continue;
+    }
+
     let eventToLoad: CallableHibikiEvent;
 
     try {
-      const importedEvent: Record<string, CallableHibikiEvent> | undefined = await import(`file://${directory}/${file.name}`);
+      const importedEvent: Record<string, CallableHibikiEvent> | undefined = await import(
+        `file://${directory}/${file.name}`
+      );
 
       // Handler for if the import is null/undefined
       if (!importedEvent) {
@@ -107,7 +117,9 @@ export async function loadEvents(bot: HibikiClient, directory: string) {
 
 // Registers all interactions to the Discord gateway
 export async function registerInteractions(bot: HibikiClient, guild?: string) {
-  if (!bot.user?.id) throw new Error("No user object is ready, have you logged into a valid token yet?");
+  if (!bot.user?.id) {
+    throw new Error("No user object is ready, have you logged into a valid token yet?");
+  }
 
   // https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
   const commandData: RESTCommandOptions[] = [];
@@ -130,8 +142,11 @@ export async function registerInteractions(bot: HibikiClient, guild?: string) {
     }
 
     // Gets a default localization
-    const defaultLocalization = commandToLocalize.find((c) => c.command === command.name && c.locale === env.DEFAULT_LOCALE);
-    const description = command.interactionType === ApplicationCommandType.ChatInput ? defaultLocalization?.description : undefined;
+    const defaultLocalization = commandToLocalize.find(
+      (c) => c.command === command.name && c.locale === env.DEFAULT_LOCALE,
+    );
+    const description =
+      command.interactionType === ApplicationCommandType.ChatInput ? defaultLocalization?.description : undefined;
 
     // Pushes REST data to the array
     commandData.push({

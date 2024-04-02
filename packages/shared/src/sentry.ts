@@ -1,10 +1,12 @@
 import * as sentry from "@sentry/bun";
 
-import env from "$shared/env.ts";
-import logger from "$shared/logger.ts";
+import { env } from "$shared/env.ts";
+import { logger } from "$shared/logger.ts";
 
-export default function initSentry(options?: sentry.BunOptions) {
-  if (!env.SENTRY_DSN) return;
+export function initSentry(options?: sentry.BunOptions) {
+  if (!env.SENTRY_DSN) {
+    return;
+  }
 
   try {
     sentry.init({
