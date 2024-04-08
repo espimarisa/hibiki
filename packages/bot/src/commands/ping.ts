@@ -1,8 +1,7 @@
-import type { ChatInputCommandInteraction } from "discord.js";
-
 import { HibikiCommand } from "$classes/Command.ts";
 import { HibikiColors } from "$shared/constants.ts";
 import { t } from "$shared/i18n.ts";
+import type { ChatInputCommandInteraction } from "discord.js";
 
 export class HibikiPingCommand extends HibikiCommand {
   async runWithInteraction(interaction: ChatInputCommandInteraction, locale: string) {

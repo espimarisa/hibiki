@@ -29,7 +29,7 @@
     "enabled": true
   },
   "javascript": {
-    "globals": ["Bun"]
+    "globals": ["Bun", "JSX"]
   },
   "json": {
     "parser": {

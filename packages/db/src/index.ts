@@ -1,12 +1,10 @@
 import path from "node:path";
-
-import { drizzle } from "drizzle-orm/postgres-js";
-import { migrate } from "drizzle-orm/postgres-js/migrator";
-import postgres from "postgres";
-
 import * as guildConfig from "$db/schema/guild_config.ts";
 import * as userConfig from "$db/schema/user_config.ts";
 import { env } from "$shared/env.ts";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
+import postgres from "postgres";
 
 // __dirname replacement in ESM
 const pathDirname = path.dirname(Bun.fileURLToPath(import.meta.url));
