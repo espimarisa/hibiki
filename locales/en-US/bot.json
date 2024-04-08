@@ -17,6 +17,14 @@
   "COMMAND_ABOUT_DISCORDJS_VERSION": "Discord.js Version",
   "COMMAND_ABOUT_BUN_VERSION": "Bun Version",
 
+  "COMMAND_DICE_NAME": "Dice",
+  "COMMAND_DICE_DESCRIPTION": "Rolls an x-sided die.",
+  "COMMAND_DICE_OPTION_0_NAME": "sides",
+  "COMMAND_DICE_OPTION_0_DESCRIPTION": "The amount of sides on the die (defaults to 6; maximum is 120).",
+
+  "COMMAND_DICE_DICE": "🎲 Dice",
+  "COMMAND_DICE_RESULT": "You rolled a {{sides}}-sided die that landed on {{roll}}.",
+
   "YEARS": "{{count}} years",
   "YEARS_one": "{{count}} year",
 

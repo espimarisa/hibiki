@@ -1,7 +1,10 @@
-import type { APIApplicationCommandOption } from "discord-api-types/v10";
-import { ApplicationCommandType, type CommandInteraction } from "discord.js";
-
 import type { HibikiClient } from "$classes/Client.ts";
+import { type APIApplicationCommandOption, ApplicationCommandType } from "discord-api-types/v10";
+import type { CommandInteraction } from "discord.js";
+
+// Paramaters to remove from setting in files (these are handled by our loader)
+// TODO: Utilize this
+export type LockedParamaters = "name" | "description" | "name_localizations" | "description_localizations";
 
 // REST command options
 export interface RESTCommandOptions {
@@ -14,15 +17,12 @@ export interface RESTCommandOptions {
   nsfw?: boolean;
 }
 
-// Localization data
-export interface CommandLocalization {
-  command: string;
-  locale: string;
-  name: string;
-  description: string;
-}
-
 export abstract class HibikiCommand {
+  // Options set in the loader. No touchy!
+  description?: string;
+  name_localizations?: Record<string, string>;
+  description_localizations?: Record<string, string>;
+
   // The type of interaction type. Defaults to CHAT_INPUT.
   interactionType: ApplicationCommandType = ApplicationCommandType.ChatInput;
 

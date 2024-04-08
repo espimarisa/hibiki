@@ -1,7 +1,6 @@
-import { type ShardClientUtil, ShardingManager } from "discord.js";
-
 import { env } from "$shared/env.ts";
 import { logger } from "$shared/logger.ts";
+import { type ShardClientUtil, ShardingManager } from "discord.js";
 
 type Auto = number | "auto";
 

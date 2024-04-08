@@ -1,14 +1,13 @@
 import path from "node:path";
-
-import { ActivityType, Client, type ClientOptions } from "discord.js";
-
 import type { HibikiCommand } from "$classes/Command.ts";
 import type { HibikiEvent } from "$classes/Event.ts";
 import { env } from "$shared/env.ts";
 import { logger } from "$shared/logger.ts";
-import { loadCommands, loadEvents, registerInteractions } from "$utils/loader.ts";
+import { generateInteractionRESTData, loadCommands, loadEvents, registerInteractions } from "$utils/loader.ts";
+import { ActivityType, Client, type ClientOptions } from "discord.js";
 
 // List of custom statuses to cycle thru
+// TODO: Have these be configurable
 const activities = ["read if h", "meow", "guh"];
 let activityState = 0;
 
@@ -47,8 +46,14 @@ export class HibikiClient extends Client {
         logger.info(`${this.commands.size.toString()} commands loaded`);
         logger.info(`${this.events.size.toString()} events loaded`);
 
-        // Registers commands; pushes to only one guild if we're in development
-        await registerInteractions(this, env.NODE_ENV === "production" ? undefined : env.DISCORD_TEST_GUILD_ID);
+        // Generates RESTful interaction data
+        const RESTData = await generateInteractionRESTData(this);
+        if (!RESTData) {
+          throw new Error("Failed to generate interaction REST data.");
+        }
+
+        // Registers commands; pushes to only one guild if we're in development and an ID is set
+        await registerInteractions(this, RESTData, !!(env.DISCORD_TEST_GUILD_ID && env.NODE_ENV !== "production"));
 
         // Cycles through statuses
         setInterval(() => {

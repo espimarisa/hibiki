@@ -1,27 +1,19 @@
 import fs from "node:fs/promises";
-
-import { REST } from "@discordjs/rest";
-import { Routes } from "discord-api-types/v10";
-import { ApplicationCommandType } from "discord.js";
-
 import type { HibikiClient } from "$classes/Client.ts";
-import type { CallableHibikiCommand, CommandLocalization, RESTCommandOptions } from "$classes/Command.ts";
+import type { CallableHibikiCommand, RESTCommandOptions } from "$classes/Command.ts";
 import type { CallableHibikiEvent, HibikiEvent } from "$classes/Event.ts";
 import type en from "$locales/en-US/bot.json";
 import { MODULE_FILE_TYPE_REGEX } from "$shared/constants.ts";
 import { env } from "$shared/env.ts";
-import { getListOfLocales, t } from "$shared/i18n.ts";
+import { getLocalizationsForKey } from "$shared/i18n.ts";
 import { logger } from "$shared/logger.ts";
+import { REST } from "@discordjs/rest";
+import { type APIApplicationCommandOption, Routes } from "discord-api-types/v10";
 
-// Localization stuff
-const commandNames: string[] = [];
-const localizedNames = new Map<string, string>();
-const localizedDescriptions = new Map<string, string>();
-const commandLocalizationData: CommandLocalization[] = [];
+const optionRegex = /COMMAND_(\w+)_OPTION_(\d+)_(\w+)/;
 
 // Loads all commands
 export async function loadCommands(bot: HibikiClient, directory: string) {
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
   const files = await fs.readdir(directory, { withFileTypes: true, encoding: "utf8" });
 
   for (const file of files) {
@@ -59,18 +51,19 @@ export async function loadCommands(bot: HibikiClient, directory: string) {
       return;
     }
 
-    // Loads the command
+    // Generates the command constructor
     const command = new commandToLoad(bot, name);
     bot.commands.set(name, command);
-    commandNames.push(name);
   }
 }
 
 // Loads all events
 export async function loadEvents(bot: HibikiClient, directory: string) {
   // Loads each event file
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
-  const files = await fs.readdir(directory, { withFileTypes: true, encoding: "utf8" });
+  const files = await fs.readdir(directory, {
+    withFileTypes: true,
+    encoding: "utf8",
+  });
 
   for (const file of files) {
     // Don't try to load source mappings or subdirectories
@@ -116,57 +109,28 @@ export async function loadEvents(bot: HibikiClient, directory: string) {
 }
 
 // Registers all interactions to the Discord gateway
-export async function registerInteractions(bot: HibikiClient, guild?: string) {
+export async function registerInteractions(bot: HibikiClient, data: RESTCommandOptions[], guild?: boolean) {
   if (!bot.user?.id) {
     throw new Error("No user object is ready, have you logged into a valid token yet?");
   }
 
-  // https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
-  const commandData: RESTCommandOptions[] = [];
-
-  // Gets a list of locales to search for
-  const locales = await getListOfLocales();
-
-  // Generates command localizations
-  generateCommandLocalizations(commandNames, locales);
-
-  // Generates all command data for REST
-  for (const command of bot.commands.values()) {
-    // Finds the command to localize
-    const commandToLocalize = commandLocalizationData.filter((c) => c.command === command.name);
-
-    // Creates maps for Discord's REST
-    for (const localization of commandToLocalize) {
-      localizedNames.set(localization.locale, localization.name.toLowerCase());
-      localizedDescriptions.set(localization.locale, localization.description);
-    }
-
-    // Gets a default localization
-    const defaultLocalization = commandToLocalize.find(
-      (c) => c.command === command.name && c.locale === env.DEFAULT_LOCALE,
-    );
-    const description =
-      command.interactionType === ApplicationCommandType.ChatInput ? defaultLocalization?.description : undefined;
-
-    // Pushes REST data to the array
-    commandData.push({
-      name: command.name.toLowerCase(),
-      description: description,
-      name_localizations: Object.fromEntries(localizedNames),
-      description_localizations: Object.fromEntries(localizedDescriptions),
-      options: command.options,
-      type: command.interactionType,
-      nsfw: command.nsfw,
-    });
-  }
-
+  // Creates a REST manager
   const rest = new REST({ version: "10" }).setToken(env.DISCORD_TOKEN);
 
   // Registers commands to a specific guild
-  // TODO: Make a delete-all-slash-commands command to clean up my mess
-  guild
-    ? await rest.put(Routes.applicationGuildCommands(bot.user.id, guild), { body: commandData })
-    : await rest.put(Routes.applicationCommands(bot.user.id), { body: commandData });
+  try {
+    if (guild) {
+      await rest.put(Routes.applicationGuildCommands(bot.user.id, env.DISCORD_TEST_GUILD_ID), {
+        body: data,
+      });
+    } else {
+      await rest.put(Routes.applicationCommands(bot.user.id), {
+        body: data,
+      });
+    }
+  } catch (error: unknown) {
+    throw new Error(Bun.inspect(error));
+  }
 }
 
 // Subscribes to event listeners and fires an event when needed
@@ -178,25 +142,80 @@ function subscribeToEvents(bot: HibikiClient, events: Map<string, HibikiEvent>) 
   }
 }
 
-// Generates localizations for all command names and descriptions
-function generateCommandLocalizations(commands: string[], locales: string[]) {
-  // Gets what locale string to look up
-  for (const command of commands) {
-    const commandName = `COMMAND_${command.toUpperCase()}_NAME` as keyof typeof en;
-    const commandDescription = `COMMAND_${command.toUpperCase()}_DESCRIPTION` as keyof typeof en;
+// Generates REST-compatible interaction data
+export async function generateInteractionRESTData(bot: HibikiClient) {
+  // https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
+  const commandData: RESTCommandOptions[] = [];
 
-    for (const locale of locales) {
-      // Gets localized name and description
-      const name = t(commandName, { lng: locale });
-      const description = t(commandDescription, { lng: locale });
+  // Generates all command data for REST
+  for (const command of bot.commands.values()) {
+    // Generates localizations
+    const commandNameString = `COMMAND_${command.name.toUpperCase()}_NAME` as keyof typeof en;
+    const commandDescriptionString = `COMMAND_${command.name.toUpperCase()}_DESCRIPTION` as keyof typeof en;
 
-      // Pushes command, locale, name, and description to an array containing all command data
-      commandLocalizationData.push({
-        command: command,
-        locale: locale,
-        name: name,
-        description: description,
-      });
+    // Gets a list of localized command names and descriptions
+    const localizedCommandNames = await getLocalizationsForKey(commandNameString, true);
+    const localizedCommandDescriptions = await getLocalizationsForKey(commandDescriptionString);
+
+    // No error handler, as command.name will *always* default to the filename
+    if (localizedCommandNames) {
+      command.name = localizedCommandNames[env.DEFAULT_LOCALE]?.toLowerCase().substring(0, 32) as string;
+      command.name_localizations = localizedCommandNames;
     }
+
+    // Sets the description if found
+    if (localizedCommandDescriptions) {
+      command.description = localizedCommandDescriptions[env.DEFAULT_LOCALE]?.substring(0, 100) as string;
+      command.description_localizations = localizedCommandDescriptions;
+    } else {
+      // Sets a fallback; bot shouldn't crash without but it's nice to check
+      command.description = "not set! check the default locale file";
+    }
+
+    // Localizes options
+    // TODO: Properly handle subcommands if we need to?
+    for (const [index, option] of command.options?.entries() ?? []) {
+      // Generates string to test to see if they exist
+      const optionNameString = `COMMAND_${command.name.toUpperCase()}_OPTION_${index}_NAME` as keyof typeof en;
+      const optionDescString = `COMMAND_${command.name.toUpperCase()}_OPTION_${index}_DESCRIPTION` as keyof typeof en;
+
+      // Generates localizations
+      const localizedOptionNames = await getLocalizationsForKey(optionNameString, true, optionRegex);
+      const localizedOptionDescriptions = await getLocalizationsForKey(optionDescString, false, optionRegex);
+
+      // Pushes name data
+      if (localizedOptionNames) {
+        // Sets name data and parses/formats it to be API compatible
+        option.name = localizedOptionNames[env.DEFAULT_LOCALE]?.toLowerCase().substring(0, 32) as string;
+        option.name_localizations = localizedOptionNames;
+      } else {
+        // Ugly, but the API will reject if we forget to put this in
+        option.name = "unknown";
+      }
+
+      // Pushes description data
+      if (localizedOptionDescriptions) {
+        // Sets description data and parses/formats it to be API compatible
+        option.description = localizedOptionDescriptions[env.DEFAULT_LOCALE]?.substring(0, 100) as string;
+        option.description_localizations = localizedOptionDescriptions;
+      } else {
+        // Ugly, but the API will reject if we forget to put this in
+        option.description = "not set! check the default locale file";
+      }
+    }
+
+    // Pushes REST data to the array
+    commandData.push({
+      name: command.name,
+      // TODO: Some command types cannot have descriptions
+      description: command.description,
+      name_localizations: command.name_localizations,
+      description_localizations: command.description_localizations,
+      options: command.options as APIApplicationCommandOption[],
+      type: command.interactionType,
+      nsfw: command.nsfw,
+    });
   }
+
+  return commandData;
 }

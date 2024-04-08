@@ -29,7 +29,7 @@
     "inlineSources": false,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ES2022",
     "moduleDetection": "force",
     "moduleResolution": "Bundler",

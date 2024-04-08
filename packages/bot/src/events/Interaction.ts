@@ -1,10 +1,9 @@
-import type { CommandInteraction } from "discord.js";
-
 import { HibikiEvent } from "$classes/Event.ts";
 import { getUserConfig } from "$db/index.ts";
 import { env } from "$shared/env.ts";
 import { logger } from "$shared/logger.ts";
 import type { HibikiEventListener } from "$typings/index.d.ts";
+import type { CommandInteraction } from "discord.js";
 
 export class HibikiInteractionEvent extends HibikiEvent {
   locale?: string;

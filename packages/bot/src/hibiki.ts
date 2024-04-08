@@ -1,5 +1,4 @@
 import { GatewayIntentBits, Options } from "discord.js";
-
 import { HibikiClient } from "./classes/Client.ts";
 
 const subscribedIntents = [
