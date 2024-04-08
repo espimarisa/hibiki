@@ -1,14 +1,20 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-
-import * as i18n from "i18next";
+import type en from "$locales/en-US/bot.json";
+import { env } from "$shared/env.ts";
+import i18n from "i18next";
 import i18NexFsBackend from "i18next-fs-backend";
 
-import { env } from "$shared/env.ts";
-
 // __dirname replacement in ESM
+// TODO: Fix this up; I'm pretty sure this is no longer needed as of Bun v1.1?
 const pathDirname = path.dirname(Bun.fileURLToPath(new URL(import.meta.url) as URL));
 const LOCALES_DIRECTORY = path.join(pathDirname, "../../../locales");
+
+// Returns an array of languages in the locales/ directory
+async function getListOfLocales() {
+  const languages = await fs.readdir(LOCALES_DIRECTORY, { encoding: "utf8" });
+  return languages;
+}
 
 // Inits i18next
 await i18n
@@ -33,11 +39,25 @@ await i18n
     throw new Error(Bun.inspect(error));
   });
 
-// Returns an array of languages in the locales/ directory
-export async function getListOfLocales() {
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
-  const languages = await fs.readdir(LOCALES_DIRECTORY, { encoding: "utf8" });
-  return languages;
+// Generates an object of localization for a specific string
+export async function getLocalizationsForKey(string: keyof typeof en, lowercase = false, regex?: RegExp) {
+  const locales = await getListOfLocales();
+
+  // Tests against a regex provided
+  if (regex) {
+    const results = regex.exec(string);
+    if (!results) {
+      return;
+    }
+  }
+
+  // Ugly, but I'm lazy
+  if (lowercase) {
+    return Object.fromEntries(locales.map((locale) => [locale, t(string, { lng: locale }).toLowerCase()]));
+  }
+
+  // Returns an object of all localizations related to a key
+  return Object.fromEntries(locales.map((locale) => [locale, t(string, { lng: locale })]));
 }
 
 // Shortcut for translate

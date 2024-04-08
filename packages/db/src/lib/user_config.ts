@@ -1,8 +1,6 @@
-import { eq } from "drizzle-orm";
-
 import { db } from "$db/index.ts";
 import { userConfig } from "$db/schema/user_config.ts";
-
+import { eq } from "drizzle-orm";
 import type { HibikiUserConfig } from "../typings/index";
 
 // Gets a user config

@@ -1,6 +1,5 @@
-import type { Duration } from "date-fns";
-
 import { t } from "$shared/i18n.ts";
+import type { Duration } from "date-fns";
 
 interface LocalizedDuration {
   years?: string;

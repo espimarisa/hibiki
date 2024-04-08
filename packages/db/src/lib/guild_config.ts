@@ -1,8 +1,6 @@
-import { eq } from "drizzle-orm";
-
 import { db } from "$db/index.ts";
 import { guildConfig } from "$db/schema/guild_config.ts";
-
+import { eq } from "drizzle-orm";
 import type { HibikiGuildConfig } from "../typings/index";
 
 // Gets a guild config

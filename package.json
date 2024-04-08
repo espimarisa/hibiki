@@ -31,13 +31,14 @@
     "start:web": "bun run --env-file .env -- turbo run start --filter=@espimarisa/hibiki-web --filter=@espimarisa/hibiki-db",
     "test": "bun run --env-file .env -- turbo run test"
   },
+  "trustedDependencies": ["@biomejs/biome", "es5-ext", "esbuild"],
   "dependencies": {
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.6.3",
+    "@biomejs/biome": "^1.6.4",
     "@types/bun": "^1.0.12",
-    "turbo": "^1.13.1",
-    "typescript": "^5.4.3"
+    "turbo": "^1.13.2",
+    "typescript": "^5.4.4"
   }
 }
