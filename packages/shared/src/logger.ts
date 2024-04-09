@@ -7,7 +7,7 @@ import type { PrettyOptions } from "pino-pretty";
 import { env } from "$shared/env.ts";
 
 // __dirname replacement in ESM
-const pathDirname = path.dirname(Bun.fileURLToPath(new URL(import.meta.url) as URL));
+const pathDirname = path.dirname(Bun.fileURLToPath(import.meta.url));
 
 // Directories to crawl
 const LOGS_DIRECTORY = path.join(pathDirname, "../../../logs");

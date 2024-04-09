@@ -6,8 +6,7 @@ import i18n from "i18next";
 import i18NexFsBackend from "i18next-fs-backend";
 
 // __dirname replacement in ESM
-// TODO: Fix this up; I'm pretty sure this is no longer needed as of Bun v1.1?
-const pathDirname = path.dirname(Bun.fileURLToPath(new URL(import.meta.url) as URL));
+const pathDirname = path.dirname(Bun.fileURLToPath(import.meta.url));
 const LOCALES_DIRECTORY = path.join(pathDirname, "../../../locales");
 
 // Returns an array of languages in the locales/ directory

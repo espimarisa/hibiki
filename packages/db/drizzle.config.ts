@@ -1,6 +1,5 @@
-import { type Config, defineConfig } from "drizzle-kit";
-
 import { env } from "$shared/env.ts";
+import { type Config, defineConfig } from "drizzle-kit";
 
 // biome-ignore lint/style/noDefaultExport: Config file
 export default defineConfig({

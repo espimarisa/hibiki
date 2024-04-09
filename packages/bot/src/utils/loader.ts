@@ -8,9 +8,11 @@ import { env } from "$shared/env.ts";
 import { getLocalizationsForKey } from "$shared/i18n.ts";
 import { logger } from "$shared/logger.ts";
 import { REST } from "@discordjs/rest";
-import { type APIApplicationCommandOption, Routes } from "discord-api-types/v10";
+import { type APIApplicationCommandOption, ApplicationCommandOptionType, Routes } from "discord-api-types/v10";
 
 const optionRegex = /COMMAND_(\w+)_OPTION_(\d+)_(\w+)/;
+const subCommandOptionNameRegex = /COMMAND_(\w+)_SUBCOMMAND_(\d+)_OPTION_(\d+)_NAME/;
+const subCommandOptionDescRegex = /COMMAND_(\w+)_SUBCOMMAND_(\d+)_OPTION_(\d+)_DESCRIPTION/;
 
 // Loads all commands
 export async function loadCommands(bot: HibikiClient, directory: string) {
@@ -143,6 +145,7 @@ function subscribeToEvents(bot: HibikiClient, events: Map<string, HibikiEvent>) 
 }
 
 // Generates REST-compatible interaction data
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: I can be as complex as I want, bitch
 export async function generateInteractionRESTData(bot: HibikiClient) {
   // https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
   const commandData: RESTCommandOptions[] = [];
@@ -173,8 +176,7 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
     }
 
     // Localizes options
-    // TODO: Properly handle subcommands if we need to?
-    for (const [index, option] of command.options?.entries() ?? []) {
+    for (const [index, option] of (command.options as APIApplicationCommandOption[])?.entries() ?? []) {
       // Generates string to test to see if they exist
       const optionNameString = `COMMAND_${command.name.toUpperCase()}_OPTION_${index}_NAME` as keyof typeof en;
       const optionDescString = `COMMAND_${command.name.toUpperCase()}_OPTION_${index}_DESCRIPTION` as keyof typeof en;
@@ -200,14 +202,53 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
         option.description_localizations = localizedOptionDescriptions;
       } else {
         // Ugly, but the API will reject if we forget to put this in
-        option.description = "not set! check the default locale file";
+        option.description = `not set! check the default locale file for option ${index}`;
+      }
+
+      // Subcommand group localization support
+      if (option.type === ApplicationCommandOptionType.SubcommandGroup) {
+        for (const [optIndex, subOpt] of option.options?.entries() ?? []) {
+          const subOptNameString = `COMMAND_${command.name.toUpperCase()}_SUBCOMMAND_${index}_OPTION_${optIndex}_NAME`;
+          const subOptDescString = `COMMAND_${command.name.toUpperCase()}_SUBCOMMAND_${index}_OPTION_${optIndex}_DESCRIPTION`;
+
+          // Generates localizations for subcommand option name
+          const localizedOptNames = await getLocalizationsForKey(
+            subOptNameString as keyof typeof en,
+            true,
+            subCommandOptionNameRegex,
+          );
+
+          // Generates localization for subcommand option desc
+          const localizedOptDescs = await getLocalizationsForKey(
+            subOptDescString as keyof typeof en,
+            false,
+            subCommandOptionDescRegex,
+          );
+
+          // Sets localized subcommand names
+          if (localizedOptNames) {
+            subOpt.name = localizedOptNames[env.DEFAULT_LOCALE]?.toLowerCase().substring(0, 32) as string;
+            subOpt.name_localizations = localizedOptNames;
+          } else {
+            // Ugly, but the API will reject if we forget to put this in
+            subOpt.name = `unknown${optIndex}`;
+          }
+
+          // Sets localized subcommand descriptions
+          if (localizedOptDescs) {
+            subOpt.description = localizedOptDescs[env.DEFAULT_LOCALE]?.toLowerCase().substring(0, 32) as string;
+            subOpt.description_localizations = localizedOptDescs;
+          } else {
+            // Ugly, but the API will reject if we forget to put this in
+            subOpt.description = `not set! check the index file for subcommand ${optIndex}`;
+          }
+        }
       }
     }
 
     // Pushes REST data to the array
     commandData.push({
       name: command.name,
-      // TODO: Some command types cannot have descriptions
       description: command.description,
       name_localizations: command.name_localizations,
       description_localizations: command.description_localizations,
