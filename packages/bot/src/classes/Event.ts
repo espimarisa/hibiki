@@ -1,5 +1,7 @@
 import type { HibikiClient } from "$classes/Client.ts";
-import type { HibikiEventListener } from "$typings/index.d.ts";
+
+// An individual event listener
+export type HibikiEventListener = keyof import("discord.js").ClientEvents;
 
 export abstract class HibikiEvent {
   // An array of event emitters to listen on

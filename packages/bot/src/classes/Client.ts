@@ -7,8 +7,7 @@ import { generateInteractionRESTData, loadCommands, loadEvents, registerInteract
 import { ActivityType, Client, type ClientOptions } from "discord.js";
 
 // List of custom statuses to cycle thru
-// TODO: Have these be configurable
-const activities = ["read if h", "meow", "guh"];
+const activities = env.DISCORD_STATUSES?.split(", ");
 let activityState = 0;
 
 // __dirname replacement in ESM
@@ -55,14 +54,16 @@ export class HibikiClient extends Client {
         // Registers commands; pushes to only one guild if we're in development and an ID is set
         await registerInteractions(this, RESTData, !!(env.DISCORD_TEST_GUILD_ID && env.NODE_ENV !== "production"));
 
-        // Cycles through statuses
-        setInterval(() => {
-          activityState = (activityState + 1) % activities.length;
-          const presence = activities[activityState];
-          this.user?.setActivity(`${presence?.toString() ?? "unknown"} | v${env.npm_package_version}`, {
-            type: ActivityType.Custom,
-          });
-        }, 60_000);
+        // Cycles through statuses if they are set
+        if (activities.length) {
+          setInterval(() => {
+            activityState = (activityState + 1) % activities.length;
+            const presence = activities[activityState];
+            this.user?.setActivity(`${presence?.toString() ?? "unknown"} | v${env.npm_package_version}`, {
+              type: ActivityType.Custom,
+            });
+          }, 60_000);
+        }
       });
     } catch (error) {
       logger.error("An error occured while starting:");
