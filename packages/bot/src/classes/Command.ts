@@ -1,10 +1,21 @@
 import type { HibikiClient } from "$classes/Client.ts";
 import { type APIApplicationCommandOption, ApplicationCommandType } from "discord-api-types/v10";
-import type { CommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction, ContextMenuCommandInteraction } from "discord.js";
 
 // Paramaters to remove from setting in files (these are handled by our loader)
-// TODO: Utilize this
 export type LockedParamaters = "name" | "description" | "name_localizations" | "description_localizations";
+type FilteredAPIApplicationCommandOptions<Type> = {
+  [APIApplicationCommandOption in keyof Type as Exclude<
+    APIApplicationCommandOption,
+    LockedParamaters
+  >]: Type[APIApplicationCommandOption];
+};
+
+// API compatible option block, used for parsing this.options[] with the hack above
+export type APIOption = APIApplicationCommandOption;
+
+// Command options to specify in each Command file
+export type HibikiCommandOptions = FilteredAPIApplicationCommandOptions<APIApplicationCommandOption>;
 
 // REST command options
 export interface RESTCommandOptions {
@@ -27,9 +38,9 @@ export abstract class HibikiCommand {
   interactionType: ApplicationCommandType = ApplicationCommandType.ChatInput;
 
   // An array of interaction options
-  options?: APIApplicationCommandOption[];
+  options?: HibikiCommandOptions[];
 
-  // Whether or not an interaction can only be seen by the runner
+  // Whether or not an interaction can only be seen by the
   ephemeral = false;
 
   // Whether or not a command is NSFW or not
@@ -43,7 +54,10 @@ export abstract class HibikiCommand {
   ) {}
 
   // Runs a command via the interaction gateway
-  public runWithInteraction?(interaction: CommandInteraction, ...args: string[]): Promise<void>;
+  public runWithInteraction?(
+    interaction: ChatInputCommandInteraction | ContextMenuCommandInteraction,
+    ...args: string[]
+  ): Promise<void>;
 
   // Gets a specific subcommand's response
   getSubCommandResponse?(commandName: string, ...args: string[]): Promise<unknown>;

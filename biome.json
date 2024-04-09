@@ -18,6 +18,7 @@
     "rules": {
       "all": true,
       "style": {
+        "noNonNullAssertion": "off",
         "useFilenamingConvention": "off",
         "useNamingConvention": "off",
         "noParameterProperties": "off"
