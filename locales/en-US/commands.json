@@ -32,5 +32,8 @@
   "COMMAND_ANIMAL_SUBCOMMAND_0_OPTION_1_NAME": "Dog",
   "COMMAND_ANIMAL_SUBCOMMAND_0_OPTION_1_DESCRIPTION": "Sends a random picture of a dog.",
   "COMMAND_ANIMAL_SUBCOMMAND_0_OPTION_2_NAME": "Fox",
-  "COMMAND_ANIMAL_SUBCOMMAND_0_OPTION_2_DESCRIPTION": "Sends a random picture of a fox."
+  "COMMAND_ANIMAL_SUBCOMMAND_0_OPTION_2_DESCRIPTION": "Sends a random picture of a fox.",
+  "ANIMAL_CAT": "🐱 Meow!",
+  "ANIMAL_DOG": "🐶 Woof!",
+  "ANIMAL_FOX": "🦊 Bark!"
 }
