@@ -14,15 +14,15 @@ export class DiceCommand extends HibikiCommand {
     },
   ] satisfies HibikiCommandOptions[];
 
-  public async runWithInteraction(interaction: ChatInputCommandInteraction) {
+  async runCommand(interaction: ChatInputCommandInteraction) {
     // Gets the number of sides and rolls the die
     const sides = interaction.options.getInteger((this.options as APIOption[])[0]!.name) || 6;
     const roll = Math.floor(Math.random() * sides) + 1;
     await interaction.followUp({
       embeds: [
         {
-          title: t("COMMAND_DICE_DICE", { lng: interaction.locale }),
-          description: t("COMMAND_DICE_RESULT", { sides: sides, roll: roll, lng: interaction.locale }),
+          title: t("DICE", { lng: interaction.locale, ns: "commands" }),
+          description: t("DICE_RESULT", { sides: sides, roll: roll, lng: interaction.locale, ns: "commands" }),
           color: HibikiColors.GENERAL,
         },
       ],

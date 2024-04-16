@@ -11,7 +11,7 @@ import { type ChatInputCommandInteraction, type EmbedField, version } from "disc
 const startupTimestamp = new Date();
 
 export class HibikiPingCommand extends HibikiCommand {
-  async runWithInteraction(interaction: ChatInputCommandInteraction, locale: string) {
+  async runCommand(interaction: ChatInputCommandInteraction) {
     // Gets the amount of cached guilds and users
     const totalCachedGuilds = await fetchTotalCachedGuilds(this.bot.shard);
     const totalCachedUsers = await fetchTotalCachedUsers(this.bot.shard);
@@ -23,7 +23,7 @@ export class HibikiPingCommand extends HibikiCommand {
     // Push cached guilds
     if (totalCachedGuilds) {
       fields.push({
-        name: t("COMMAND_ABOUT_CACHED_GUILDS", { lng: locale }),
+        name: t("ABOUT_CACHED_GUILDS", { lng: interaction.locale, ns: "commands" }),
         value: totalCachedGuilds.toString(),
         inline: true,
       });
@@ -32,7 +32,7 @@ export class HibikiPingCommand extends HibikiCommand {
     // Push cached users
     if (totalCachedUsers) {
       fields.push({
-        name: t("COMMAND_ABOUT_CACHED_USERS", { lng: locale }),
+        name: t("ABOUT_CACHED_USERS", { lng: interaction.locale, ns: "commands" }),
         value: totalCachedUsers.toString(),
         inline: true,
       });
@@ -41,28 +41,32 @@ export class HibikiPingCommand extends HibikiCommand {
     await interaction.followUp({
       embeds: [
         {
-          title: t("COMMAND_ABOUT_TITLE", { username: this.bot.user?.username, lng: locale }),
-          description: t("COMMAND_ABOUT_DETAILS", { username: this.bot.user?.username, lng: locale }),
+          title: t("ABOUT_TITLE", { username: this.bot.user?.username, lng: interaction.locale, ns: "commands" }),
+          description: t("ABOUT_DETAILS", {
+            username: this.bot.user?.username,
+            lng: interaction.locale,
+            ns: "commands",
+          }),
           color: HibikiColors.GENERAL,
           fields: [
             ...fields,
             {
-              name: t("COMMAND_ABOUT_UPTIME", { lng: locale }),
+              name: t("ABOUT_UPTIME", { lng: interaction.locale, ns: "commands" }),
               value: localizedUptime,
               inline: true,
             },
             {
-              name: t("COMMAND_ABOUT_HIBIKI_VERSION", { lng: locale }),
+              name: t("ABOUT_HIBIKI_VERSION", { lng: interaction.locale, ns: "commands" }),
               value: env.npm_package_version,
               inline: true,
             },
             {
-              name: t("COMMAND_ABOUT_DISCORDJS_VERSION", { lng: locale }),
+              name: t("ABOUT_DISCORDJS_VERSION", { lng: interaction.locale, ns: "commands" }),
               value: version,
               inline: true,
             },
             {
-              name: t("COMMAND_ABOUT_BUN_VERSION", { lng: locale }),
+              name: t("ABOUT_BUN_VERSION", { lng: interaction.locale, ns: "commands" }),
               value: Bun.version,
               inline: true,
             },

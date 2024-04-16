@@ -4,11 +4,7 @@ import type { HibikiEvent } from "$classes/Event.ts";
 import { env } from "$shared/env.ts";
 import { logger } from "$shared/logger.ts";
 import { generateInteractionRESTData, loadCommands, loadEvents, registerInteractions } from "$utils/loader.ts";
-import { ActivityType, Client, type ClientOptions } from "discord.js";
-
-// List of custom statuses to cycle thru
-const activities = env.DISCORD_STATUSES?.split(", ");
-let activityState = 0;
+import { ActivityType, Client, type ClientOptions, type ClientUser } from "discord.js";
 
 // __dirname replacement in ESM
 const pathDirname = path.dirname(Bun.fileURLToPath(import.meta.url));
@@ -16,6 +12,7 @@ const pathDirname = path.dirname(Bun.fileURLToPath(import.meta.url));
 // Directories to crawl
 const COMMANDS_DIRECTORY = path.join(pathDirname, "../commands");
 const EVENTS_DIRECTORY = path.join(pathDirname, "../events");
+let activityState = 0;
 
 export class HibikiClient extends Client {
   readonly commands = new Map<string, HibikiCommand>();
@@ -23,8 +20,6 @@ export class HibikiClient extends Client {
 
   constructor(options: ClientOptions) {
     super(options);
-
-    // Logs errors
     this.on("error", (err) => {
       logger.error(Bun.inspect(err));
     });
@@ -54,20 +49,24 @@ export class HibikiClient extends Client {
         // Registers commands; pushes to only one guild if we're in development and an ID is set
         await registerInteractions(this, RESTData, !!(env.DISCORD_TEST_GUILD_ID && env.NODE_ENV !== "production"));
 
-        // Cycles through statuses if they are set
-        if (activities.length) {
-          setInterval(() => {
-            activityState = (activityState + 1) % activities.length;
-            const presence = activities[activityState];
-            this.user?.setActivity(`${presence?.toString() ?? "unknown"} | v${env.npm_package_version}`, {
-              type: ActivityType.Custom,
-            });
-          }, 60_000);
+        // Cycles through statuses if any are set
+        if (env.DISCORD_STATUSES?.split(", ").length) {
+          this.cycleStatuses(this.user!, env.DISCORD_STATUSES.split(", "));
+          setInterval(this.cycleStatuses, 30000, this.user!, env.DISCORD_STATUSES.split(", "));
         }
       });
     } catch (error) {
       logger.error("An error occured while starting:");
       throw new Error(Bun.inspect(error));
     }
+  }
+
+  // Cycles through statuses
+  cycleStatuses(user: ClientUser, statuses: string[]) {
+    activityState = (activityState + 1) % statuses.length;
+    const presence = statuses[activityState];
+    user.setActivity(`${presence?.toString() ?? "unknown"} | v${env.npm_package_version}`, {
+      type: ActivityType.Custom,
+    });
   }
 }

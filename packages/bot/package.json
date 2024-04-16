@@ -1,16 +1,6 @@
 {
   "name": "@espimarisa/hibiki-bot",
-  "version": "7.0.0-alpha",
   "type": "module",
-  "description": "",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/espimarisa/hibiki.git"
-  },
-  "homepage": "https://github.com/espimarisa/hibiki#readme",
-  "bugs": {
-    "url": "https://github.com/espimarisa/hibiki/issues"
-  },
   "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "license": "zlib",
   "private": true,
@@ -27,6 +17,6 @@
     "date-fns": "^3.6.0",
     "discord-api-types": "^0.37.79",
     "discord.js": "^14.14.1",
-    "i18next": "^23.11.0"
+    "i18next": "^23.11.2"
   }
 }
