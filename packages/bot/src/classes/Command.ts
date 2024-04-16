@@ -1,8 +1,8 @@
 import type { HibikiClient } from "$classes/Client.ts";
 import { type APIApplicationCommandOption, ApplicationCommandType } from "discord-api-types/v10";
-import type { ChatInputCommandInteraction, ContextMenuCommandInteraction } from "discord.js";
+import type { PossibleCommandInteractionType } from "../events/CommandInteraction";
 
-// Paramaters to remove from setting in files (these are handled by our loader)
+// Paramaters to remove from setting in individual command files. Prevents overriding loader-handled data.
 export type LockedParamaters = "name" | "description" | "name_localizations" | "description_localizations";
 type FilteredAPIApplicationCommandOptions<Type> = {
   [APIApplicationCommandOption in keyof Type as Exclude<
@@ -14,10 +14,11 @@ type FilteredAPIApplicationCommandOptions<Type> = {
 // API compatible option block, used for parsing this.options[] with the hack above
 export type APIOption = APIApplicationCommandOption;
 
-// Command options to specify in each Command file
+// Options available to specify in each individual command file
 export type HibikiCommandOptions = FilteredAPIApplicationCommandOptions<APIApplicationCommandOption>;
 
-// REST command options
+// REST command options for registering interactions
+// https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
 export interface RESTCommandOptions {
   name: string;
   description?: string;
@@ -29,21 +30,20 @@ export interface RESTCommandOptions {
 }
 
 export abstract class HibikiCommand {
-  // Options set in the loader. No touchy!
   description?: string;
   name_localizations?: Record<string, string>;
   description_localizations?: Record<string, string>;
 
-  // The type of interaction type. Defaults to CHAT_INPUT.
+  // The type of command interaction type. Defaults to CHAT_INPUT.
   interactionType: ApplicationCommandType = ApplicationCommandType.ChatInput;
 
-  // An array of interaction options
+  // An array of command interaction options
   options?: HibikiCommandOptions[];
 
-  // Whether or not an interaction can only be seen by the
+  // Whether or not the interaction response can only be seen by the runner. Defaults to false.
   ephemeral = false;
 
-  // Whether or not a command is NSFW or not
+  // Whether or not an interaction is NSFW. Defaults to false.
   nsfw = false;
 
   // Creates a new Hibiki command
@@ -53,15 +53,9 @@ export abstract class HibikiCommand {
     // biome-ignore lint/suspicious/noEmptyBlockStatements: Abstract constructor
   ) {}
 
-  // Runs a command via the interaction gateway
-  public runWithInteraction?(
-    interaction: ChatInputCommandInteraction | ContextMenuCommandInteraction,
-    ...args: string[]
-  ): Promise<void>;
+  // Runs the command
+  abstract runCommand(interaction: PossibleCommandInteractionType): Promise<void>;
 
-  // Gets a specific subcommand's response
-  getSubCommandResponse?(commandName: string, ...args: string[]): Promise<unknown>;
+  // Gets a subcommand response
+  getSubCommandResponse?(subCommandName: string): Promise<unknown>;
 }
-
-// A callable type for an abstract Hibiki command
-export type CallableHibikiCommand = new (_bot: HibikiClient, _name: string) => HibikiCommand;

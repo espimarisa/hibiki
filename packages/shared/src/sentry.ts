@@ -1,14 +1,14 @@
 import { env } from "$shared/env.ts";
 import { logger } from "$shared/logger.ts";
-import * as sentry from "@sentry/bun";
+import { type BunOptions, init } from "@sentry/bun";
 
-export function initSentry(options?: sentry.BunOptions) {
+export function initSentry(options?: BunOptions) {
   if (!env.SENTRY_DSN) {
     return;
   }
 
   try {
-    sentry.init({
+    init({
       dsn: env.SENTRY_DSN,
       environment: env.NODE_ENV,
       release: env.npm_package_version,

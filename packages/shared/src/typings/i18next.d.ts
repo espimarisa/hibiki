@@ -1,15 +1,16 @@
 import "i18next";
 
-// Import all namespaces
-import type bot from "$locales/en-US/bot.json";
+import type commands from "$locales/en-US/commands.json";
+import type global from "$locales/en-US/global.json";
 
 declare module "i18next" {
-  // Extend CustomTypeOptions
   interface CustomTypeOptions {
-    defaultNS: "bot";
+    defaultNS: "global";
+    ns: ["commands", "global"];
 
     resources: {
-      bot: typeof bot;
+      commands: typeof commands;
+      global: typeof global;
     };
   }
 }

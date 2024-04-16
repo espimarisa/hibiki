@@ -4,8 +4,6 @@ import type { PinoRotateFileOptions } from "@chatsift/pino-rotate-file";
 import createLogger, { multistream, transport } from "pino";
 import type { PrettyOptions } from "pino-pretty";
 
-import { env } from "$shared/env.ts";
-
 // __dirname replacement in ESM
 const pathDirname = path.dirname(Bun.fileURLToPath(import.meta.url));
 
@@ -34,7 +32,7 @@ const pinoRotateFileOptions = {
 export const logger = createLogger(
   {
     // Sets name to package name
-    name: env.npm_package_name || undefined,
+    // name: env.npm_package_name || undefined,
     level: "trace",
   },
   multistream([

@@ -4,12 +4,12 @@ import { t } from "$shared/i18n.ts";
 import type { ChatInputCommandInteraction } from "discord.js";
 
 export class HibikiPingCommand extends HibikiCommand {
-  async runWithInteraction(interaction: ChatInputCommandInteraction, locale: string) {
+  async runCommand(interaction: ChatInputCommandInteraction) {
     const initialInteraction = await interaction.followUp({
       fetchReply: true,
       embeds: [
         {
-          title: t("COMMAND_PING_PINGING", { lng: locale }),
+          title: t("PING_PINGING", { lng: interaction.locale, ns: "commands" }),
           color: HibikiColors.GENERAL,
         },
       ],
@@ -18,10 +18,11 @@ export class HibikiPingCommand extends HibikiCommand {
     await interaction.editReply({
       embeds: [
         {
-          title: t("COMMAND_PING_PONG", { lng: locale }),
-          description: t("COMMAND_PING_LATENCY", {
-            lng: locale,
+          title: t("PING_PONG", { lng: interaction.locale, ns: "commands" }),
+          description: t("PING_LATENCY", {
             latency: initialInteraction.createdTimestamp - interaction.createdTimestamp,
+            lng: interaction.locale,
+            ns: "commands",
           }),
           color: HibikiColors.GENERAL,
         },

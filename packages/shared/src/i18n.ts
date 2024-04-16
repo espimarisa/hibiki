@@ -1,9 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type en from "$locales/en-US/bot.json";
+import type commands from "$locales/en-US/commands.json";
 import { env } from "$shared/env.ts";
 import i18n from "i18next";
-import i18NexFsBackend from "i18next-fs-backend";
+import i18NexFsBackend, { type FsBackendOptions } from "i18next-fs-backend";
 
 // __dirname replacement in ESM
 const pathDirname = path.dirname(Bun.fileURLToPath(import.meta.url));
@@ -18,19 +18,18 @@ async function getListOfLocales() {
 // Inits i18next
 await i18n
   .use(i18NexFsBackend)
-  .init({
+  .init<FsBackendOptions>({
+    defaultNS: "global",
     initImmediate: false,
     fallbackLng: env.DEFAULT_LOCALE,
-    load: "all",
+    load: "currentOnly",
     lng: env.DEFAULT_LOCALE,
-    ns: ["bot"],
-    defaultNS: "bot",
+    ns: ["commands", "global"],
     preload: await getListOfLocales(),
     interpolation: {
       skipOnVariables: false,
     },
     backend: {
-      skipOnVariables: false,
       loadPath: `${LOCALES_DIRECTORY}/{{lng}}/{{ns}}.json`,
     },
   })
@@ -39,24 +38,24 @@ await i18n
   });
 
 // Generates an object of localization for a specific string
-export async function getLocalizationsForKey(string: keyof typeof en, lowercase = false, regex?: RegExp) {
+export async function getLocalizationsForKey(string: keyof typeof commands, lowercase = false, regex?: RegExp) {
   const locales = await getListOfLocales();
 
   // Tests against a regex provided
   if (regex) {
-    const results = regex.exec(string);
-    if (!results) {
+    const regexResults = regex.exec(string);
+    if (!regexResults) {
       return;
     }
   }
 
-  // Ugly, but I'm lazy
-  if (lowercase) {
-    return Object.fromEntries(locales.map((locale) => [locale, t(string, { lng: locale }).toLowerCase()]));
-  }
-
   // Returns an object of all localizations related to a key
-  return Object.fromEntries(locales.map((locale) => [locale, t(string, { lng: locale })]));
+  return Object.fromEntries(
+    locales.map((locale) => [
+      locale,
+      lowercase ? t(string, { lng: locale, ns: "commands" }).toLowerCase() : t(string, { lng: locale, ns: "commands" }),
+    ]),
+  );
 }
 
 // Shortcut for translate

@@ -16,7 +16,7 @@ jobs:
 
       # Sets Bun.js up
       - name: Use Bun.js
-        uses: oven-sh/setup-bun@v1.2.0
+        uses: oven-sh/setup-bun@v1.2.1
         with:
           bun-version: latest
 

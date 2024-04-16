@@ -1,0 +1,20 @@
+{
+  "SECONDS": "{{count}} seconds",
+  "SECONDS_one": "{{count}} second",
+  "MINUTES": "{{count}} minutes",
+  "MINUTES_one": "{{count}} minute",
+  "HOURS": "{{count}} hours",
+  "HOURS_one": "{{count}} hour",
+  "DAYS": "{{count}} days",
+  "DAYS_one": "{{count}} day",
+  "WEEKS": "{{count}} weeks",
+  "WEEKS_one": "{{count}} week",
+  "MONTHS": "{{count}} months",
+  "MONTHS_one": "{{count}} month",
+  "YEARS": "{{count}} years",
+  "YEARS_one": "{{count}} year",
+
+  "ERROR": "❌ Error",
+  "ERROR_DESCRIPTION": "\n```ts\n{{error}}\n```",
+  "ERROR_FOUND_A_BUG": "Found a bug? - github.com/espimarisa/hibiki/issues"
+}

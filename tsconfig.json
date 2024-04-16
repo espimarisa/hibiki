@@ -1,10 +1,10 @@
 {
   "exclude": ["./dist/*", "node_modules"],
-  "include": ["./packages/**/*", "./locales/*"],
+  "include": ["./packages/**/*", "locales/*"],
 
   "compilerOptions": {
     "paths": {
-      "$locales/*": ["./locales/*"],
+      "$locales/*": ["locales/*"],
       "$bot/*": ["./packages/bot/src/*"],
       "$db/*": ["./packages/db/src/*"],
       "$shared/*": ["./packages/shared/src/*"],
@@ -13,11 +13,11 @@
 
     "allowArbitraryExtensions": true,
     "allowImportingTsExtensions": true,
-    "allowJs": false,
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
     "baseUrl": ".",
-    "checkJs": false,
+    "checkJs": true,
     "declaration": false,
     "downlevelIteration": true,
     "emitDecoratorMetadata": true,
