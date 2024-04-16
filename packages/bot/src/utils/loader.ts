@@ -153,7 +153,9 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
       command.description_localizations = localizedCommandDescriptions;
     } else {
       // Fallback description
-      command.description = "Command description not defined. Please check the default locale file.";
+      command.description
+        ? command.description
+        : "Command description not defined. Please check the default locale file.";
     }
 
     // Localizes options
@@ -172,7 +174,7 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
         option.name_localizations = localizedOptionNames;
       } else {
         // Fallback option name
-        option.name = `unknown${index}`;
+        option.name ? option.name : `unknown${index}`;
       }
 
       // Localizes the command option descriptions
@@ -181,7 +183,9 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
         option.description_localizations = localizedOptionDescriptions;
       } else {
         // Fallback description
-        option.description = `Option description ${index} not defined. Please check the default locale file.`;
+        option.description
+          ? option.description
+          : `Option description ${index} not defined. Please check the default locale file.`;
       }
 
       // Localizes subcommands
@@ -205,7 +209,7 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
             subOpt.name_localizations = localizedOptNames;
           } else {
             // Fallback subcommand option name
-            subOpt.name = `unknown${optIndex}`;
+            subOpt.name = subOpt.name ? subOpt.name : `unknown${optIndex}`;
           }
 
           // Localizes the subcommand option descriptions
@@ -214,7 +218,9 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
             subOpt.description_localizations = localizedOptDescs;
           } else {
             // Fallback subcommand option description
-            subOpt.description = `Subcommand description not defined. Please check the default locale file for subcommand ${optIndex}`;
+            subOpt.description
+              ? subOpt.description
+              : `Subcommand description not defined. Please check the default locale file for subcommand ${optIndex}`;
           }
         }
       }
