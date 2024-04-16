@@ -9,7 +9,7 @@
 
 ## About
 
-Hibiki is a Discord bot providing accessible and information-rich utilities.
+Hibiki is a Discord bot focused on accessible and information-rich utilities.
 
 You can invite the official Hibiki instance using [this Discord invite][invite].
 
@@ -21,7 +21,7 @@ The information below applies to the official instance of Hibiki. Self-hosted in
 
 > "Application" or "official instance" refers to the Hibiki bot application with the Discord user ID of `493904957523623936`.
 
-**Updated on February 14th, 2024**
+**Updated on April 16th, 2024**
 
 - Do not try to intentionally crash, break, or exploit the application
 - If you find a critical bug or security vulnerability, you must report it
@@ -30,7 +30,7 @@ The information below applies to the official instance of Hibiki. Self-hosted in
 
 ## Data Privacy
 
-**Updated on February 14th, 2024**
+**Updated on April 16th, 2024**
 
 The following types of user data can be stored when needed:
 

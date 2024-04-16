@@ -2,16 +2,14 @@ import { env } from "$shared/env.ts";
 import { logger } from "$shared/logger.ts";
 import { type ShardClientUtil, ShardingManager } from "discord.js";
 
-type Auto = number | "auto";
-
 export class HibikiShardingManager {
   readonly shardingManager: ShardingManager;
   private readonly _mainFile: string;
   private readonly _token: string;
-  private readonly _shardCount: Auto;
+  private readonly _shardCount: number | "auto";
 
   // Creates a new Sharding manager
-  constructor(file: string, token: string, shardCount: Auto = "auto") {
+  constructor(file: string, token: string, shardCount: number | "auto") {
     this._mainFile = file;
     this._shardCount = shardCount;
     this._token = token;

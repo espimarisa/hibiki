@@ -1,8 +1,8 @@
 import fs from "node:fs/promises";
 import type { HibikiClient } from "$classes/Client.ts";
-import type { CallableHibikiCommand, RESTCommandOptions } from "$classes/Command.ts";
-import type { CallableHibikiEvent, HibikiEvent } from "$classes/Event.ts";
-import type en from "$locales/en-US/bot.json";
+import type { HibikiCommand, RESTCommandOptions } from "$classes/Command.ts";
+import type { HibikiEvent } from "$classes/Event.ts";
+import type commands from "$locales/en-US/commands.json";
 import { MODULE_FILE_TYPE_REGEX } from "$shared/constants.ts";
 import { env } from "$shared/env.ts";
 import { getLocalizationsForKey } from "$shared/i18n.ts";
@@ -19,41 +19,36 @@ export async function loadCommands(bot: HibikiClient, directory: string) {
   const files = await fs.readdir(directory, { withFileTypes: true, encoding: "utf8" });
 
   for (const file of files) {
-    // Don't try to load source mappings or other jank stuff
+    // Only attempt to load modules; don't load mapping files
     if (file.name.endsWith(".map") || !MODULE_FILE_TYPE_REGEX.test(file.name)) {
       continue;
     }
 
-    let commandToLoad: CallableHibikiCommand;
+    let commandToLoad: new (_bot: HibikiClient, _name: string) => HibikiCommand;
 
-    // Tries to load the command
     try {
-      const importedCommand: Record<string, CallableHibikiCommand> | undefined = await import(
-        `file://${directory}/${file.name}`
-      );
-
-      // Handler for if the import is null/undefined
+      // Imports the command
+      const importedCommand: Record<string, HibikiCommand> = await import(`file://${directory}/${file.name}`);
       if (!importedCommand) {
         logger.error(`Commmand ${file.name} failed to import`);
-        return;
+        continue;
       }
 
       // @ts-expect-error We can reasonably expect that this won't be null, as it is caught by the above check
       commandToLoad = importedCommand[Object.keys(importedCommand)[0]];
     } catch (error) {
-      // Catches and logs the error but allows the bot to still run
       logger.error(`Command ${file.name} failed to load: ${Bun.inspect(error)}`);
-      return;
+      continue;
     }
 
     // Gets the command name
     const name = file.name.split(MODULE_FILE_TYPE_REGEX)[0]?.toLowerCase();
     if (!name) {
       logger.error(`Command ${file.name} failed to load: Could not generate filename`);
-      return;
+      continue;
     }
 
-    // Generates the command constructor
+    // Initializes the command
     const command = new commandToLoad(bot, name);
     bot.commands.set(name, command);
   }
@@ -61,29 +56,22 @@ export async function loadCommands(bot: HibikiClient, directory: string) {
 
 // Loads all events
 export async function loadEvents(bot: HibikiClient, directory: string) {
-  // Loads each event file
-  const files = await fs.readdir(directory, {
-    withFileTypes: true,
-    encoding: "utf8",
-  });
+  const files = await fs.readdir(directory, { withFileTypes: true, encoding: "utf8" });
 
   for (const file of files) {
-    // Don't try to load source mappings or subdirectories
+    // Only attempt to load modules; don't load source mappings
     if (file.name.endsWith(".map") || !MODULE_FILE_TYPE_REGEX.test(file.name)) {
       continue;
     }
 
-    let eventToLoad: CallableHibikiEvent;
+    let eventToLoad: new (_bot: HibikiClient, _name: string) => HibikiEvent;
 
     try {
-      const importedEvent: Record<string, CallableHibikiEvent> | undefined = await import(
-        `file://${directory}/${file.name}`
-      );
-
-      // Handler for if the import is null/undefined
+      // Imports the event
+      const importedEvent: Record<string, HibikiEvent> = await import(`file://${directory}/${file.name}`);
       if (!importedEvent) {
         logger.error(`Event ${file.name} failed to import`);
-        return;
+        continue;
       }
 
       // @ts-expect-error We can reasonably expect that this won't be null, as it is caught by the above check
@@ -91,26 +79,26 @@ export async function loadEvents(bot: HibikiClient, directory: string) {
     } catch (error) {
       // Catches and logs the error but allows the bot to still run
       logger.error(`Event ${file.name} failed to load: ${Bun.inspect(error)}`);
-      return;
+      continue;
     }
 
     // Gets the event name
     const name = file.name.split(MODULE_FILE_TYPE_REGEX)[0];
     if (!name) {
       logger.error(`Event ${file.name} failed to load: Could not generate filename`);
-      return;
+      continue;
     }
 
-    // Loads the event
+    // Initializes the event
     const event = new eventToLoad(bot, name);
     bot.events.set(name, event);
   }
 
-  // Subscribes to all of the events
+  // Subscribes to event listerners
   subscribeToEvents(bot, bot.events);
 }
 
-// Registers all interactions to the Discord gateway
+// Registers interactions to the Discord gateway
 export async function registerInteractions(bot: HibikiClient, data: RESTCommandOptions[], guild?: boolean) {
   if (!bot.user?.id) {
     throw new Error("No user object is ready, have you logged into a valid token yet?");
@@ -119,23 +107,20 @@ export async function registerInteractions(bot: HibikiClient, data: RESTCommandO
   // Creates a REST manager
   const rest = new REST({ version: "10" }).setToken(env.DISCORD_TOKEN);
 
-  // Registers commands to a specific guild
   try {
     if (guild) {
-      await rest.put(Routes.applicationGuildCommands(bot.user.id, env.DISCORD_TEST_GUILD_ID), {
-        body: data,
-      });
+      // Registers commands to a specific guild
+      await rest.put(Routes.applicationGuildCommands(bot.user.id, env.DISCORD_TEST_GUILD_ID), { body: data });
     } else {
-      await rest.put(Routes.applicationCommands(bot.user.id), {
-        body: data,
-      });
+      // Registers global slash commands
+      await rest.put(Routes.applicationCommands(bot.user.id), { body: data });
     }
   } catch (error: unknown) {
     throw new Error(Bun.inspect(error));
   }
 }
 
-// Subscribes to event listeners and fires an event when needed
+// Subscribes to all event listeners and fires when called on
 function subscribeToEvents(bot: HibikiClient, events: Map<string, HibikiEvent>) {
   for (const eventToListenOn of events.values()) {
     for (const individualEvent of eventToListenOn.events) {
@@ -145,18 +130,14 @@ function subscribeToEvents(bot: HibikiClient, events: Map<string, HibikiEvent>) 
 }
 
 // Generates REST-compatible interaction data
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: I can be as complex as I want, bitch
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: This is meant to be complex as it is only run once
 export async function generateInteractionRESTData(bot: HibikiClient) {
-  // https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
-  const commandData: RESTCommandOptions[] = [];
+  const RESTCommandData: RESTCommandOptions[] = [];
 
-  // Generates all command data for REST
   for (const command of bot.commands.values()) {
-    // Generates localizations
-    const commandNameString = `COMMAND_${command.name.toUpperCase()}_NAME` as keyof typeof en;
-    const commandDescriptionString = `COMMAND_${command.name.toUpperCase()}_DESCRIPTION` as keyof typeof en;
-
-    // Gets a list of localized command names and descriptions
+    // Gets a list of all command name and description localizations
+    const commandNameString = `COMMAND_${command.name.toUpperCase()}_NAME` as keyof typeof commands;
+    const commandDescriptionString = `COMMAND_${command.name.toUpperCase()}_DESCRIPTION` as keyof typeof commands;
     const localizedCommandNames = await getLocalizationsForKey(commandNameString, true);
     const localizedCommandDescriptions = await getLocalizationsForKey(commandDescriptionString);
 
@@ -166,88 +147,81 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
       command.name_localizations = localizedCommandNames;
     }
 
-    // Sets the description if found
+    // Localizes the command description
     if (localizedCommandDescriptions) {
       command.description = localizedCommandDescriptions[env.DEFAULT_LOCALE]?.substring(0, 100) as string;
       command.description_localizations = localizedCommandDescriptions;
     } else {
-      // Sets a fallback; bot shouldn't crash without but it's nice to check
-      command.description = "not set! check the default locale file";
+      // Fallback description
+      command.description = "Command description not defined. Please check the default locale file.";
     }
 
     // Localizes options
     for (const [index, option] of (command.options as APIApplicationCommandOption[])?.entries() ?? []) {
-      // Generates string to test to see if they exist
-      const optionNameString = `COMMAND_${command.name.toUpperCase()}_OPTION_${index}_NAME` as keyof typeof en;
-      const optionDescString = `COMMAND_${command.name.toUpperCase()}_OPTION_${index}_DESCRIPTION` as keyof typeof en;
+      // Gets a list of all option name and option description localizations
+      const optionNameString = `COMMAND_${command.name.toUpperCase()}_OPTION_${index}_NAME` as keyof typeof commands;
+      const optionDescString =
+        `COMMAND_${command.name.toUpperCase()}_OPTION_${index}_DESCRIPTION` as keyof typeof commands;
 
-      // Generates localizations
       const localizedOptionNames = await getLocalizationsForKey(optionNameString, true, optionRegex);
       const localizedOptionDescriptions = await getLocalizationsForKey(optionDescString, false, optionRegex);
 
-      // Pushes name data
+      // Localizes the command option names
       if (localizedOptionNames) {
-        // Sets name data and parses/formats it to be API compatible
         option.name = localizedOptionNames[env.DEFAULT_LOCALE]?.toLowerCase().substring(0, 32) as string;
         option.name_localizations = localizedOptionNames;
       } else {
-        // Ugly, but the API will reject if we forget to put this in
-        option.name = "unknown";
+        // Fallback option name
+        option.name = `unknown${index}`;
       }
 
-      // Pushes description data
+      // Localizes the command option descriptions
       if (localizedOptionDescriptions) {
-        // Sets description data and parses/formats it to be API compatible
         option.description = localizedOptionDescriptions[env.DEFAULT_LOCALE]?.substring(0, 100) as string;
         option.description_localizations = localizedOptionDescriptions;
       } else {
-        // Ugly, but the API will reject if we forget to put this in
-        option.description = `not set! check the default locale file for option ${index}`;
+        // Fallback description
+        option.description = `Option description ${index} not defined. Please check the default locale file.`;
       }
 
-      // Subcommand group localization support
+      // Localizes subcommands
       if (option.type === ApplicationCommandOptionType.SubcommandGroup) {
         for (const [optIndex, subOpt] of option.options?.entries() ?? []) {
-          const subOptNameString = `COMMAND_${command.name.toUpperCase()}_SUBCOMMAND_${index}_OPTION_${optIndex}_NAME`;
-          const subOptDescString = `COMMAND_${command.name.toUpperCase()}_SUBCOMMAND_${index}_OPTION_${optIndex}_DESCRIPTION`;
+          const subOptNameString =
+            `COMMAND_${command.name.toUpperCase()}_SUBCOMMAND_${index}_OPTION_${optIndex}_NAME` as keyof typeof commands;
 
-          // Generates localizations for subcommand option name
-          const localizedOptNames = await getLocalizationsForKey(
-            subOptNameString as keyof typeof en,
-            true,
-            subCommandOptionNameRegex,
-          );
+          const subOptDescString =
+            `COMMAND_${command.name.toUpperCase()}_SUBCOMMAND_${index}_OPTION_${optIndex}_DESCRIPTION` as keyof typeof commands;
 
-          // Generates localization for subcommand option desc
-          const localizedOptDescs = await getLocalizationsForKey(
-            subOptDescString as keyof typeof en,
-            false,
-            subCommandOptionDescRegex,
-          );
+          // Generates localizations for subcommand option names
+          const localizedOptNames = await getLocalizationsForKey(subOptNameString, true, subCommandOptionNameRegex);
 
-          // Sets localized subcommand names
+          // Generates localization for subcommand option descriptions
+          const localizedOptDescs = await getLocalizationsForKey(subOptDescString, false, subCommandOptionDescRegex);
+
+          // Localizes the subcommand option names
           if (localizedOptNames) {
             subOpt.name = localizedOptNames[env.DEFAULT_LOCALE]?.toLowerCase().substring(0, 32) as string;
             subOpt.name_localizations = localizedOptNames;
           } else {
-            // Ugly, but the API will reject if we forget to put this in
+            // Fallback subcommand option name
             subOpt.name = `unknown${optIndex}`;
           }
 
-          // Sets localized subcommand descriptions
+          // Localizes the subcommand option descriptions
           if (localizedOptDescs) {
             subOpt.description = localizedOptDescs[env.DEFAULT_LOCALE]?.toLowerCase().substring(0, 32) as string;
             subOpt.description_localizations = localizedOptDescs;
           } else {
-            // Ugly, but the API will reject if we forget to put this in
-            subOpt.description = `not set! check the index file for subcommand ${optIndex}`;
+            // Fallback subcommand option description
+            subOpt.description = `Subcommand description not defined. Please check the default locale file for subcommand ${optIndex}`;
           }
         }
       }
     }
 
-    // Pushes REST data to the array
-    commandData.push({
+    // Pushes the REST-compatible data to the array to return
+    RESTCommandData.push({
       name: command.name,
       description: command.description,
       name_localizations: command.name_localizations,
@@ -258,5 +232,5 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
     });
   }
 
-  return commandData;
+  return RESTCommandData;
 }

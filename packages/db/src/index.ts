@@ -1,10 +1,13 @@
 import path from "node:path";
-import * as guildConfig from "$db/schema/guild_config.ts";
-import * as userConfig from "$db/schema/user_config.ts";
 import { env } from "$shared/env.ts";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import postgres from "postgres";
+
+// biome-ignore lint/style/noNamespaceImport: Drizzle requies a namespace export
+import * as guildConfig from "$db/schema/guild_config.ts";
+// biome-ignore lint/style/noNamespaceImport: Drizzle requies a namespace export
+import * as userConfig from "$db/schema/user_config.ts";
 
 // __dirname replacement in ESM
 const pathDirname = path.dirname(Bun.fileURLToPath(import.meta.url));
@@ -37,7 +40,3 @@ await migrate(db, {
 });
 
 export { db };
-
-// Exports lib for ease of use
-export { createBlankGuildConfig, deleteGuildConfig, getGuildConfig, updateGuildConfig } from "$db/lib/guild_config.ts";
-export { createBlankUserConfig, deleteUserConfig, getUserConfig, updateUserConfig } from "$db/lib/user_config.ts";
