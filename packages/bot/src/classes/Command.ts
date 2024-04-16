@@ -3,7 +3,7 @@ import { type APIApplicationCommandOption, ApplicationCommandType } from "discor
 import type { PossibleCommandInteractionType } from "../events/CommandInteraction";
 
 // Paramaters to remove from setting in individual command files. Prevents overriding loader-handled data.
-export type LockedParamaters = "name" | "description" | "name_localizations" | "description_localizations";
+type LockedParamaters = "name" | "description" | "name_localizations" | "description_localizations";
 type FilteredAPIApplicationCommandOptions<Type> = {
   [APIApplicationCommandOption in keyof Type as Exclude<
     APIApplicationCommandOption,
@@ -57,5 +57,5 @@ export abstract class HibikiCommand {
   abstract runCommand(interaction: PossibleCommandInteractionType): Promise<void>;
 
   // Gets a subcommand response
-  getSubCommandResponse?(subCommandName: string): Promise<unknown>;
+  getSubCommandResponse?(subCommandName: string, ..._args: string[]): Promise<unknown>;
 }

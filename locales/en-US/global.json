@@ -1,4 +1,6 @@
 {
+  "NO_OPTION_PROVIDED": "No option was provided.",
+
   "SECONDS": "{{count}} seconds",
   "SECONDS_one": "{{count}} second",
   "MINUTES": "{{count}} minutes",
@@ -14,7 +16,11 @@
   "YEARS": "{{count}} years",
   "YEARS_one": "{{count}} year",
 
+  "API_POWERED_BY": "Powered by {{url}}",
+
   "ERROR": "❌ Error",
   "ERROR_DESCRIPTION": "\n```ts\n{{error}}\n```",
-  "ERROR_FOUND_A_BUG": "Found a bug? - github.com/espimarisa/hibiki/issues"
+  "ERROR_FOUND_A_BUG": "Found a bug? - github.com/espimarisa/hibiki/issues",
+
+  "ERROR_IMAGE": "Failed to send the image. Try again later."
 }
