@@ -3,7 +3,7 @@ import { HibikiColors } from "$shared/constants.ts";
 import { t } from "$shared/i18n.ts";
 import type { ChatInputCommandInteraction } from "discord.js";
 
-export class HibikiPingCommand extends HibikiCommand {
+export class PingCommand extends HibikiCommand {
   async runCommand(interaction: ChatInputCommandInteraction) {
     const initialInteraction = await interaction.followUp({
       fetchReply: true,
