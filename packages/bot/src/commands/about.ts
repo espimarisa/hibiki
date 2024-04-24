@@ -10,7 +10,7 @@ import { type ChatInputCommandInteraction, type EmbedField, version } from "disc
 // Generates a timestamp upon process startup
 const startupTimestamp = new Date();
 
-export class HibikiPingCommand extends HibikiCommand {
+export class AboutCommand extends HibikiCommand {
   async runCommand(interaction: ChatInputCommandInteraction) {
     // Gets the amount of cached guilds and users
     const totalCachedGuilds = await fetchTotalCachedGuilds(this.bot.shard);

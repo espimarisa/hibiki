@@ -9,7 +9,7 @@
 
 ## About
 
-Hibiki is a Discord bot focused on accessible and information-rich utilities.
+Hibiki is a Discord bot focused on accessible and informational utilities.
 
 You can invite the official Hibiki instance using [this Discord invite][invite].
 
