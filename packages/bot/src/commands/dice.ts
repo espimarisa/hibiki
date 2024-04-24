@@ -3,7 +3,6 @@ import { HibikiColors } from "$shared/constants.ts";
 import { t } from "$shared/i18n.ts";
 import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
 
-// Paramaters to remove from setting in files (these are handled by our loader)
 export class DiceCommand extends HibikiCommand {
   options = [
     {
