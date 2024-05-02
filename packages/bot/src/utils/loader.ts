@@ -130,7 +130,6 @@ function subscribeToEvents(bot: HibikiClient, events: Map<string, HibikiEvent>) 
 }
 
 // Generates REST-compatible interaction data
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: This is meant to be complex as it is only run once
 export async function generateInteractionRESTData(bot: HibikiClient) {
   const RESTCommandData: RESTCommandOptions[] = [];
 
@@ -230,8 +229,8 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
     RESTCommandData.push({
       name: command.name,
       description: command.description,
-      name_localizations: command.name_localizations,
-      description_localizations: command.description_localizations,
+      name_localizations: command.name_localizations ?? {},
+      description_localizations: command.description_localizations ?? {},
       options: command.options as APIApplicationCommandOption[],
       type: command.interactionType,
       nsfw: command.nsfw,

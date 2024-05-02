@@ -13,11 +13,11 @@
   },
   "dependencies": {
     "@chatsift/pino-rotate-file": "^0.3.0",
-    "@sentry/bun": "^7.112.1",
-    "i18next": "^23.11.2",
+    "@sentry/bun": "^7.112.2",
+    "i18next": "^23.11.3",
     "i18next-fs-backend": "^2.3.1",
-    "pino": "^8.20.0",
+    "pino": "^9.0.0",
     "pino-pretty": "^11.0.0",
-    "zod": "^3.23.4"
+    "zod": "^3.23.5"
   }
 }

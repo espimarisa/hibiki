@@ -35,9 +35,13 @@ export class AnimalCommand extends HibikiCommand {
       await interaction.followUp({
         embeds: [
           {
-            title: t("ERROR", { lng: interaction.locale, ns: "global" }),
-            description: t("NO_OPTION_PROVIDED", { lng: interaction.locale, ns: "global" }),
+            title: t("ERROR", { lng: interaction.locale, ns: "errors" }),
+            description: t("ERROR_NO_OPTION_PROVIDED", { lng: interaction.locale, ns: "errors" }),
             color: HibikiColors.ERROR,
+            footer: {
+              text: t("ERROR_FOUND_A_BUG", { lng: interaction.locale, ns: "errors" }),
+              icon_url: this.bot.user?.displayAvatarURL(),
+            },
           },
         ],
       });
@@ -51,9 +55,13 @@ export class AnimalCommand extends HibikiCommand {
       await interaction.followUp({
         embeds: [
           {
-            title: t("ERROR", { lng: interaction.locale, ns: "global" }),
-            description: t("ERROR_IMAGE", { lng: interaction.locale, ns: "global" }),
+            title: t("ERROR", { lng: interaction.locale, ns: "errors" }),
+            description: t("ERROR_IMAGE", { lng: interaction.locale, ns: "errors" }),
             color: HibikiColors.ERROR,
+            footer: {
+              text: t("ERROR_FOUND_A_BUG", { lng: interaction.locale, ns: "errors" }),
+              icon_url: this.bot.user?.displayAvatarURL(),
+            },
           },
         ],
       });
@@ -99,8 +107,8 @@ export class AnimalCommand extends HibikiCommand {
         // Returns the URL and strings to use
         return [
           `${apiBaseURL}/cat/${body._id}`,
-          t("ANIMAL_CAT", { lng: locale, ns: "commands" }),
-          t("API_POWERED_BY", { lng: locale, ns: "global", url: apiBaseURL.replace("https://", "") }),
+          t("COMMAND_ANIMAL_CAT", { lng: locale, ns: "commands" }),
+          t("API_POWERED_BY", { lng: locale, ns: "api", url: apiBaseURL.replace("https://", "") }),
         ];
       }
 
@@ -122,8 +130,8 @@ export class AnimalCommand extends HibikiCommand {
         // Returns the URL and a string to use for the embed title
         return [
           body.url,
-          t("ANIMAL_DOG", { lng: locale, ns: "commands" }),
-          t("API_POWERED_BY", { lng: locale, ns: "global", url: apiBaseURL.replace("https://", "") }),
+          t("COMMAND_ANIMAL_DOG", { lng: locale, ns: "commands" }),
+          t("API_POWERED_BY", { lng: locale, ns: "api", url: apiBaseURL.replace("https://", "") }),
         ];
       }
 
@@ -146,8 +154,8 @@ export class AnimalCommand extends HibikiCommand {
         // Returns the URL and strings to use
         return [
           body.image,
-          t("ANIMAL_FOX", { lng: locale, ns: "commands" }),
-          t("API_POWERED_BY", { lng: locale, ns: "global", url: apiBaseURL.replace("https://", "") }),
+          t("COMMAND_ANIMAL_FOX", { lng: locale, ns: "commands" }),
+          t("API_POWERED_BY", { lng: locale, ns: "api", url: apiBaseURL.replace("https://", "") }),
         ];
       }
 

@@ -16,7 +16,7 @@
     "test": "bun run check && bun run lint"
   },
   "dependencies": {
-    "drizzle-orm": "^0.30.9",
+    "drizzle-orm": "^0.30.10",
     "postgres": "^3.4.4"
   },
   "devDependencies": {

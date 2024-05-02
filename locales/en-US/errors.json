@@ -1,0 +1,11 @@
+{
+  "ERROR": "❌ Error",
+  "ERROR_ACCOUNT": "Failed to get information about the account. Try again later.",
+  "ERROR_CHANNEL": "Failed to get information about the channel. Try again later.",
+  "ERROR_DESCRIPTION": "\n```ts\n{{error}}\n```",
+  "ERROR_FOUND_A_BUG": "Found a bug? - github.com/espimarisa/hibiki/issues",
+  "ERROR_IMAGE": "Failed to send the image. Try again later.",
+  "ERROR_NO_OPTION_PROVIDED": "No option was provided.",
+  "ERROR_ROLE": "Failed to get information about the role. Try again later.",
+  "ERROR_SERVER": "Failed to get information about the server. Try again later."
+}

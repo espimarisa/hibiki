@@ -6,6 +6,7 @@ import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "
 export class DiceCommand extends HibikiCommand {
   options = [
     {
+      // The amount of sides that should be on the dice
       type: ApplicationCommandOptionType.Integer,
       required: false,
       min_value: 1,
@@ -20,8 +21,13 @@ export class DiceCommand extends HibikiCommand {
     await interaction.followUp({
       embeds: [
         {
-          title: t("DICE", { lng: interaction.locale, ns: "commands" }),
-          description: t("DICE_RESULT", { sides: sides, roll: roll, lng: interaction.locale, ns: "commands" }),
+          title: t("COMMAND_DICE_DICE", { lng: interaction.locale, ns: "commands" }),
+          description: t("COMMAND_DICE_DICE_RESULT", {
+            sides: sides,
+            roll: roll,
+            lng: interaction.locale,
+            ns: "commands",
+          }),
           color: HibikiColors.GENERAL,
         },
       ],

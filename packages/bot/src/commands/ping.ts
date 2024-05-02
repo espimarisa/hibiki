@@ -9,7 +9,7 @@ export class PingCommand extends HibikiCommand {
       fetchReply: true,
       embeds: [
         {
-          title: t("PING_PINGING", { lng: interaction.locale, ns: "commands" }),
+          title: t("COMMAND_PING_PING_PINGING", { lng: interaction.locale, ns: "commands" }),
           color: HibikiColors.GENERAL,
         },
       ],
@@ -18,8 +18,8 @@ export class PingCommand extends HibikiCommand {
     await interaction.editReply({
       embeds: [
         {
-          title: t("PING_PONG", { lng: interaction.locale, ns: "commands" }),
-          description: t("PING_LATENCY", {
+          title: t("COMMAND_PING_PING_PONG", { lng: interaction.locale, ns: "commands" }),
+          description: t("COMMAND_PING_PING_LATENCY", {
             latency: initialInteraction.createdTimestamp - interaction.createdTimestamp,
             lng: interaction.locale,
             ns: "commands",

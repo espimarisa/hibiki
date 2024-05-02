@@ -24,7 +24,7 @@ await i18n
     fallbackLng: env.DEFAULT_LOCALE,
     load: "currentOnly",
     lng: env.DEFAULT_LOCALE,
-    ns: ["commands", "global"],
+    ns: ["api", "booleans", "commands", "errors", "global", "time"],
     preload: await getListOfLocales(),
     interpolation: {
       skipOnVariables: false,

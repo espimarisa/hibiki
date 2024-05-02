@@ -23,7 +23,7 @@ export class AboutCommand extends HibikiCommand {
     // Push cached guilds
     if (totalCachedGuilds) {
       fields.push({
-        name: t("ABOUT_CACHED_GUILDS", { lng: interaction.locale, ns: "commands" }),
+        name: t("COMMAND_ABOUT_CACHED_GUILDS", { lng: interaction.locale, ns: "commands" }),
         value: totalCachedGuilds.toString(),
         inline: true,
       });
@@ -32,7 +32,7 @@ export class AboutCommand extends HibikiCommand {
     // Push cached users
     if (totalCachedUsers) {
       fields.push({
-        name: t("ABOUT_CACHED_USERS", { lng: interaction.locale, ns: "commands" }),
+        name: t("COMMAND_ABOUT_CACHED_USERS", { lng: interaction.locale, ns: "commands" }),
         value: totalCachedUsers.toString(),
         inline: true,
       });
@@ -41,35 +41,44 @@ export class AboutCommand extends HibikiCommand {
     await interaction.followUp({
       embeds: [
         {
-          title: t("ABOUT_TITLE", { username: this.bot.user?.username, lng: interaction.locale, ns: "commands" }),
-          description: t("ABOUT_DETAILS", {
+          title: t("COMMAND_ABOUT_TITLE", {
+            username: this.bot.user?.username,
+            lng: interaction.locale,
+            ns: "commands",
+          }),
+          description: t("COMMAND_ABOUT_DETAILS", {
             username: this.bot.user?.username,
             lng: interaction.locale,
             ns: "commands",
           }),
           color: HibikiColors.GENERAL,
           fields: [
-            ...fields,
             {
-              name: t("ABOUT_UPTIME", { lng: interaction.locale, ns: "commands" }),
+              name: t("COMMAND_ABOUT_UPTIME", { lng: interaction.locale, ns: "commands" }),
               value: localizedUptime,
-              inline: true,
+              inline: false,
             },
             {
-              name: t("ABOUT_HIBIKI_VERSION", { lng: interaction.locale, ns: "commands" }),
+              name: t("COMMAND_ABOUT_HIBIKI_VERSION", { lng: interaction.locale, ns: "commands" }),
               value: env.npm_package_version,
               inline: true,
             },
             {
-              name: t("ABOUT_DISCORDJS_VERSION", { lng: interaction.locale, ns: "commands" }),
+              name: t("COMMAND_ABOUT_DISCORDJS_VERSION", { lng: interaction.locale, ns: "commands" }),
               value: version,
               inline: true,
             },
             {
-              name: t("ABOUT_BUN_VERSION", { lng: interaction.locale, ns: "commands" }),
+              name: t("COMMAND_ABOUT_BUN_VERSION", { lng: interaction.locale, ns: "commands" }),
               value: Bun.version,
               inline: true,
             },
+            {
+              name: t("COMMAND_ABOUT_LOADED_COMMANDS", { lng: interaction.locale, ns: "commands" }),
+              value: this.bot.commands.size.toString(),
+              inline: true,
+            },
+            ...fields,
           ],
           thumbnail: {
             url: this.bot.user?.displayAvatarURL() ?? "",

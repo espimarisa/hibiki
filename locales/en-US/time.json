@@ -1,0 +1,16 @@
+{
+  "DAYS": "{{count}} days",
+  "DAYS_one": "{{count}} day",
+  "HOURS": "{{count}} hours",
+  "HOURS_one": "{{count}} hour",
+  "MINUTES": "{{count}} minutes",
+  "MINUTES_one": "{{count}} minute",
+  "MONTHS": "{{count}} months",
+  "MONTHS_one": "{{count}} month",
+  "SECONDS": "{{count}} seconds",
+  "SECONDS_one": "{{count}} second",
+  "WEEKS": "{{count}} weeks",
+  "WEEKS_one": "{{count}} week",
+  "YEARS": "{{count}} years",
+  "YEARS_one": "{{count}} year"
+}
