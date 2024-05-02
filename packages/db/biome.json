@@ -16,6 +16,9 @@
     "ignore": ["**/node_modules/*", "**/dist/*"],
     "enabled": true,
     "rules": {
+      "complexity": {
+        "noExcessiveCognitiveComplexity": "off"
+      },
       "all": true,
       "style": {
         "noNonNullAssertion": "off",

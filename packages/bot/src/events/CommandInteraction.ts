@@ -43,15 +43,15 @@ export class HibikiInteractionEvent extends HibikiEvent {
       await interaction.followUp({
         embeds: [
           {
-            title: t("ERROR", { locale: interaction.locale, ns: "global" }),
+            title: t("ERROR", { locale: interaction.locale, ns: "errors" }),
             description: t("ERROR_DESCRIPTION", {
               locale: interaction.locale,
-              ns: "global",
+              ns: "errors",
               error: (error as Error).message.replace(DISCORD_BOT_TOKEN_REGEX, "token"),
             }),
             color: HibikiColors.ERROR,
             footer: {
-              text: t("ERROR_FOUND_A_BUG", { lng: interaction.locale, ns: "global" }),
+              text: t("ERROR_FOUND_A_BUG", { lng: interaction.locale, ns: "errors" }),
               icon_url: this.bot.user?.displayAvatarURL(),
             },
           },
