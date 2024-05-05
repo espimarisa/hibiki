@@ -33,11 +33,11 @@ export class AvatarCommand extends HibikiCommand {
       await interaction.followUp({
         embeds: [
           {
-            title: t("ERROR", { lng: interaction.locale, ns: "errors" }),
-            description: t("ERROR_ACCOUNT", { lng: interaction.locale, ns: "errors" }),
+            title: t("errors:ERROR", { lng: interaction.locale }),
+            description: t("errors:ERROR_ACCOUNT", { lng: interaction.locale }),
             color: HibikiColors.ERROR,
             footer: {
-              text: t("ERROR_FOUND_A_BUG", { lng: interaction.locale, ns: "errors" }),
+              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
               icon_url: this.bot.user?.displayAvatarURL(),
             },
           },
@@ -55,7 +55,6 @@ export class AvatarCommand extends HibikiCommand {
             name: t(serverAvatar ? "COMMAND_AVATAR_SERVER_TITLE" : "COMMAND_AVATAR_TITLE", {
               username: member.user.tag,
               lng: interaction.locale,
-              ns: "commands",
             }),
             icon_url: serverAvatar
               ? member.displayAvatarURL({ size: 1024 })

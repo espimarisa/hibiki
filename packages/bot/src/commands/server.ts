@@ -17,11 +17,11 @@ export class ServerCommand extends HibikiCommand {
       await interaction.followUp({
         embeds: [
           {
-            title: t("ERROR", { lng: interaction.locale, ns: "errors" }),
-            description: t("ERROR_SERVER", { lng: interaction.locale, ns: "errors" }),
+            title: t("errors:ERROR", { lng: interaction.locale }),
+            description: t("errors:ERROR_SERVER", { lng: interaction.locale }),
             color: HibikiColors.ERROR,
             footer: {
-              text: t("ERROR_FOUND_A_BUG", { lng: interaction.locale, ns: "errors" }),
+              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
               icon_url: this.bot.user?.displayAvatarURL(),
             },
           },
@@ -40,14 +40,14 @@ export class ServerCommand extends HibikiCommand {
 
     // Guild ID
     fields.push({
-      name: t("ID", { lng: interaction.locale, ns: "global" }),
+      name: t("global:ID", { lng: interaction.locale }),
       value: guild.id.toString(),
       inline: false,
     });
 
     // Creation date
     fields.push({
-      name: t("CREATED_ON", { lng: interaction.locale, ns: "global" }),
+      name: t("global:CREATED_ON", { lng: interaction.locale }),
       value: createFullTimestamp(guild.createdAt),
       inline: false,
     });
@@ -55,7 +55,7 @@ export class ServerCommand extends HibikiCommand {
     // Owner
     if (owner.user) {
       fields.push({
-        name: t("OWNER", { lng: interaction.locale, ns: "global" }),
+        name: t("global:OWNER", { lng: interaction.locale }),
         value: `${owner.user.tag} (${owner.user.id})`,
         inline: false,
       });
@@ -63,7 +63,7 @@ export class ServerCommand extends HibikiCommand {
 
     // Total member count
     fields.push({
-      name: t("MEMBERS", { lng: interaction.locale, ns: "global" }),
+      name: t("global:MEMBERS", { lng: interaction.locale }),
       value: guild.memberCount.toString(),
       inline: true,
     });
@@ -71,7 +71,7 @@ export class ServerCommand extends HibikiCommand {
     // Total channels
     if (totalChannels) {
       fields.push({
-        name: t("CHANNELS", { lng: interaction.locale, ns: "global" }),
+        name: t("global:CHANNELS", { lng: interaction.locale }),
         value: totalChannels.toString(),
         inline: true,
       });
@@ -80,7 +80,7 @@ export class ServerCommand extends HibikiCommand {
     // Total roles
     if (totalRoles) {
       fields.push({
-        name: t("ROLES", { lng: interaction.locale, ns: "global" }),
+        name: t("global:ROLES", { lng: interaction.locale }),
         value: totalRoles.toString(),
         inline: true,
       });
@@ -89,7 +89,7 @@ export class ServerCommand extends HibikiCommand {
     // Total emojis
     if (totalEmojis) {
       fields.push({
-        name: t("EMOJIS", { lng: interaction.locale, ns: "global" }),
+        name: t("global:EMOJIS", { lng: interaction.locale }),
         value: totalEmojis.toString(),
         inline: true,
       });
@@ -97,7 +97,7 @@ export class ServerCommand extends HibikiCommand {
     // Stickers
     if (totalStickers) {
       fields.push({
-        name: t("STICKERS", { lng: interaction.locale, ns: "global" }),
+        name: t("global:STICKERS", { lng: interaction.locale }),
         value: totalStickers.toString(),
         inline: true,
       });
@@ -105,17 +105,17 @@ export class ServerCommand extends HibikiCommand {
 
     // Mobile 2FA
     fields.push({
-      name: t("2FA", { lng: interaction.locale, ns: "global" }),
+      name: t("global:2FA", { lng: interaction.locale }),
       value: guild.mfaLevel
-        ? t("YES", { lng: interaction.locale, ns: "booleans" })
-        : t("NO", { lng: interaction.locale, ns: "booleans" }),
+        ? t("booleans:YES", { lng: interaction.locale })
+        : t("booleans:NO", { lng: interaction.locale }),
       inline: true,
     });
 
     // Vanity URL code and uses
     if (guild.vanityURLCode) {
       fields.push({
-        name: t("VANITY_URL", { lng: interaction.locale, ns: "global" }),
+        name: t("global:VANITY_URL", { lng: interaction.locale }),
         value: `${guild.vanityURLCode} (${guild.vanityURLUses})`,
         inline: false,
       });
@@ -124,8 +124,8 @@ export class ServerCommand extends HibikiCommand {
     // Partnered guild
     if (guild.partnered) {
       fields.push({
-        name: t("PARTNERED", { lng: interaction.locale, ns: "global" }),
-        value: t("YES", { lng: interaction.locale, ns: "booleans" }),
+        name: t("global:PARTNERED", { lng: interaction.locale }),
+        value: t("booleans:YES", { lng: interaction.locale }),
         inline: true,
       });
     }
@@ -133,8 +133,8 @@ export class ServerCommand extends HibikiCommand {
     // Verified guild
     if (guild.verified) {
       fields.push({
-        name: t("VERIFIED", { lng: interaction.locale, ns: "global" }),
-        value: t("YES", { lng: interaction.locale, ns: "booleans" }),
+        name: t("global:VERIFIED", { lng: interaction.locale }),
+        value: t("booleans:YES", { lng: interaction.locale }),
         inline: true,
       });
     }

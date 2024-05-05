@@ -19,12 +19,12 @@ async function getListOfLocales() {
 await i18n
   .use(i18NexFsBackend)
   .init<FsBackendOptions>({
-    defaultNS: "global",
+    defaultNS: "empty",
     initImmediate: false,
     fallbackLng: env.DEFAULT_LOCALE,
     load: "currentOnly",
     lng: env.DEFAULT_LOCALE,
-    ns: ["api", "booleans", "commands", "errors", "global", "time"],
+    ns: ["api", "booleans", "commands", "empty", "errors", "global", "time"],
     preload: await getListOfLocales(),
     interpolation: {
       skipOnVariables: false,
@@ -53,7 +53,7 @@ export async function getLocalizationsForKey(string: keyof typeof commands, lowe
   return Object.fromEntries(
     locales.map((locale) => [
       locale,
-      lowercase ? t(string, { lng: locale, ns: "commands" }).toLowerCase() : t(string, { lng: locale, ns: "commands" }),
+      lowercase ? t(string, { lng: locale }).toLowerCase() : t(string, { lng: locale }),
     ]),
   );
 }

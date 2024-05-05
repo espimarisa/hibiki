@@ -24,11 +24,11 @@ export class ChannelCommand extends HibikiCommand {
       await interaction.followUp({
         embeds: [
           {
-            title: t("ERROR", { lng: interaction.locale, ns: "errors" }),
-            description: t("ERROR_CHANNEL", { lng: interaction.locale, ns: "errors" }),
+            title: t("errors:ERROR", { lng: interaction.locale }),
+            description: t("errors:ERROR_CHANNEL", { lng: interaction.locale }),
             color: HibikiColors.ERROR,
             footer: {
-              text: t("ERROR_FOUND_A_BUG", { lng: interaction.locale, ns: "errors" }),
+              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
               icon_url: this.bot.user?.displayAvatarURL(),
             },
           },
@@ -54,14 +54,14 @@ export class ChannelCommand extends HibikiCommand {
 
     // ID
     fields.push({
-      name: t("ID", { lng: interaction.locale, ns: "global" }),
+      name: t("global:ID", { lng: interaction.locale }),
       value: channel.id,
       inline: false,
     });
 
     // Type
     fields.push({
-      name: t("CHANNEL_TYPE", { lng: interaction.locale, ns: "global" }),
+      name: t("global:CHANNEL_TYPE", { lng: interaction.locale }),
       value: localizeChannelType(channel.type, interaction.locale),
       inline: false,
     });
@@ -69,7 +69,7 @@ export class ChannelCommand extends HibikiCommand {
     // Creation date
     if (channel.createdAt) {
       fields.push({
-        name: t("CREATED_ON", { lng: interaction.locale, ns: "global" }),
+        name: t("global:CREATED_ON", { lng: interaction.locale }),
         value: createFullTimestamp(channel.createdAt),
         inline: false,
       });
@@ -78,7 +78,7 @@ export class ChannelCommand extends HibikiCommand {
     // Thread only information
     if (channel.parent) {
       fields.push({
-        name: t("PARENT", { lng: interaction.locale, ns: "global" }),
+        name: t("global:PARENT", { lng: interaction.locale }),
         value: channel.parent.name,
         inline: false,
       });
@@ -89,7 +89,7 @@ export class ChannelCommand extends HibikiCommand {
       // Thread amounts
       if (channel.threads.cache.size) {
         fields.push({
-          name: t("THREADS", { lng: interaction.locale, ns: "global" }),
+          name: t("global:THREADS", { lng: interaction.locale }),
           value: channel.threads.cache.size.toString(),
           inline: false,
         });
@@ -104,7 +104,7 @@ export class ChannelCommand extends HibikiCommand {
     ) {
       // Position
       fields.push({
-        name: t("POSITION", { lng: interaction.locale, ns: "global" }),
+        name: t("global:POSITION", { lng: interaction.locale }),
         value: (channel.position + 1).toString(),
         inline: false,
       });
@@ -112,8 +112,8 @@ export class ChannelCommand extends HibikiCommand {
       // NSFW channel?
       if (channel.nsfw) {
         fields.push({
-          name: t("NSFW", { lng: interaction.locale, ns: "global" }),
-          value: t("YES", { lng: interaction.locale, ns: "booleans" }),
+          name: t("global:NSFW", { lng: interaction.locale }),
+          value: t("booleans:YES", { lng: interaction.locale }),
           inline: false,
         });
       }
@@ -123,8 +123,8 @@ export class ChannelCommand extends HibikiCommand {
     if (channel.type === ChannelType.GuildVoice || channel.type === ChannelType.GuildStageVoice) {
       // Bitrate
       fields.push({
-        name: t("BITRATE", { lng: interaction.locale, ns: "global" }),
-        value: t("BITRATE_DATA", { bitrate: channel.bitrate / 1000, lng: interaction.locale, ns: "global" }),
+        name: t("global:BITRATE", { lng: interaction.locale }),
+        value: t("global:BITRATE_DATA", { bitrate: channel.bitrate / 1000, lng: interaction.locale }),
         inline: false,
       });
     }
@@ -133,7 +133,7 @@ export class ChannelCommand extends HibikiCommand {
     if (channel.type === ChannelType.GuildCategory && channel.children.cache.size) {
       // Children channel amount
       fields.push({
-        name: t("CHILDREN", { lng: interaction.locale, ns: "global" }),
+        name: t("global:CHILDREN", { lng: interaction.locale }),
         value: channel.children.cache.size.toString(),
         inline: false,
       });

@@ -36,11 +36,11 @@ export class AvatarCommand extends HibikiCommand {
       await interaction.followUp({
         embeds: [
           {
-            title: t("ERROR", { lng: interaction.locale, ns: "errors" }),
-            description: t("ERROR_ACCOUNT", { lng: interaction.locale, ns: "errors" }),
+            title: t("errors:ERROR", { lng: interaction.locale }),
+            description: t("errors:ERROR_ACCOUNT", { lng: interaction.locale }),
             color: HibikiColors.ERROR,
             footer: {
-              text: t("ERROR_FOUND_A_BUG", { lng: interaction.locale, ns: "errors" }),
+              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
               icon_url: this.bot.user?.displayAvatarURL(),
             },
           },
@@ -52,7 +52,7 @@ export class AvatarCommand extends HibikiCommand {
 
     // ID
     fields.push({
-      name: t("ID", { lng: interaction.locale, ns: "global" }),
+      name: t("global:ID", { lng: interaction.locale }),
       value: member.id.toString(),
       inline: false,
     });
@@ -60,7 +60,7 @@ export class AvatarCommand extends HibikiCommand {
     // Global ("new") display name
     if (member.user.globalName) {
       fields.push({
-        name: t("DISPLAY_NAME", { lng: interaction.locale, ns: "global" }),
+        name: t("global:DISPLAY_NAME", { lng: interaction.locale }),
         value: member.user.globalName,
         inline: true,
       });
@@ -68,7 +68,7 @@ export class AvatarCommand extends HibikiCommand {
 
     // Username ("new") handle or "old" username
     fields.push({
-      name: t("USERNAME", { lng: interaction.locale, ns: "global" }),
+      name: t("global:USERNAME", { lng: interaction.locale }),
       value: member.user.discriminator ? member.user.tag : member.user.username,
       inline: true,
     });
@@ -76,7 +76,7 @@ export class AvatarCommand extends HibikiCommand {
     // App note
     if (member.user.bot) {
       fields.push({
-        name: t("COMMAND_ACCOUNT_APP_ACCOUNT", { lng: interaction.locale, ns: "commands" }),
+        name: t("commands:COMMAND_ACCOUNT_APP_ACCOUNT", { lng: interaction.locale }),
         value: "True",
         inline: true,
       });
@@ -84,7 +84,7 @@ export class AvatarCommand extends HibikiCommand {
 
     // Creation date
     fields.push({
-      name: t("CREATED_ON", { lng: interaction.locale, ns: "global" }),
+      name: t("global:CREATED_ON", { lng: interaction.locale }),
       value: createFullTimestamp(member.user.createdAt),
       inline: false,
     });
@@ -94,7 +94,7 @@ export class AvatarCommand extends HibikiCommand {
       // Server join date
       if (member.joinedAt) {
         fields.push({
-          name: t("JOINED_ON", { lng: interaction.locale, ns: "global" }),
+          name: t("global:JOINED_ON", { lng: interaction.locale }),
           value: createFullTimestamp(member.joinedAt),
           inline: false,
         });
@@ -103,7 +103,7 @@ export class AvatarCommand extends HibikiCommand {
       // Server nickname
       if (member.nickname) {
         fields.push({
-          name: t("NICKNAME", { lng: interaction.locale, ns: "global" }),
+          name: t("global:NICKNAME", { lng: interaction.locale }),
           value: member.nickname.toString(),
           inline: true,
         });
@@ -112,7 +112,7 @@ export class AvatarCommand extends HibikiCommand {
       // Highest role
       if (member.roles) {
         fields.push({
-          name: t("COMMAND_ACCOUNT_HIGHEST_ROLE", { lng: interaction.locale, ns: "commands" }),
+          name: t("commands:COMMAND_ACCOUNT_HIGHEST_ROLE", { lng: interaction.locale }),
           value: member.roles.highest.name.toString(),
           inline: true,
         });
