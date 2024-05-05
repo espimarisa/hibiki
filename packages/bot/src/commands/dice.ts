@@ -21,12 +21,11 @@ export class DiceCommand extends HibikiCommand {
     await interaction.followUp({
       embeds: [
         {
-          title: t("COMMAND_DICE_DICE", { lng: interaction.locale, ns: "commands" }),
-          description: t("COMMAND_DICE_DICE_RESULT", {
+          title: t("commands:COMMAND_DICE_DICE", { lng: interaction.locale }),
+          description: t("commands:COMMAND_DICE_DICE_RESULT", {
             sides: sides,
             roll: roll,
             lng: interaction.locale,
-            ns: "commands",
           }),
           color: HibikiColors.GENERAL,
         },

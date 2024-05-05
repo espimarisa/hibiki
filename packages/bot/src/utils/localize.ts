@@ -18,32 +18,32 @@ export function localizeTimeSince(time: Duration, locale: string, disabledItems?
 
   // Number of years
   if (time.years && !disabledItems?.years) {
-    formattedDuration.set("years", t("YEARS", { count: time.years, lng: locale, ns: "time" }));
+    formattedDuration.set("years", t("time:YEARS", { count: time.years, lng: locale }));
   }
 
   // Number of Months
   if (time.months && !disabledItems?.months) {
-    formattedDuration.set("months", t("MONTHS", { count: time.months, lng: locale, ns: "time" }));
+    formattedDuration.set("months", t("time:MONTHS", { count: time.months, lng: locale }));
   }
 
   // Number of weeks
   if (time.weeks && !disabledItems?.weeks) {
-    formattedDuration.set("weeks", t("WEEKS", { count: time.weeks, lng: locale, ns: "time" }));
+    formattedDuration.set("weeks", t("time:WEEKS", { count: time.weeks, lng: locale }));
   }
 
   // Number of days
   if (time.days && !disabledItems?.days) {
-    formattedDuration.set("days", t("DAYS", { count: time.days, lng: locale, ns: "time" }));
+    formattedDuration.set("days", t("time:DAYS", { count: time.days, lng: locale }));
   }
 
   // Number of minutes
   if (time.minutes && !disabledItems?.minutes) {
-    formattedDuration.set("minutes", t("MINUTES", { count: time.minutes, lng: locale, ns: "time" }));
+    formattedDuration.set("minutes", t("time:MINUTES", { count: time.minutes, lng: locale }));
   }
 
   // Number of seconds
   if (time.seconds && !disabledItems?.seconds) {
-    formattedDuration.set("seconds", t("SECONDS", { count: time.seconds, lng: locale, ns: "time" }));
+    formattedDuration.set("seconds", t("time:SECONDS", { count: time.seconds, lng: locale }));
   }
 
   return [...formattedDuration.values()].join(", ");
@@ -54,43 +54,43 @@ export function localizeChannelType(type: ChannelType, locale: string) {
   switch (type) {
     // Announcement channel
     case ChannelType.GuildAnnouncement:
-      return t("ANNOUNCEMENT", { lng: locale, ns: "global" });
+      return t("global:ANNOUNCEMENT", { lng: locale });
 
     // Category
     case ChannelType.GuildCategory:
-      return t("CATEGORY", { lng: locale, ns: "global" });
+      return t("global:CATEGORY", { lng: locale });
 
     // Guild forum
     case ChannelType.GuildForum:
-      return t("FORUM", { lng: locale, ns: "global" });
+      return t("global:FORUM", { lng: locale });
 
     // Guild directory
     case ChannelType.GuildDirectory:
-      return t("DIRECTORY", { lng: locale, ns: "global" });
+      return t("global:DIRECTORY", { lng: locale });
 
     // Guild media
     case ChannelType.GuildMedia:
-      return t("MEDIA", { lng: locale, ns: "global" });
+      return t("global:MEDIA", { lng: locale });
 
     // Stage channel
     case ChannelType.GuildStageVoice:
-      return t("STAGE", { lng: locale, ns: "global" });
+      return t("global:STAGE", { lng: locale });
 
     // Text channel
     case ChannelType.GuildText:
-      return t("TEXT", { lng: locale, ns: "global" });
+      return t("global:TEXT", { lng: locale });
 
     // Voice channel
     case ChannelType.GuildVoice:
-      return t("VOICE", { lng: locale, ns: "global" });
+      return t("global:VOICE", { lng: locale });
 
     // Private thread
     case ChannelType.PrivateThread:
-      return t("PRIVATE_THREAD", { lng: locale, ns: "global" });
+      return t("global:PRIVATE_THREAD", { lng: locale });
 
     // Thread
     case ChannelType.PublicThread:
-      return t("THREAD", { lng: locale, ns: "global" });
+      return t("global:THREAD", { lng: locale });
 
     // Returns the raw type (future-proofing)
     default:

@@ -13,10 +13,10 @@
     "test": "bun run check && bun run lint"
   },
   "dependencies": {
-    "@discordjs/rest": "^2.2.0",
+    "@discordjs/rest": "^2.3.0",
     "date-fns": "^3.6.0",
     "discord-api-types": "^0.37.83",
-    "discord.js": "^14.14.1",
+    "discord.js": "^14.15.1",
     "i18next": "^23.11.3"
   }
 }
