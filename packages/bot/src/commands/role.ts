@@ -24,11 +24,11 @@ export class RoleCommand extends HibikiCommand {
       await interaction.followUp({
         embeds: [
           {
-            title: t("ERROR", { lng: interaction.locale, ns: "errors" }),
-            description: t("ERROR_ROLE", { lng: interaction.locale, ns: "errors" }),
+            title: t("errors:ERROR", { lng: interaction.locale }),
+            description: t("errors:ERROR_ROLE", { lng: interaction.locale }),
             color: HibikiColors.ERROR,
             footer: {
-              text: t("ERROR_FOUND_A_BUG", { lng: interaction.locale, ns: "errors" }),
+              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
               icon_url: this.bot.user?.displayAvatarURL(),
             },
           },
@@ -54,7 +54,7 @@ export class RoleCommand extends HibikiCommand {
 
     // ID
     fields.push({
-      name: t("ID", { lng: interaction.locale, ns: "global" }),
+      name: t("global:ID", { lng: interaction.locale }),
       value: role.id,
       inline: false,
     });
@@ -62,7 +62,7 @@ export class RoleCommand extends HibikiCommand {
     // Color
     if (role.color) {
       fields.push({
-        name: t("COLOR", { lng: interaction.locale, ns: "global" }),
+        name: t("global:COLOR", { lng: interaction.locale }),
         value: `#${role.color.toString(16)}`,
         inline: false,
       });
@@ -71,8 +71,8 @@ export class RoleCommand extends HibikiCommand {
     // Managed
     if (role.managed) {
       fields.push({
-        name: t("MANAGED", { lng: interaction.locale, ns: "global" }),
-        value: t("YES", { lng: interaction.locale, ns: "booleans" }),
+        name: t("global:MANAGED", { lng: interaction.locale }),
+        value: t("booleans:YES", { lng: interaction.locale }),
         inline: false,
       });
     }
@@ -80,7 +80,7 @@ export class RoleCommand extends HibikiCommand {
     // Creation date
     if (role.createdAt) {
       fields.push({
-        name: t("CREATED_ON", { lng: interaction.locale, ns: "global" }),
+        name: t("global:CREATED_ON", { lng: interaction.locale }),
         value: createFullTimestamp(role.createdAt),
         inline: false,
       });
@@ -89,8 +89,8 @@ export class RoleCommand extends HibikiCommand {
     // Hoisted
     if (role.hoist) {
       fields.push({
-        name: t("HOISTED", { lng: interaction.locale, ns: "global" }),
-        value: t("YES", { lng: interaction.locale, ns: "booleans" }),
+        name: t("global:HOISTED", { lng: interaction.locale }),
+        value: t("booleans:YES", { lng: interaction.locale }),
         inline: false,
       });
     }
@@ -98,7 +98,7 @@ export class RoleCommand extends HibikiCommand {
     // Position
     if (role.position) {
       fields.push({
-        name: t("POSITION", { lng: interaction.locale, ns: "global" }),
+        name: t("global:POSITION", { lng: interaction.locale }),
         value: role.position.toString(),
         inline: false,
       });
