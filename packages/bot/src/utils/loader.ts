@@ -135,8 +135,9 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
 
   for (const command of bot.commands.values()) {
     // Gets a list of all command name and description localizations
-    const commandNameString = `COMMAND_${command.name.toUpperCase()}_NAME` as keyof typeof commands;
-    const commandDescriptionString = `COMMAND_${command.name.toUpperCase()}_DESCRIPTION` as keyof typeof commands;
+    const commandNameString = `commands:COMMAND_${command.name.toUpperCase()}_NAME` as keyof typeof commands;
+    const commandDescriptionString =
+      `commands:COMMAND_${command.name.toUpperCase()}_DESCRIPTION` as keyof typeof commands;
     const localizedCommandNames = await getLocalizationsForKey(commandNameString, true);
     const localizedCommandDescriptions = await getLocalizationsForKey(commandDescriptionString);
 
@@ -160,9 +161,10 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
     // Localizes options
     for (const [index, option] of (command.options as APIApplicationCommandOption[])?.entries() ?? []) {
       // Gets a list of all option name and option description localizations
-      const optionNameString = `COMMAND_${command.name.toUpperCase()}_OPTION_${index}_NAME` as keyof typeof commands;
+      const optionNameString =
+        `commands:COMMAND_${command.name.toUpperCase()}_OPTION_${index}_NAME` as keyof typeof commands;
       const optionDescString =
-        `COMMAND_${command.name.toUpperCase()}_OPTION_${index}_DESCRIPTION` as keyof typeof commands;
+        `commands:COMMAND_${command.name.toUpperCase()}_OPTION_${index}_DESCRIPTION` as keyof typeof commands;
 
       const localizedOptionNames = await getLocalizationsForKey(optionNameString, true, optionRegex);
       const localizedOptionDescriptions = await getLocalizationsForKey(optionDescString, false, optionRegex);
@@ -191,10 +193,10 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
       if (option.type === ApplicationCommandOptionType.SubcommandGroup) {
         for (const [optIndex, subOpt] of option.options?.entries() ?? []) {
           const subOptNameString =
-            `COMMAND_${command.name.toUpperCase()}_SUBCOMMAND_${index}_OPTION_${optIndex}_NAME` as keyof typeof commands;
+            `commands:COMMAND_${command.name.toUpperCase()}_SUBCOMMAND_${index}_OPTION_${optIndex}_NAME` as keyof typeof commands;
 
           const subOptDescString =
-            `COMMAND_${command.name.toUpperCase()}_SUBCOMMAND_${index}_OPTION_${optIndex}_DESCRIPTION` as keyof typeof commands;
+            `commands:COMMAND_${command.name.toUpperCase()}_SUBCOMMAND_${index}_OPTION_${optIndex}_DESCRIPTION` as keyof typeof commands;
 
           // Generates localizations for subcommand option names
           const localizedOptNames = await getLocalizationsForKey(subOptNameString, true, subCommandOptionNameRegex);
