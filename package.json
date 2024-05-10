@@ -23,13 +23,23 @@
     "start:web": "bun run --env-file .env -- turbo run start --filter=@espimarisa/hibiki-web --filter=@espimarisa/hibiki-db",
     "test": "bun run --env-file .env -- turbo run test"
   },
-  "trustedDependencies": ["@biomejs/biome", "es5-ext", "esbuild"],
+  "trustedDependencies": [
+    "@biomejs/biome",
+    "@fortawesome/fontawesome-common-types",
+    "@fortawesome/fontawesome-svg-core",
+    "@fortawesome/free-brands-svg-icons",
+    "@fortawesome/free-solid-svg-icons",
+    "@sveltejs/kit",
+    "es5-ext",
+    "esbuild",
+    "svelte-preprocess"
+  ],
   "dependencies": {
     "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.7.3",
-    "@types/bun": "^1.1.1",
+    "bun-types": "^1.1.7",
     "turbo": "^1.13.3",
     "typescript": "^5.4.5"
   }
