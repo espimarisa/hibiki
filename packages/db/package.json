@@ -7,7 +7,7 @@
   "scripts": {
     "check": "tsc --noEmit",
     "db:generate": "bun drizzle-kit generate",
-    "db:prepare": "bun run db:generate && bun run db",
+    "db:prepare": "bun run db:generate",
     "db:push": "bun drizzle-kit push",
     "db:studio": "bun run db:push && bun run db:generate && drizzle-kit studio",
     "format": "biome format --write .",
