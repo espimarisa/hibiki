@@ -6,9 +6,9 @@
   "private": true,
   "scripts": {
     "check": "tsc --noEmit",
-    "db:generate": "bun drizzle-kit generate:pg",
-    "db:prepare": "bun run db:generate && bun run db:push",
-    "db:push": "bun drizzle-kit push:pg",
+    "db:generate": "bun drizzle-kit generate",
+    "db:prepare": "bun run db:generate && bun run db",
+    "db:push": "bun drizzle-kit push",
     "db:studio": "bun run db:push && bun run db:generate && drizzle-kit studio",
     "format": "biome format --write .",
     "lint": "biome check .",
@@ -20,6 +20,6 @@
     "postgres": "^3.4.4"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.20.17"
+    "drizzle-kit": "^0.21.0"
   }
 }

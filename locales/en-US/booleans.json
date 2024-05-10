@@ -1,4 +1,6 @@
 {
   "YES": "Yes",
-  "NO": "No"
+  "NO": "No",
+  "TRUE": "True",
+  "FALSE": "False"
 }

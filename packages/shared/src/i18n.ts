@@ -53,6 +53,7 @@ export async function getLocalizationsForKey(string: keyof typeof commands, lowe
   return Object.fromEntries(
     locales.map((locale) => [
       locale,
+      // @ts-expect-error We can reasonabily expect this to be fine.
       lowercase ? t(string, { lng: locale }).toLowerCase() : t(string, { lng: locale }),
     ]),
   );

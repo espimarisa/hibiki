@@ -69,5 +69,12 @@
   "COMMAND_ROLE_OPTION_0_DESCRIPTION": "The role to return information about.",
 
   "COMMAND_SERVER_NAME": "Server",
-  "COMMAND_SERVER_DESCRIPTION": "Returns information about this Discord server/guild."
+  "COMMAND_SERVER_DESCRIPTION": "Returns information about this Discord server/guild.",
+
+  "COMMAND_XKCD_NAME": "XKCD",
+  "COMMAND_XKCD_DESCRIPTION": "Sends a specified XKCD comic.",
+  "COMMAND_XKCD_OPTION_0_NAME": "number",
+  "COMMAND_XKCD_OPTION_0_DESCRIPTION": "The XKCD comic ID to get and send. Defaults to the latest one if no number is provided.",
+  "COMMAND_XKCD_FOOTER": "Powered by xkcd.com | {{- date}}",
+  "COMMAND_XKCD_NOTFOUND": "No comic exists with that ID. Try a different one."
 }
