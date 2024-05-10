@@ -16,7 +16,7 @@
     "@discordjs/rest": "^2.3.0",
     "date-fns": "^3.6.0",
     "discord-api-types": "^0.37.83",
-    "discord.js": "^14.15.1",
+    "discord.js": "^14.15.2",
     "i18next": "^23.11.3"
   }
 }

@@ -52,7 +52,7 @@ export class AvatarCommand extends HibikiCommand {
       embeds: [
         {
           author: {
-            name: t(serverAvatar ? "COMMAND_AVATAR_SERVER_TITLE" : "COMMAND_AVATAR_TITLE", {
+            name: t(serverAvatar ? "commands:COMMAND_AVATAR_SERVER_TITLE" : "commands:COMMAND_AVATAR_TITLE", {
               username: member.user.tag,
               lng: interaction.locale,
             }),

@@ -77,7 +77,7 @@ export class AvatarCommand extends HibikiCommand {
     if (member.user.bot) {
       fields.push({
         name: t("commands:COMMAND_ACCOUNT_APP_ACCOUNT", { lng: interaction.locale }),
-        value: "True",
+        value: t("booleans:YES", { lng: interaction.locale }),
         inline: true,
       });
     }
