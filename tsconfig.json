@@ -1,5 +1,5 @@
 {
-  "exclude": ["./dist/*", "node_modules"],
+  "exclude": ["./dist/*", "node_modules", "build/*"],
   "include": ["./packages/**/*", "locales/*"],
 
   "compilerOptions": {
@@ -29,8 +29,8 @@
     "inlineSources": false,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "module": "ES2022",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
     "moduleDetection": "force",
     "moduleResolution": "Bundler",
     "noEmit": true,
@@ -59,7 +59,8 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "suppressImplicitAnyIndexErrors": false,
-    "target": "ES2022",
+    "target": "ESNext",
+    "types": ["bun-types"],
     "useDefineForClassFields": true,
     "useUnknownInCatchVariables": true,
     "verbatimModuleSyntax": true

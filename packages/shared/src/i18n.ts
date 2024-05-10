@@ -61,4 +61,3 @@ export async function getLocalizationsForKey(string: keyof typeof commands, lowe
 
 // Shortcut for translate
 export const t = i18n.t;
-export { i18n };

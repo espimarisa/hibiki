@@ -1,0 +1,109 @@
+////////////////////////
+// Universal stylesheet
+////////////////////////
+
+@import url("modern-normalize");
+@import url("@fontsource/atkinson-hyperlegible");
+
+@import url("./utilities.scss");
+@import url("./typography.scss");
+
+html {
+  font-size: 20px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family:
+    "Atkinson Hyperlegible",
+    -apple-system,
+    system-ui,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  color: $black;
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  height: 100;
+  width: 100;
+  margin: 0 auto;
+  padding: 0 auto;
+}
+
+//////////////////////
+// Element styling
+//////////////////////
+
+a {
+  color: $black;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: auto;
+}
+
+button {
+  color: $black;
+  border: 0.01rem solid $black;
+  border-radius: 0.25rem;
+  margin: auto;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.1rem;
+  cursor: pointer;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+button:hover {
+  border: 0.01rem solid $primary;
+}
+
+footer {
+  font-size: 1rem;
+  padding: 1rem;
+  margin-top: auto;
+  background-color: $grey;
+  text-align: center;
+}
+
+//////////////////////
+// Dark mode styling
+//////////////////////
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: $white;
+    background-color: $black;
+  }
+
+  a {
+    color: $white;
+  }
+
+  button {
+    border: 0.01rem solid $white;
+    color: inherit;
+    background-color: inherit;
+  }
+
+  footer {
+    background-color: $black;
+  }
+}

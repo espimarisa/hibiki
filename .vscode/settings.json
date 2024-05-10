@@ -6,5 +6,8 @@
   "editor.codeActionsOnSave": {
     "source.organizeImports.biome": "explicit",
     "quickfix.biome": "explicit"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

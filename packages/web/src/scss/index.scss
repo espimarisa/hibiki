@@ -1,0 +1,33 @@
+//////////////////////
+// Component styling
+//////////////////////
+
+#hibiki-title {
+  font-size: 3.5rem;
+}
+
+.large-hero {
+  max-height: 40rem;
+  padding: 5rem;
+  background-color: $grey;
+}
+
+.small-hero {
+  padding: 5rem;
+  max-width: 50rem;
+}
+
+//////////////////////
+// Dark mode styling
+//////////////////////
+
+@media (prefers-color-scheme: dark) {
+  .large-hero {
+    color: $white;
+    background-color: $dark;
+  }
+
+  #hibiki-title {
+    text-shadow: 0 0 0.5rem $primary;
+  }
+}

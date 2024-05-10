@@ -9,9 +9,11 @@
 
 ## About
 
-Hibiki is a Discord bot focused on accessible and informational utilities.
+Hibiki is a Discord app focused on accessible and informational utilities.
 
-You can invite the official Hibiki instance using [this Discord invite][invite].
+## Invite
+
+You can invite the official Hibiki app using [this Discord invite][invite].
 
 **_NO support is given for self-hosted instances._**
 
@@ -19,44 +21,40 @@ You can invite the official Hibiki instance using [this Discord invite][invite].
 
 The information below applies to the official instance of Hibiki. Self-hosted instances or forks may not respect our official Terms of Service or privacy guidelines.
 
-> "Application" or "official instance" refers to the Hibiki bot application with the Discord user ID of `493904957523623936`.
+> "Application"/"official instance" refers to the Hibiki Discord application with the user ID of `493904957523623936` and/or the website with the URL `www.hibiki.app`.
 
-**Updated on April 16th, 2024**
+**Updated on May 10th, 2024**
 
 - Do not try to intentionally crash, break, or exploit the application
-- If you find a critical bug or security vulnerability, you must report it
+- If you find a critical bug or security vulnerability, please report it
 - Usage must follow Discord's **[Terms of Service][discord_tos]** and **[Community Guidelines][discord_cg]**
 - Usage must obey all laws in the **United States** (host location)
 
 ## Data Privacy
 
-**Updated on April 16th, 2024**
+**Updated on May 10th, 2024**
 
-The following types of user data can be stored when needed:
+_No identifiable information is stored in Hibiki's database._
 
-- **User ID(s)**: A Discord ID pointing to a unique user
-- **Server ID(s)**: A Discord ID pointing to a unique server
-- **Message ID(s)**: A message ID pointing to a specific message
-- **Command Response(s)**: Responses in commands and other input forms
-
-When added or removed from a server, the following information will be logged to a private Discord channel that only maintainers can access:
+When added or removed from a server, the following information will be logged to a private Discord channel that only project maintainers can access:
 
 - The server's creation date
 - The server name, icon, and guild ID
 - The server owner's username and user ID
 - The total number of unique members in the server
 
-To request user or server data deletion, please contact the primary maintainer:
+When an interaction is ran, the following information will be logged to the console output and stored into log files that are kept for 30 days:
 
-- Discord - [@espimarisa][espi-discord] - please state why you added me after a friend request
-- Telegram - [@espimarisa][espi-telegram] - please include why you messaged me in your message
-- Email - [contact@espi.me][espi-email] - please include "Hibiki Data Deletion" in the contact line
+- The username and user ID of the interaction runner
+- The guild name and guild ID that the interaction was ran in
+
+When Hibiki's website is accessed, the website will check what locale your browser is configured to use by using a default browser function. This information is not stored, and is only used to localize the homepage.
 
 ## License
 
 [zlib/libpng][license]
 
-[badge-stable-version]: https://img.shields.io/github/package-json/v/espimarisa/hibiki/main?color=blue "Shields.io badge showing the latest development version."
+[badge-stable-version]: https://img.shields.io/github/package-json/v/espimarisa/hibiki/main?color=blue "Shields.io badge showing the latest production version."
 [badge-develop-version]: https://img.shields.io/github/package-json/v/espimarisa/hibiki/develop?color=red "Shields.io badge showing the latest development version."
 [badge-license]: https://img.shields.io/badge/license-zlib-orange.svg "Shields.io badge displaying the zlib license."
 [badge-workflow]: https://img.shields.io/github/actions/workflow/status/espimarisa/hibiki/push.yml?branch=develop "Shields.io badge showing the latest workflow status."
