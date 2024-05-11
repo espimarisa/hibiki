@@ -5,8 +5,8 @@ import type { HibikiEvent } from "$classes/Event.ts";
 import type commands from "$locales/en-US/commands.json";
 import { MODULE_FILE_TYPE_REGEX } from "$shared/constants.ts";
 import { env } from "$shared/env.ts";
-import { getLocalizationsForKey } from "$shared/i18n.ts";
 import { logger } from "$shared/logger.ts";
+import { getLocalizationsForKey } from "$utils/i18n.ts";
 import { REST } from "@discordjs/rest";
 import { type APIApplicationCommandOption, ApplicationCommandOptionType, Routes } from "discord-api-types/v10";
 
@@ -190,7 +190,7 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
       }
 
       // Localizes subcommands
-      if (option.type === ApplicationCommandOptionType.SubcommandGroup) {
+      if (option.type === ApplicationCommandOptionType.Subcommand) {
         for (const [optIndex, subOpt] of option.options?.entries() ?? []) {
           const subOptNameString =
             `commands:COMMAND_${command.name.toUpperCase()}_SUBCOMMAND_${index}_OPTION_${optIndex}_NAME` as keyof typeof commands;
@@ -215,7 +215,7 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
 
           // Localizes the subcommand option descriptions
           if (localizedOptDescs) {
-            subOpt.description = localizedOptDescs[env.DEFAULT_LOCALE]?.toLowerCase().substring(0, 32) as string;
+            subOpt.description = localizedOptDescs[env.DEFAULT_LOCALE]?.substring(0, 32) as string;
             subOpt.description_localizations = localizedOptDescs;
           } else {
             // Fallback subcommand option description

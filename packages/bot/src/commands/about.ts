@@ -2,8 +2,8 @@ import { HibikiCommand } from "$classes/Command.ts";
 import { fetchTotalCachedGuilds, fetchTotalCachedUsers } from "$classes/Sharder.ts";
 import { HibikiColors } from "$shared/constants.ts";
 import { env } from "$shared/env.ts";
-import { t } from "$shared/i18n.ts";
 import { getTimeSince } from "$utils/format.ts";
+import { t } from "$utils/i18n.ts";
 import { localizeTimeSince } from "$utils/localize.ts";
 import { type ChatInputCommandInteraction, type EmbedField, version } from "discord.js";
 

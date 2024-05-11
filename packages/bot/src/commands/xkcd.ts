@@ -1,6 +1,7 @@
 import { type APIOption, HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$shared/constants.ts";
-import { t } from "$shared/i18n.ts";
+import { hibikiFetch } from "$shared/fetch.ts";
+import { t } from "$utils/i18n.ts";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
 import type { ChatInputCommandInteraction } from "discord.js";
 
@@ -14,9 +15,9 @@ interface XKCDResponse {
   day: number;
   month: number;
   year: number;
-  transcript: string | undefined;
-  news: string | undefined;
-  link: string | undefined;
+  transcript?: string;
+  news?: string;
+  link?: string;
 }
 
 export class XKCDCommand extends HibikiCommand {
@@ -53,7 +54,7 @@ export class XKCDCommand extends HibikiCommand {
     };
 
     // Fetches the initial endpoint
-    const initialRes = await fetch(endpoint);
+    const initialRes = await hibikiFetch(endpoint);
     if (!initialRes || initialRes.status === 404) {
       await errorMessage(initialRes?.status === 404);
       return;
@@ -73,7 +74,7 @@ export class XKCDCommand extends HibikiCommand {
       endpoint = `https://xkcd.com/${randomNum}/info.0.json`;
 
       // Fetches the random comic
-      const randomRes = await fetch(endpoint);
+      const randomRes = await hibikiFetch(endpoint);
       if (!randomRes || randomRes.status === 404) {
         await errorMessage(randomRes?.status === 404);
         return;
@@ -87,7 +88,7 @@ export class XKCDCommand extends HibikiCommand {
       }
 
       // Gets the final response
-      const res = await fetch(endpoint);
+      const res = await hibikiFetch(endpoint);
       if (!res || res.status === 404) {
         await errorMessage(res?.status === 404);
         return;

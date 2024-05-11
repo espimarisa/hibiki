@@ -57,5 +57,5 @@ export abstract class HibikiCommand {
   abstract runCommand(interaction: PossibleCommandInteractionType): Promise<void>;
 
   // Gets a subcommand response
-  getSubCommandResponse?(subCommandName: string, ..._args: string[]): Promise<unknown>;
+  getSubCommandResponse?(subCommandName: string, ...args: unknown[]): unknown;
 }

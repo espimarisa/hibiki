@@ -1,36 +1,30 @@
 import { HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$shared/constants.ts";
-import { t } from "$shared/i18n.ts";
+import { hibikiFetch } from "$shared/fetch.ts";
+import { t } from "$utils/i18n.ts";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
 import type { ChatInputCommandInteraction } from "discord.js";
 
 export class AnimalCommand extends HibikiCommand {
   options = [
     {
-      type: ApplicationCommandOptionType.SubcommandGroup,
-      options: [
-        {
-          name: "cat",
-          description: "Sends a random picture of a cat.",
-          type: ApplicationCommandOptionType.Subcommand,
-        },
-        {
-          name: "dog",
-          description: "Sends a random picture of a dog.",
-          type: ApplicationCommandOptionType.Subcommand,
-        },
-        {
-          name: "fox",
-          description: "Sends a random picture of a fox.",
-          type: ApplicationCommandOptionType.Subcommand,
-        },
-      ],
+      // Cat
+      type: ApplicationCommandOptionType.Subcommand,
+    },
+    {
+      // Dog
+      type: ApplicationCommandOptionType.Subcommand,
+    },
+    {
+      // Fox
+      type: ApplicationCommandOptionType.Subcommand,
     },
   ] satisfies HibikiCommandOptions[];
 
   async runCommand(interaction: ChatInputCommandInteraction) {
     // Gets the subcommand specified
-    const subcommand = interaction.options.getSubcommand();
+    const subcommand = interaction.options.getSubcommand(true);
+
     if (!subcommand) {
       await interaction.followUp({
         embeds: [
@@ -92,13 +86,13 @@ export class AnimalCommand extends HibikiCommand {
       // Gets a cat picture
       case "cat": {
         const apiBaseURL = "https://cataas.com";
-        const response = await fetch(`${apiBaseURL}/cat?json=true`);
+        const response = await hibikiFetch(`${apiBaseURL}/cat?json=true`);
 
         if (!response) {
           return;
         }
 
-        const body = await response?.json();
+        const body = await response.json();
 
         if (!body?._id) {
           return;
@@ -115,13 +109,13 @@ export class AnimalCommand extends HibikiCommand {
       // Gets a dog picture
       case "dog": {
         const apiBaseURL = "https://random.dog";
-        const response = await fetch(`${apiBaseURL}/woof.json`);
+        const response = await hibikiFetch(`${apiBaseURL}/woof.json`);
 
         if (!response) {
           return;
         }
 
-        const body = await response?.json();
+        const body = await response.json();
 
         if (!body?.url) {
           return;
@@ -139,13 +133,13 @@ export class AnimalCommand extends HibikiCommand {
       case "fox": {
         // todo type
         const apiBaseURL = "https://randomfox.ca";
-        const response = await fetch(`${apiBaseURL}/floof/`);
+        const response = await hibikiFetch(`${apiBaseURL}/floof/`);
 
         if (!response) {
           return;
         }
 
-        const body = await response?.json();
+        const body = await response.json();
 
         if (!body?.image) {
           return;

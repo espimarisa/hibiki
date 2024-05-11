@@ -1,6 +1,6 @@
 import { type APIOption, HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$shared/constants.ts";
-import { t } from "$shared/i18n.ts";
+import { t } from "$utils/i18n.ts";
 import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
 
 export class AvatarCommand extends HibikiCommand {
