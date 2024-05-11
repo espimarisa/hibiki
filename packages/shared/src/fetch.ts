@@ -1,12 +1,8 @@
 import { env } from "$shared/env.ts";
 
-export async function fetch(url: string, options?: RequestInit): Promise<Response | undefined> {
-  if (!url) {
-    return;
-  }
-
+export async function hibikiFetch(url: string, options?: RequestInit): Promise<Response | undefined> {
+  // Fetches the URL
   try {
-    // Fetches the URL
     const response: Response | undefined = await fetch(url, {
       ...options,
       headers: {
@@ -17,13 +13,12 @@ export async function fetch(url: string, options?: RequestInit): Promise<Respons
       },
     });
 
-    // Return the response
-    return response;
-  } catch (error) {
-    if (error) {
-      throw new Error(Bun.inspect(error));
+    if (!response) {
+      return;
     }
 
-    return;
+    return response;
+  } catch (err) {
+    throw new Error(Bun.inspect(err));
   }
 }

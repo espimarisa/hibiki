@@ -1,4 +1,4 @@
-import "$shared/i18n.ts";
+import "$utils/i18n.ts";
 
 import { HibikiShardingManager } from "$classes/Sharder.ts";
 import { env } from "$shared/env.ts";
