@@ -1,6 +1,6 @@
 import { type APIOption, HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$shared/constants.ts";
-import { t } from "$shared/i18n.ts";
+import { t } from "$utils/i18n.ts";
 import { localizeChannelType } from "$utils/localize.ts";
 import { createFullTimestamp } from "$utils/timestamp.ts";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";

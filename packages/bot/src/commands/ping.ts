@@ -1,6 +1,6 @@
 import { HibikiCommand } from "$classes/Command.ts";
 import { HibikiColors } from "$shared/constants.ts";
-import { t } from "$shared/i18n.ts";
+import { t } from "$utils/i18n.ts";
 import type { ChatInputCommandInteraction } from "discord.js";
 
 export class PingCommand extends HibikiCommand {

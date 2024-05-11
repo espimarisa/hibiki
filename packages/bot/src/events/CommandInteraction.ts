@@ -1,7 +1,7 @@
 import { HibikiEvent, type HibikiEventListener } from "$classes/Event.ts";
 import { DISCORD_BOT_TOKEN_REGEX, HibikiColors } from "$shared/constants.ts";
-import { t } from "$shared/i18n.ts";
 import { logger } from "$shared/logger.ts";
+import { t } from "$utils/i18n.ts";
 
 import type {
   ChatInputCommandInteraction,
