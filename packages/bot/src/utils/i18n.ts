@@ -7,7 +7,7 @@ import i18NexFsBackend, { type FsBackendOptions } from "i18next-fs-backend";
 
 // __dirname replacement in ESM
 const pathDirname = path.dirname(Bun.fileURLToPath(import.meta.url));
-const LOCALES_DIRECTORY = path.join(pathDirname, "../../../locales");
+const LOCALES_DIRECTORY = path.join(pathDirname, "../../../../locales");
 
 // Returns an array of languages in the locales/ directory
 async function getListOfLocales() {
