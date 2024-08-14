@@ -1,7 +1,0 @@
-# Change this to the domain you reverse proxy from
-localhost {
-	# Creates the reverse proxy on the "hibiki" container, running on port 3000
-	reverse_proxy hibiki:3000 {
-		header_down Strict-Transport-Security max-age=31536000
-	}
-}

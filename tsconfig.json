@@ -1,14 +1,16 @@
 {
   "exclude": ["./dist/*", "node_modules", "build/*"],
-  "include": ["./packages/**/*", "locales/*"],
+  "include": ["./src/**/*", "./locales/*"],
 
   "compilerOptions": {
     "paths": {
-      "$locales/*": ["locales/*"],
-      "$bot/*": ["./packages/bot/src/*"],
-      "$db/*": ["./packages/db/src/*"],
-      "$shared/*": ["./packages/shared/src/*"],
-      "$web/*": ["./packages/web/src/*"]
+      "$locales/*": ["./locales/*"],
+      "$bot/*": ["./src/*"],
+      "$classes/*": ["./src/classes/*"],
+      "$commands/*": ["./src/commands/*"],
+      "$events/*": ["./src/events/*"],
+      "$typings/*": ["./src/typings/*"],
+      "$utils/*": ["./src/utils/*"]
     },
 
     "allowArbitraryExtensions": true,
@@ -50,7 +52,7 @@
     "resolveJsonModule": true,
     "resolvePackageJsonExports": true,
     "resolvePackageJsonImports": true,
-    "rootDir": "./packages",
+    "rootDir": "./src",
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,

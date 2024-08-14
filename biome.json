@@ -1,23 +1,26 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.6.3/schema.json",
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 
   "files": {
-    "ignore": ["**/node_modules/*", "**/dist/*", "**/.svelte-kit/*", "**/packages/web/build/*"],
+    "ignore": ["**/node_modules/*", "**/dist/*"],
     "ignoreUnknown": true
   },
   "formatter": {
-    "ignore": ["**/node_modules/*", "**/dist/*", "**/.svelte-kit/*", "**/build/*"],
+    "ignore": ["**/node_modules/*", "**/dist/*"],
     "enabled": true,
     "formatWithErrors": true,
     "lineWidth": 120,
     "indentStyle": "space"
   },
   "linter": {
-    "ignore": ["**/node_modules/*", "**/dist/*", "**/.svelte-kit/*", "**/build/*"],
+    "ignore": ["**/node_modules/*", "**/dist/*"],
     "enabled": true,
     "rules": {
       "complexity": {
         "noExcessiveCognitiveComplexity": "off"
+      },
+      "correctness": {
+        "noNodejsModules": "off"
       },
       "all": true,
       "style": {
@@ -29,7 +32,7 @@
     }
   },
   "organizeImports": {
-    "ignore": ["**/node_modules/*", "**/dist/*", "**/.svelte-kit/*", "**/build/*"],
+    "ignore": ["**/node_modules/*", "**/dist/*"],
     "enabled": true
   },
   "javascript": {

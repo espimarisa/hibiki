@@ -1,46 +1,35 @@
 {
-  "name": "@espimarisa/hibiki-bot",
+  "name": "@espimarisa/hibiki",
   "version": "4.0.0-alpha",
   "type": "module",
-  "description": "A Discord bot focused on accessible and informational utilities.",
+  "description": "A Discord app providing informational tools and utilities.",
   "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "license": "zlib",
   "private": true,
-  "workspaces": ["./packages/*"],
+  "packageManager": "bun@1.1.23",
   "scripts": {
-    "build": "bun run --env-file .env turbo run build",
-    "check": "bun run --env-file .env -- turbo run check",
-    "db:generate": "bun run --env-file .env -- turbo run db:generate --filter=@espimarisa/hibiki-db",
-    "db:studio": "bun run --env-file .env -- turbo run studio --filter=@espimarisa/hibiki-db",
+    "check": "tsc --noEmit",
+    "dev": "NODE_ENV=development bun run --hot ./src/index.ts",
+    "lint": "biome check .",
+    "lint:fix": "biome check --apply .",
+    "start": "NODE_ENV=production bun run ./src/index.ts",
+    "test": "bun run check && bun run lint",
+    "build": "bun --filter ='@espimarisa/hibiki-bot' build",
     "deps:update": "bunx npm-check-updates --target latest --workspaces --root --upgrade",
-    "dev:bot": "bun run --env-file .env -- turbo run dev --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
-    "dev:web": "bun run --env-file .env -- turbo run dev --filter=@espimarisa/hibiki-web --filter=@espimarisa/hibiki-db",
-    "format": "biome format --write .",
-    "lint": "bun run --env-file .env -- turbo run lint",
-    "lint:fix": "bun run --env-file .env -- turbo run lint:fix",
-    "start": "bun run --env-file .env -- turbo run start",
-    "start:bot": "bun run --env-file .env -- turbo run start --filter=@espimarisa/hibiki-bot --filter=@espimarisa/hibiki-db",
-    "start:web": "bun run --env-file .env -- turbo run start --filter=@espimarisa/hibiki-web --filter=@espimarisa/hibiki-db",
-    "test": "bun run --env-file .env -- turbo run test"
+    "format": "biome format --write ."
   },
-  "trustedDependencies": [
-    "@biomejs/biome",
-    "@fortawesome/fontawesome-common-types",
-    "@fortawesome/fontawesome-svg-core",
-    "@fortawesome/free-brands-svg-icons",
-    "@fortawesome/free-solid-svg-icons",
-    "@sveltejs/kit",
-    "es5-ext",
-    "esbuild",
-    "svelte-preprocess"
-  ],
   "dependencies": {
-    "tslib": "^2.6.2"
+    "tslib": "^2.6.3",
+    "@discordjs/rest": "^2.3.0",
+    "date-fns": "^3.6.0",
+    "discord-api-types": "^0.37.93",
+    "discord.js": "^14.15.3",
+    "i18next": "^23.12.3",
+    "i18next-fs-backend": "^2.3.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.7.3",
-    "bun-types": "^1.1.8",
-    "turbo": "^1.13.3",
-    "typescript": "^5.4.5"
+    "@biomejs/biome": "^1.8.3",
+    "bun-types": "^1.1.23",
+    "typescript": "^5.5.4"
   }
 }

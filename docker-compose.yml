@@ -7,38 +7,8 @@ services:
       dockerfile: Dockerfile
     container_name: hibiki
     depends_on:
-      - postgres
       - caddy
-    ports:
-      - "3000:3000"
     restart: unless-stopped
-
-  postgres:
-    image: postgres:latest
-    container_name: postgres
-    hostname: ${POSTGRES_HOST}
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    restart: unless-stopped
-
-  caddy:
-    image: caddy/caddy:latest
-    container_name: caddy
-    restart: unless-stopped
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
 
 volumes:
-  postgres-data:
-  caddy_data:
   hibiki:
