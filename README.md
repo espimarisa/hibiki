@@ -9,7 +9,7 @@
 
 ## About
 
-Hibiki is a Discord app focused on accessible and informational utilities.
+Hibiki is a Discord app providing informational tools and utilities.
 
 ## Invite
 
@@ -21,9 +21,9 @@ You can invite the official Hibiki app using [this Discord invite][invite].
 
 The information below applies to the official instance of Hibiki. Self-hosted instances or forks may not respect our official Terms of Service or privacy guidelines.
 
-> "Application"/"official instance" refers to the Hibiki Discord application with the user ID of `493904957523623936` and/or the website with the URL `www.hibiki.app`.
+> "Application"/"official instance" refers to the Hibiki Discord application with the user ID of `493904957523623936`.
 
-**Updated on May 10th, 2024**
+**Updated on August 13th, 2024**
 
 - Do not try to intentionally crash, break, or exploit the application
 - If you find a critical bug or security vulnerability, please report it
@@ -32,7 +32,7 @@ The information below applies to the official instance of Hibiki. Self-hosted in
 
 ## Data Privacy
 
-**Updated on May 10th, 2024**
+**Updated on August 13th, 2024**
 
 _No identifiable information is stored in Hibiki's database._
 
@@ -47,8 +47,6 @@ When an interaction is ran, the following information will be logged to the cons
 
 - The username and user ID of the interaction runner
 - The guild name and guild ID that the interaction was ran in
-
-When Hibiki's website is accessed, the website will check what locale your browser is configured to use by using a default browser function. This information is not stored, and is only used to localize the homepage.
 
 ## License
 
