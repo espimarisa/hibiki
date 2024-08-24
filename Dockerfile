@@ -20,8 +20,7 @@ COPY . .
 
 # Tests & builds
 ENV NODE_ENV=production
-RUN bun run test
-RUN bun run build
+RUN bun test
 
 # Copies production dependencies and source into the final image
 FROM base AS release
@@ -30,4 +29,4 @@ COPY --from=prerelease /usr/src/app .
 
 # Runs
 USER bun
-ENTRYPOINT [ "bun", "run", "start" ]
+ENTRYPOINT [ "bun", "start" ]

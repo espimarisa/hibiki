@@ -1,4 +1,5 @@
 import type { HibikiClient } from "$classes/Client.ts";
+import type { API_KEYS } from "$utils/env.ts";
 import { type APIApplicationCommandOption, ApplicationCommandType } from "discord-api-types/v10";
 import type { PossibleCommandInteractionType } from "../events/CommandInteraction";
 
@@ -45,6 +46,9 @@ export abstract class HibikiCommand {
 
   // Whether or not an interaction is NSFW. Defaults to false.
   nsfw = false;
+
+  // An array of required API keys that must be provided for a command to load
+  requiredAPIKeys?: API_KEYS[];
 
   // Creates a new Hibiki command
   protected constructor(

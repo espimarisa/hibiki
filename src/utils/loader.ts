@@ -50,7 +50,18 @@ export async function loadCommands(bot: HibikiClient, directory: string) {
 
     // Initializes the command
     const command = new commandToLoad(bot, name);
-    bot.commands.set(name, command);
+
+    // Don't load commands with no provided API keys
+    let missingKeys = false;
+    if (command.requiredAPIKeys && !command.requiredAPIKeys.every((k) => Object.keys(env).includes(k))) {
+      logger.warn(`Command ${command.name} not loaded: API key(s) ${command.requiredAPIKeys.join(", ")} not provided`);
+      missingKeys = true;
+    }
+
+    // Loads all commands
+    if (!missingKeys) {
+      bot.commands.set(name, command);
+    }
   }
 }
 

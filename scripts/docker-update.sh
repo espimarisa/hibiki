@@ -3,14 +3,14 @@
 echo "Updating Hibiki..."
 
 # Stops the instance
-docker compose -f "./docker-compose.yml" stop
+docker compose ---verbose dockef "./docker-compose.yml" stop
 
 # Pulls the latest release
-git pull
+# git pull
 
 # Rebuilds the instance
-docker compose -f "./docker-compose.yml" build
+docker compose --verbose -f "./docker-compose.yml" build
 
 # Starts the instance
-docker compose -f "./docker-compose.yml" up -d
+docker compose --verbose -f "./docker-compose.yml" up -d
 echo "Finished updating Hibiki!"

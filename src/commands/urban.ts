@@ -6,6 +6,8 @@ import { createFullTimestamp } from "$utils/timestamp.ts";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
 import type { ChatInputCommandInteraction, EmbedField } from "discord.js";
 
+const API_BASE_URL = "http://api.urbandictionary.com/v0/define?term="
+
 // A word from the Urban Dictionary API - http://api.urbandictionary.com/v0/define?term=word
 interface UrbanWord {
   definition: string;
@@ -31,7 +33,6 @@ export class UrbanCommand extends HibikiCommand {
 
   public async runCommand(interaction: ChatInputCommandInteraction) {
     const query = interaction.options.getString((this.options as APIOption[])[0]!.name, true);
-    const encodedQuery = encodeURIComponent(query);
     const fields: EmbedField[] = [];
 
     // Error handler
@@ -47,16 +48,12 @@ export class UrbanCommand extends HibikiCommand {
       });
     };
 
-    // Fetches the initial response
-    const response = await hibikiFetch(`http://api.urbandictionary.com/v0/define?term=${encodedQuery}`);
-    if (!response) {
-      await errorMessage();
-      return;
-    }
+    // Gets the initial response
+    const response = await hibikiFetch(`${API_BASE_URL}${encodeURIComponent(query)}`);
 
-    // Converts the response to JSON
-    const body = await response.json();
-    if (!body?.list?.length) {
+    // Converts response; handles errors
+    const body = await response?.json();
+    if (!(response && body?.list?.length)) {
       await errorMessage();
       return;
     }
