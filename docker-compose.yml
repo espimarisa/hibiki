@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   hibiki:
     stdin_open: true
@@ -6,9 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: hibiki
-    depends_on:
-      - caddy
     restart: unless-stopped
 
 volumes:
-  hibiki:
+  hibiki-data:

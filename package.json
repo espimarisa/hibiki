@@ -6,35 +6,34 @@
   "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "license": "zlib",
   "private": true,
-  "packageManager": "bun@1.1.23",
+  "packageManager": "bun@1.1.25",
   "scripts": {
     "check": "tsc --noEmit",
+    "deps:update": "bunx npm-check-updates --target latest --root --upgrade",
     "dev": "NODE_ENV=development bun run --hot ./src/index.ts",
     "lint": "biome check .",
     "lint:fix": "biome check --apply .",
     "start": "NODE_ENV=production bun run ./src/index.ts",
     "test": "bun run check && bun run lint",
-    "build": "bun --filter ='@espimarisa/hibiki-bot' build",
-    "deps:update": "bunx npm-check-updates --target latest --root --upgrade",
     "format": "biome format --write ."
   },
   "dependencies": {
     "@chatsift/pino-rotate-file": "^0.5.1",
     "@discordjs/rest": "^2.3.0",
-    "@sentry/bun": "^8.25.0",
+    "@sentry/bun": "^8.26.0",
     "date-fns": "^3.6.0",
-    "discord-api-types": "^0.37.93",
+    "discord-api-types": "^0.37.97",
     "discord.js": "^14.15.3",
-    "i18next": "^23.12.3",
+    "i18next": "^23.14.0",
     "i18next-fs-backend": "^2.3.2",
     "pino": "^9.3.2",
     "pino-pretty": "^11.2.2",
-    "tslib": "^2.6.3",
+    "tslib": "^2.7.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
-    "bun-types": "^1.1.23",
+    "bun-types": "^1.1.25",
     "typescript": "^5.5.4"
   }
 }
