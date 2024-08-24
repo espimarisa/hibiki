@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+// Array of all possible API keys
+export type API_KEYS = "API_GITHUB_PAT" | "API_TEST";
+
 const envSchema = z.object({
   // A valid Discord token
   DISCORD_TOKEN: z.string().trim().min(1, { message: "Missing Discord token" }),
@@ -14,7 +17,10 @@ const envSchema = z.object({
   DISCORD_STATUSES: z.string().trim(),
 
   // Sentry/Glitchtip DSN for error reporting
-  SENTRY_DSN: z.string(),
+  SENTRY_DSN: z.string().optional(),
+
+  // API keys
+  API_GITHUB_PAT: z.string().trim().optional(),
 
   // Node/Bun stuff
   NODE_ENV: z.string().default("DEVELOPMENT"),

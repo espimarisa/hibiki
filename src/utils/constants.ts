@@ -17,25 +17,3 @@ export const HibikiColors = {
 
 // Donate URL
 export const HibikiDonateURL = "https://github.com/sponsors/espimarisa";
-
-// Translate URL
-// TODO: Add a URL
-export const HibikiTranslateURL = "https://github.com/espimarisa/hibiki";
-
-// License URL
-export const HibikiLicenseURL = "https://github.com/espimarisa/hibiki/LICENSE.md";
-
-// Support invite
-export const HibikiSupportInvite = "https://discord.gg/VpRscV3mdn";
-
-// Invite permissions
-export const HibikiInvitePermissions = 28_307_378_007_798;
-
-// Invite scope
-export const HibikiInviteScope = ["bot", "applications.commands"];
-
-// Homepage URL
-export const HibikiWebURL = "https://hibiki.app";
-
-export const HibikiPrivacyURL = "https://github.com/espimarisa/hibiki#data-privacy";
-export const HibikiTermsURL = "https://github.com/espimarisa/hibiki#terms-of-service";

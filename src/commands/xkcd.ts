@@ -54,16 +54,10 @@ export class XKCDCommand extends HibikiCommand {
     };
 
     // Fetches the initial endpoint
-    const initialRes = await hibikiFetch(endpoint);
-    if (!initialRes || initialRes.status === 404) {
-      await errorMessage(initialRes?.status === 404);
-      return;
-    }
-
-    // Converts endpoint to JSON; error handler
-    let body: XKCDResponse = await initialRes.json();
-    if (!body?.num) {
-      await errorMessage();
+    const initialResponse = await hibikiFetch(endpoint);
+    let body: XKCDResponse = await initialResponse?.json();
+    if (!initialResponse || initialResponse.status === 404 || !body?.num) {
+      await errorMessage(initialResponse?.status === 404);
       return;
     }
 
@@ -73,31 +67,19 @@ export class XKCDCommand extends HibikiCommand {
       const randomNum = Math.floor(Math.random() * body.num) + 1;
       endpoint = `https://xkcd.com/${randomNum}/info.0.json`;
 
-      // Fetches the random comic
-      const randomRes = await hibikiFetch(endpoint);
-      if (!randomRes || randomRes.status === 404) {
-        await errorMessage(randomRes?.status === 404);
-        return;
-      }
-
-      // Converts the random comic to JSON
-      const randomBody: XKCDResponse = await randomRes.json();
-      if (!randomBody?.num) {
-        await errorMessage();
+      // Fetches a random comic
+      const randomResponse = await hibikiFetch(endpoint);
+      const randomBody: XKCDResponse = await randomResponse?.json();
+      if (!randomResponse || randomResponse.status === 404 || !randomBody?.num) {
+        await errorMessage(randomResponse?.status === 404);
         return;
       }
 
       // Gets the final response
-      const res = await hibikiFetch(endpoint);
-      if (!res || res.status === 404) {
-        await errorMessage(res?.status === 404);
-        return;
-      }
-
-      // Gets the final body
-      body = (await res.json()) as XKCDResponse;
-      if (!body?.num) {
-        await errorMessage();
+      const finalResponse = await hibikiFetch(endpoint);
+      body = (await finalResponse?.json()) as XKCDResponse;
+      if (!finalResponse || finalResponse.status === 404 || !body?.num) {
+        await errorMessage(finalResponse?.status === 404);
         return;
       }
     }

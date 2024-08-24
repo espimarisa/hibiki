@@ -93,7 +93,6 @@ export class AnimalCommand extends HibikiCommand {
         }
 
         const body = await response.json();
-
         if (!body?._id) {
           return;
         }
@@ -116,7 +115,6 @@ export class AnimalCommand extends HibikiCommand {
         }
 
         const body = await response.json();
-
         if (!body?.url) {
           return;
         }
@@ -140,7 +138,6 @@ export class AnimalCommand extends HibikiCommand {
         }
 
         const body = await response.json();
-
         if (!body?.image) {
           return;
         }
