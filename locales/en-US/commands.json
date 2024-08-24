@@ -43,6 +43,12 @@
   "COMMAND_AVATAR_SERVER_TITLE": "{{username}}'s server avatar",
   "COMMAND_AVATAR_TITLE": "{{username}}'s avatar",
 
+  "COMMAND_BANNER_NAME": "Banner",
+  "COMMAND_BANNER_DESCRIPTION": "Sends an account's profile banner.",
+  "COMMAND_BANNER_OPTION_0_NAME": "account",
+  "COMMAND_BANNER_OPTION_0_DESCRIPTION": "The account to get the profile banner from. Defaults to yourself.",
+  "COMMAND_BANNER_TITLE": "{{username}}'s banner",
+
   "COMMAND_CHANNEL_NAME": "Channel",
   "COMMAND_CHANNEL_DESCRIPTION": "Gets information about a selected channel.",
   "COMMAND_CHANNEL_OPTION_0_NAME": "channel",
@@ -109,7 +115,15 @@
   "COMMAND_ROLEPLAY_KISS": "❤️ {{user}} gave {{target}} a kiss!",
 
   "COMMAND_SERVER_NAME": "Server",
-  "COMMAND_SERVER_DESCRIPTION": "Gets information about the Discord server/guild.",
+  "COMMAND_SERVER_DESCRIPTION": "Gets information and statistics about the Discord server.",
+  "COMMAND_SERVER_OPTION_0_NAME": "info",
+  "COMMAND_SERVER_OPTION_0_DESCRIPTION": "Gets information and statistics about the Discord server.",
+  "COMMAND_SERVER_OPTION_1_NAME": "banner",
+  "COMMAND_SERVER_OPTION_1_DESCRIPTION": "Sends the server's banner.",
+  "COMMAND_SERVER_OPTION_2_NAME": "icon",
+  "COMMAND_SERVER_OPTION_2_DESCRIPTION": "Sends the server's icon.",
+  "COMMAND_SERVER_OPTION_3_NAME": "invite-banner",
+  "COMMAND_SERVER_OPTION_3_DESCRIPTION": "Sends the server's invite banner.",
 
   "COMMAND_URBAN_NAME": "Urban",
   "COMMAND_URBAN_DESCRIPTION": "Gets the definition of a word from the Urban Dictionary",
