@@ -5,6 +5,8 @@
   "ERROR_DESCRIPTION": "\n```ts\n{{- error}}\n```",
   "ERROR_FOUND_A_BUG": "Found a bug? - github.com/espimarisa/hibiki/issues",
   "ERROR_IMAGE": "Failed to send the image. Try again later.",
+  "ERROR_NO_BANNER": "No banner is set.",
+  "ERROR_NO_ICON": "No icon is set.",
   "ERROR_NO_OPTION_PROVIDED": "No option was provided.",
   "ERROR_ROLE": "Failed to get information about the role. Try again later.",
   "ERROR_SERVER": "Failed to get information about the server. Try again later."
