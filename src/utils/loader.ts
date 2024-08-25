@@ -246,6 +246,9 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
       description_localizations: command.description_localizations ?? {},
       options: command.options as APIApplicationCommandOption[],
       type: command.interactionType,
+      // TODO: Troubleshoot image embeds/thumbnails in DMs
+      integration_types: command.userInstallable ? [0, 1] : [0],
+      contexts: command.userInstallable ? [0, 1, 2] : [0],
       nsfw: command.nsfw,
     });
   }

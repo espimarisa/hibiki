@@ -17,6 +17,7 @@ export class AvatarCommand extends HibikiCommand {
     },
   ] satisfies HibikiCommandOptions[];
 
+  // TODO: Allow running this in DMs
   async runCommand(interaction: ChatInputCommandInteraction) {
     // Gets the member data and/or the server member data for resolving the avatar URL
     const memberToFetch = await interaction.options.getUser((this.options as APIOption[])[0]!.name)?.fetch();
@@ -38,7 +39,7 @@ export class AvatarCommand extends HibikiCommand {
             color: HibikiColors.ERROR,
             footer: {
               text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-              icon_url: this.bot.user?.displayAvatarURL(),
+              icon_url: interaction.client.user.displayAvatarURL(),
             },
           },
         ],

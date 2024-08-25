@@ -11,12 +11,15 @@ import { type ChatInputCommandInteraction, type EmbedField, version } from "disc
 const startupTimestamp = new Date();
 
 export class AboutCommand extends HibikiCommand {
+  userInstallable = true;
+
   async runCommand(interaction: ChatInputCommandInteraction) {
     // Gets the amount of cached guilds and users
     const totalCachedGuilds = await fetchTotalCachedGuilds(this.bot.shard);
     const totalCachedUsers = await fetchTotalCachedUsers(this.bot.shard);
     const fields: EmbedField[] = [];
 
+    // Calculates uptime
     const uptime = getTimeSince(startupTimestamp, new Date());
     const localizedUptime = localizeTimeSince(uptime, interaction.locale);
 
@@ -38,15 +41,16 @@ export class AboutCommand extends HibikiCommand {
       });
     }
 
+    // Sends the embed
     await interaction.followUp({
       embeds: [
         {
           title: t("commands:COMMAND_ABOUT_TITLE", {
-            username: this.bot.user?.username,
+            username: interaction.client.user.username,
             lng: interaction.locale,
           }),
           description: t("commands:COMMAND_ABOUT_DETAILS", {
-            username: this.bot.user?.username,
+            username: interaction.client.user.username,
             lng: interaction.locale,
           }),
           color: HibikiColors.GENERAL,
@@ -79,7 +83,7 @@ export class AboutCommand extends HibikiCommand {
             ...fields,
           ],
           thumbnail: {
-            url: this.bot.user?.displayAvatarURL() ?? "",
+            url: interaction.client.user.displayAvatarURL(),
           },
         },
       ],

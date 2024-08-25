@@ -1,5 +1,6 @@
 import { type APIOption, HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$utils/constants.ts";
+import { sendErrorReply } from "$utils/error.ts";
 import { hibikiFetch } from "$utils/fetch.ts";
 import { t } from "$utils/i18n.ts";
 import { createFullTimestamp } from "$utils/timestamp.ts";
@@ -24,6 +25,8 @@ interface UrbanWord {
 }
 
 export class UrbanCommand extends HibikiCommand {
+  userInstallable = true;
+
   options: HibikiCommandOptions[] = [
     {
       type: ApplicationCommandOptionType.String,
@@ -35,26 +38,13 @@ export class UrbanCommand extends HibikiCommand {
     const query = interaction.options.getString((this.options as APIOption[])[0]!.name, true);
     const fields: EmbedField[] = [];
 
-    // Error handler
-    const errorMessage = async () => {
-      await interaction.followUp({
-        embeds: [
-          {
-            title: t("errors:ERROR"),
-            description: t("commands:COMMAND_URBAN_NODEFINITION", { word: query, lng: interaction.locale }),
-            color: HibikiColors.ERROR,
-          },
-        ],
-      });
-    };
-
     // Gets the initial response
     const response = await hibikiFetch(`${API_BASE_URL}${encodeURIComponent(query)}`);
 
     // Converts response; handles errors
     const body = await response?.json();
     if (!(response && body?.list?.length)) {
-      await errorMessage();
+      await sendErrorReply("commands:COMMAND_URBAN_NODEFINITION", interaction);
       return;
     }
 
@@ -64,7 +54,7 @@ export class UrbanCommand extends HibikiCommand {
 
     // Error handler for words with no definition
     if (!(topword && word?.definition)) {
-      await errorMessage();
+      await sendErrorReply("commands:COMMAND_URBAN_NODEFINITION", interaction);
       return;
     }
 

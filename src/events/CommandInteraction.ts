@@ -51,7 +51,7 @@ export class HibikiInteractionEvent extends HibikiEvent {
             color: HibikiColors.ERROR,
             footer: {
               text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-              icon_url: this.bot.user?.displayAvatarURL(),
+              icon_url: interaction.client.user.displayAvatarURL(),
             },
           },
         ],

@@ -1,5 +1,6 @@
 import { HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$utils/constants.ts";
+import { sendErrorReply } from "$utils/error.ts";
 import { hibikiFetch } from "$utils/fetch.ts";
 import { t } from "$utils/i18n.ts";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
@@ -25,41 +26,16 @@ export class AnimalCommand extends HibikiCommand {
     // Gets the subcommand specified
     const subcommand = interaction.options.getSubcommand(true);
 
+    // Error handler
     if (!subcommand) {
-      await interaction.followUp({
-        embeds: [
-          {
-            title: t("errors:ERROR", { lng: interaction.locale }),
-            description: t("errors:ERROR_NO_OPTION_PROVIDED", { lng: interaction.locale }),
-            color: HibikiColors.ERROR,
-            footer: {
-              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-              icon_url: this.bot.user?.displayAvatarURL(),
-            },
-          },
-        ],
-      });
-
+      await sendErrorReply("errors:ERROR_NO_OPTION_PROVIDED", interaction);
       return;
     }
 
     // Gets the image relating to the type of animal
     const subcommandResponse = await this.getSubCommandResponse!(subcommand, interaction.locale);
     if (!subcommandResponse?.length) {
-      await interaction.followUp({
-        embeds: [
-          {
-            title: t("errors:ERROR", { lng: interaction.locale }),
-            description: t("errors:ERROR_IMAGE", { lng: interaction.locale }),
-            color: HibikiColors.ERROR,
-            footer: {
-              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-              icon_url: this.bot.user?.displayAvatarURL(),
-            },
-          },
-        ],
-      });
-
+      await sendErrorReply("errors:ERROR_IMAGE", interaction);
       return;
     }
 
@@ -71,9 +47,10 @@ export class AnimalCommand extends HibikiCommand {
           color: HibikiColors.GENERAL,
           image: {
             url: `${subcommandResponse[0]}`,
+            proxy_url: `${subcommandResponse[0]}`,
           },
           footer: {
-            icon_url: this.bot.user?.displayAvatarURL(),
+            icon_url: interaction.client.user.displayAvatarURL(),
             text: `${subcommandResponse[2]}`,
           },
         },
@@ -85,21 +62,18 @@ export class AnimalCommand extends HibikiCommand {
     switch (commandName) {
       // Gets a cat picture
       case "cat": {
-        const apiBaseURL = "https://cataas.com";
-        const response = await hibikiFetch(`${apiBaseURL}/cat?json=true`);
+        const apiBaseURL = "https://api.thecatapi.com";
+        const response = await hibikiFetch(`${apiBaseURL}/v1/images/search`);
+        const body = await response?.json();
 
-        if (!response) {
+        // Error handler
+        if (!(response && body?.[0]?.url)) {
           return;
         }
 
-        const body = await response.json();
-        if (!body?._id) {
-          return;
-        }
-
-        // Returns the URL and strings to use
+        // Returns data
         return [
-          `${apiBaseURL}/cat/${body._id}`,
+          body[0].url,
           t("commands:COMMAND_ANIMAL_CAT", { lng: locale }),
           t("api:API_POWERED_BY", { lng: locale, url: apiBaseURL.replace("https://", "") }),
         ];
@@ -107,21 +81,18 @@ export class AnimalCommand extends HibikiCommand {
 
       // Gets a dog picture
       case "dog": {
-        const apiBaseURL = "https://random.dog";
-        const response = await hibikiFetch(`${apiBaseURL}/woof.json`);
+        const apiBaseURL = "https://dog.ceo";
+        const response = await hibikiFetch(`${apiBaseURL}/api/breeds/image/random`);
+        const body = await response?.json();
 
-        if (!response) {
+        // Error handler
+        if (!(response && body?.message) || body?.status !== "success") {
           return;
         }
 
-        const body = await response.json();
-        if (!body?.url) {
-          return;
-        }
-
-        // Returns the URL and a string to use for the embed title
+        // Returns data
         return [
-          body.url,
+          body.message,
           t("commands:COMMAND_ANIMAL_DOG", { lng: locale }),
           t("api:API_POWERED_BY", { lng: locale, url: apiBaseURL.replace("https://", "") }),
         ];
@@ -129,20 +100,16 @@ export class AnimalCommand extends HibikiCommand {
 
       // Gets a fox picture
       case "fox": {
-        // todo type
         const apiBaseURL = "https://randomfox.ca";
         const response = await hibikiFetch(`${apiBaseURL}/floof/`);
+        const body = await response?.json();
 
-        if (!response) {
+        // Error handler
+        if (!(response && body?.image)) {
           return;
         }
 
-        const body = await response.json();
-        if (!body?.image) {
-          return;
-        }
-
-        // Returns the URL and strings to use
+        // Returns data
         return [
           body.image,
           t("commands:COMMAND_ANIMAL_FOX", { lng: locale }),
