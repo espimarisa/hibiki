@@ -3,6 +3,7 @@ import { HibikiColors } from "$utils/constants.ts";
 import { t } from "$utils/i18n.ts";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
 import type { ChatInputCommandInteraction } from "discord.js";
+import { sendErrorReply } from "../utils/error";
 
 export class RoleplayCommand extends HibikiCommand {
   options = [
@@ -62,33 +63,14 @@ export class RoleplayCommand extends HibikiCommand {
     const member = await interaction.options.getUser(this.options[0]!.options[0]!.name)?.fetch();
 
     // Error handler
-    const errorMessage = async (self = false) => {
-      await interaction.followUp({
-        embeds: [
-          {
-            title: t("errors:ERROR", { lng: interaction.locale }),
-            description: self
-              ? t("commands:COMMAND_ROLEPLAY_SELF", { lng: interaction.locale })
-              : t("errors:ERROR_NO_OPTION_PROVIDED", { lng: interaction.locale }),
-            color: HibikiColors.ERROR,
-            footer: {
-              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-              icon_url: this.bot.user?.displayAvatarURL(),
-            },
-          },
-        ],
-      });
-    };
-
-    // Error handler
     if (!(subcommand && member)) {
-      await errorMessage();
+      await sendErrorReply("errors:ERROR_NO_OPTION_PROVIDED", interaction);
       return;
     }
 
     // Disallow roleplay with yourself
     if (interaction.user.id === member.id) {
-      await errorMessage(true);
+      await sendErrorReply("commands:COMMAND_ROLEPLAY_SELF", interaction);
       return;
     }
 
@@ -100,9 +82,9 @@ export class RoleplayCommand extends HibikiCommand {
       member.globalName ? member.globalName : member.tag,
     );
 
-    // Error handler
+    // Error handler for no option
     if (!subCommandResponse) {
-      await errorMessage();
+      await sendErrorReply("errors:ERROR_NO_OPTION_PROVIDED", interaction);
       return;
     }
 
@@ -117,7 +99,7 @@ export class RoleplayCommand extends HibikiCommand {
           },
           footer: {
             text: t("api:API_POWERED_BY", { locale: interaction.locale, url: "weeb.sh" }),
-            icon_url: this.bot.user?.displayAvatarURL(),
+            icon_url: interaction.client.user.displayAvatarURL(),
           },
         },
       ],
@@ -126,6 +108,7 @@ export class RoleplayCommand extends HibikiCommand {
 
   getSubCommandResponse(commandName: string, locale: string, user: string, target: string): string[] | undefined {
     switch (commandName) {
+      // Hug
       case "hug": {
         return [
           "https://cdn.weeb.sh/images/B10Tfknqf.gif",
@@ -133,6 +116,7 @@ export class RoleplayCommand extends HibikiCommand {
         ];
       }
 
+      // Pat
       case "pat": {
         return [
           "https://cdn.weeb.sh/images/HJRIlihCZ.gif",
@@ -140,6 +124,7 @@ export class RoleplayCommand extends HibikiCommand {
         ];
       }
 
+      // Cuddle
       case "cuddle": {
         return [
           "https://cdn.weeb.sh/images/rkA6SU7w-.gif",
@@ -147,6 +132,7 @@ export class RoleplayCommand extends HibikiCommand {
         ];
       }
 
+      // Kiss
       case "kiss": {
         return [
           "https://cdn.weeb.sh/images/SkKL3adPb.gif",

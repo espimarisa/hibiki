@@ -1,6 +1,7 @@
 import { type APIOption, HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$utils/constants.ts";
 import type { API_KEYS } from "$utils/env.ts";
+import { sendErrorReply } from "$utils/error.ts";
 import { hibikiFetch } from "$utils/fetch.ts";
 import { createFullTimestamp } from "$utils/timestamp.ts";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
@@ -11,6 +12,7 @@ const API_BASEURL = "https://api.github.com";
 const API_REQUIRED_HEADER = "application/vnd.github+json";
 
 export class GithubCommand extends HibikiCommand {
+  userInstallable = true;
   requiredAPIKeys: API_KEYS[] = ["API_GITHUB_PAT"];
 
   options: HibikiCommandOptions[] = [
@@ -23,23 +25,6 @@ export class GithubCommand extends HibikiCommand {
   public async runCommand(interaction: ChatInputCommandInteraction) {
     const query = interaction.options.getString((this.options as APIOption[])[0]!.name, true);
     const fields: EmbedField[] = [];
-
-    // Error handler
-    const errorMessage = async () => {
-      await interaction.followUp({
-        embeds: [
-          {
-            title: t("errors:ERROR", { lng: interaction.locale }),
-            description: t("commands:COMMAND_GITHUB_NOTFOUND", { lng: interaction.locale }),
-            color: HibikiColors.ERROR,
-            footer: {
-              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-              icon_url: this.bot.user?.displayAvatarURL(),
-            },
-          },
-        ],
-      });
-    };
 
     // Looks up the query
     let response: Response | undefined;
@@ -65,7 +50,7 @@ export class GithubCommand extends HibikiCommand {
     // Converts response; handles errors
     const body = await response?.json();
     if (!(response && body?.id) || body.message) {
-      await errorMessage();
+      await sendErrorReply("commands:COMMAND_GITHUB_NOTFOUND", interaction);
       return;
     }
 
@@ -73,7 +58,7 @@ export class GithubCommand extends HibikiCommand {
     if (body.created_at) {
       fields.push({
         name: t("global:CREATED_ON", { lng: interaction.locale }),
-        value: createFullTimestamp(new Date(body.created_at)).toString(),
+        value: createFullTimestamp(new Date(body.created_at)),
         inline: false,
       });
     }
@@ -84,7 +69,7 @@ export class GithubCommand extends HibikiCommand {
       if (body.updated_at) {
         fields.push({
           name: t("global:UPDATED_ON", { lng: interaction.locale }),
-          value: createFullTimestamp(new Date(body.updated_at)).toString(),
+          value: createFullTimestamp(new Date(body.updated_at)),
           inline: false,
         });
       }
@@ -93,7 +78,7 @@ export class GithubCommand extends HibikiCommand {
       if (body.pushed_at) {
         fields.push({
           name: t("commands:COMMAND_GITHUB_LASTPUSHED", { lng: interaction.locale }),
-          value: createFullTimestamp(new Date(body.pushed_at)).toString(),
+          value: createFullTimestamp(new Date(body.pushed_at)),
           inline: false,
         });
       }
@@ -310,7 +295,8 @@ export class GithubCommand extends HibikiCommand {
             url: body.html_url,
           },
           thumbnail: {
-            url: isRepo ? body.owner.avatar_url : body.avatar_url,
+            // TODO: Look into why this doesn't embed without appending a fake .png
+            url: isRepo ? `${body.owner.avatar_url}.png` : `${body.avatar_url}.png`,
           },
         },
       ],

@@ -4,6 +4,8 @@ import { t } from "$utils/i18n.ts";
 import type { ChatInputCommandInteraction } from "discord.js";
 
 export class PingCommand extends HibikiCommand {
+  userInstallable = true;
+
   async runCommand(interaction: ChatInputCommandInteraction) {
     const initialInteraction = await interaction.followUp({
       fetchReply: true,

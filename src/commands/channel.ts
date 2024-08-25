@@ -1,5 +1,6 @@
 import { type APIOption, HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$utils/constants.ts";
+import { sendErrorReply } from "$utils/error.ts";
 import { t } from "$utils/i18n.ts";
 import { localizeChannelType } from "$utils/localize.ts";
 import { createFullTimestamp } from "$utils/timestamp.ts";
@@ -20,35 +21,26 @@ export class ChannelCommand extends HibikiCommand {
     const channelToFetch = interaction.options.getChannel((this.options as APIOption[])[0]!.name);
     const fields: EmbedField[] = [];
 
-    const errorMessage = async () =>
-      await interaction.followUp({
-        embeds: [
-          {
-            title: t("errors:ERROR", { lng: interaction.locale }),
-            description: t("errors:ERROR_CHANNEL", { lng: interaction.locale }),
-            color: HibikiColors.ERROR,
-            footer: {
-              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-              icon_url: this.bot.user?.displayAvatarURL(),
-            },
-          },
-        ],
-      });
-
     // Argument error handler
     if (!channelToFetch) {
-      await errorMessage();
+      await sendErrorReply("errors:ERROR_CHANNEL", interaction);
       return;
     }
 
-    // Gets guild channel info
-    const channel =
-      interaction.guild!.channels.cache.find((c) => c.name === channelToFetch.name) ||
-      (await interaction.guild!.channels.fetch(channelToFetch.id));
+    // Guild error handler
+    if (!interaction.guild) {
+      await sendErrorReply("errors:ERROR_SERVER", interaction);
+      return;
+    }
 
-    // Error handler
+    // Gets channel info
+    const channel =
+      interaction.guild.channels.cache.find((c) => c.name === channelToFetch.name) ||
+      (await interaction.guild.channels.fetch(channelToFetch.id));
+
+    // Channel error handler
     if (!channel) {
-      await errorMessage();
+      await sendErrorReply("errors:ERROR_CHANNEL", interaction);
       return;
     }
 
@@ -149,7 +141,7 @@ export class ChannelCommand extends HibikiCommand {
           author: {
             name: channel.name,
             url: channel.url,
-            icon_url: interaction.guild?.iconURL() ?? "",
+            icon_url: interaction.guild.iconURL() ?? "",
           },
         },
       ],
