@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // Array of all possible API keys
-export type API_KEYS = "API_GITHUB_PAT" | "API_TEST";
+export type API_KEYS = "API_GITHUB_PAT" | "API_ABUSEIPDB_KEY" | "API_IPINFOIO_KEY" | "API_GOOGLEMAPS_KEY";
 
 const envSchema = z.object({
   // A valid Discord token
@@ -20,6 +20,9 @@ const envSchema = z.object({
   SENTRY_DSN: z.string().optional(),
 
   // API keys
+  API_ABUSEIPDB_KEY: z.string().trim().optional(),
+  API_IPINFOIO_KEY: z.string().trim().optional(),
+  API_GOOGLEMAPS_KEY: z.string().trim().optional(),
   API_GITHUB_PAT: z.string().trim().optional(),
 
   // Node/Bun stuff

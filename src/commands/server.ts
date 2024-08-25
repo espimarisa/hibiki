@@ -1,7 +1,7 @@
 import { HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$utils/constants.ts";
 import { t } from "$utils/i18n.ts";
-import { createFullTimestamp } from "$utils/timestamp";
+import { createFullTimestamp } from "$utils/timestamp.ts";
 import {
   type APIEmbed,
   ApplicationCommandOptionType,
