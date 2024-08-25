@@ -6,7 +6,7 @@ import { createFullTimestamp } from "$utils/timestamp.ts";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
 import type { ChatInputCommandInteraction, EmbedField } from "discord.js";
 
-const API_BASE_URL = "http://api.urbandictionary.com/v0/define?term="
+const API_BASE_URL = "http://api.urbandictionary.com/v0/define?term=";
 
 // A word from the Urban Dictionary API - http://api.urbandictionary.com/v0/define?term=word
 interface UrbanWord {

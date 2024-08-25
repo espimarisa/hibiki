@@ -6,7 +6,7 @@
   "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "license": "zlib",
   "private": true,
-  "packageManager": "bun@1.1.25",
+  "packageManager": "bun@1.1.26",
   "scripts": {
     "check": "tsc --noEmit",
     "deps:update": "bunx npm-check-updates --target latest --root --upgrade",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
-    "bun-types": "^1.1.25",
+    "bun-types": "^1.1.26",
     "typescript": "^5.5.4"
   }
 }

@@ -1,7 +1,7 @@
 import { type APIOption, HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
-import { HibikiColors } from "$utils/constants";
-import type { API_KEYS } from "$utils/env";
-import { hibikiFetch } from "$utils/fetch";
+import { HibikiColors } from "$utils/constants.ts";
+import type { API_KEYS } from "$utils/env.ts";
+import { hibikiFetch } from "$utils/fetch.ts";
 import { createFullTimestamp } from "$utils/timestamp.ts";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
 import type { ChatInputCommandInteraction, EmbedField } from "discord.js";
