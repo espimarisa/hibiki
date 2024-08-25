@@ -1,18 +1,16 @@
 import { HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$utils/constants.ts";
+import { sendErrorReply } from "$utils/error.ts";
 import { t } from "$utils/i18n.ts";
 import { createFullTimestamp } from "$utils/timestamp.ts";
 import {
-  type APIEmbed,
   ApplicationCommandOptionType,
   type ChatInputCommandInteraction,
   type CommandInteraction,
   type EmbedField,
-  type Guild,
 } from "discord.js";
 
 // TODO: Explicit content filter, message filtering, and more guild data
-// TODO: Add an option for fetching basic REST guild data if possible
 export class ServerCommand extends HibikiCommand {
   options = [
     {
@@ -37,81 +35,48 @@ export class ServerCommand extends HibikiCommand {
     // Gets the subcommand specified
     const subcommand = interaction.options.getSubcommand(true);
 
-    // Error handler
+    // No subcommand error handler
     if (!subcommand) {
-      await interaction.followUp({
-        embeds: [
-          {
-            title: t("errors:ERROR", { lng: interaction.locale }),
-            description: t("errors:ERROR_NO_OPTION_PROVIDED", { lng: interaction.locale }),
-            color: HibikiColors.ERROR,
-            footer: {
-              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-              icon_url: this.bot.user?.displayAvatarURL(),
-            },
-          },
-        ],
-      });
+      await sendErrorReply("errors:ERROR_NO_OPTION_PROVIDED", interaction);
+      return;
+    }
 
+    // Guild error handler
+    if (!interaction.guild) {
+      await sendErrorReply("errors:ERROR_SERVER", interaction);
       return;
     }
 
     // Runs the subcommands
-    const subcommandResponse = await this.getSubCommandResponse!(subcommand, interaction);
-    await interaction.followUp({
-      embeds: subcommandResponse,
-    });
-
-    return;
+    await this.getSubCommandResponse!(subcommand, interaction);
   }
 
-  async getSubCommandResponse(commandName: string, interaction: CommandInteraction): Promise<APIEmbed[]> {
-    // Error handler embed
-    const errorEmbed = (errorString: string) => [
-      // TODO: Make a utility for this in $utils/*
-      {
-        title: t("errors:ERROR", { lng: interaction.locale }),
-        description: errorString,
-        color: HibikiColors.ERROR,
-        footer: {
-          text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-          icon_url: this.bot.user?.displayAvatarURL(),
-        },
-      },
-    ];
-
-    // Embed for image returns
-    const imageEmbed = (guild: Guild, url: string) => [
-      {
-        color: HibikiColors.GENERAL,
-        author: {
-          name: guild.name,
-          icon_url: guild.iconURL() ?? undefined,
-        },
-        image: {
-          url: url,
-        },
-      },
-    ];
+  async getSubCommandResponse(commandName: string, interaction: CommandInteraction) {
+    // Guild error handler
+    if (!interaction.guild) {
+      await sendErrorReply("errors:ERROR_SERVER", interaction);
+      return;
+    }
 
     switch (commandName) {
       // Server info command
       case "info": {
         // Fetches guild data
-        const guild = await interaction.guild?.fetch();
+        const guild = await interaction.guild.fetch();
         const fields: EmbedField[] = [];
 
         // Error handler
         if (!guild) {
-          return errorEmbed(t("errors:ERROR_SERVER", { lng: interaction.locale }));
+          await sendErrorReply("errors:ERROR_SERVER", interaction);
+          return;
         }
 
         // Fetches owner and channel, role, emoji, and sticker counts
         const owner = await guild.fetchOwner();
-        const totalChannels = (await interaction.guild?.channels.fetch())?.size;
-        const totalRoles = (await interaction.guild?.roles.fetch())?.size;
-        const totalEmojis = (await interaction.guild?.emojis.fetch())?.size;
-        const totalStickers = (await interaction.guild?.stickers.fetch())?.size;
+        const totalChannels = (await interaction.guild.channels.fetch())?.size;
+        const totalRoles = (await interaction.guild.roles.fetch())?.size;
+        const totalEmojis = (await interaction.guild.emojis.fetch())?.size;
+        const totalStickers = (await interaction.guild.stickers.fetch())?.size;
 
         // Guild ID
         fields.push({
@@ -215,56 +180,111 @@ export class ServerCommand extends HibikiCommand {
         }
 
         // Sends server information
-        const embed = [
-          {
-            description: guild.description?.substring(0, 200) ?? undefined,
-            color: HibikiColors.GENERAL,
-            fields: fields,
-            author: {
-              name: guild.name,
-              icon_url: guild.iconURL() ?? undefined,
+        await interaction.followUp({
+          embeds: [
+            {
+              description: guild.description?.substring(0, 200) ?? "",
+              color: HibikiColors.GENERAL,
+              fields: fields,
+              author: {
+                name: guild.name,
+                icon_url: guild.iconURL() ?? "",
+              },
+              thumbnail: {
+                url: guild.iconURL() ?? "",
+              },
             },
-            thumbnail: {
-              url: guild.iconURL() ?? "",
-            },
-          },
-        ];
+          ],
+        });
 
-        return embed;
+        return;
       }
 
       // Server banner
       case "banner": {
-        if (!interaction.guild?.bannerURL()) {
+        if (!interaction.guild.bannerURL()) {
           // Error handler
-          return errorEmbed(t("errors:ERROR_NO_BANNER", { lng: interaction.locale }));
+          await sendErrorReply("errors:ERROR_NO_BANNER", interaction);
+          return;
         }
 
-        return imageEmbed(interaction.guild, interaction.guild.bannerURL({ size: 2048 })!.toString());
+        // Sends the embed
+        await interaction.followUp({
+          embeds: [
+            {
+              color: HibikiColors.GENERAL,
+              author: {
+                name: interaction.guild.name,
+                icon_url: interaction.guild.iconURL() ?? "",
+              },
+              image: {
+                url: interaction.guild.bannerURL() ?? "",
+              },
+            },
+          ],
+        });
+
+        return;
       }
 
       // Server icon
       case "icon": {
-        if (!interaction.guild?.iconURL()) {
+        if (!interaction.guild.iconURL()) {
           // Error handler
-          return errorEmbed(t("errors:ERROR_NO_ICON", { lng: interaction.locale }));
+          await sendErrorReply("errors:ERROR_NO_ICON", interaction);
+          return;
         }
 
-        return imageEmbed(interaction.guild, interaction.guild.iconURL({ size: 2048 })!.toString());
+        // Sends the embed
+        await interaction.followUp({
+          embeds: [
+            {
+              color: HibikiColors.GENERAL,
+              author: {
+                name: interaction.guild.name,
+                icon_url: interaction.guild.iconURL() ?? "",
+              },
+              image: {
+                url: interaction.guild.bannerURL() ?? "",
+              },
+            },
+          ],
+        });
+
+        return;
       }
 
       // Server invite banner
       case "invite-banner": {
-        if (!interaction.guild?.splashURL()) {
+        if (!interaction.guild.splashURL()) {
           // Error handler
-          return errorEmbed(t("errors:ERROR_NO_BANNER", { lng: interaction.locale }));
+          await sendErrorReply("errors:ERROR_NO_BANNER", interaction);
+          return;
         }
 
-        return imageEmbed(interaction.guild, interaction.guild.splashURL({ size: 2048 })!.toString());
+        // Sends the embed
+        await interaction.followUp({
+          embeds: [
+            {
+              color: HibikiColors.GENERAL,
+              author: {
+                name: interaction.guild.name,
+                icon_url: interaction.guild.iconURL() ?? "",
+              },
+              image: {
+                url: interaction.guild.splashURL() ?? "",
+              },
+            },
+          ],
+        });
+
+        return;
       }
 
-      default:
-        return errorEmbed(t("errors:ERROR_NO_OPTION_PROVIDED"));
+      default: {
+        await sendErrorReply("errors:ERROR_NO_OPTION_PROVIDED", interaction);
+        return;
+      }
     }
   }
 }

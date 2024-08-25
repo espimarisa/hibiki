@@ -1,5 +1,6 @@
 import { type APIOption, HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$utils/constants.ts";
+import { sendErrorReply } from "$utils/error.ts";
 import { t } from "$utils/i18n.ts";
 import { createFullTimestamp } from "$utils/timestamp.ts";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
@@ -19,36 +20,20 @@ export class RoleCommand extends HibikiCommand {
     const roleToFetch = interaction.options.getRole((this.options as APIOption[])[0]!.name);
     const fields: EmbedField[] = [];
 
-    // Error handler
-    const errorMessage = async () =>
-      await interaction.followUp({
-        embeds: [
-          {
-            title: t("errors:ERROR", { lng: interaction.locale }),
-            description: t("errors:ERROR_ROLE", { lng: interaction.locale }),
-            color: HibikiColors.ERROR,
-            footer: {
-              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-              icon_url: this.bot.user?.displayAvatarURL(),
-            },
-          },
-        ],
-      });
-
     // Argument error handler
-    if (!roleToFetch) {
-      await errorMessage();
+    if (!(roleToFetch && interaction.guild)) {
+      await sendErrorReply("errors:ERROR_ROLE", interaction);
       return;
     }
 
     // Gets guild role info
     const role =
-      interaction.guild!.roles.cache.find((r) => r.name === roleToFetch.name) ||
-      (await interaction.guild!.roles.fetch(roleToFetch.id));
+      interaction.guild.roles.cache.find((r) => r.name === roleToFetch.name) ||
+      (await interaction.guild.roles.fetch(roleToFetch.id));
 
     // General error handler
     if (!role) {
-      await errorMessage();
+      await sendErrorReply("errors:ERROR_ROLE", interaction);
       return;
     }
 
@@ -112,10 +97,10 @@ export class RoleCommand extends HibikiCommand {
           color: role.color || HibikiColors.GENERAL,
           author: {
             name: role.unicodeEmoji ? `${role.unicodeEmoji} ${role.name}` : role.name,
-            icon_url: interaction.guild?.iconURL() ?? "",
+            icon_url: interaction.guild.iconURL() ?? "",
           },
           thumbnail: {
-            url: role?.iconURL()?.toString() ?? "",
+            url: role.iconURL() ?? "",
           },
         },
       ],

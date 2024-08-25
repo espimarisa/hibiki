@@ -83,8 +83,7 @@
   "COMMAND_IPINFO_DESCRIPTION": "Returns information and abuse data about an IP address.",
   "COMMAND_IPINFO_OPTION_0_NAME": "ip",
   "COMMAND_IPINFO_OPTION_0_DESCRIPTION": "The IP to get information about. IPV4 and IPV6 both supported.",
-  "COMMAND_IPINFO_INVALID": "Either the IP specified was invalid, or no information was found about it.",
-  "COMMAND_IPINFO_INVALID_IPV6": "Either the IP specified was invalid, or no information was found about it. If you provided an IPV6 address, the host may not support IPV6.",
+  "COMMAND_IPINFO_INVALID": "Either the IP specified was invalid, or no information was found about it. If you provided an IPV6 address, the host may not support IPV6.",
   "COMMAND_IPINFO_HOSTNAME": "Hostname",
   "COMMAND_IPINFO_ASN": "ASN",
   "COMMAND_IPINFO_USAGETYPE": "Usage Type",
@@ -94,6 +93,13 @@
   "COMMAND_IPINFO_ABUSESTATS_DATA": "{{ reports }} reports; {{ confidence }}% confidence",
   "COMMAND_IPINFO_TOR": "TOR",
   "COMMAND_IPINFO_INFOFOR": "Information for {{ ip }}",
+
+  "COMMAND_PACKAGE_NAME": "Package",
+  "COMMAND_PACKAGE_DESCRIPTION": "Returns information about a package from a specified package database.",
+  "COMMAND_PACKAGE_OPTION_0_NAME": "aur",
+  "COMMAND_PACKAGE_OPTION_0_DESCRIPTION": "Gets information about a package from the Arch User Repository (AUR).",
+  "COMMAND_PACKAGE_SUBCOMMAND_0_OPTION_0_NAME": "package",
+  "COMMAND_PACKAGE_SUBCOMMAND_0_OPTION_0_DESCRIPTION": "The package to return information about.",
 
   "COMMAND_PING_NAME": "Ping",
   "COMMAND_PING_DESCRIPTION": "Checks the current status and latency.",

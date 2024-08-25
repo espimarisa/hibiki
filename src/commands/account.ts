@@ -1,5 +1,6 @@
 import { type APIOption, HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$utils/constants.ts";
+import { sendErrorReply } from "$utils/error.ts";
 import { t } from "$utils/i18n.ts";
 import { createFullTimestamp } from "$utils/timestamp.ts";
 import { ApplicationCommandOptionType, type ChatInputCommandInteraction, type EmbedField } from "discord.js";
@@ -26,27 +27,20 @@ export class AvatarCommand extends HibikiCommand {
     const idToFetch = memberToFetch?.id ?? interaction.user.id;
     const fields: EmbedField[] = [];
 
+    // Error handler for no guild
+    if (!interaction.guild) {
+      await sendErrorReply("errors:ERROR_SERVER", interaction);
+      return;
+    }
+
     // Fetches the member
     const member =
-      interaction.guild!.members.cache.find((m) => m.id === idToFetch) ||
-      (await interaction.guild!.members.fetch(idToFetch));
+      interaction.guild.members.cache.find((m) => m.id === idToFetch) ||
+      (await interaction.guild.members.fetch(idToFetch));
 
-    // Error handler
+    // Error handler for no member
     if (!member) {
-      await interaction.followUp({
-        embeds: [
-          {
-            title: t("errors:ERROR", { lng: interaction.locale }),
-            description: t("errors:ERROR_ACCOUNT", { lng: interaction.locale }),
-            color: HibikiColors.ERROR,
-            footer: {
-              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-              icon_url: this.bot.user?.displayAvatarURL(),
-            },
-          },
-        ],
-      });
-
+      await sendErrorReply("errors:ERROR_ACCOUNT", interaction);
       return;
     }
 
@@ -104,7 +98,7 @@ export class AvatarCommand extends HibikiCommand {
       if (member.nickname) {
         fields.push({
           name: t("global:NICKNAME", { lng: interaction.locale }),
-          value: member.nickname.toString(),
+          value: member.nickname,
           inline: true,
         });
       }
@@ -113,7 +107,7 @@ export class AvatarCommand extends HibikiCommand {
       if (member.roles) {
         fields.push({
           name: t("commands:COMMAND_ACCOUNT_HIGHEST_ROLE", { lng: interaction.locale }),
-          value: member.roles.highest.name.toString(),
+          value: member.roles.highest.name,
           inline: true,
         });
       }
@@ -126,16 +120,16 @@ export class AvatarCommand extends HibikiCommand {
           author: {
             name: member.user.tag,
             icon_url: serverInfo
-              ? member.displayAvatarURL({ size: 1024 })
-              : member.user.displayAvatarURL({ size: 1024 }),
+              ? member.displayAvatarURL({ size: 2048 })
+              : member.user.displayAvatarURL({ size: 2048 }),
           },
           fields: fields,
           color: member.user.accentColor ?? HibikiColors.GENERAL,
           thumbnail: {
-            url: serverInfo ? member.displayAvatarURL({ size: 1024 }) : member.user.displayAvatarURL({ size: 1024 }),
+            url: serverInfo ? member.displayAvatarURL({ size: 2048 }) : member.user.displayAvatarURL({ size: 1024 }),
           },
           image: {
-            url: member.user.bannerURL({ size: 1024 }) ?? "",
+            url: member.user.bannerURL({ size: 2048 }) ?? "",
           },
         },
       ],

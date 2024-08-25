@@ -1,6 +1,7 @@
 import { type APIOption, HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$utils/constants.ts";
 import { type API_KEYS, env } from "$utils/env.ts";
+import { sendErrorReply } from "$utils/error.ts";
 import { hibikiFetch } from "$utils/fetch.ts";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
 import type { ChatInputCommandInteraction, EmbedField } from "discord.js";
@@ -8,6 +9,7 @@ import { t } from "i18next";
 import { z } from "zod";
 
 export class IPInfoCommand extends HibikiCommand {
+  userInstallable = true;
   requiredAPIKeys: API_KEYS[] = ["API_ABUSEIPDB_KEY", "API_IPINFOIO_KEY", "API_GOOGLEMAPS_KEY"];
 
   options: HibikiCommandOptions[] = [
@@ -21,36 +23,15 @@ export class IPInfoCommand extends HibikiCommand {
     const query = interaction.options.getString((this.options as APIOption[])[0]!.name, true);
     const fields: EmbedField[] = [];
     let IPINFO_API_BASE_URL = "https://ipinfo.io";
-    let ipv6 = false;
-
-    // Error handler
-    const errorMessage = async (ipv6 = false) => {
-      await interaction.followUp({
-        embeds: [
-          {
-            title: t("errors:ERROR", { lng: interaction.locale }),
-            description: ipv6
-              ? t("commands:COMMAND_IPINFO_INVALID_IPV6", { lng: interaction.locale })
-              : t("commands:COMMAND_IPINFO_INVALID", { lng: interaction.locale }),
-            color: HibikiColors.ERROR,
-            footer: {
-              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-              icon_url: this.bot.user?.displayAvatarURL(),
-            },
-          },
-        ],
-      });
-    };
 
     // Error handler for invalid IPs
     if (!z.string().ip().safeParse(query).success) {
-      await errorMessage();
+      await sendErrorReply("commands:COMMAND_IPINFO_INVALID", interaction);
       return;
     }
 
     // IPV6 support. Set IPV6 to true for networking errors
     if (z.string().ip({ version: "v6" }).safeParse(query).success) {
-      ipv6 = true;
       IPINFO_API_BASE_URL = "https://v6.ipinfo.io";
     }
 
@@ -63,8 +44,8 @@ export class IPInfoCommand extends HibikiCommand {
 
     // Converts response; error handler
     const ipinfoBody = await ipinfoResponse?.json();
-    if (!ipinfoResponse && ipinfoBody) {
-      await errorMessage(ipv6);
+    if (!ipinfoResponse) {
+      await sendErrorReply("commands:COMMAND_IPINFO_INVALID", interaction);
       return;
     }
 
@@ -92,7 +73,7 @@ export class IPInfoCommand extends HibikiCommand {
     if (ipinfoBody.org) {
       fields.push({
         name: t("commands:COMMAND_IPINFO_ASN", { lng: interaction.locale }),
-        value: ipinfoBody.org.toString(),
+        value: ipinfoBody.org,
         inline: true,
       });
     }
@@ -101,7 +82,7 @@ export class IPInfoCommand extends HibikiCommand {
     let mapTile = "";
     if (ipinfoBody.loc) {
       // Sets the map tile
-      mapTile = `https://maps.googleapis.com/maps/api/staticmap?center=${ipinfoBody.loc}&zoom=10&size=250x150&scale=2&key=${env.API_GOOGLEMAPS_KEY}`;
+      mapTile = `https://maps.googleapis.com/maps/api/staticmap?center=${ipinfoBody.loc}&zoom=10&size=250x150&scale=2&format=png&key=${env.API_GOOGLEMAPS_KEY}`;
     }
 
     // Region/city/country string
@@ -139,7 +120,7 @@ export class IPInfoCommand extends HibikiCommand {
     if (ipinfoBody.timezone) {
       fields.push({
         name: t("global:TIMEZONE", { lng: interaction.locale }),
-        value: ipinfoBody.timezone.toString(),
+        value: ipinfoBody.timezone,
         inline: false,
       });
     }
@@ -159,7 +140,7 @@ export class IPInfoCommand extends HibikiCommand {
       if (abuseipdbBody.data.domain) {
         fields.push({
           name: t("commands:COMMAND_IPINFO_DOMAIN", { lng: interaction.locale }),
-          value: abuseipdbBody.data.domain.toString(),
+          value: abuseipdbBody.data.domain,
           inline: true,
         });
       }

@@ -1,7 +1,7 @@
 import type { HibikiClient } from "$classes/Client.ts";
+import type { PossibleCommandInteractionType } from "$events/CommandInteraction.ts";
 import type { API_KEYS } from "$utils/env.ts";
 import { type APIApplicationCommandOption, ApplicationCommandType } from "discord-api-types/v10";
-import type { PossibleCommandInteractionType } from "../events/CommandInteraction";
 
 // Paramaters to remove from setting in individual command files. Prevents overriding loader-handled data.
 type LockedParamaters = "name" | "description" | "name_localizations" | "description_localizations";
@@ -28,6 +28,8 @@ export interface RESTCommandOptions {
   options?: APIApplicationCommandOption[];
   type: ApplicationCommandType;
   nsfw?: boolean;
+  integration_types?: number[];
+  contexts?: number[];
 }
 
 export abstract class HibikiCommand {
@@ -40,6 +42,9 @@ export abstract class HibikiCommand {
 
   // An array of command interaction options
   options?: HibikiCommandOptions[];
+
+  // Whether or not a command is user installable. Defaults to false.
+  userInstallable = false;
 
   // Whether or not the interaction response can only be seen by the runner. Defaults to false.
   ephemeral = false;

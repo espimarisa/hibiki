@@ -4,6 +4,8 @@ import { t } from "$utils/i18n.ts";
 import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
 
 export class DiceCommand extends HibikiCommand {
+  userInstallable = true;
+
   options = [
     {
       // The amount of sides that should be on the dice
@@ -15,9 +17,11 @@ export class DiceCommand extends HibikiCommand {
   ] satisfies HibikiCommandOptions[];
 
   async runCommand(interaction: ChatInputCommandInteraction) {
-    // Gets the number of sides and rolls the die
+    // Gets the number of sides
     const sides = interaction.options.getInteger((this.options as APIOption[])[0]!.name) || 6;
     const roll = Math.floor(Math.random() * sides) + 1;
+
+    // Sends the embed
     await interaction.followUp({
       embeds: [
         {
