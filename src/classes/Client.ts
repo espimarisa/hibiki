@@ -36,7 +36,7 @@ export class HibikiClient extends Client {
         await loadCommands(this, COMMANDS_DIRECTORY);
         await loadEvents(this, EVENTS_DIRECTORY);
 
-        logger.info("Logged in to Discord");
+        logger.info(`Logged in to Discord as ${this.user?.tag}`);
         logger.info(`${this.commands.size.toString()} commands loaded`);
         logger.info(`${this.events.size.toString()} events loaded`);
 
