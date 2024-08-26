@@ -8,7 +8,7 @@ import type { PrettyOptions } from "pino-pretty";
 const pathDirname = path.dirname(Bun.fileURLToPath(import.meta.url));
 
 // Directories to crawl
-const LOGS_DIRECTORY = path.join(pathDirname, "../../../logs");
+const LOGS_DIRECTORY = path.join(pathDirname, "../../logs");
 
 // Pino-pretty options
 const pinoPrettyOptions = {
@@ -22,11 +22,6 @@ const pinoRotateFileOptions = {
   dir: LOGS_DIRECTORY,
   mkdir: true,
   maxAgeDays: 14,
-  prettyOptions: {
-    ...pinoPrettyOptions,
-    // Disable colorization for fs log files
-    colorize: false,
-  },
 } satisfies PinoRotateFileOptions;
 
 export const logger = createLogger(
