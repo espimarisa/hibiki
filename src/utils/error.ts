@@ -2,14 +2,14 @@ import type commands from "$locales/en-US/commands.json";
 import type errors from "$locales/en-US/errors.json";
 import { HibikiColors } from "$utils/constants.ts";
 import { t } from "$utils/i18n.ts";
-import type { CommandInteraction } from "discord.js";
+import type { ChatInputCommandInteraction } from "discord.js";
 
 // Generates a generic error embed with a custom description
 export async function sendErrorReply(
   // Hacky typing: Only allow dictionaries from the commands: and errors dictionary
   // The string to translate and send
   descriptionString: `commands:${keyof typeof commands}` | `errors:${keyof typeof errors}`,
-  interaction: CommandInteraction,
+  interaction: ChatInputCommandInteraction,
 ) {
   await interaction.followUp({
     embeds: [

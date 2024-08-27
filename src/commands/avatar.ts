@@ -1,5 +1,6 @@
 import { type APIOption, HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$utils/constants.ts";
+import { sendErrorReply } from "$utils/error.ts";
 import { t } from "$utils/i18n.ts";
 import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
 
@@ -24,27 +25,20 @@ export class AvatarCommand extends HibikiCommand {
     const idToFetch = memberToFetch?.id ?? interaction.user.id;
     const serverAvatar = interaction.options.getBoolean((this.options as APIOption[])[1]!.name);
 
+    // Guild error handler
+    if (!interaction.guild) {
+      await sendErrorReply("errors:ERROR_ACCOUNT", interaction);
+      return;
+    }
+
     // Fetches the member
     const member =
-      interaction.guild!.members.cache.find((m) => m.id === idToFetch) ||
-      (await interaction.guild!.members.fetch(idToFetch));
+      interaction.guild.members.cache.find((m) => m.id === idToFetch) ||
+      (await interaction.guild.members.fetch(idToFetch));
 
-    // Error handler
+    // Member error handler
     if (!member) {
-      await interaction.followUp({
-        embeds: [
-          {
-            title: t("errors:ERROR", { lng: interaction.locale }),
-            description: t("errors:ERROR_ACCOUNT", { lng: interaction.locale }),
-            color: HibikiColors.ERROR,
-            footer: {
-              text: t("errors:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-              icon_url: interaction.client.user.displayAvatarURL(),
-            },
-          },
-        ],
-      });
-
+      await sendErrorReply("errors:ERROR_ACCOUNT", interaction);
       return;
     }
 
@@ -58,12 +52,12 @@ export class AvatarCommand extends HibikiCommand {
               lng: interaction.locale,
             }),
             icon_url: serverAvatar
-              ? member.displayAvatarURL({ size: 1024 })
-              : member.user.displayAvatarURL({ size: 1024 }),
+              ? member.displayAvatarURL({ size: 2048 })
+              : member.user.displayAvatarURL({ size: 2048 }),
           },
           color: member.user.accentColor ?? HibikiColors.GENERAL,
           image: {
-            url: serverAvatar ? member.displayAvatarURL({ size: 1024 }) : member.user.displayAvatarURL({ size: 1024 }),
+            url: serverAvatar ? member.displayAvatarURL({ size: 2048 }) : member.user.displayAvatarURL({ size: 2048 }),
           },
         },
       ],

@@ -126,7 +126,7 @@ export class AvatarCommand extends HibikiCommand {
           fields: fields,
           color: member.user.accentColor ?? HibikiColors.GENERAL,
           thumbnail: {
-            url: serverInfo ? member.displayAvatarURL({ size: 2048 }) : member.user.displayAvatarURL({ size: 1024 }),
+            url: serverInfo ? member.displayAvatarURL({ size: 2048 }) : member.user.displayAvatarURL({ size: 2048 }),
           },
           image: {
             url: member.user.bannerURL({ size: 2048 }) ?? "",
