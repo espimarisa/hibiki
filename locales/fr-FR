@@ -1,1 +1,13 @@
-{}
+{
+  "ERROR": "",
+  "ERROR_ACCOUNT": "",
+  "ERROR_CHANNEL": "",
+  "ERROR_DESCRIPTION": "",
+  "ERROR_FOUND_A_BUG": "",
+  "ERROR_IMAGE": "",
+  "ERROR_NO_BANNER": "",
+  "ERROR_NO_ICON": "",
+  "ERROR_NO_OPTION_PROVIDED": "",
+  "ERROR_ROLE": "",
+  "ERROR_SERVER": ""
+}
