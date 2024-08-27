@@ -1,16 +1,3 @@
 {
-  "DAYS_other": "",
-  "DAYS_one": "",
-  "HOURS_other": "",
-  "HOURS_one": "",
-  "MINUTES_other": "",
-  "MINUTES_one": "",
-  "MONTHS_other": "",
-  "MONTHS_one": "",
-  "SECONDS_other": "",
-  "SECONDS_one": "",
-  "WEEKS_other": "",
-  "WEEKS_one": "",
-  "YEARS_other": "",
-  "YEARS_one": ""
+  "API_POWERED_BY": ""
 }
