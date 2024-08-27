@@ -1,3 +1,6 @@
 files:
   - source: /locales/en-US/*.json
     translation: /locales/%locale%
+
+commit_message: "i18n: new %language% translations"
+append_commit_message: true
