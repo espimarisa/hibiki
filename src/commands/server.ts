@@ -3,12 +3,7 @@ import { HibikiColors } from "$utils/constants.ts";
 import { sendErrorReply } from "$utils/error.ts";
 import { t } from "$utils/i18n.ts";
 import { createFullTimestamp } from "$utils/timestamp.ts";
-import {
-  ApplicationCommandOptionType,
-  type ChatInputCommandInteraction,
-  type CommandInteraction,
-  type EmbedField,
-} from "discord.js";
+import { ApplicationCommandOptionType, type ChatInputCommandInteraction, type EmbedField } from "discord.js";
 
 // TODO: Explicit content filter, message filtering, and more guild data
 export class ServerCommand extends HibikiCommand {
@@ -51,7 +46,7 @@ export class ServerCommand extends HibikiCommand {
     await this.getSubCommandResponse!(subcommand, interaction);
   }
 
-  async getSubCommandResponse(commandName: string, interaction: CommandInteraction) {
+  async getSubCommandResponse(commandName: string, interaction: ChatInputCommandInteraction) {
     // Guild error handler
     if (!interaction.guild) {
       await sendErrorReply("errors:ERROR_SERVER", interaction);

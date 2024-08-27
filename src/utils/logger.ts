@@ -13,7 +13,7 @@ const LOGS_DIRECTORY = path.join(pathDirname, "../../logs");
 // Pino-pretty options
 const pinoPrettyOptions = {
   levelFirst: true,
-  translateTime: "yyyy-mm-dd HH:MM:ss",
+  translateTime: "SYS:yyyy-mm-dd HH:MM:ss TT",
   colorize: true,
 } satisfies PrettyOptions;
 

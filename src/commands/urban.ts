@@ -9,21 +9,6 @@ import type { ChatInputCommandInteraction, EmbedField } from "discord.js";
 
 const API_BASE_URL = "http://api.urbandictionary.com/v0/define?term=";
 
-// A word from the Urban Dictionary API - http://api.urbandictionary.com/v0/define?term=word
-interface UrbanWord {
-  definition: string;
-  permalink: string;
-  thumbs_up: number;
-  sound_urls?: string[];
-  author: string;
-  word: string;
-  defid: number;
-  current_vote: string;
-  written_on: Date;
-  example: string;
-  thumbs_down: number;
-}
-
 export class UrbanCommand extends HibikiCommand {
   userInstallable = true;
 
@@ -89,7 +74,7 @@ export class UrbanCommand extends HibikiCommand {
     // Upvote count
     if (word.thumbs_up) {
       fields.push({
-        name: t("global:UPVOTES", { lng: interaction.locale }),
+        name: t("global:UPVOTES", { lng: interaction.locale, count: word.thumbs_up }),
         value: word.thumbs_up.toString(),
         inline: true,
       });
@@ -98,7 +83,7 @@ export class UrbanCommand extends HibikiCommand {
     // Downvote count
     if (word.thumbs_down) {
       fields.push({
-        name: t("global:DOWNVOTES", { lng: interaction.locale }),
+        name: t("global:DOWNVOTES", { lng: interaction.locale, count: word.thumbs_down }),
         value: word.thumbs_down.toString(),
         inline: true,
       });
@@ -116,4 +101,19 @@ export class UrbanCommand extends HibikiCommand {
       ],
     });
   }
+}
+
+// A word from the Urban Dictionary API - http://api.urbandictionary.com/v0/define?term=word
+interface UrbanWord {
+  definition: string;
+  permalink: string;
+  thumbs_up: number;
+  sound_urls?: string[];
+  author: string;
+  word: string;
+  defid: number;
+  current_vote: string;
+  written_on: Date;
+  example: string;
+  thumbs_down: number;
 }

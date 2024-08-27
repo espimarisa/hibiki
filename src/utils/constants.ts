@@ -6,13 +6,13 @@ export const MODULE_FILE_TYPE_REGEX = /\.(cjs|mjs|js|mts|cts|ts)$/i;
 
 export const HibikiColors = {
   // Gold #FFB000
-  GENERAL: 0xff_b0_00,
+  GENERAL: 0xffb000,
 
   // Success #DC267F
-  SUCCESS: 0xdc_26_7f,
+  SUCCESS: 0xdc267f,
 
   // Orange #FE6100
-  ERROR: 0xfe_61_00,
+  ERROR: 0xfe6100,
 };
 
 // Donate URL

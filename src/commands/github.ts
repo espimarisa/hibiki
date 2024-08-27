@@ -194,7 +194,7 @@ export class GithubCommand extends HibikiCommand {
       // Topics
       if (body.topics) {
         fields.push({
-          name: t("commands:COMMAND_GITHUB_TOPICS", { lng: interaction.locale }),
+          name: t("commands:COMMAND_GITHUB_TOPICS", { lng: interaction.locale, count: body.topics.length }),
           value: body.topics.map((m: Record<string, string>) => `\`${m}\``).join(", "),
           inline: false,
         });

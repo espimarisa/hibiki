@@ -19,12 +19,18 @@ export class AvatarCommand extends HibikiCommand {
     const memberToFetch = await interaction.options.getUser((this.options as APIOption[])[0]!.name)?.fetch();
     const idToFetch = memberToFetch?.id ?? interaction.user.id;
 
+    // Guild error handler
+    if (!interaction.guild) {
+      await sendErrorReply("errors:ERROR_SERVER", interaction);
+      return;
+    }
+
     // Fetches the member
     const member =
-      interaction.guild!.members.cache.find((m) => m.id === idToFetch) ||
-      (await interaction.guild!.members.fetch(idToFetch));
+      interaction.guild.members.cache.find((m) => m.id === idToFetch) ||
+      (await interaction.guild.members.fetch(idToFetch));
 
-    // Error handler
+    // Member error handler
     if (!member?.user?.bannerURL()) {
       await sendErrorReply("errors:ERROR_NO_BANNER", interaction);
       return;
