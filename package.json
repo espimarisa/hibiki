@@ -20,7 +20,7 @@
   "dependencies": {
     "@chatsift/pino-rotate-file": "^0.5.1",
     "@discordjs/rest": "^2.3.0",
-    "@sentry/bun": "^8.26.0",
+    "@sentry/bun": "^8.27.0",
     "date-fns": "^3.6.0",
     "discord-api-types": "^0.37.98",
     "discord.js": "^14.15.3",
