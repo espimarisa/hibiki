@@ -1,9 +1,8 @@
-# Hibiki Development
+# Hibiki
 
 > This branch is in active development and is not ready for self-hosting or production use.
 
 [![Stable Version][badge-stable-version]][version]
-[![Develop Version][badge-develop-version]][version]
 [![Build][badge-workflow]][workflow]
 [![License][badge-license]][license]
 
@@ -53,7 +52,6 @@ When an interaction is ran, the following information will be logged to the cons
 [zlib/libpng][license]
 
 [badge-stable-version]: https://img.shields.io/github/package-json/v/espimarisa/hibiki/main?color=blue "Shields.io badge showing the latest production version."
-[badge-develop-version]: https://img.shields.io/github/package-json/v/espimarisa/hibiki/develop?color=red "Shields.io badge showing the latest development version."
 [badge-license]: https://img.shields.io/badge/license-zlib-orange.svg "Shields.io badge displaying the zlib license."
 [badge-workflow]: https://img.shields.io/github/actions/workflow/status/espimarisa/hibiki/push.yml?branch=develop "Shields.io badge showing the latest workflow status."
 [discord_tos]: https://discord.com/terms "A link to Discord's Terms of Service."
