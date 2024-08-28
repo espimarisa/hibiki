@@ -211,11 +211,11 @@ export class PackageCommand extends HibikiCommand {
         const version = interaction.options.getString(this.options[1]!.options[1]!.name, false);
 
         // Gets the initial response
-        const response = await hibikiFetch(`${API_BASE_URL}/${encodeURIComponent(query)}`);
+        const response = await hibikiFetch(`${API_BASE_URL}/${encodeURIComponent(query.toLowerCase())}`);
 
         // Converts response; handles errors
         const body = await response?.json();
-        if (!(response || !body?.["dist-tags"]?.latest || body?.error)) {
+        if (!(response && body?.["dist-tags"]?.latest) || body?.error) {
           await sendErrorReply("commands:COMMAND_PACKAGE_NOTFOUND", interaction);
           return;
         }
