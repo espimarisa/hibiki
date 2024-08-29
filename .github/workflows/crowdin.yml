@@ -1,0 +1,41 @@
+name: Crowdin Action
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  synchronize-with-crowdin:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+
+      - name: Crowdin
+        uses: crowdin/github-action@v2.1.1
+        with:
+          push_translations: true
+          upload_sources: true
+          upload_translations: false
+          download_translations: true
+          skip_untranslated_strings: true
+          skip_untranslated_files: true
+          localization_branch_name: i18n
+          create_pull_request: true
+          commit_message: "i18n: add new translations"
+          pull_request_assignees: espimarisa
+          pull_request_reviewers: espimarisa
+          pull_request_title: "[i18n] New translations"
+          pull_request_labels: "i18n"
+          pull_request_body: "New Crowdin pull request with translations"
+          pull_request_base_branch_name: "main"
+        env:
+          # A classic GitHub Personal Access Token with the 'repo' scope selected (the user should have write access to the repository).
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+          # A numeric ID, found at https://crowdin.com/project/<projectName>/tools/api
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+
+          # Visit https://crowdin.com/settings#api-key to create this token
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
