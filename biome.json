@@ -2,18 +2,18 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 
   "files": {
-    "ignore": ["**/node_modules/*", "**/dist/*"],
+    "ignore": ["**/node_modules/*", "**/dist/*", "**/drizzle/*"],
     "ignoreUnknown": true
   },
   "formatter": {
-    "ignore": ["**/node_modules/*", "**/dist/*"],
+    "ignore": ["**/node_modules/*", "**/dist/*", "**/drizzle/*"],
     "enabled": true,
     "formatWithErrors": true,
     "lineWidth": 120,
     "indentStyle": "space"
   },
   "linter": {
-    "ignore": ["**/node_modules/*", "**/dist/*"],
+    "ignore": ["**/node_modules/*", "**/dist/*", "**/drizzle/*"],
     "enabled": true,
     "rules": {
       "complexity": {
