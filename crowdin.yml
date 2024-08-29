@@ -1,8 +1,0 @@
-files:
-  - source: /locales/en-US/*.json
-    translation: /locales/%locale%
-
-commit_message: "i18n: new %language% translations"
-append_commit_message: true
-project_id: CROWDIN_PROJECT_ID
-api_token: CROWDIN_PERSONAL_TOKEN
