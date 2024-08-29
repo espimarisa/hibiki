@@ -9,11 +9,15 @@
   "packageManager": "bun@1.1.26",
   "scripts": {
     "check": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "bun run db:generate && drizzle-kit studio",
     "deps:update": "bunx npm-check-updates --target latest --root --upgrade",
-    "dev": "NODE_ENV=development bun run --hot ./src/index.ts",
+    "dev": "NODE_ENV=development bun run db:generate && bun run db:push && bun run --hot ./src/index.ts",
     "lint": "biome check .",
     "lint:fix": "biome check --apply .",
-    "start": "NODE_ENV=production bun run ./src/index.ts",
+    "start": "NODE_ENV=production bun run db:generate && bun run ./src/index.ts",
     "test": "bun run check && bun run lint",
     "format": "biome format --write ."
   },
@@ -24,16 +28,20 @@
     "date-fns": "^3.6.0",
     "discord-api-types": "^0.37.98",
     "discord.js": "^14.15.3",
+    "drizzle-orm": "^0.33.0",
     "i18next": "^23.14.0",
     "i18next-fs-backend": "^2.3.2",
     "pino": "^9.3.2",
     "pino-pretty": "^11.2.2",
+    "postgres": "^3.4.4",
     "tslib": "^2.7.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
     "bun-types": "^1.1.26",
+    "drizzle-kit": "^0.24.2",
     "typescript": "^5.5.4"
-  }
+  },
+  "trustedDependencies": ["@biomejs/biome", "esbuild"]
 }

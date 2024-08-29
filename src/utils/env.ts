@@ -25,6 +25,13 @@ const envSchema = z.object({
   API_GOOGLEMAPS_KEY: z.string().trim().optional(),
   API_GITHUB_PAT: z.string().trim().optional(),
 
+  // PostgreSQL options
+  POSTGRES_USER: z.string().trim().min(1, { message: "Missing PostgreSQL user" }),
+  POSTGRES_PASSWORD: z.string().trim().min(1, { message: "Missing PostgreSQL password" }),
+  POSTGRES_PORT: z.string().trim().min(1, { message: "Missing PostgreSQL port" }),
+  POSTGRES_HOST: z.string().trim().min(1, { message: "Missing PostgreSQL host" }),
+  POSTGRES_DB: z.string().trim().min(1, { message: "Missing PostgreSQL DB" }),
+
   // Node/Bun stuff
   NODE_ENV: z.string().default("DEVELOPMENT"),
   npm_package_name: z.string().default("develop"),

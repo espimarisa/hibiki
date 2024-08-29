@@ -1,6 +1,6 @@
 {
   "exclude": ["./dist/*", "node_modules", "build/*"],
-  "include": ["./src/**/*", "./locales/*"],
+  "include": ["./src/**/*", "./locales/*", "drizzle.config.ts"],
 
   "compilerOptions": {
     "paths": {
@@ -8,6 +8,7 @@
       "$bot/*": ["./src/*"],
       "$classes/*": ["./src/classes/*"],
       "$commands/*": ["./src/commands/*"],
+      "$db/*": ["./src/db/*"],
       "$events/*": ["./src/events/*"],
       "$typings/*": ["./src/typings/*"],
       "$utils/*": ["./src/utils/*"]
@@ -52,7 +53,7 @@
     "resolveJsonModule": true,
     "resolvePackageJsonExports": true,
     "resolvePackageJsonImports": true,
-    "rootDir": "./src",
+    "rootDir": ".",
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
