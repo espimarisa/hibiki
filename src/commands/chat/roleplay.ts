@@ -1,9 +1,9 @@
 import { HibikiCommand, type HibikiCommandOptions } from "$classes/Command.ts";
 import { HibikiColors } from "$utils/constants.ts";
+import { sendErrorReply } from "$utils/error.ts";
 import { t } from "$utils/i18n.ts";
 import { ApplicationCommandOptionType } from "discord-api-types/v10";
 import type { ChatInputCommandInteraction } from "discord.js";
-import { sendErrorReply } from "../utils/error";
 
 export class RoleplayCommand extends HibikiCommand {
   options = [

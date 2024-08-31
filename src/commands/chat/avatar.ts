@@ -2,9 +2,11 @@ import { type APIOption, HibikiCommand, type HibikiCommandOptions } from "$class
 import { HibikiColors } from "$utils/constants.ts";
 import { sendErrorReply } from "$utils/error.ts";
 import { t } from "$utils/i18n.ts";
-import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, type ChatInputCommandInteraction } from "discord.js";
 
 export class AvatarCommand extends HibikiCommand {
+  interactionType = ApplicationCommandType.User;
+
   options = [
     {
       // The account to get an avatar from

@@ -1,6 +1,6 @@
 {
   "exclude": ["./dist/*", "node_modules", "build/*"],
-  "include": ["./src/**/*", "./locales/*", "drizzle.config.ts"],
+  "include": ["./src/**/**/*", "./locales/*", "drizzle.config.ts"],
 
   "compilerOptions": {
     "paths": {
