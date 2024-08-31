@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import path from "node:path";
 import type { HibikiClient } from "$classes/Client.ts";
 import type { HibikiCommand, RESTCommandOptions } from "$classes/Command.ts";
 import type { HibikiEvent } from "$classes/Event.ts";
@@ -8,7 +9,12 @@ import { env } from "$utils/env.ts";
 import { getLocalizationsForKey } from "$utils/i18n.ts";
 import { logger } from "$utils/logger.ts";
 import { REST } from "@discordjs/rest";
-import { type APIApplicationCommandOption, ApplicationCommandOptionType, Routes } from "discord-api-types/v10";
+import {
+  type APIApplicationCommandOption,
+  ApplicationCommandOptionType,
+  ApplicationCommandType,
+  Routes,
+} from "discord-api-types/v10";
 
 const optionRegex = /COMMAND_(\w+)_OPTION_(\d+)_(\w+)/;
 const subCommandOptionNameRegex = /COMMAND_(\w+)_SUBCOMMAND_(\d+)_OPTION_(\d+)_NAME/;
@@ -19,6 +25,12 @@ export async function loadCommands(bot: HibikiClient, directory: string) {
   const files = await fs.readdir(directory, { withFileTypes: true, encoding: "utf8" });
 
   for (const file of files) {
+    if (file.isDirectory()) {
+      // If there is a subfolder, re-run it inside of it
+      await loadCommands(bot, path.join(directory, file.name));
+      continue;
+    }
+
     // Only attempt to load modules; don't load mapping files
     if (file.name.endsWith(".map") || !MODULE_FILE_TYPE_REGEX.test(file.name)) {
       continue;
@@ -240,15 +252,29 @@ export async function generateInteractionRESTData(bot: HibikiClient) {
 
     // Pushes the REST-compatible data to the array to return
     RESTCommandData.push({
+      // Command name
       name: command.name,
-      description: command.description,
       name_localizations: command.name_localizations ?? {},
-      description_localizations: command.description_localizations ?? {},
-      options: command.options as APIApplicationCommandOption[],
-      type: command.interactionType,
-      // TODO: Troubleshoot image embeds/thumbnails in DMs
+
+      // User commands cannot have descriptions
+      description: command.interactionType === ApplicationCommandType.User ? undefined : command.description,
+      description_localizations:
+        command.interactionType === ApplicationCommandType.User ? undefined : command.description_localizations ?? {},
+
+      // User commands cannot have options
+      options:
+        command.interactionType === ApplicationCommandType.User
+          ? undefined
+          : (command.options as APIApplicationCommandOption[]),
+
+      // Command type; default to chat input
+      type: command.interactionType ?? ApplicationCommandType.ChatInput,
+
+      // Default to server-only support, but allow user installations if opted in
       integration_types: command.userInstallable ? [0, 1] : [0],
       contexts: command.userInstallable ? [0, 1, 2] : [0],
+
+      /** @deprecated */
       nsfw: command.nsfw,
     });
   }
