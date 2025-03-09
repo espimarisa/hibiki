@@ -1,46 +1,45 @@
 {
-  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 
-  "files": {
-    "ignore": ["**/node_modules/*", "**/dist/*", "**/drizzle/*"],
-    "ignoreUnknown": true
-  },
-  "formatter": {
-    "ignore": ["**/node_modules/*", "**/dist/*", "**/drizzle/*"],
-    "enabled": true,
-    "formatWithErrors": true,
-    "lineWidth": 120,
-    "indentStyle": "space"
-  },
-  "linter": {
-    "ignore": ["**/node_modules/*", "**/dist/*", "**/drizzle/*"],
-    "enabled": true,
-    "rules": {
-      "complexity": {
-        "noExcessiveCognitiveComplexity": "off"
-      },
-      "correctness": {
-        "noNodejsModules": "off"
-      },
-      "all": true,
-      "style": {
-        "noNonNullAssertion": "off",
-        "useFilenamingConvention": "off",
-        "useNamingConvention": "off",
-        "noParameterProperties": "off"
-      }
-    }
-  },
-  "organizeImports": {
-    "ignore": ["**/node_modules/*", "**/dist/*"],
-    "enabled": true
-  },
-  "javascript": {
-    "globals": ["Bun", "JSX"]
-  },
-  "json": {
-    "parser": {
-      "allowComments": true
-    }
-  }
+	"files": {
+		"ignore": ["**/node_modules/*"],
+		"ignoreUnknown": true
+	},
+	"formatter": {
+		"ignore": ["**/node_modules/*"],
+		"enabled": true,
+		"formatWithErrors": true,
+		"lineWidth": 80,
+		"indentStyle": "tab"
+	},
+	"linter": {
+		"ignore": ["**/node_modules/*"],
+		"enabled": true,
+		"rules": {
+			"complexity": {
+				"noExcessiveCognitiveComplexity": "off"
+			},
+			"correctness": {
+				"noNodejsModules": "off"
+			},
+			"all": true,
+			"style": {
+				"noNonNullAssertion": "off",
+				"noParameterProperties": "off",
+				"noDefaultExport": "off"
+			}
+		}
+	},
+	"organizeImports": {
+		"ignore": ["**/node_modules/*"],
+		"enabled": true
+	},
+	"javascript": {
+		"globals": ["Bun", "JSX"]
+	},
+	"json": {
+		"parser": {
+			"allowComments": true
+		}
+	}
 }

@@ -1,12 +1,19 @@
-# EditorConfig is awesome: https://EditorConfig.org
-
-# top-most EditorConfig file
-root = true
+root = true # Top-most editorconfig file
 
 [*]
-indent_style = space
-indent_size = 2
-end_of_line = lf
-charset = utf-8
-trim_trailing_whitespace = true
-insert_final_newline = true
+charset = utf-8 # Always use UTF-8
+end_of_line = lf # Always use lf endings
+insert_final_newline = true # Always insert a final newline
+indent_size = 2 # Indentation size of 2 is preferred
+indent_style = tab # Tabs are usually preferred
+max_line_length = 80 # Max line length of 80 is generally preferred
+trim_trailing_whitespace = true # Always trim trailing whitepsace
+
+# PEP 8 guidelines for Python
+[*.py,*.yml,*.yaml]
+indent_size = 4 # PEP-8 wants the use of 4 per indent
+indent_style = space # PEP-8 wants the use of spaces
+
+# Checkstyle guidelines for Java
+[{*.java}]
+indent_size = 3 # Checkstyle requires a level of 3

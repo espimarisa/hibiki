@@ -10,13 +10,14 @@ jobs:
         os: [ubuntu-latest]
     steps:
       # Checks out git
-      - uses: actions/checkout@v4.1.7
+      - name: Checkout
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       # Sets Bun.js up
-      - name: Use Bun.js
-        uses: oven-sh/setup-bun@v2.0.1
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
