@@ -1,45 +1,157 @@
 {
-	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-
+	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
 	"files": {
-		"ignore": ["**/node_modules/*"],
+		"ignore": [
+			"**/node_modules/*",
+			"**/_site/*"
+		],
 		"ignoreUnknown": true
 	},
 	"formatter": {
-		"ignore": ["**/node_modules/*"],
 		"enabled": true,
-		"formatWithErrors": true,
+		"attributePosition": "multiline",
+		"bracketSpacing": true,
+		"formatWithErrors": false,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineEnding": "lf",
 		"lineWidth": 80,
-		"indentStyle": "tab"
+		"useEditorconfig": true
 	},
 	"linter": {
-		"ignore": ["**/node_modules/*"],
 		"enabled": true,
 		"rules": {
+			"recommended": true,
 			"complexity": {
-				"noExcessiveCognitiveComplexity": "off"
+				"noUselessStringConcat": "warn",
+				"noUselessUndefinedInitialization": "warn",
+				"noVoid": "error",
+				"useDateNow": "warn",
+				"useSimplifiedLogicExpression": "warn"
 			},
 			"correctness": {
-				"noNodejsModules": "off"
+				"noConstantMathMinMaxClamp": "error",
+				"noInvalidNewBuiltin": "error",
+				"noNewSymbol": "error",
+				"noUndeclaredVariables": "warn",
+				"noUnusedFunctionParameters": "warn",
+				"noUnusedImports": "warn",
+				"noUnusedPrivateClassMembers": "warn",
+				"noUnusedVariables": "warn",
+				"useArrayLiterals": "error",
+				"useImportExtensions": "warn"
 			},
-			"all": true,
+			"performance": {
+				"noBarrelFile": "warn",
+				"noDelete": "error",
+				"noReExportAll": "warn",
+				"useTopLevelRegex": "error"
+			},
 			"style": {
-				"noNonNullAssertion": "off",
-				"noParameterProperties": "off",
-				"noDefaultExport": "off"
+				"noArguments": "warn",
+				"noCommaOperator": "warn",
+				"noDoneCallback": "error",
+				"noImplicitBoolean": "warn",
+				"noInferrableTypes": "error",
+				"noNegationElse": "error",
+				"noParameterAssign": "error",
+				"noRestrictedGlobals": "error",
+				"noShoutyConstants": "warn",
+				"noUnusedTemplateLiteral": "error",
+				"noUselessElse": "error",
+				"noYodaExpression": "error",
+				"useBlockStatements": "warn",
+				"useCollapsedElseIf": "warn",
+				"useConsistentArrayType": "error",
+				"useConsistentBuiltinInstantiation": "error",
+				"useConst": "error",
+				"useDefaultParameterLast": "error",
+				"useDefaultSwitchClause": "error",
+				"useEnumInitializers": "error",
+				"useExplicitLengthCheck": "error",
+				"useExponentiationOperator": "error",
+				"useExportType": "error",
+				"useFilenamingConvention": "off",
+				"useForOf": "warn",
+				"useFragmentSyntax": "warn",
+				"useImportType": "error",
+				"useNamingConvention": "off",
+				"useNodeAssertStrict": "error",
+				"useNodejsImportProtocol": "error",
+				"useNumberNamespace": "error",
+				"useNumericLiterals": "warn",
+				"useSelfClosingElements": "warn",
+				"useShorthandAssign": "error",
+				"useShorthandFunctionType": "error",
+				"useSingleVarDeclarator": "error",
+				"useTemplate": "warn",
+				"useThrowNewError": "error"
+			},
+			"suspicious": {
+				"noConsole": "info",
+				"noEmptyBlock": "error",
+				"noEmptyBlockStatements": "error",
+				"noEvolvingTypes": "error",
+				"noMisplacedAssertion": "error",
+				"noReactSpecificProps": "warn",
+				"noSkippedTests": "warn",
+				"useAwait": "warn",
+				"useErrorMessage": "warn",
+				"useNumberToFixedDigitsArgument": "error"
 			}
 		}
 	},
-	"organizeImports": {
-		"ignore": ["**/node_modules/*"],
-		"enabled": true
+	"css": {
+		"formatter": {
+			"enabled": true,
+			"indentStyle": "tab",
+			"indentWidth": 2,
+			"lineEnding": "lf",
+			"lineWidth": 80,
+			"quoteStyle": "double"
+		},
+		"parser": {
+			"allowWrongLineComments": false,
+			"cssModules": true
+		}
 	},
 	"javascript": {
-		"globals": ["Bun", "JSX"]
+		"formatter": {
+			"enabled": true,
+			"arrowParentheses": "always",
+			"attributePosition": "multiline",
+			"bracketSameLine": true,
+			"bracketSpacing": true,
+			"indentStyle": "tab",
+			"indentWidth": 2,
+			"jsxQuoteStyle": "double",
+			"lineEnding": "lf",
+			"lineWidth": 80,
+			"quoteProperties": "asNeeded",
+			"quoteStyle": "double",
+			"semicolons": "always",
+			"trailingCommas": "all"
+		},
+		"globals": [
+			"Bun",
+			"Node",
+			"JSX"
+		]
 	},
 	"json": {
+		"formatter": {
+			"enabled": true,
+			"indentStyle": "tab",
+			"indentWidth": 2,
+			"lineEnding": "lf",
+			"lineWidth": 2,
+			"trailingCommas": "none"
+		},
 		"parser": {
 			"allowComments": true
 		}
+	},
+	"organizeImports": {
+		"enabled": true
 	}
 }

@@ -1,8 +1,25 @@
 {
-	"exclude": ["./dist/*", "node_modules"],
-	"include": ["./src/**/**/*"],
+	"exclude": [
+		"./dist/*",
+		"node_modules"
+	],
+	"include": [
+		"./src/**/**/*"
+	],
 
 	"compilerOptions": {
+		"paths": {
+			"$classes/*": [
+				"./classes/*"
+			],
+			"$utils/*": [
+				"./utils/*"
+			],
+			"$root/*": [
+				"./*"
+			]
+		},
+
 		"allowArbitraryExtensions": true,
 		"allowImportingTsExtensions": true,
 		"allowJs": true,
@@ -23,7 +40,11 @@
 		"inlineSources": false,
 		"isolatedModules": true,
 		"jsx": "react-jsx",
-		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"lib": [
+			"ESNext",
+			"DOM",
+			"DOM.Iterable"
+		],
 		"module": "Node16",
 		"moduleResolution": "node16",
 		"noEmit": true,
@@ -42,12 +63,14 @@
 		"resolveJsonModule": true,
 		"resolvePackageJsonExports": true,
 		"resolvePackageJsonImports": true,
-		"rootDir": "./src",
+		"rootDir": ".",
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
 		"target": "ESNext",
-		"types": ["bun-types"],
+		"types": [
+			"bun-types"
+		],
 		"verbatimModuleSyntax": true
 	}
 }

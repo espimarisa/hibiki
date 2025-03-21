@@ -1,6 +1,6 @@
 # hibiki
 
-discord app providing informational tools, utilities, and other bits and pieces
+discord app providing informational tools and utilities
 
 # license
 [zlib/libpng](LICENSE)

@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/c++,lua,vue,deno,java,node,ruby,rust,linux,macos,react,vuejs,csharp,jekyll,kotlin,python,svelte,windows,visualstudio,visualstudiocode,archlinuxpackages,latex
-# Edit at https://www.toptal.com/developers/gitignore?templates=c++,lua,vue,deno,java,node,ruby,rust,linux,macos,react,vuejs,csharp,jekyll,kotlin,python,svelte,windows,visualstudio,visualstudiocode,archlinuxpackages,latex
+# Created by https://www.toptal.com/developers/gitignore/api/c++,lua,vue,deno,java,node,ruby,rust,latex,linux,macos,react,vuejs,csharp,jekyll,kotlin,python,svelte,windows,visualstudio,visualstudiocode,archlinuxpackages,perl,qt
+# Edit at https://www.toptal.com/developers/gitignore?templates=c++,lua,vue,deno,java,node,ruby,rust,latex,linux,macos,react,vuejs,csharp,jekyll,kotlin,python,svelte,windows,visualstudio,visualstudiocode,archlinuxpackages,perl,qt
 
 ### ArchLinuxPackages ###
 *.tar
@@ -12,8 +12,6 @@
 *.log
 *.log.*
 *.sig
-
-pkg/
 
 ### C++ ###
 # Prerequisites
@@ -1004,6 +1002,45 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
+### Perl ###
+!Build/
+.last_cover_stats
+/META.yml
+/META.json
+/MYMETA.*
+*.pm.tdy
+*.bs
+
+# Devel::Cover
+cover_db/
+
+# Devel::NYTProf
+nytprof.out
+
+# Dist::Zilla
+/.build/
+
+# Module::Build
+_build/
+Build
+Build.bat
+
+# Module::Install
+inc/
+
+# ExtUtils::MakeMaker
+/blib/
+/_eumm/
+/*.gz
+/Makefile
+/Makefile.old
+/MANIFEST.bak
+/pm_to_blib
+/*.zip
+
+# Carton
+local/
+
 ### Python ###
 # Byte-compiled / optimized / DLL files
 *.py[cod]
@@ -1170,6 +1207,52 @@ poetry.toml
 
 # LSP config files
 pyrightconfig.json
+
+### Qt ###
+# C++ objects and libs
+
+# Qt-es
+object_script.*.Release
+object_script.*.Debug
+*_plugin_import.cpp
+/.qmake.cache
+/.qmake.stash
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qmlc
+*.jsc
+Makefile*
+*build-*
+*.qm
+*.prl
+
+# Qt unit tests
+target_wrapper.*
+
+# QtCreator
+*.autosave
+
+# QtCreator Qml
+*.qmlproject.user
+*.qmlproject.user.*
+
+# QtCreator CMake
+CMakeLists.txt.user*
+
+# QtCreator 4.8< compilation database
+compile_commands.json
+
+# QtCreator local machine specific files for imported projects
+*creator.user*
+
+*_qmlcache.qrc
 
 ### react ###
 .DS_*
@@ -1488,4 +1571,4 @@ $RECYCLE.BIN/
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
-# End of https://www.toptal.com/developers/gitignore/api/c++,lua,vue,deno,java,node,ruby,rust,linux,macos,react,vuejs,csharp,jekyll,kotlin,python,svelte,windows,visualstudio,visualstudiocode,archlinuxpackages,latex
+# End of https://www.toptal.com/developers/gitignore/api/c++,lua,vue,deno,java,node,ruby,rust,latex,linux,macos,react,vuejs,csharp,jekyll,kotlin,python,svelte,windows,visualstudio,visualstudiocode,archlinuxpackages,perl,qt
