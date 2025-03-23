@@ -6,7 +6,15 @@
 
 import { bot } from "$root/bot.ts";
 import { importDirectory } from "$utils/loader.ts";
+import { env } from "./utils/env.ts";
+import { sentryInit } from "./utils/sentry.ts";
 
+// Starts Sentry if a DSN is provided
+if (env.SENTRY_DSN && env.SENTRY_DSN.length > 0) {
+	sentryInit();
+}
+
+// Starts Discordeno
 bot.logger.info("Starting discordeno...");
 
 // Loads commands

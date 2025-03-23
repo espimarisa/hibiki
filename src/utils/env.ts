@@ -16,6 +16,9 @@ const envSchema = z.object({
 	// Discord testing guild ID to log to/deploy local commands to. Optional.
 	DISCORD_GUILD_ID: z.string().trim().optional(),
 
+	// Sentry DSN for submitting errors to. Optional.
+	SENTRY_DSN: z.string().trim().optional(),
+
 	// Bun environment variables
 	NODE_ENV: z.string().default("DEVELOPMENT"),
 	npm_package_name: z.string().default("develop"),
