@@ -9,6 +9,8 @@
 	"packageManager": "bun@1.2.5",
 	"scripts": {
 		"check": "tsc --noEmit",
+		"deploy": "NODE_ENV=production bun run ./src/register.ts",
+		"deploy:dev": "NODE_ENV=development bun run ./src/register.ts",
 		"dev": "NODE_ENV=development bun run --hot ./src/index.ts",
 		"lint": "biome check .",
 		"lint:fix": "biome check --apply .",
@@ -20,6 +22,7 @@
 		"@discordeno/bot": "^21.0.0",
 		"@discordeno/types": "^21.0.0",
 		"dd-cache-proxy": "^2.6.0",
+		"i18xs": "^1.5.4",
 		"zod": "^3.24.2"
 	},
 	"devDependencies": {

@@ -7,8 +7,7 @@
         "@discordeno/bot": "^21.0.0",
         "@discordeno/types": "^21.0.0",
         "dd-cache-proxy": "^2.6.0",
-        "discord-api-types": "^0.37.119",
-        "discordeno": "^21.0.0",
+        "i18xs": "^1.5.4",
         "zod": "^3.24.2",
       },
       "devDependencies": {
@@ -58,11 +57,9 @@
 
     "dd-cache-proxy": ["dd-cache-proxy@2.6.0", "", { "peerDependencies": { "@discordeno/bot": "^21.0.0" } }, "sha512-YFrx1eelrqotBiJmDeIsCJuBiKqNYx26M/2m9Bk0G7v/GeTyV3DllY5CIPgyFZvQamu4g0MZ6gd9tca6rapKfQ=="],
 
-    "discord-api-types": ["discord-api-types@0.37.119", "", {}, "sha512-WasbGFXEB+VQWXlo6IpW3oUv73Yuau1Ig4AZF/m13tXcTKnMpc/mHjpztIlz4+BM9FG9BHQkEXiPto3bKduQUg=="],
-
-    "discordeno": ["discordeno@21.0.0", "", { "dependencies": { "@discordeno/bot": "21.0.0", "@discordeno/gateway": "21.0.0", "@discordeno/rest": "21.0.0", "@discordeno/types": "21.0.0", "@discordeno/utils": "21.0.0" } }, "sha512-NX1x5GtHbrNhpeahfHw+2A6/3bpec2obNjIZ/mkBUGWcpLWG/ZgJSIkkdQIxcrnQ3loQooo/5IpBucnFTiGATA=="],
-
     "fzstd": ["fzstd@0.1.1", "", {}, "sha512-dkuVSOKKwh3eas5VkJy1AW1vFpet8TA/fGmVA5krThl8YcOVE/8ZIoEA1+U1vEn5ckxxhLirSdY837azmbaNHA=="],
+
+    "i18xs": ["i18xs@1.5.4", "", { "peerDependencies": { "typescript": "^5.0.0" } }, "sha512-fG9lLFMx27OBj+Y7RnfCnFl9dt/ApczKUwZJMEyiw1uOvaiRRmOovseTzHWwVG0GWu78MAIWvEYILSDWiMQt3g=="],
 
     "typescript": ["typescript@5.8.2", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ=="],
 

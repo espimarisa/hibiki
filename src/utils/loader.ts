@@ -1,6 +1,6 @@
 /**
  * @file loader
- * @description Utilities for loading and registering Hibiki modules.
+ * @description Utilities for loading and registering commands and events.
  * @author Espi Marisa <contact@espi.me>
  */
 
@@ -41,12 +41,22 @@ export async function importDirectory(directory: PathLike) {
 }
 
 /**
- * Registeres an individual Hibiki command in-memory.
+ * Registers an individual Hibiki command in-memory.
  * @param command The commaind to load.
  */
 
 export function createHibikiCommand(command: Command) {
 	commands.set(command.name, command);
+}
+
+/**
+ * Generates a command's filename from it's path.
+ * @param fileName The filename to parse and turn into a valid command name.
+ * @returns A string with a valid command name based on the filename.
+ */
+
+export function setCommandName(fileName: string) {
+	return fileName.replace(REGEX_MODULE_FILETYPE, "");
 }
 
 /**

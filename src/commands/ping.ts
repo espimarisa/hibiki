@@ -4,12 +4,15 @@
  * @author Espi Marisa <contact@espi.me>
  */
 
-import { createHibikiCommand } from "$utils/loader.ts";
+import { i18xs } from "$root/utils/i18nxs.ts";
+import { HibikiColors } from "$utils/constants.ts";
+import { createHibikiCommand, setCommandName } from "$utils/loader.ts";
+import { createEmbeds, snowflakeToTimestamp } from "@discordeno/bot";
 import { ApplicationCommandTypes } from "@discordeno/types";
 
 createHibikiCommand({
-	name: "ping",
-	description: "check latency bla bla this is a test",
+	name: setCommandName(import.meta.file),
+	description: i18xs.t("commands.COMMAND_PING_DESCRIPTION"),
 	type: ApplicationCommandTypes.ChatInput,
 
 	/**
@@ -18,6 +21,18 @@ createHibikiCommand({
 	 */
 
 	async runCommand(interaction) {
-		await interaction.respond("hi from discordeno");
+		// Calculates the current latency
+		const ping = Date.now() - snowflakeToTimestamp(interaction.id);
+
+		// Creates the embed
+		const embeds = createEmbeds()
+			.setTitle(i18xs.t("commands.COMMAND_PING_TITLE"))
+			.setDescription(i18xs.t("commands.COMMAND_PING_LATENCY", { ping: ping }))
+			.setColor(HibikiColors.GENERAL);
+
+		// Sends the embed
+		await interaction.respond({
+			embeds,
+		});
 	},
 });
