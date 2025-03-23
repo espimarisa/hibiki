@@ -1,42 +1,59 @@
 /**
  * @file hibiki
- * @description Initializes a Hibiki client instance
- * @module hibiki
+ * @description Creates and manages a proxyCacheInstance and Hibiki client.
+ * @author Espi Marisa <contact@espi.me>
  */
 
-import { HibikiClient } from "$classes/HibikiClient.ts";
-import { GatewayIntentBits, Options } from "discord.js";
+import { env } from "$utils/env.ts";
+import { Intents, createBot } from "@discordeno/bot";
+import { createProxyCache } from "dd-cache-proxy";
 
-const subscribedIntents = [
-	// Required for guild, channel, and role objects
-	GatewayIntentBits.Guilds,
+// Creates a new bot instance
+const rawBot = createBot({
+	intents: Intents.Guilds,
+	token: env.DISCORD_TOKEN,
 
-	// PRIVILEGED: Required for getting guild member data
-	GatewayIntentBits.GuildMembers,
-] satisfies GatewayIntentBits[];
-
-new HibikiClient({
-	// Cache sweeping options
-	sweepers: {
-		// Use the default sweeper settings
-		...Options.DefaultSweeperSettings,
-	},
-
-	// Caching options
-	makeCache: Options.cacheWithLimits({
-		// Use the default settings
-		...Options.DefaultMakeCacheSettings,
-
-		// Only cache up to 200 members at once
-		GuildMemberManager: {
-			maxSize: 200,
-			keepOverLimit: (member) => member.id === member.client.user.id,
+	// Data to opt-in to
+	desiredProperties: {
+		// Guild properties
+		guild: {
+			id: true,
+			name: true,
 		},
+		// Member properties
+		member: {
+			id: true,
+			user: true,
+		},
+		// Interaction properties
+		interaction: {
+			data: true,
+			guild: true,
+			id: true,
+			member: true,
+			token: true,
+			type: true,
+		},
+		// User properties
+		user: {
+			discriminator: true,
+			id: true,
+			username: true,
+		},
+	},
+});
 
-		// Do not cache reactions
-		ReactionManager: 0,
-	}),
-
-	// Intents to subscribe to
-	intents: subscribedIntents,
-}).init();
+// Creates a new proxy cache instance
+export const bot = createProxyCache(rawBot, {
+	// Cache options
+	cacheInMemory: {
+		default: false,
+		guild: true,
+	},
+	// Properties to cache
+	desiredProps: {
+		guild: ["id", "members", "name"],
+		member: ["id", "user"],
+		user: ["discriminator", "id", "tag", "username"],
+	},
+});

@@ -1,6 +1,6 @@
 /**
  * @file constants
- * @description Global variables and strings used throughout the app
+ * @description Global variables used throughout Hibiki.
  * @author Espi Marisa <contact@espi.me>
  */
 

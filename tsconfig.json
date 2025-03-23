@@ -9,14 +9,11 @@
 
 	"compilerOptions": {
 		"paths": {
-			"$classes/*": [
-				"./classes/*"
+			"$root/*": [
+				"./*"
 			],
 			"$utils/*": [
 				"./utils/*"
-			],
-			"$root/*": [
-				"./*"
 			]
 		},
 
@@ -70,7 +67,6 @@
 		"target": "ESNext",
 		"types": [
 			"bun-types"
-		],
-		"verbatimModuleSyntax": true
+		]
 	}
 }

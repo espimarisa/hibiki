@@ -1,6 +1,6 @@
 /**
  * @file env
- * @description Parses and validates environment variables
+ * @description Parses and validates environment variables.
  * @author Espi Marisa <contact@espi.me>
  */
 
@@ -11,7 +11,10 @@ const envSchema = z.object({
 	DISCORD_TOKEN: z.string().trim().min(1, { message: "Missing Discord token" }),
 
 	// Discord statuses to cycle through. Optional.
-	DISCORD_STATUSES: z.string().trim(),
+	DISCORD_STATUSES: z.string().trim().optional(),
+
+	// Discord testing guild ID to log to/deploy local commands to. Optional.
+	DISCORD_GUILD_ID: z.string().trim().optional(),
 
 	// Bun environment variables
 	NODE_ENV: z.string().default("DEVELOPMENT"),
