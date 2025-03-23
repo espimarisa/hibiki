@@ -4,7 +4,7 @@
  * @author Espi Marisa <contact@espi.me>
  */
 
-import { bot } from "$root/hibiki.ts";
+import { bot } from "$root/bot.ts";
 import { env } from "$utils/env.ts";
 import { importDirectory, registerGatewayCommands } from "$utils/loader.ts";
 
@@ -16,7 +16,7 @@ await importDirectory("src/commands");
 
 // Registers commands to the gateway
 bot.logger.info("Registering commands...");
-await registerGatewayCommands(isDevelopment);
+await registerGatewayCommands();
 
 // Log where we registered commands to
 isDevelopment

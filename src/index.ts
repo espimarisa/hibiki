@@ -4,7 +4,7 @@
  * @author Espi Marisa <contact@espi.me>
  */
 
-import { bot } from "$root/hibiki.ts";
+import { bot } from "$root/bot.ts";
 import { importDirectory } from "$utils/loader.ts";
 
 bot.logger.info("Starting discordeno...");

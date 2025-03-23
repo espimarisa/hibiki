@@ -14,6 +14,7 @@ createHibikiCommand({
 	name: setCommandName(import.meta.file),
 	description: i18xs.t("commands.COMMAND_PING_DESCRIPTION"),
 	type: ApplicationCommandTypes.ChatInput,
+	options: [],
 
 	/**
 	 * Runs the ping command.

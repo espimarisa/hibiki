@@ -4,9 +4,12 @@
  * @author Espi Marisa <contact@espi.me>
  */
 
-import { bot } from "$root/hibiki.ts";
+import { bot } from "$root/bot.ts";
 import { commands } from "$utils/loader.ts";
 import { InteractionTypes } from "@discordeno/types";
+import { createLogger } from "@discordeno/utils";
+
+const logger = createLogger({ name: "INTERACTION" });
 
 /**
  * Runs an interaction when the interactionCommand event is fired.
@@ -29,15 +32,28 @@ bot.events.interactionCreate = async (interaction) => {
 
 	// Don't run commands that are invalid; weird edge-case
 	if (!command) {
-		bot.logger.error(`Command ${interaction.data.name} not found`);
+		logger.error(`Command ${interaction.data.name} not found`);
 		return;
 	}
+
+	// Gets guild and user data
+	const guild = interaction.guild
+		? await bot.helpers.getGuild(interaction.guild.id)
+		: undefined;
+	const user = interaction.member
+		? await bot.helpers.getUser(interaction.member.id)
+		: undefined;
+
+	// Logs when someone runs a command
+	const guildInfo = guild ? `${guild.name}/${guild.id}` : "unknown/unknown";
+	const userInfo = user ? `${user.username}/${user.id}` : "unknown/unknown";
+	logger.info(`${userInfo} ran ${command.name} in ${guildInfo}`);
 
 	// Executes the command
 	try {
 		await command.runCommand(interaction);
 	} catch (error) {
-		bot.logger.error(`Error while running ${command.name}:`);
+		logger.error(`Error while running ${command.name}:`);
 		throw new Error(Bun.inspect(error));
 	}
 };

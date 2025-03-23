@@ -4,7 +4,7 @@
  * @author Espi Marisa <contact@espi.me>
  */
 
-import type { bot } from "$root/hibiki.ts";
+import type { bot } from "$root/bot.ts";
 import type {
 	ApplicationCommandOption,
 	ApplicationCommandTypes,
@@ -14,7 +14,7 @@ import type {
  * A Hibiki command.
  */
 
-export interface Command {
+export interface HibikiCommand {
 	// The command name. Use i18n to get it.
 	name: string;
 
@@ -26,7 +26,7 @@ export interface Command {
 
 	// Command options.
 	// TODO: Localization.
-	options?: ApplicationCommandOption[];
+	options: ApplicationCommandOption[];
 
 	/**
 	 * Runs a Hibiki command.

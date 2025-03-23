@@ -5,14 +5,17 @@
  */
 
 import { readdir } from "node:fs/promises";
-import { bot } from "$root/hibiki.ts";
-import type { Command } from "$root/utils/typings.ts";
+import { bot } from "$root/bot.ts";
+import type { HibikiCommand } from "$root/utils/typings.ts";
 import { REGEX_MODULE_FILETYPE } from "$utils/constants.ts";
 import { env } from "$utils/env.ts";
-import { Collection, logger } from "@discordeno/bot";
+import { Collection } from "@discordeno/bot";
+import { createLogger } from "@discordeno/utils";
 import type { PathLike } from "bun";
 
-export const commands = new Collection<string, Command>();
+const logger = createLogger({ name: "LOADER" });
+
+export const commands = new Collection<string, HibikiCommand>();
 
 /**
  * Imports an entire directory.
@@ -45,7 +48,7 @@ export async function importDirectory(directory: PathLike) {
  * @param command The commaind to load.
  */
 
-export function createHibikiCommand(command: Command) {
+export function createHibikiCommand(command: HibikiCommand) {
 	commands.set(command.name, command);
 }
 
@@ -61,7 +64,7 @@ export function setCommandName(fileName: string) {
 
 /**
  * Registers an array of commands to the Discord gateway.
- * @param guild Whether or not to register guild-only commands.
+ * @param scope Whether or not to register commands to one guild or globally.
  */
 
 export async function registerGatewayCommands(guild = false) {
@@ -73,6 +76,7 @@ export async function registerGatewayCommands(guild = false) {
 		}
 
 		try {
+			// TODO: Parse this data
 			await bot.helpers.upsertGuildApplicationCommands(
 				env.DISCORD_GUILD_ID,
 				commands.array(),
