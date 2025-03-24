@@ -40,7 +40,7 @@ export async function cycleStatuses(statuses: string[]) {
 
 	// Only run a loop if there is more than 1 status
 	if (statuses.length > 1) {
-		// Cycle through each status every 5 minutes
-		setInterval(cycleStatuses, 300000, statuses);
+		// Cycle through each status every 10 minutes
+		setInterval(cycleStatuses, 600000, statuses);
 	}
 }
