@@ -1,5 +1,5 @@
 {
 	"COMMAND_PING_DESCRIPTION": "Checks Hibiki's current latency.",
 	"COMMAND_PING_TITLE": "🏓 Pong!",
-	"COMMAND_PING_LATENCY": "The current latency is {ping}ms."
+	"COMMAND_PING_LATENCY": "This message took {{ping}}ms to send."
 }

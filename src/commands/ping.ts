@@ -4,7 +4,7 @@
  * @author Espi Marisa <contact@espi.me>
  */
 
-import { i18xs } from "$root/utils/i18xs.ts";
+import { t } from "$root/utils/i18n.ts";
 import { HibikiColors } from "$utils/constants.ts";
 import { createHibikiCommand, setCommandName } from "$utils/loader.ts";
 import { createEmbeds, snowflakeToTimestamp } from "@discordeno/bot";
@@ -12,7 +12,7 @@ import { ApplicationCommandTypes } from "@discordeno/types";
 
 createHibikiCommand({
 	name: setCommandName(import.meta.file),
-	description: i18xs.t("commands.COMMAND_PING_DESCRIPTION"),
+	description: t("commands:COMMAND_PING_DESCRIPTION", { lng: "en" }),
 	type: ApplicationCommandTypes.ChatInput,
 	options: [],
 
@@ -27,8 +27,17 @@ createHibikiCommand({
 
 		// Creates the embed
 		const embeds = createEmbeds()
-			.setTitle(i18xs.t("commands.COMMAND_PING_TITLE"))
-			.setDescription(i18xs.t("commands.COMMAND_PING_LATENCY", { ping: ping }))
+			.setTitle(
+				t("commands:COMMAND_PING_TITLE", {
+					lng: interaction.locale ?? "en",
+				}),
+			)
+			.setDescription(
+				t("commands:COMMAND_PING_LATENCY", {
+					ping: ping,
+					lng: interaction.locale ?? "en",
+				}),
+			)
 			.setColor(HibikiColors.GENERAL);
 
 		// Sends the embed

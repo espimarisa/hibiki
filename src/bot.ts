@@ -19,25 +19,58 @@ interface BotDesiredProperties extends Required<typeof desiredProperties> {}
 
 // Desired Discordeno properties
 const desiredProperties = createDesiredPropertiesObject({
-	guild: {
-		id: true,
+	channel: {
 		name: true,
+		id: true,
+	},
+	guild: {
+		banner: true,
+		channels: true,
+		description: true,
+		icon: true,
+		id: true,
+		memberCount: true,
+		members: true,
+		name: true,
+		owner: true,
+		ownerId: true,
+		shardId: true,
+		splash: true,
+		toggles: true,
 	},
 	member: {
+		avatar: true,
+		banner: true,
 		id: true,
+		joinedAt: true,
+		nick: true,
+		toggles: true,
 		user: true,
 	},
 	interaction: {
+		applicationId: true,
 		data: true,
 		guild: true,
+		guildId: true,
 		id: true,
+		locale: true,
 		member: true,
 		token: true,
 		type: true,
+		user: true,
+	},
+	role: {
+		name: true,
+		id: true,
 	},
 	user: {
+		accentColor: true,
+		avatar: true,
+		banner: true,
 		discriminator: true,
+		globalName: true,
 		id: true,
+		locale: true,
 		toggles: true,
 		username: true,
 	},
@@ -60,8 +93,8 @@ export const bot = createProxyCache(rawBot, {
 	},
 	// Properties to cache
 	desiredProps: {
-		guild: ["id", "members", "name"],
-		user: ["discriminator", "id", "tag", "toggles", "username"],
+		guild: ["id", "name", "owner"],
+		user: ["discriminator", "globalName", "id", "locale", "tag", "username"],
 	},
 	sweeper: {
 		// Run the sweeper every 5 minutes

@@ -14,7 +14,7 @@
 		"dev": "NODE_ENV=development bun run --hot ./src/index.ts",
 		"lint": "biome check .",
 		"lint:fix": "biome check --apply .",
-		"start": "bun run deploy && bun run start",
+		"start": "bun run deploy && bun run start:bot",
 		"start:bot": "NODE_ENV=production bun run ./src/index.ts",
 		"test": "bun run check && bun run lint",
 		"format": "biome format --write ."
@@ -25,7 +25,8 @@
 		"@discordeno/utils": "^21.0.0",
 		"@sentry/bun": "^9.8.0",
 		"dd-cache-proxy": "^2.6.0",
-		"i18xs": "^1.5.4",
+		"i18next": "^24.2.3",
+		"i18next-fs-backend": "^2.6.0",
 		"zod": "^3.24.2"
 	},
 	"devDependencies": {
