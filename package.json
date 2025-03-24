@@ -23,7 +23,6 @@
 		"@discordeno/bot": "^21.0.0",
 		"@discordeno/types": "^21.0.0",
 		"@discordeno/utils": "^21.0.0",
-		"@espimarisa/hibiki": ".",
 		"@sentry/bun": "^9.9.0",
 		"dd-cache-proxy": "^2.6.0",
 		"i18next": "^24.2.3",

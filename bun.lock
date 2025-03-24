@@ -4,7 +4,6 @@
     "": {
       "name": "@espimarisa/hibiki",
       "dependencies": {
-        "@espimarisa/hibiki": ".",
         "@discordeno/bot": "^21.0.0",
         "@discordeno/types": "^21.0.0",
         "@discordeno/utils": "^21.0.0",
@@ -54,8 +53,6 @@
     "@discordeno/types": ["@discordeno/types@21.0.0", "", {}, "sha512-TUZAEqqlXRNQji+NCaQo8DruzI8rXbBvMaZYsZvN9f03PrdSddzMOy3cjs4eeL6ZMVocmMVRIaVnB713blylCw=="],
 
     "@discordeno/utils": ["@discordeno/utils@21.0.0", "", { "dependencies": { "@discordeno/types": "21.0.0" } }, "sha512-I7I3Szlk+LkT/CRmJJiLPsjuBUjbuXUCvOzsgWCltkxDMIGmQeNoQtFK7t89V1Gcc4icsrnHVMho1BcaAITijg=="],
-
-    "@espimarisa/hibiki": ["@espimarisa/hibiki@file:", { "dependencies": { "@discordeno/bot": "^21.0.0", "@discordeno/types": "^21.0.0", "@discordeno/utils": "^21.0.0", "@sentry/bun": "^9.9.0", "dd-cache-proxy": "^2.6.0", "i18next": "^24.2.3", "i18next-fs-backend": "^2.6.0", "zod": "^3.24.2" }, "devDependencies": { "@biomejs/biome": "^1.9.4", "@types/bun": "^1.2.5", "typescript": "^5.8.2" } }],
 
     "@opentelemetry/api": ["@opentelemetry/api@1.9.0", "", {}, "sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg=="],
 
