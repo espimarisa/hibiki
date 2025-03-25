@@ -19,9 +19,6 @@
 			"$events/*": [
 				"./src/events/*"
 			],
-			"$root/*": [
-				"./src/*"
-			],
 			"$utils/*": [
 				"./src/utils/*"
 			]

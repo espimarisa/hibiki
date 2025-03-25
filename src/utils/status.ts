@@ -4,8 +4,8 @@
  * @author Espi Marisa <contact@espi.me>
  */
 
-import { bot } from "$root/bot.ts";
 import { ActivityTypes } from "@discordeno/types";
+import { bot } from "src/bot.ts";
 let activityState = 0;
 
 /**

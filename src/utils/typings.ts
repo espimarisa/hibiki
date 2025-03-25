@@ -4,11 +4,11 @@
  * @author Espi Marisa <contact@espi.me>
  */
 
-import type { bot } from "$root/bot.ts";
 import type {
 	ApplicationCommandOption,
 	ApplicationCommandTypes,
 } from "@discordeno/bot";
+import type { bot } from "src/bot.ts";
 
 /**
  * A Hibiki command.

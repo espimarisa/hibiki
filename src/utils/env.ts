@@ -7,16 +7,16 @@
 import { z } from "zod";
 
 const envSchema = z.object({
-	// A valid Discord token. Required.
+	// Discord bot token to login to the API with.
 	DISCORD_TOKEN: z.string().trim().min(1, { message: "Missing Discord token" }),
 
-	// Discord statuses to cycle through. Optional.
-	DISCORD_STATUSES: z.string().trim().optional(),
-
-	// Discord testing guild ID to log to/deploy local commands to. Optional.
+	// Discord Guild ID to deploy to in development mode.
 	DISCORD_GUILD_ID: z.string().trim().optional(),
 
-	// Sentry DSN for submitting errors to. Optional.
+	// Statuses to cycle through. Delimited by a comma and a space.
+	DISCORD_STATUSES: z.string().trim().optional(),
+
+	// Sentry DSN URL to upload errors to.
 	SENTRY_DSN: z.string().trim().optional(),
 
 	// Bun environment variables

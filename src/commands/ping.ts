@@ -4,8 +4,8 @@
  * @author Espi Marisa <contact@espi.me>
  */
 
-import { t } from "$root/utils/i18n.ts";
 import { HibikiColors } from "$utils/constants.ts";
+import { t } from "$utils/i18n.ts";
 import { createHibikiCommand, setCommandName } from "$utils/loader.ts";
 import { createEmbeds, snowflakeToTimestamp } from "@discordeno/bot";
 import { ApplicationCommandTypes } from "@discordeno/types";

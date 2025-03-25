@@ -4,9 +4,9 @@
  * @author Espi Marisa <contact@espi.me>
  */
 
-import { bot } from "$root/bot.ts";
 import { env } from "$utils/env.ts";
 import { cycleStatuses } from "$utils/status.ts";
+import { bot } from "src/bot.ts";
 
 /**
  * Runs a ready listener when the ready event is fired.

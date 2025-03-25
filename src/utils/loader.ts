@@ -5,13 +5,13 @@
  */
 
 import { readdir } from "node:fs/promises";
-import { bot } from "$root/bot.ts";
-import type { HibikiCommand } from "$root/utils/typings.ts";
 import { REGEX_MODULE_FILETYPE } from "$utils/constants.ts";
 import { env } from "$utils/env.ts";
+import type { HibikiCommand } from "$utils/typings.ts";
 import { Collection } from "@discordeno/bot";
 import { createLogger } from "@discordeno/utils";
 import type { PathLike } from "bun";
+import { bot } from "src/bot.ts";
 
 const logger = createLogger({ name: "LOADER" });
 

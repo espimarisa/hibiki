@@ -4,9 +4,9 @@
  * @author Espi Marisa <contact@espi.me>
  */
 
-import { bot } from "$root/bot.ts";
 import { env } from "$utils/env.ts";
 import { importDirectory, registerGatewayCommands } from "$utils/loader.ts";
+import { bot } from "src/bot.ts";
 
 const isDevelopment = env.NODE_ENV === "development";
 

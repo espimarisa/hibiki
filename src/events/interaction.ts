@@ -4,10 +4,10 @@
  * @author Espi Marisa <contact@espi.me>
  */
 
-import { bot } from "$root/bot.ts";
 import { commands } from "$utils/loader.ts";
 import { InteractionTypes } from "@discordeno/types";
 import { createLogger } from "@discordeno/utils";
+import { bot } from "src/bot.ts";
 
 const logger = createLogger({ name: "INTERACTION" });
 
