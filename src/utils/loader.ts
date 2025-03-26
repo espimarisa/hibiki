@@ -5,13 +5,13 @@
  */
 
 import { readdir } from "node:fs/promises";
-import { REGEX_MODULE_FILETYPE } from "$utils/constants.ts";
+import { bot } from "$root/bot.ts";
+import { MODULE_FILETYPE_REGEX } from "$utils/constants.ts";
 import { env } from "$utils/env.ts";
 import type { HibikiCommand } from "$utils/typings.ts";
 import { Collection } from "@discordeno/bot";
 import { createLogger } from "@discordeno/utils";
 import type { PathLike } from "bun";
-import { bot } from "src/bot.ts";
 
 const logger = createLogger({ name: "LOADER" });
 
@@ -27,7 +27,7 @@ export async function importDirectory(directory: PathLike) {
 
 	// Iterate through each file; only load modules
 	for (const file of files) {
-		if (!REGEX_MODULE_FILETYPE.test(file)) {
+		if (!MODULE_FILETYPE_REGEX.test(file)) {
 			continue;
 		}
 
@@ -59,7 +59,7 @@ export function createHibikiCommand(command: HibikiCommand) {
  */
 
 export function setCommandName(fileName: string) {
-	return fileName.replace(REGEX_MODULE_FILETYPE, "");
+	return fileName.replace(MODULE_FILETYPE_REGEX, "");
 }
 
 /**

@@ -16,6 +16,9 @@
 			"$locales/*": [
 				"./locales/*"
 			],
+			"$root/*": [
+				"./src/*"
+			],
 			"$events/*": [
 				"./src/events/*"
 			],
