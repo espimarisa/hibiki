@@ -6,6 +6,16 @@ on:
 
 jobs:
   build-and-test:
+    permissions:
+      actions: write
+      checks: write
+      contents: read
+      deployments: read
+      issues: write
+      pull-requests: write
+      security-events: write
+      statuses: write
+
     runs-on: ubuntu-latest
 
     steps:
