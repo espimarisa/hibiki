@@ -1,7 +1,7 @@
 /**
- * @file constants
- * @description Global variables used throughout Hibiki.
+ * @file Common variables and helpers used throughout the application.
  * @author Espi Marisa <contact@espi.me>
+ * @module utils/constants
  */
 
 // A regex for validating Discord bot tokens
@@ -12,7 +12,7 @@ export const MODULE_FILETYPE_REGEX = /\.(cjs|mjs|js|mts|cts|ts)$/i;
 
 // Hex colors used for embeds
 export const HibikiColors = {
-	GENERAL: 0xffb000,
-	SUCCESS: 0xdc267f,
-	ERROR: 0xfe6100,
+	error: 0xfe6100,
+	general: 0xffb000,
+	success: 0xdc267f,
 };

@@ -1,14 +1,12 @@
 /**
- * @file sentry
- * @description Utilities for initializing Sentry.
+ * @file Utilities for registering and interacting with Sentry.
+ * @todo Stop
  * @author Espi Marisa <contact@espi.me>
+ * @module utils/sentry
  */
 
-import { env } from "$utils/env.ts";
-import { createLogger } from "@discordeno/utils";
+import { env } from "@/utils/env.ts";
 import { type BunOptions, init } from "@sentry/bun";
-
-const logger = createLogger({ name: "SENTRY" });
 
 /**
  * Initializes a Sentry client.
@@ -17,7 +15,7 @@ const logger = createLogger({ name: "SENTRY" });
 
 export function sentryInit(options?: BunOptions) {
 	if (!env.SENTRY_DSN) {
-		logger.error("No Sentry DSN provided");
+		// console.error("No Sentry DSN provided");
 		return;
 	}
 
@@ -29,8 +27,8 @@ export function sentryInit(options?: BunOptions) {
 			...options,
 		});
 
-		logger.info("Successfully initialized Sentry");
+		// console.info("Successfully initialized Sentry");
 	} catch (error) {
-		logger.error(`Error while initializing Sentry: ${Bun.inspect(error)}`);
+		// console.error(`Error while initializing Sentry: ${Bun.inspect(error)}`);
 	}
 }

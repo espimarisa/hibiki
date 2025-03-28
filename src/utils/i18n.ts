@@ -1,22 +1,18 @@
 /**
- * @file i18n
- * @description Utilities for i18n and localization.
+ * @file Utilities to perform i18n and l10n with i18next.
  * @author Espi Marisa <contact@espi.me>
+ * @module utils/i18n
  */
 
 import fs from "node:fs/promises";
 import path from "node:path";
+import { getDirname } from "@/utils/fs.ts";
 import i18n from "i18next";
 import i18NexFsBackend, { type FsBackendOptions } from "i18next-fs-backend";
 
-// __dirname replacement in ESM
-const pathDirname = path.dirname(Bun.fileURLToPath(import.meta.url));
-const LOCALES_DIRECTORY = path.join(pathDirname, "../../locales");
-
-// Returns an array of languages in the locales/ directory
-async function getListOfLocales() {
-	return await fs.readdir(LOCALES_DIRECTORY, { encoding: "utf8" });
-}
+// Gets the LOCALES_DIRECTORY to load
+const currentFolder = getDirname(import.meta.url);
+const LOCALES_DIRECTORY = path.join(currentFolder, "../../locales");
 
 // Inits i18next
 await i18n
@@ -34,7 +30,7 @@ await i18n
 		lng: "en",
 		load: "currentOnly",
 		ns: ["commands", "common"],
-		preload: await getListOfLocales(),
+		preload: await fs.readdir(LOCALES_DIRECTORY, { encoding: "utf8" }),
 	})
 	.catch((error) => {
 		throw new Error(Bun.inspect(error));

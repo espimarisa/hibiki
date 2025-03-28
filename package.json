@@ -1,41 +1,36 @@
 {
+	"private": true,
 	"name": "@espimarisa/hibiki",
 	"version": "4.0.0-alpha",
-	"type": "module",
 	"description": "discord app providing informational tools and utilities",
-	"author": "Espi Marisa <contact@espi.me> (https://espi.me)",
 	"license": "zlib",
-	"private": true,
-	"packageManager": "bun@1.2.5",
+	"author": "Espi Marisa <contact@espi.me> (https://espi.me)",
+	"homepage": "https://github.com/espimarisa/hibiki",
+	"repository": "git@github.com:espimarisa/hibiki.git",
+	"bugs": "https://github.com/espimarisa/hibiki/issues",
+	"type": "module",
 	"scripts": {
+		"build": "tsc",
 		"check": "tsc --noEmit",
-		"deploy": "NODE_ENV=production bun run ./src/register.ts",
-		"deploy:dev": "NODE_ENV=development bun run ./src/register.ts",
-		"dev": "NODE_ENV=development bun run --hot ./src/index.ts",
-		"lint": "biome check .",
-		"lint:fix": "biome check --apply .",
-		"start": "bun run deploy && bun run start:bot",
-		"start:bot": "NODE_ENV=production bun run ./src/index.ts",
-		"test": "bun run check && bun run lint",
-		"format": "biome format --write ."
+		"dev": "NODE_ENV=development bun run ./src/index.ts",
+		"format": "biome format --fix .",
+		"lint": "biome check",
+		"lint:fix": "biome lint --fix .",
+		"start": "NODE_ENV=production bun run ./src/index.ts",
+		"test": "bun run check && bun run lint"
 	},
 	"dependencies": {
-		"@discordeno/bot": "^21.0.0",
-		"@discordeno/types": "^21.0.0",
-		"@discordeno/utils": "^21.0.0",
-		"@sentry/bun": "^9.9.0",
-		"dd-cache-proxy": "^2.6.0",
+		"@sentry/bun": "^9.10.1",
 		"i18next": "^24.2.3",
 		"i18next-fs-backend": "^2.6.0",
 		"zod": "^3.24.2"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
-		"@types/bun": "^1.2.5",
+		"@biomejs/biome": "2.0.0-beta.1",
+		"@types/bun": "^1.2.8",
+		"turbo": "^2.4.4",
 		"typescript": "^5.8.2"
 	},
-	"trustedDependencies": [
-		"@biomejs/biome",
-		"esbuild"
-	]
+	"packageManager": "bun@1.2.7",
+	"trustedDependencies": ["@biomejs/biome", "esbuild"]
 }

@@ -1,32 +1,8 @@
 {
-	"exclude": [
-		"./dist/*",
-		"node_modules"
-	],
-	"include": [
-		"./src/**/**/*",
-		"./locales/**/*"
-	],
+	"exclude": ["./dist/*", "node_modules"],
+	"include": ["./src/**/**/*", "./locales/**/*"],
 
 	"compilerOptions": {
-		"paths": {
-			"$commands/*": [
-				"./src/commands/*"
-			],
-			"$locales/*": [
-				"./locales/*"
-			],
-			"$root/*": [
-				"./src/*"
-			],
-			"$events/*": [
-				"./src/events/*"
-			],
-			"$utils/*": [
-				"./src/utils/*"
-			]
-		},
-
 		"allowArbitraryExtensions": true,
 		"allowImportingTsExtensions": true,
 		"allowJs": true,
@@ -47,11 +23,7 @@
 		"inlineSources": false,
 		"isolatedModules": true,
 		"jsx": "react-jsx",
-		"lib": [
-			"ESNext",
-			"DOM",
-			"DOM.Iterable"
-		],
+		"lib": ["ES2024", "DOM", "DOM.Iterable"],
 		"module": "Node16",
 		"moduleResolution": "node16",
 		"noEmit": true,
@@ -62,9 +34,14 @@
 		"noImplicitReturns": true,
 		"noPropertyAccessFromIndexSignature": true,
 		"noUncheckedIndexedAccess": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
 		"outDir": "./dist",
+		"paths": {
+			"@/locales/*": ["./locales/*"],
+			"@/root/*": ["./src/*"],
+			"@/utils/*": ["./src/utils/*"]
+		},
 		"pretty": true,
 		"removeComments": true,
 		"resolveJsonModule": true,
@@ -74,9 +51,6 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-		"target": "ESNext",
-		"typeRoots": [
-			"./src/typings"
-		]
+		"target": "ES2024"
 	}
 }

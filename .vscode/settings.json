@@ -1,9 +1,0 @@
-{
-	"biome.enabled": true,
-	"eslint.enable": false,
-	"prettier.enable": false,
-	"editor.defaultFormatter": "biomejs.biome",
-	"[markdown]": {
-		"editor.defaultFormatter": "yzhang.markdown-all-in-one"
-	}
-}
