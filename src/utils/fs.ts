@@ -7,7 +7,9 @@
 import type { PathLike } from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { MODULE_FILETYPE_REGEX } from "@/utils/constants.ts";
+import { loaderLogger } from "./logger.js";
+
+const MODULE_FILETYPE_REGEX = /\.(cjs|mjs|js|mts|cts|ts)$/i;
 
 /**
  * Returns the directory of a URL (__dirname replacement).
@@ -34,13 +36,21 @@ export async function importDirectory(directory: PathLike) {
 		}
 
 		try {
-			// Imports the file
-			import(`${directory}/${file}`);
-			// console.info(`Successfully imported ${file}`);
+			await import(`${directory}/${file}`);
+			loaderLogger.info(`Successfully imported ${file}`);
 		} catch (error) {
-			// Log our errors like the good person we are
-			// console.error(`Failed to import ${file}:`);
+			loaderLogger.error(`Failed to import ${file}:`);
 			throw new Error(Bun.inspect(error));
 		}
 	}
+}
+
+/**
+ * Generates a clean filename without an extension.
+ * @param fileName The filename to remove the extension from.
+ * @returns A filename without the extension.
+ */
+
+export function cleanFileName(fileName: string) {
+	return fileName.replace(MODULE_FILETYPE_REGEX, "");
 }

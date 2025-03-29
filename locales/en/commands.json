@@ -1,5 +1,5 @@
 {
-	"COMMAND_PING_DESCRIPTION": "Checks Hibiki's current latency.",
-	"COMMAND_PING_LATENCY": "This message took {{ping}}ms to send.",
-	"COMMAND_PING_TITLE": "🏓 Pong!"
+	"COMMAND_PING_DESCRIPTION": "Checks the current latency and shard status.",
+	"COMMAND_PING_PONG": "🏓 Pong!",
+	"COMMAND_PING_LATENCY": "This reply took {{ping}}ms to send. \nShard latency: {{latency}}ms."
 }

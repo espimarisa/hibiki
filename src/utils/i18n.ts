@@ -4,18 +4,20 @@
  * @module utils/i18n
  */
 
-import fs from "node:fs/promises";
-import path from "node:path";
-import { getDirname } from "@/utils/fs.ts";
+import { getDirname } from "@/utils/fs.js";
+import { loaderLogger } from "@/utils/logger.js";
 import i18n from "i18next";
 import i18NexFsBackend, { type FsBackendOptions } from "i18next-fs-backend";
+import fs from "node:fs/promises";
+import path from "node:path";
 
-// Gets the LOCALES_DIRECTORY to load
-const currentFolder = getDirname(import.meta.url);
-const LOCALES_DIRECTORY = path.join(currentFolder, "../../locales");
+// Gets the locales directory and each locale
+const CURRENT_DIRECTORY = getDirname(import.meta.url);
+const LOCALES_DIRECTORY = path.join(CURRENT_DIRECTORY, "../../locales");
+const LOCALES_ARRAY = await fs.readdir(LOCALES_DIRECTORY);
 
-// Inits i18next
-await i18n
+// Initializes i18next
+i18n
 	.use(i18NexFsBackend)
 	.init<FsBackendOptions>({
 		backend: {
@@ -28,13 +30,14 @@ await i18n
 			skipOnVariables: false,
 		},
 		lng: "en",
-		load: "currentOnly",
+		load: "languageOnly",
 		ns: ["commands", "common"],
-		preload: await fs.readdir(LOCALES_DIRECTORY, { encoding: "utf8" }),
+		preload: LOCALES_ARRAY,
 	})
 	.catch((error) => {
+		loaderLogger.error("Error while starting i18next:");
 		throw new Error(Bun.inspect(error));
 	});
 
-// Shortcut for i18n.t
+// i18n translate function shorthand
 export const t = i18n.t;

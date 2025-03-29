@@ -4,7 +4,6 @@
 
 	"compilerOptions": {
 		"allowArbitraryExtensions": true,
-		"allowImportingTsExtensions": true,
 		"allowJs": true,
 		"allowSyntheticDefaultImports": true,
 		"allowUnreachableCode": false,
@@ -26,7 +25,7 @@
 		"lib": ["ES2024", "DOM", "DOM.Iterable"],
 		"module": "Node16",
 		"moduleResolution": "node16",
-		"noEmit": true,
+		"noEmit": false,
 		"noEmitHelpers": true,
 		"noEmitOnError": true,
 		"noFallthroughCasesInSwitch": true,

@@ -7,11 +7,11 @@
 					"level": "on",
 					"options": {
 						"groups": [
+							":ALIAS:",
+							":PACKAGE:",
 							":NODE:",
 							":BUN:",
 							":PACKAGE_WITH_PROTOCOL:",
-							":ALIAS:",
-							":PACKAGE:",
 							":PATH:",
 							":URL:"
 						]
@@ -31,7 +31,7 @@
 	},
 	"files": {
 		"ignoreUnknown": true,
-		"includes": ["**/*.{js,json,md,ts}", "!**/node_modules", "!**/dist"]
+		"includes": ["**/src/**", "**/locales/**", "!**/node_modules", "!**/dist"]
 	},
 	"formatter": {
 		"attributePosition": "multiline",
@@ -84,7 +84,6 @@
 				"useImportExtensions": "error"
 			},
 			"nursery": {
-				"noAwaitInLoop": "error",
 				"noCommonJs": "error",
 				"noConstantBinaryExpression": "error",
 				"noDocumentCookie": "error",

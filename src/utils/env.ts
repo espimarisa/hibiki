@@ -4,22 +4,29 @@
  * @module utils/env
  */
 
-import process from "node:process";
-import { DISCORD_TOKEN_REGEX } from "@/utils/constants.ts";
+import { DISCORD_TOKEN_REGEX } from "@/utils/constants.js";
 import { z } from "zod";
+import process from "node:process";
 
 // An object containing expected environment variables
 const envSchema = z.object({
+	// Bot token to log into the Discord API with
 	DISCORD_TOKEN: z
 		.string()
 		.trim()
 		.min(1, { message: "Missing DISCORD_TOKEN" })
 		.regex(DISCORD_TOKEN_REGEX, "Malformed DISCORD_TOKEN"),
 
-	DISCORD_GUILD_ID: z.string().optional(),
+	// Discord Guild ID to use for development mode/event logging
+	DISCORD_DEV_GUILD_ID: z.string().optional(),
+
+	// A comma-space delimited list of Discord statuses to set
 	DISCORD_STATUSES: z.string().optional(),
+
+	// A Sentry DSN URL (https) to submit and upload errors to
 	SENTRY_DSN: z.string().optional(),
 
+	// Bun variables to ensure always exist
 	NODE_ENV: z.string().default("DEVELOPMENT"),
 	npm_package_name: z.string().default("develop"),
 	npm_package_version: z.string().default("develop"),
