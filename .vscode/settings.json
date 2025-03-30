@@ -1,0 +1,30 @@
+{
+	"biome.enabled": true,
+	"eslint.enable": false,
+	"prettier.enable": false,
+
+	"editor.codeActionsOnSave": {
+		"source.action.useSortedKeys.biome": "explicit",
+		"source.addMissingImports.ts": "explicit",
+		"source.biome": "explicit",
+		"source.fixAll.ts": "explicit",
+		"source.organizeImports.biome": "explicit",
+		"source.removeUnusedImports": "explicit"
+	},
+
+	"[javascript][javascriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome",
+		"javascript.preferences.importModuleSpecifierEnding": "js"
+	},
+
+	"[json][jsonc]": {
+		"editor.defaultFormatter": "biomejs.biome"
+	},
+
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"[typescript][typescriptreact]": {
+		"editor.defaultFormatter": "biomejs.biome",
+		"javascript.preferences.importModuleSpecifierEnding": "js",
+		"typescript.preferences.importModuleSpecifier": "relative"
+	}
+}

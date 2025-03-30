@@ -1,0 +1,54 @@
+{
+	"Hibiki Command": {
+		"scope": "typescript",
+		"description": "Template for creating a Hibiki command.",
+		"isFileTemplate": true,
+		"prefix": ["hibiki-command"],
+		"body": [
+			"/**",
+			" * @file $1",
+			" * @author $2",
+			" * @module $3",
+			" */",
+			"",
+			"import { createCommand, getFileName } from \"@/utils/command.js\";",
+			"import { t } from \"@/utils/i18n.js\";",
+			"",
+			"createCommand({",
+			"\tname: getFileName(import.meta.file),",
+			"\tdescription: t($4),",
+			"\tuserInstallable: false,",
+			"",
+			"\tasync runCommand(interaction) {",
+			"\t\t$5",
+			"\t},",
+			"});",
+			""
+		]
+	},
+	"Hibiki Event": {
+		"scope": "typescript",
+		"description": "Template for creating a Hibiki Event listener.",
+		"isFileTemplate": true,
+		"prefix": ["hibiki-event"],
+		"body": [
+			"/**",
+			" * @file $1",
+			" * @author $2",
+			" * @module $3",
+			" */",
+			"",
+			"import { createEvent } from \"@/utils/event.js\";",
+			"",
+			"createEvent({",
+			"\tevent: $4,",
+			"\tonce: false,",
+			"",
+			"\tasync runEvent(event) {",
+			"\t\t$5",
+			"\t},",
+			"});",
+			""
+		]
+	}
+}

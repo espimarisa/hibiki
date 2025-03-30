@@ -34,7 +34,7 @@ export interface HibikiEvent {
  * @param event The event to add to the collection.
  */
 
-export function createHibikiEvent(event: HibikiEvent) {
+export function createEvent(event: HibikiEvent) {
 	HIBIKI_EVENTS.set(event.event, event);
 }
 

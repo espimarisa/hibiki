@@ -5,7 +5,7 @@
  */
 
 import { HIBIKI_COMMANDS } from "@/utils/command.js";
-import { createHibikiEvent } from "@/utils/event.js";
+import { createEvent } from "@/utils/event.js";
 import { commandLogger } from "@/utils/logger.js";
 import type {
 	ChatInputCommandInteraction,
@@ -19,7 +19,7 @@ export type PossibleCommandInteractionType =
 	| ContextMenuCommandInteraction
 	| UserContextMenuCommandInteraction;
 
-createHibikiEvent({
+createEvent({
 	event: "interactionCreate",
 	once: false,
 
