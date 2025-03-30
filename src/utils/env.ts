@@ -4,9 +4,11 @@
  * @module utils/env
  */
 
-import { DISCORD_TOKEN_REGEX } from "@/utils/constants.js";
 import { z } from "zod";
 import process from "node:process";
+
+// A regex for validating Discord bot tokens
+const DISCORD_TOKEN_REGEX = /[\w-]{24}\.[\w-]{6}\.[\w-]{27}/;
 
 // An object containing expected environment variables
 const envSchema = z.object({

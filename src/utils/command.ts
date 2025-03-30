@@ -4,6 +4,7 @@
  * @module utils/command
  */
 
+import { MODULE_FILETYPE_REGEX } from "@/utils/fs.js";
 import {
 	type APIApplicationCommandOption,
 	type APIApplicationCommandSubcommandGroupOption,
@@ -21,9 +22,16 @@ import {
 // Creates a collection of commands
 export const HIBIKI_COMMANDS = new Collection<string, HibikiCommand>();
 
+// Hex colors used for embeds
+export enum CommandColors {
+	SECONDARY = 0xffb000,
+	PRIMARY = 0xdc267f,
+	ERROR = 0xfe6100,
+}
+
 // Typing for a Hibiki command
 export interface HibikiCommand {
-	// Name of the command. cleanFileName(import.meta.file);
+	// Name of the command. getCommandName(import.meta.file);
 	name: string;
 
 	// Description of the command. t("commands:COMMAND_NAME_DESCRIPTION");
@@ -63,8 +71,18 @@ export interface HibikiCommand {
  * @param command The command to add to the collection.
  */
 
-export function createHibikiCommand(command: HibikiCommand) {
+export function createCommand(command: HibikiCommand) {
 	HIBIKI_COMMANDS.set(command.name, command);
+}
+
+/**
+ * Generates a clean filename without an extension.
+ * @param fileName The filename to remove the extension from.
+ * @returns A filename without the extension.
+ */
+
+export function getFileName(fileName: string) {
+	return fileName.replace(MODULE_FILETYPE_REGEX, "");
 }
 
 /**

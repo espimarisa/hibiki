@@ -4,14 +4,12 @@
  * @module commands/ping
  */
 
-import { createHibikiCommand } from "@/utils/command.js";
-import { HibikiColors } from "@/utils/constants.js";
-import { cleanFileName } from "@/utils/fs.js";
+import { CommandColors, createCommand, getFileName } from "@/utils/command.js";
 import { t } from "@/utils/i18n.js";
 import { EmbedBuilder, SnowflakeUtil } from "discord.js";
 
-createHibikiCommand({
-	name: cleanFileName(import.meta.file),
+createCommand({
+	name: getFileName(import.meta.file),
 	description: t("commands:COMMAND_PING_DESCRIPTION"),
 	userInstallable: true,
 
@@ -31,7 +29,7 @@ createHibikiCommand({
 					latency: shardLatency,
 				}),
 			)
-			.setColor(HibikiColors.primary);
+			.setColor(CommandColors.PRIMARY);
 
 		// Sends the message
 		await interaction.followUp({ embeds: [embeds] });
