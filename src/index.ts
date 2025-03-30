@@ -88,7 +88,7 @@ sharder.on("shardCreate", (shard) => {
 
 				// Logs bot client information when fully ready
 				shardingLogger.info(
-					`Connected to Discord as ${botUser.tag}/${botUser.id}`,
+					`Connected to Discord as ${botUser.tag} (${botUser.id})`,
 				);
 			}
 		}

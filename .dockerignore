@@ -1,0 +1,11 @@
+# Ignore everything else
+*
+
+# Include only necessary files
+!locales/
+!src/
+!.env
+!biome.json
+!bun.lock
+!package.json
+!tsconfig.json

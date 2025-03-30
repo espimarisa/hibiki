@@ -7,14 +7,18 @@
 import { bot } from "@/root/hibiki.js";
 import { Collection } from "discord.js";
 
-// Creates a collection of events
-export const HIBIKI_EVENTS = new Collection<string, HibikiEvent>();
-
 // Typing shortcut for an individual Discord ClientEvent
 export type ClientEvent = keyof import("discord.js").ClientEvents;
 
+// Creates a collection of events
+export const HIBIKI_EVENTS = new Collection<string, HibikiEvent>();
+
+// Typing for a valid Hibiki event
 export interface HibikiEvent {
+	// The event listener to fire on
 	event: ClientEvent;
+
+	// Whether or not the event should only be ran once. Defaults to false.
 	once: boolean;
 
 	/**
