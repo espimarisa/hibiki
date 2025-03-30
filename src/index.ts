@@ -26,6 +26,9 @@ if (env.SENTRY_DSN) {
 	initSentry();
 }
 
+// Initialze i18next
+import "@/utils/i18n.js";
+
 // Creates a new sharding manager
 export const sharder = new ShardingManager(HIBIKI_FILE_PATH, {
 	mode: "process",

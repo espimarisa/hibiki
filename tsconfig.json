@@ -37,8 +37,11 @@
 		"noUnusedParameters": false,
 		"outDir": "./dist",
 		"paths": {
+			"@/commands/*": ["./src/commands/*"],
+			"@/events/*": ["./src/events/*"],
 			"@/locales/*": ["./locales/*"],
 			"@/root/*": ["./src/*"],
+			"@/types/*": ["./src/@types/*"],
 			"@/utils/*": ["./src/utils/*"]
 		},
 		"pretty": true,

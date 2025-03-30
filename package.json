@@ -25,6 +25,8 @@
 	"dependencies": {
 		"@chatsift/pino-rotate-file": "^0.5.1",
 		"@sentry/bun": "^9.10.1",
+		"date-fns": "^4.1.0",
+		"discord-api-types": "^0.37.119",
 		"discord.js": "^14.18.0",
 		"i18next": "^24.2.3",
 		"i18next-fs-backend": "^2.6.0",

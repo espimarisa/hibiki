@@ -8,14 +8,17 @@ import { commandToJSON, HIBIKI_COMMANDS } from "@/utils/command.js";
 import { env } from "@/utils/env.js";
 import { getDirname, importDirectory } from "@/utils/fs.js";
 import { loaderLogger } from "@/utils/logger.js";
+import { REST } from "discord.js";
 import {
 	type APIUser,
-	REST,
 	type RESTPostAPIApplicationCommandsJSONBody,
 	Routes,
-} from "discord.js";
+} from "discord-api-types/v10";
 import path from "node:path";
 import process from "node:process";
+
+// Initialze i18next
+import "@/utils/i18n.js";
 
 // Gets the commands directory
 const ROOT_DIRECTORY = getDirname(import.meta.url);

@@ -6,7 +6,8 @@
 
 import { env } from "@/utils/env.js";
 import { shardingLogger } from "@/utils/logger.js";
-import { ActivityType, Client, GatewayIntentBits, Options } from "discord.js";
+import { Client, Options } from "discord.js";
+import { ActivityType, GatewayIntentBits } from "discord-api-types/v10";
 
 const DISCORD_STATUSES = env.DISCORD_STATUSES?.split(", ");
 

@@ -7,25 +7,15 @@
 import { HIBIKI_COMMANDS } from "@/utils/command.js";
 import { createEvent } from "@/utils/event.js";
 import { commandLogger } from "@/utils/logger.js";
-import type {
-	ChatInputCommandInteraction,
-	ContextMenuCommandInteraction,
-	UserContextMenuCommandInteraction,
-} from "discord.js";
-
-// Possible command interaction types
-export type PossibleCommandInteractionType =
-	| ChatInputCommandInteraction
-	| ContextMenuCommandInteraction
-	| UserContextMenuCommandInteraction;
+import type { ChatInputCommandInteraction } from "discord.js";
 
 createEvent({
 	event: "interactionCreate",
 	once: false,
 
-	async runEvent(interaction: PossibleCommandInteractionType) {
-		// Only run interaction commands
-		if (!(interaction.commandName && interaction.isCommand())) {
+	async runEvent(interaction: ChatInputCommandInteraction) {
+		// Only run interaction commands; ignore empty data
+		if (!(interaction?.commandName && interaction.isCommand())) {
 			return;
 		}
 
@@ -43,10 +33,12 @@ createEvent({
 		);
 
 		try {
-			// Defers the reply; handle ephemerals
-			await interaction.deferReply({
-				flags: command.ephemeral ? ["Ephemeral"] : [],
-			});
+			// Defers the reply if needed
+			if (command.defer) {
+				await interaction.deferReply({
+					flags: command.ephemeral ? ["Ephemeral"] : [],
+				});
+			}
 
 			// Runs the command
 			await command.runCommand(interaction);

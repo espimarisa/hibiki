@@ -5,27 +5,23 @@
  */
 
 import { MODULE_FILETYPE_REGEX } from "@/utils/fs.js";
+import { type ChatInputCommandInteraction, Collection } from "discord.js";
 import {
 	type APIApplicationCommandOption,
-	type APIApplicationCommandSubcommandGroupOption,
-	type APIApplicationCommandSubcommandOption,
-	type ApplicationCommandOptionData,
-	ApplicationCommandOptionType,
 	ApplicationCommandType,
 	ApplicationIntegrationType,
-	Collection,
-	type CommandInteraction,
 	InteractionContextType,
+	type LocalizationMap,
 	type RESTPostAPIApplicationCommandsJSONBody,
-} from "discord.js";
+} from "discord-api-types/v10";
 
 // Creates a collection of commands
 export const HIBIKI_COMMANDS = new Collection<string, HibikiCommand>();
 
 // Hex colors used for embeds
 export enum CommandColors {
-	SECONDARY = 0xffb000,
 	PRIMARY = 0xdc267f,
+	SECONDARY = 0xffb000,
 	ERROR = 0xfe6100,
 }
 
@@ -34,17 +30,17 @@ export interface HibikiCommand {
 	// Name of the command. getCommandName(import.meta.file);
 	name: string;
 
-	// Description of the command. t("commands:COMMAND_NAME_DESCRIPTION");
+	// Description of the command. t("KEY_NAME");
 	description: string;
 
-	// Object of name localizations. TODO
-	nameLocalizations?: Record<string, Record<string, string>>;
+	// Object of name localizations. tList("KEY_NAME", true);
+	name_localizations?: LocalizationMap;
 
-	// Object of description localizations. TODO
-	descriptionLocalizations?: Record<string, Record<string, string>>;
+	// Object of description localizations. tList("KEY_NAME");
+	description_localizations?: LocalizationMap;
 
 	// Array of command interaction options
-	options?: ApplicationCommandOptionData[];
+	options?: APIApplicationCommandOption[];
 
 	// Command interaction type. Defaults to ChatInput if not set.
 	type?: ApplicationCommandType;
@@ -55,6 +51,9 @@ export interface HibikiCommand {
 	// Makes a command only runnable in NSFW channels. Defaults to false.
 	nsfw?: boolean;
 
+	// Whether or not to defer the reply to allow for extra processing time. Defaults to false.
+	defer?: boolean;
+
 	// If set, allow installing the command to users/DMs. Defaults to false.
 	userInstallable?: boolean;
 
@@ -63,7 +62,7 @@ export interface HibikiCommand {
 	 * @param interaction The interaction to run the command on.
 	 */
 
-	runCommand: (interaction: CommandInteraction) => Promise<void>;
+	runCommand: (interaction: ChatInputCommandInteraction) => Promise<void>;
 }
 
 /**
@@ -103,15 +102,18 @@ export function commandToJSON(command: HibikiCommand) {
 		description: isUserCommand ? "" : command.description,
 
 		// Command name localizations
-		name_localizations: command.nameLocalizations || {},
+		name_localizations: command.name_localizations || {},
 
 		// Command description localizations; user-only commands cannot have it
 		description_localizations: isUserCommand
 			? undefined
-			: command.descriptionLocalizations || {},
+			: command.description_localizations || {},
 
 		// NSFW flag
 		nsfw: command.nsfw,
+
+		// Command options; user commands cannot have options
+		options: isUserCommand ? [] : command.options,
 
 		// Interaction type. Default to ChatInput if not set
 		type: command.type || ApplicationCommandType.ChatInput,
@@ -128,40 +130,9 @@ export function commandToJSON(command: HibikiCommand) {
 		// Sets integration types. Default to guild-only; allow user installations
 		integration_types: command.userInstallable
 			? [
-					// Allow guild + user if userInstallable
 					ApplicationIntegrationType.GuildInstall,
 					ApplicationIntegrationType.UserInstall,
 				]
 			: [ApplicationIntegrationType.GuildInstall],
-
-		// Parses command options; user commands cannot have options
-		// Why must you make me write annoying nested ternary grossness!
-		// Can't you help a guy out and parse this on *YOUR* end? :'(
-		options: isUserCommand
-			? undefined
-			: command.options?.map((option) => {
-					switch (option.type) {
-						// Return subcommand group option data
-						case ApplicationCommandOptionType.SubcommandGroup: {
-							return {
-								...option,
-								options: option.options ? [...option.options] : [],
-							} as APIApplicationCommandSubcommandGroupOption;
-						}
-
-						// Return subcommand option data
-						case ApplicationCommandOptionType.Subcommand: {
-							return {
-								...option,
-								options: option.options ? [...option.options] : [],
-							} as APIApplicationCommandSubcommandOption;
-						}
-
-						// Return other option data
-						default: {
-							return option as APIApplicationCommandOption;
-						}
-					}
-				}) || [],
 	} satisfies RESTPostAPIApplicationCommandsJSONBody;
 }
