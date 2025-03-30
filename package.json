@@ -12,11 +12,13 @@
 	"scripts": {
 		"build": "tsc",
 		"check": "tsc --noEmit",
-		"deploy": "bun run build && bun run start",
+		"deploy": "NODE_ENV=production bun run build && bun run register",
 		"dev": "NODE_ENV=development bun run ./src/index.ts",
 		"format": "biome format --fix .",
 		"lint": "biome check",
 		"lint:fix": "biome lint --fix .",
+		"register": "NODE_ENV=production bun run ./dist/src/register.js",
+		"register:dev": "NODE_ENV=development bun run ./src/register.ts",
 		"start": "NODE_ENV=production bun run ./dist/src/index.js",
 		"test": "bun run check && bun run lint"
 	},

@@ -8,22 +8,18 @@ import { createHibikiCommand } from "@/utils/command.js";
 import { HibikiColors } from "@/utils/constants.js";
 import { cleanFileName } from "@/utils/fs.js";
 import { t } from "@/utils/i18n.js";
-import {
-	ApplicationCommandType,
-	EmbedBuilder,
-	SnowflakeUtil,
-} from "discord.js";
+import { EmbedBuilder, SnowflakeUtil } from "discord.js";
 
 createHibikiCommand({
 	name: cleanFileName(import.meta.file),
 	description: t("commands:COMMAND_PING_DESCRIPTION"),
-	type: ApplicationCommandType.ChatInput,
+	userInstallable: true,
 
 	async runCommand(interaction) {
 		// Calculates the current latency and shard latency
 		const ping = Date.now() - SnowflakeUtil.timestampFrom(interaction.id);
-		const shardID = interaction.guild?.shardId ?? 0;
-		const shardLatency = interaction.client.ws.shards.get(shardID)?.ping ?? 0;
+		const shardID = interaction.guild?.shardId || 0;
+		const shardLatency = interaction.client.ws.shards.get(shardID)?.ping || 0;
 
 		// Generates the embed
 		const embeds = new EmbedBuilder()
