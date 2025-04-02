@@ -4,13 +4,20 @@
  * @module commands/roleplay
  */
 
-import { createCommand } from "@/utils/command.js";
+import type { DictionaryKey } from "@/types/i18next.js";
+import { CommandColors, createCommand } from "@/utils/command.js";
 import { errorReply } from "@/utils/error.js";
 import { t, tObj } from "@/utils/i18n.js";
 import {
 	ApplicationCommandOptionType,
 	ApplicationCommandType,
 } from "discord-api-types/v10";
+
+// Expected subcommand response typing
+interface RoleplaySubcommandData {
+	url: string;
+	string: DictionaryKey;
+}
 
 export const roleplayCommand = createCommand({
 	name: t("command:COMMAND_ROLEPLAY_NAME"),
@@ -100,20 +107,77 @@ export const roleplayCommand = createCommand({
 			return;
 		}
 
-		// Don't allow self-roleplay
-		if (interaction.user.id === user.id) {
-			await errorReply(interaction, "command:COMMAND_ROLEPLAY_SELF_DETAILS");
-
-			return;
-		}
-
 		// Don't allow self-to-bot roleplay
 		if (user.id === interaction.client.user.id) {
 			await errorReply(interaction, "command:COMMAND_ROLEPLAY_BOT_DETAILS");
-
 			return;
 		}
 
-		await interaction.reply("it works bitch lol");
+		// Don't allow self-to-self roleplay
+		if (user.id === interaction.user.id) {
+			await errorReply(interaction, "command:COMMAND_ROLEPLAY_SELF_DETAILS");
+			return;
+		}
+
+		// Runs the subcommand
+		const response = this.runSubCommand?.(subcommand) as RoleplaySubcommandData;
+		if (!response) {
+			await errorReply(interaction, "error:ERROR_IMAGE");
+			return;
+		}
+
+		// Sends the getSubResponse
+		await interaction.reply({
+			embeds: [
+				{
+					title: t(response.string, {
+						lng: interaction.locale,
+						user: interaction.user.tag,
+						target: user.tag,
+					}),
+					color: CommandColors.Primary,
+					image: {
+						url: response.url,
+					},
+				},
+			],
+		});
+	},
+
+	runSubCommand(type: string): RoleplaySubcommandData | undefined {
+		switch (type) {
+			case "hug": {
+				return {
+
+					url: "https://cdn.weeb.sh/images/B10Tfknqf.gif",
+					string: "command:COMMAND_ROLEPLAY_HUG_DETAILS",
+				} satisfies RoleplaySubcommandData;
+			}
+
+			case "kiss": {
+				return {
+					url: "https://cdn.weeb.sh/images/SkKL3adPb.gif",
+					string: "command:COMMAND_ROLEPLAY_KISS_DETAILS",
+				} satisfies RoleplaySubcommandData;
+			}
+
+			case "cuddle": {
+				return {
+					url: "https://cdn.weeb.sh/images/rkA6SU7w-.gif",
+					string: "command:COMMAND_ROLEPLAY_CUDDLE_DETAILS",
+				} satisfies RoleplaySubcommandData;
+			}
+
+			case "pat": {
+				return {
+					url: "https://cdn.weeb.sh/images/HJRIlihCZ.gif",
+					string: "command:COMMAND_ROLEPLAY_PAT_DETAILS",
+				} satisfies RoleplaySubcommandData;
+			}
+
+			default: {
+				return;
+			}
+		}
 	},
 });

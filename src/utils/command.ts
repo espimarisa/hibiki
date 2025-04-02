@@ -45,14 +45,6 @@ export type APIIOptionType =
 /** REST compatible command body shorthand type. */
 export type RESTCommand = RESTPostAPIApplicationCommandsJSONBody;
 
-/** An enum of common colors used. */
-export enum CommandColors {
-	Primary = 0xff0070,
-	Secondary = 0xffa500,
-	Success = 0x648fff,
-	Error = 0xfe6100,
-}
-
 // TODO: runSubCommand()... or getSubResponse()? I forgot.
 
 /** Typing for a bot command. */
@@ -119,7 +111,23 @@ export type HibikiCommand = {
 	runUserCommand?: (
 		interaction: UserContextMenuCommandInteraction,
 	) => Promise<void>;
+
+	/**
+	 * Runs a subcommand.
+	 * @param commandName The subcommand to run.
+	 * @param args Additional arguments for the subcommand.
+	 */
+
+	runSubCommand?: (commandName: string, ...args: unknown[]) => unknown;
 };
+
+/** An enum of common colors used. */
+export enum CommandColors {
+	Primary = 0xff0070,
+	Secondary = 0xffa500,
+	Success = 0x648fff,
+	Error = 0xfe6100,
+}
 
 /** A Discord.js collection containing imported commands. */
 export const commands = new Collection<string, HibikiCommand>();
