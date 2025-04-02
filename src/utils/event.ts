@@ -1,50 +1,46 @@
 /**
- * @file Utilities for creating and registering a Hibiki event.
+ * @file Utilities for creating and registering a client event listener.
  * @author Espi Marisa <contact@espi.me>
  * @module utils/event
  */
 
-import { bot } from "@/root/hibiki.js";
-import { Collection } from "discord.js";
+import { bot } from "@/root/bot.js";
+import { type ClientEvents, Collection } from "discord.js";
 
-// Typing shortcut for an individual Discord ClientEvent
-export type ClientEvent = keyof import("discord.js").ClientEvents;
+/** Typing for an event handler. */
+export type HibikiEvent = {
+	/** The client event to listen on. */
+	event: keyof ClientEvents;
 
-// Creates a collection of events
-export const HIBIKI_EVENTS = new Collection<string, HibikiEvent>();
-
-// Typing for a valid Hibiki event
-export interface HibikiEvent {
-	// The event listener to fire on
-	event: ClientEvent;
-
-	// Whether or not the event should only be ran once. Defaults to false.
+	/** Only runs the event once. Defaults to false. */
 	once: boolean;
 
 	/**
-	 * Runs a Hibiki event via a Discord interaction.
-	 * @param params Additional event arguments.
+	 * Function to run upon an event firing.
 	 */
 
-	runEvent: (...params: never[]) => Promise<void> | void;
-}
+	runEvent: (...params: never[]) => Promise<void>;
+};
+
+/** A Discord.js collection containing imported event handlers. */
+export const events = new Collection<string, HibikiEvent>();
 
 /**
- * Registers a Hibiki event into the collection.
- * @param event The event to add to the collection.
+ * Creates a client event handler.
+ * @param event The event handler to register.
  */
 
 export function createEvent(event: HibikiEvent) {
-	HIBIKI_EVENTS.set(event.event, event);
+	events.set(event.event, event);
 }
 
 /**
- * Subscribes to events and runs them.
- * @param events A collection of events to subscribe to.
+ * Registers event handlers.
+ * @param eventHandlers The collection of events register.
  */
 
-export function subscribeToEvents(events: typeof HIBIKI_EVENTS) {
-	for (const individualEvent of events.values()) {
+export function registerEvents(eventListeners: typeof events) {
+	for (const individualEvent of eventListeners.values()) {
 		// Runs events that fire once
 		if (individualEvent.once) {
 			bot.once(individualEvent.event, async (...args) => {

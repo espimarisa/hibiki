@@ -4,26 +4,23 @@
  * @module commands/about
  */
 
-import {
-	CommandColors,
-	createCommand,
-	getFileName,
-	HIBIKI_COMMANDS,
-} from "@/utils/command.js";
+import { CommandColors, commands, createCommand } from "@/utils/command.js";
 import { env } from "@/utils/env.js";
 import { getTimeSince } from "@/utils/format.js";
-import { t, tList } from "@/utils/i18n.js";
+import { t, tObj } from "@/utils/i18n.js";
 import { localizeTime } from "@/utils/localize.js";
+import { ApplicationCommandType } from "discord.js";
 
 const startupTimestamp = new Date();
 
-createCommand({
-	name: getFileName(import.meta.file),
-	description: t("commands:COMMAND_ABOUT_DESCRIPTION"),
-	name_localizations: tList("commands:COMMAND_ABOUT_NAME", true),
-	description_localizations: tList("commands:COMMAND_ABOUT_DESCRIPTION"),
+export const aboutCommand = createCommand({
+	name: t("command:COMMAND_ABOUT_NAME"),
+	description: t("command:COMMAND_ABOUT_DESCRIPTION"),
+	name_localizations: tObj("command:COMMAND_ABOUT_NAME"),
+	description_localizations: tObj("command:COMMAND_ABOUT_DESCRIPTION"),
+	type: ApplicationCommandType.ChatInput,
 
-	async runCommand(interaction) {
+	async runSlashCommand(interaction) {
 		// Calculates uptime
 		const uptime = getTimeSince(startupTimestamp, new Date());
 		const localizedUptime = localizeTime(uptime, interaction.locale);
@@ -32,45 +29,45 @@ createCommand({
 		await interaction.reply({
 			embeds: [
 				{
-					title: t("commands:COMMAND_ABOUT_TITLE", {
+					title: t("command:COMMAND_ABOUT_TITLE", {
 						lng: interaction.locale,
 						username: interaction.client.user.username,
 					}),
-					description: t("commands:COMMAND_ABOUT_DETAILS", {
+					description: t("command:COMMAND_ABOUT_DETAILS", {
 						lng: interaction.locale,
 						username: interaction.client.user.username,
 					}),
-					color: CommandColors.PRIMARY,
+					color: CommandColors.Primary,
 					thumbnail: {
 						url: interaction.client.user.displayAvatarURL(),
 					},
 					fields: [
 						{
-							name: t("commands:COMMAND_ABOUT_UPTIME", {
+							name: t("command:COMMAND_ABOUT_UPTIME", {
 								lng: interaction.locale,
 							}),
 							value: localizedUptime,
 							inline: false,
 						},
 						{
-							name: t("commands:COMMAND_ABOUT_VERSION", {
+							name: t("command:COMMAND_ABOUT_VERSION", {
 								lng: interaction.locale,
 							}),
 							value: env.npm_package_version,
 							inline: true,
 						},
 						{
-							name: t("commands:COMMAND_ABOUT_BUN", {
+							name: t("command:COMMAND_ABOUT_BUN", {
 								lng: interaction.locale,
 							}),
 							value: Bun.version,
 							inline: true,
 						},
 						{
-							name: t("commands:COMMAND_ABOUT_REGISTEREDCOMMANDS", {
+							name: t("command:COMMAND_ABOUT_REGISTEREDCOMMANDS", {
 								lng: interaction.locale,
 							}),
-							value: HIBIKI_COMMANDS.size.toString(),
+							value: commands.size.toString(),
 							inline: false,
 						},
 					],

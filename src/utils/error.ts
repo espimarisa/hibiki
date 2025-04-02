@@ -4,67 +4,69 @@
  * @module utils/error
  */
 
-import type { HIBIKI_DICTIONARY_KEYS } from "@/types/i18next.js";
-import { CommandColors } from "@/utils/command.js";
-import { env } from "@/utils/env.js";
+import type { DictionaryKey } from "@/types/i18next.js";
+import { CommandColors, type InteractionType } from "@/utils/command.js";
 import { t } from "@/utils/i18n.js";
-import { loaderLogger } from "@/utils/logger.js";
-import { init } from "@sentry/bun";
-import type { ChatInputCommandInteraction, EmbedData } from "discord.js";
+import { logger } from "@/utils/logger.js";
+import type { EmbedData } from "discord.js";
+
+const fallback = "Unknown error";
 
 /**
- * Connects to a Sentry DSN.
+ * Parses a possible error object and returns the stack.
+ * @param error A possible error object to parse.
+ * @returns A valid Error object or error message.
  */
 
-export function initSentry() {
-	if (!env.SENTRY_DSN) {
-		return;
+export function getError(error: unknown) {
+	// Return parsed error object
+	if (error instanceof Error) {
+		return {
+			cause: error.cause ? Bun.inspect(error.cause) : (error.stack ?? fallback),
+			message: error.message,
+			stack: error.stack ?? fallback,
+			name: error.name,
+		} satisfies Error;
 	}
 
-	try {
-		init({
-			dsn: env.SENTRY_DSN,
-			environment: env.NODE_ENV,
-			release: env.npm_package_version,
-		});
-
-		loaderLogger.info("Successfully connected to Sentry");
-	} catch (error) {
-		loaderLogger.error("Error while connecting to Sentry:");
-		throw new Error(Bun.inspect(error));
-	}
+	return {
+		cause: fallback,
+		message: typeof error === "string" ? error : fallback,
+		stack: fallback,
+		name: fallback,
+	} satisfies Error;
 }
 
 /**
- * Sends an error message to an interaction.
+ * Sends an error reply to an interaction.
  * @param interaction The interaction to send the reply on.
  * @param string The string to translate and send in the error message.
- * @param followUp Whether or not to use followUp(). Defaults to false.
+ * @param deferred If set, will run .followUp(). Defaults to false.
+ * @param variables Additional variables to pass to i18next.
  */
 
-export async function sendErrorReply(
-	interaction: ChatInputCommandInteraction,
-	string: HIBIKI_DICTIONARY_KEYS,
-	followUp = false,
+export async function errorReply(
+	interaction: InteractionType,
+	string: DictionaryKey,
+	deferred = false,
+	variables: Record<string, unknown> = {},
 ) {
-	// Embed data
+	// Prepare embed message
 	const embed = {
-		title: t("ERROR", { lng: interaction.locale }),
-		description: t(string, { "lng": interaction.locale }),
-		color: CommandColors.ERROR,
+		title: t("error:ERROR", { lng: interaction.locale }),
+		description: t(string, { ...variables, lng: interaction.locale }),
+		color: CommandColors.Error,
 		footer: {
-			text: t("common:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
+			text: t("error:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
 			iconURL: interaction.client.user.displayAvatarURL(),
 		},
 	} satisfies EmbedData;
 
-	// Send followup messages
-	if (followUp) {
-		await interaction.followUp({ embeds: [embed] });
-		return;
+	try {
+		await (deferred
+			? interaction.followUp({ embeds: [embed] })
+			: interaction.reply({ embeds: [embed] }));
+	} catch (err) {
+		logger.warn(`Failed to send error reply: ${getError(err).message}`);
 	}
-
-	// Send normal replies
-	await interaction.reply({ embeds: [embed] });
-	return;
 }

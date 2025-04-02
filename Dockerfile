@@ -36,7 +36,7 @@ RUN chown bun /usr/src/app/logs
 USER bun
 
 # Run deploy script
-RUN bun run deploy
+RUN bun run register
 
 # Start the bot
 ENTRYPOINT ["bun", "run", "start"]

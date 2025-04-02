@@ -1,78 +1,69 @@
 /**
- * @file Registers commands and interactions to Discord.
+ * @file Registers commands to the Discord API.
  * @author Espi Marisa <contact@espi.me>
- * @module deploy
+ * @module register
  */
 
-import { commandToJSON, HIBIKI_COMMANDS } from "@/utils/command.js";
-import { env } from "@/utils/env.js";
-import { getDirname, importDirectory } from "@/utils/fs.js";
-import { loaderLogger } from "@/utils/logger.js";
-import { REST } from "discord.js";
 import {
-	type APIUser,
-	type RESTPostAPIApplicationCommandsJSONBody,
-	Routes,
-} from "discord-api-types/v10";
-import path from "node:path";
-import process from "node:process";
+	commands,
+	commandToREST,
+	type RESTCommand,
+	registerCommands,
+} from "@/utils/command.js";
+import { env } from "@/utils/env.js";
+import { getDirname, importDir } from "@/utils/fs.js";
+import { initI18N } from "@/utils/i18n.js";
+import { join } from "node:path";
+import { parseArgs } from "node:util";
 
-// Initialze i18next
-import "@/utils/i18n.js";
-
-// Gets the commands directory
+// Gets the commands and locales directory
 const ROOT_DIRECTORY = getDirname(import.meta.url);
-const COMMANDS_DIRECTORY = path.join(ROOT_DIRECTORY, "./commands");
-let commandJSON: RESTPostAPIApplicationCommandsJSONBody[] = [];
+const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
+const COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands");
+const isDevelop = env.NODE_ENV === "development";
+const devGuild = env.DISCORD_DEV_GUILD_ID;
 
-// Loads commands into memory
-loaderLogger.info("Registering commands...");
-await importDirectory(COMMANDS_DIRECTORY).then(() => {
-	// Gets a JSON array of commands to register after loading
-	commandJSON = HIBIKI_COMMANDS.map((command) => commandToJSON(command));
+// Parse CLI arguments for clearing
+const cliArgs = parseArgs({
+	allowPositionals: true,
+	args: Bun.argv,
+	strict: true,
+	options: {
+		clear: {
+			type: "boolean",
+		},
+		guild: {
+			type: "string",
+		},
+	},
 });
 
-// Creates a REST manager and gets the bot client ID
-const rest = new REST({ version: "10" }).setToken(env.DISCORD_TOKEN);
-const user = (await rest.get("/oauth2/applications/@me")) as
-	| APIUser
-	| undefined;
+// Clear only when --clear true is passed; allows guild ID thru CLI
+const clear = cliArgs?.values?.clear === true;
+const cliGuild = cliArgs?.values?.guild;
+const guildOnly = isDevelop || typeof cliGuild === "string";
 
-// Ensures we have a client ID; exit if we don't
-if (!user?.id) {
-	loaderLogger.fatal("No Client ID was returned by Discord. Exiting.");
-	process.exit(1);
+// Load locales and commands
+await initI18N(LOCALES_DIRECTORY);
+await importDir(COMMANDS_DIRECTORY);
+
+// Generates command data to use
+const data: RESTCommand[] = [];
+commands.map((command) => {
+	data.push(commandToREST(command));
+});
+
+// Register to a specific guild
+if ((isDevelop && devGuild) || cliGuild) {
+	// Register to to cli guild if passed, otherwise use the dev guild
+	await registerCommands(
+		env.DISCORD_TOKEN,
+		data,
+		cliGuild ? cliGuild : devGuild,
+		guildOnly,
+		clear,
+	);
+} else {
+	// Registers commands globally
+	await registerCommands(env.DISCORD_TOKEN, data, undefined, false, clear);
 }
-
-try {
-	// Registers commands to a single guild in development mode
-	if (env.DISCORD_DEV_GUILD_ID && env.NODE_ENV === "development") {
-		await rest
-			.put(Routes.applicationGuildCommands(user.id, env.DISCORD_DEV_GUILD_ID), {
-				body: commandJSON,
-			})
-			.then(() => {
-				// Log when finished and kill the process
-				loaderLogger.info(
-					`Registered commands to guild ID ${env.DISCORD_DEV_GUILD_ID}. Exiting.`,
-				);
-			});
-	} else {
-		// Register global commands otherwise
-		await rest
-			.put(Routes.applicationCommands(user.id), {
-				body: commandJSON,
-			})
-			.then(() => {
-				// Log when finished and kill the process
-				loaderLogger.info(
-					`Registered commands globally as ${user.id}. Exiting.`,
-				);
-			});
-	}
-} catch (error) {
-	loaderLogger.fatal(`Error while registering commands: ${Bun.inspect(error)}`);
-	process.exit(1);
-}
-
-process.exit(0);

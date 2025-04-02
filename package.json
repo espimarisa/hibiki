@@ -10,15 +10,17 @@
 	"bugs": "https://github.com/espimarisa/hibiki/issues",
 	"type": "module",
 	"scripts": {
-		"build": "tsc",
+		"build": "rm -rf dist && tsc",
 		"check": "tsc --noEmit",
-		"deploy": "NODE_ENV=production bun run build && bun run register",
 		"dev": "NODE_ENV=development bun run ./src/index.ts",
+		"dev:watch": "NODE_ENV=development bun run --hot ./src/index.ts",
 		"format": "biome format --fix .",
 		"lint": "biome check",
 		"lint:fix": "biome lint --fix .",
 		"register": "NODE_ENV=production bun run ./dist/src/register.js",
 		"register:dev": "NODE_ENV=development bun run ./src/register.ts",
+		"register:clear": "NODE_ENV=production bun run ./dist/src/register.js --clear",
+		"register:clear:dev": "NODE_ENV=development bun run ./src/register.ts --clear",
 		"start": "NODE_ENV=production bun run ./dist/src/index.js",
 		"test": "bun run check && bun run lint"
 	},
@@ -41,6 +43,6 @@
 		"turbo": "^2.4.4",
 		"typescript": "^5.8.2"
 	},
-	"packageManager": "bun@1.2.7",
+	"packageManager": "bun@1.2.8",
 	"trustedDependencies": ["@biomejs/biome", "esbuild"]
 }

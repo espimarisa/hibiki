@@ -4,47 +4,46 @@
  * @module events/interactionCreate
  */
 
-import { HIBIKI_COMMANDS } from "@/utils/command.js";
+import { commands, runCommand } from "@/utils/command.js";
+import { errorReply, getError } from "@/utils/error.js";
 import { createEvent } from "@/utils/event.js";
-import { commandLogger } from "@/utils/logger.js";
-import type { ChatInputCommandInteraction } from "discord.js";
+import { logger } from "@/utils/logger.js";
+import type { Interaction } from "discord.js";
 
 createEvent({
 	event: "interactionCreate",
 	once: false,
 
-	async runEvent(interaction: ChatInputCommandInteraction) {
-		// Only run interaction commands; ignore empty data
-		if (!(interaction?.commandName && interaction.isCommand())) {
+	async runEvent(interaction: Interaction) {
+		// Only handle commands
+		// TODO: Handle other interactions seperately
+		if (!interaction.isCommand()) {
 			return;
 		}
 
-		// Searches for the right command to run
-		const command = HIBIKI_COMMANDS.get(interaction.commandName);
+		// Searches for the command to run
+		const command = commands.get(interaction.commandName);
 		if (!command) {
 			return;
 		}
 
-		// Logs when a command is ran
-		const guildName = interaction.guild ? interaction.guild.name : "DMs";
-		const guildID = interaction.guild ? interaction.guild.id : "DMs";
-		commandLogger.info(
-			`${interaction.commandName} ran in ${guildName} (${guildID}) by ${interaction.user.tag} (${interaction.user.id})`,
+		// Logs when a command is run
+		logger.info(
+			`${interaction.commandName} ran in ${
+				interaction.guild?.name ?? "DMs"
+			} by ${interaction.user.tag} (${interaction.user.id})`,
 		);
 
+		// Runs the specific command type
 		try {
-			// Defers the reply if needed
-			if (command.defer) {
-				await interaction.deferReply({
-					flags: command.ephemeral ? ["Ephemeral"] : [],
-				});
-			}
-
-			// Runs the command
-			await command.runCommand(interaction);
-		} catch (error) {
-			commandLogger.error(`Error while running ${command.name}:`);
-			throw new Error(Bun.inspect(error));
+			await runCommand(interaction, command);
+		} catch (err) {
+			// Log the error and send the simplified message
+			const error = getError(err);
+			logger.error(`Error while running command: ${error.cause}`);
+			await errorReply(interaction, "error:ERROR_STACK", command.defer, {
+				"error": error.message,
+			});
 		}
 	},
 });

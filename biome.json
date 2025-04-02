@@ -8,9 +8,9 @@
 					"options": {
 						"groups": [
 							":ALIAS:",
-							":PACKAGE:",
-							":NODE:",
 							":BUN:",
+							":NODE:",
+							":PACKAGE:",
 							":PACKAGE_WITH_PROTOCOL:",
 							":PATH:",
 							":URL:"
@@ -31,7 +31,7 @@
 	},
 	"files": {
 		"ignoreUnknown": true,
-		"includes": ["**/src/**", "**/locales/**", "!**/node_modules", "!**/dist"]
+		"includes": ["src/**/*.ts", "locales/**/*.json"]
 	},
 	"formatter": {
 		"attributePosition": "multiline",
@@ -127,7 +127,8 @@
 				"noBarrelFile": "error",
 				"noDelete": "error",
 				"noReExportAll": "error",
-				"useTopLevelRegex": "error"
+				"useTopLevelRegex": "error",
+				"noAccumulatingSpread": "error"
 			},
 			"recommended": true,
 			"style": {
@@ -142,6 +143,7 @@
 				"noShoutyConstants": "error",
 				"noUnusedTemplateLiteral": "error",
 				"noUselessElse": "error",
+				"noDefaultExport": "error",
 				"noYodaExpression": "error",
 				"useAsConstAssertion": "error",
 				"useBlockStatements": "error",
@@ -155,12 +157,85 @@
 				"useExplicitLengthCheck": "error",
 				"useExponentiationOperator": "error",
 				"useExportType": "error",
-				"useFilenamingConvention": "off",
+				"useFilenamingConvention": "on",
 				"useForOf": "error",
 				"useFragmentSyntax": "error",
 				"useImportType": "error",
 				"useLiteralEnumMembers": "error",
-				"useNamingConvention": "off",
+				"useNamingConvention": {
+					"level": "info",
+					"options": {
+						"strictCase": false,
+						"conventions": [
+							{
+								"formats": [
+									"CONSTANT_CASE",
+									"PascalCase",
+									"camelCase",
+									"snake_case"
+								],
+								"selector": {
+									"kind": "typeProperty"
+								}
+							},
+							{
+								"formats": [
+									"CONSTANT_CASE",
+									"PascalCase",
+									"camelCase",
+									"snake_case"
+								],
+								"selector": {
+									"kind": "objectLiteralGetter"
+								}
+							},
+							{
+								"formats": [
+									"CONSTANT_CASE",
+									"PascalCase",
+									"camelCase",
+									"snake_case"
+								],
+								"selector": {
+									"kind": "objectLiteralMember"
+								}
+							},
+							{
+								"formats": [
+									"CONSTANT_CASE",
+									"PascalCase",
+									"camelCase",
+									"snake_case"
+								],
+								"selector": {
+									"kind": "objectLiteralMethod"
+								}
+							},
+							{
+								"formats": [
+									"CONSTANT_CASE",
+									"PascalCase",
+									"camelCase",
+									"snake_case"
+								],
+								"selector": {
+									"kind": "objectLiteralProperty"
+								}
+							},
+							{
+								"formats": [
+									"CONSTANT_CASE",
+									"PascalCase",
+									"camelCase",
+									"snake_case"
+								],
+								"selector": {
+									"kind": "objectLiteralSetter"
+								}
+							}
+						]
+					}
+				},
 				"useNodeAssertStrict": "error",
 				"useNodejsImportProtocol": "error",
 				"useNumberNamespace": "error",
@@ -190,6 +265,18 @@
 			}
 		}
 	},
+	"overrides": [
+		{
+			"includes": ["**/*.d.ts"],
+			"linter": {
+				"rules": {
+					"style": {
+						"useNamingConvention": "off"
+					}
+				}
+			}
+		}
+	],
 	"vcs": {
 		"clientKind": "git",
 		"enabled": true,

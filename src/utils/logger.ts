@@ -1,18 +1,19 @@
 /**
- * @file Utilities to perform console logging and debugging.
+ * @file Creates a pino logger.
  * @author Espi Marisa <contact@espi.me>
  * @module utils/logger
  */
 
+import { env } from "@/utils/env.js";
 import { getDirname } from "@/utils/fs.js";
+import { join } from "node:path";
 import type { PinoRotateFileOptions } from "@chatsift/pino-rotate-file";
-import { type LoggerOptions, multistream, pino, transport } from "pino";
+import { multistream, pino, transport } from "pino";
 import type { PrettyOptions } from "pino-pretty";
-import path from "node:path";
 
 // Gets the directory to store logs into
 const CURRENT_DIRECTORY = getDirname(import.meta.url);
-const LOGS_DIRECTORY = path.join(CURRENT_DIRECTORY, "../../logs");
+const LOGS_DIRECTORY = join(CURRENT_DIRECTORY, "../../logs");
 
 // Pino pretty option
 const pinoPrettyOptions = {
@@ -28,44 +29,26 @@ const pinoRotateFileOptions = {
 	maxAgeDays: 14,
 } satisfies PinoRotateFileOptions;
 
-/**
- * Wrapper to create a pino logger with a given name.
- * @param name The name to add to the logger.
- * @param options Optional additional pino options.
- * @returns A pino logger module.
- */
-
-export function createLogger(name: string, options?: LoggerOptions) {
-	const logger = pino(
+// Creates a pino logger
+export const logger = pino(
+	{
+		level: "info",
+		name: `${env.npm_package_name}/${env.npm_package_version}`,
+	},
+	multistream([
 		{
-			...options,
-			name: name,
-			level: "trace",
+			level: "info",
+			stream: transport({
+				target: "pino-pretty",
+				options: pinoPrettyOptions,
+			}),
 		},
-
-		// Use pino-pretty and store logs on the filesystem in JSON
-		multistream([
-			{
-				level: "trace",
-				stream: transport({
-					target: "pino-pretty",
-					options: pinoPrettyOptions,
-				}),
-			},
-			{
-				level: "trace",
-				stream: transport({
-					target: "@chatsift/pino-rotate-file",
-					options: pinoRotateFileOptions,
-				}),
-			},
-		]),
-	);
-
-	return logger;
-}
-
-// Pre-defined specific loggers
-export const shardingLogger = createLogger("SHARDER");
-export const loaderLogger = createLogger("LOADER");
-export const commandLogger = createLogger("COMMAND");
+		{
+			level: "info",
+			stream: transport({
+				target: "@chatsift/pino-rotate-file",
+				options: pinoRotateFileOptions,
+			}),
+		},
+	]),
+);

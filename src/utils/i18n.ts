@@ -1,63 +1,89 @@
 /**
- * @file Utilities to perform i18n and l10n with i18next.
+ * @file Utilities to perform i18n and l10n.
  * @author Espi Marisa <contact@espi.me>
  * @module utils/i18n
  */
 
-import type { HIBIKI_DICTIONARY_KEYS } from "@/types/i18next.js";
-import { getDirname } from "@/utils/fs.js";
-import { loaderLogger } from "@/utils/logger.js";
+import type { DictionaryKey } from "@/types/i18next.js";
+import { getError } from "@/utils/error.js";
+import { logger } from "@/utils/logger.js";
+import type { PathLike } from "node:fs";
+import { readdir } from "node:fs/promises";
 import i18n from "i18next";
 import i18NexFsBackend, { type FsBackendOptions } from "i18next-fs-backend";
-import fs from "node:fs/promises";
-import path from "node:path";
 
-// Gets the locales directory and each locale
-const CURRENT_DIRECTORY = getDirname(import.meta.url);
-const LOCALES_DIRECTORY = path.join(CURRENT_DIRECTORY, "../../locales");
-const LOCALES_ARRAY = await fs.readdir(LOCALES_DIRECTORY);
+let localeDirectoryData: string[] = [];
+
+export async function initI18N(directory: PathLike) {
+	try {
+		// Gets the contents of the directory
+		const directoryPath = directory.toString();
+		localeDirectoryData = await getLocaleFiles(directoryPath);
+
+		// Starts i18next
+		await i18n.use(i18NexFsBackend).init<FsBackendOptions>({
+			backend: {
+				loadPath: `${directoryPath}/{{lng}}/{{ns}}.json`,
+			},
+			defaultNS: "common",
+			fallbackLng: "en-US",
+			initAsync: true,
+			interpolation: {
+				skipOnVariables: false,
+			},
+			preload: localeDirectoryData,
+			lng: "en-US",
+			load: "currentOnly",
+			ns: ["command", "common", "error"],
+		});
+
+		logger.info("Successfully initialized i18next");
+	} catch (err) {
+		const error = getError(err);
+		logger.error(`Error initializing i18next: ${error.message}`);
+		throw new Error(error.cause);
+	}
+}
+/** Returns a localized string. */
+export const t = i18n.t;
 
 /**
- * Returns an object containing all localizations of a dictionary key.
- * @param key The dictionary key to get all localizations for.
- * @param lower Lowercases all translations (defaults to false).
+ * Reads locale files from a directory.
+ * @param directory The directory to search for locales in.
+ * @returns An array of locale filenames.
+ */
+
+async function getLocaleFiles(directory: string): Promise<string[]> {
+	try {
+		// Iterates over each file
+		const files = await readdir(directory);
+		return files;
+	} catch (err) {
+		const error = getError(err);
+		logger.error(`Failed to load locales from ${directory}: ${error.message}`);
+		throw new Error(error.cause);
+	}
+}
+
+/**
+ * Returns an object containing all localizations of a key.
+ * @param key The key to get all localizations for.
  * @returns An object containing all translations of a key.
  */
 
-export function tList(key: HIBIKI_DICTIONARY_KEYS, lower = false) {
-	return Object.fromEntries(
-		LOCALES_ARRAY.map((locale) => [
-			locale,
-			lower ? t(key, { lng: locale }).toLowerCase() : t(key, { lng: locale }),
-		]),
-	);
+export function tObj(key: DictionaryKey) {
+	const translations: Record<string, string> = {};
+
+	// Iterates through each locale
+	for (const locale of localeDirectoryData) {
+		try {
+			// Sets the translated locale
+			const translation = i18n.t(key, { lng: locale });
+			translations[locale] = translation;
+		} catch (err) {
+			logger.warn(`Failed to get translation for ${key} in locale ${locale}`);
+		}
+	}
+
+	return translations;
 }
-
-// Initializes i18next
-i18n
-	.use(i18NexFsBackend)
-	.init<FsBackendOptions>({
-		backend: {
-			loadPath: `${LOCALES_DIRECTORY}/{{lng}}/{{ns}}.json`,
-		},
-		defaultNS: "common",
-		fallbackLng: "en-US",
-		initImmediate: false,
-		interpolation: {
-			skipOnVariables: false,
-		},
-		lng: "en-US",
-		load: "currentOnly",
-		ns: ["commands", "common"],
-		preload: LOCALES_ARRAY,
-	})
-	.catch((error) => {
-		loaderLogger.error("Error while initializing i18next:");
-		throw new Error(Bun.inspect(error));
-	})
-	.then(() => {
-		loaderLogger.info("Successfully initialized i18next");
-	});
-
-// i18n translate function shorthand
-export const t = i18n.t;

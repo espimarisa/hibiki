@@ -1,25 +1,28 @@
 /**
- * @file Typing extensions for i18next.
+ * @file Additional typing definitions for i18next.
  * @author Espi Marisa <contact@espi.me>
- * @module @types/i18next.d.ts
+ * @module @types/i18next
  */
 
-import type commands from "@/locales/en-US/commands.json";
+import type command from "@/locales/en-US/command.json";
 import type common from "@/locales/en-US/common.json";
+import type error from "@/locales/en-US/error.json";
 
-// Valid Hibiki dictionary keys
-export type HIBIKI_DICTIONARY_KEYS =
-	| `commands:${keyof typeof commands}`
-	| `common:${keyof typeof common}`;
+// Valid dictionary keys
+export type DictionaryKey =
+	| `command:${keyof typeof command}`
+	| `common:${keyof typeof common}`
+	| `error:${keyof typeof error}`;
 
 declare module "i18next" {
 	interface CustomTypeOptions {
 		defaultNS: "common";
-		ns: ["common", "commands"];
+		ns: ["command", "common", "error"];
 
 		resources: {
+			command: typeof command;
 			common: typeof common;
-			commands: typeof commands;
+			error: typeof error;
 		};
 	}
 }
