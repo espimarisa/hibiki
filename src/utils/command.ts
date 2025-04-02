@@ -28,6 +28,7 @@ import {
 	type RESTPostAPIApplicationCommandsJSONBody,
 	type Snowflake,
 } from "discord-api-types/v10";
+import { env } from "./env.js";
 
 /** Possible command interaction types. */
 export type InteractionType =
@@ -78,7 +79,7 @@ export type HibikiCommand = {
 	ephemeral?: boolean;
 
 	/** Controls where commands are installable. Defaults to 0 for guilds only. */
-	integrationTypes?: ApplicationIntegrationType[];
+	integration_types?: ApplicationIntegrationType[];
 
 	/** Controls where commands are runnable. Defaults to 0 for guilds only. */
 	contexts?: InteractionContextType[];
@@ -88,6 +89,9 @@ export type HibikiCommand = {
 
 	/** If true, allow followUp() and additional processing time. Defaults to false. */
 	defer?: boolean;
+
+	/** An optional array of required API keys in .env needed to load a command. */
+	api_keys?: string[];
 
 	/**
 	 * Runs a chat input (slash) command.
@@ -202,6 +206,12 @@ export async function runCommand(
  */
 
 export function createCommand(command: HibikiCommand) {
+	// Validates if required API keys are in .env
+	if (command.api_keys?.some((key) => !(key in env))) {
+		logger.warn(`Command ${command.name} not loaded: missing API keys`);
+		return;
+	}
+
 	commands.set(command.name, command);
 }
 
@@ -241,7 +251,7 @@ export function commandToREST(command: HibikiCommand) {
 
 		// Validates contexts & integration types; default to guild only if unset
 		contexts: command.contexts ?? [InteractionContextType.Guild],
-		integration_types: command.integrationTypes ?? [
+		integration_types: command.integration_types ?? [
 			ApplicationIntegrationType.GuildInstall,
 		],
 	} satisfies RESTCommand;
@@ -255,7 +265,7 @@ export function commandToREST(command: HibikiCommand) {
  */
 
 function normalizeLocales(field: LocalizationMap, isName = false) {
-	const data =
+	return (
 		Object.fromEntries(
 			Object.entries(field).map(([key, value]) => [
 				key,
@@ -263,9 +273,8 @@ function normalizeLocales(field: LocalizationMap, isName = false) {
 					? value?.substring(0, 32).toLowerCase()
 					: value?.substring(0, 100),
 			]),
-		) || null;
-
-	return data;
+		) || null
+	);
 }
 
 /**
