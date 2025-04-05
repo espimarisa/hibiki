@@ -9,6 +9,7 @@ Hibiki is a Discord application that *really needs a better introduction written
 ## Invite
 
 You can invite Hibiki to your Discord server [using this install link][install].
+
 The following information in this section applies only to [the official Hibiki instance][hibiki].
 
 ### Terms of Service
