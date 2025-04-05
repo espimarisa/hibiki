@@ -2,7 +2,7 @@
   "ABOUT_COMMANDS": "Commands",
   "ABOUT_DESCRIPTION": "Shows information and statistics about me.",
   "ABOUT_DETAILS": "Made with love (and cookies) by [Espi Marisa](https://espi.me). {{- emoji}}",
-  "ABOUT_LINKS": "[GitHub](https://github.com/espimarisa/hibiki) | [Invite](https://discord.com/api/oauth2/authorize?client_id={{id}}&permissions={{permissions}}&scope=bot%20applications.commands) | [Privacy](https://github.com/espimarisa/hibiki#readme) | [Donate](https://ko-fi.com/espimarisa)",
+  "ABOUT_LINKS": "[GitHub](https://github.com/espimarisa/hibiki) | [Invite](https://discord.com/api/oauth2/authorize?client_id={{id}}&permissions={{permissions}}&scope=bot%20applications.commands) | [Privacy](https://github.com/espimarisa/hibiki?tab=readme-ov-file#privacy-policy) | [Donate](https://ko-fi.com/espimarisa)",
   "ABOUT_NAME": "about",
   "ABOUT_STATISTICS": "Statistics",
   "ABOUT_STATISTICS_DETAILS": "{{servers}} servers \n{{users}} cached users \n{{commands}} loaded commands",
