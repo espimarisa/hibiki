@@ -59,7 +59,9 @@ export const aboutCommand: HibikiSlashCommand = {
         }),
       )
       .setColor(HibikiColors.Primary)
-      .setThumbnail(interaction.user.client.user.displayAvatarURL())
+      .setThumbnail(
+        interaction.user.client.user.displayAvatarURL({ size: 512 }),
+      )
       .addFields(
         {
           // Total servers

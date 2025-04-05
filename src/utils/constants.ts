@@ -5,10 +5,10 @@
 
 /** An enum of common colors used. */
 export enum HibikiColors {
-  Primary = 0xff0070,
-  Secondary = 0xffa500,
-  Success = 0x648fff,
-  Error = 0xfe6100,
+  Primary = 0xff0050,
+  Secondary = 0xffdb26,
+  Success = 0x00ffaf,
+  Error = 0xff3000,
 }
 
 /** Zero-width space unicode modifier for empty embed fields. */

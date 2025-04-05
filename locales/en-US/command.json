@@ -5,7 +5,7 @@
   "ABOUT_LINKS": "[GitHub](https://github.com/espimarisa/hibiki) | [Invite](https://discord.com/api/oauth2/authorize?client_id={{id}}&permissions={{permissions}}&scope=bot%20applications.commands) | [Privacy](https://github.com/espimarisa/hibiki#readme) | [Donate](https://ko-fi.com/espimarisa)",
   "ABOUT_NAME": "about",
   "ABOUT_STATISTICS": "Statistics",
-  "ABOUT_STATISTICS_DETAILS": "{{servers}} servers\n {{users}} cached users \n{{commands}} loaded commands",
+  "ABOUT_STATISTICS_DETAILS": "{{servers}} servers \n{{users}} cached users \n{{commands}} loaded commands",
   "ABOUT_STATSFORNERDS": "Stats for nerds",
   "ABOUT_STATSFORNERDS_DETAILS": "Using {{memory}} of memory \n{{uptime}} of uptime",
   "ABOUT_TITLE": "✨ About {{username}}",

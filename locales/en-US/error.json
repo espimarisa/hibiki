@@ -1,7 +1,7 @@
 {
-  "ERROR": "❌ Oh dear...",
+  "ERROR": "❌ Something went wrong!",
   "FOUND_A_BUG": "Found a bug? - github.com/espimarisa/hibiki/issues",
   "IMAGE": "Failed to send the image. Try again later.",
-  "NO_OPTION": "A required {{option}} was not provided.",
+  "NO_OPTION": "A valid {{option}} wasn't provided.",
   "STACK": "\n```ts\n{{- error}}\n```"
 }

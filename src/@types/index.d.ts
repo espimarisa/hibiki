@@ -10,7 +10,7 @@ type ClientEvents = import("discord.js").ClientEvents;
 type ChatInputCommandInteraction =
   import("discord.js").ChatInputCommandInteraction;
 
-/** Typing alias for an i18next valid dictionary key.  */
+/** Typing alias for an i18next valid dictionary key. */
 type DictionaryKey = import("@/types/i18next.d.ts").DictionaryKey;
 
 /** Typing for a Hibiki slash command. */

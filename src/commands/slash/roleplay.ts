@@ -115,7 +115,9 @@ export const roleplayCommand: HibikiSlashCommand = {
 
     // Handles unresolved data
     if (!(target && subcommand)) {
-      await sendErrorReply(interaction, "error:NO_OPTION", true);
+      await sendErrorReply(interaction, "error:NO_OPTION", true, true, {
+        option: t("command:ROLEPLAY_TARGET_NAME"),
+      });
       return;
     }
 
