@@ -10,19 +10,19 @@ import type error from "@/locales/en-US/error.json";
 
 // Valid dictionary keys
 export type DictionaryKey =
-	| `command:${keyof typeof command}`
-	| `common:${keyof typeof common}`
-	| `error:${keyof typeof error}`;
+  | `command:${keyof typeof command}`
+  | `common:${keyof typeof common}`
+  | `error:${keyof typeof error}`;
 
 declare module "i18next" {
-	interface CustomTypeOptions {
-		defaultNS: "common";
-		ns: ["command", "common", "error"];
+  interface CustomTypeOptions {
+    defaultNS: "common";
+    ns: ["command", "common", "error"];
 
-		resources: {
-			command: typeof command;
-			common: typeof common;
-			error: typeof error;
-		};
-	}
+    resources: {
+      command: typeof command;
+      common: typeof common;
+      error: typeof error;
+    };
+  }
 }

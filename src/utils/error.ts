@@ -4,11 +4,14 @@
  * @module utils/error
  */
 
-import type { DictionaryKey } from "@/types/i18next.js";
-import { CommandColors, type InteractionType } from "@/utils/command.js";
-import { t } from "@/utils/i18n.js";
+import { HibikiColors } from "@/utils/constants.js";
 import { logger } from "@/utils/logger.js";
-import type { EmbedData } from "discord.js";
+import {
+  type CommandInteraction,
+  EmbedBuilder,
+  MessageFlags,
+} from "discord.js";
+import { t } from "i18next";
 
 const fallback = "Unknown error";
 
@@ -19,54 +22,63 @@ const fallback = "Unknown error";
  */
 
 export function getError(error: unknown) {
-	// Return parsed error object
-	if (error instanceof Error) {
-		return {
-			cause: error.cause ? Bun.inspect(error.cause) : (error.stack ?? fallback),
-			message: error.message,
-			stack: error.stack ?? fallback,
-			name: error.name,
-		} satisfies Error;
-	}
+  // Return parsed error object
+  if (error instanceof Error) {
+    return {
+      cause: error.cause ? Bun.inspect(error.cause) : (error.stack ?? fallback),
+      message: error.message,
+      stack: error.stack ?? fallback,
+      name: error.name,
+    } satisfies Error;
+  }
 
-	return {
-		cause: fallback,
-		message: typeof error === "string" ? error : fallback,
-		stack: fallback,
-		name: fallback,
-	} satisfies Error;
+  return {
+    cause: fallback,
+    message: typeof error === "string" ? error : fallback,
+    stack: fallback,
+    name: fallback,
+  } satisfies Error;
 }
 
 /**
  * Sends an error reply to an interaction.
- * @param interaction The interaction to send the reply on.
- * @param string The string to translate and send in the error message.
- * @param deferred If set, will run .followUp(). Defaults to false.
- * @param variables Additional variables to pass to i18next.
+ * @param interaction The interaction to send the error message to.
+ * @param key The key to use for the description.
+ * @param opts Additional options to pass to i18next.
  */
 
-export async function errorReply(
-	interaction: InteractionType,
-	string: DictionaryKey,
-	deferred = false,
-	variables: Record<string, unknown> = {},
+export async function sendErrorReply(
+  interaction: CommandInteraction,
+  key: DictionaryKey,
+  ...opts: unknown[]
 ) {
-	// Prepare embed message
-	const embed = {
-		title: t("error:ERROR", { lng: interaction.locale }),
-		description: t(string, { ...variables, lng: interaction.locale }),
-		color: CommandColors.Error,
-		footer: {
-			text: t("error:ERROR_FOUND_A_BUG", { lng: interaction.locale }),
-			iconURL: interaction.client.user.displayAvatarURL(),
-		},
-	} satisfies EmbedData;
+  // Creates the embed
+  const flags = interaction.ephemeral ? MessageFlags.Ephemeral : undefined;
+  const embed = new EmbedBuilder();
+  embed
+    .setTitle(t("error:ERROR", { lng: interaction.locale }))
+    .setDescription(t(key, { ...opts, lng: interaction.locale }))
+    .setColor(HibikiColors.Error)
+    .setFooter({
+      "iconURL": interaction.user.client.user.displayAvatarURL(),
+      "text": t("error:FOUND_A_BUG", { lng: interaction.locale }),
+    });
 
-	try {
-		await (deferred
-			? interaction.followUp({ embeds: [embed] })
-			: interaction.reply({ embeds: [embed] }));
-	} catch (err) {
-		logger.warn(`Failed to send error reply: ${getError(err).message}`);
-	}
+  // Sends the error message
+  try {
+    if (interaction.deferred) {
+      await interaction.followUp({
+        flags: flags,
+        embeds: [embed],
+      });
+    } else {
+      await interaction.reply({
+        flags: flags,
+        embeds: [embed],
+      });
+    }
+  } catch (err) {
+    const error = getError(err);
+    logger.warn(`Failed to send error reply: ${error.message}`);
+  }
 }

@@ -17,38 +17,38 @@ const LOGS_DIRECTORY = join(CURRENT_DIRECTORY, "../../logs");
 
 // Pino pretty option
 const pinoPrettyOptions = {
-	levelFirst: false,
-	translateTime: "SYS:yyyy-mm-dd HH:MM:ss TT",
-	colorize: true,
+  levelFirst: false,
+  translateTime: "SYS:yyyy-mm-dd HH:MM:ss TT",
+  colorize: true,
 } satisfies PrettyOptions;
 
 // Pino rotation options
 const pinoRotateFileOptions = {
-	dir: LOGS_DIRECTORY,
-	mkdir: true,
-	maxAgeDays: 14,
+  dir: LOGS_DIRECTORY,
+  mkdir: true,
+  maxAgeDays: 14,
 } satisfies PinoRotateFileOptions;
 
 // Creates a pino logger
 export const logger = pino(
-	{
-		level: "info",
-		name: `${env.npm_package_name}/${env.npm_package_version}`,
-	},
-	multistream([
-		{
-			level: "info",
-			stream: transport({
-				target: "pino-pretty",
-				options: pinoPrettyOptions,
-			}),
-		},
-		{
-			level: "info",
-			stream: transport({
-				target: "@chatsift/pino-rotate-file",
-				options: pinoRotateFileOptions,
-			}),
-		},
-	]),
+  {
+    level: "info",
+    name: `${env.npm_package_name}/${env.npm_package_version}`,
+  },
+  multistream([
+    {
+      level: "info",
+      stream: transport({
+        target: "pino-pretty",
+        options: pinoPrettyOptions,
+      }),
+    },
+    {
+      level: "info",
+      stream: transport({
+        target: "@chatsift/pino-rotate-file",
+        options: pinoRotateFileOptions,
+      }),
+    },
+  ]),
 );

@@ -2,5 +2,6 @@
 
 discord app providing informational tools and utilities
 
-# license
+## license
+
 [zlib](LICENSE)

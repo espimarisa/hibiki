@@ -1,183 +1,210 @@
 /**
- * @file Command for user-to-user roleplay and interaction.
+ * @file Slash command for user-to-user roleplay.
  * @author Espi Marisa <contact@espi.me>
- * @module commands/roleplay
+ * @module commands/slash/roleplay
  */
 
-import type { DictionaryKey } from "@/types/i18next.js";
-import { CommandColors, createCommand } from "@/utils/command.js";
-import { errorReply } from "@/utils/error.js";
-import { t, tObj } from "@/utils/i18n.js";
+import { HibikiColors } from "@/utils/constants.js";
+import { t, tMap } from "@/utils/i18n.js";
 import {
-	ApplicationCommandOptionType,
-	ApplicationCommandType,
-} from "discord-api-types/v10";
+  EmbedBuilder,
+  InteractionContextType,
+  SlashCommandBuilder,
+} from "discord.js";
 
-// Expected subcommand response typing
-interface RoleplaySubcommandData {
-	url: string;
-	string: DictionaryKey;
-}
+export const roleplayCommand: HibikiSlashCommand = {
+  data: new SlashCommandBuilder()
+    .setName("roleplay")
+    .setNameLocalizations(tMap("command:ROLEPLAY_NAME"))
+    .setDescription(t("command:ROLEPLAY_DESCRIPTION"))
+    .setDescriptionLocalizations(tMap("command:ROLEPLAY_DESCRIPTION"))
+    .setContexts(InteractionContextType.Guild)
+    .addSubcommand((hug) =>
+      hug
+        .setName("hug")
+        .setNameLocalizations(tMap("command:ROLEPLAY_HUG_NAME"))
+        .setDescription(t("command:ROLEPLAY_HUG_DESCRIPTION"))
+        .setDescriptionLocalizations(tMap("command:ROLEPLAY_HUG_DESCRIPTION"))
+        .addUserOption((target) =>
+          target
+            .setName("target")
+            .setNameLocalizations(tMap("command:ROLEPLAY_TARGET_NAME"))
+            .setDescription(t("command:ROLEPLAY_TARGET_DESCRIPTION"))
+            .setDescriptionLocalizations(
+              tMap("command:ROLEPLAY_TARGET_DESCRIPTION"),
+            ),
+        ),
+    )
+    .addSubcommand((cuddle) =>
+      cuddle
+        .setName("cuddle")
+        .setNameLocalizations(tMap("command:ROLEPLAY_CUDDLE_NAME"))
+        .setDescription(t("command:ROLEPLAY_CUDDLE_DESCRIPTION"))
+        .setDescriptionLocalizations(
+          tMap("command:ROLEPLAY_CUDDLE_DESCRIPTION"),
+        )
+        .addUserOption((target) =>
+          target
+            .setName("target")
+            .setNameLocalizations(tMap("command:ROLEPLAY_TARGET_NAME"))
+            .setDescription(t("command:ROLEPLAY_TARGET_DESCRIPTION"))
+            .setDescriptionLocalizations(
+              tMap("command:ROLEPLAY_TARGET_DESCRIPTION"),
+            ),
+        ),
+    )
+    .addSubcommand((kiss) =>
+      kiss
+        .setName("kiss")
+        .setNameLocalizations(tMap("command:ROLEPLAY_KISS_NAME"))
+        .setDescription(t("command:ROLEPLAY_KISS_DESCRIPTION"))
+        .setDescriptionLocalizations(tMap("command:ROLEPLAY_KISS_DESCRIPTION"))
+        .addUserOption((target) =>
+          target
+            .setName("target")
+            .setNameLocalizations(tMap("command:ROLEPLAY_TARGET_NAME"))
+            .setDescription(t("command:ROLEPLAY_TARGET_DESCRIPTION"))
+            .setDescriptionLocalizations(
+              tMap("command:ROLEPLAY_TARGET_DESCRIPTION"),
+            ),
+        ),
+    )
+    .addSubcommand((pat) =>
+      pat
+        .setName("pat")
+        .setNameLocalizations(tMap("command:ROLEPLAY_PAT_NAME"))
+        .setDescription(t("command:ROLEPLAY_PAT_DESCRIPTION"))
+        .setDescriptionLocalizations(tMap("command:ROLEPLAY_PAT_DESCRIPTION"))
+        .addUserOption((target) =>
+          target
+            .setName("target")
+            .setNameLocalizations(tMap("command:ROLEPLAY_TARGET_NAME"))
+            .setDescription(t("command:ROLEPLAY_TARGET_DESCRIPTION"))
+            .setDescriptionLocalizations(
+              tMap("command:ROLEPLAY_TARGET_DESCRIPTION"),
+            ),
+        ),
+    )
+    .addSubcommand((slap) =>
+      slap
+        .setName("slap")
+        .setNameLocalizations(tMap("command:ROLEPLAY_SLAP_NAME"))
+        .setDescription(t("command:ROLEPLAY_SLAP_DESCRIPTION"))
+        .setDescriptionLocalizations(tMap("command:ROLEPLAY_SLAP_DESCRIPTION"))
+        .addUserOption((target) =>
+          target
+            .setName("target")
+            .setNameLocalizations(tMap("command:ROLEPLAY_TARGET_NAME"))
+            .setDescription(t("command:ROLEPLAY_TARGET_DESCRIPTION"))
+            .setDescriptionLocalizations(
+              tMap("command:ROLEPLAY_TARGET_DESCRIPTION"),
+            ),
+        ),
+    ),
 
-export const roleplayCommand = createCommand({
-	name: t("command:COMMAND_ROLEPLAY_NAME"),
-	name_localizations: tObj("command:COMMAND_ROLEPLAY_NAME"),
-	description: t("command:COMMAND_ROLEPLAY_DESCRIPTION"),
-	description_localizations: tObj("command:COMMAND_ROLEPLAY_DESCRIPTION"),
-	type: ApplicationCommandType.ChatInput,
-	options: [
-		{
-			// Hug subcommand
-			name: t("command:COMMAND_ROLEPLAY_HUG"),
-			description: t("command:COMMAND_ROLEPLAY_HUG_DESCRIPTION"),
-			type: ApplicationCommandOptionType.Subcommand,
-			options: [
-				{
-					// The member to hug
-					name: t("common:MEMBER"),
-					name_localizations: tObj("common:MEMBER"),
-					description: t("command:COMMAND_ROLEPLAY_TARGET"),
-					description_localizations: tObj("command:COMMAND_ROLEPLAY_TARGET"),
-					type: ApplicationCommandOptionType.User,
-					required: true,
-				},
-			],
-		},
-		{
-			// Kiss subcommand
-			name: t("command:COMMAND_ROLEPLAY_KISS"),
-			description: t("command:COMMAND_ROLEPLAY_KISS_DESCRIPTION"),
-			type: ApplicationCommandOptionType.Subcommand,
-			options: [
-				{
-					// The member to kiss
-					name: t("common:MEMBER"),
-					name_localizations: tObj("common:MEMBER"),
-					description: t("command:COMMAND_ROLEPLAY_TARGET"),
-					description_localizations: tObj("command:COMMAND_ROLEPLAY_TARGET"),
-					type: ApplicationCommandOptionType.User,
-					required: true,
-				},
-			],
-		},
-		{
-			// Cuddle subcommand
-			name: t("command:COMMAND_ROLEPLAY_CUDDLE"),
-			description: t("command:COMMAND_ROLEPLAY_CUDDLE_DESCRIPTION"),
-			type: ApplicationCommandOptionType.Subcommand,
-			options: [
-				{
-					// The member to cuddle
-					name: t("common:MEMBER"),
-					name_localizations: tObj("common:MEMBER"),
-					description: t("command:COMMAND_ROLEPLAY_TARGET"),
-					description_localizations: tObj("command:COMMAND_ROLEPLAY_TARGET"),
-					type: ApplicationCommandOptionType.User,
-					required: true,
-				},
-			],
-		},
-		{
-			// Pat subcommand
-			name: t("command:COMMAND_ROLEPLAY_PAT"),
-			description: t("command:COMMAND_ROLEPLAY_PAT_DESCRIPTION"),
-			type: ApplicationCommandOptionType.Subcommand,
-			options: [
-				{
-					// The member to pat
-					name: t("common:MEMBER"),
-					name_localizations: tObj("common:MEMBER"),
-					description: t("command:COMMAND_ROLEPLAY_TARGET"),
-					description_localizations: tObj("command:COMMAND_ROLEPLAY_TARGET"),
-					type: ApplicationCommandOptionType.User,
-					required: true,
-				},
-			],
-		},
-	],
+  async runCommand(interaction) {
+    // Initialize string and url to use later
+    let string: DictionaryKey;
+    let url = "";
 
-	async runSlashCommand(interaction) {
-		// Gets the subcommand and runner
-		const subcommand = interaction.options.getSubcommand();
-		const user = interaction.options.getUser("member");
+    // Gets the subcommand and target
+    const embed = new EmbedBuilder();
+    const target = interaction.options.getUser("target");
+    const subcommand = interaction.options.getSubcommand();
 
-		// Handles edge cases where no subcommand or user was found
-		if (!(subcommand && user)) {
-			await errorReply(interaction, "error:ERROR_NO_OPTION");
-			return;
-		}
+    // Handles unresolved data
+    if (!(target && subcommand)) {
+      await interaction.reply({
+        flags: "Ephemeral",
+        embeds: [
+          embed
+            .setTitle(t("error:ERROR"))
+            .setDescription(t("error:NO_OPTION"))
+            .setColor(HibikiColors.Error)
+            .setFooter({ "text": t("error:FOUND_A_BUG") }),
+        ],
+      });
 
-		// Don't allow self-to-bot roleplay
-		if (user.id === interaction.client.user.id) {
-			await errorReply(interaction, "command:COMMAND_ROLEPLAY_BOT_DETAILS");
-			return;
-		}
+      return;
+    }
 
-		// Don't allow self-to-self roleplay
-		if (user.id === interaction.user.id) {
-			await errorReply(interaction, "command:COMMAND_ROLEPLAY_SELF_DETAILS");
-			return;
-		}
+    // Don't allow self-roleplay
+    if (interaction.user.id === target.id) {
+      await interaction.reply({
+        embeds: [
+          embed
+            .setTitle(t("error:ERROR"))
+            .setDescription(t("command:ROLEPLAY_SELF_MESSAGE"))
+            .setColor(HibikiColors.Error),
+        ],
+      });
+    }
 
-		// Runs the subcommand
-		const response = this.runSubCommand?.(subcommand) as RoleplaySubcommandData;
-		if (!response) {
-			await errorReply(interaction, "error:ERROR_IMAGE");
-			return;
-		}
+    // Don't allow roleplay with the bot
+    if (interaction.client.user.id === target.id) {
+      await interaction.reply({
+        embeds: [
+          embed
+            .setTitle(t("error:ERROR"))
+            .setDescription(t("command:ROLEPLAY_BOT_MESSAGE"))
+            .setColor(HibikiColors.Error),
+        ],
+      });
 
-		// Sends the getSubResponse
-		await interaction.reply({
-			embeds: [
-				{
-					title: t(response.string, {
-						lng: interaction.locale,
-						user: interaction.user.tag,
-						target: user.tag,
-					}),
-					color: CommandColors.Primary,
-					image: {
-						url: response.url,
-					},
-				},
-			],
-		});
-	},
+      return;
+    }
 
-	runSubCommand(type: string): RoleplaySubcommandData | undefined {
-		switch (type) {
-			case "hug": {
-				return {
+    // Gets the string and URL to use
+    switch (subcommand) {
+      case "hug": {
+        string = "command:ROLEPLAY_HUG_MESSAGE";
+        url = "https://cdn.weeb.sh/images/B10Tfknqf.gif";
+        break;
+      }
 
-					url: "https://cdn.weeb.sh/images/B10Tfknqf.gif",
-					string: "command:COMMAND_ROLEPLAY_HUG_DETAILS",
-				} satisfies RoleplaySubcommandData;
-			}
+      case "cuddle": {
+        string = "command:ROLEPLAY_CUDDLE_MESSAGE";
+        url = "https://cdn.weeb.sh/images/rkA6SU7w-.gif";
+        break;
+      }
 
-			case "kiss": {
-				return {
-					url: "https://cdn.weeb.sh/images/SkKL3adPb.gif",
-					string: "command:COMMAND_ROLEPLAY_KISS_DETAILS",
-				} satisfies RoleplaySubcommandData;
-			}
+      case "kiss": {
+        string = "command:ROLEPLAY_KISS_MESSAGE";
+        url = "https://cdn.weeb.sh/images/SkKL3adPb.gif";
+        break;
+      }
 
-			case "cuddle": {
-				return {
-					url: "https://cdn.weeb.sh/images/rkA6SU7w-.gif",
-					string: "command:COMMAND_ROLEPLAY_CUDDLE_DETAILS",
-				} satisfies RoleplaySubcommandData;
-			}
+      case "pat": {
+        string = "command:ROLEPLAY_PAT_MESSAGE";
+        url = "command:COMMAND_ROLEPLAY_PAT_DETAILS";
+        break;
+      }
 
-			case "pat": {
-				return {
-					url: "https://cdn.weeb.sh/images/HJRIlihCZ.gif",
-					string: "command:COMMAND_ROLEPLAY_PAT_DETAILS",
-				} satisfies RoleplaySubcommandData;
-			}
+      case "slap": {
+        string = "command:ROLEPLAY_SLAP_MESSAGE";
+        url = "https://cdn.weeb.sh/images/HkA6mJFP-.gif";
+        break;
+      }
 
-			default: {
-				return;
-			}
-		}
-	},
-});
+      default: {
+        return;
+      }
+    }
+
+    // Sends the embed
+    await interaction.reply({
+      embeds: [
+        embed
+          .setDescription(
+            t(string, {
+              lng: interaction.locale,
+              user: interaction.user.globalName,
+              target: target.globalName,
+            }),
+          )
+          .setColor(HibikiColors.Primary)
+          .setImage(url),
+      ],
+    });
+  },
+};

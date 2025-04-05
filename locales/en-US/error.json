@@ -1,9 +1,7 @@
 {
-	"ERROR": "❌ Oh dear...",
-	"ERROR_ACCOUNT": "Failed to get information about that account. Try again later.",
-	"ERROR_FOUND_A_BUG": "Found a bug? - github.com/espimarisa/hibiki/issues",
-	"ERROR_IMAGE": "Failed to send the image. Try again later.",
-	"ERROR_NO_OPTION": "A required {{option}} was not provided.",
-	"ERROR_OWNER_ONLY": "This command is only allowed to be ran by the application owner.",
-	"ERROR_STACK": "\n```ts\n{{- error}}\n```"
+  "ERROR": "❌ Oh dear...",
+  "FOUND_A_BUG": "Found a bug? - github.com/espimarisa/hibiki/issues",
+  "IMAGE": "Failed to send the image. Try again later.",
+  "NO_OPTION": "A required {{option}} was not provided.",
+  "STACK": "\n```ts\n{{- message}}\n```"
 }

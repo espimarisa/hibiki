@@ -1,39 +1,39 @@
 /**
- * @file Command to check the current latency and shard status.
+ * @file Slash command to return current shard latency and status.
  * @author Espi Marisa <contact@espi.me>
- * @module commands/ping
+ * @module commands/slash/ping
  */
 
-import { CommandColors, createCommand } from "@/utils/command.js";
-import { t, tObj } from "@/utils/i18n.js";
-import { ApplicationCommandType, SnowflakeUtil } from "discord.js";
+import { HibikiColors } from "@/utils/constants.js";
+import { t, tMap } from "@/utils/i18n.js";
+import { EmbedBuilder, SlashCommandBuilder, SnowflakeUtil } from "discord.js";
 
-export const pingCommand = createCommand({
-	name: t("command:COMMAND_PING_NAME"),
-	description: t("command:COMMAND_PING_DESCRIPTION"),
-	name_localizations: tObj("command:COMMAND_PING_NAME"),
-	description_localizations: tObj("command:COMMAND_PING_DESCRIPTION"),
-	type: ApplicationCommandType.ChatInput,
+export const testCommand: HibikiSlashCommand = {
+  data: new SlashCommandBuilder()
+    .setName("ping")
+    .setNameLocalizations(tMap("command:PING_NAME"))
+    .setDescription(t("command:PING_DESCRIPTION"))
+    .setDescriptionLocalizations(tMap("command:PING_DESCRIPTION")),
 
-	async runSlashCommand(interaction) {
-		// Calculates the current latency and shard latency
-		const ping = Date.now() - SnowflakeUtil.timestampFrom(interaction.id);
-		const shardId = interaction.guild?.shardId || 0;
-		const shardLatency = interaction.client.ws.shards.get(shardId)?.ping || 0;
+  async runCommand(interaction) {
+    // Calculates the current ping and shard latency
+    const ping = Date.now() - SnowflakeUtil.timestampFrom(interaction.id);
+    const shard = interaction.guild?.shardId || 0;
+    const latency = interaction.client.ws.shards.get(shard)?.ping || 0;
 
-		// Sends the message
-		await interaction.reply({
-			embeds: [
-				{
-					title: t("command:COMMAND_PING_PONG", { lng: interaction.locale }),
-					description: t("command:COMMAND_PING_LATENCY", {
-						lng: interaction.locale,
-						ping: ping,
-						latency: shardLatency,
-					}),
-					color: CommandColors.Secondary,
-				},
-			],
-		});
-	},
-});
+    // Creates the embed
+    const embed = new EmbedBuilder()
+      .setTitle(t("command:PING_PONG"))
+      .setDescription(
+        t("command:PING_LATENCY", {
+          lng: interaction.locale,
+          ping: ping,
+          latency: latency,
+        }),
+      )
+      .setColor(HibikiColors.Primary);
+
+    // Sends the interaction
+    await interaction.reply({ embeds: [embed] });
+  },
+};
