@@ -20,6 +20,12 @@ type HibikiSlashCommand = {
   /** An optional array of required env vars in .env needed to load a command. */
   env_vars?: string[];
 
+  /** If set, only the runner can see the command. Defaults to false. */
+  ephemeral?: boolean;
+
+  /** If set, defer the interaction to allow for more processing time. Defaults to false. */
+  defer?: boolean;
+
   /**
    * Runs a chat input (slash) command.
    * @param interaction The interaction to run the command on.

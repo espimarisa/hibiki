@@ -11,6 +11,7 @@ import {
   InteractionContextType,
   SlashCommandBuilder,
 } from "discord.js";
+import { sendErrorReply } from "../../utils/error.js";
 
 export const roleplayCommand: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
@@ -114,43 +115,19 @@ export const roleplayCommand: HibikiSlashCommand = {
 
     // Handles unresolved data
     if (!(target && subcommand)) {
-      await interaction.reply({
-        flags: "Ephemeral",
-        embeds: [
-          embed
-            .setTitle(t("error:ERROR"))
-            .setDescription(t("error:NO_OPTION"))
-            .setColor(HibikiColors.Error)
-            .setFooter({ "text": t("error:FOUND_A_BUG") }),
-        ],
-      });
-
+      await sendErrorReply(interaction, "error:NO_OPTION", true);
       return;
     }
 
     // Don't allow self-roleplay
     if (interaction.user.id === target.id) {
-      await interaction.reply({
-        embeds: [
-          embed
-            .setTitle(t("error:ERROR"))
-            .setDescription(t("command:ROLEPLAY_SELF_MESSAGE"))
-            .setColor(HibikiColors.Error),
-        ],
-      });
+      await sendErrorReply(interaction, "command:ROLEPLAY_SELF_MESSAGE");
+      return;
     }
 
     // Don't allow roleplay with the bot
     if (interaction.client.user.id === target.id) {
-      await interaction.reply({
-        embeds: [
-          embed
-            .setTitle(t("error:ERROR"))
-            .setDescription(t("command:ROLEPLAY_BOT_MESSAGE"))
-            .setColor(HibikiColors.Error),
-        ],
-      });
-
+      await sendErrorReply(interaction, "command:ROLEPLAY_BOT_MESSAGE");
       return;
     }
 

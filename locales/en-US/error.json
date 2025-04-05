@@ -3,5 +3,5 @@
   "FOUND_A_BUG": "Found a bug? - github.com/espimarisa/hibiki/issues",
   "IMAGE": "Failed to send the image. Try again later.",
   "NO_OPTION": "A required {{option}} was not provided.",
-  "STACK": "\n```ts\n{{- message}}\n```"
+  "STACK": "\n```ts\n{{- error}}\n```"
 }

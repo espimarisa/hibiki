@@ -12,6 +12,7 @@ import { ActivityType, GatewayIntentBits } from "discord-api-types/v10";
 
 let activityState = 0;
 
+/** Creates a new Discord.js client. */
 export const bot = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 

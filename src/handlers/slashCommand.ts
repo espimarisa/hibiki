@@ -32,15 +32,28 @@ export const slashCommandHandler: HibikiEventHandler<"interactionCreate"> = {
 
     // Runs the slash command
     try {
+      // Defers the initial reply if comamnd.defer is set
+      if (command.defer) {
+        // Defers the reply; use Ephemeral if needed
+        await interaction.deferReply({
+          "flags": command.ephemeral ? ["Ephemeral"] : [],
+        });
+      }
       await command.runCommand(interaction);
     } catch (err) {
       const error = getError(err);
       logger.error(`Error running ${command.data.name}: ${error.stack}`);
 
       // Sends an error reply with error.message
-      await sendErrorReply(interaction, "error:STACK", {
-        message: error.message,
-      });
+      await sendErrorReply(
+        interaction,
+        "error:STACK",
+        command.defer,
+        command.ephemeral,
+        {
+          error: error.message,
+        },
+      );
 
       return;
     }

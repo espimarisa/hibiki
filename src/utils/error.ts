@@ -6,11 +6,7 @@
 
 import { HibikiColors } from "@/utils/constants.js";
 import { logger } from "@/utils/logger.js";
-import {
-  type CommandInteraction,
-  EmbedBuilder,
-  MessageFlags,
-} from "discord.js";
+import { type CommandInteraction, EmbedBuilder } from "discord.js";
 import { t } from "i18next";
 
 const fallback = "Unknown error";
@@ -44,16 +40,20 @@ export function getError(error: unknown) {
  * Sends an error reply to an interaction.
  * @param interaction The interaction to send the error message to.
  * @param key The key to use for the description.
+ * @param defer If set, sends a followUp() instead of a reply().
+ * @param ephemeral If set, sends the reply to just the runner.
  * @param opts Additional options to pass to i18next.
  */
 
 export async function sendErrorReply(
   interaction: CommandInteraction,
   key: DictionaryKey,
-  ...opts: unknown[]
+  defer = false,
+  ephemeral = false,
+  opts: Record<string, unknown> = {},
 ) {
   // Creates the embed
-  const flags = interaction.ephemeral ? MessageFlags.Ephemeral : undefined;
+  const flags = ephemeral ? "Ephemeral" : undefined;
   const embed = new EmbedBuilder();
   embed
     .setTitle(t("error:ERROR", { lng: interaction.locale }))
@@ -66,7 +66,7 @@ export async function sendErrorReply(
 
   // Sends the error message
   try {
-    if (interaction.deferred) {
+    if (defer) {
       await interaction.followUp({
         flags: flags,
         embeds: [embed],
