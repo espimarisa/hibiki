@@ -1,7 +1,7 @@
 /**
- * @file Creates a pino logger.
+ * @file Utility used for output logging.
  * @author Espi Marisa <contact@espi.me>
- * @module utils/logger
+ * @license zlib
  */
 
 import { env } from "@/utils/env.js";
@@ -17,9 +17,9 @@ const LOGS_DIRECTORY = join(CURRENT_DIRECTORY, "../../logs");
 
 // Pino pretty option
 const pinoPrettyOptions = {
+  colorize: true,
   levelFirst: false,
   translateTime: "SYS:yyyy-mm-dd HH:MM:ss TT",
-  colorize: true,
 } satisfies PrettyOptions;
 
 // Pino rotation options
@@ -29,7 +29,7 @@ const pinoRotateFileOptions = {
   maxAgeDays: 14,
 } satisfies PinoRotateFileOptions;
 
-// Creates a pino logger
+/** Pino logger used for console output and writing to log files. */
 export const logger = pino(
   {
     level: "info",

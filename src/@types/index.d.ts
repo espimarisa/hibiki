@@ -1,21 +1,15 @@
 /**
- * @file Typing file for internal Hibiki modules.
+ * @file Typing definitions for internal modules.
  * @author Espi Marisa <contact@espi.me>
- * @module @types/index.d.ts
+ * @license zlib
  */
 
-// Type import aliases so global types are happy
-type SlashCommandBuilder = import("discord.js").SlashCommandBuilder;
-type ClientEvents = import("discord.js").ClientEvents;
-type ChatInputCommandInteraction =
-  import("discord.js").ChatInputCommandInteraction;
-
-/** Typing alias for an i18next valid dictionary key. */
+/** A valid localization dictionary key. */
 type DictionaryKey = import("@/types/i18next.d.ts").DictionaryKey;
 
 /** Typing for a Hibiki slash command. */
 type HibikiSlashCommand = {
-  data: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder;
+  data: PrivateSlashCommandBuilder | PrivateSlashCommandSubcommandsOnlyBuilder;
 
   /** An optional array of required env vars in .env needed to load a command. */
   env_vars?: string[];
@@ -31,11 +25,13 @@ type HibikiSlashCommand = {
    * @param interaction The interaction to run the command on.
    */
 
-  runCommand: (interaction: ChatInputCommandInteraction) => Promise<void>;
+  runCommand: (
+    interaction: PrivateChatInputCommandInteraction,
+  ) => Promise<void>;
 };
 
 /** Typing for a Hibiki event handler. */
-type HibikiEventHandler<K extends keyof ClientEvents> = {
+type HibikiEvent<K extends keyof PrivateClientEvents> = {
   /** The client event to listen on. */
   event: K;
 
@@ -43,12 +39,22 @@ type HibikiEventHandler<K extends keyof ClientEvents> = {
   once?: boolean;
 
   /**
-   * Runs a handler when an event is emitted.
+   * Runs am event when an event is emitted.
    * @param args Arguments to pass to the handler.
    */
 
-  runHandler: (...args: ClientEvents[K]) => Promise<void>;
+  runEvent: (...args: PrivateClientEvents[K]) => Promise<void>;
 };
 
+type HibikiCommand = HibikiSlashCommand;
+
 /** Typing for possible Hibiki event handler types */
-type HibikiEventHandlerTypes = HibikiEventHandler<keyof ClientEvents>;
+type HibikiEventTypes = HibikiEventHandler<keyof PrivateClientEvents>;
+
+// Type import aliases so global types are happy
+type PrivateSlashCommandBuilder = import("discord.js").SlashCommandBuilder;
+type PrivateClientEvents = import("discord.js").ClientEvents;
+type PrivateChatInputCommandInteraction =
+  import("discord.js").ChatInputCommandInteraction;
+type PrivateSlashCommandSubcommandsOnlyBuilder =
+  import("discord.js").SlashCommandSubcommandsOnlyBuilder;

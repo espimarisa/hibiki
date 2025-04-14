@@ -1,6 +1,6 @@
 {
   "exclude": ["./dist/*", "node_modules/"],
-  "include": ["./src/**/*.ts", "./src/**/*.d.ts", "./locales/**/*.json"],
+  "include": ["./src/**/*.ts", "./locales/**/*.json"],
 
   "compilerOptions": {
     "allowArbitraryExtensions": true,
@@ -38,7 +38,7 @@
     "outDir": "./dist",
     "paths": {
       "@/commands/*": ["./src/commands/*"],
-      "@/handlers/*": ["./src/handlers/*"],
+      "@/events/*": ["./src/events/*"],
       "@/locales/*": ["./locales/*"],
       "@/root/*": ["./src/*"],
       "@/types/*": ["./src/@types/*"],

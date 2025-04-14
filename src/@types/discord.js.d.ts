@@ -1,13 +1,17 @@
 /**
  * @file Additional typing definitions for Discord.js.
  * @author Espi Marisa <contact@espi.me>
- * @module @types/discord.js.d.ts
+ * @license zlib
  */
 
 import type { Collection } from "discord.js";
 
 declare module "discord.js" {
   interface Client {
-    slashCommands?: Collection<string, HibikiSlashCommand>;
+    /** A collection of valid loaded commands. */
+    commands?: Collection<string, HibikiCommand>;
+
+    /** A ShardingManager. */
+    sharder: ShardingManager;
   }
 }

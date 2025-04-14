@@ -2,7 +2,7 @@
   "private": true,
   "name": "@espimarisa/hibiki",
   "version": "4.0.0-alpha",
-  "description": "discord app providing informational tools and utilities",
+  "description": "Kitchen sink Discord bot full of polished tools, utilities, and other odds-and-ends.",
   "license": "zlib",
   "author": "Espi Marisa <contact@espi.me> (https://espi.me)",
   "homepage": "https://github.com/espimarisa/hibiki",
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@chatsift/pino-rotate-file": "^0.5.1",
-    "@sentry/bun": "^9.11.0",
+    "@sentry/bun": "^9.12.0",
     "date-fns": "^4.1.0",
     "discord.js": "^14.18.0",
     "i18next": "^24.2.3",
@@ -38,9 +38,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.0-beta.1",
-    "@types/bun": "^1.2.8",
-    "typescript": "^5.8.2"
+    "@types/bun": "^1.2.9",
+    "typescript": "^5.8.3"
   },
-  "packageManager": "bun@1.2.8",
+  "packageManager": "bun@1.2.9",
   "trustedDependencies": ["@biomejs/biome", "esbuild"]
 }

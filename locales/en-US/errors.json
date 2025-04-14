@@ -1,0 +1,8 @@
+{
+  "ERROR": "❌ Error",
+  "ERROR_FATAL": "❌ Something went wrong!",
+  "ERROR_STACK": "\n```ts\n{{- error}}\n```",
+  "ERROR_BUG": "Spotted a bug? - github.com/espimarisa/hibiki/issues",
+  "IMAGE_FAILED": "Failed to get image response data. Try again later.",
+  "NO_OPTION": "A valid **{{option}}** needs to be provided."
+}

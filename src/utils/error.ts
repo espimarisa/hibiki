@@ -1,7 +1,7 @@
 /**
- * @file Utilities for capturing and debugging errors.
+ * @file Utilities to interact with and handle errors.
  * @author Espi Marisa <contact@espi.me>
- * @module utils/error
+ * @license zlib
  */
 
 import { HibikiColors } from "@/utils/constants.js";
@@ -9,31 +9,46 @@ import { logger } from "@/utils/logger.js";
 import { type CommandInteraction, EmbedBuilder } from "discord.js";
 import { t } from "i18next";
 
-const fallback = "Unknown error";
+const errorFallback = "Unknown";
 
 /**
- * Parses a possible error object and returns the stack.
+ * Parses a possible error object and returns an Error object.
  * @param error A possible error object to parse.
- * @returns A valid Error object or error message.
+ * @returns A valid Error instance.
  */
 
-export function getError(error: unknown) {
-  // Return parsed error object
+export function parseError(error: unknown) {
+  // Returns the Error object if it is one
   if (error instanceof Error) {
-    return {
-      cause: error.cause ? Bun.inspect(error.cause) : (error.stack ?? fallback),
-      message: error.message,
-      stack: error.stack ?? fallback,
-      name: error.name,
-    } satisfies Error;
+    return error;
   }
 
-  return {
-    cause: fallback,
-    message: typeof error === "string" ? error : fallback,
-    stack: fallback,
-    name: fallback,
-  } satisfies Error;
+  let message = errorFallback;
+
+  // Handles errors that only return a string
+  if (typeof error === "string") {
+    message = error;
+  } else if (
+    // Handles non-Error objects
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error
+  ) {
+    // Inspect the object and get the message
+    message = Bun.inspect((error as { message: unknown }).message);
+  } else {
+    // Build the object
+    message = Bun.inspect(error);
+  }
+
+  // Preserve the error.cause if it exists
+  const cause =
+    typeof error === "object" && error !== null
+      ? Bun.inspect(error)
+      : undefined;
+
+  // Returns a valid Error object and appends the cause
+  return new Error(message, cause ? { cause } : undefined);
 }
 
 /**
@@ -56,12 +71,12 @@ export async function sendErrorReply(
   const flags = ephemeral ? "Ephemeral" : undefined;
   const embed = new EmbedBuilder();
   embed
-    .setTitle(t("error:ERROR", { lng: interaction.locale }))
+    .setTitle(t("errors:ERROR", { lng: interaction.locale }))
     .setDescription(t(key, { ...opts, lng: interaction.locale }))
     .setColor(HibikiColors.Error)
     .setFooter({
       "iconURL": interaction.user.client.user.displayAvatarURL(),
-      "text": t("error:FOUND_A_BUG", { lng: interaction.locale }),
+      "text": t("errors:ERROR_BUG", { lng: interaction.locale }),
     });
 
   // Sends the error message
@@ -78,7 +93,7 @@ export async function sendErrorReply(
       });
     }
   } catch (err) {
-    const error = getError(err);
+    const error = parseError(err);
     logger.warn(`Failed to send error reply: ${error.message}`);
   }
 }

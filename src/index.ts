@@ -1,69 +1,50 @@
 /**
- * @file Creates a sharding manager and spawns a bot client.
+ * @file Spawns shards and creates a bot client.
  * @author Espi Marisa <contact@espi.me>
- * @module index
+ * @license zlib
  */
 
 import { bot } from "@/root/bot.js";
 import { env } from "@/utils/env.js";
-import { getError } from "@/utils/error.js";
+import { parseError } from "@/utils/error.js";
 import {
   getDirname,
-  loadEventHandlers,
-  loadSlashCommands,
+  HIBIKI_COMMANDS,
+  HIBIKI_EVENTS,
+  loadCommands,
+  loadEvents,
 } from "@/utils/fs.js";
-import { initI18N } from "@/utils/i18n.js";
+import { initI18Next } from "@/utils/i18n.js";
 import { logger } from "@/utils/logger.js";
 import { join } from "node:path";
-import { init } from "@sentry/bun";
-import { type ClientUser, Collection, ShardingManager } from "discord.js";
+import { type ClientUser, ShardingManager } from "discord.js";
 
 // Gets important directories and the client file
 const ROOT_DIRECTORY = getDirname(import.meta.url);
-const SLASH_COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands/slash");
-const EVENT_HANDLERS_DIRECTORY = join(ROOT_DIRECTORY, "./handlers");
+const ROOT_FILE_NAME = `bot.${env.NODE_ENV === "production" ? "js" : "ts"}`;
+const ROOT_FILE = join(ROOT_DIRECTORY, ROOT_FILE_NAME);
 const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
-const ROOT_FILE = `bot.${env.NODE_ENV === "production" ? "js" : "ts"}`;
-const ROOT_FILE_PATH = join(ROOT_DIRECTORY, ROOT_FILE);
+const COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands");
+const EVENTS_DIRECTORY = join(ROOT_DIRECTORY, "./events");
+
 const readyShards = new Set();
 
-/** A Discord.js collection of valid Hibiki slash commands. */
-export const slashCommands = new Collection<string, HibikiSlashCommand>();
-
-/** A Discord.js collection of valid Hibiki event handlers. */
-export const eventHandlers = new Collection<string, HibikiEventHandlerTypes>();
-
-// Initialze Sentry
-if (env.SENTRY_DSN) {
-  try {
-    init({
-      dsn: env.SENTRY_DSN,
-      environment: env.NODE_ENV,
-      release: env.npm_package_version,
-    });
-
-    logger.info("Successfully connected to Sentry");
-  } catch (err) {
-    const error = getError(err);
-    logger.error(`Error connecting to Sentry: ${error.message}`);
-    throw new Error(error.stack);
-  }
-}
-
-// Loads i18next, slash commands, and event handlers
-await initI18N(LOCALES_DIRECTORY);
-await loadSlashCommands(SLASH_COMMANDS_DIRECTORY, slashCommands);
-await loadEventHandlers(EVENT_HANDLERS_DIRECTORY, eventHandlers);
-
-// Append slashCommands to bot.client
-bot.slashCommands = slashCommands;
-
-/** Creates the primary Discord.js ShardingManager. */
-export const sharder = new ShardingManager(ROOT_FILE_PATH, {
+// Creates a ShardingManager
+const sharder = new ShardingManager(ROOT_FILE, {
   mode: "process",
+  respawn: true,
   token: env.DISCORD_TOKEN,
   totalShards: "auto",
 });
+
+// Loads i18next, commands, and events
+await initI18Next(LOCALES_DIRECTORY);
+await loadCommands(COMMANDS_DIRECTORY, HIBIKI_COMMANDS);
+await loadEvents(EVENTS_DIRECTORY, HIBIKI_EVENTS);
+
+// Appends commands, and the sharder to the client
+bot.commands = HIBIKI_COMMANDS;
+bot.sharder = sharder;
 
 // Logs specific sharding events
 sharder.on("shardCreate", (shard) => {
@@ -79,7 +60,7 @@ sharder.on("shardCreate", (shard) => {
 
   // Shard error
   shard.on("error", (err) => {
-    const error = getError(err);
+    const error = parseError(err);
     logger.error(`Shard #${shard.id} encountered an error: ${error.message}`);
     throw new Error(error.stack);
   });
@@ -117,10 +98,10 @@ sharder.on("shardCreate", (shard) => {
         // Gets client information from shard 0
         const user = (await sharder.broadcastEval((bot) => bot.user, {
           shard: 0,
-        })) as ClientUser;
+        })) as ClientUser | undefined;
 
-        // Logs client information when fully ready
-        logger.info(`Connected to Discord as ${user.username} (${user?.id})`);
+        // Logs client information when ready
+        logger.info(`Connected to Discord as ${user?.username} (${user?.id})`);
       }
     }
   });
@@ -131,70 +112,17 @@ try {
   await sharder.spawn();
 
   // Subscribe event handlers to their listeners
-  for (const handler of eventHandlers.values()) {
+  for (const event of HIBIKI_EVENTS.values()) {
     // Run handlers that only listen once
-    if (handler.once) {
-      bot.once(
-        handler.event,
-        async (...args) => await handler.runHandler(...args),
-      );
+    if (event.once) {
+      bot.once(event.event, async (...args) => await event.runEvent(...args));
     } else {
       // Run handlers when their subscribed events are emitted
-      bot.on(
-        handler.event,
-        async (...args) => await handler.runHandler(...args),
-      );
+      bot.on(event.event, async (...args) => await event.runEvent(...args));
     }
   }
 } catch (err) {
-  const error = getError(err);
-  logger.error(`Error spawning shards: ${error.message}`);
-  throw new Error(error.stack);
-}
-
-/**
- * Gets the total number of guilds across all shards.
- * @returns The total number of guilds across all shards.
- */
-
-export async function getTotalGuilds() {
-  const results = await sharder.broadcastEval((client) =>
-    client.guilds.fetch().then((guilds) => guilds.size),
-  );
-
-  return results.reduce((acc, count) => acc + count, 0);
-}
-
-/**
- * Gets the total number of cached guilds across all shards.
- * @returns The total number of cached guilds across all shards.
- */
-
-export async function getTotalCachedGuilds() {
-  const total = (await sharder.fetchClientValues(
-    "guilds.cache.size",
-  )) as number[];
-
-  if (total.length === 0) {
-    return;
-  }
-
-  return total.reduce((a, b) => a + b);
-}
-
-/**
- * Gets the total number of cached users across all guilds.
- * @returns The total number of cached users across all guilds.
- */
-
-export async function getTotalCachedUsers() {
-  const total = (await sharder.fetchClientValues(
-    "users.cache.size",
-  )) as number[];
-
-  if (total.length === 0) {
-    return;
-  }
-
-  return total.reduce((a, b) => a + b);
+  const error = parseError(err);
+  logger.error(`Error while spawning shards: ${error.message}`);
+  throw error;
 }

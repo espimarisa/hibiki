@@ -1,28 +1,29 @@
 /**
  * @file Additional typing definitions for i18next.
  * @author Espi Marisa <contact@espi.me>
- * @module @types/i18next
+ * @license zlib
  */
 
-import type command from "@/locales/en-US/command.json";
+import type commands from "@/locales/en-US/commands.json";
 import type common from "@/locales/en-US/common.json";
-import type error from "@/locales/en-US/error.json";
+import type errors from "@/locales/en-US/errors.json";
 
-// Valid dictionary keys
+/** A valid localization dictionary key. */
 export type DictionaryKey =
-  | `command:${keyof typeof command}`
+  | `commands:${keyof typeof commands}`
   | `common:${keyof typeof common}`
-  | `error:${keyof typeof error}`;
+  | `errors:${keyof typeof errors}`;
 
+// Typing overrides for i18next
 declare module "i18next" {
   interface CustomTypeOptions {
     defaultNS: "common";
-    ns: ["command", "common", "error"];
+    ns: ["commands", "common", "errors"];
 
     resources: {
-      command: typeof command;
+      commands: typeof commands;
       common: typeof common;
-      error: typeof error;
+      errors: typeof errors;
     };
   }
 }

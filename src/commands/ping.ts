@@ -1,19 +1,19 @@
 /**
  * @file Slash command to return current shard latency and status.
  * @author Espi Marisa <contact@espi.me>
- * @module commands/slash/ping
+ * @license zlib
  */
 
 import { HibikiColors } from "@/utils/constants.js";
-import { t, tMap } from "@/utils/i18n.js";
+import { t, tObj } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder, SnowflakeUtil } from "discord.js";
 
-export const testCommand: HibikiSlashCommand = {
+export const pingCommand: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
     .setName("ping")
-    .setNameLocalizations(tMap("command:PING_NAME"))
-    .setDescription(t("command:PING_DESCRIPTION"))
-    .setDescriptionLocalizations(tMap("command:PING_DESCRIPTION")),
+    .setNameLocalizations(tObj("commands:PING_NAME"))
+    .setDescription(t("commands:PING_DESCRIPTION"))
+    .setDescriptionLocalizations(tObj("commands:PING_DESCRIPTION")),
 
   async runCommand(interaction) {
     // Calculates the current ping and shard latency
@@ -23,9 +23,9 @@ export const testCommand: HibikiSlashCommand = {
 
     // Creates the embed
     const embed = new EmbedBuilder()
-      .setTitle(t("command:PING_PONG"))
+      .setTitle(t("commands:PING_PONG"))
       .setDescription(
-        t("command:PING_LATENCY", {
+        t("commands:PING_LATENCY", {
           lng: interaction.locale,
           ping: ping,
           latency: latency,

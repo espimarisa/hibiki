@@ -1,20 +1,24 @@
 /**
- * @file Creates a bot client instance.
+ * @file Creates a Discord.js client instance.
  * @author Espi Marisa <contact@espi.me>
- * @module bot
+ * @license zlib
  */
 
 import { env } from "@/utils/env.js";
-import { getError } from "@/utils/error.js";
+import { parseError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
-import { Client, Options } from "discord.js";
-import { ActivityType, GatewayIntentBits } from "discord-api-types/v10";
+import { ActivityType, Client, GatewayIntentBits, Options } from "discord.js";
 
 let activityState = 0;
 
 /** Creates a new Discord.js client. */
 export const bot = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.MessageContent,
+  ],
 
   // Cache sweeping settings
   sweepers: {
@@ -36,11 +40,12 @@ export const bot = new Client({
 bot.once("ready", async () => {
   if (bot.shard) {
     try {
+      // Emit a ready event to the sharding manager
       await bot.shard.send({ type: "shardReady" });
     } catch (err) {
-      const error = getError(err);
+      const error = parseError(err);
       logger.error(`Failed to emit ready event: ${error.message}`);
-      throw new Error(error.stack);
+      throw error;
     }
   }
 
@@ -53,12 +58,12 @@ bot.once("ready", async () => {
 
 // Logs into Discord
 bot.login(env.DISCORD_TOKEN).catch((err) => {
-  const error = getError(err);
+  const error = parseError(err);
   logger.fatal(`Failed to login to Discord: ${error.message}`);
-  throw new Error(error.stack);
+  throw error;
 });
 
-/** Cycles between statuses. */
+/** Cycles bot statuses. */
 function cycleStatuses() {
   if (env.DISCORD_STATUSES.length === 0 || !bot.user) {
     return;

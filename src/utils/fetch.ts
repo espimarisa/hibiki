@@ -1,16 +1,15 @@
 /**
- * @file Utilities for fetching from API endpoints.
+ * @file Utility to wrap around native fetch() and dynamically append headers.
  * @author Espi Marisa <contact@espi.me>
- * @module utils/fetch
+ * @license zlib
  */
 
 import { env } from "@/utils/env.js";
-import { getError } from "@/utils/error.js";
+import { parseError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
-import type { Client } from "discord.js";
 
 /**
- * Wrapper around native fetch() to append application headers to all requests.
+ * Wrapper around native fetch().
  * @param url The URL to fetch.
  * @param options Fetch options.
  * @returns A fetch response.
@@ -32,32 +31,8 @@ export async function hFetch(url: string, options?: RequestInit) {
 
     return response;
   } catch (err) {
-    const error = getError(err);
+    const error = parseError(err);
     logger.warn(`Error fetching ${url}: ${error.message}`);
-    throw new Error(error.stack);
+    throw error;
   }
-}
-
-/**
- * Fetches a client emoji.
- * @param client The client to fetch the emoji with.
- * @param emoji The ID of the emoji to fetch.
- * @param fallback The fallback emoji to use.
- */
-
-export async function fetchClientEmoji(
-  client: Client,
-  emoji: string,
-  fallback: string,
-) {
-  try {
-    const fetched = await client.application?.emojis.fetch(emoji);
-    if (fetched?.id) {
-      return fetched.toString();
-    }
-  } catch (err) {
-    logger.warn(`Failed to fetch client emoji: ${emoji}, using fallback`);
-  }
-
-  return fallback;
 }

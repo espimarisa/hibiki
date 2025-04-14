@@ -1,15 +1,24 @@
 /**
  * @file Utilities for working with the filesystem.
- * @author Espi Marisa <contact@espi.me>
- * @module utils/fs
+ * @author Espi Marisa
+ * @license zlib
  */
 
-import { getError } from "@/utils/error.js";
+import { parseError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
 import type { PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import type { Collection } from "discord.js";
+import { Collection } from "discord.js";
+
+/** A collection of valid commands loaded from the filesystem. */
+export const HIBIKI_COMMANDS = new Collection<string, HibikiCommand>();
+
+/** A collection of valid event handlers loaded from the filesystem. */
+export const HIBIKI_EVENTS = new Collection<
+  string,
+  HibikiEvent<HibikiEventTypes>
+>();
 
 /** Validates filetypes for valid ESM modules */
 const ESM_FILETYPE_REGEX = /\.(mjs|mts|ts|js)$/i;
@@ -20,59 +29,74 @@ export type ImportData = {
   resolved: () => Promise<unknown>;
 };
 
+/** Typing for loadModules() result */
+export type ModuleLoadStats = {
+  loaded: number;
+  failed: number;
+  skipped: number;
+};
+
 /**
  * Returns the directory of a URL (__dirname replacement).
- * @param path The URL to get the directory name from.
- * @returns The directory that a file is located in.
+ * @param directory The URL to get the directory name from.
+ * @returns The directory path to a file.
  */
 
-export function getDirname(path: string) {
-  return dirname(Bun.fileURLToPath(path));
+export function getDirname(directory: string) {
+  return dirname(Bun.fileURLToPath(directory));
 }
 
 /**
- * Imports an entire directory asynchronously.
- * @param path The directory to import files from.
+ * Recursively imports an entire directory asynchronously.
+ * @param directory The directory to import files from.
+ * @param recursive If set, loads imports recursively.
+ * @returns A list of ImportData objects.
  */
 
-export async function importDirectory(path: PathLike) {
-  // Gets the full directory path and directory listing
-  const directoryPath = path.toString();
+export async function importDirectory(directory: PathLike, recursive = false) {
+  const directoryPath = directory.toString();
   const files = await readdir(directoryPath, { withFileTypes: true });
   const importedFiles: ImportData[] = [];
 
-  // Iterates over the files
-  for (const file of files) {
-    if (file.isDirectory()) {
-      continue;
-    }
-
-    // Only validate valid ESM modules
-    if (!ESM_FILETYPE_REGEX.test(file.name)) {
-      continue;
-    }
-
-    // Gets the file's full path
+  const importTasks = files.map(async (file) => {
+    // Gets the full path of the file
     const filePath = join(directoryPath, file.name);
 
+    // Scan subdirectories if recursive is set
+    if (file.isDirectory()) {
+      if (recursive === false) {
+        return;
+      }
+
+      const subFiles = await importDirectory(filePath);
+      importedFiles.push(...subFiles);
+      return;
+    }
+
+    // Do not load non-module files
+    if (!ESM_FILETYPE_REGEX.test(file.name)) {
+      return;
+    }
+
     try {
-      // Imports the file and gets either the default export or all exports
+      // Prepares the import
       importedFiles.push({
         name: file.name,
         resolved: async () => {
           const module = await import(filePath);
-          return module ?? module.default;
+          return module;
         },
       });
-
-      logger.info(`Successfully imported ${file.name}`);
     } catch (err) {
-      const error = getError(err);
-      logger.error(`Failed to import ${file.name}: ${error.message}`);
-      throw new Error(error.stack);
+      const error = parseError(err);
+      logger.error(
+        `Failed to prepare import for ${file.name}: ${error.message}`,
+      );
     }
-  }
+  });
 
+  // Settles all tasks and returns the imports
+  await Promise.allSettled(importTasks);
   return importedFiles;
 }
 
@@ -83,15 +107,20 @@ export async function importDirectory(path: PathLike) {
  */
 
 export async function getImportData(resolved: ImportData) {
-  // Await resolution of the module
   const module = await resolved.resolved();
-
-  // Ensure the module is valid
   if (!module) {
     return;
   }
 
-  // If there is a single named export, return it
+  // Load default exports
+  if (module && typeof module === "object" && "default" in module) {
+    return {
+      name: resolved.name,
+      resolved: async () => (module as { default: unknown }).default,
+    };
+  }
+
+  // Loads each exported export
   const exportedValues = Object.values(module);
   if (exportedValues.length === 1) {
     return {
@@ -100,7 +129,6 @@ export async function getImportData(resolved: ImportData) {
     };
   }
 
-  // If multiple named exports exist, return the entire module
   return {
     name: resolved.name,
     resolved: async () => module,
@@ -112,52 +140,71 @@ export async function getImportData(resolved: ImportData) {
  * @param directory The directory to load modules from.
  * @param collection The collection to update with loaded modules.
  * @param validator Function to use to validate module validity.
+ * @returns ModuleLoadStats containing load results.
  */
 
-async function loadModules<T>(
+export async function loadModules<T>(
   directory: PathLike,
   collection: Collection<string, T>,
   validator: (importData: ImportData) => Promise<boolean>,
 ) {
-  // Scan the directory for files
+  // Scans the directory for files
   const files = await importDirectory(directory);
+  let loaded = 0;
+  let failed = 0;
+  let skipped = 0;
 
-  // Iterate over the files
-  for (const file of files) {
-    // Gets import data
-    const data = await getImportData(file);
-    if (!data) {
-      continue;
+  // Gets import data for each file
+  const loadTasks = files.map(async (file) => {
+    try {
+      const data = await getImportData(file);
+      if (!data) {
+        skipped++;
+        return;
+      }
+
+      // Checks module validation
+      const resolvedModule = (await data.resolved()) as T;
+      const isValid = await validator(data);
+
+      if (isValid) {
+        // Loads valid modules
+        const key = data.name.replace(ESM_FILETYPE_REGEX, "");
+        collection.set(key, resolvedModule);
+        logger.info(`Successfully imported ${data.name}`);
+        loaded++;
+      } else {
+        // Skips valid modules
+        logger.error(`${data.name} failed validation`);
+        skipped++;
+      }
+    } catch (err) {
+      const error = parseError(err);
+      logger.error(`Failed to load ${file.name}: ${error.message}`);
+      failed++;
     }
+  });
 
-    // Await the resolved() function to get the actual module
-    const resolvedModule = (await data.resolved()) as T;
-
-    // Validate the module
-    const isValid = await validator(data);
-    if (isValid) {
-      // Add the valid module to the collection
-      collection.set(data.name.replace(ESM_FILETYPE_REGEX, ""), resolvedModule);
-      logger.info(`Module ${data.name} successfully loaded`);
-    } else {
-      logger.warn(`Module ${data.name} failed validation`);
-    }
-  }
+  // Return loaded module stats
+  await Promise.allSettled(loadTasks);
+  return { loaded, failed, skipped };
 }
 
 /**
- * Loads and validates slash commands from a directory.
- * @param directory The directory to load slash commands from.
- * @param collection The collection to push slash commands into.
+ * Loads and validates commands from a directory.
+ * @param directory The directory to load user commands from.
+ * @param collection The collection to push commands into.
  */
 
-export async function loadSlashCommands(
+export async function loadCommands(
   directory: PathLike,
-  collection: Collection<string, HibikiSlashCommand>,
+  collection: Collection<string, HibikiCommand>,
 ) {
-  logger.info("Loading slash commands...");
-  await loadModules<HibikiSlashCommand>(directory, collection, async (data) => {
-    const resolvedModule = (await data.resolved()) as HibikiSlashCommand;
+  logger.info("Loading commands...");
+
+  // Gets the resolved import data
+  await loadModules<HibikiCommand>(directory, collection, async (data) => {
+    const resolvedModule = (await data.resolved()) as HibikiCommand;
 
     return (
       resolvedModule.data !== undefined &&
@@ -172,20 +219,15 @@ export async function loadSlashCommands(
  * @param collection The collection to push event handlers into.
  */
 
-export async function loadEventHandlers(
+export async function loadEvents(
   directory: PathLike,
-  collection: Collection<string, HibikiEventHandlerTypes>,
+  collection: Collection<string, HibikiEventTypes>,
 ) {
-  // Gets the resolved import data
   logger.info("Loading event handlers...");
 
-  await loadModules<HibikiEventHandlerTypes>(
-    directory,
-    collection,
-    async (data) => {
-      const resolved = (await data.resolved()) as HibikiEventHandlerTypes;
-
-      return resolved.runHandler !== undefined && resolved.event !== undefined;
-    },
-  );
+  // Gets the resolved import data
+  await loadModules<HibikiEventTypes>(directory, collection, async (data) => {
+    const resolved = (await data.resolved()) as HibikiEvent<HibikiEventTypes>;
+    return resolved.runEvent !== undefined && resolved.event !== undefined;
+  });
 }

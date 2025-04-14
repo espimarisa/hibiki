@@ -1,13 +1,12 @@
 /**
- * @file Registers slash commands to the Discord API.
+ * @file Registers command interactions to the Discord API.
  * @author Espi Marisa <contact@espi.me>
- * @module register
+ * @license zlib
  */
 
-import { slashCommands } from "@/root/index.js";
 import { env } from "@/utils/env.js";
-import { getDirname, loadSlashCommands } from "@/utils/fs.js";
-import { initI18N } from "@/utils/i18n.js";
+import { getDirname, HIBIKI_COMMANDS, loadCommands } from "@/utils/fs.js";
+import { initI18Next } from "@/utils/i18n.js";
 import { logger } from "@/utils/logger.js";
 import { join } from "node:path";
 import { exit } from "node:process";
@@ -21,12 +20,11 @@ import {
 
 // Gets the root, commands, and locales directory
 const ROOT_DIRECTORY = getDirname(import.meta.url);
-const SLASH_COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands/slash");
+const COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands");
 const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
 
 // Determines if we should register to a development guild
 const isDevelop = env.NODE_ENV === "development" && env.DISCORD_DEV_GUILD_ID;
-
 const data: RESTPostAPIApplicationCommandsJSONBody[] = [];
 
 // Parse CLI arguments for clearing
@@ -50,8 +48,8 @@ const guild =
   cliArgs?.values?.guild || (isDevelop ? env.DISCORD_DEV_GUILD_ID : undefined);
 
 // Load locales and slash commands
-await initI18N(LOCALES_DIRECTORY);
-await loadSlashCommands(SLASH_COMMANDS_DIRECTORY, slashCommands);
+await initI18Next(LOCALES_DIRECTORY);
+await loadCommands(COMMANDS_DIRECTORY, HIBIKI_COMMANDS);
 
 // Makes a REST manager and gets the client user object
 const rest = new REST({ version: "10" }).setToken(env.DISCORD_TOKEN);
@@ -61,9 +59,8 @@ if (!user) {
   throw new Error("No user returned from Discord, cannot register.");
 }
 
-slashCommands.map((command) => {
+HIBIKI_COMMANDS.map((command) => {
   if (command.data) {
-    logger.info(`Registering ${command.data.name}...`);
     data.push(command.data.toJSON());
   } else {
     logger.error(`Command data is undefined for command: ${command}`);
