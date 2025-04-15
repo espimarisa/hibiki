@@ -36,6 +36,9 @@ const envSchema = z.object({
   /** Redis/Valkey database URL to connect to. */
   REDIS_URL: z.string().trim().url(),
 
+  /** PostgreSQL database url to connect to. */
+  POSTGRES_URL: z.string().trim().min(1, { message: "Missing POSTGRES_URL" }),
+
   /** Valid Sentry DSN URL (https) to submit and upload errors to. */
   SENTRY_DSN: z.string().trim().url().optional().default(""),
 

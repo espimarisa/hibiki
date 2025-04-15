@@ -5,6 +5,9 @@ yarn.lock
 .yarn/*
 .pnp.*
 
+# Modules
+node_modules
+
 # Logs
 *.log
 *.pid

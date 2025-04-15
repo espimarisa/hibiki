@@ -46,6 +46,19 @@ type HibikiEvent<K extends keyof PrivateClientEvents> = {
   runEvent: (...args: PrivateClientEvents[K]) => Promise<void>;
 };
 
+/** Typing for a valid Hibiki guild config. */
+type GuildConfig = {
+  /** The guild's ID. */
+  guild_id: string;
+};
+
+/** Typing for a valid Hibiki user config. */
+type UserConfig = {
+  /** The user's Discord ID. */
+  user_id: string;
+};
+
+/** Shorthand type for all valid types of commands. */
 type HibikiCommand = HibikiSlashCommand;
 
 /** Typing for possible Hibiki event handler types */

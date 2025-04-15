@@ -2,10 +2,12 @@
 *
 
 # Include only necessary files
+!drizzle/
 !locales/
 !src/
 !biome.json
 !bun.lock
+!drizzle.config.ts
 !package.json
 !tsconfig.json
 .env

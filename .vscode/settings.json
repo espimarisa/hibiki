@@ -26,5 +26,6 @@
 		"editor.defaultFormatter": "biomejs.biome",
 		"javascript.preferences.importModuleSpecifierEnding": "js",
 		"typescript.preferences.importModuleSpecifier": "relative"
-	}
+	},
+	"git.ignoreLimitWarning": true
 }

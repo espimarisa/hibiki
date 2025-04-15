@@ -31,7 +31,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["src/**/*.ts", "locales/**/*.json"]
+    "includes": ["src/**/*.{js,ts}", "locales/**/*.json", "drizzle.config.ts"]
   },
   "formatter": {
     "attributePosition": "multiline",

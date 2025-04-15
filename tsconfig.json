@@ -1,6 +1,6 @@
 {
   "exclude": ["./dist/*", "node_modules/"],
-  "include": ["./src/**/*.ts", "./locales/**/*.json"],
+  "include": ["./src/**/*.ts", "./locales/**/*.json", "drizzle.config.ts"],
 
   "compilerOptions": {
     "allowArbitraryExtensions": true,
@@ -8,6 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
+    "allowImportingTsExtensions": false,
     "baseUrl": ".",
     "checkJs": true,
     "declaration": false,
@@ -22,7 +23,7 @@
     "inlineSources": false,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "lib": ["ES2024", "DOM", "DOM.Iterable"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "Node16",
     "moduleResolution": "node16",
     "noEmit": false,
@@ -38,6 +39,7 @@
     "outDir": "./dist",
     "paths": {
       "@/commands/*": ["./src/commands/*"],
+      "@/db/*": ["./src/db/*"],
       "@/events/*": ["./src/events/*"],
       "@/locales/*": ["./locales/*"],
       "@/root/*": ["./src/*"],
@@ -53,7 +55,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "ES2024",
+    "target": "ESNext",
     "types": ["./src/@types", "@types/bun"]
   }
 }
