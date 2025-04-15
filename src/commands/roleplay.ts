@@ -20,6 +20,7 @@ export const roleplaycommands: HibikiSlashCommand = {
     .setDescription(t("commands:ROLEPLAY_DESCRIPTION"))
     .setDescriptionLocalizations(tObj("commands:ROLEPLAY_DESCRIPTION"))
     .setContexts(InteractionContextType.Guild)
+    // Hug subcommand
     .addSubcommand((hug) =>
       hug
         .setName("hug")
@@ -36,6 +37,7 @@ export const roleplaycommands: HibikiSlashCommand = {
             ),
         ),
     )
+    // Cuddle subcommand
     .addSubcommand((cuddle) =>
       cuddle
         .setName("cuddle")
@@ -54,6 +56,7 @@ export const roleplaycommands: HibikiSlashCommand = {
             ),
         ),
     )
+    // Kiss subcommand
     .addSubcommand((kiss) =>
       kiss
         .setName("kiss")
@@ -70,6 +73,7 @@ export const roleplaycommands: HibikiSlashCommand = {
             ),
         ),
     )
+    // Pat subcommand
     .addSubcommand((pat) =>
       pat
         .setName("pat")
@@ -86,6 +90,7 @@ export const roleplaycommands: HibikiSlashCommand = {
             ),
         ),
     )
+    // Slap subcommand
     .addSubcommand((slap) =>
       slap
         .setName("slap")

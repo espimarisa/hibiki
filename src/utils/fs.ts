@@ -11,17 +11,12 @@ import { readdir } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { Collection } from "discord.js";
 
-/** A collection of valid commands loaded from the filesystem. */
-export const HIBIKI_COMMANDS = new Collection<string, HibikiCommand>();
-
-/** A collection of valid event handlers loaded from the filesystem. */
-export const HIBIKI_EVENTS = new Collection<
-  string,
-  HibikiEvent<HibikiEventTypes>
->();
-
-/** Validates filetypes for valid ESM modules */
-const ESM_FILETYPE_REGEX = /\.(mjs|mts|ts|js)$/i;
+/** Typing for loadModules() result */
+export type ModuleLoadStats = {
+  loaded: number;
+  failed: number;
+  skipped: number;
+};
 
 /** Typing for expected return of getImportData() */
 export type ImportData = {
@@ -29,12 +24,17 @@ export type ImportData = {
   resolved: () => Promise<unknown>;
 };
 
-/** Typing for loadModules() result */
-export type ModuleLoadStats = {
-  loaded: number;
-  failed: number;
-  skipped: number;
-};
+/** A collection of valid commands loaded from the filesystem. */
+export const hibikiCommands = new Collection<string, HibikiCommand>();
+
+/** A collection of valid event handlers loaded from the filesystem. */
+export const hibikiEvents = new Collection<
+  string,
+  HibikiEvent<HibikiEventTypes>
+>();
+
+/** Validates filetypes for valid ESM modules */
+const ESM_FILETYPE_REGEX = /\.(mjs|mts|ts|js)$/i;
 
 /**
  * Returns the directory of a URL (__dirname replacement).

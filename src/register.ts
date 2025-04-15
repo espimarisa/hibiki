@@ -5,7 +5,7 @@
  */
 
 import { env } from "@/utils/env.js";
-import { getDirname, HIBIKI_COMMANDS, loadCommands } from "@/utils/fs.js";
+import { getDirname, hibikiCommands, loadCommands } from "@/utils/fs.js";
 import { initI18Next } from "@/utils/i18n.js";
 import { logger } from "@/utils/logger.js";
 import { join } from "node:path";
@@ -49,7 +49,7 @@ const guild =
 
 // Load locales and slash commands
 await initI18Next(LOCALES_DIRECTORY);
-await loadCommands(COMMANDS_DIRECTORY, HIBIKI_COMMANDS);
+await loadCommands(COMMANDS_DIRECTORY, hibikiCommands);
 
 // Makes a REST manager and gets the client user object
 const rest = new REST({ version: "10" }).setToken(env.DISCORD_TOKEN);
@@ -59,7 +59,7 @@ if (!user) {
   throw new Error("No user returned from Discord, cannot register.");
 }
 
-HIBIKI_COMMANDS.map((command) => {
+hibikiCommands.map((command) => {
   if (command.data) {
     data.push(command.data.toJSON());
   } else {

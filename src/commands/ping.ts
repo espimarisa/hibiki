@@ -6,14 +6,20 @@
 
 import { HibikiColors } from "@/utils/constants.js";
 import { t, tObj } from "@/utils/i18n.js";
-import { EmbedBuilder, SlashCommandBuilder, SnowflakeUtil } from "discord.js";
+import {
+  EmbedBuilder,
+  InteractionContextType,
+  SlashCommandBuilder,
+  SnowflakeUtil,
+} from "discord.js";
 
 export const pingCommand: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
     .setName("ping")
     .setNameLocalizations(tObj("commands:PING_NAME"))
     .setDescription(t("commands:PING_DESCRIPTION"))
-    .setDescriptionLocalizations(tObj("commands:PING_DESCRIPTION")),
+    .setDescriptionLocalizations(tObj("commands:PING_DESCRIPTION"))
+    .setContexts(InteractionContextType.Guild),
 
   async runCommand(interaction) {
     // Calculates the current ping and shard latency

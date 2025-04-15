@@ -9,14 +9,15 @@ import { env } from "@/utils/env.js";
 import { parseError } from "@/utils/error.js";
 import {
   getDirname,
-  HIBIKI_COMMANDS,
-  HIBIKI_EVENTS,
+  hibikiCommands,
+  hibikiEvents,
   loadCommands,
   loadEvents,
 } from "@/utils/fs.js";
 import { initI18Next } from "@/utils/i18n.js";
 import { logger } from "@/utils/logger.js";
 import { join } from "node:path";
+import { init } from "@sentry/bun";
 import { type ClientUser, ShardingManager } from "discord.js";
 
 // Gets important directories and the client file
@@ -29,6 +30,23 @@ const EVENTS_DIRECTORY = join(ROOT_DIRECTORY, "./events");
 
 const readyShards = new Set();
 
+// Initialize sentry if a DSN is provided
+if (env.SENTRY_DSN) {
+  try {
+    init({
+      dsn: env.SENTRY_DSN,
+      environment: env.NODE_ENV,
+      release: env.npm_package_version,
+      tracesSampleRate: 0.2,
+    });
+
+    logger.info(`Sentry connected to DSN ${env.SENTRY_DSN}`);
+  } catch (err) {
+    const error = parseError(err);
+    logger.error(`Error initializing Sentry: ${error.message}`);
+  }
+}
+
 // Creates a ShardingManager
 const sharder = new ShardingManager(ROOT_FILE, {
   mode: "process",
@@ -39,11 +57,11 @@ const sharder = new ShardingManager(ROOT_FILE, {
 
 // Loads i18next, commands, and events
 await initI18Next(LOCALES_DIRECTORY);
-await loadCommands(COMMANDS_DIRECTORY, HIBIKI_COMMANDS);
-await loadEvents(EVENTS_DIRECTORY, HIBIKI_EVENTS);
+await loadCommands(COMMANDS_DIRECTORY, hibikiCommands);
+await loadEvents(EVENTS_DIRECTORY, hibikiEvents);
 
 // Appends commands, and the sharder to the client
-bot.commands = HIBIKI_COMMANDS;
+bot.commands = hibikiCommands;
 bot.sharder = sharder;
 
 // Logs specific sharding events
@@ -112,7 +130,7 @@ try {
   await sharder.spawn();
 
   // Subscribe event handlers to their listeners
-  for (const event of HIBIKI_EVENTS.values()) {
+  for (const event of hibikiEvents.values()) {
     // Run handlers that only listen once
     if (event.once) {
       bot.once(event.event, async (...args) => await event.runEvent(...args));

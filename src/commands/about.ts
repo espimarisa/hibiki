@@ -10,7 +10,12 @@ import { env } from "@/utils/env.js";
 import { getTimeSince } from "@/utils/format.js";
 import { localizeBytes, localizeTime, t, tObj } from "@/utils/i18n.js";
 import { memoryUsage } from "node:process";
-import { EmbedBuilder, SlashCommandBuilder, version } from "discord.js";
+import {
+  EmbedBuilder,
+  InteractionContextType,
+  SlashCommandBuilder,
+  version,
+} from "discord.js";
 
 const startupTimestamp = new Date();
 
@@ -19,7 +24,8 @@ export const aboutCommand: HibikiSlashCommand = {
     .setName("about")
     .setNameLocalizations(tObj("commands:ABOUT_NAME"))
     .setDescription(t("commands:ABOUT_DESCRIPTION"))
-    .setDescriptionLocalizations(tObj("commands:ABOUT_DESCRIPTION")),
+    .setDescriptionLocalizations(tObj("commands:ABOUT_DESCRIPTION"))
+    .setContexts(InteractionContextType.Guild),
 
   async runCommand(interaction) {
     await interaction.deferReply();

@@ -13,6 +13,18 @@
   "ABOUT_VERSION": "Version",
   "ABOUT_VERSION_DETAILS": "Hibiki {{- hibiki}} \nDiscord.js {{- djs}} \nBun {{- bun}}",
 
+  "ANIMAL_NAME": "animal",
+  "ANIMAL_DESCRIPTION": "Get pictures of various animals!",
+  "ANIMAL_CAT_NAME": "cat",
+  "ANIMAL_CAT_DESCRIPTION": "Sends a random cat picture.",
+  "ANIMAL_DOG_NAME": "dog",
+  "ANIMAL_DOG_DESCRIPTION": "Send a random dog picture.",
+  "ANIMAL_FOX_NAME": "fox",
+  "ANIMAL_FOX_DESCRIPTION": "Sends a random fox picture.",
+  "ANIMAL_CAT_MESSAGE": "😺 Meow!",
+  "ANIMAL_DOG_MESSAGE": "🐶 Woof!",
+  "ANIMAL_FOX_MESSAGE": "🦊 Bark!",
+
   "PING_DESCRIPTION": "Checks the current latency and shard status.",
   "PING_LATENCY": "This reply took {{ping}}ms to send. \nShard latency: {{latency}}ms.",
   "PING_NAME": "ping",
