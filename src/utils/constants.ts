@@ -4,8 +4,6 @@
  * @license zlib
  */
 
-
-
 /** Commonly used colors. */
 export enum HibikiColors {
   Primary = 0xff0050,

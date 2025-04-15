@@ -31,7 +31,14 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["src/**/*.{js,ts}", "locales/**/*.json", "drizzle.config.ts"]
+    "includes": [
+      "src/**/*.{js,ts}",
+      "locales/**/*.json",
+      "drizzle.config.ts",
+      "biome.json",
+      "package.json",
+      "tsconfig.json"
+    ]
   },
   "formatter": {
     "attributePosition": "multiline",

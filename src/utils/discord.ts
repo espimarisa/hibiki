@@ -4,7 +4,6 @@
  * @license zlib
  */
 
-
 /**
  * Gets the total number of guilds across all shards.
  * @returns The total number of guilds across all shards.
