@@ -114,7 +114,6 @@ export const roleplaycommands: HibikiSlashCommand = {
     let url = "";
 
     // Gets the subcommand and target
-    const embed = new EmbedBuilder();
     const target = interaction.options.getUser("target");
     const subcommand = interaction.options.getSubcommand();
 
@@ -178,8 +177,8 @@ export const roleplaycommands: HibikiSlashCommand = {
     // Sends the embed
     await interaction.reply({
       embeds: [
-        embed
-          .setDescription(
+        new EmbedBuilder()
+          .setTitle(
             t(string, {
               lng: interaction.locale,
               user: interaction.user.displayName,

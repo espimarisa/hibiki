@@ -27,19 +27,20 @@ export const pingCommand: HibikiSlashCommand = {
     const shard = interaction.guild?.shardId || 0;
     const latency = interaction.client.ws.shards.get(shard)?.ping || 0;
 
-    // Creates the embed
-    const embed = new EmbedBuilder()
-      .setTitle(t("commands:PING_PONG"))
-      .setDescription(
-        t("commands:PING_LATENCY", {
-          lng: interaction.locale,
-          ping: ping,
-          latency: latency,
-        }),
-      )
-      .setColor(HibikiColors.Primary);
-
     // Sends the interaction
-    await interaction.reply({ embeds: [embed] });
+    await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setTitle(t("commands:PING_PONG"))
+          .setDescription(
+            t("commands:PING_LATENCY", {
+              lng: interaction.locale,
+              ping: ping,
+              latency: latency,
+            }),
+          )
+          .setColor(HibikiColors.Primary),
+      ],
+    });
   },
 };

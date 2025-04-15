@@ -63,6 +63,7 @@ async function runCommand(interaction: CommandInteraction) {
       logger.error(
         `Error running slash command ${command.data.name}: ${error.message}`,
       );
+      throw err;
     }
 
     return;

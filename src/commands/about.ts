@@ -39,69 +39,74 @@ export const aboutCommand: HibikiSlashCommand = {
     const cachedUsers =
       (await getTotalCachedUsers(interaction.client.sharder)) || 1;
 
-    // Creates the embed
-    const embed = new EmbedBuilder()
-      .setTitle(
-        t("commands:ABOUT_TITLE", {
-          lng: interaction.locale,
-          username: interaction.user.client.user.username,
-        }),
-      )
-      .setDescription(
-        t("commands:ABOUT_DETAILS", {
-          lng: interaction.locale,
-        }),
-      )
-      .setColor(HibikiColors.Primary)
-      .setThumbnail(
-        interaction.user.client.user.displayAvatarURL({ size: 512 }),
-      )
-      .addFields(
-        {
-          // Total servers
-          name: t("commands:ABOUT_STATISTICS", { lng: interaction.locale }),
-          value: t("commands:ABOUT_STATISTICS_DETAILS", {
-            lng: interaction.locale,
-            servers: totalGuilds,
-            users: cachedUsers,
-            commands: interaction.client.commands?.size,
-          }),
-          inline: true,
-        },
-        {
-          // Versioning
-          name: t("commands:ABOUT_VERSION", { lng: interaction.locale }),
-          value: t("commands:ABOUT_VERSION_DETAILS", {
-            lng: interaction.locale,
-            hibiki: env.npm_package_version,
-            djs: version,
-            bun: Bun.version_with_sha,
-          }),
-          inline: true,
-        },
-        {
-          // Bot uptime
-          name: t("commands:ABOUT_STATSFORNERDS", { lng: interaction.locale }),
-          value: t("commands:ABOUT_STATSFORNERDS_DETAILS", {
-            lng: interaction.locale,
-            uptime: localizedUptime,
-            memory: localizedMemory,
-          }),
-          inline: false,
-        },
-        {
-          // Links
-          name: ZWSP,
-          value: t("commands:ABOUT_LINKS", {
-            lng: interaction.locale,
-            id: interaction.client.user.id,
-            permissions: INVITE_PERMISSIONS,
-          }),
-          inline: false,
-        },
-      );
-
     // Sends the interaction
-    await interaction.followUp({ embeds: [embed] });
+    await interaction.followUp({
+      embeds: [
+        new EmbedBuilder()
+          .setTitle(
+            t("commands:ABOUT_TITLE", {
+              lng: interaction.locale,
+              username: interaction.user.client.user.username,
+            }),
+          )
+          .setDescription(
+            t("commands:ABOUT_DETAILS", {
+              lng: interaction.locale,
+            }),
+          )
+          .setColor(HibikiColors.Primary)
+          .setThumbnail(
+            interaction.user.client.user.displayAvatarURL({ size: 512 }),
+          )
+          .addFields(
+            {
+              // Total servers
+              name: t("commands:ABOUT_STATISTICS", {
+                lng: interaction.locale,
+              }),
+              value: t("commands:ABOUT_STATISTICS_DETAILS", {
+                lng: interaction.locale,
+                servers: totalGuilds,
+                users: cachedUsers,
+                commands: interaction.client.commands?.size,
+              }),
+              inline: true,
+            },
+            {
+              // Versioning
+              name: t("commands:ABOUT_VERSION", { lng: interaction.locale }),
+              value: t("commands:ABOUT_VERSION_DETAILS", {
+                lng: interaction.locale,
+                hibiki: env.npm_package_version,
+                djs: version,
+                bun: Bun.version_with_sha,
+              }),
+              inline: true,
+            },
+            {
+              // Bot uptime
+              name: t("commands:ABOUT_STATSFORNERDS", {
+                lng: interaction.locale,
+              }),
+              value: t("commands:ABOUT_STATSFORNERDS_DETAILS", {
+                lng: interaction.locale,
+                uptime: localizedUptime,
+                memory: localizedMemory,
+              }),
+              inline: false,
+            },
+            {
+              // Links
+              name: ZWSP,
+              value: t("commands:ABOUT_LINKS", {
+                lng: interaction.locale,
+                id: interaction.client.user.id,
+                permissions: INVITE_PERMISSIONS,
+              }),
+              inline: false,
+            },
+          ),
+      ],
+    });
   },
 };

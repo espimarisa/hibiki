@@ -9,7 +9,10 @@ type DictionaryKey = import("@/types/i18next.d.ts").DictionaryKey;
 
 /** Typing for a Hibiki slash command. */
 type HibikiSlashCommand = {
-  data: PrivateSlashCommandBuilder | PrivateSlashCommandSubcommandsOnlyBuilder;
+  data:
+    | PrivateSlashCommandBuilder
+    | PrivateSlashCommandSubcommandBuilder
+    | PrivateSlashCommandSubcommandsOnlyBuilder;
 
   /** An optional array of required env vars in .env needed to load a command. */
   env_vars?: string[];
@@ -71,3 +74,5 @@ type PrivateChatInputCommandInteraction =
   import("discord.js").ChatInputCommandInteraction;
 type PrivateSlashCommandSubcommandsOnlyBuilder =
   import("discord.js").SlashCommandSubcommandsOnlyBuilder;
+type PrivateSlashCommandSubcommandBuilder =
+  import("discord.js").PrivateSlashCommandSubcommandBuilder;

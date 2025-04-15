@@ -99,13 +99,14 @@ export const animalCommand: HibikiSlashCommand = {
       return;
     }
 
-    // Creates the embed
-    const embed = new EmbedBuilder()
-      .setTitle(t(titleString))
-      .setColor(HibikiColors.Primary)
-      .setImage(body[bodyKey]);
-
     // Sends the embed
-    await interaction.followUp({ embeds: [embed] });
+    await interaction.followUp({
+      embeds: [
+        new EmbedBuilder()
+          .setTitle(t(titleString))
+          .setColor(HibikiColors.Primary)
+          .setImage(body[bodyKey]),
+      ],
+    });
   },
 };
