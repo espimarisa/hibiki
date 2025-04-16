@@ -1,11 +1,12 @@
 {
   "ERROR": "❌ Error",
+  "ERROR_BUG": "Spotted a bug? - github.com/espimarisa/hibiki/issues",
   "ERROR_FATAL": "❌ Something went wrong!",
   "ERROR_STACK": "\n```ts\n{{- error}}\n```",
-  "ERROR_BUG": "Spotted a bug? - github.com/espimarisa/hibiki/issues",
-  "XKCD": "No XKCD comic exists with that ID. Try a different one, or leave blank for a random comic.",
-  "IMAGE_FAILED": "Failed to get image response data. Try again later.",
   "FETCH_FAILED": "Failed to get information. Try again later.",
   "GITHUB_QUERY": "No user or public repository matching your query was found.",
-  "NO_OPTION": "A valid **{{option}}** needs to be provided."
+  "IMAGE_FAILED": "Failed to get image response data. Try again later.",
+  "IPINFO_INVALID": "The IP address you provided doesn't seem to be a valid external address.",
+  "NO_OPTION": "A valid **{{option}}** needs to be provided.",
+  "XKCD": "No XKCD comic exists with that ID. Try a different one, or leave blank for a random comic."
 }

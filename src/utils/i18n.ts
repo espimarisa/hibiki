@@ -76,7 +76,7 @@ async function getLocaleFiles(directory: string): Promise<string[]> {
  * @returns An object containing all localizations of a key.
  */
 
-export function tObj(key: DictionaryKey) {
+export function tO(key: DictionaryKey) {
   const localizations: Record<string, string> = {};
 
   // Iterates through each locale

@@ -6,7 +6,7 @@
 
 import { HibikiColors } from "@/utils/constants.js";
 import { sendErrorReply } from "@/utils/error.js";
-import { t, tObj } from "@/utils/i18n.js";
+import { t, tO } from "@/utils/i18n.js";
 import {
   EmbedBuilder,
   InteractionContextType,
@@ -16,24 +16,25 @@ import {
 export const roleplaycommands: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
     .setName("roleplay")
-    .setNameLocalizations(tObj("commands:ROLEPLAY_NAME"))
+    .setNameLocalizations(tO("commands:ROLEPLAY_NAME"))
     .setDescription(t("commands:ROLEPLAY_DESCRIPTION"))
-    .setDescriptionLocalizations(tObj("commands:ROLEPLAY_DESCRIPTION"))
+    .setDescriptionLocalizations(tO("commands:ROLEPLAY_DESCRIPTION"))
     .setContexts(InteractionContextType.Guild)
     // Hug subcommand
     .addSubcommand((hug) =>
       hug
         .setName("hug")
-        .setNameLocalizations(tObj("commands:ROLEPLAY_HUG_NAME"))
+        .setNameLocalizations(tO("commands:ROLEPLAY_HUG_NAME"))
         .setDescription(t("commands:ROLEPLAY_HUG_DESCRIPTION"))
-        .setDescriptionLocalizations(tObj("commands:ROLEPLAY_HUG_DESCRIPTION"))
+        .setDescriptionLocalizations(tO("commands:ROLEPLAY_HUG_DESCRIPTION"))
+        // Target option
         .addUserOption((target) =>
           target
             .setName("target")
-            .setNameLocalizations(tObj("commands:ROLEPLAY_TARGET_NAME"))
+            .setNameLocalizations(tO("commands:ROLEPLAY_TARGET_NAME"))
             .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
             .setDescriptionLocalizations(
-              tObj("commands:ROLEPLAY_TARGET_DESCRIPTION"),
+              tO("commands:ROLEPLAY_TARGET_DESCRIPTION"),
             )
             .setRequired(true),
         ),
@@ -42,18 +43,17 @@ export const roleplaycommands: HibikiSlashCommand = {
     .addSubcommand((cuddle) =>
       cuddle
         .setName("cuddle")
-        .setNameLocalizations(tObj("commands:ROLEPLAY_CUDDLE_NAME"))
+        .setNameLocalizations(tO("commands:ROLEPLAY_CUDDLE_NAME"))
         .setDescription(t("commands:ROLEPLAY_CUDDLE_DESCRIPTION"))
-        .setDescriptionLocalizations(
-          tObj("commands:ROLEPLAY_CUDDLE_DESCRIPTION"),
-        )
+        .setDescriptionLocalizations(tO("commands:ROLEPLAY_CUDDLE_DESCRIPTION"))
+        // Target option
         .addUserOption((target) =>
           target
             .setName("target")
-            .setNameLocalizations(tObj("commands:ROLEPLAY_TARGET_NAME"))
+            .setNameLocalizations(tO("commands:ROLEPLAY_TARGET_NAME"))
             .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
             .setDescriptionLocalizations(
-              tObj("commands:ROLEPLAY_TARGET_DESCRIPTION"),
+              tO("commands:ROLEPLAY_TARGET_DESCRIPTION"),
             )
             .setRequired(true),
         ),
@@ -62,16 +62,17 @@ export const roleplaycommands: HibikiSlashCommand = {
     .addSubcommand((kiss) =>
       kiss
         .setName("kiss")
-        .setNameLocalizations(tObj("commands:ROLEPLAY_KISS_NAME"))
+        .setNameLocalizations(tO("commands:ROLEPLAY_KISS_NAME"))
         .setDescription(t("commands:ROLEPLAY_KISS_DESCRIPTION"))
-        .setDescriptionLocalizations(tObj("commands:ROLEPLAY_KISS_DESCRIPTION"))
+        .setDescriptionLocalizations(tO("commands:ROLEPLAY_KISS_DESCRIPTION"))
+        // Target option
         .addUserOption((target) =>
           target
             .setName("target")
-            .setNameLocalizations(tObj("commands:ROLEPLAY_TARGET_NAME"))
+            .setNameLocalizations(tO("commands:ROLEPLAY_TARGET_NAME"))
             .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
             .setDescriptionLocalizations(
-              tObj("commands:ROLEPLAY_TARGET_DESCRIPTION"),
+              tO("commands:ROLEPLAY_TARGET_DESCRIPTION"),
             )
             .setRequired(true),
         ),
@@ -80,16 +81,17 @@ export const roleplaycommands: HibikiSlashCommand = {
     .addSubcommand((pat) =>
       pat
         .setName("pat")
-        .setNameLocalizations(tObj("commands:ROLEPLAY_PAT_NAME"))
+        .setNameLocalizations(tO("commands:ROLEPLAY_PAT_NAME"))
         .setDescription(t("commands:ROLEPLAY_PAT_DESCRIPTION"))
-        .setDescriptionLocalizations(tObj("commands:ROLEPLAY_PAT_DESCRIPTION"))
+        .setDescriptionLocalizations(tO("commands:ROLEPLAY_PAT_DESCRIPTION"))
+        // Target option
         .addUserOption((target) =>
           target
             .setName("target")
-            .setNameLocalizations(tObj("commands:ROLEPLAY_TARGET_NAME"))
+            .setNameLocalizations(tO("commands:ROLEPLAY_TARGET_NAME"))
             .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
             .setDescriptionLocalizations(
-              tObj("commands:ROLEPLAY_TARGET_DESCRIPTION"),
+              tO("commands:ROLEPLAY_TARGET_DESCRIPTION"),
             )
             .setRequired(true),
         ),
@@ -98,16 +100,17 @@ export const roleplaycommands: HibikiSlashCommand = {
     .addSubcommand((slap) =>
       slap
         .setName("slap")
-        .setNameLocalizations(tObj("commands:ROLEPLAY_SLAP_NAME"))
+        .setNameLocalizations(tO("commands:ROLEPLAY_SLAP_NAME"))
         .setDescription(t("commands:ROLEPLAY_SLAP_DESCRIPTION"))
-        .setDescriptionLocalizations(tObj("commands:ROLEPLAY_SLAP_DESCRIPTION"))
+        .setDescriptionLocalizations(tO("commands:ROLEPLAY_SLAP_DESCRIPTION"))
+        // Target option
         .addUserOption((target) =>
           target
             .setName("target")
-            .setNameLocalizations(tObj("commands:ROLEPLAY_TARGET_NAME"))
+            .setNameLocalizations(tO("commands:ROLEPLAY_TARGET_NAME"))
             .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
             .setDescriptionLocalizations(
-              tObj("commands:ROLEPLAY_TARGET_DESCRIPTION"),
+              tO("commands:ROLEPLAY_TARGET_DESCRIPTION"),
             )
             .setRequired(true),
         ),

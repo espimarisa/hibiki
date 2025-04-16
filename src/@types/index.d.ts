@@ -14,8 +14,8 @@ type HibikiSlashCommand = {
     | PrivateSlashCommandSubcommandBuilder
     | PrivateSlashCommandSubcommandsOnlyBuilder;
 
-  /** An optional array of required env vars in .env needed to load a command. */
-  env_vars?: string[];
+  /** An optional array of required env variables needed to load a command. */
+  required_env?: Array<keyof PrivateEnvironmentVariables>;
 
   /** If set, only the runner can see the command. Defaults to false. */
   ephemeral?: boolean;
@@ -76,3 +76,5 @@ type PrivateSlashCommandSubcommandsOnlyBuilder =
   import("discord.js").SlashCommandSubcommandsOnlyBuilder;
 type PrivateSlashCommandSubcommandBuilder =
   import("discord.js").PrivateSlashCommandSubcommandBuilder;
+type PrivateEnvironmentVariables =
+  import("@/utils/env.js").EnvironmentVariables;

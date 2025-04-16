@@ -5,7 +5,7 @@
  */
 
 import { HibikiColors } from "@/utils/constants.js";
-import { t, tObj } from "@/utils/i18n.js";
+import { t, tO } from "@/utils/i18n.js";
 import {
   EmbedBuilder,
   InteractionContextType,
@@ -16,9 +16,9 @@ import {
 export const pingCommand: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
     .setName("ping")
-    .setNameLocalizations(tObj("commands:PING_NAME"))
+    .setNameLocalizations(tO("commands:PING_NAME"))
     .setDescription(t("commands:PING_DESCRIPTION"))
-    .setDescriptionLocalizations(tObj("commands:PING_DESCRIPTION"))
+    .setDescriptionLocalizations(tO("commands:PING_DESCRIPTION"))
     .setContexts(InteractionContextType.Guild),
 
   async runCommand(interaction) {

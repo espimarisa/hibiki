@@ -42,6 +42,9 @@ const envSchema = z.object({
   /** Valid Sentry DSN URL (https) to submit and upload errors to. */
   SENTRY_DSN: z.string().trim().url().optional().default(""),
 
+  /** IPInfo.io API key for the ipinfo command. */
+  IPINFO_API_KEY: z.string().trim().optional().default(""),
+
   // Bun variables to ensure always exist
   NODE_ENV: z.string().default("development"),
   npm_package_name: z.string().default("develop"),
@@ -61,3 +64,30 @@ if (!result.success) {
 
 /** Validated environment variables. */
 export const env: z.infer<typeof envSchema> = result.data;
+
+/** Typing for valid environment variables. */
+export type EnvironmentVariables = typeof env;
+
+/**
+ * Validates if environment variables existing and are > 1 character.
+ * @param variable Environment variable object to check.
+ * @param keys Array of environment variable keys to validate.
+ * @returns A boolean indicating fail/success and a list of missing keys.
+ */
+
+export function validateKey(
+  variable: EnvironmentVariables,
+  keys: Array<keyof EnvironmentVariables>,
+) {
+  const missingKeys = keys.filter((key) => {
+    const value = variable[key as keyof EnvironmentVariables];
+    return typeof value !== "string" || value.length === 0;
+  });
+
+  // Return keys if validation failed
+  if (missingKeys.length > 0) {
+    return missingKeys;
+  }
+
+  return [];
+}

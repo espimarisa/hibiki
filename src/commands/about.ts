@@ -13,7 +13,7 @@ import {
 import { getTotalCachedUsers, getTotalGuilds } from "@/utils/discord.js";
 import { env } from "@/utils/env.js";
 import { getTimeSince } from "@/utils/format.js";
-import { localizeBytes, localizeTime, t, tObj } from "@/utils/i18n.js";
+import { localizeBytes, localizeTime, t, tO } from "@/utils/i18n.js";
 import { memoryUsage } from "node:process";
 import { EmbedBuilder, SlashCommandBuilder, version } from "discord.js";
 
@@ -22,9 +22,9 @@ const startupTimestamp = new Date();
 export const aboutCommand: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
     .setName("about")
-    .setNameLocalizations(tObj("commands:ABOUT_NAME"))
+    .setNameLocalizations(tO("commands:ABOUT_NAME"))
     .setDescription(t("commands:ABOUT_DESCRIPTION"))
-    .setDescriptionLocalizations(tObj("commands:ABOUT_DESCRIPTION"))
+    .setDescriptionLocalizations(tO("commands:ABOUT_DESCRIPTION"))
     .setContexts(AllInteractionContextTypes),
 
   async runCommand(interaction) {

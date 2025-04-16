@@ -4,6 +4,7 @@
  * @license zlib
  */
 
+import { type EnvironmentVariables, env, validateKey } from "@/utils/env.js";
 import { parseError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
 import type { PathLike } from "node:fs";
@@ -204,11 +205,23 @@ export async function loadCommands(
 
   // Gets the resolved import data
   await loadModules<HibikiCommand>(directory, collection, async (data) => {
-    const resolvedModule = (await data.resolved()) as HibikiCommand;
+    let missingVars: Array<keyof EnvironmentVariables> = [];
+    const command = (await data.resolved()) as HibikiCommand;
 
+    // Validates required environment variables
+    if (command.required_env && command.required_env.length > 0) {
+      // Checks for missing variables; do not load if missing
+      missingVars = validateKey(env, command.required_env);
+      if (missingVars && missingVars.length > 0) {
+        logger.error(`Missing environment variable ${missingVars.join(", ")}`);
+      }
+    }
+
+    // Load commands with data, runCommand(), and no missing variables
     return (
-      resolvedModule.data !== undefined &&
-      typeof resolvedModule.runCommand === "function"
+      command.data !== undefined &&
+      typeof command.runCommand === "function" &&
+      missingVars.length === 0
     );
   });
 }
@@ -227,7 +240,7 @@ export async function loadEvents(
 
   // Gets the resolved import data
   await loadModules<HibikiEventTypes>(directory, collection, async (data) => {
-    const resolved = (await data.resolved()) as HibikiEvent<HibikiEventTypes>;
-    return resolved.runEvent !== undefined && resolved.event !== undefined;
+    const event = (await data.resolved()) as HibikiEvent<HibikiEventTypes>;
+    return event.runEvent !== undefined && event.event !== undefined;
   });
 }

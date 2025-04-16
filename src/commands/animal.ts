@@ -7,41 +7,41 @@
 import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
 import { sendErrorReply } from "@/utils/error.js";
 import { hFetch } from "@/utils/fetch.js";
-import { t, tObj } from "@/utils/i18n.js";
+import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const animalCommand: HibikiSlashCommand = {
+  defer: true,
   data: new SlashCommandBuilder()
     .setName("animal")
-    .setNameLocalizations(tObj("commands:ANIMAL_NAME"))
+    .setNameLocalizations(tO("commands:ANIMAL_NAME"))
     .setDescription(t("commands:ANIMAL_DESCRIPTION"))
-    .setDescriptionLocalizations(tObj("commands:ANIMAL_DESCRIPTION"))
+    .setDescriptionLocalizations(tO("commands:ANIMAL_DESCRIPTION"))
     .setContexts(AllInteractionContextTypes)
     // Cat subcommand
     .addSubcommand((cat) =>
       cat
         .setName("cat")
-        .setNameLocalizations(tObj("commands:ANIMAL_CAT_NAME"))
+        .setNameLocalizations(tO("commands:ANIMAL_CAT_NAME"))
         .setDescription(t("commands:ANIMAL_CAT_DESCRIPTION"))
-        .setDescriptionLocalizations(tObj("commands:ANIMAL_CAT_DESCRIPTION")),
+        .setDescriptionLocalizations(tO("commands:ANIMAL_CAT_DESCRIPTION")),
     )
     // Dog subcommand
     .addSubcommand((dog) =>
       dog
         .setName("dog")
-        .setNameLocalizations(tObj("commands:ANIMAL_DOG_NAME"))
+        .setNameLocalizations(tO("commands:ANIMAL_DOG_NAME"))
         .setDescription(t("commands:ANIMAL_DOG_DESCRIPTION"))
-        .setDescriptionLocalizations(tObj("commands:ANIMAL_DOG_DESCRIPTION")),
+        .setDescriptionLocalizations(tO("commands:ANIMAL_DOG_DESCRIPTION")),
     )
     // Fox subcommand
     .addSubcommand((fox) =>
       fox
         .setName("fox")
-        .setNameLocalizations(tObj("commands:ANIMAL_FOX_NAME"))
+        .setNameLocalizations(tO("commands:ANIMAL_FOX_NAME"))
         .setDescription(t("commands:ANIMAL_FOX_DESCRIPTION"))
-        .setDescriptionLocalizations(tObj("commands:ANIMAL_FOX_DESCRIPTION")),
+        .setDescriptionLocalizations(tO("commands:ANIMAL_FOX_DESCRIPTION")),
     ),
-  defer: true,
 
   async runCommand(interaction) {
     let apiURL = "";

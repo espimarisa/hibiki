@@ -4,11 +4,11 @@
  * @license zlib
  */
 
-// TODO: API typings
+import type { PossibleGithubResponse } from "@/types/endpoints.js";
 import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
 import { sendErrorReply } from "@/utils/error.js";
 import { hFetch } from "@/utils/fetch.js";
-import { t, tObj } from "@/utils/i18n.js";
+import { t, tO } from "@/utils/i18n.js";
 import {
   EmbedBuilder,
   SlashCommandBuilder,
@@ -26,23 +26,24 @@ export const githubCommand: HibikiSlashCommand = {
   defer: true,
   data: new SlashCommandBuilder()
     .setName("github")
-    .setNameLocalizations(tObj("commands:GITHUB_NAME"))
+    .setNameLocalizations(tO("commands:GITHUB_NAME"))
     .setDescription(t("commands:GITHUB_DESCRIPTION"))
-    .setDescriptionLocalizations(tObj("commands:GITHUB_DESCRIPTION"))
+    .setDescriptionLocalizations(tO("commands:GITHUB_DESCRIPTION"))
     .setContexts(AllInteractionContextTypes)
     // User subcommand
     .addSubcommand((user) =>
       user
         .setName("user")
-        .setNameLocalizations(tObj("commands:GITHUB_USER_NAME"))
+        .setNameLocalizations(tO("commands:GITHUB_USER_NAME"))
         .setDescription(t("commands:GITHUB_USER_DESCRIPTION"))
-        .setDescriptionLocalizations(tObj("commands:GITHUB_USER_DESCRIPTION"))
+        .setDescriptionLocalizations(tO("commands:GITHUB_USER_DESCRIPTION"))
+        // Username option
         .addStringOption((username) =>
           username
             .setName(t("commands:GITHUB_QUERY_NAME"))
-            .setNameLocalizations(tObj("commands:GITHUB_QUERY_NAME"))
+            .setNameLocalizations(tO("commands:GITHUB_QUERY_NAME"))
             .setDescription(t("commands:GITHUB_USER_TARGET"))
-            .setDescriptionLocalizations(tObj("commands:GITHUB_USER_TARGET"))
+            .setDescriptionLocalizations(tO("commands:GITHUB_USER_TARGET"))
             .setRequired(true),
         ),
     )
@@ -50,18 +51,19 @@ export const githubCommand: HibikiSlashCommand = {
     .addSubcommand((repository) =>
       repository
         .setName("repository")
-        .setNameLocalizations(tObj("commands:GITHUB_REPOSITORY_NAME"))
+        .setNameLocalizations(tO("commands:GITHUB_REPOSITORY_NAME"))
         .setDescription(t("commands:GITHUB_REPOSITORY_DESCRIPTION"))
         .setDescriptionLocalizations(
-          tObj("commands:GITHUB_REPOSITORY_DESCRIPTION"),
+          tO("commands:GITHUB_REPOSITORY_DESCRIPTION"),
         )
+        // URL option
         .addStringOption((url) =>
           url
             .setName(t("commands:GITHUB_QUERY_NAME"))
-            .setNameLocalizations(tObj("commands:GITHUB_QUERY_NAME"))
+            .setNameLocalizations(tO("commands:GITHUB_QUERY_NAME"))
             .setDescription(t("commands:GITHUB_REPOSITORY_TARGET"))
             .setDescriptionLocalizations(
-              tObj("commands:GITHUB_REPOSITORY_TARGET"),
+              tO("commands:GITHUB_REPOSITORY_TARGET"),
             )
             .setRequired(true),
         ),

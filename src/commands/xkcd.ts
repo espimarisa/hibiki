@@ -4,44 +4,29 @@
  * @license zlib
  */
 
+import type { XKCDResponse } from "@/types/endpoints.js";
 import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
 import { sendErrorReply } from "@/utils/error.js";
 import { hFetch } from "@/utils/fetch.js";
-import { tObj } from "@/utils/i18n.js";
+import { tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { t } from "i18next";
-
-// TODO: Allow searching by title and transcripts!
-// XKCD Comic response - https://xkcd.com/info.0.json
-type XKCDResponse = {
-  title: string;
-  safe_title: string;
-  alt: string;
-  img: string;
-  num: number;
-  day: number;
-  month: number;
-  year: number;
-  transcript?: string;
-  news?: string;
-  link?: string;
-};
 
 export const xkcdCommand: HibikiSlashCommand = {
   defer: true,
   data: new SlashCommandBuilder()
     .setName("xkcd")
-    .setNameLocalizations(tObj("commands:XKCD_NAME"))
+    .setNameLocalizations(tO("commands:XKCD_NAME"))
     .setDescription(t("commands:XKCD_DESCRIPTION"))
-    .setDescriptionLocalizations(tObj("commands:XKCD_DESCRIPTION"))
+    .setDescriptionLocalizations(tO("commands:XKCD_DESCRIPTION"))
     .setContexts(AllInteractionContextTypes)
     // Number option
     .addIntegerOption((number) =>
       number
         .setName("number")
-        .setNameLocalizations(tObj("commands:XKCD_NUMBER_NAME"))
+        .setNameLocalizations(tO("commands:XKCD_NUMBER_NAME"))
         .setDescription(t("commands:XKCD_NUMBER_DESCRIPTION"))
-        .setDescriptionLocalizations(tObj("commands:XKCD_NUMBER_DESCRIPTION"))
+        .setDescriptionLocalizations(tO("commands:XKCD_NUMBER_DESCRIPTION"))
         .setRequired(false),
     ),
 
