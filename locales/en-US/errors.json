@@ -5,5 +5,7 @@
   "ERROR_BUG": "Spotted a bug? - github.com/espimarisa/hibiki/issues",
   "XKCD": "No XKCD comic exists with that ID. Try a different one, or leave blank for a random comic.",
   "IMAGE_FAILED": "Failed to get image response data. Try again later.",
+  "FETCH_FAILED": "Failed to get information. Try again later.",
+  "GITHUB_QUERY": "No user or public repository matching your query was found.",
   "NO_OPTION": "A valid **{{option}}** needs to be provided."
 }

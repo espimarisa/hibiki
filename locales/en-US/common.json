@@ -21,5 +21,20 @@
   "WEEKS_one": "{{count}} week",
   "YEARS": "{{count}} years",
   "YEARS_one": "{{count}} year",
-  "YES": "Yes"
+  "YES": "Yes",
+  "CREATED_ON": "Created on",
+  "UPDATED_ON": "Updated on",
+  "OWNER": "Owner",
+  "DISABLED": "Disabled",
+  "ENABLED": "Enabled",
+  "TRUE": "True",
+  "FALSE": "False",
+  "LICENSE": "License",
+  "LANGUAGE": "Language",
+  "HOMEPAGE": "Homepage",
+  "FOLLOWERS": "Followers",
+  "FOLLOWING": "Following",
+  "LOCATION": "Location",
+  "WEBSITE": "Website",
+  "EMAIL": "Email"
 }

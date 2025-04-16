@@ -34,7 +34,8 @@ export const roleplaycommands: HibikiSlashCommand = {
             .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
             .setDescriptionLocalizations(
               tObj("commands:ROLEPLAY_TARGET_DESCRIPTION"),
-            ),
+            )
+            .setRequired(true),
         ),
     )
     // Cuddle subcommand
@@ -53,7 +54,8 @@ export const roleplaycommands: HibikiSlashCommand = {
             .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
             .setDescriptionLocalizations(
               tObj("commands:ROLEPLAY_TARGET_DESCRIPTION"),
-            ),
+            )
+            .setRequired(true),
         ),
     )
     // Kiss subcommand
@@ -70,7 +72,8 @@ export const roleplaycommands: HibikiSlashCommand = {
             .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
             .setDescriptionLocalizations(
               tObj("commands:ROLEPLAY_TARGET_DESCRIPTION"),
-            ),
+            )
+            .setRequired(true),
         ),
     )
     // Pat subcommand
@@ -87,7 +90,8 @@ export const roleplaycommands: HibikiSlashCommand = {
             .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
             .setDescriptionLocalizations(
               tObj("commands:ROLEPLAY_TARGET_DESCRIPTION"),
-            ),
+            )
+            .setRequired(true),
         ),
     )
     // Slap subcommand
@@ -104,7 +108,8 @@ export const roleplaycommands: HibikiSlashCommand = {
             .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
             .setDescriptionLocalizations(
               tObj("commands:ROLEPLAY_TARGET_DESCRIPTION"),
-            ),
+            )
+            .setRequired(true),
         ),
     ),
 
@@ -114,7 +119,7 @@ export const roleplaycommands: HibikiSlashCommand = {
     let url = "";
 
     // Gets the subcommand and target
-    const target = interaction.options.getUser("target");
+    const target = interaction.options.getUser("target", true);
     const subcommand = interaction.options.getSubcommand();
 
     // Handles unresolved data

@@ -80,22 +80,12 @@ sharder.on("shardCreate", (shard) => {
   shard.on("error", (err) => {
     const error = parseError(err);
     logger.error(`Shard #${shard.id} encountered an error: ${error.message}`);
-    throw new Error(error.stack);
+    throw error;
   });
 
   // Shard ready
   shard.on("ready", () => {
     logger.info(`Shard #${shard.id} is ready`);
-  });
-
-  // Shard reconnecting
-  shard.on("reconnecting", () => {
-    logger.warn(`Shard #${shard.id} is reconnecting`);
-  });
-
-  // Shard resume
-  shard.on("resume", () => {
-    logger.warn(`Shard #${shard.id} has resumed`);
   });
 
   // Shard spawn

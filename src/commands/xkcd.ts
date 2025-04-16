@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import { HibikiColors } from "@/utils/constants.js";
+import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
 import { sendErrorReply } from "@/utils/error.js";
 import { hFetch } from "@/utils/fetch.js";
 import { tObj } from "@/utils/i18n.js";
@@ -34,6 +34,7 @@ export const xkcdCommand: HibikiSlashCommand = {
     .setNameLocalizations(tObj("commands:XKCD_NAME"))
     .setDescription(t("commands:XKCD_DESCRIPTION"))
     .setDescriptionLocalizations(tObj("commands:XKCD_DESCRIPTION"))
+    .setContexts(AllInteractionContextTypes)
     // Number option
     .addIntegerOption((number) =>
       number

@@ -4,21 +4,17 @@
  * @license zlib
  */
 
+import { HibikiIntents } from "@/utils/constants.js";
 import { env } from "@/utils/env.js";
 import { parseError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
-import { ActivityType, Client, GatewayIntentBits, Options } from "discord.js";
+import { ActivityType, Client, Options } from "discord.js";
 
 let activityState = 0;
 
 /** Creates a new Discord.js client. */
 export const bot = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.MessageContent,
-  ],
+  intents: HibikiIntents,
 
   // Cache sweeping settings
   sweepers: {

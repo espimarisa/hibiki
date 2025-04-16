@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import { HibikiColors } from "@/utils/constants.js";
+import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
 import { sendErrorReply } from "@/utils/error.js";
 import { hFetch } from "@/utils/fetch.js";
 import { t, tObj } from "@/utils/i18n.js";
@@ -16,6 +16,7 @@ export const animalCommand: HibikiSlashCommand = {
     .setNameLocalizations(tObj("commands:ANIMAL_NAME"))
     .setDescription(t("commands:ANIMAL_DESCRIPTION"))
     .setDescriptionLocalizations(tObj("commands:ANIMAL_DESCRIPTION"))
+    .setContexts(AllInteractionContextTypes)
     // Cat subcommand
     .addSubcommand((cat) =>
       cat
@@ -48,8 +49,7 @@ export const animalCommand: HibikiSlashCommand = {
     let titleString: DictionaryKey | "" = "";
 
     // Gets the subcommand to run
-    const subcommand = interaction.options.getSubcommand();
-
+    const subcommand = interaction.options.getSubcommand(true);
     if (!subcommand) {
       await sendErrorReply(interaction, "errors:IMAGE_FAILED", true, true);
       return;
