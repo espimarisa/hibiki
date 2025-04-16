@@ -6,7 +6,7 @@
 
 import { db } from "@/db/index.js";
 import { guildConfig } from "@/db/schema/guildConfig.js";
-import { parseError } from "@/utils/error.js";
+import { captureError, parseError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
 import { eq } from "drizzle-orm";
 
@@ -30,8 +30,14 @@ export async function getGuildConfig(guild: string) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error getting guild config ${guild}: ${error.message}`);
-    throw error;
+
+    // Captures the error with Sentry
+    captureError(error, {
+      guild: guild,
+    });
   }
+
+  return;
 }
 
 /**
@@ -47,8 +53,14 @@ export async function deleteGuildConfig(guild: string) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error deleting guild config ${guild}: ${error.message}`);
-    throw error;
+
+    // Captures the error with Sentry
+    captureError(error, {
+      guild: guild,
+    });
   }
+
+  return;
 }
 
 /**
@@ -72,8 +84,15 @@ export async function updateGuildConfig(guild: string, config: GuildConfig) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error updating guild config ${guild}: ${error.message}`);
-    throw error;
+
+    // Captures the error with Sentry
+    captureError(error, {
+      config: config,
+      guild: guild,
+    });
   }
+
+  return;
 }
 
 /**
@@ -96,6 +115,12 @@ export async function createBlankGuildConfig(guild: string) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error creating guild config ${guild}: ${error.message}`);
-    throw error;
+
+    // Captures the error with Sentry
+    captureError(error, {
+      guild: guild,
+    });
   }
+
+  return;
 }

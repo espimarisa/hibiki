@@ -167,7 +167,7 @@ export const roleplaycommands: HibikiSlashCommand = {
 
       case "pat": {
         string = "commands:ROLEPLAY_PAT_MESSAGE";
-        url = "commands:COMMAND_ROLEPLAY_PAT_DETAILS";
+        url = "https://cdn.weeb.sh/images/HJRIlihCZ.gif";
         break;
       }
 

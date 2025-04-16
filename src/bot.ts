@@ -7,6 +7,7 @@
 import { HibikiIntents } from "@/utils/constants.js";
 import { env } from "@/utils/env.js";
 import { parseError } from "@/utils/error.js";
+import { captureError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
 import { ActivityType, Client, Options } from "discord.js";
 
@@ -41,7 +42,7 @@ bot.once("ready", async () => {
     } catch (err) {
       const error = parseError(err);
       logger.error(`Failed to emit ready event: ${error.message}`);
-      throw error;
+      captureError(error);
     }
   }
 

@@ -5,7 +5,7 @@
  */
 
 import { type EnvironmentVariables, env, validateKey } from "@/utils/env.js";
-import { parseError } from "@/utils/error.js";
+import { captureError, parseError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
 import type { PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
@@ -13,14 +13,14 @@ import { dirname, join } from "node:path";
 import { Collection } from "discord.js";
 
 /** Typing for loadModules() result */
-export type ModuleLoadStats = {
+type ModuleLoadStats = {
   loaded: number;
   failed: number;
   skipped: number;
 };
 
 /** Typing for expected return of getImportData() */
-export type ImportData = {
+type ImportData = {
   name: string;
   resolved: () => Promise<unknown>;
 };
@@ -93,7 +93,14 @@ export async function importDirectory(directory: PathLike, recursive = false) {
       logger.error(
         `Failed to prepare import for ${file.name}: ${error.message}`,
       );
+
+      // Captures the error with Sentry
+      captureError(error, {
+        file: file.name,
+      });
     }
+
+    return;
   });
 
   // Settles all tasks and returns the imports
@@ -183,7 +190,14 @@ export async function loadModules<T>(
       const error = parseError(err);
       logger.error(`Failed to load ${file.name}: ${error.message}`);
       failed++;
+
+      // Captures the error with Sentry
+      captureError(error, {
+        file: file.name,
+      });
     }
+
+    return;
   });
 
   // Return loaded module stats

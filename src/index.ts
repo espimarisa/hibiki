@@ -6,7 +6,7 @@
 
 import { bot } from "@/root/bot.js";
 import { env } from "@/utils/env.js";
-import { parseError } from "@/utils/error.js";
+import { captureError, initSentry, parseError } from "@/utils/error.js";
 import {
   getDirname,
   hibikiCommands,
@@ -16,8 +16,8 @@ import {
 } from "@/utils/fs.js";
 import { initI18Next } from "@/utils/i18n.js";
 import { logger } from "@/utils/logger.js";
+import { hostname } from "node:os";
 import { join } from "node:path";
-import { init } from "@sentry/bun";
 import { type ClientUser, ShardingManager } from "discord.js";
 
 // Gets important directories and the client file
@@ -30,21 +30,13 @@ const EVENTS_DIRECTORY = join(ROOT_DIRECTORY, "./events");
 
 const readyShards = new Set();
 
-// Initialize sentry if a DSN is provided
+// Connects to Sentry
 if (env.SENTRY_DSN) {
-  try {
-    init({
-      dsn: env.SENTRY_DSN,
-      environment: env.NODE_ENV,
-      release: env.npm_package_version,
-      tracesSampleRate: 0.2,
-    });
-
-    logger.info(`Sentry connected to DSN ${env.SENTRY_DSN}`);
-  } catch (err) {
-    const error = parseError(err);
-    logger.error(`Error initializing Sentry: ${error.message}`);
-  }
+  initSentry(env.SENTRY_DSN, {
+    environment: env.NODE_ENV,
+    release: env.npm_package_version,
+    serverName: hostname(),
+  });
 }
 
 // Creates a ShardingManager
@@ -80,7 +72,11 @@ sharder.on("shardCreate", (shard) => {
   shard.on("error", (err) => {
     const error = parseError(err);
     logger.error(`Shard #${shard.id} encountered an error: ${error.message}`);
-    throw error;
+
+    // Captures the error with Sentry
+    captureError(error, {
+      shard: shard.id,
+    });
   });
 
   // Shard ready
@@ -132,5 +128,7 @@ try {
 } catch (err) {
   const error = parseError(err);
   logger.error(`Error while spawning shards: ${error.message}`);
-  throw error;
+
+  // Captures the error with Sentry
+  captureError(error);
 }

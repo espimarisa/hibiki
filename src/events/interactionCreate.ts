@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import { parseError } from "@/utils/error.js";
+import { captureError, parseError, sendErrorReply } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
 import type { CommandInteraction, Interaction } from "discord.js";
 
@@ -41,29 +41,53 @@ async function runCommand(interaction: CommandInteraction) {
     return;
   }
 
+  // Gets the user and guild name/ID
+  const user = `${interaction.user.username} (${interaction.user.id})`;
+  const guild = interaction.guild
+    ? `${interaction.guild.name} (${interaction.guild.id})`
+    : "DMs";
+
   /**
    * Slash command handler
    */
 
   if (interaction.isChatInputCommand()) {
     const command = commandToRun as HibikiSlashCommand;
+    const commandName = command.data.name;
 
     try {
       // Defer replies for deferred commands
       if (command.defer) {
         await interaction.deferReply({
+          // Handle ephemeral flags
           flags: command.ephemeral ? "Ephemeral" : [],
         });
       }
 
-      // Runs the command
+      // Runs the command and logs it
       await command.runCommand(interaction);
+      logger.info(`${user} ran command ${commandName} in ${guild}`);
     } catch (err) {
       const error = parseError(err);
-      logger.error(
-        `Error running slash command ${command.data.name}: ${error.message}`,
+      logger.error(`Error running command ${commandName}: ${error.message}`);
+
+      // Sends an error reply
+      await sendErrorReply(
+        interaction,
+        "errors:ERROR_STACK",
+        command.defer,
+        command.ephemeral,
+        {
+          error: error.message,
+        },
       );
-      throw err;
+
+      // Captures the error with sentry
+      captureError(err, {
+        command: commandName,
+        guild: guild,
+        user: user,
+      });
     }
 
     return;

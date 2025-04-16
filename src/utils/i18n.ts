@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import { parseError } from "@/utils/error.js";
+import { captureError, parseError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
 import type { PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
@@ -13,6 +13,7 @@ import i18next, { type TOptions } from "i18next";
 import i18NexFsBackend, { type FsBackendOptions } from "i18next-fs-backend";
 
 let localeDirectoryData: string[] = [];
+const defaultLocale = "en-US";
 
 /**
  * Initializes i18next and loads locales.
@@ -33,13 +34,13 @@ export async function initI18Next(directory: PathLike) {
         loadPath: `${directoryPath}/{{lng}}/{{ns}}.json`,
       },
       defaultNS: "common",
-      fallbackLng: "en-US",
+      fallbackLng: defaultLocale,
       initAsync: true,
       interpolation: {
         skipOnVariables: false,
       },
-      preload: localeDirectoryData,
-      lng: "en-US",
+      preload: localeDirectoryData || [],
+      lng: defaultLocale,
       load: "currentOnly",
       ns: ["commands", "common", "errors"],
     });
@@ -48,8 +49,14 @@ export async function initI18Next(directory: PathLike) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error initializing i18next: ${error.message}`);
-    throw error;
+
+    // Captures the error with Sentry
+    captureError(err, {
+      directory: directory,
+    });
   }
+
+  return;
 }
 
 /**
@@ -58,7 +65,7 @@ export async function initI18Next(directory: PathLike) {
  * @returns An array of locale filenames.
  */
 
-async function getLocaleFiles(directory: string): Promise<string[]> {
+async function getLocaleFiles(directory: string) {
   try {
     // Iterates over each file
     const files = await readdir(directory, { withFileTypes: true });
@@ -66,8 +73,14 @@ async function getLocaleFiles(directory: string): Promise<string[]> {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Failed to load locales from ${directory}: ${error.message}`);
-    throw error;
+
+    // Captures the error with Sentry
+    captureError(err, {
+      directory: directory,
+    });
   }
+
+  return [];
 }
 
 /**
@@ -88,6 +101,12 @@ export function tO(key: DictionaryKey) {
     } catch (err) {
       const error = parseError(err);
       logger.warn(`No translation for ${key} in ${locale}: ${error.message}`);
+
+      // Captures the error with Sentry
+      captureError(err, {
+        key: key,
+        locale: locale,
+      });
     }
   }
 
@@ -102,13 +121,27 @@ export function tO(key: DictionaryKey) {
  */
 
 export function t(key: DictionaryKey, options?: TOptions) {
-  return i18next.t(key, {
-    // Use en-US as a fallback
-    // NOTE: i18next *has* fallback support, but it is quirky
-    // This wrapper allows us to perform future arguments more easily anyways
-    lng: "en-US",
-    ...options,
-  });
+  try {
+    const translation = i18next.t(key, {
+      // Use defaultLocale as a fallback
+      // NOTE: i18next *has* fallback support, but it is quirky
+      // This wrapper allows us to perform future arguments more easily anyways
+      lng: defaultLocale,
+      ...options,
+    });
+
+    return translation;
+  } catch (err) {
+    const error = parseError(err);
+
+    // Captures the error with Sentry
+    captureError(err, {
+      key: key,
+      locale: options?.lng || defaultLocale,
+    });
+
+    return key;
+  }
 }
 
 /**

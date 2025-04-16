@@ -6,7 +6,7 @@
 
 import { db } from "@/db/index.js";
 import { userConfig } from "@/db/schema/userConfig.js";
-import { parseError } from "@/utils/error.js";
+import { captureError, parseError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
 import { eq } from "drizzle-orm";
 
@@ -30,8 +30,14 @@ export async function getUserConfig(user: string) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error getting user config ${user}: ${error.message}`);
-    throw error;
+
+    // Captures the error with Sentry
+    captureError(error, {
+      user: user,
+    });
   }
+
+  return;
 }
 
 /**
@@ -47,8 +53,14 @@ export async function deleteUserConfig(user: string) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error deleting user config ${user}: ${error.message}`);
-    throw error;
+
+    // Captures the error with Sentry
+    captureError(error, {
+      user: user,
+    });
   }
+
+  return;
 }
 
 /**
@@ -69,8 +81,15 @@ export async function updateUserConfig(user: string, config: UserConfig) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error updating user config ${user}: ${error.message}`);
-    throw error;
+
+    // Captures the error with Sentry
+    captureError(error, {
+      config: config,
+      user: user,
+    });
   }
+
+  return;
 }
 
 /**
@@ -84,6 +103,12 @@ export async function createBlankUserConfig(user: string) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error creating user config ${user}: ${error.message}`);
-    throw error;
+
+    // Captures the error with Sentry
+    captureError(error, {
+      user: user,
+    });
   }
+
+  return;
 }

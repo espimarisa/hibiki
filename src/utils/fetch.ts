@@ -5,7 +5,7 @@
  */
 
 import { env } from "@/utils/env.js";
-import { parseError } from "@/utils/error.js";
+import { captureError, parseError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
 
 /**
@@ -33,6 +33,13 @@ export async function hFetch(url: string, options?: RequestInit) {
   } catch (err) {
     const error = parseError(err);
     logger.warn(`Error fetching ${url}: ${error.message}`);
-    throw error;
+
+    // Captures the error with Sentry
+    captureError(error, {
+      url: url,
+      options: options,
+    });
   }
+
+  return;
 }
