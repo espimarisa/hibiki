@@ -1,5 +1,4 @@
 {
-  "ABOUT_COMMANDS": "Commands",
   "ABOUT_DESCRIPTION": "Shows information and statistics about me.",
   "ABOUT_DETAILS": "I'm a kitchen sink Discord bot full of polished tools, utilities, and other odds-and-ends. \n\nMade with love by [Espi Marisa](https://espi.me). 💖",
   "ABOUT_LINKS": "[GitHub](https://github.com/espimarisa/hibiki) | [Invite](https://discord.com/api/oauth2/authorize?client_id={{id}}&permissions={{permissions}}&scope=bot%20applications.commands) | [Privacy](https://github.com/espimarisa/hibiki?tab=readme-ov-file#privacy-policy) | [Donate](https://ko-fi.com/espimarisa)",
@@ -9,8 +8,6 @@
   "ABOUT_STATSFORNERDS": "Stats for nerds",
   "ABOUT_STATSFORNERDS_DETAILS": "Using {{memory}} of memory \n{{uptime}} of uptime",
   "ABOUT_TITLE": "✨ About {{username}}",
-  "ABOUT_UPTIME": "Uptime",
-  "ABOUT_VERSION": "Version",
   "ABOUT_VERSION_DETAILS": "Hibiki {{- hibiki}} \nDiscord.js {{- djs}} \nBun {{- bun}}",
 
   "ANIMAL_CAT_DESCRIPTION": "Sends a random cat picture.",

@@ -20,14 +20,17 @@ import { hostname } from "node:os";
 import { join } from "node:path";
 import { type ClientUser, ShardingManager } from "discord.js";
 
-// Gets important directories and the client file
+// Gets the root directory and primary bot file
 const ROOT_DIRECTORY = getDirname(import.meta.url);
-const ROOT_FILE_NAME = `bot.${env.NODE_ENV === "production" ? "js" : "ts"}`;
-const ROOT_FILE = join(ROOT_DIRECTORY, ROOT_FILE_NAME);
-const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
+const BOT_FILE_NAME = `bot.${env.NODE_ENV === "production" ? "js" : "ts"}`;
+const BOT_FILE = join(ROOT_DIRECTORY, BOT_FILE_NAME);
+
+// Gets directories to load
 const COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands");
 const EVENTS_DIRECTORY = join(ROOT_DIRECTORY, "./events");
+const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
 
+// Creates a set for storing a list of ready shards
 const readyShards = new Set();
 
 // Connects to Sentry
@@ -39,8 +42,8 @@ if (env.SENTRY_DSN) {
   });
 }
 
-// Creates a ShardingManager
-const sharder = new ShardingManager(ROOT_FILE, {
+/** The primary Discord.js ShardingManager controlling all client shards. */
+const sharder = new ShardingManager(BOT_FILE, {
   mode: "process",
   respawn: true,
   token: env.DISCORD_TOKEN,
@@ -52,7 +55,7 @@ await initI18Next(LOCALES_DIRECTORY);
 await loadCommands(COMMANDS_DIRECTORY, hibikiCommands);
 await loadEvents(EVENTS_DIRECTORY, hibikiEvents);
 
-// Appends commands, and the sharder to the client
+// Appends commands and the sharder to the spawned client
 bot.commands = hibikiCommands;
 bot.sharder = sharder;
 
@@ -72,8 +75,6 @@ sharder.on("shardCreate", (shard) => {
   shard.on("error", (err) => {
     const error = parseError(err);
     logger.error(`Shard #${shard.id} encountered an error: ${error.message}`);
-
-    // Captures the error with Sentry
     captureError(error, {
       shard: shard.id,
     });
@@ -95,7 +96,7 @@ sharder.on("shardCreate", (shard) => {
       // Adds the shard to the ready list
       readyShards.add(shard);
 
-      // Handlers for when all shards are ready
+      // Log when all shards are ready
       if (readyShards.size === sharder.totalShards) {
         logger.info("All shards are ready");
 
@@ -104,31 +105,35 @@ sharder.on("shardCreate", (shard) => {
           shard: 0,
         })) as ClientUser | undefined;
 
-        // Logs client information when ready
-        logger.info(`Connected to Discord as ${user?.username} (${user?.id})`);
+        // Logs if a user object is not returned
+        if (!user) {
+          logger.fatal("No user object received from Discord. This is bad!");
+          return;
+        }
+
+        // Logs user information when fully connected
+        logger.info(`Connected to Discord as ${user.username} (${user.id})`);
       }
     }
   });
 });
 
+// Spawns shards
 try {
-  // Spawns shards
   await sharder.spawn();
 
-  // Subscribe event handlers to their listeners
+  // Subscribes event handlers to their listeners
   for (const event of hibikiEvents.values()) {
-    // Run handlers that only listen once
     if (event.once) {
+      // Runs event handlers that only fire once
       bot.once(event.event, async (...args) => await event.runEvent(...args));
     } else {
-      // Run handlers when their subscribed events are emitted
+      // Runs event handlers on each event emitter
       bot.on(event.event, async (...args) => await event.runEvent(...args));
     }
   }
 } catch (err) {
   const error = parseError(err);
-  logger.error(`Error while spawning shards: ${error.message}`);
-
-  // Captures the error with Sentry
+  logger.error(`Error spawning shards: ${error.message}`);
   captureError(error);
 }

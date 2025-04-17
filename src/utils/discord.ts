@@ -4,20 +4,7 @@
  * @license zlib
  */
 
-/**
- * Gets the total number of guilds across all shards.
- * @returns The total number of guilds across all shards.
- */
-
 import type { ShardingManager } from "discord.js";
-
-export async function getTotalGuilds(sharder: ShardingManager) {
-  const results = await sharder.broadcastEval((client) =>
-    client.guilds.fetch().then((guilds) => guilds.size),
-  );
-
-  return results.reduce((acc, count) => acc + count, 0);
-}
 
 /**
  * Gets the total number of cached guilds across all shards.
@@ -51,4 +38,17 @@ export async function getTotalCachedUsers(sharder: ShardingManager) {
   }
 
   return total.reduce((a, b) => a + b);
+}
+
+/**
+ * Gets the total number of guilds across all shards.
+ * @returns The total number of guilds across all shards.
+ */
+
+export async function getTotalGuilds(sharder: ShardingManager) {
+  const results = await sharder.broadcastEval((client) =>
+    client.guilds.fetch().then((guilds) => guilds.size),
+  );
+
+  return results.reduce((acc, count) => acc + count, 0);
 }

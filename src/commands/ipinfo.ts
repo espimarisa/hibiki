@@ -54,12 +54,6 @@ export const ipinfoCommand: HibikiSlashCommand = {
       },
     });
 
-    // Invalid response handler
-    if (!response) {
-      await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
-      return;
-    }
-
     // Converts response to JSON
     const body = await response.json();
     if (!body) {

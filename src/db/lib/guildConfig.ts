@@ -4,19 +4,20 @@
  * @license zlib
  */
 
-import { db } from "@/db/index.js";
+import { db } from "@/db/drizzle.js";
 import { guildConfig } from "@/db/schema/guildConfig.js";
 import { captureError, parseError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
+import type { Snowflake } from "discord.js";
 import { eq } from "drizzle-orm";
 
 /**
  * Gets a guild config.
- * @param guild The guild ID search for a matching config with.
- * @returns A guild config.
+ * @param guild The guild's Discord guild ID.
+ * @returns A valid guild configuration object if found.
  */
 
-export async function getGuildConfig(guild: string) {
+export async function getGuildConfig(guild: Snowflake) {
   try {
     const config = await db.query.guildConfig.findFirst({
       where: (guildConfig, { eq }) => eq(guildConfig.guild_id, guild),
@@ -30,22 +31,20 @@ export async function getGuildConfig(guild: string) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error getting guild config ${guild}: ${error.message}`);
-
-    // Captures the error with Sentry
     captureError(error, {
       guild: guild,
     });
-  }
 
-  return;
+    return;
+  }
 }
 
 /**
  * Deletes a guild config.
- * @param guild The guild ID to delete a matching config with.
+ * @param guild The guild's Discord guild ID.
  */
 
-export async function deleteGuildConfig(guild: string) {
+export async function deleteGuildConfig(guild: Snowflake) {
   try {
     await db.transaction(async (query) => {
       await query.delete(guildConfig).where(eq(guildConfig.guild_id, guild));
@@ -53,23 +52,19 @@ export async function deleteGuildConfig(guild: string) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error deleting guild config ${guild}: ${error.message}`);
-
-    // Captures the error with Sentry
     captureError(error, {
       guild: guild,
     });
   }
-
-  return;
 }
 
 /**
  * Updates a guild config.
- * @param guild The guild ID to update a matching config with.
- * @param config A valid guild config object.
+ * @param guild The guild's Discord guild ID.
+ * @param config A valid guild configuration object.
  */
 
-export async function updateGuildConfig(guild: string, config: GuildConfig) {
+export async function updateGuildConfig(guild: Snowflake, config: GuildConfig) {
   try {
     // Checks for an existing config
     const existingConfig = await getGuildConfig(guild);
@@ -84,23 +79,19 @@ export async function updateGuildConfig(guild: string, config: GuildConfig) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error updating guild config ${guild}: ${error.message}`);
-
-    // Captures the error with Sentry
     captureError(error, {
       config: config,
       guild: guild,
     });
   }
-
-  return;
 }
 
 /**
- * Creates a blank guild config.
- * @param guild The guild ID to create a config for.
+ * Creates a new guild config.
+ * @param guild The guild's Discord guild ID.
  */
 
-export async function createBlankGuildConfig(guild: string) {
+export async function createGuildConfig(guild: Snowflake) {
   // Checks to see if the guild config exists
   const config = await getGuildConfig(guild);
   if (config) {
@@ -115,12 +106,8 @@ export async function createBlankGuildConfig(guild: string) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error creating guild config ${guild}: ${error.message}`);
-
-    // Captures the error with Sentry
     captureError(error, {
       guild: guild,
     });
   }
-
-  return;
 }

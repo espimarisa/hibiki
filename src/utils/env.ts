@@ -1,5 +1,5 @@
 /**
- * @file Utility to parse and validate environment variables.
+ * @file Utility for parsing and validation of environment variables.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
@@ -8,52 +8,116 @@ import { DISCORD_TOKEN_REGEX } from "@/utils/constants.js";
 import { env as processEnv } from "node:process";
 import { z } from "zod";
 
-// An object containing expected environment variables
+// Helper to validate optional strings
+const optionalString = () => z.string().trim().optional().default("");
+
+// Helper to validate URLs requiring a prefix (i.e name://)
+const prefixedUrl = (prefix: string, message: string) =>
+  z
+    .string()
+    .trim()
+    .url()
+    .refine((url) => url.startsWith(prefix), { message });
+
+// Helper to validate required strings
+const requiredString = (message: string) =>
+  z.string().trim().min(1, { message });
+
+// Environment variables to validate
 const envSchema = z.object({
-  /** Discord bot token to authenticate with. */
-  DISCORD_TOKEN: z
-    .string()
-    .trim()
-    .min(1, { message: "Missing DISCORD_TOKEN" })
-    .regex(DISCORD_TOKEN_REGEX, "Malformed DISCORD_TOKEN"),
+  /**
+   * REQUIRED: Discord bot token to authenticate with.
+   * @see https://discord.com/developers/docs/quick-start/getting-started
+   */
 
-  /** Discord Guild ID to deploy development-mode commands and log bot events to. */
-  DISCORD_DEV_GUILD_ID: z.string().trim().optional().default(""),
+  DISCORD_TOKEN: requiredString("Missing DISCORD_TOKEN").regex(
+    DISCORD_TOKEN_REGEX,
+    "Malformed DISCORD_TOKEN",
+  ),
 
-  /** Discord channel ID (inside of DISCORD_DEV_GUILD_ID) to send certain logs to. */
-  DISCORD_DEV_CHANNEL_ID: z.string().trim().optional().default(""),
+  /**
+   * OPTIONAL: Discord guild ID to deploy development-mode commands and log certain events to.
+   * @see https://discord.com/developers/docs/resources/guild
+   */
 
-  /** Comma-space ('one, two') delimited list of bot statuses to cycle through. */
-  DISCORD_STATUSES: z
-    .string()
-    .trim()
-    .optional()
-    .default("")
-    .transform((value) =>
-      value ? value.split(",").map((item) => item.trim()) : [],
-    ),
+  DISCORD_DEV_GUILD_ID: optionalString(),
 
-  /** Redis/Valkey database URL to connect to. */
-  REDIS_URL: z.string().trim().url(),
+  /**
+   * OPTIONAL: Discord channel ID (inside of DISCORD_DEV_GUILD_ID) to log certain events to.
+   * @see https://discord.com/developers/docs/resources/guild
+   */
 
-  /** PostgreSQL database url to connect to. */
-  POSTGRES_URL: z.string().trim().min(1, { message: "Missing POSTGRES_URL" }),
+  DISCORD_DEV_CHANNEL_ID: optionalString(),
 
-  /** Valid Sentry DSN URL (https) to submit and upload errors to. */
+  /**
+   * OPTIONAL: Comma-space delimited ('one, two') list of bot statuses to cycle through.
+   * @see https://en.wikipedia.org/wiki/Comma-separated_values
+   */
+
+  DISCORD_STATUSES: optionalString().transform((value) =>
+    value ? value.split(",").map((item) => item.trim()) : [],
+  ),
+
+  /**
+   * REQUIRED: Redis server URL to connect to.
+   * @see https://redis.io/docs/latest/develop/clients/nodejs/connect/
+   * @default redis://127.0.0.1:6379
+   */
+
+  REDIS_URL: prefixedUrl("redis://", "REDIS_URL must start with redis://"),
+
+  /**
+   * REQUIRED: PostgreSQL database connection URL to connect to.
+   * @see https://www.postgresql.org/docs/6.4/jdbc19100.htm
+   * @default postgresql://postgres:postgres@127.0.0.1:5432/hibiki
+   */
+
+  POSTGRES_URL: prefixedUrl(
+    "postgresql://",
+    "POSTGRES_URL must start with postgres://",
+  ),
+
+  /**
+   * OPTIONAL: Sentry.io DSN URL to submit and log errors to.
+   * @see https://docs.sentry.io/concepts/key-terms/dsn-explainer/#where-to-find-your-data-source-name-dsn
+   */
+
   SENTRY_DSN: z.string().trim().url().optional().default(""),
 
-  /** IPInfo.io API key for the ipinfo command. */
+  /**
+   * OPTIONAL: IPinfo.io API key used to get IP address information.
+   * @see https://ipinfo.io/signup
+   */
+
   IPINFO_API_KEY: z.string().trim().optional().default(""),
 
-  // Bun variables to ensure always exist
+  /**
+   * AUTOMATIC: The current NODE_ENV environment.
+   * @see https://bun.sh/guides/runtime/set-env
+   * @default development
+   */
+
   NODE_ENV: z.string().default("development"),
-  npm_package_name: z.string().default("develop"),
+
+  /**
+   * AUTOMATIC: The package name inside of package.json.
+   * @see https://docs.npmjs.com/cli/v11/configuring-npm/package-json
+   * @default @espimarisa/hibiki
+   */
+
+  npm_package_name: z.string().default("@espimarisa/hibiki"),
+
+  /**
+   * AUTOMATIC: The package version inside of package.json.
+   * @see https://docs.npmjs.com/cli/v11/configuring-npm/package-json
+   * @default develop
+   */
+
   npm_package_version: z.string().default("develop"),
 });
 
 // Parses and validates environment variables
 const result = envSchema.safeParse(processEnv);
-
 if (!result.success) {
   throw new Error(
     `Failed validating variables:\n${result.error.errors
@@ -62,32 +126,27 @@ if (!result.success) {
   );
 }
 
-/** Validated environment variables. */
+/** An object of validated environment variables. */
 export const env: z.infer<typeof envSchema> = result.data;
 
-/** Typing for valid environment variables. */
+/** Typing for validated environment variables. */
 export type EnvironmentVariables = typeof env;
 
 /**
- * Validates if environment variables existing and are > 1 character.
+ * Validates if environment variables exist and are >1 character.
  * @param variable Environment variable object to check.
  * @param keys Array of environment variable keys to validate.
- * @returns A boolean indicating fail/success and a list of missing keys.
+ * @returns A list of missing or invalid environment variables.
  */
 
 export function validateKey(
   variable: EnvironmentVariables,
-  keys: Array<keyof EnvironmentVariables>,
+  keys: (keyof EnvironmentVariables)[],
 ) {
   const missingKeys = keys.filter((key) => {
-    const value = variable[key as keyof EnvironmentVariables];
+    const value = variable[key];
     return typeof value !== "string" || value.length === 0;
   });
 
-  // Return keys if validation failed
-  if (missingKeys.length > 0) {
-    return missingKeys;
-  }
-
-  return [];
+  return missingKeys;
 }

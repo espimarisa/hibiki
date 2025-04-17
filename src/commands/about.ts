@@ -1,7 +1,7 @@
 /**
- * @file Slash command that returns information and statistics about itself.
+ * @file Slash command to get information and statistics about the bot.
  * @author Espi Marisa <contact@espi.me>
- * @module commands/slash/about
+ * @license zlib
  */
 
 import {
@@ -20,6 +20,7 @@ import { EmbedBuilder, SlashCommandBuilder, version } from "discord.js";
 const startupTimestamp = new Date();
 
 export const aboutCommand: HibikiSlashCommand = {
+  defer: true,
   data: new SlashCommandBuilder()
     .setName("about")
     .setNameLocalizations(tO("commands:ABOUT_NAME"))
@@ -28,16 +29,15 @@ export const aboutCommand: HibikiSlashCommand = {
     .setContexts(AllInteractionContextTypes),
 
   async runCommand(interaction) {
-    await interaction.deferReply();
-
-    // Gets and localizes uptime, memory, and cache data
+    // Gets uptime and memory statistics
     const uptime = getTimeSince(startupTimestamp, new Date());
     const memory = Math.round(memoryUsage().heapUsed);
     const localizedUptime = localizeTime(uptime, interaction.locale);
     const localizedMemory = localizeBytes(memory, interaction.locale);
-    const totalGuilds = (await getTotalGuilds(interaction.client.sharder)) || 1;
-    const cachedUsers =
-      (await getTotalCachedUsers(interaction.client.sharder)) || 1;
+
+    // Gets the total amount of cached guilds and users
+    const cachedGuilds = await getTotalGuilds(interaction.client.sharder);
+    const cachedUsers = await getTotalCachedUsers(interaction.client.sharder);
 
     // Sends the interaction
     await interaction.followUp({
@@ -66,7 +66,7 @@ export const aboutCommand: HibikiSlashCommand = {
               }),
               value: t("commands:ABOUT_STATISTICS_DETAILS", {
                 lng: interaction.locale,
-                servers: totalGuilds,
+                servers: cachedGuilds,
                 users: cachedUsers,
                 commands: interaction.client.commands?.size,
               }),

@@ -16,6 +16,7 @@ import {
   time,
 } from "discord.js";
 
+// GitHub API urls and headers
 const API_BASEURL = "https://api.github.com";
 const API_REQUIRED_HEADER = "application/vnd.github+json";
 
@@ -70,31 +71,32 @@ export const githubCommand: HibikiSlashCommand = {
     ),
 
   async runCommand(interaction) {
-    let response: Response | undefined;
-    let isRepo = false;
-
     // Gets the subcommand and query
     const subcommand = interaction.options.getSubcommand(true);
     let query = interaction.options.getString("query", true);
+    let isRepository = false;
+    let response: Response;
 
     // Don't allow empty queries
     if (!(subcommand && query)) {
       await sendErrorReply(interaction, "errors:NO_OPTION", true, true, {
         option: t("commands:GITHUB_QUERY_NAME"),
       });
+
+      return;
     }
 
-    // Sets options for fetching a repository
+    // Fetches a repository
     query = query.replace(GITHUB_URL_REGEX, "");
     if (subcommand === "repository") {
-      isRepo = true;
+      isRepository = true;
       response = await hFetch(`${API_BASEURL}/repos/${query}`, {
         headers: {
           Accept: API_REQUIRED_HEADER,
         },
       });
     } else {
-      // Sets options for fetching a user
+      // Fetches a user
       response = await hFetch(`${API_BASEURL}/users/${query}`, {
         headers: {
           Accept: API_REQUIRED_HEADER,
@@ -102,14 +104,8 @@ export const githubCommand: HibikiSlashCommand = {
       });
     }
 
-    // Handler for empty body response
-    if (!response) {
-      await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
-      return;
-    }
-
     // Converts response into JSON
-    const body: PossibleGithubResponse | undefined = await response?.json();
+    const body: PossibleGithubResponse = await response.json();
     if (!body?.id) {
       await sendErrorReply(interaction, "errors:GITHUB_QUERY", true, true);
       return;
@@ -137,10 +133,10 @@ export const githubCommand: HibikiSlashCommand = {
     }
 
     // Repository owner
-    if (body.owner) {
+    if (body.owner?.login) {
       embed.addFields({
         name: t("common:OWNER", { lng: interaction.locale }),
-        value: body.owner.login.toString(),
+        value: body.owner.login,
         inline: true,
       });
     }
@@ -173,7 +169,7 @@ export const githubCommand: HibikiSlashCommand = {
     }
 
     // Repository fork information
-    if (body.fork && body.source) {
+    if (body.fork && body.source?.full_name) {
       embed.addFields({
         name: t("commands:GITHUB_FORKED_FROM", { lng: interaction.locale }),
         value: body.source.full_name,
@@ -191,7 +187,7 @@ export const githubCommand: HibikiSlashCommand = {
     }
 
     // Repository license; ignore NOASSERTION
-    if (body.license && body.license.spdx_id !== "NOASSERTION") {
+    if (body.license?.spdx_id && body.license.spdx_id !== "NOASSERTION") {
       embed.addFields({
         name: t("common:LICENSE"),
         value: body.license.spdx_id,
@@ -245,7 +241,7 @@ export const githubCommand: HibikiSlashCommand = {
     }
 
     // Repository topics
-    if (body.topics?.length > 0) {
+    if (body.topics && body.topics.length > 0) {
       embed.addFields({
         name: t("commands:GITHUB_TOPICS"),
         value: body.topics.map((topic) => `\`${topic}\``).join(", "),
@@ -333,22 +329,26 @@ export const githubCommand: HibikiSlashCommand = {
       });
     }
 
-    // Sets the embed description and author
-    embed.setDescription(isRepo ? body.description || "" : body.bio || "");
+    // Sets the embed description
+    embed.setDescription(
+      isRepository ? body.description || "" : body.bio || "",
+    );
+
+    // Sets the embed author
     embed.setAuthor({
-      iconURL: isRepo ? body.owner.avatar_url : body.avatar_url,
-      name: `${isRepo ? body.name : body.login} (${body.id})`,
-      url: body.html_url,
+      iconURL: isRepository ? body.owner.avatar_url : body.avatar_url,
+
+      // Repository name or username
+      name: `${isRepository ? body.name || "" : body.login || ""} (${body.id})`,
+      url: body.html_url || "",
     });
 
     // Sets the embed thumbnail
     embed.setThumbnail(
-      isRepo ? `${body.owner.avatar_url}.png` : `${body.avatar_url}.png`,
+      isRepository ? `${body.owner.avatar_url}.png` : `${body.avatar_url}.png`,
     );
 
-    // Sends the embed
-    await interaction.followUp({
-      embeds: [embed],
-    });
+    // Sends the interaction
+    await interaction.followUp({ embeds: [embed] });
   },
 };

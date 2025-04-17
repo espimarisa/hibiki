@@ -1,6 +1,6 @@
 {
-  "exclude": ["./dist/*", "node_modules/"],
-  "include": ["./src/**/*.ts", "./locales/**/*.json", "drizzle.config.ts"],
+  "exclude": ["dist/*", "node_modules/"],
+  "include": ["src/**/*.ts", "locales/**/*.json", "drizzle.config.ts"],
 
   "compilerOptions": {
     "allowArbitraryExtensions": true,

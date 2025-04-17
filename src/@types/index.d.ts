@@ -1,5 +1,5 @@
 /**
- * @file Typing definitions for internal modules.
+ * @file Global typing definitions for internal modules.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
@@ -9,18 +9,31 @@ type DictionaryKey = import("@/types/i18next.d.ts").DictionaryKey;
 
 /** Typing for a Hibiki slash command. */
 type HibikiSlashCommand = {
+  /** Slash command data. */
   data:
     | PrivateSlashCommandBuilder
     | PrivateSlashCommandSubcommandBuilder
     | PrivateSlashCommandSubcommandsOnlyBuilder;
 
-  /** An optional array of required env variables needed to load a command. */
-  required_env?: Array<keyof PrivateEnvironmentVariables>;
+  /**
+   * Required environment variables needed in order to load the command.
+   * @default undefined
+   */
 
-  /** If set, only the runner can see the command. Defaults to false. */
+  required_env?: (keyof PrivateEnvironmentVariables)[];
+
+  /**
+   * Only the runner can view the interaction.
+   * @default false
+   */
+
   ephemeral?: boolean;
 
-  /** If set, defer the interaction to allow for more processing time. Defaults to false. */
+  /**
+   * Defers the interaction, allowing for more processing time.
+   * @default false
+   */
+
   defer?: boolean;
 
   /**
@@ -35,10 +48,14 @@ type HibikiSlashCommand = {
 
 /** Typing for a Hibiki event handler. */
 type HibikiEvent<K extends keyof PrivateClientEvents> = {
-  /** The client event to listen on. */
+  /** The client event to handle. */
   event: K;
 
-  /** If set, only runs the event once. Defaults to false. */
+  /**
+   * Only run the event the first time it is emitted.
+   * @default false
+   */
+
   once?: boolean;
 
   /**
@@ -51,14 +68,14 @@ type HibikiEvent<K extends keyof PrivateClientEvents> = {
 
 /** Typing for a valid Hibiki guild config. */
 type GuildConfig = {
-  /** The guild's ID. */
-  guild_id: string;
+  /** The guild's Discord guild ID. **/
+  guild_id: PrivateSnowflake;
 };
 
 /** Typing for a valid Hibiki user config. */
 type UserConfig = {
-  /** The user's Discord ID. */
-  user_id: string;
+  /** The user's Discord user ID. **/
+  user_id: PrivateSnowflake;
 };
 
 /** Shorthand type for all valid types of commands. */
@@ -67,7 +84,7 @@ type HibikiCommand = HibikiSlashCommand;
 /** Typing for possible Hibiki event handler types */
 type HibikiEventTypes = HibikiEventHandler<keyof PrivateClientEvents>;
 
-// Type import aliases so global types are happy
+// Private typing import aliases so global types function properly
 type PrivateSlashCommandBuilder = import("discord.js").SlashCommandBuilder;
 type PrivateClientEvents = import("discord.js").ClientEvents;
 type PrivateChatInputCommandInteraction =
@@ -78,3 +95,4 @@ type PrivateSlashCommandSubcommandBuilder =
   import("discord.js").PrivateSlashCommandSubcommandBuilder;
 type PrivateEnvironmentVariables =
   import("@/utils/env.js").EnvironmentVariables;
+type PrivateSnowflake = import("discord.js").Snowflake;

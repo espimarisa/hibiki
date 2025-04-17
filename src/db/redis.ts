@@ -1,5 +1,5 @@
 /**
- * @file Database client for interacting with Redis/Valkey.
+ * @file Database client for interacting with a Redis server.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
@@ -7,5 +7,5 @@
 import { env } from "@/utils/env.js";
 import { RedisClient } from "bun";
 
-/** Creates a client connecting to Redis/Valkey. */
+/** A Redis connection client. */
 export const redis = new RedisClient(env.REDIS_URL);

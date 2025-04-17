@@ -32,7 +32,7 @@
   "files": {
     "ignoreUnknown": true,
     "includes": [
-      "src/**/*.{js,ts}",
+      "src/**/*.ts",
       "locales/**/*.json",
       "drizzle.config.ts",
       "biome.json",

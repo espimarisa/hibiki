@@ -1,7 +1,6 @@
 {
   "ERROR": "❌ Error",
   "ERROR_BUG": "Spotted a bug? - github.com/espimarisa/hibiki/issues",
-  "ERROR_FATAL": "❌ Something went wrong!",
   "ERROR_STACK": "\n```ts\n{{- error}}\n```",
   "FETCH_FAILED": "Failed to get information. Try again later.",
   "GITHUB_QUERY": "No user or public repository matching your query was found.",

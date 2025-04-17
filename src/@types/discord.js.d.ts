@@ -8,10 +8,10 @@ import type { Collection } from "discord.js";
 
 declare module "discord.js" {
   interface Client {
-    /** A collection of valid loaded commands. */
+    /** A collection of loaded commands. */
     commands?: Collection<string, HibikiCommand>;
 
-    /** A ShardingManager. */
+    /** The primary ShardingManager instance. */
     sharder: ShardingManager;
   }
 }

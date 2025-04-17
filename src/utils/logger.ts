@@ -1,5 +1,5 @@
 /**
- * @file Utility used for output logging.
+ * @file Utilities to log to the console and log files.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
@@ -11,25 +11,25 @@ import type { PinoRotateFileOptions } from "@chatsift/pino-rotate-file";
 import { multistream, pino, transport } from "pino";
 import type { PrettyOptions } from "pino-pretty";
 
-// Gets the directory to store logs into
+// Gets the directory to store log files in
 const CURRENT_DIRECTORY = getDirname(import.meta.url);
 const LOGS_DIRECTORY = join(CURRENT_DIRECTORY, "../../logs");
 
-// Pino pretty option
+// Options for pino-pretty
 const pinoPrettyOptions = {
   colorize: true,
   levelFirst: false,
   translateTime: "SYS:yyyy-mm-dd HH:MM:ss TT",
 } satisfies PrettyOptions;
 
-// Pino rotation options
+// Options for log rotation
 const pinoRotateFileOptions = {
   dir: LOGS_DIRECTORY,
-  mkdir: true,
   maxAgeDays: 14,
+  mkdir: true,
 } satisfies PinoRotateFileOptions;
 
-/** Pino logger used for console output and writing to log files. */
+/** Pino logger to log to stdout. */
 export const logger = pino(
   {
     level: "info",
@@ -39,15 +39,15 @@ export const logger = pino(
     {
       level: "info",
       stream: transport({
-        target: "pino-pretty",
         options: pinoPrettyOptions,
+        target: "pino-pretty",
       }),
     },
     {
       level: "info",
       stream: transport({
-        target: "@chatsift/pino-rotate-file",
         options: pinoRotateFileOptions,
+        target: "@chatsift/pino-rotate-file",
       }),
     },
   ]),

@@ -1,5 +1,5 @@
 /**
- * @file Event listener for interactionCreate; handles running interactions.
+ * @file Event listener for interactionCreate.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
@@ -13,11 +13,12 @@ export const interactionCreate: HibikiEvent<"interactionCreate"> = {
   once: false,
 
   async runEvent(interaction: Interaction) {
-    // Only handle supported interaction types
+    // Only process supported interaction types
     if (!(interaction.isButton() || interaction.isCommand())) {
       return;
     }
 
+    // Runs interaction application command interactions
     if (interaction.isCommand()) {
       await runCommand(interaction);
     }
@@ -25,8 +26,8 @@ export const interactionCreate: HibikiEvent<"interactionCreate"> = {
 };
 
 /**
- * Runs a command.
- * @param interaction The interaction to run the slash command on.
+ * Runs an interaction application command.
+ * @param interaction The interaction to run the command on.
  */
 
 async function runCommand(interaction: CommandInteraction) {
@@ -41,16 +42,13 @@ async function runCommand(interaction: CommandInteraction) {
     return;
   }
 
-  // Gets the user and guild name/ID
+  // Gets the user/guild name and ID to log
   const user = `${interaction.user.username} (${interaction.user.id})`;
   const guild = interaction.guild
     ? `${interaction.guild.name} (${interaction.guild.id})`
     : "DMs";
 
-  /**
-   * Slash command handler
-   */
-
+  // Slash (chat input) command handler
   if (interaction.isChatInputCommand()) {
     const command = commandToRun as HibikiSlashCommand;
     const commandName = command.data.name;
@@ -64,12 +62,19 @@ async function runCommand(interaction: CommandInteraction) {
         });
       }
 
-      // Runs the command and logs it
+      // Runs the command
       await command.runCommand(interaction);
       logger.info(`${user} ran command ${commandName} in ${guild}`);
     } catch (err) {
       const error = parseError(err);
       logger.error(`Error running command ${commandName}: ${error.message}`);
+
+      // Captures the Error with Sentry
+      captureError(err, {
+        command: commandName,
+        guild: guild,
+        user: user,
+      });
 
       // Sends an error reply
       await sendErrorReply(
@@ -81,15 +86,6 @@ async function runCommand(interaction: CommandInteraction) {
           error: error.message,
         },
       );
-
-      // Captures the error with sentry
-      captureError(err, {
-        command: commandName,
-        guild: guild,
-        user: user,
-      });
     }
-
-    return;
   }
 }

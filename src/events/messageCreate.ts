@@ -11,9 +11,14 @@ export const messageCreate: HibikiEvent<"messageCreate"> = {
   once: false,
 
   // biome-ignore lint/suspicious/useAwait: <explanation>
-  async runEvent(message: Message) {
+  async runEvent(msg: Message) {
+    // Do not process invalid message data
+    if (!msg.id || msg.content.length === 0) {
+      return;
+    }
+
     // Do not process bot messages
-    if (!message.content || message.author.bot) {
+    if (msg.author.id === msg.client.user.id || msg.author.bot) {
       return;
     }
 

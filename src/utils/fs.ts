@@ -12,13 +12,6 @@ import { readdir } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { Collection } from "discord.js";
 
-/** Typing for loadModules() result */
-type ModuleLoadStats = {
-  loaded: number;
-  failed: number;
-  skipped: number;
-};
-
 /** Typing for expected return of getImportData() */
 type ImportData = {
   name: string;
@@ -64,11 +57,7 @@ export async function importDirectory(directory: PathLike, recursive = false) {
     const filePath = join(directoryPath, file.name);
 
     // Scan subdirectories if recursive is set
-    if (file.isDirectory()) {
-      if (recursive === false) {
-        return;
-      }
-
+    if (file.isDirectory() && recursive) {
       const subFiles = await importDirectory(filePath);
       importedFiles.push(...subFiles);
       return;
@@ -90,11 +79,7 @@ export async function importDirectory(directory: PathLike, recursive = false) {
       });
     } catch (err) {
       const error = parseError(err);
-      logger.error(
-        `Failed to prepare import for ${file.name}: ${error.message}`,
-      );
-
-      // Captures the error with Sentry
+      logger.error(`Failed to import ${file.name}: ${error.message}`);
       captureError(error, {
         file: file.name,
       });
@@ -179,19 +164,17 @@ export async function loadModules<T>(
         // Loads valid modules
         const key = data.name.replace(ESM_FILETYPE_REGEX, "");
         collection.set(key, resolvedModule);
-        logger.info(`Successfully imported ${data.name}`);
+        logger.info(`Successfully loaded ${data.name}`);
         loaded++;
       } else {
         // Skips valid modules
-        logger.error(`${data.name} failed validation`);
+        logger.error(`${data.name} failed validation, not loading`);
         skipped++;
       }
     } catch (err) {
+      failed++;
       const error = parseError(err);
       logger.error(`Failed to load ${file.name}: ${error.message}`);
-      failed++;
-
-      // Captures the error with Sentry
       captureError(error, {
         file: file.name,
       });
@@ -219,7 +202,7 @@ export async function loadCommands(
 
   // Gets the resolved import data
   await loadModules<HibikiCommand>(directory, collection, async (data) => {
-    let missingVars: Array<keyof EnvironmentVariables> = [];
+    let missingVars: (keyof EnvironmentVariables)[] = [];
     const command = (await data.resolved()) as HibikiCommand;
 
     // Validates required environment variables

@@ -17,7 +17,7 @@ import { logger } from "@/utils/logger.js";
 
 export async function hFetch(url: string, options?: RequestInit) {
   try {
-    const response: Response | undefined = await fetch(url, {
+    const response: Response = await fetch(url, {
       ...options,
       headers: {
         ...options?.headers,
@@ -25,21 +25,19 @@ export async function hFetch(url: string, options?: RequestInit) {
       },
     });
 
-    if (!response) {
-      return;
+    if (!response.ok) {
+      throw new Error(`Request failed: ${response.status}`);
     }
 
     return response;
   } catch (err) {
     const error = parseError(err);
     logger.warn(`Error fetching ${url}: ${error.message}`);
-
-    // Captures the error with Sentry
     captureError(error, {
       url: url,
       options: options,
     });
-  }
 
-  return;
+    throw error;
+  }
 }

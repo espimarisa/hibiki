@@ -39,16 +39,8 @@ export const xkcdCommand: HibikiSlashCommand = {
 
     // Gets the specific comic or the latest one to calculate how many XKCD comics are available
     let response = await hFetch(endpoint);
-
-    // Sends a generic error if no response
-    if (!response || response.status === 404) {
-      await sendErrorReply(
-        interaction,
-        response?.status === 404 ? "errors:XKCD" : "errors:IMAGE_FAILED",
-        true,
-        true,
-      );
-
+    if (response.status === 404) {
+      await sendErrorReply(interaction, "errors:XKCD", true, true);
       return;
     }
 
@@ -67,16 +59,8 @@ export const xkcdCommand: HibikiSlashCommand = {
 
       // Gets the comic
       response = await hFetch(endpoint);
-
-      // Sends a generic error if no response; otherwise throw 404
-      if (!response || response.status === 404) {
-        await sendErrorReply(
-          interaction,
-          response?.status === 404 ? "errors:XKCD" : "errors:IMAGE_FAILED",
-          true,
-          true,
-        );
-
+      if (response.status === 404) {
+        await sendErrorReply(interaction, "errors:XKCD", true, true);
         return;
       }
 
@@ -88,7 +72,7 @@ export const xkcdCommand: HibikiSlashCommand = {
       }
     }
 
-    // Sends the embed
+    // Sends the interaction
     await interaction.followUp({
       embeds: [
         new EmbedBuilder()

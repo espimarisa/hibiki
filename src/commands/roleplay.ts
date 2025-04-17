@@ -182,7 +182,7 @@ export const roleplaycommands: HibikiSlashCommand = {
       }
     }
 
-    // Sends the embed
+    // Sends the interaction
     await interaction.reply({
       embeds: [
         new EmbedBuilder()

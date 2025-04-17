@@ -4,27 +4,30 @@
  * @license zlib
  */
 
-/** biome-ignore-all lint/style/noDefaultExport: Drizzle prefers default exports */
+/** biome-ignore-all lint/style/noDefaultExport: Drizzle config requires a default export */
 
 import { env } from "node:process";
 import { type Config, defineConfig } from "drizzle-kit";
 import { z } from "zod";
 
-// Validates schema
-const envSchema = z.object({
-  POSTGRES_URL: z.string().trim().min(1, { message: "Missing PostgreSQL URL" }),
-});
-
-const validatedEnv = envSchema.parse(env);
+// Validates POSTGRES_URL
+const envSchema = z
+  .object({
+    POSTGRES_URL: z
+      .string()
+      .trim()
+      .min(1, { message: "Missing PostgreSQL URL" }),
+  })
+  .parse(env);
 
 // Configures drizzle
 export default defineConfig({
+  dbCredentials: {
+    url: envSchema.POSTGRES_URL,
+  },
   dialect: "postgresql",
   out: "./drizzle",
   schema: "./src/db/schema",
-  dbCredentials: {
-    url: validatedEnv.POSTGRES_URL,
-  },
-  verbose: true,
   strict: true,
+  verbose: true,
 }) satisfies Config;

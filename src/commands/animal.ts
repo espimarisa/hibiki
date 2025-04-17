@@ -11,7 +11,6 @@ import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const animalCommand: HibikiSlashCommand = {
-  defer: true,
   data: new SlashCommandBuilder()
     .setName("animal")
     .setNameLocalizations(tO("commands:ANIMAL_NAME"))
@@ -87,19 +86,13 @@ export const animalCommand: HibikiSlashCommand = {
 
     // Fetches the response
     const response = await hFetch(apiURL);
-    if (!response) {
-      await sendErrorReply(interaction, "errors:IMAGE_FAILED", true, true);
-      return;
-    }
-
-    // Converts response to JSON
     const body = await response.json();
     if (!body?.[bodyKey]) {
       await sendErrorReply(interaction, "errors:IMAGE_FAILED", true, true);
       return;
     }
 
-    // Sends the embed
+    // Sends the interaction
     await interaction.followUp({
       embeds: [
         new EmbedBuilder()

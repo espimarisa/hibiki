@@ -1,10 +1,10 @@
 /**
- * @file Database client connecting to Drizzle and PostgreSQL.
+ * @file Database client for interacting with Drizzle.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
 
-/** biome-ignore-all lint/style/noNamespaceImport: Drizzle is really stupid. */
+/** biome-ignore-all lint/style/noNamespaceImport: Drizzle requires a namespace import. */
 
 import * as guildConfig from "@/db/schema/guildConfig.js";
 import * as userConfig from "@/db/schema/userConfig.js";
@@ -22,7 +22,7 @@ const pg = postgres(env.POSTGRES_URL, {
   },
 });
 
-// Creates a new Drizzle client
+/** A database client connecting to Drizzle. */
 export const db = drizzle(pg, {
   schema: {
     ...guildConfig,

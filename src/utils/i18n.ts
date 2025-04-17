@@ -49,8 +49,6 @@ export async function initI18Next(directory: PathLike) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error initializing i18next: ${error.message}`);
-
-    // Captures the error with Sentry
     captureError(err, {
       directory: directory,
     });
@@ -73,44 +71,12 @@ async function getLocaleFiles(directory: string) {
   } catch (err) {
     const error = parseError(err);
     logger.error(`Failed to load locales from ${directory}: ${error.message}`);
-
-    // Captures the error with Sentry
     captureError(err, {
       directory: directory,
     });
   }
 
   return [];
-}
-
-/**
- * Returns an object containing all localizations of a key.
- * @param key The key to get all localizations for.
- * @returns An object containing all localizations of a key.
- */
-
-export function tO(key: DictionaryKey) {
-  const localizations: Record<string, string> = {};
-
-  // Iterates through each locale
-  for (const locale of localeDirectoryData) {
-    try {
-      // Sets the translated locale
-      const translation = t(key, { lng: locale });
-      localizations[locale] = translation;
-    } catch (err) {
-      const error = parseError(err);
-      logger.warn(`No translation for ${key} in ${locale}: ${error.message}`);
-
-      // Captures the error with Sentry
-      captureError(err, {
-        key: key,
-        locale: locale,
-      });
-    }
-  }
-
-  return localizations;
 }
 
 /**
@@ -133,9 +99,8 @@ export function t(key: DictionaryKey, options?: TOptions) {
     return translation;
   } catch (err) {
     const error = parseError(err);
-
-    // Captures the error with Sentry
-    captureError(err, {
+    logger.warn(`Failed to localize key ${key}: ${error.message}`);
+    captureError(error, {
       key: key,
       locale: options?.lng || defaultLocale,
     });
@@ -145,10 +110,38 @@ export function t(key: DictionaryKey, options?: TOptions) {
 }
 
 /**
- * Formats and localizes storage amounts.
- * @param bytes The amount to calculate a string for.
+ * Returns an object containing all localizations of a key.
+ * @param key The key to get all localizations for.
+ * @returns An object containing all localizations of a key.
+ */
+
+export function tO(key: DictionaryKey) {
+  const localizations: Record<string, string> = {};
+
+  // Iterates through each locale
+  for (const locale of localeDirectoryData) {
+    try {
+      // Sets the translated locale
+      const translation = t(key, { lng: locale });
+      localizations[locale] = translation;
+    } catch (err) {
+      const error = parseError(err);
+      logger.warn(`No translation for ${key} in ${locale}: ${error.message}`);
+      captureError(err, {
+        key: key,
+        locale: locale,
+      });
+    }
+  }
+
+  return localizations;
+}
+
+/**
+ * Localizes storage amounts.
+ * @param bytes The storage amount to localize.
  * @param locale The locale to use for localization.
- * @returns An object containing localized storage unit strings.
+ * @returns An object containing localized storage units.
  */
 
 export function localizeBytes(bytes: number, locale: string) {
@@ -175,7 +168,7 @@ export function localizeBytes(bytes: number, locale: string) {
 }
 
 /**
- * Formats and localizes human-readable time.
+ * Localizes time.
  * @param time The date-fns duration object to localize.
  * @param locale The locale to use for localization.
  * @param hide An optional object of digits to ignore.

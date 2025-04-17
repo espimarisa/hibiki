@@ -5,6 +5,7 @@
  */
 
 import { env } from "@/utils/env.js";
+import { parseError } from "@/utils/error.js";
 import { getDirname, hibikiCommands, loadCommands } from "@/utils/fs.js";
 import { initI18Next } from "@/utils/i18n.js";
 import { logger } from "@/utils/logger.js";
@@ -27,11 +28,10 @@ const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
 const isDevelop = env.NODE_ENV === "development" && env.DISCORD_DEV_GUILD_ID;
 const data: RESTPostAPIApplicationCommandsJSONBody[] = [];
 
-// Parse CLI arguments for clearing
+// Parses CLI arguments
 const cliArgs = parseArgs({
   allowPositionals: true,
   args: Bun.argv,
-  strict: true,
   options: {
     clear: {
       type: "boolean",
@@ -40,26 +40,31 @@ const cliArgs = parseArgs({
       type: "string",
     },
   },
+  strict: true,
 });
 
-// Checks if we want to clear and if we want to work on one guild
+// Checks if clear is set and if we should perform guild operations
 const clear = cliArgs?.values?.clear === true;
 const guild =
   cliArgs?.values?.guild || (isDevelop ? env.DISCORD_DEV_GUILD_ID : undefined);
 
-// Load locales and slash commands
+// Loads i18next and commands
 await initI18Next(LOCALES_DIRECTORY);
 await loadCommands(COMMANDS_DIRECTORY, hibikiCommands);
 
-// Makes a REST manager and gets the client user object
+// Creates a REST manager; gets the user object
 const rest = new REST({ version: "10" }).setToken(env.DISCORD_TOKEN);
 const user = (await rest.get("/oauth2/applications/@me")) as User | undefined;
 
-if (!user) {
-  throw new Error("No user returned from Discord, cannot register.");
+// Do not perform operations if no user object is returned
+if (!user?.id) {
+  logger.error("No user returned from Discord, cannot register. Exiting.");
+  exit(1);
 }
 
+// Maps the collection of commands
 hibikiCommands.map((command) => {
+  // Convert command.data to JSON
   if (command.data) {
     data.push(command.data.toJSON());
   } else {
@@ -67,22 +72,39 @@ hibikiCommands.map((command) => {
   }
 });
 
-// Exit if no data is passed and clear isn't set
+// Exits if no data and clear isn't set
 if (!(data || clear)) {
-  logger.error("No data was provided. Exiting.");
+  logger.error("No data was provided. Cannot register. Exiting.");
+  exit(1);
 }
 
-// If guildID is provided, register guild commands
-if (guild) {
-  const route = Routes.applicationGuildCommands(user.id, guild);
-  await rest.put(route, { body: clear ? [] : data });
+// Message to log to the console (clearing if clear, registering if not)
+const message = clear ? "clearing all commands" : "registering commands";
+logger.info(`Registering as user ${user.id}`);
 
-  // Exit after handling the single guild
-  logger.info(`Only ${clear ? "clearing" : "registering to"} guild ${guild}`);
+// Individual guild operations
+if (guild) {
+  try {
+    // Registers/clears guild commands
+    const route = Routes.applicationGuildCommands(user.id, guild);
+    await rest.put(route, { body: clear ? [] : data });
+    logger.info(`Finished ${message} to ${guild}. Exiting.`);
+  } catch (err) {
+    const error = parseError(err);
+    logger.error(`Failed ${message} to ${guild}: ${error.message}`);
+    exit(1);
+  }
 } else {
-  // Register global commands
-  const route = Routes.applicationCommands(user.id);
-  await rest.put(route, { body: clear ? [] : data });
+  try {
+    // Registers/clears global commands
+    const route = Routes.applicationCommands(user.id);
+    await rest.put(route, { body: clear ? [] : data });
+    logger.info(`Finished ${message} globally. Exiting.`);
+  } catch (err) {
+    const error = parseError(err);
+    logger.error(`Failed ${message} globally: ${error.message}`);
+    exit(1);
+  }
 }
 
 exit();

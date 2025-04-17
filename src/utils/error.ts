@@ -1,7 +1,7 @@
 /**
  * @file Utilities to interact with and handle errors.
- * @author Espi Marisa <contact@espi.me>
  * @license zlib
+ * @author Espi Marisa <contact@espi.me>
  */
 
 /** biome-ignore-all lint/nursery/noProcessGlobal: Bun's process.on() is different from node:process.on */
@@ -10,49 +10,43 @@ import { HibikiColors } from "@/utils/constants.js";
 import { env } from "@/utils/env.js";
 import { logger } from "@/utils/logger.js";
 import { type BunOptions, captureException, captureMessage } from "@sentry/bun";
-import { type CommandInteraction, EmbedBuilder } from "discord.js";
+import {
+  type CommandInteraction,
+  EmbedBuilder,
+  MessageFlags,
+} from "discord.js";
 import { init, t } from "i18next";
 
 const errorFallback = "Unknown";
-let sentryConnection = false;
+let sentryConnected = false;
 
 /**
  * Initializes Sentry and connects to a DSN.
  * @param dsn The Sentry DSN to connect to.
  * @param options Additional Sentry client options.
  */
-
 export function initSentry(dsn: string, options?: BunOptions) {
   if (!dsn) {
     return;
   }
 
-  // Connect to sentry
   try {
     init({
-      dsn: dsn,
+      dsn,
       tracesSampleRate: env.NODE_ENV === "development" ? 1.0 : 0.2,
       ...options,
     });
 
-    sentryConnection = true;
+    sentryConnected = true;
     logger.info(`Sentry connected to DSN ${dsn}`);
 
-    // Capture errors; wait until on() is connected
+    // Capture all errors that are not manually caught
     if (typeof process.on === "function") {
-      // Catch unhandledRejections and capture them if connected
-      process.on("unhandledRejection", (reason) => {
-        captureError(reason);
-      });
-
-      // Catch uncaughtExceptions and capture them if connected
-      process.on("uncaughtException", (err) => {
-        captureError(err);
-      });
+      process.on("unhandledRejection", captureError);
+      process.on("uncaughtException", captureError);
     }
   } catch (err) {
-    const error = parseError(err);
-    logger.error(`Error initializing Sentry: ${error.message}`);
+    logger.error(`Error initializing Sentry: ${parseError(err).message}`);
   }
 }
 
@@ -62,16 +56,15 @@ export function initSentry(dsn: string, options?: BunOptions) {
  * @param context Additional context to supply.
  */
 
-export function captureError(
-  err: Error | unknown,
-  context?: Record<string, unknown>,
-) {
-  if (sentryConnection) {
-    if (err instanceof Error) {
-      captureException(err, context ? { extra: context } : undefined);
-    } else {
-      captureMessage(String(err), context ? { extra: context } : undefined);
-    }
+export function captureError(err: unknown, context?: Record<string, unknown>) {
+  if (!sentryConnected) {
+    return;
+  }
+
+  if (err instanceof Error) {
+    captureException(err, context ? { extra: context } : undefined);
+  } else {
+    captureMessage(String(err), context ? { extra: context } : undefined);
   }
 }
 
@@ -81,37 +74,35 @@ export function captureError(
  * @returns A valid Error instance.
  */
 
-export function parseError(error: unknown) {
-  // Returns the Error object if it is one
+export function parseError(error: unknown): Error {
+  let message = errorFallback;
+
   if (error instanceof Error) {
     return error;
   }
 
-  let message = errorFallback;
-
-  // Handles errors that only return a string
+  // Parses string-only errors
   if (typeof error === "string") {
     message = error;
   } else if (
-    // Handles non-Error objects
+    // Parses objects with "error" inside of them
     typeof error === "object" &&
     error !== null &&
     "message" in error
   ) {
-    // Inspect the object and get the message
     message = Bun.inspect((error as { message: unknown }).message);
   } else {
-    // Build the object
+    // Parses error objects
     message = Bun.inspect(error);
   }
 
-  // Preserve the error.cause if it exists
+  // Generates the error cause
   const cause =
     typeof error === "object" && error !== null
       ? Bun.inspect(error)
       : undefined;
 
-  // Returns a valid Error object and appends the cause
+  // Returns the error
   return new Error(message, cause ? { cause } : undefined);
 }
 
@@ -131,40 +122,36 @@ export async function sendErrorReply(
   ephemeral = false,
   opts: Record<string, unknown> = {},
 ) {
-  // Creates the embed
-  const flags = ephemeral ? "Ephemeral" : undefined;
-  const embed = new EmbedBuilder();
-  embed
-    .setTitle(t("errors:ERROR_FATAL", { lng: interaction.locale }))
+  const flags: MessageFlags | undefined = ephemeral
+    ? MessageFlags.Ephemeral
+    : undefined;
+
+  const embed = new EmbedBuilder()
+    .setTitle(t("errors:ERROR", { lng: interaction.locale }))
     .setDescription(t(key, { ...opts, lng: interaction.locale }))
     .setColor(HibikiColors.Error)
     .setFooter({
-      "iconURL": interaction.user.client.user.displayAvatarURL(),
-      "text": t("errors:ERROR_BUG", { lng: interaction.locale }),
+      iconURL: interaction.user.client.user.displayAvatarURL(),
+      text: t("errors:ERROR_BUG", { lng: interaction.locale }),
     });
 
-  // Sends the error message
   try {
+    // Creates the message to send
+    const message = {
+      flags: flags,
+      embeds: [embed],
+    };
+
     if (defer) {
-      await interaction.followUp({
-        flags: flags,
-        embeds: [embed],
-      });
+      // Follow up to deferred interactions
+      await interaction.followUp(message);
     } else {
-      await interaction.reply({
-        flags: flags,
-        embeds: [embed],
-      });
+      // Reply to interactions
+      await interaction.reply(message);
     }
   } catch (err) {
     const error = parseError(err);
     logger.error(`Failed to send error reply: ${error.message}`);
-
-    // Captures the error with sentry
-    captureError(error, {
-      interaction: interaction.id,
-    });
+    captureError(error, { interaction: interaction.id });
   }
-
-  return;
 }

@@ -21,29 +21,33 @@ export const guildDelete: HibikiEvent<"guildDelete"> = {
   once: false,
 
   async runEvent(guild: Guild) {
-    logger.info(`Removed from guild ${guild.name} (${guild.id})`);
+    // Gets the guild owner
+    const owner = await guild.fetchOwner();
 
-    // Send a message to DISCORD_DEV_CHANNEL_ID
+    // String for the guild name
+    const guildName = guild.name
+      ? `${guild.name} (${guild.id})`
+      : guild.id || "Unknown";
+
+    // String for the guild owner
+    const guildOwner = owner?.user
+      ? `${owner.user.username} (${owner.id})`
+      : owner.id || "Unknown";
+
+    logger.info(`Removed from guild ${guildName} owned by ${guildOwner}`);
+
+    // Send a message to DISCORD_DEV_CHANNEL_ID if set
     if (env.DISCORD_DEV_CHANNEL_ID && env.DISCORD_DEV_GUILD_ID) {
-      // Gets the owner and the channel
-      const owner = await guild
-        .fetchOwner()
-        .then((guildOwner) => {
-          return guildOwner;
-        })
-        .catch(() => {
-          return;
-        });
-
+      // Gets the channel
       const channel = await bot.channels.fetch(env.DISCORD_DEV_CHANNEL_ID);
       if (!channel || channel.type !== ChannelType.GuildText) {
         return;
       }
 
-      // Creates the initial embed
+      // Creates the embed
       const embed = new EmbedBuilder()
-        .setTitle(`❌ Removed from ${guild.name}`)
-        .setColor(HibikiColors.Error)
+        .setTitle(`❌ Removed from guild: ${guildName}`)
+        .setColor(HibikiColors.Success)
         .addFields(
           {
             name: "ID",
@@ -51,7 +55,7 @@ export const guildDelete: HibikiEvent<"guildDelete"> = {
             inline: false,
           },
           {
-            name: "Created",
+            name: "Created on",
             value: time(guild.createdAt, TimestampStyles.LongDateTime),
             inline: false,
           },
@@ -59,14 +63,12 @@ export const guildDelete: HibikiEvent<"guildDelete"> = {
         .setImage(guild.bannerURL())
         .setThumbnail(guild.iconURL());
 
-      // Owner details
-      if (owner) {
-        embed.addFields({
-          name: "Owner",
-          value: `${owner.user.username} (${owner.id})`,
-          inline: false,
-        });
-      }
+      // Owner
+      embed.addFields({
+        name: "Owner",
+        value: guildOwner,
+        inline: false,
+      });
 
       // Member count
       if (guild.memberCount) {
@@ -78,9 +80,7 @@ export const guildDelete: HibikiEvent<"guildDelete"> = {
       }
 
       // Logs to the logging channel
-      await channel.send({
-        embeds: [embed],
-      });
+      await channel.send({ embeds: [embed] });
     }
   },
 };
