@@ -21,6 +21,17 @@
   "ANIMAL_FOX_NAME": "fox",
   "ANIMAL_NAME": "animal",
 
+  "COIN_NAME": "coin",
+  "COIN_DESCRIPTION": "Flips a coin.",
+  "COIN_MESSAGE_HEADS": "🔵 Your coin landed on heads.",
+  "COIN_MESSAGE_TAILS": "🟠 Your coin landed on tails.",
+
+  "DICE_NAME": "dice",
+  "DICE_DESCRIPTION": "Rolls a die.",
+  "DICE_SIDES_NAME": "sides",
+  "DICE_SIDES_DESCRIPTION": "The amount of sides on the die. Defaults to 6; max is 120.",
+  "DICE_MESSAGE": "🎲 You rolled a {{roll}} on your {{sides}}-sided die.",
+
   "GITHUB_ARCHIVED": "Archived",
   "GITHUB_COMPANY": "Company",
   "GITHUB_DESCRIPTION": "Gets information about a GitHub user or repository.",
