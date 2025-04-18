@@ -38,9 +38,9 @@
     "noUnusedParameters": false,
     "outDir": "./dist",
     "paths": {
-      "@/commands/*": ["./src/commands/*"],
+      "@/interactions/*": ["./src/interactions/*"],
       "@/db/*": ["./src/db/*"],
-      "@/events/*": ["./src/events/*"],
+      "@/listeners/*": ["./src/listeners/*"],
       "@/locales/*": ["./locales/*"],
       "@/root/*": ["./src/*"],
       "@/types/*": ["./src/@types/*"],

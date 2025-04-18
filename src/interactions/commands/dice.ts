@@ -8,7 +8,7 @@ import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
 import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
-export const diceCommand: HibikiSlashCommand = {
+export const diceCommand: HibikiChatCommandInteraction = {
   data: new SlashCommandBuilder()
     .setName("dice")
     .setNameLocalizations(tO("commands:DICE_NAME"))

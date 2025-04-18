@@ -10,7 +10,7 @@ import { hFetch } from "@/utils/fetch.js";
 import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
-export const animalCommand: HibikiSlashCommand = {
+export const animalCommand: HibikiChatCommandInteraction = {
   data: new SlashCommandBuilder()
     .setName("animal")
     .setNameLocalizations(tO("commands:ANIMAL_NAME"))
@@ -41,7 +41,6 @@ export const animalCommand: HibikiSlashCommand = {
         .setDescription(t("commands:ANIMAL_FOX_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ANIMAL_FOX_DESCRIPTION")),
     ),
-  defer: true,
 
   async runCommand(interaction) {
     let apiURL = "";
@@ -96,7 +95,7 @@ export const animalCommand: HibikiSlashCommand = {
     }
 
     // Sends the interaction
-    await interaction.followUp({
+    await interaction.reply({
       embeds: [
         new EmbedBuilder()
           .setTitle(t(titleString))

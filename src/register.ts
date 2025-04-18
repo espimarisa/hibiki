@@ -1,3 +1,5 @@
+// TODO: Register user commands
+
 /**
  * @file Registers command interactions to the Discord API.
  * @author Espi Marisa <contact@espi.me>
@@ -6,7 +8,11 @@
 
 import { env } from "@/utils/env.js";
 import { parseError } from "@/utils/error.js";
-import { getDirname, hibikiCommands, loadCommands } from "@/utils/fs.js";
+import {
+  getDirname,
+  hibikiCommandInteractions,
+  loadCommandInteractions,
+} from "@/utils/fs.js";
 import { initI18Next } from "@/utils/i18n.js";
 import { logger } from "@/utils/logger.js";
 import { join } from "node:path";
@@ -19,9 +25,12 @@ import {
   type User,
 } from "discord.js";
 
-// Gets the root, commands, and locales directory
+// Gets the root, command interactions, and locales directory
 const ROOT_DIRECTORY = getDirname(import.meta.url);
-const COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands");
+const COMMAND_INTERACTIONS_DIRECTORY = join(
+  ROOT_DIRECTORY,
+  "./interactions/commands",
+);
 const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
 
 // Determines if we should register to a development guild
@@ -48,9 +57,12 @@ const clear = cliArgs?.values?.clear === true;
 const guild =
   cliArgs?.values?.guild || (isDevelop ? env.DISCORD_DEV_GUILD_ID : undefined);
 
-// Loads i18next and commands
+// Loads i18next and command interactions
 await initI18Next(LOCALES_DIRECTORY);
-await loadCommands(COMMANDS_DIRECTORY, hibikiCommands);
+await loadCommandInteractions(
+  COMMAND_INTERACTIONS_DIRECTORY,
+  hibikiCommandInteractions,
+);
 
 // Creates a REST manager; gets the user object
 const rest = new REST({ version: "10" }).setToken(env.DISCORD_TOKEN);
@@ -63,7 +75,7 @@ if (!user?.id) {
 }
 
 // Maps the collection of commands
-hibikiCommands.map((command) => {
+hibikiCommandInteractions.map((command) => {
   // Convert command.data to JSON
   if (command.data) {
     data.push(command.data.toJSON());

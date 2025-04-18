@@ -8,11 +8,11 @@ import { captureError, parseError, sendErrorReply } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
 import type { CommandInteraction, Interaction } from "discord.js";
 
-export const interactionCreate: HibikiEvent<"interactionCreate"> = {
+export const interactionCreate: HibikiListener<"interactionCreate"> = {
   event: "interactionCreate",
   once: false,
 
-  async runEvent(interaction: Interaction) {
+  async runListener(interaction: Interaction) {
     // Only process supported interaction types
     if (!(interaction.isButton() || interaction.isCommand())) {
       return;
@@ -26,7 +26,7 @@ export const interactionCreate: HibikiEvent<"interactionCreate"> = {
 };
 
 /**
- * Runs an interaction application command.
+ * Runs an interaction command.
  * @param interaction The interaction to run the command on.
  */
 
@@ -50,7 +50,7 @@ async function runCommand(interaction: CommandInteraction) {
 
   // Slash (chat input) command handler
   if (interaction.isChatInputCommand()) {
-    const command = commandToRun as HibikiSlashCommand;
+    const command = commandToRun as HibikiChatCommandInteraction;
     const commandName = command.data.name;
 
     try {
@@ -64,10 +64,12 @@ async function runCommand(interaction: CommandInteraction) {
 
       // Runs the command
       await command.runCommand(interaction);
-      logger.info(`${user} ran command ${commandName} in ${guild}`);
+      logger.info(`${user} ran command interaction ${commandName} in ${guild}`);
     } catch (err) {
       const error = parseError(err);
-      logger.error(`Error running command ${commandName}: ${error.message}`);
+      logger.error(
+        `Error running command interaction ${commandName}: ${error.message}`,
+      );
 
       // Captures the Error with Sentry
       captureError(err, {

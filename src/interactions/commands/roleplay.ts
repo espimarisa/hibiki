@@ -13,7 +13,7 @@ import {
   SlashCommandBuilder,
 } from "discord.js";
 
-export const roleplaycommands: HibikiSlashCommand = {
+export const roleplaycommands: HibikiChatCommandInteraction = {
   data: new SlashCommandBuilder()
     .setName("roleplay")
     .setNameLocalizations(tO("commands:ROLEPLAY_NAME"))

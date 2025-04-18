@@ -16,11 +16,11 @@ import {
   time,
 } from "discord.js";
 
-export const guildCreate: HibikiEvent<"guildCreate"> = {
+export const guildCreate: HibikiListener<"guildCreate"> = {
   event: "guildCreate",
   once: false,
 
-  async runEvent(guild: Guild) {
+  async runListener(guild: Guild) {
     // Gets the guild owner
     const owner = await guild.fetchOwner();
 

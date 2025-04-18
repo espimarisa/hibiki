@@ -17,7 +17,7 @@ import { tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { t } from "i18next";
 
-export const xkcdCommand: HibikiSlashCommand = {
+export const xkcdCommand: HibikiChatCommandInteraction = {
   data: new SlashCommandBuilder()
     .setName("xkcd")
     .setNameLocalizations(tO("commands:XKCD_NAME"))

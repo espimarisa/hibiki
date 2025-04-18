@@ -19,7 +19,7 @@ import { EmbedBuilder, SlashCommandBuilder, version } from "discord.js";
 
 const startupTimestamp = new Date();
 
-export const aboutCommand: HibikiSlashCommand = {
+export const aboutCommand: HibikiChatCommandInteraction = {
   data: new SlashCommandBuilder()
     .setName("about")
     .setNameLocalizations(tO("commands:ABOUT_NAME"))

@@ -18,14 +18,14 @@ type ImportData = {
   resolved: () => Promise<unknown>;
 };
 
-/** A collection of valid commands loaded from the filesystem. */
-export const hibikiCommands = new Collection<string, HibikiCommand>();
-
-/** A collection of valid event handlers loaded from the filesystem. */
-export const hibikiEvents = new Collection<
+/** A collection of valid command interactions loaded from the filesystem. */
+export const hibikiCommandInteractions = new Collection<
   string,
-  HibikiEvent<HibikiEventTypes>
+  HibikiCommandInteraction
 >();
+
+/** A collection of valid event listeners loaded from the filesystem. */
+export const hibikiListeners = new Collection<string, HibikiListenerType>();
 
 /** Validates filetypes for valid ESM modules */
 const ESM_FILETYPE_REGEX = /\.(mjs|mts|ts|js)$/i;
@@ -60,7 +60,6 @@ export async function importDirectory(directory: PathLike, recursive = false) {
     if (file.isDirectory() && recursive) {
       const subFiles = await importDirectory(filePath);
       importedFiles.push(...subFiles);
-      return;
     }
 
     // Do not load non-module files
@@ -189,55 +188,61 @@ export async function loadModules<T>(
 }
 
 /**
- * Loads and validates commands from a directory.
- * @param directory The directory to load user commands from.
- * @param collection The collection to push commands into.
+ * Loads and validates command interactions from a directory.
+ * @param directory The directory to load command interactions from.
+ * @param collection The collection to push command interactions into.
  */
 
-export async function loadCommands(
+export async function loadCommandInteractions(
   directory: PathLike,
-  collection: Collection<string, HibikiCommand>,
+  collection: Collection<string, HibikiCommandInteraction>,
 ) {
-  logger.info("Loading commands...");
+  logger.info("Loading command interactions...");
 
   // Gets the resolved import data
-  await loadModules<HibikiCommand>(directory, collection, async (data) => {
-    let missingVars: (keyof EnvironmentVariables)[] = [];
-    const command = (await data.resolved()) as HibikiCommand;
+  await loadModules<HibikiCommandInteraction>(
+    directory,
+    collection,
+    async (data) => {
+      let missingVars: (keyof EnvironmentVariables)[] = [];
+      const command = (await data.resolved()) as HibikiCommandInteraction;
 
-    // Validates required environment variables
-    if (command.required_env && command.required_env.length > 0) {
-      // Checks for missing variables; do not load if missing
-      missingVars = validateKey(env, command.required_env);
-      if (missingVars && missingVars.length > 0) {
-        logger.error(`Missing environment variable ${missingVars.join(", ")}`);
+      // Validates required environment variables
+      if (command.required_env && command.required_env.length > 0) {
+        // Checks for missing variables; do not load if missing
+        missingVars = validateKey(env, command.required_env);
+        if (missingVars && missingVars.length > 0) {
+          logger.error(
+            `Missing environment variable ${missingVars.join(", ")}`,
+          );
+        }
       }
-    }
 
-    // Load commands with data, runCommand(), and no missing variables
-    return (
-      command.data !== undefined &&
-      typeof command.runCommand === "function" &&
-      missingVars.length === 0
-    );
-  });
+      // Load commands with data, runCommand(), and no missing variables
+      return (
+        command.data !== undefined &&
+        typeof command.runCommand === "function" &&
+        missingVars.length === 0
+      );
+    },
+  );
 }
 
 /**
- * Loads and validates event handlers from a directory.
- * @param directory The directory to load event handlers from.
- * @param collection The collection to push event handlers into.
+ * Loads and validates event listeners from a directory.
+ * @param directory The directory to load event listeners from.
+ * @param collection The collection to push event listeners into.
  */
 
-export async function loadEvents(
+export async function loadListeners(
   directory: PathLike,
-  collection: Collection<string, HibikiEventTypes>,
+  collection: Collection<string, HibikiListenerType>,
 ) {
-  logger.info("Loading event handlers...");
+  logger.info("Loading event listeners...");
 
   // Gets the resolved import data
-  await loadModules<HibikiEventTypes>(directory, collection, async (data) => {
-    const event = (await data.resolved()) as HibikiEvent<HibikiEventTypes>;
-    return event.runEvent !== undefined && event.event !== undefined;
+  await loadModules<HibikiListenerType>(directory, collection, async (data) => {
+    const event = (await data.resolved()) as HibikiListenerType;
+    return event.runListener !== undefined && event.event !== undefined;
   });
 }

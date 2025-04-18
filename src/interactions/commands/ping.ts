@@ -8,7 +8,7 @@ import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
 import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder, SnowflakeUtil } from "discord.js";
 
-export const pingCommand: HibikiSlashCommand = {
+export const pingCommand: HibikiChatCommandInteraction = {
   data: new SlashCommandBuilder()
     .setName("ping")
     .setNameLocalizations(tO("commands:PING_NAME"))

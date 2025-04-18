@@ -9,10 +9,10 @@ import { env } from "@/utils/env.js";
 import { captureError, initSentry, parseError } from "@/utils/error.js";
 import {
   getDirname,
-  hibikiCommands,
-  hibikiEvents,
-  loadCommands,
-  loadEvents,
+  hibikiCommandInteractions,
+  hibikiListeners,
+  loadCommandInteractions,
+  loadListeners,
 } from "@/utils/fs.js";
 import { initI18Next } from "@/utils/i18n.js";
 import { logger } from "@/utils/logger.js";
@@ -26,8 +26,8 @@ const BOT_FILE_NAME = `bot.${env.NODE_ENV === "production" ? "js" : "ts"}`;
 const BOT_FILE = join(ROOT_DIRECTORY, BOT_FILE_NAME);
 
 // Gets directories to load
-const COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands");
-const EVENTS_DIRECTORY = join(ROOT_DIRECTORY, "./events");
+const INTERACTIONS_DIRECTORY = join(ROOT_DIRECTORY, "./interactions/commands");
+const LISTENERS_DIRECTORY = join(ROOT_DIRECTORY, "./listeners");
 const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
 
 // Creates a set for storing a list of ready shards
@@ -50,13 +50,18 @@ const sharder = new ShardingManager(BOT_FILE, {
   totalShards: "auto",
 });
 
-// Loads i18next, commands, and events
+// Loads i18next and command interactions
 await initI18Next(LOCALES_DIRECTORY);
-await loadCommands(COMMANDS_DIRECTORY, hibikiCommands);
-await loadEvents(EVENTS_DIRECTORY, hibikiEvents);
+await loadCommandInteractions(
+  INTERACTIONS_DIRECTORY,
+  hibikiCommandInteractions,
+);
+
+// Loads event listeners
+await loadListeners(LISTENERS_DIRECTORY, hibikiListeners);
 
 // Appends commands and the sharder to the spawned client
-bot.commands = hibikiCommands;
+bot.commands = hibikiCommandInteractions;
 bot.sharder = sharder;
 
 // Logs specific sharding events
@@ -123,13 +128,16 @@ try {
   await sharder.spawn();
 
   // Subscribes event handlers to their listeners
-  for (const event of hibikiEvents.values()) {
+  for (const event of hibikiListeners.values()) {
     if (event.once) {
       // Runs event handlers that only fire once
-      bot.once(event.event, async (...args) => await event.runEvent(...args));
+      bot.once(
+        event.event,
+        async (...args) => await event.runListener(...args),
+      );
     } else {
       // Runs event handlers on each event emitter
-      bot.on(event.event, async (...args) => await event.runEvent(...args));
+      bot.on(event.event, async (...args) => await event.runListener(...args));
     }
   }
 } catch (err) {

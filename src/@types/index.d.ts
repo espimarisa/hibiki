@@ -7,8 +7,8 @@
 /** A valid localization dictionary key. */
 type DictionaryKey = import("@/types/i18next.d.ts").DictionaryKey;
 
-/** Typing for a Hibiki slash command. */
-type HibikiSlashCommand = {
+/** Typing for a Hibiki chat command. */
+type HibikiChatCommandInteraction = {
   /** Slash command data. */
   data:
     | PrivateSlashCommandBuilder
@@ -46,24 +46,24 @@ type HibikiSlashCommand = {
   ) => Promise<void>;
 };
 
-/** Typing for a Hibiki event handler. */
-type HibikiEvent<K extends keyof PrivateClientEvents> = {
+/** Typing for a Hibiki event listener. */
+type HibikiListener<K extends keyof PrivateClientEvents> = {
   /** The client event to handle. */
   event: K;
 
   /**
-   * Only run the event the first time it is  .
+   * Only run the event listener the first time it is emitted.
    * @default false
    */
 
   once?: boolean;
 
   /**
-   * Runs am event when an event is emitted.
+   * Runs an event listener when an event listener is emitted.
    * @param args Arguments to pass to the handler.
    */
 
-  runEvent: (...args: PrivateClientEvents[K]) => Promise<void>;
+  runListener: (...args: PrivateClientEvents[K]) => Promise<void>;
 };
 
 /** Typing for a valid Hibiki guild config. */
@@ -78,11 +78,11 @@ type UserConfig = {
   user_id: PrivateSnowflake;
 };
 
-/** Shorthand type for all valid types of commands. */
-type HibikiCommand = HibikiSlashCommand;
-
 /** Typing for possible Hibiki event handler types */
-type HibikiEventTypes = HibikiEventHandler<keyof PrivateClientEvents>;
+type HibikiListenerType = HibikiListener<keyof PrivateClientEvents>;
+
+/** Typing for possible Hibiki command interaction types. */
+type HibikiCommandInteraction = HibikiChatCommandInteraction;
 
 // Private typing import aliases so global types function properly
 type PrivateSlashCommandBuilder = import("discord.js").SlashCommandBuilder;

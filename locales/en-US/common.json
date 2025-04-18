@@ -24,6 +24,7 @@
   "LICENSE": "License",
   "LOCATION": "Location",
   "MAINTAINERS": "Maintainers",
+  "MAINTAINERS_zero": "Maintainer",
   "MAINTAINERS_one": "Maintainer",
   "MEMBER": "Member",
   "MINUTES": "{{count}} minutes",

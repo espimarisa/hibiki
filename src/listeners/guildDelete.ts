@@ -16,11 +16,11 @@ import {
   time,
 } from "discord.js";
 
-export const guildDelete: HibikiEvent<"guildDelete"> = {
+export const guildDelete: HibikiListener<"guildDelete"> = {
   event: "guildDelete",
   once: false,
 
-  async runEvent(guild: Guild) {
+  async runListener(guild: Guild) {
     // Gets the guild owner
     const owner = await guild.fetchOwner();
 

@@ -15,7 +15,7 @@ import { z } from "zod";
 
 const abuseAPIBaseURL = "https://api.abuseipdb.com/api/v2/check?ipAddress=";
 
-export const ipinfoCommand: HibikiSlashCommand = {
+export const ipinfoCommand: HibikiChatCommandInteraction = {
   data: new SlashCommandBuilder()
     .setName("ipinfo")
     .setNameLocalizations(tO("commands:IPINFO_NAME"))

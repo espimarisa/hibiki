@@ -23,7 +23,7 @@ const API_REQUIRED_HEADER = "application/vnd.github+json";
 // Regex to validate GitHub URLs
 const GITHUB_URL_REGEX = /^https:\/\/(www\.)?github\.com\//;
 
-export const githubCommand: HibikiSlashCommand = {
+export const githubCommand: HibikiChatCommandInteraction = {
   data: new SlashCommandBuilder()
     .setName("github")
     .setNameLocalizations(tO("commands:GITHUB_NAME"))

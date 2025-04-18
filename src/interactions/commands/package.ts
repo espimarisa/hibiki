@@ -21,7 +21,7 @@ import { SlashCommandBuilder } from "discord.js";
 const aurAPIURL = "https://aur.archlinux.org/rpc/v5/info?arg[]=";
 const npmAPIURL = "https://registry.npmjs.com";
 
-export const packageCommand: HibikiSlashCommand = {
+export const packageCommand: HibikiChatCommandInteraction = {
   data: new SlashCommandBuilder()
     .setName("package")
     .setNameLocalizations(tO("commands:PACKAGE_NAME"))
@@ -113,7 +113,6 @@ export const packageCommand: HibikiSlashCommand = {
 
         // Shorthand for body results
         const body = aurBody.results[0];
-        let dependencies: string[][] = [];
 
         // Submitted on
         if (body.FirstSubmitted) {
@@ -143,7 +142,7 @@ export const packageCommand: HibikiSlashCommand = {
         if (body.Maintainer) {
           embed.addFields({
             name: t("common:MAINTAINERS", {
-              count: body.Maintainer.length,
+              count: body.Maintainer.length - 1,
               lng: interaction.locale,
             }),
             value: body.Maintainer,
@@ -208,29 +207,18 @@ export const packageCommand: HibikiSlashCommand = {
           });
         }
 
-        // Checks for dependencies
+        // Dependencies
         if (body.Depends && body.Depends.length > 0) {
-          // Append make dependencies if they exist
-          if (body.MakeDepends && body.MakeDepends.length > 0) {
-            dependencies = [...dependencies, body.MakeDepends];
-          } else {
-            // Use base dependencies
-            dependencies = [...dependencies, body.Depends];
-          }
-
-          // Dependencies
-          if (dependencies && dependencies.length > 0) {
-            embed.addFields({
-              name: t("commands:PACKAGE_DEPENDENCIES", {
-                lng: interaction.locale,
-              }),
-              value: trimMessage(
-                dependencies.map((m) => `\`${m}\``).join(", "),
-                MessageLimits.EmbedFieldValue,
-              ),
-              inline: false,
-            });
-          }
+          embed.addFields({
+            name: t("commands:PACKAGE_DEPENDENCIES", {
+              lng: interaction.locale,
+            }),
+            value: trimMessage(
+              body.Depends.map((m) => `\`${m}\``).join(", "),
+              MessageLimits.EmbedFieldValue,
+            ),
+            inline: false,
+          });
         }
 
         // Notes
@@ -346,7 +334,7 @@ export const packageCommand: HibikiSlashCommand = {
         if (body.maintainers && body.maintainers.length > 0) {
           embed.addFields({
             name: t("common:MAINTAINERS", {
-              count: body.maintainers.length,
+              count: body.maintainers.length - 1,
               lng: interaction.locale,
             }),
             value: trimMessage(
@@ -393,5 +381,8 @@ export const packageCommand: HibikiSlashCommand = {
         return;
       }
     }
+
+    // Sends the interaction
+    await interaction.followUp({ embeds: [embed] });
   },
 };
