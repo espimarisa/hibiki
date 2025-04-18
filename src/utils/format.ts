@@ -4,6 +4,7 @@
  * @license zlib
  */
 
+import { MessageLimits } from "@/utils/constants.js";
 import { intervalToDuration } from "date-fns";
 
 /**
@@ -18,4 +19,17 @@ export function getTimeSince(from: Date, to: Date) {
     start: from,
     end: to,
   });
+}
+
+/**
+ * Trims a Discord message field to be under the limit.
+ * @param string The string to trim.
+ * @param limit The limit to set. Defaults to the description limit.
+ */
+
+export function trimMessage(
+  string: string,
+  limit: MessageLimits = MessageLimits.EmbedDescription,
+) {
+  return string.length > limit ? string.substring(0, limit) : string;
 }

@@ -5,9 +5,14 @@
  */
 
 import type { XKCDResponse } from "@/types/endpoints.js";
-import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
+import {
+  AllInteractionContextTypes,
+  HibikiColors,
+  MessageLimits,
+} from "@/utils/constants.js";
 import { sendErrorReply } from "@/utils/error.js";
 import { hFetch } from "@/utils/fetch.js";
+import { trimMessage } from "@/utils/format.js";
 import { tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { t } from "i18next";
@@ -89,11 +94,7 @@ export const xkcdCommand: HibikiSlashCommand = {
       embeds: [
         new EmbedBuilder()
           .setTitle(`${body.safe_title} (#${body.num})`)
-          .setDescription(
-            body.alt.length > 2000
-              ? `${body.alt.substring(0, 1500)}...`
-              : body.alt,
-          )
+          .setDescription(trimMessage(body.alt, MessageLimits.EmbedDescription))
           .setColor(HibikiColors.Primary)
           .setImage(body.img)
           .setFooter({

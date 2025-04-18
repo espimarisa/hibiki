@@ -5,9 +5,15 @@
  */
 
 import type { AURPackage, PartialNPMPackage } from "@/types/endpoints.js";
-import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
+import {
+  AllInteractionContextTypes,
+  HibikiColors,
+  HibikiImages,
+  MessageLimits,
+} from "@/utils/constants.js";
 import { sendErrorReply } from "@/utils/error.js";
 import { hFetch } from "@/utils/fetch.js";
+import { trimMessage } from "@/utils/format.js";
 import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, TimestampStyles, time } from "@discordjs/builders";
 import { SlashCommandBuilder } from "discord.js";
@@ -81,7 +87,7 @@ export const packageCommand: HibikiSlashCommand = {
     ).toLowerCase();
 
     // Creates the embed
-    const embed = new EmbedBuilder().setColor(HibikiColors.Primary);
+    const embed = new EmbedBuilder();
 
     // Gets information for the specific subcommand
     switch (subcommand) {
@@ -108,12 +114,6 @@ export const packageCommand: HibikiSlashCommand = {
         // Shorthand for body results
         const body = aurBody.results[0];
         let dependencies: string[][] = [];
-
-        // Gets the description
-        const description =
-          body.Description && body.Description.length > 150
-            ? `${body.Description.substring(0, 150)}...`
-            : body.Description || "";
 
         // Submitted on
         if (body.FirstSubmitted) {
@@ -176,7 +176,10 @@ export const packageCommand: HibikiSlashCommand = {
         if (body.Provides) {
           embed.addFields({
             name: t("commands:PACKAGE_PROVIDES", { lng: interaction.locale }),
-            value: `${body.Provides.map((m) => `\`${m}\``).join(", ")}`,
+            value: trimMessage(
+              body.Provides.map((p) => `\`${p}\``).join(", "),
+              MessageLimits.EmbedFieldValue,
+            ),
             inline: false,
           });
         }
@@ -185,7 +188,10 @@ export const packageCommand: HibikiSlashCommand = {
         if (body.Keywords && body.Keywords.length > 0) {
           embed.addFields({
             name: t("commands:PACKAGE_KEYWORDS", { lng: interaction.locale }),
-            value: `${body.Keywords.map((m) => `\`${m}\``).join(", ")}`,
+            value: trimMessage(
+              body.Keywords.map((m) => `\`${m}\``).join(", "),
+              MessageLimits.EmbedFieldValue,
+            ),
             inline: false,
           });
         }
@@ -194,7 +200,10 @@ export const packageCommand: HibikiSlashCommand = {
         if (body.Conflicts && body.Conflicts.length > 0) {
           embed.addFields({
             name: t("commands:PACKAGE_CONFLICTS", { lng: interaction.locale }),
-            value: `${body.Conflicts.map((m) => `\`${m}\``).join(", ")}`,
+            value: trimMessage(
+              body.Conflicts.map((m) => `\`${m}\``).join(", "),
+              MessageLimits.EmbedFieldValue,
+            ),
             inline: false,
           });
         }
@@ -215,7 +224,10 @@ export const packageCommand: HibikiSlashCommand = {
               name: t("commands:PACKAGE_DEPENDENCIES", {
                 lng: interaction.locale,
               }),
-              value: `${dependencies.map((m) => `\`${m}\``).join(", ")}`,
+              value: trimMessage(
+                dependencies.map((m) => `\`${m}\``).join(", "),
+                MessageLimits.EmbedFieldValue,
+              ),
               inline: false,
             });
           }
@@ -232,11 +244,18 @@ export const packageCommand: HibikiSlashCommand = {
           });
         }
 
-        // Sets the description
-        embed.setDescription(description);
+        // Sets the embed description
+        if (body.Description) {
+          embed.setDescription(
+            trimMessage(body.Description, MessageLimits.EmbedDescription),
+          );
+        }
+        // Sets the embed color
+        embed.setColor(HibikiColors.ArchLogo);
 
-        // Sets the author
+        // Sets the embed author
         embed.setAuthor({
+          iconURL: HibikiImages.ArchLogo,
           name: `${body.Name} ${body.Version}`,
           url: `https://aur.archlinux.org/packages/${body.Name}`,
         });
@@ -330,7 +349,10 @@ export const packageCommand: HibikiSlashCommand = {
               count: body.maintainers.length,
               lng: interaction.locale,
             }),
-            value: body.maintainers.map((m) => `\`${m.name}\``).join(", "),
+            value: trimMessage(
+              body.maintainers.map((m) => `\`${m.name}\``).join(", "),
+              MessageLimits.EmbedFieldValue,
+            ),
             inline: false,
           });
         }
@@ -339,20 +361,28 @@ export const packageCommand: HibikiSlashCommand = {
         if (body.keywords && body.keywords.length > 0) {
           embed.addFields({
             name: t("commands:PACKAGE_KEYWORDS", { lng: interaction.locale }),
-            value: body.keywords.map((w) => `\`${w}\``).join(", "),
+            value: trimMessage(
+              body.keywords.map((w) => `\`${w}\``).join(", "),
+              MessageLimits.EmbedFieldValue,
+            ),
             inline: false,
           });
         }
 
         // Sets the embed description
         if (body.description) {
-          embed.setDescription(body.description);
+          embed.setDescription(
+            trimMessage(body.description, MessageLimits.EmbedDescription),
+          );
         }
+
+        // Sets the embed color
+        embed.setColor(HibikiColors.NPMLogo);
 
         // Sets the embed author
         embed.setAuthor({
+          iconURL: HibikiImages.NPMLogo,
           name: body._id,
-          iconURL: interaction.client.user.displayAvatarURL(),
           url: `https://www.npmjs.com/package/${query}/v/${body.version}`,
         });
 
@@ -363,8 +393,5 @@ export const packageCommand: HibikiSlashCommand = {
         return;
       }
     }
-
-    // Sends the interaction
-    await interaction.followUp({ embeds: [embed] });
   },
 };
