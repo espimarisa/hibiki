@@ -56,7 +56,7 @@ export const guildCreate: HibikiEvent<"guildCreate"> = {
           },
           {
             name: "Created on",
-            value: time(guild.createdAt, TimestampStyles.LongDateTime),
+            value: time(guild.createdAt, TimestampStyles.ShortDateTime),
             inline: false,
           },
         )

@@ -13,7 +13,6 @@ import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { t } from "i18next";
 
 export const xkcdCommand: HibikiSlashCommand = {
-  defer: true,
   data: new SlashCommandBuilder()
     .setName("xkcd")
     .setNameLocalizations(tO("commands:XKCD_NAME"))
@@ -29,6 +28,7 @@ export const xkcdCommand: HibikiSlashCommand = {
         .setDescriptionLocalizations(tO("commands:XKCD_NUMBER_DESCRIPTION"))
         .setRequired(false),
     ),
+  defer: true,
 
   async runCommand(interaction) {
     // Gets the number and/or endpoint to use
@@ -39,6 +39,12 @@ export const xkcdCommand: HibikiSlashCommand = {
 
     // Gets the specific comic or the latest one to calculate how many XKCD comics are available
     let response = await hFetch(endpoint);
+    if (!response) {
+      await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
+      return;
+    }
+
+    // Error handler if the comic doesn't exist
     if (response.status === 404) {
       await sendErrorReply(interaction, "errors:XKCD", true, true);
       return;
@@ -59,6 +65,12 @@ export const xkcdCommand: HibikiSlashCommand = {
 
       // Gets the comic
       response = await hFetch(endpoint);
+      if (!response) {
+        await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
+        return;
+      }
+
+      // Error handler if the comic doesn't exist
       if (response.status === 404) {
         await sendErrorReply(interaction, "errors:XKCD", true, true);
         return;

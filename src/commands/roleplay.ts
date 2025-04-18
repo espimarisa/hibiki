@@ -27,14 +27,14 @@ export const roleplaycommands: HibikiSlashCommand = {
         .setNameLocalizations(tO("commands:ROLEPLAY_HUG_NAME"))
         .setDescription(t("commands:ROLEPLAY_HUG_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ROLEPLAY_HUG_DESCRIPTION"))
-        // Target option
-        .addUserOption((target) =>
-          target
-            .setName("target")
-            .setNameLocalizations(tO("commands:ROLEPLAY_TARGET_NAME"))
-            .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
+        // MEMBER option
+        .addUserOption((member) =>
+          member
+            .setName("member")
+            .setNameLocalizations(tO("commands:ROLEPLAY_MEMBER_NAME"))
+            .setDescription(t("commands:ROLEPLAY_MEMBER_DESCRIPTION"))
             .setDescriptionLocalizations(
-              tO("commands:ROLEPLAY_TARGET_DESCRIPTION"),
+              tO("commands:ROLEPLAY_MEMBER_DESCRIPTION"),
             )
             .setRequired(true),
         ),
@@ -46,14 +46,14 @@ export const roleplaycommands: HibikiSlashCommand = {
         .setNameLocalizations(tO("commands:ROLEPLAY_CUDDLE_NAME"))
         .setDescription(t("commands:ROLEPLAY_CUDDLE_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ROLEPLAY_CUDDLE_DESCRIPTION"))
-        // Target option
-        .addUserOption((target) =>
-          target
-            .setName("target")
-            .setNameLocalizations(tO("commands:ROLEPLAY_TARGET_NAME"))
-            .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
+        // MEMBER option
+        .addUserOption((member) =>
+          member
+            .setName("member")
+            .setNameLocalizations(tO("commands:ROLEPLAY_MEMBER_NAME"))
+            .setDescription(t("commands:ROLEPLAY_MEMBER_DESCRIPTION"))
             .setDescriptionLocalizations(
-              tO("commands:ROLEPLAY_TARGET_DESCRIPTION"),
+              tO("commands:ROLEPLAY_MEMBER_DESCRIPTION"),
             )
             .setRequired(true),
         ),
@@ -65,14 +65,14 @@ export const roleplaycommands: HibikiSlashCommand = {
         .setNameLocalizations(tO("commands:ROLEPLAY_KISS_NAME"))
         .setDescription(t("commands:ROLEPLAY_KISS_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ROLEPLAY_KISS_DESCRIPTION"))
-        // Target option
-        .addUserOption((target) =>
-          target
-            .setName("target")
-            .setNameLocalizations(tO("commands:ROLEPLAY_TARGET_NAME"))
-            .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
+        // MEMBER option
+        .addUserOption((member) =>
+          member
+            .setName("member")
+            .setNameLocalizations(tO("commands:ROLEPLAY_MEMBER_NAME"))
+            .setDescription(t("commands:ROLEPLAY_MEMBER_DESCRIPTION"))
             .setDescriptionLocalizations(
-              tO("commands:ROLEPLAY_TARGET_DESCRIPTION"),
+              tO("commands:ROLEPLAY_MEMBER_DESCRIPTION"),
             )
             .setRequired(true),
         ),
@@ -84,14 +84,14 @@ export const roleplaycommands: HibikiSlashCommand = {
         .setNameLocalizations(tO("commands:ROLEPLAY_PAT_NAME"))
         .setDescription(t("commands:ROLEPLAY_PAT_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ROLEPLAY_PAT_DESCRIPTION"))
-        // Target option
-        .addUserOption((target) =>
-          target
-            .setName("target")
-            .setNameLocalizations(tO("commands:ROLEPLAY_TARGET_NAME"))
-            .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
+        // MEMBER option
+        .addUserOption((member) =>
+          member
+            .setName("member")
+            .setNameLocalizations(tO("commands:ROLEPLAY_MEMBER_NAME"))
+            .setDescription(t("commands:ROLEPLAY_MEMBER_DESCRIPTION"))
             .setDescriptionLocalizations(
-              tO("commands:ROLEPLAY_TARGET_DESCRIPTION"),
+              tO("commands:ROLEPLAY_MEMBER_DESCRIPTION"),
             )
             .setRequired(true),
         ),
@@ -103,14 +103,14 @@ export const roleplaycommands: HibikiSlashCommand = {
         .setNameLocalizations(tO("commands:ROLEPLAY_SLAP_NAME"))
         .setDescription(t("commands:ROLEPLAY_SLAP_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ROLEPLAY_SLAP_DESCRIPTION"))
-        // Target option
-        .addUserOption((target) =>
-          target
-            .setName("target")
-            .setNameLocalizations(tO("commands:ROLEPLAY_TARGET_NAME"))
-            .setDescription(t("commands:ROLEPLAY_TARGET_DESCRIPTION"))
+        // MEMBER option
+        .addUserOption((member) =>
+          member
+            .setName("member")
+            .setNameLocalizations(tO("commands:ROLEPLAY_MEMBER_NAME"))
+            .setDescription(t("commands:ROLEPLAY_MEMBER_DESCRIPTION"))
             .setDescriptionLocalizations(
-              tO("commands:ROLEPLAY_TARGET_DESCRIPTION"),
+              tO("commands:ROLEPLAY_MEMBER_DESCRIPTION"),
             )
             .setRequired(true),
         ),
@@ -121,26 +121,18 @@ export const roleplaycommands: HibikiSlashCommand = {
     let string: DictionaryKey;
     let url = "";
 
-    // Gets the subcommand and target
-    const target = interaction.options.getUser("target", true);
+    // Gets the subcommand and member
+    const member = interaction.options.getUser("member", true);
     const subcommand = interaction.options.getSubcommand();
 
-    // Handles unresolved data
-    if (!(target && subcommand)) {
-      await sendErrorReply(interaction, "errors:NO_OPTION", true, true, {
-        option: t("commands:ROLEPLAY_TARGET_NAME"),
-      });
-      return;
-    }
-
     // Don't allow self-roleplay
-    if (interaction.user.id === target.id) {
+    if (interaction.user.id === member.id) {
       await sendErrorReply(interaction, "commands:ROLEPLAY_SELF_MESSAGE");
       return;
     }
 
     // Don't allow roleplay with the bot
-    if (interaction.client.user.id === target.id) {
+    if (interaction.client.user.id === member.id) {
       await sendErrorReply(interaction, "commands:ROLEPLAY_BOT_MESSAGE");
       return;
     }
@@ -190,7 +182,7 @@ export const roleplaycommands: HibikiSlashCommand = {
             t(string, {
               lng: interaction.locale,
               user: interaction.user.displayName,
-              target: target.displayName,
+              member: member.displayName,
             }),
           )
           .setColor(HibikiColors.Primary)

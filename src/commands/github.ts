@@ -24,7 +24,6 @@ const API_REQUIRED_HEADER = "application/vnd.github+json";
 const GITHUB_URL_REGEX = /^https:\/\/(www\.)?github\.com\//;
 
 export const githubCommand: HibikiSlashCommand = {
-  defer: true,
   data: new SlashCommandBuilder()
     .setName("github")
     .setNameLocalizations(tO("commands:GITHUB_NAME"))
@@ -35,16 +34,18 @@ export const githubCommand: HibikiSlashCommand = {
     .addSubcommand((user) =>
       user
         .setName("user")
-        .setNameLocalizations(tO("commands:GITHUB_USER_NAME"))
+        .setNameLocalizations(tO("commands:GITHUB_USER_USERNAME_NAME"))
         .setDescription(t("commands:GITHUB_USER_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:GITHUB_USER_DESCRIPTION"))
         // Username option
         .addStringOption((username) =>
           username
-            .setName(t("commands:GITHUB_QUERY_NAME"))
-            .setNameLocalizations(tO("commands:GITHUB_QUERY_NAME"))
-            .setDescription(t("commands:GITHUB_USER_TARGET"))
-            .setDescriptionLocalizations(tO("commands:GITHUB_USER_TARGET"))
+            .setName(t("commands:GITHUB_USER_USERNAME_NAME"))
+            .setNameLocalizations(tO("commands:GITHUB_USER_USERNAME_NAME"))
+            .setDescription(t("commands:GITHUB_USER_USERNAME_DESCRIPTION"))
+            .setDescriptionLocalizations(
+              tO("commands:GITHUB_USER_USERNAME_DESCRIPTION"),
+            )
             .setRequired(true),
         ),
     )
@@ -60,31 +61,23 @@ export const githubCommand: HibikiSlashCommand = {
         // URL option
         .addStringOption((url) =>
           url
-            .setName(t("commands:GITHUB_QUERY_NAME"))
-            .setNameLocalizations(tO("commands:GITHUB_QUERY_NAME"))
-            .setDescription(t("commands:GITHUB_REPOSITORY_TARGET"))
+            .setName(t("commands:GITHUB_REPOSITORY_URL_NAME"))
+            .setNameLocalizations(tO("commands:GITHUB_REPOSITORY_URL_NAME"))
+            .setDescription(t("commands:GITHUB_REPOSITORY_URL_DESCRIPTION"))
             .setDescriptionLocalizations(
-              tO("commands:GITHUB_REPOSITORY_TARGET"),
+              tO("commands:GITHUB_REPOSITORY_URL_DESCRIPTION"),
             )
             .setRequired(true),
         ),
     ),
+  defer: true,
 
   async runCommand(interaction) {
     // Gets the subcommand and query
     const subcommand = interaction.options.getSubcommand(true);
     let query = interaction.options.getString("query", true);
     let isRepository = false;
-    let response: Response;
-
-    // Don't allow empty queries
-    if (!(subcommand && query)) {
-      await sendErrorReply(interaction, "errors:NO_OPTION", true, true, {
-        option: t("commands:GITHUB_QUERY_NAME"),
-      });
-
-      return;
-    }
+    let response: Response | undefined;
 
     // Fetches a repository
     query = query.replace(GITHUB_URL_REGEX, "");
@@ -104,6 +97,12 @@ export const githubCommand: HibikiSlashCommand = {
       });
     }
 
+    // Error handler for invalid response
+    if (!response) {
+      await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
+      return;
+    }
+
     // Converts response into JSON
     const body: PossibleGithubResponse = await response.json();
     if (!body?.id) {
@@ -118,7 +117,7 @@ export const githubCommand: HibikiSlashCommand = {
     if (body.created_at) {
       embed.addFields({
         name: t("common:CREATED_ON"),
-        value: time(new Date(body.created_at), TimestampStyles.LongDateTime),
+        value: time(new Date(body.created_at), TimestampStyles.ShortDateTime),
         inline: false,
       });
     }
@@ -127,7 +126,7 @@ export const githubCommand: HibikiSlashCommand = {
     if (body.updated_at) {
       embed.addFields({
         name: t("common:UPDATED_ON", { lng: interaction.locale }),
-        value: time(new Date(body.updated_at), TimestampStyles.LongDateTime),
+        value: time(new Date(body.updated_at), TimestampStyles.ShortDateTime),
         inline: false,
       });
     }
@@ -260,7 +259,10 @@ export const githubCommand: HibikiSlashCommand = {
     // User's total followers
     if (body.followers) {
       embed.addFields({
-        name: t("common:FOLLOWERS", { lng: interaction.locale }),
+        name: t("common:FOLLOWERS", {
+          lng: interaction.locale,
+          count: body.followers,
+        }),
         value: body.followers.toString(),
         inline: true,
       });

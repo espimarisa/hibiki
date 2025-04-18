@@ -16,8 +16,6 @@ import { z } from "zod";
 const abuseAPIBaseURL = "https://api.abuseipdb.com/api/v2/check?ipAddress=";
 
 export const ipinfoCommand: HibikiSlashCommand = {
-  defer: true,
-  required_env: ["IPINFO_API_KEY", "ABUSEIPDB_API_KEY"],
   data: new SlashCommandBuilder()
     .setName("ipinfo")
     .setNameLocalizations(tO("commands:IPINFO_NAME"))
@@ -33,6 +31,8 @@ export const ipinfoCommand: HibikiSlashCommand = {
         .setDescriptionLocalizations(tO("commands:IPINFO_ADDRESS_DESCRIPTION"))
         .setRequired(true),
     ),
+  defer: true,
+  required_env: ["IPINFO_API_KEY", "ABUSEIPDB_API_KEY"],
 
   async runCommand(interaction) {
     // Gets the query
@@ -58,6 +58,12 @@ export const ipinfoCommand: HibikiSlashCommand = {
       },
     });
 
+    // Error handler for invalid response
+    if (!ipResponse) {
+      await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
+      return;
+    }
+
     // Converts IP information response to JSON
     const ipBody: IPInfoResponse = await ipResponse.json();
     if (!ipBody) {
@@ -73,16 +79,19 @@ export const ipinfoCommand: HibikiSlashCommand = {
       },
     });
 
+    // Error handler for invalid response
+    if (!abuseResponse) {
+      await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
+      return;
+    }
+
     // Converts abuse information response to JSON
     const abuseBody = await abuseResponse.json();
 
     // Creates the embed
     const embed = new EmbedBuilder().setColor(HibikiColors.Primary).setAuthor({
       iconURL: interaction.client.user.displayAvatarURL(),
-      name: t("commands:IPINFO_MESSAGE", {
-        lng: interaction.locale,
-        address: query,
-      }),
+      name: query.toString(),
       url: `${ipAPIURL}/${query}`,
     });
 
@@ -139,7 +148,7 @@ export const ipinfoCommand: HibikiSlashCommand = {
     // Region
     if (regionString.length > 0) {
       embed.addFields({
-        name: t("commands:IPINFO_LOCATION", { lng: interaction.locale }),
+        name: t("common:LOCATION", { lng: interaction.locale }),
         value: regionString,
         inline: true,
       });
@@ -148,7 +157,7 @@ export const ipinfoCommand: HibikiSlashCommand = {
     // Timezone
     if (ipBody.timezone) {
       embed.addFields({
-        name: t("commands:IPINFO_TIMEZONE", { lng: interaction.locale }),
+        name: t("common:TIMEZONE", { lng: interaction.locale }),
         value: ipBody.timezone,
         inline: true,
       });

@@ -5,6 +5,42 @@
  */
 
 /**
+ * AUR package response data.
+ * @see https://wiki.archlinux.org/title/Aurweb_RPC_interface#1.2.1
+ */
+
+export type AURPackage = {
+  results: [
+    {
+      ID: number;
+      Name: string;
+      PackageBaseID?: number;
+      PackageBase?: string;
+      Version?: string;
+      Description?: string;
+      URL?: string;
+      NumVotes?: number;
+      Popularity?: number;
+      OutOfDate?: boolean;
+      Maintainer?: string;
+      FirstSubmitted?: number;
+      LastModified?: number;
+      URLPath?: string;
+      Depends?: string[];
+      MakeDepends?: string[];
+      OptDepends?: string[];
+      CheckDepends?: string[];
+      Conflicts?: string[];
+      Provides?: string[];
+      Replaces?: string[];
+      Groups?: string[];
+      License?: string[];
+      Keywords?: string[];
+    },
+  ];
+};
+
+/**
  * GitHub API user response.
  * @see https://api.github.com/users/query
  */
@@ -171,6 +207,39 @@ export type IPInfoResponse = {
   readme?: string;
   anycast?: boolean;
 };
+
+/**
+ * NPM package data response.
+ * @see https://docs.npmjs.com/cli/v10/configuring-npm/package-json#people-fields-author-contributors
+ */
+
+interface PartialNPMPackage {
+  author?: NPMContact | string;
+  config?: Record<string, unknown>;
+  cpu?: string[];
+  deprecated?: string;
+  description?: string;
+  files?: string[];
+  homepage?: string;
+  keywords?: string[];
+  license?: string;
+  maintainers?: NPMContact[];
+  name: string;
+  os?: string[];
+  version: string;
+  _id: string;
+}
+
+/**
+ * NPM package contact details.
+ * @see https://docs.npmjs.com/cli/v10/configuring-npm/package-json#people-fields-author-contributors
+ */
+
+interface NPMContact {
+  email?: string;
+  url?: string;
+  name: string;
+}
 
 /**
  * XKCD comic API response.

@@ -11,7 +11,6 @@ import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const animalCommand: HibikiSlashCommand = {
-  defer: true,
   data: new SlashCommandBuilder()
     .setName("animal")
     .setNameLocalizations(tO("commands:ANIMAL_NAME"))
@@ -42,6 +41,7 @@ export const animalCommand: HibikiSlashCommand = {
         .setDescription(t("commands:ANIMAL_FOX_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ANIMAL_FOX_DESCRIPTION")),
     ),
+  defer: true,
 
   async runCommand(interaction) {
     let apiURL = "";
@@ -50,10 +50,6 @@ export const animalCommand: HibikiSlashCommand = {
 
     // Gets the subcommand to run
     const subcommand = interaction.options.getSubcommand(true);
-    if (!subcommand) {
-      await sendErrorReply(interaction, "errors:IMAGE_FAILED", true, true);
-      return;
-    }
 
     switch (subcommand) {
       // Cat: Use CatAAS; body.url for image
@@ -87,6 +83,12 @@ export const animalCommand: HibikiSlashCommand = {
 
     // Fetches the response
     const response = await hFetch(apiURL);
+    if (!response) {
+      await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
+      return;
+    }
+
+    // Converts the response to JSON
     const body = await response.json();
     if (!body?.[bodyKey]) {
       await sendErrorReply(interaction, "errors:IMAGE_FAILED", true, true);

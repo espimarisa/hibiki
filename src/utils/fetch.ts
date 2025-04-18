@@ -26,7 +26,7 @@ export async function hFetch(url: string, options?: RequestInit) {
     });
 
     if (!response.ok) {
-      throw new Error(`Request failed: ${response.status}`);
+      return;
     }
 
     return response;

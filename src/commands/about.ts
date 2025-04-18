@@ -20,13 +20,13 @@ import { EmbedBuilder, SlashCommandBuilder, version } from "discord.js";
 const startupTimestamp = new Date();
 
 export const aboutCommand: HibikiSlashCommand = {
-  defer: true,
   data: new SlashCommandBuilder()
     .setName("about")
     .setNameLocalizations(tO("commands:ABOUT_NAME"))
     .setDescription(t("commands:ABOUT_DESCRIPTION"))
     .setDescriptionLocalizations(tO("commands:ABOUT_DESCRIPTION"))
     .setContexts(AllInteractionContextTypes),
+  defer: true,
 
   async runCommand(interaction) {
     // Gets uptime and memory statistics
@@ -59,9 +59,7 @@ export const aboutCommand: HibikiSlashCommand = {
           .addFields(
             {
               // Total servers
-              name: t("commands:ABOUT_STATISTICS", {
-                lng: interaction.locale,
-              }),
+              name: t("common:STATISTICS", { lng: interaction.locale }),
               value: t("commands:ABOUT_STATISTICS_DETAILS", {
                 lng: interaction.locale,
                 servers: cachedGuilds,
@@ -72,7 +70,7 @@ export const aboutCommand: HibikiSlashCommand = {
             },
             {
               // Versioning
-              name: t("commands:ABOUT_VERSION", { lng: interaction.locale }),
+              name: t("common:VERSION", { lng: interaction.locale }),
               value: t("commands:ABOUT_VERSION_DETAILS", {
                 lng: interaction.locale,
                 hibiki: env.npm_package_version,
@@ -83,10 +81,10 @@ export const aboutCommand: HibikiSlashCommand = {
             },
             {
               // Bot uptime
-              name: t("commands:ABOUT_STATSFORNERDS", {
+              name: t("commands:ABOUT_SYSTEM", {
                 lng: interaction.locale,
               }),
-              value: t("commands:ABOUT_STATSFORNERDS_DETAILS", {
+              value: t("commands:ABOUT_SYSTEM_DETAILS", {
                 lng: interaction.locale,
                 uptime: localizedUptime,
                 memory: localizedMemory,
