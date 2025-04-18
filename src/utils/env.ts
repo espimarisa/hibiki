@@ -92,6 +92,13 @@ const envSchema = z.object({
   IPINFO_API_KEY: z.string().trim().optional().default(""),
 
   /**
+   * OPTIONAL: AbuseIPDB API key used to get IP address abuse information.
+   * @see https://www.abuseipdb.com/api.html
+   */
+
+  ABUSEIPDB_API_KEY: z.string().trim().optional().default(""),
+
+  /**
    * AUTOMATIC: The current NODE_ENV environment.
    * @see https://bun.sh/guides/runtime/set-env
    * @default development

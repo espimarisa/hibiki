@@ -1,7 +1,7 @@
 /**
  * @file Slash command for user-to-user roleplay.
  * @author Espi Marisa <contact@espi.me>
- * @module commands/slash/roleplay
+ * @license zlib
  */
 
 import { HibikiColors } from "@/utils/constants.js";

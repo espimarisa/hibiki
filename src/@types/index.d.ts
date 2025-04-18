@@ -17,7 +17,7 @@ type HibikiSlashCommand = {
 
   /**
    * Required environment variables needed in order to load the command.
-   * @default undefined
+   * @default []
    */
 
   required_env?: (keyof PrivateEnvironmentVariables)[];
@@ -52,7 +52,7 @@ type HibikiEvent<K extends keyof PrivateClientEvents> = {
   event: K;
 
   /**
-   * Only run the event the first time it is emitted.
+   * Only run the event the first time it is  .
    * @default false
    */
 

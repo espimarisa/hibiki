@@ -11,6 +11,7 @@ import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const animalCommand: HibikiSlashCommand = {
+  defer: true,
   data: new SlashCommandBuilder()
     .setName("animal")
     .setNameLocalizations(tO("commands:ANIMAL_NAME"))

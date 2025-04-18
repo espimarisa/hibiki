@@ -131,7 +131,7 @@ export async function sendErrorReply(
     .setDescription(t(key, { ...opts, lng: interaction.locale }))
     .setColor(HibikiColors.Error)
     .setFooter({
-      iconURL: interaction.user.client.user.displayAvatarURL(),
+      iconURL: interaction.client.user.displayAvatarURL(),
       text: t("errors:ERROR_BUG", { lng: interaction.locale }),
     });
 

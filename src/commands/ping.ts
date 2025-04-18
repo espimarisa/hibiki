@@ -26,7 +26,7 @@ export const pingCommand: HibikiSlashCommand = {
     await interaction.reply({
       embeds: [
         new EmbedBuilder()
-          .setTitle(t("commands:PING_PONG"))
+          .setTitle(t("commands:PING_MESSAGE"))
           .setDescription(
             t("commands:PING_LATENCY", {
               lng: interaction.locale,

@@ -4,17 +4,20 @@
  * @license zlib
  */
 
-import { AllInteractionContextTypes } from "@/utils/constants.js";
+import type { IPInfoResponse } from "@/types/endpoints.js";
+import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
 import { env } from "@/utils/env.js";
 import { sendErrorReply } from "@/utils/error.js";
 import { hFetch } from "@/utils/fetch.js";
 import { t, tO } from "@/utils/i18n.js";
-import { SlashCommandBuilder } from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { z } from "zod";
+
+const abuseAPIBaseURL = "https://api.abuseipdb.com/api/v2/check?ipAddress=";
 
 export const ipinfoCommand: HibikiSlashCommand = {
   defer: true,
-  required_env: ["IPINFO_API_KEY"],
+  required_env: ["IPINFO_API_KEY", "ABUSEIPDB_API_KEY"],
   data: new SlashCommandBuilder()
     .setName("ipinfo")
     .setNameLocalizations(tO("commands:IPINFO_NAME"))
@@ -33,8 +36,9 @@ export const ipinfoCommand: HibikiSlashCommand = {
 
   async runCommand(interaction) {
     // Gets the query
+    const ipRegion: string[] = [];
     const query = interaction.options.getString("address", true);
-    let apiURL = "https://ipinfo.io";
+    let ipAPIURL = "https://ipinfo.io";
 
     // Parses the query; do not request invalid IPs
     if (!z.string().ip().safeParse(query).success) {
@@ -44,21 +48,170 @@ export const ipinfoCommand: HibikiSlashCommand = {
 
     // IPV6 support. Adjusts the URL to be v6.ipinfo.io.
     if (z.string().ip({ version: "v6" }).safeParse(query).success) {
-      apiURL = "https://v6.ipinfo.io";
+      ipAPIURL = "https://v6.ipinfo.io";
     }
 
     // Fetches the IP information
-    const response = await hFetch(`${apiURL}/${query}/json`, {
+    const ipResponse = await hFetch(`${ipAPIURL}/${query}/json`, {
       headers: {
         Authorization: `Bearer ${env.IPINFO_API_KEY}`,
       },
     });
 
-    // Converts response to JSON
-    const body = await response.json();
-    if (!body) {
+    // Converts IP information response to JSON
+    const ipBody: IPInfoResponse = await ipResponse.json();
+    if (!ipBody) {
       await sendErrorReply(interaction, "errors:IPINFO_INVALID", true, true);
       return;
     }
+
+    // Fetched AbuseIPDB information
+    const abuseResponse = await hFetch(`${abuseAPIBaseURL}${query}`, {
+      headers: {
+        Accept: "application/json",
+        Key: env.ABUSEIPDB_API_KEY,
+      },
+    });
+
+    // Converts abuse information response to JSON
+    const abuseBody = await abuseResponse.json();
+
+    // Creates the embed
+    const embed = new EmbedBuilder().setColor(HibikiColors.Primary).setAuthor({
+      iconURL: interaction.client.user.displayAvatarURL(),
+      name: t("commands:IPINFO_MESSAGE", {
+        lng: interaction.locale,
+        address: query,
+      }),
+      url: `${ipAPIURL}/${query}`,
+    });
+
+    // Hostname
+    if (ipBody.hostname) {
+      embed.addFields({
+        name: t("commands:IPINFO_HOSTNAME", { lng: interaction.locale }),
+        value: ipBody.hostname,
+        inline: false,
+      });
+    }
+
+    // ASN
+    if (ipBody.org) {
+      embed.addFields({
+        name: t("commands:IPINFO_ASN", { lng: interaction.locale }),
+        value: ipBody.org,
+        inline: false,
+      });
+    }
+
+    // Geolocation
+    if (ipBody.loc) {
+      embed.addFields({
+        name: t("commands:IPINFO_GEOLOCATION", { lng: interaction.locale }),
+        value: ipBody.loc,
+        inline: true,
+      });
+    }
+
+    // IP city
+    if (ipBody.city) {
+      ipRegion.push(ipBody.city);
+    }
+
+    // IP region
+    if (ipBody.region) {
+      ipRegion.push(ipBody.region);
+    }
+
+    // IP country
+    if (ipBody.country) {
+      ipRegion.push(ipBody.country);
+    }
+
+    // IP postal code
+    if (ipBody.postal) {
+      ipRegion.push(ipBody.postal);
+    }
+
+    // Joins the IP region string
+    const regionString = ipRegion.join(", ");
+
+    // Region
+    if (regionString.length > 0) {
+      embed.addFields({
+        name: t("commands:IPINFO_LOCATION", { lng: interaction.locale }),
+        value: regionString,
+        inline: true,
+      });
+    }
+
+    // Timezone
+    if (ipBody.timezone) {
+      embed.addFields({
+        name: t("commands:IPINFO_TIMEZONE", { lng: interaction.locale }),
+        value: ipBody.timezone,
+        inline: true,
+      });
+    }
+
+    // Abuse information
+    if (!abuseBody.data?.errors) {
+      // ISP
+      if (abuseBody.data.isp) {
+        embed.addFields({
+          name: t("commands:IPINFO_ISP", { lng: interaction.locale }),
+          value: abuseBody.data.isp,
+          inline: true,
+        });
+      }
+
+      // Usage type
+      if (abuseBody.data.usageType) {
+        embed.addFields({
+          name: t("commands:IPINFO_USAGE_TYPE", { lng: interaction.locale }),
+          value: abuseBody.data.usageType,
+          inline: true,
+        });
+      }
+
+      // Domain
+      if (abuseBody.data.domain) {
+        embed.addFields({
+          name: t("commands:IPINFO_DOMAIN", { lng: interaction.locale }),
+          value: abuseBody.data.domain,
+          inline: true,
+        });
+      }
+
+      // Bogon/TOR
+      if (ipBody.bogon || abuseBody.data.tor) {
+        embed.addFields({
+          name: t("commands:IPINFO_NOTES", { lng: interaction.locale }),
+          value: t(
+            ipBody.bogon ? "commands:IPINFO_BOGON" : "commands:IPINFO_TOR",
+            {
+              lng: interaction.locale,
+            },
+          ),
+          inline: false,
+        });
+      }
+
+      // Total reports
+      embed.addFields({
+        name: t("commands:IPINFO_ABUSE_INFORMATION", {
+          lng: interaction.locale,
+        }),
+        value: t("commands:IPINFO_ABUSE_STATISTICS", {
+          lng: interaction.locale,
+          reports: abuseBody.data.totalReports,
+          confidence: abuseBody.data.abuseConfidenceScore,
+        }),
+        inline: false,
+      });
+    }
+
+    // Sends the interaction
+    await interaction.followUp({ embeds: [embed] });
   },
 };

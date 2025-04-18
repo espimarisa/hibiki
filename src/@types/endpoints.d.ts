@@ -152,6 +152,27 @@ export type GithubRepository = {
 export type PossibleGithubResponse = GithubRepository & GithubUser;
 
 /**
+ * Possible IPInfo.IO API response.
+ * @see https://ipinfo.io/developers#json-response
+ */
+
+export type IPInfoResponse = {
+  bogon?: boolean;
+  ip: string;
+  hostname?: string;
+  city?: string;
+  region?: string;
+  region?: string;
+  country?: string;
+  loc?: string;
+  org?: string;
+  postal?: string;
+  timezone?: string;
+  readme?: string;
+  anycast?: boolean;
+};
+
+/**
  * XKCD comic API response.
  * @see https://xkcd.com/info.0.json
  */

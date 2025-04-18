@@ -46,7 +46,7 @@ export const aboutCommand: HibikiSlashCommand = {
           .setTitle(
             t("commands:ABOUT_TITLE", {
               lng: interaction.locale,
-              username: interaction.user.client.user.username,
+              username: interaction.client.user.username,
             }),
           )
           .setDescription(
@@ -55,9 +55,7 @@ export const aboutCommand: HibikiSlashCommand = {
             }),
           )
           .setColor(HibikiColors.Primary)
-          .setThumbnail(
-            interaction.user.client.user.displayAvatarURL({ size: 512 }),
-          )
+          .setThumbnail(interaction.client.user.displayAvatarURL({ size: 512 }))
           .addFields(
             {
               // Total servers
