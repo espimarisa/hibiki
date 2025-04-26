@@ -1,5 +1,5 @@
 /**
- * @file Additional typing definitions for external API endpoints.
+ * @file Typing definitions for external API endpoints.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
@@ -197,7 +197,6 @@ export type IPInfoResponse = {
   ip: string;
   hostname?: string;
   city?: string;
-  region?: string;
   region?: string;
   country?: string;
   loc?: string;

@@ -1,5 +1,5 @@
 /**
- * @file Database schema for guild configs.
+ * @file Drizzle database schema for Hibiki guild configurations.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
@@ -11,6 +11,6 @@ export const guildConfig = pgTable("guild_config", {
   // PostgreSQL's primary ID key.
   id: uuid("id").primaryKey().defaultRandom(),
 
-  // The guild's Discord guild ID.
+  // The guild's unique Discord guild ID.
   guild_id: text("guild_id").notNull(),
 });

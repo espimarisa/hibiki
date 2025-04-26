@@ -1,18 +1,17 @@
 /**
- * @file Utility to wrap around native fetch() and dynamically append headers.
+ * @file Fetches a network resource (wrapper around native fetch()).
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
 
-import { env } from "@/utils/env.js";
-import { captureError, parseError } from "@/utils/error.js";
-import { logger } from "@/utils/logger.js";
+import { captureError, parseError } from "@utils/error.js";
+import { logger } from "@utils/logger.js";
 
 /**
- * Wrapper around native fetch().
- * @param url The URL to fetch.
- * @param options Fetch options.
- * @returns A fetch response.
+ * Fetches a network resource (wrapper around native fetch()).
+ * @param url Wrapper around native fetch() to perform a network request.
+ * @param options Object containing request options.
+ * @returns A fetched response.
  */
 
 export async function hFetch(url: string, options?: RequestInit) {
@@ -21,11 +20,12 @@ export async function hFetch(url: string, options?: RequestInit) {
       ...options,
       headers: {
         ...options?.headers,
-        "User-Agent": `${env.npm_package_name}/${env.npm_package_version} (github.com/espimarisa/hibiki)`,
+        "User-Agent": "Hibiki (github.com/espimarisa/hibiki)",
       },
     });
 
-    if (!response.ok) {
+    // Return undefined if response.ok is not set to enforce valid handling
+    if (!response?.ok) {
       return;
     }
 

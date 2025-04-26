@@ -6,12 +6,11 @@
 
 import type { Message } from "discord.js";
 
-export const messageCreate: HibikiListener<"messageCreate"> = {
+export const messageCreate: HibikiEvent<"messageCreate"> = {
   event: "messageCreate",
-  once: false,
 
   // biome-ignore lint/suspicious/useAwait: <explanation>
-  async runListener(msg: Message) {
+  async handle(msg: Message) {
     // Do not process invalid message data
     if (!msg.id || msg.content.length === 0) {
       return;

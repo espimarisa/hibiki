@@ -4,26 +4,21 @@
  * @license zlib
  */
 
-import type { XKCDResponse } from "@/types/endpoints.js";
-import {
-  AllInteractionContextTypes,
-  HibikiColors,
-  MessageLimits,
-} from "@/utils/constants.js";
-import { sendErrorReply } from "@/utils/error.js";
-import { hFetch } from "@/utils/fetch.js";
-import { trimMessage } from "@/utils/format.js";
-import { tO } from "@/utils/i18n.js";
+import type { XKCDResponse } from "@typings/endpoints.js";
+import { HibikiColors, MessageLimits } from "@utils/constants.js";
+import { sendErrorReply } from "@utils/error.js";
+import { hFetch } from "@utils/fetch.js";
+import { trimContent } from "@utils/format.js";
+import { tO } from "@utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { t } from "i18next";
 
-export const xkcdCommand: HibikiChatCommandInteraction = {
+export const xkcdCommand: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
     .setName("xkcd")
     .setNameLocalizations(tO("commands:XKCD_NAME"))
     .setDescription(t("commands:XKCD_DESCRIPTION"))
     .setDescriptionLocalizations(tO("commands:XKCD_DESCRIPTION"))
-    .setContexts(AllInteractionContextTypes)
     // Number option
     .addIntegerOption((number) =>
       number
@@ -33,9 +28,11 @@ export const xkcdCommand: HibikiChatCommandInteraction = {
         .setDescriptionLocalizations(tO("commands:XKCD_NUMBER_DESCRIPTION"))
         .setRequired(false),
     ),
-  defer: true,
 
-  async runCommand(interaction) {
+  async run(interaction) {
+    // Defers the reply
+    await interaction.deferReply();
+
     // Gets the number and/or endpoint to use
     const number = interaction.options.getInteger("number");
     let endpoint = number
@@ -94,7 +91,7 @@ export const xkcdCommand: HibikiChatCommandInteraction = {
       embeds: [
         new EmbedBuilder()
           .setTitle(`${body.safe_title} (#${body.num})`)
-          .setDescription(trimMessage(body.alt, MessageLimits.EmbedDescription))
+          .setDescription(trimContent(body.alt, MessageLimits.EmbedDescription))
           .setColor(HibikiColors.Primary)
           .setImage(body.img)
           .setFooter({

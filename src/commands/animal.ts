@@ -4,19 +4,18 @@
  * @license zlib
  */
 
-import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
-import { sendErrorReply } from "@/utils/error.js";
-import { hFetch } from "@/utils/fetch.js";
-import { t, tO } from "@/utils/i18n.js";
+import { HibikiColors } from "@utils/constants.js";
+import { sendErrorReply } from "@utils/error.js";
+import { hFetch } from "@utils/fetch.js";
+import { t, tO } from "@utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
-export const animalCommand: HibikiChatCommandInteraction = {
+export const animalCommand: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
     .setName("animal")
     .setNameLocalizations(tO("commands:ANIMAL_NAME"))
     .setDescription(t("commands:ANIMAL_DESCRIPTION"))
     .setDescriptionLocalizations(tO("commands:ANIMAL_DESCRIPTION"))
-    .setContexts(AllInteractionContextTypes)
     // Cat subcommand
     .addSubcommand((cat) =>
       cat
@@ -42,7 +41,7 @@ export const animalCommand: HibikiChatCommandInteraction = {
         .setDescriptionLocalizations(tO("commands:ANIMAL_FOX_DESCRIPTION")),
     ),
 
-  async runCommand(interaction) {
+  async run(interaction) {
     let apiURL = "";
     let bodyKey = "";
     let titleString: DictionaryKey | "" = "";

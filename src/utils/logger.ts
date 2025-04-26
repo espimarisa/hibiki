@@ -1,13 +1,13 @@
 /**
- * @file Utilities to log to the console and log files.
+ * @file Creates a pino logger for console and log file output.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
 
-import { env } from "@/utils/env.js";
-import { getDirname } from "@/utils/fs.js";
 import { join } from "node:path";
 import type { PinoRotateFileOptions } from "@chatsift/pino-rotate-file";
+import { env } from "@utils/env.js";
+import { getDirname } from "@utils/fs.js";
 import { multistream, pino, transport } from "pino";
 import type { PrettyOptions } from "pino-pretty";
 
@@ -29,7 +29,7 @@ const pinoRotateFileOptions = {
   mkdir: true,
 } satisfies PinoRotateFileOptions;
 
-/** Pino logger to log to stdout. */
+/** Pino logger instance. */
 export const logger = pino(
   {
     level: "info",

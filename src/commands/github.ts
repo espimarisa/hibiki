@@ -4,11 +4,11 @@
  * @license zlib
  */
 
-import type { PossibleGithubResponse } from "@/types/endpoints.js";
-import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
-import { sendErrorReply } from "@/utils/error.js";
-import { hFetch } from "@/utils/fetch.js";
-import { t, tO } from "@/utils/i18n.js";
+import type { PossibleGithubResponse } from "@typings/endpoints.js";
+import { HibikiColors } from "@utils/constants.js";
+import { sendErrorReply } from "@utils/error.js";
+import { hFetch } from "@utils/fetch.js";
+import { t, tO } from "@utils/i18n.js";
 import {
   EmbedBuilder,
   SlashCommandBuilder,
@@ -23,13 +23,12 @@ const API_REQUIRED_HEADER = "application/vnd.github+json";
 // Regex to validate GitHub URLs
 const GITHUB_URL_REGEX = /^https:\/\/(www\.)?github\.com\//;
 
-export const githubCommand: HibikiChatCommandInteraction = {
+export const githubCommand: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
     .setName("github")
     .setNameLocalizations(tO("commands:GITHUB_NAME"))
     .setDescription(t("commands:GITHUB_DESCRIPTION"))
     .setDescriptionLocalizations(tO("commands:GITHUB_DESCRIPTION"))
-    .setContexts(AllInteractionContextTypes)
     // User subcommand
     .addSubcommand((user) =>
       user
@@ -70,9 +69,11 @@ export const githubCommand: HibikiChatCommandInteraction = {
             .setRequired(true),
         ),
     ),
-  defer: true,
 
-  async runCommand(interaction) {
+  async run(interaction) {
+    // Defers the reply
+    await interaction.deferReply();
+
     // Gets the subcommand and query
     const subcommand = interaction.options.getSubcommand(true);
     let query = interaction.options.getString("query", true);

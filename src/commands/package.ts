@@ -4,30 +4,28 @@
  * @license zlib
  */
 
-import type { AURPackage, PartialNPMPackage } from "@/types/endpoints.js";
-import {
-  AllInteractionContextTypes,
-  HibikiColors,
-  HibikiImages,
-  MessageLimits,
-} from "@/utils/constants.js";
-import { sendErrorReply } from "@/utils/error.js";
-import { hFetch } from "@/utils/fetch.js";
-import { trimMessage } from "@/utils/format.js";
-import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, TimestampStyles, time } from "@discordjs/builders";
+import type { AURPackage, PartialNPMPackage } from "@typings/endpoints.js";
+import { MessageLimits } from "@utils/constants.js";
+import { sendErrorReply } from "@utils/error.js";
+import { hFetch } from "@utils/fetch.js";
+import { trimContent } from "@utils/format.js";
+import { t, tO } from "@utils/i18n.js";
 import { SlashCommandBuilder } from "discord.js";
 
 const aurAPIURL = "https://aur.archlinux.org/rpc/v5/info?arg[]=";
 const npmAPIURL = "https://registry.npmjs.com";
+const archLogoColor = 0x1793d1;
+const archLogoImage = "https://i.imgur.com/Xl0n1Dk.png";
+const npmLogoColor = 0xcc3534;
+const npmLogoImage = "https://i.imgur.com/KHy3WZ0.png";
 
-export const packageCommand: HibikiChatCommandInteraction = {
+export const packageCommand: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
     .setName("package")
     .setNameLocalizations(tO("commands:PACKAGE_NAME"))
     .setDescription(t("commands:PACKAGE_NAME"))
     .setDescriptionLocalizations(tO("commands:PACKAGE_DESCRIPTION"))
-    .setContexts(AllInteractionContextTypes)
     // AUR subcommand
     .addSubcommand((aur) =>
       aur
@@ -77,9 +75,11 @@ export const packageCommand: HibikiChatCommandInteraction = {
             .setRequired(false),
         ),
     ),
-  defer: true,
 
-  async runCommand(interaction) {
+  async run(interaction) {
+    // Defers the reply
+    await interaction.deferReply();
+
     // Gets the subcommand, query, and optional version
     const subcommand = interaction.options.getSubcommand(true);
     const query = encodeURIComponent(
@@ -175,7 +175,7 @@ export const packageCommand: HibikiChatCommandInteraction = {
         if (body.Provides) {
           embed.addFields({
             name: t("commands:PACKAGE_PROVIDES", { lng: interaction.locale }),
-            value: trimMessage(
+            value: trimContent(
               body.Provides.map((p) => `\`${p}\``).join(", "),
               MessageLimits.EmbedFieldValue,
             ),
@@ -187,7 +187,7 @@ export const packageCommand: HibikiChatCommandInteraction = {
         if (body.Keywords && body.Keywords.length > 0) {
           embed.addFields({
             name: t("commands:PACKAGE_KEYWORDS", { lng: interaction.locale }),
-            value: trimMessage(
+            value: trimContent(
               body.Keywords.map((m) => `\`${m}\``).join(", "),
               MessageLimits.EmbedFieldValue,
             ),
@@ -199,7 +199,7 @@ export const packageCommand: HibikiChatCommandInteraction = {
         if (body.Conflicts && body.Conflicts.length > 0) {
           embed.addFields({
             name: t("commands:PACKAGE_CONFLICTS", { lng: interaction.locale }),
-            value: trimMessage(
+            value: trimContent(
               body.Conflicts.map((m) => `\`${m}\``).join(", "),
               MessageLimits.EmbedFieldValue,
             ),
@@ -213,7 +213,7 @@ export const packageCommand: HibikiChatCommandInteraction = {
             name: t("commands:PACKAGE_DEPENDENCIES", {
               lng: interaction.locale,
             }),
-            value: trimMessage(
+            value: trimContent(
               body.Depends.map((m) => `\`${m}\``).join(", "),
               MessageLimits.EmbedFieldValue,
             ),
@@ -235,15 +235,15 @@ export const packageCommand: HibikiChatCommandInteraction = {
         // Sets the embed description
         if (body.Description) {
           embed.setDescription(
-            trimMessage(body.Description, MessageLimits.EmbedDescription),
+            trimContent(body.Description, MessageLimits.EmbedDescription),
           );
         }
         // Sets the embed color
-        embed.setColor(HibikiColors.ArchLogo);
+        embed.setColor(archLogoColor);
 
         // Sets the embed author
         embed.setAuthor({
-          iconURL: HibikiImages.ArchLogo,
+          iconURL: archLogoImage,
           name: `${body.Name} ${body.Version}`,
           url: `https://aur.archlinux.org/packages/${body.Name}`,
         });
@@ -337,7 +337,7 @@ export const packageCommand: HibikiChatCommandInteraction = {
               count: body.maintainers.length - 1,
               lng: interaction.locale,
             }),
-            value: trimMessage(
+            value: trimContent(
               body.maintainers.map((m) => `\`${m.name}\``).join(", "),
               MessageLimits.EmbedFieldValue,
             ),
@@ -349,7 +349,7 @@ export const packageCommand: HibikiChatCommandInteraction = {
         if (body.keywords && body.keywords.length > 0) {
           embed.addFields({
             name: t("commands:PACKAGE_KEYWORDS", { lng: interaction.locale }),
-            value: trimMessage(
+            value: trimContent(
               body.keywords.map((w) => `\`${w}\``).join(", "),
               MessageLimits.EmbedFieldValue,
             ),
@@ -360,16 +360,16 @@ export const packageCommand: HibikiChatCommandInteraction = {
         // Sets the embed description
         if (body.description) {
           embed.setDescription(
-            trimMessage(body.description, MessageLimits.EmbedDescription),
+            trimContent(body.description, MessageLimits.EmbedDescription),
           );
         }
 
         // Sets the embed color
-        embed.setColor(HibikiColors.NPMLogo);
+        embed.setColor(npmLogoColor);
 
         // Sets the embed author
         embed.setAuthor({
-          iconURL: HibikiImages.NPMLogo,
+          iconURL: npmLogoImage,
           name: body._id,
           url: `https://www.npmjs.com/package/${query}/v/${body.version}`,
         });

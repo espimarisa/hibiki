@@ -4,21 +4,15 @@
  * @license zlib
  */
 
-import { bot } from "@/root/bot.js";
-import { env } from "@/utils/env.js";
-import { captureError, initSentry, parseError } from "@/utils/error.js";
-import {
-  getDirname,
-  hibikiCommandInteractions,
-  hibikiListeners,
-  loadCommandInteractions,
-  loadListeners,
-} from "@/utils/fs.js";
-import { initI18Next } from "@/utils/i18n.js";
-import { logger } from "@/utils/logger.js";
 import { hostname } from "node:os";
 import { join } from "node:path";
-import { type ClientUser, ShardingManager } from "discord.js";
+import { bot } from "@root/bot.js";
+import { env } from "@utils/env.js";
+import { captureError, initSentry, parseError } from "@utils/error.js";
+import { getDirname, loadCommands, loadEvents } from "@utils/fs.js";
+import { initI18Next } from "@utils/i18n.js";
+import { logger } from "@utils/logger.js";
+import { type ClientUser, Collection, ShardingManager } from "discord.js";
 
 // Gets the root directory and primary bot file
 const ROOT_DIRECTORY = getDirname(import.meta.url);
@@ -26,9 +20,13 @@ const BOT_FILE_NAME = `bot.${env.NODE_ENV === "production" ? "js" : "ts"}`;
 const BOT_FILE = join(ROOT_DIRECTORY, BOT_FILE_NAME);
 
 // Gets directories to load
-const INTERACTIONS_DIRECTORY = join(ROOT_DIRECTORY, "./interactions/commands");
-const LISTENERS_DIRECTORY = join(ROOT_DIRECTORY, "./listeners");
+const COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands");
+const EVENTS_DIRECTORY = join(ROOT_DIRECTORY, "./events");
 const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
+
+// Creates collections for storing modules in
+const hibikiCommands = new Collection<string, HibikiSlashCommand>();
+const hibikiEvents = new Collection<string, HibikiEvent<HibikiListener>>();
 
 // Creates a set for storing a list of ready shards
 const readyShards = new Set();
@@ -50,18 +48,13 @@ const sharder = new ShardingManager(BOT_FILE, {
   totalShards: "auto",
 });
 
-// Loads i18next and command interactions
+// Loads i18next, commands, and listeners
 await initI18Next(LOCALES_DIRECTORY);
-await loadCommandInteractions(
-  INTERACTIONS_DIRECTORY,
-  hibikiCommandInteractions,
-);
-
-// Loads event listeners
-await loadListeners(LISTENERS_DIRECTORY, hibikiListeners);
+await loadCommands(COMMANDS_DIRECTORY, hibikiCommands);
+await loadEvents(EVENTS_DIRECTORY, hibikiEvents);
 
 // Appends commands and the sharder to the spawned client
-bot.commands = hibikiCommandInteractions;
+bot.commands = hibikiCommands;
 bot.sharder = sharder;
 
 // Logs specific sharding events
@@ -128,16 +121,13 @@ try {
   await sharder.spawn();
 
   // Subscribes event handlers to their listeners
-  for (const event of hibikiListeners.values()) {
+  for (const event of hibikiEvents.values()) {
     if (event.once) {
       // Runs event handlers that only fire once
-      bot.once(
-        event.event,
-        async (...args) => await event.runListener(...args),
-      );
+      bot.once(event.event, async (...args) => await event.handle(...args));
     } else {
       // Runs event handlers on each event emitter
-      bot.on(event.event, async (...args) => await event.runListener(...args));
+      bot.on(event.event, async (...args) => await event.handle(...args));
     }
   }
 } catch (err) {

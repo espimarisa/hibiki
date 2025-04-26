@@ -4,16 +4,16 @@
  * @license zlib
  */
 
-import { HibikiColors } from "@/utils/constants.js";
-import { sendErrorReply } from "@/utils/error.js";
-import { t, tO } from "@/utils/i18n.js";
+import { HibikiColors } from "@utils/constants.js";
+import { sendErrorReply } from "@utils/error.js";
+import { t, tO } from "@utils/i18n.js";
 import {
   EmbedBuilder,
   InteractionContextType,
   SlashCommandBuilder,
 } from "discord.js";
 
-export const roleplaycommands: HibikiChatCommandInteraction = {
+export const roleplaycommands: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
     .setName("roleplay")
     .setNameLocalizations(tO("commands:ROLEPLAY_NAME"))
@@ -116,7 +116,7 @@ export const roleplaycommands: HibikiChatCommandInteraction = {
         ),
     ),
 
-  async runCommand(interaction) {
+  async run(interaction) {
     // Initialize string and url to use later
     let string: DictionaryKey;
     let url = "";

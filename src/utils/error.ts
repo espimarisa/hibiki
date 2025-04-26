@@ -1,15 +1,15 @@
 /**
- * @file Utilities to interact with and handle errors.
+ * @file Utilities interacting with and handling errors.
  * @license zlib
  * @author Espi Marisa <contact@espi.me>
  */
 
 /** biome-ignore-all lint/nursery/noProcessGlobal: Bun's process.on() is different from node:process.on */
 
-import { HibikiColors } from "@/utils/constants.js";
-import { env } from "@/utils/env.js";
-import { logger } from "@/utils/logger.js";
 import { type BunOptions, captureException, captureMessage } from "@sentry/bun";
+import { HibikiColors } from "@utils/constants.js";
+import { env } from "@utils/env.js";
+import { logger } from "@utils/logger.js";
 import {
   type CommandInteraction,
   EmbedBuilder,
@@ -17,7 +17,7 @@ import {
 } from "discord.js";
 import { init, t } from "i18next";
 
-const errorFallback = "Unknown";
+const errorFallbackMessage = "Unknown";
 let sentryConnected = false;
 
 /**
@@ -25,6 +25,7 @@ let sentryConnected = false;
  * @param dsn The Sentry DSN to connect to.
  * @param options Additional Sentry client options.
  */
+
 export function initSentry(dsn: string, options?: BunOptions) {
   if (!dsn) {
     return;
@@ -53,7 +54,7 @@ export function initSentry(dsn: string, options?: BunOptions) {
 /**
  * Captures an error and sends it to Sentry.
  * @param err The error object to capture.
- * @param context Additional context to supply.
+ * @param context Additional context to supply to Sentry.
  */
 
 export function captureError(err: unknown, context?: Record<string, unknown>) {
@@ -75,7 +76,7 @@ export function captureError(err: unknown, context?: Record<string, unknown>) {
  */
 
 export function parseError(error: unknown): Error {
-  let message = errorFallback;
+  let message = errorFallbackMessage;
 
   if (error instanceof Error) {
     return error;

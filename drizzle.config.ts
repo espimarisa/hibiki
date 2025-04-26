@@ -1,10 +1,10 @@
 /**
- * @file Drizzle ORM configuration file.
+ * @file Configuration file for Drizzle.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
 
-/** biome-ignore-all lint/style/noDefaultExport: Drizzle config requires a default export */
+/** biome-ignore-all lint/style/noDefaultExport: Drizzle config requires a default export. */
 
 import { env } from "node:process";
 import { type Config, defineConfig } from "drizzle-kit";

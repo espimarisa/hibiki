@@ -4,17 +4,16 @@
  * @license zlib
  */
 
-import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
-import { t, tO } from "@/utils/i18n.js";
+import { HibikiColors } from "@utils/constants.js";
+import { t, tO } from "@utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
-export const diceCommand: HibikiChatCommandInteraction = {
+export const diceCommand: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
     .setName("dice")
     .setNameLocalizations(tO("commands:DICE_NAME"))
     .setDescription(t("commands:DICE_DESCRIPTION"))
     .setDescriptionLocalizations(tO("commands:DICE_DESCRIPTION"))
-    .setContexts(AllInteractionContextTypes)
     // Sides option
     .addIntegerOption((sides) =>
       sides
@@ -27,7 +26,7 @@ export const diceCommand: HibikiChatCommandInteraction = {
         .setMaxValue(120),
     ),
 
-  async runCommand(interaction) {
+  async run(interaction) {
     // Gets the number of sides and calculates the roll
     const sides = interaction.options.getInteger("sides") || 6;
     const roll = Math.floor(Math.random() * sides) + 1;

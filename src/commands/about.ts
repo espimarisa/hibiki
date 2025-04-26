@@ -4,31 +4,28 @@
  * @license zlib
  */
 
-import {
-  AllInteractionContextTypes,
-  HibikiColors,
-  INVITE_PERMISSIONS,
-  ZWSP,
-} from "@/utils/constants.js";
-import { getTotalCachedUsers, getTotalGuilds } from "@/utils/discord.js";
-import { env } from "@/utils/env.js";
-import { getTimeSince } from "@/utils/format.js";
-import { localizeBytes, localizeTime, t, tO } from "@/utils/i18n.js";
 import { memoryUsage } from "node:process";
+import { HibikiColors, INVITE_PERMISSIONS } from "@utils/constants.js";
+import { getTotalCachedUsers, getTotalGuilds } from "@utils/discord.js";
+import { env } from "@utils/env.js";
+import { getTimeSince } from "@utils/format.js";
+import { t, tO } from "@utils/i18n.js";
+import { localizeBytes, localizeTime } from "@utils/localize.js";
 import { EmbedBuilder, SlashCommandBuilder, version } from "discord.js";
 
 const startupTimestamp = new Date();
 
-export const aboutCommand: HibikiChatCommandInteraction = {
+export const aboutCommand: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
     .setName("about")
     .setNameLocalizations(tO("commands:ABOUT_NAME"))
     .setDescription(t("commands:ABOUT_DESCRIPTION"))
-    .setDescriptionLocalizations(tO("commands:ABOUT_DESCRIPTION"))
-    .setContexts(AllInteractionContextTypes),
-  defer: true,
+    .setDescriptionLocalizations(tO("commands:ABOUT_DESCRIPTION")),
 
-  async runCommand(interaction) {
+  async run(interaction) {
+    // Defers the reply
+    await interaction.deferReply();
+
     // Gets uptime and memory statistics
     const uptime = getTimeSince(startupTimestamp, new Date());
     const memory = Math.round(memoryUsage().heapUsed);
@@ -64,7 +61,7 @@ export const aboutCommand: HibikiChatCommandInteraction = {
                 lng: interaction.locale,
                 servers: cachedGuilds,
                 users: cachedUsers,
-                commands: interaction.client.commands?.size,
+                commands: interaction.client.commands.size,
               }),
               inline: true,
             },
@@ -93,7 +90,7 @@ export const aboutCommand: HibikiChatCommandInteraction = {
             },
             {
               // Links
-              name: ZWSP,
+              name: "\u200b",
               value: t("commands:ABOUT_LINKS", {
                 lng: interaction.locale,
                 id: interaction.client.user.id,

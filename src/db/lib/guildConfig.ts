@@ -1,23 +1,22 @@
 /**
- * @file Database driver performing operations with guild configs.
+ * @file Drizzle database driver interacting with guild configurations.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
 
-import { db } from "@/db/drizzle.js";
-import { guildConfig } from "@/db/schema/guildConfig.js";
-import { captureError, parseError } from "@/utils/error.js";
-import { logger } from "@/utils/logger.js";
-import type { Snowflake } from "discord.js";
+import { db } from "@db/index.js";
+import { guildConfig } from "@db/schema/guildConfig.js";
+import { captureError, parseError } from "@utils/error.js";
+import { logger } from "@utils/logger.js";
 import { eq } from "drizzle-orm";
 
 /**
- * Gets a guild config.
- * @param guild The guild's Discord guild ID.
- * @returns A valid guild configuration object if found.
+ * Gets a Hibiki guild configuration object by guild ID.
+ * @param guild The unique Discord guild ID to get a matching configuration for.
+ * @returns A valid Hibiki guild configuration object.
  */
 
-export async function getGuildConfig(guild: Snowflake) {
+export async function getGuildConfig(guild: string) {
   try {
     const config = await db.query.guildConfig.findFirst({
       where: (guildConfig, { eq }) => eq(guildConfig.guild_id, guild),
@@ -40,31 +39,40 @@ export async function getGuildConfig(guild: Snowflake) {
 }
 
 /**
- * Deletes a guild config.
- * @param guild The guild's Discord guild ID.
+ * Deletes a Hibiki guild configuration object by guild ID.
+ * @param guild The unique Discord guild ID to delete a configuration for.
+ * @returns A boolean indicating success or failure.
  */
 
-export async function deleteGuildConfig(guild: Snowflake) {
+export async function deleteGuildConfig(guild: string) {
   try {
     await db.transaction(async (query) => {
       await query.delete(guildConfig).where(eq(guildConfig.guild_id, guild));
     });
+
+    return true;
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error deleting guild config ${guild}: ${error.message}`);
     captureError(error, {
       guild: guild,
     });
+
+    return false;
   }
 }
 
 /**
- * Updates a guild config.
- * @param guild The guild's Discord guild ID.
- * @param config A valid guild configuration object.
+ * Updates a Hibiki guild configuration object by guild ID.
+ * @param guild The unique Discord guild ID to delete a configuration for.
+ * @param config A valid Hibiki guild configuration object to insert.
+ * @returns A boolean indicating success or failure.
  */
 
-export async function updateGuildConfig(guild: Snowflake, config: GuildConfig) {
+export async function updateGuildConfig(
+  guild: string,
+  config: HibikiGuildConfig,
+) {
   try {
     // Checks for an existing config
     const existingConfig = await getGuildConfig(guild);
@@ -76,6 +84,8 @@ export async function updateGuildConfig(guild: Snowflake, config: GuildConfig) {
           .set(config)
           .where(eq(guildConfig.guild_id, guild))
       : db.insert(guildConfig).values(config).onConflictDoNothing());
+
+    return true;
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error updating guild config ${guild}: ${error.message}`);
@@ -83,31 +93,7 @@ export async function updateGuildConfig(guild: Snowflake, config: GuildConfig) {
       config: config,
       guild: guild,
     });
-  }
-}
 
-/**
- * Creates a new guild config.
- * @param guild The guild's Discord guild ID.
- */
-
-export async function createGuildConfig(guild: Snowflake) {
-  // Checks to see if the guild config exists
-  const config = await getGuildConfig(guild);
-  if (config) {
-    return;
-  }
-
-  try {
-    await db
-      .insert(guildConfig)
-      .values({ guild_id: guild })
-      .onConflictDoNothing();
-  } catch (err) {
-    const error = parseError(err);
-    logger.error(`Error creating guild config ${guild}: ${error.message}`);
-    captureError(error, {
-      guild: guild,
-    });
+    return false;
   }
 }

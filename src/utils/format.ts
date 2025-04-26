@@ -4,14 +4,14 @@
  * @license zlib
  */
 
-import { MessageLimits } from "@/utils/constants.js";
+import type { MessageLimits } from "@utils/constants.js";
 import { intervalToDuration } from "date-fns";
 
 /**
  * Gets the amount of time that has passed since a date.
- * @param from The initial date to calculate with.
- * @param to The date to calculate passed time with.
- * @returns A formatted amount of time that has passed.
+ * @param from The initial date to use in the calculation.
+ * @param to The current date to use in the calculation.
+ * @returns Formatted amount of time that has passed.
  */
 
 export function getTimeSince(from: Date, to: Date) {
@@ -22,14 +22,12 @@ export function getTimeSince(from: Date, to: Date) {
 }
 
 /**
- * Trims a Discord message field to be under the limit.
+ * Wrapper around substring() for easily trimming Discord content limits.
  * @param string The string to trim.
- * @param limit The limit to set. Defaults to the description limit.
+ * @param limit The limit to use.
+ * @returns A trimmed string.
  */
 
-export function trimMessage(
-  string: string,
-  limit: MessageLimits = MessageLimits.EmbedDescription,
-) {
+export function trimContent(string: string, limit: MessageLimits) {
   return string.length > limit ? string.substring(0, limit) : string;
 }

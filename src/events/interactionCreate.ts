@@ -4,15 +4,14 @@
  * @license zlib
  */
 
-import { captureError, parseError, sendErrorReply } from "@/utils/error.js";
-import { logger } from "@/utils/logger.js";
+import { captureError, parseError, sendErrorReply } from "@utils/error.js";
+import { logger } from "@utils/logger.js";
 import type { CommandInteraction, Interaction } from "discord.js";
 
-export const interactionCreate: HibikiListener<"interactionCreate"> = {
+export const interactionCreate: HibikiEvent<"interactionCreate"> = {
   event: "interactionCreate",
-  once: false,
 
-  async runListener(interaction: Interaction) {
+  async handle(interaction: Interaction) {
     // Only process supported interaction types
     if (!(interaction.isButton() || interaction.isCommand())) {
       return;
@@ -32,9 +31,7 @@ export const interactionCreate: HibikiListener<"interactionCreate"> = {
 
 async function runCommand(interaction: CommandInteraction) {
   // Finds the command to run
-  const commandToRun = interaction.client.commands?.get(
-    interaction.commandName,
-  );
+  const commandToRun = interaction.client.commands.get(interaction.commandName);
 
   // Do not run invalid commands
   if (!commandToRun) {
@@ -50,20 +47,12 @@ async function runCommand(interaction: CommandInteraction) {
 
   // Slash (chat input) command handler
   if (interaction.isChatInputCommand()) {
-    const command = commandToRun as HibikiChatCommandInteraction;
+    const command = commandToRun as HibikiSlashCommand;
     const commandName = command.data.name;
 
     try {
-      // Defer replies for deferred commands
-      if (command.defer) {
-        await interaction.deferReply({
-          // Handle ephemeral flags
-          flags: command.ephemeral ? "Ephemeral" : [],
-        });
-      }
-
       // Runs the command
-      await command.runCommand(interaction);
+      await command.run(interaction);
       logger.info(`${user} ran command interaction ${commandName} in ${guild}`);
     } catch (err) {
       const error = parseError(err);
@@ -82,8 +71,8 @@ async function runCommand(interaction: CommandInteraction) {
       await sendErrorReply(
         interaction,
         "errors:ERROR_STACK",
-        command.defer,
-        command.ephemeral,
+        interaction.deferred ?? false,
+        interaction.ephemeral ?? false,
         {
           error: error.message,
         },

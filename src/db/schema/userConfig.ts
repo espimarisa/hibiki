@@ -1,5 +1,5 @@
 /**
- * @file Database schema for user configs.
+ * @file Drizzle database schema for Hibiki user configurations.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
@@ -11,6 +11,6 @@ export const userConfig = pgTable("user_config", {
   // PostgreSQL's primary ID key.
   id: uuid("id").primaryKey().defaultRandom(),
 
-  // The user's Discord user ID.
+  // The user's unique Discord user ID.
   user_id: text("user_id").notNull(),
 });

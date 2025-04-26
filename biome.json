@@ -1,5 +1,5 @@
 {
-  "$schema": "https://next.biomejs.dev/schemas/2.0.0-beta.1/schema.json",
+  "$schema": "node_modules/@biomejs/biome/configuration_schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -21,21 +21,15 @@
         "useSortedKeys": "off",
         "useSortedProperties": "on"
       }
-    },
-    "enabled": true
-  },
-  "css": {
-    "formatter": {
-      "enabled": true
     }
   },
+  "css": {},
   "files": {
-    "ignoreUnknown": true,
     "includes": [
       "src/**/*.ts",
       "locales/**/*.json",
-      "drizzle.config.ts",
       "biome.json",
+      "drizzle.config.ts",
       "package.json",
       "tsconfig.json"
     ]
@@ -43,25 +37,10 @@
   "formatter": {
     "attributePosition": "multiline",
     "bracketSameLine": true,
-    "bracketSpacing": true,
-    "enabled": true,
-    "expand": "auto",
-    "formatWithErrors": false,
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineEnding": "lf",
-    "lineWidth": 80,
-    "useEditorconfig": true
+    "indentStyle": "space"
   },
   "javascript": {
-    "formatter": {
-      "bracketSameLine": true,
-      "quoteProperties": "preserve"
-    },
-    "globals": ["Bun"],
-    "parser": {
-      "unsafeParameterDecoratorsEnabled": true
-    }
+    "globals": ["Bun"]
   },
   "json": {
     "parser": {
@@ -69,7 +48,6 @@
     }
   },
   "linter": {
-    "enabled": true,
     "rules": {
       "complexity": {
         "noForEach": "error",
@@ -115,12 +93,6 @@
         "useAriaPropsSupportedByRole": "error",
         "useAtIndex": "error",
         "useCollapsedIf": "error",
-        "useConsistentMemberAccessibility": {
-          "level": "error",
-          "options": {
-            "accessibility": "explicit"
-          }
-        },
         "useGoogleFontDisplay": "error",
         "useGoogleFontPreconnect": "error",
         "useGuardForIn": "error",
@@ -131,26 +103,30 @@
         "useValidAutocomplete": "error"
       },
       "performance": {
+        "noAccumulatingSpread": "error",
         "noBarrelFile": "error",
         "noDelete": "error",
         "noReExportAll": "error",
-        "useTopLevelRegex": "error",
-        "noAccumulatingSpread": "error"
+        "useTopLevelRegex": "error"
       },
       "recommended": true,
       "style": {
         "noArguments": "error",
         "noCommaOperator": "error",
+        "noDefaultExport": "error",
         "noDoneCallback": "error",
+        "noImplicitBoolean": "error",
         "noInferrableTypes": "error",
         "noNamespace": "error",
         "noNamespaceImport": "error",
         "noNegationElse": "error",
         "noNonNullAssertion": "error",
+        "noParameterAssign": "error",
+        "noParameterProperties": "error",
+        "noRestrictedGlobals": "error",
         "noShoutyConstants": "error",
         "noUnusedTemplateLiteral": "error",
         "noUselessElse": "error",
-        "noDefaultExport": "error",
         "noYodaExpression": "error",
         "useAsConstAssertion": "error",
         "useBlockStatements": "error",
@@ -164,7 +140,7 @@
         "useExplicitLengthCheck": "error",
         "useExponentiationOperator": "error",
         "useExportType": "error",
-        "useFilenamingConvention": "on",
+        "useFilenamingConvention": "info",
         "useForOf": "error",
         "useFragmentSyntax": "error",
         "useImportType": "error",
@@ -172,7 +148,6 @@
         "useNamingConvention": {
           "level": "info",
           "options": {
-            "strictCase": false,
             "conventions": [
               {
                 "formats": [
@@ -240,7 +215,8 @@
                   "kind": "objectLiteralSetter"
                 }
               }
-            ]
+            ],
+            "strictCase": false
           }
         },
         "useNodeAssertStrict": "error",
@@ -274,7 +250,7 @@
   },
   "overrides": [
     {
-      "includes": ["**/*.d.ts"],
+      "includes": ["src/**/*.d.ts"],
       "linter": {
         "rules": {
           "style": {
@@ -283,10 +259,5 @@
         }
       }
     }
-  ],
-  "vcs": {
-    "clientKind": "git",
-    "enabled": true,
-    "useIgnoreFile": true
-  }
+  ]
 }

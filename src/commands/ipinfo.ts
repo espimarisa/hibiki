@@ -4,24 +4,23 @@
  * @license zlib
  */
 
-import type { IPInfoResponse } from "@/types/endpoints.js";
-import { AllInteractionContextTypes, HibikiColors } from "@/utils/constants.js";
-import { env } from "@/utils/env.js";
-import { sendErrorReply } from "@/utils/error.js";
-import { hFetch } from "@/utils/fetch.js";
-import { t, tO } from "@/utils/i18n.js";
+import type { IPInfoResponse } from "@typings/endpoints.js";
+import { HibikiColors } from "@utils/constants.js";
+import { env } from "@utils/env.js";
+import { sendErrorReply } from "@utils/error.js";
+import { hFetch } from "@utils/fetch.js";
+import { t, tO } from "@utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { z } from "zod";
 
 const abuseAPIBaseURL = "https://api.abuseipdb.com/api/v2/check?ipAddress=";
 
-export const ipinfoCommand: HibikiChatCommandInteraction = {
+export const ipinfoCommand: HibikiSlashCommand = {
   data: new SlashCommandBuilder()
     .setName("ipinfo")
     .setNameLocalizations(tO("commands:IPINFO_NAME"))
     .setDescription(t("commands:IPINFO_DESCRIPTION"))
     .setDescriptionLocalizations(tO("commands:IPINFO_DESCRIPTION"))
-    .setContexts(AllInteractionContextTypes)
     // Address option
     .addStringOption((address) =>
       address
@@ -31,10 +30,11 @@ export const ipinfoCommand: HibikiChatCommandInteraction = {
         .setDescriptionLocalizations(tO("commands:IPINFO_ADDRESS_DESCRIPTION"))
         .setRequired(true),
     ),
-  defer: true,
-  required_env: ["IPINFO_API_KEY", "ABUSEIPDB_API_KEY"],
 
-  async runCommand(interaction) {
+  async run(interaction) {
+    // Defers the reply
+    await interaction.deferReply();
+
     // Gets the query
     const ipRegion: string[] = [];
     const query = interaction.options.getString("address", true);

@@ -1,23 +1,22 @@
 /**
- * @file Database driver performing operations with user configs.
+ * @file Drizzle database driver interacting with user configurations.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
 
-import { db } from "@/db/drizzle.js";
-import { userConfig } from "@/db/schema/userConfig.js";
-import { captureError, parseError } from "@/utils/error.js";
-import { logger } from "@/utils/logger.js";
-import type { Snowflake } from "discord.js";
+import { db } from "@db/index.js";
+import { userConfig } from "@db/schema/userConfig.js";
+import { captureError, parseError } from "@utils/error.js";
+import { logger } from "@utils/logger.js";
 import { eq } from "drizzle-orm";
 
 /**
- * Gets a user config.
- * @param user The user's Discord user ID.
- * @returns A valid user configuration object if found.
+ * Gets a Hibiki user configuration object by user ID.
+ * @param user The unique Discord user ID to get a matching configuration for.
+ * @returns A valid Hibiki user configuration object.
  */
 
-export async function getUserConfig(user: Snowflake) {
+export async function getUserConfig(user: string) {
   try {
     const config = await db.query.userConfig.findFirst({
       where: (userConfig, { eq }) => eq(userConfig.user_id, user),
@@ -40,31 +39,37 @@ export async function getUserConfig(user: Snowflake) {
 }
 
 /**
- * Deletes a user config.
- * @param user The user's Discord user ID.
+ * Deletes a Hibiki user configuration object by user ID.
+ * @param user The unique Discord user ID to delete a configuration for.
+ * @returns A boolean indicating success or failure.
  */
 
-export async function deleteUserConfig(user: Snowflake) {
+export async function deleteUserConfig(user: string) {
   try {
     await db.transaction(async (query) => {
       await query.delete(userConfig).where(eq(userConfig.user_id, user));
     });
+
+    return true;
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error deleting user config ${user}: ${error.message}`);
     captureError(error, {
       user: user,
     });
+
+    return false;
   }
 }
 
 /**
- * Updates a user config.
- * @param user The user's Discord user ID.
- * @param config A valid user configuration object.
+ * Updates a Hibiki user configuration object by user ID.
+ * @param guild The unique Discord user ID to delete a configuration for.
+ * @param config A valid Hibiki user configuration object to insert.
+ * @returns A boolean indicating success or failure.
  */
 
-export async function updateUserConfig(user: Snowflake, config: UserConfig) {
+export async function updateUserConfig(user: string, config: HibikiUserConfig) {
   try {
     // Checks for an existing config
     const existingConfig = await getUserConfig(user);
@@ -73,6 +78,8 @@ export async function updateUserConfig(user: Snowflake, config: UserConfig) {
     await (existingConfig?.user_id
       ? db.update(userConfig).set(config).where(eq(userConfig.user_id, user))
       : db.insert(userConfig).values(config).onConflictDoNothing());
+
+    return true;
   } catch (err) {
     const error = parseError(err);
     logger.error(`Error updating user config ${user}: ${error.message}`);
@@ -80,22 +87,7 @@ export async function updateUserConfig(user: Snowflake, config: UserConfig) {
       config: config,
       user: user,
     });
-  }
-}
 
-/**
- * Creates a new user config.
- * @param user The user's Discord user ID.
- */
-
-export async function createUserConfig(user: Snowflake) {
-  try {
-    await db.insert(userConfig).values({ user_id: user }).onConflictDoNothing();
-  } catch (err) {
-    const error = parseError(err);
-    logger.error(`Error creating user config ${user}: ${error.message}`);
-    captureError(error, {
-      user: user,
-    });
+    return false;
   }
 }

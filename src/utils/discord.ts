@@ -1,6 +1,6 @@
 /**
  * @file Utilities interacting with Discord or Discord.js directly.
- * @author Espi Marisa
+ * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
 
@@ -8,6 +8,7 @@ import type { ShardingManager } from "discord.js";
 
 /**
  * Gets the total number of cached guilds across all shards.
+ * @param sharder The sharding manager to use.
  * @returns The total number of cached guilds across all shards.
  */
 
@@ -25,6 +26,7 @@ export async function getTotalCachedGuilds(sharder: ShardingManager) {
 
 /**
  * Gets the total number of cached users across all guilds.
+ * @param sharder The sharding manager to use.
  * @returns The total number of cached users across all guilds.
  */
 
@@ -42,6 +44,7 @@ export async function getTotalCachedUsers(sharder: ShardingManager) {
 
 /**
  * Gets the total number of guilds across all shards.
+ * @param sharder The sharding manager to use.
  * @returns The total number of guilds across all shards.
  */
 

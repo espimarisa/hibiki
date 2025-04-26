@@ -1,13 +1,13 @@
 /**
- * @file Event listener for guildCreate.
+ * @file Event listener for guildDelete.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */
 
-import { bot } from "@/root/bot.js";
-import { HibikiColors } from "@/utils/constants.js";
-import { env } from "@/utils/env.js";
-import { logger } from "@/utils/logger.js";
+import { bot } from "@root/bot.js";
+import { HibikiColors } from "@utils/constants.js";
+import { env } from "@utils/env.js";
+import { logger } from "@utils/logger.js";
 import {
   ChannelType,
   EmbedBuilder,
@@ -16,11 +16,10 @@ import {
   time,
 } from "discord.js";
 
-export const guildCreate: HibikiListener<"guildCreate"> = {
-  event: "guildCreate",
-  once: false,
+export const guildDelete: HibikiEvent<"guildDelete"> = {
+  event: "guildDelete",
 
-  async runListener(guild: Guild) {
+  async handle(guild: Guild) {
     // Gets the guild owner
     const owner = await guild.fetchOwner();
 
@@ -34,7 +33,7 @@ export const guildCreate: HibikiListener<"guildCreate"> = {
       ? `${owner.user.username} (${owner.id})`
       : owner.id || "Unknown";
 
-    logger.info(`Added to guild ${guildName} owned by ${guildOwner}`);
+    logger.info(`Removed from guild ${guildName} owned by ${guildOwner}`);
 
     // Send a message to DISCORD_DEV_CHANNEL_ID if set
     if (env.DISCORD_DEV_CHANNEL_ID && env.DISCORD_DEV_GUILD_ID) {
@@ -46,7 +45,7 @@ export const guildCreate: HibikiListener<"guildCreate"> = {
 
       // Creates the embed
       const embed = new EmbedBuilder()
-        .setTitle(`✅ Added to guild: ${guildName}`)
+        .setTitle(`❌ Removed from guild: ${guildName}`)
         .setColor(HibikiColors.Success)
         .addFields(
           {
