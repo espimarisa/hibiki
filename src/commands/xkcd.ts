@@ -4,16 +4,16 @@
  * @license zlib
  */
 
-import type { XKCDResponse } from "@typings/endpoints.js";
-import { HibikiColors, MessageLimits } from "@utils/constants.js";
-import { sendErrorReply } from "@utils/error.js";
-import { hFetch } from "@utils/fetch.js";
-import { trimContent } from "@utils/format.js";
-import { tO } from "@utils/i18n.js";
+import type { HibikiSlashCommand } from "@/helpers/command.js";
+import { HibikiColors, MessageLimits } from "@/utils/constants.js";
+import { sendErrorReply } from "@/utils/error.js";
+import { hFetch } from "@/utils/fetch.js";
+import { trimContent } from "@/utils/format.js";
+import { tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { t } from "i18next";
 
-export const xkcdCommand: HibikiSlashCommand = {
+export const xkcdCommand = {
   data: new SlashCommandBuilder()
     .setName("xkcd")
     .setNameLocalizations(tO("commands:XKCD_NAME"))
@@ -104,4 +104,23 @@ export const xkcdCommand: HibikiSlashCommand = {
       ],
     });
   },
+} satisfies HibikiSlashCommand;
+
+/**
+ * XKCD comic API response.
+ * @see https://xkcd.com/info.0.json
+ */
+
+type XKCDResponse = {
+  alt: string;
+  day: number;
+  img: string;
+  link: string;
+  month: number;
+  news: string;
+  num: number;
+  safe_title: string;
+  title: string;
+  transcript: string;
+  year: number;
 };

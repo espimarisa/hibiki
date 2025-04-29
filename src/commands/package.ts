@@ -4,13 +4,13 @@
  * @license zlib
  */
 
+import type { HibikiSlashCommand } from "@/helpers/command.js";
+import { MessageLimits } from "@/utils/constants.js";
+import { sendErrorReply } from "@/utils/error.js";
+import { hFetch } from "@/utils/fetch.js";
+import { trimContent } from "@/utils/format.js";
+import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, TimestampStyles, time } from "@discordjs/builders";
-import type { AURPackage, PartialNPMPackage } from "@typings/endpoints.js";
-import { MessageLimits } from "@utils/constants.js";
-import { sendErrorReply } from "@utils/error.js";
-import { hFetch } from "@utils/fetch.js";
-import { trimContent } from "@utils/format.js";
-import { t, tO } from "@utils/i18n.js";
 import { SlashCommandBuilder } from "discord.js";
 
 const aurAPIURL = "https://aur.archlinux.org/rpc/v5/info?arg[]=";
@@ -20,7 +20,7 @@ const archLogoImage = "https://i.imgur.com/Xl0n1Dk.png";
 const npmLogoColor = 0xcc3534;
 const npmLogoImage = "https://i.imgur.com/KHy3WZ0.png";
 
-export const packageCommand: HibikiSlashCommand = {
+export const packageCommand = {
   data: new SlashCommandBuilder()
     .setName("package")
     .setNameLocalizations(tO("commands:PACKAGE_NAME"))
@@ -385,4 +385,73 @@ export const packageCommand: HibikiSlashCommand = {
     // Sends the interaction
     await interaction.followUp({ embeds: [embed] });
   },
+} satisfies HibikiSlashCommand;
+
+/**
+ * AUR package response data.
+ * @see https://wiki.archlinux.org/title/Aurweb_RPC_interface#1.2.1
+ */
+
+type AURPackage = {
+  results: [
+    {
+      CheckDepends?: string[];
+      Conflicts?: string[];
+      Depends?: string[];
+      Description?: string;
+      FirstSubmitted?: number;
+      Groups?: string[];
+      ID: number;
+      Keywords?: string[];
+      LastModified?: number;
+      License?: string[];
+      Maintainer?: string;
+      MakeDepends?: string[];
+      Name: string;
+      NumVotes?: number;
+      OptDepends?: string[];
+      OutOfDate?: boolean;
+      PackageBase?: string;
+      PackageBaseID?: number;
+      Popularity?: number;
+      Provides?: string[];
+      Replaces?: string[];
+      URL?: string;
+      URLPath?: string;
+      Version?: string;
+    },
+  ];
+};
+
+/**
+ * NPM package data response.
+ * @see https://docs.npmjs.com/cli/v10/configuring-npm/package-json#people-fields-author-contributors
+ */
+
+type PartialNPMPackage = {
+  _id: string;
+  author?: NPMContact | string;
+  config?: Record<string, unknown>;
+  cpu?: string[];
+  deprecated?: string;
+  description?: string;
+  files?: string[];
+  homepage?: string;
+  keywords?: string[];
+  license?: string;
+  maintainers?: NPMContact[];
+  name: string;
+  os?: string[];
+  version: string;
+};
+
+/**
+ * NPM package contact details.
+ * @see https://docs.npmjs.com/cli/v10/configuring-npm/package-json#people-fields-author-contributors
+ */
+
+type NPMContact = {
+  email?: string;
+  name: string;
+  url?: string;
 };

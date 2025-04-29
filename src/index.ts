@@ -4,14 +4,16 @@
  * @license zlib
  */
 
+import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { HibikiEvent, HibikiListener } from "@/helpers/event.js";
+import { bot } from "@/root/bot.js";
+import { env } from "@/root/utils/env.js";
+import { captureError, initSentry, parseError } from "@/utils/error.js";
+import { getDirname, loadCommands, loadEvents } from "@/utils/fs.js";
+import { initI18Next } from "@/utils/i18n.js";
+import { logger } from "@/utils/logger.js";
 import { hostname } from "node:os";
 import { join } from "node:path";
-import { bot } from "@root/bot.js";
-import { env } from "@utils/env.js";
-import { captureError, initSentry, parseError } from "@utils/error.js";
-import { getDirname, loadCommands, loadEvents } from "@utils/fs.js";
-import { initI18Next } from "@utils/i18n.js";
-import { logger } from "@utils/logger.js";
 import { type ClientUser, Collection, ShardingManager } from "discord.js";
 
 // Gets the root directory and primary bot file

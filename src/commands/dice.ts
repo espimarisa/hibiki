@@ -4,11 +4,12 @@
  * @license zlib
  */
 
-import { HibikiColors } from "@utils/constants.js";
-import { t, tO } from "@utils/i18n.js";
+import type { HibikiSlashCommand } from "@/helpers/command.js";
+import { HibikiColors } from "@/utils/constants.js";
+import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
-export const diceCommand: HibikiSlashCommand = {
+export const diceCommand = {
   data: new SlashCommandBuilder()
     .setName("dice")
     .setNameLocalizations(tO("commands:DICE_NAME"))
@@ -46,4 +47,4 @@ export const diceCommand: HibikiSlashCommand = {
       ],
     });
   },
-};
+} satisfies HibikiSlashCommand;

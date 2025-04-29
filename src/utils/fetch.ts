@@ -4,8 +4,8 @@
  * @license zlib
  */
 
-import { captureError, parseError } from "@utils/error.js";
-import { logger } from "@utils/logger.js";
+import { captureError, parseError } from "@/utils/error.js";
+import { logger } from "@/utils/logger.js";
 
 /**
  * Fetches a network resource (wrapper around native fetch()).

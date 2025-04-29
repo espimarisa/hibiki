@@ -4,14 +4,16 @@
  * @license zlib
  */
 
-import { captureError, parseError, sendErrorReply } from "@utils/error.js";
-import { logger } from "@utils/logger.js";
-import type { CommandInteraction, Interaction } from "discord.js";
+import type { HibikiEvent } from "@/helpers/event.js";
+import { captureError, parseError, sendErrorReply } from "@/utils/error.js";
+import { logger } from "@/utils/logger.js";
+import type { CommandInteraction } from "discord.js";
+import type { HibikiSlashCommand } from "../helpers/command.js";
 
 export const interactionCreate: HibikiEvent<"interactionCreate"> = {
   event: "interactionCreate",
 
-  async handle(interaction: Interaction) {
+  async handle(interaction) {
     // Only process supported interaction types
     if (!(interaction.isButton() || interaction.isCommand())) {
       return;
@@ -53,11 +55,11 @@ async function runCommand(interaction: CommandInteraction) {
     try {
       // Runs the command
       await command.run(interaction);
-      logger.info(`${user} ran command interaction ${commandName} in ${guild}`);
+      logger.info(`${user} ran slash command ${commandName} in ${guild}`);
     } catch (err) {
       const error = parseError(err);
       logger.error(
-        `Error running command interaction ${commandName}: ${error.message}`,
+        `Error running slash command ${commandName}: ${error.message}`,
       );
 
       // Captures the Error with Sentry

@@ -1,5 +1,5 @@
 /**
- * @file Additional typing definitions for Discord.js.
+ * @file Extended typing definitions for Discord.js.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */

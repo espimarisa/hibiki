@@ -1,5 +1,5 @@
 /**
- * @file Utilities interacting with Discord or Discord.js directly.
+ * @file Helpers interacting with Discord or Discord.js directly.
  * @author Espi Marisa <contact@espi.me>
  * @license zlib
  */

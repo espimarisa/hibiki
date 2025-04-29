@@ -4,11 +4,12 @@
  * @license zlib
  */
 
-import { HibikiColors } from "@utils/constants.js";
-import { t, tO } from "@utils/i18n.js";
+import type { HibikiSlashCommand } from "@/helpers/command.js";
+import { HibikiColors } from "@/utils/constants.js";
+import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder, SnowflakeUtil } from "discord.js";
 
-export const pingCommand: HibikiSlashCommand = {
+export const pingCommand = {
   data: new SlashCommandBuilder()
     .setName("ping")
     .setNameLocalizations(tO("commands:PING_NAME"))
@@ -37,4 +38,4 @@ export const pingCommand: HibikiSlashCommand = {
       ],
     });
   },
-};
+} satisfies HibikiSlashCommand;

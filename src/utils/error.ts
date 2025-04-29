@@ -6,16 +6,17 @@
 
 /** biome-ignore-all lint/nursery/noProcessGlobal: Bun's process.on() is different from node:process.on */
 
+import { env } from "@/root/utils/env.js";
+import { HibikiColors } from "@/utils/constants.js";
+import { logger } from "@/utils/logger.js";
 import { type BunOptions, captureException, captureMessage } from "@sentry/bun";
-import { HibikiColors } from "@utils/constants.js";
-import { env } from "@utils/env.js";
-import { logger } from "@utils/logger.js";
 import {
   type CommandInteraction,
   EmbedBuilder,
   MessageFlags,
 } from "discord.js";
 import { init, t } from "i18next";
+import type { DictionaryKey } from "../@types/i18next.js";
 
 const errorFallbackMessage = "Unknown";
 let sentryConnected = false;

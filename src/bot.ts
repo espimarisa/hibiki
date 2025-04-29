@@ -4,10 +4,10 @@
  * @license zlib
  */
 
-import { env } from "@utils/env.js";
-import { parseError } from "@utils/error.js";
-import { captureError } from "@utils/error.js";
-import { logger } from "@utils/logger.js";
+import { env } from "@/root/utils/env.js";
+import { parseError } from "@/utils/error.js";
+import { captureError } from "@/utils/error.js";
+import { logger } from "@/utils/logger.js";
 import {
   ActivityType,
   Client,
@@ -23,6 +23,7 @@ const intents = [
   GatewayIntentBits.GuildMessages,
   GatewayIntentBits.GuildMembers,
   GatewayIntentBits.MessageContent,
+  GatewayIntentBits.GuildMessageReactions,
 ];
 
 /** Primary Discord.js client instance. */

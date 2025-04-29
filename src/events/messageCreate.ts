@@ -4,13 +4,13 @@
  * @license zlib
  */
 
-import type { Message } from "discord.js";
+import type { HibikiEvent } from "@/helpers/event.js";
 
 export const messageCreate: HibikiEvent<"messageCreate"> = {
   event: "messageCreate",
 
   // biome-ignore lint/suspicious/useAwait: <explanation>
-  async handle(msg: Message) {
+  async handle(msg) {
     // Do not process invalid message data
     if (!msg.id || msg.content.length === 0) {
       return;

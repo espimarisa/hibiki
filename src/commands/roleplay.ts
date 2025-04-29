@@ -4,16 +4,18 @@
  * @license zlib
  */
 
-import { HibikiColors } from "@utils/constants.js";
-import { sendErrorReply } from "@utils/error.js";
-import { t, tO } from "@utils/i18n.js";
+import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { DictionaryKey } from "@/types/i18next.js";
+import { HibikiColors } from "@/utils/constants.js";
+import { sendErrorReply } from "@/utils/error.js";
+import { t, tO } from "@/utils/i18n.js";
 import {
   EmbedBuilder,
   InteractionContextType,
   SlashCommandBuilder,
 } from "discord.js";
 
-export const roleplaycommands: HibikiSlashCommand = {
+export const roleplaycommands = {
   data: new SlashCommandBuilder()
     .setName("roleplay")
     .setNameLocalizations(tO("commands:ROLEPLAY_NAME"))
@@ -190,4 +192,4 @@ export const roleplaycommands: HibikiSlashCommand = {
       ],
     });
   },
-};
+} satisfies HibikiSlashCommand;

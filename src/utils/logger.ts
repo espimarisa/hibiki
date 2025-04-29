@@ -4,10 +4,10 @@
  * @license zlib
  */
 
+import { env } from "@/root/utils/env.js";
+import { getDirname } from "@/utils/fs.js";
 import { join } from "node:path";
 import type { PinoRotateFileOptions } from "@chatsift/pino-rotate-file";
-import { env } from "@utils/env.js";
-import { getDirname } from "@utils/fs.js";
 import { multistream, pino, transport } from "pino";
 import type { PrettyOptions } from "pino-pretty";
 

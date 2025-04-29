@@ -4,11 +4,13 @@
  * @license zlib
  */
 
+import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { HibikiEvent, HibikiListener } from "@/helpers/event.js";
+import { parseError } from "@/utils/error.js";
+import { logger } from "@/utils/logger.js";
 import type { Dirent, PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
-import { parseError } from "@utils/error.js";
-import { logger } from "@utils/logger.js";
 import type { Collection } from "discord.js";
 
 const ESM_FILETYPE_REGEX = /\.(mjs|mts|ts|js)$/i;

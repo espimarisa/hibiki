@@ -4,10 +4,11 @@
  * @license zlib
  */
 
+import type { DictionaryKey } from "@/types/i18next.js";
+import { captureError, parseError } from "@/utils/error.js";
+import { logger } from "@/utils/logger.js";
 import type { PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
-import { captureError, parseError } from "@utils/error.js";
-import { logger } from "@utils/logger.js";
 import i18next, { type TOptions } from "i18next";
 import i18NexFsBackend, { type FsBackendOptions } from "i18next-fs-backend";
 

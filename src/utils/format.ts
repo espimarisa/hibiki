@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import type { MessageLimits } from "@utils/constants.js";
+import type { MessageLimits } from "@/utils/constants.js";
 import { intervalToDuration } from "date-fns";
 
 /**

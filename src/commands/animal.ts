@@ -4,13 +4,15 @@
  * @license zlib
  */
 
-import { HibikiColors } from "@utils/constants.js";
-import { sendErrorReply } from "@utils/error.js";
-import { hFetch } from "@utils/fetch.js";
-import { t, tO } from "@utils/i18n.js";
+import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { DictionaryKey } from "@/types/i18next.js";
+import { HibikiColors } from "@/utils/constants.js";
+import { sendErrorReply } from "@/utils/error.js";
+import { hFetch } from "@/utils/fetch.js";
+import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
-export const animalCommand: HibikiSlashCommand = {
+export const animalCommand = {
   data: new SlashCommandBuilder()
     .setName("animal")
     .setNameLocalizations(tO("commands:ANIMAL_NAME"))
@@ -103,4 +105,4 @@ export const animalCommand: HibikiSlashCommand = {
       ],
     });
   },
-};
+} satisfies HibikiSlashCommand;

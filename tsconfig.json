@@ -37,13 +37,14 @@
     "noUnusedParameters": true,
     "outDir": "./dist",
     "paths": {
-      "@commands/*": ["./src/commands/*"],
-      "@db/*": ["./src/db/*"],
-      "@events/*": ["./src/events/*"],
-      "@locales/*": ["./locales/*"],
-      "@root/*": ["./src/*"],
-      "@typings/*": ["./src/typings/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@/commands/*": ["./src/commands/*"],
+      "@/db/*": ["./src/db/*"],
+      "@/events/*": ["./src/events/*"],
+      "@/helpers/*": ["./src/helpers/*"],
+      "@/locales/*": ["./locales/*"],
+      "@/root/*": ["./src/*"],
+      "@/types/*": ["./src/@types/*"],
+      "@/utils/*": ["./src/utils/*"]
     },
     "pretty": true,
     "removeComments": true,
@@ -59,7 +60,7 @@
     "strictPropertyInitialization": true,
     "target": "ESNext",
     "tsBuildInfoFile": "./.tsbuildinfo",
-    "types": ["@types/bun", "./src/typings"],
+    "types": ["@types/bun"],
     "useUnknownInCatchVariables": true,
     "verbatimModuleSyntax": true
   },

@@ -4,7 +4,8 @@
  * @license zlib
  */
 
-import { t } from "@utils/i18n.js";
+import type { DictionaryKey } from "@/types/i18next.js";
+import { t } from "@/utils/i18n.js";
 import type { Duration } from "date-fns";
 
 /**

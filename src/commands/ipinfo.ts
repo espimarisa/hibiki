@@ -4,18 +4,18 @@
  * @license zlib
  */
 
-import type { IPInfoResponse } from "@typings/endpoints.js";
-import { HibikiColors } from "@utils/constants.js";
-import { env } from "@utils/env.js";
-import { sendErrorReply } from "@utils/error.js";
-import { hFetch } from "@utils/fetch.js";
-import { t, tO } from "@utils/i18n.js";
+import type { HibikiSlashCommand } from "@/helpers/command.js";
+import { env } from "@/root/utils/env.js";
+import { HibikiColors } from "@/utils/constants.js";
+import { sendErrorReply } from "@/utils/error.js";
+import { hFetch } from "@/utils/fetch.js";
+import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { z } from "zod";
 
 const abuseAPIBaseURL = "https://api.abuseipdb.com/api/v2/check?ipAddress=";
 
-export const ipinfoCommand: HibikiSlashCommand = {
+export const ipinfoCommand = {
   data: new SlashCommandBuilder()
     .setName("ipinfo")
     .setNameLocalizations(tO("commands:IPINFO_NAME"))
@@ -223,4 +223,24 @@ export const ipinfoCommand: HibikiSlashCommand = {
     // Sends the interaction
     await interaction.followUp({ embeds: [embed] });
   },
+} satisfies HibikiSlashCommand;
+
+/**
+ * Possible IPInfo.IO API response.
+ * @see https://ipinfo.io/developers#json-response
+ */
+
+type IPInfoResponse = {
+  bogon?: boolean;
+  ip: string;
+  hostname?: string;
+  city?: string;
+  region?: string;
+  country?: string;
+  loc?: string;
+  org?: string;
+  postal?: string;
+  timezone?: string;
+  readme?: string;
+  anycast?: boolean;
 };

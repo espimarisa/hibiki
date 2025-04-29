@@ -14,3 +14,6 @@ export const userConfig = pgTable("user_config", {
   // The user's unique Discord user ID.
   user_id: text("user_id").notNull(),
 });
+
+/** Typing for a valid Hibiki user config. */
+export type HibikiUserConfig = typeof userConfig.$inferSelect;

@@ -5,14 +5,15 @@
  * @todo Register other things.
  */
 
+import type { HibikiSlashCommand } from "@/helpers/command.js";
+import { env } from "@/root/utils/env.js";
+import { parseError } from "@/utils/error.js";
+import { getDirname, loadCommands } from "@/utils/fs.js";
+import { initI18Next } from "@/utils/i18n.js";
+import { logger } from "@/utils/logger.js";
 import { join } from "node:path";
 import { exit } from "node:process";
 import { parseArgs } from "node:util";
-import { env } from "@utils/env.js";
-import { parseError } from "@utils/error.js";
-import { getDirname, loadCommands } from "@utils/fs.js";
-import { initI18Next } from "@utils/i18n.js";
-import { logger } from "@utils/logger.js";
 import {
   Collection,
   REST,

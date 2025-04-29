@@ -145,80 +145,6 @@
         "useFragmentSyntax": "error",
         "useImportType": "error",
         "useLiteralEnumMembers": "error",
-        "useNamingConvention": {
-          "level": "info",
-          "options": {
-            "conventions": [
-              {
-                "formats": [
-                  "CONSTANT_CASE",
-                  "PascalCase",
-                  "camelCase",
-                  "snake_case"
-                ],
-                "selector": {
-                  "kind": "typeProperty"
-                }
-              },
-              {
-                "formats": [
-                  "CONSTANT_CASE",
-                  "PascalCase",
-                  "camelCase",
-                  "snake_case"
-                ],
-                "selector": {
-                  "kind": "objectLiteralGetter"
-                }
-              },
-              {
-                "formats": [
-                  "CONSTANT_CASE",
-                  "PascalCase",
-                  "camelCase",
-                  "snake_case"
-                ],
-                "selector": {
-                  "kind": "objectLiteralMember"
-                }
-              },
-              {
-                "formats": [
-                  "CONSTANT_CASE",
-                  "PascalCase",
-                  "camelCase",
-                  "snake_case"
-                ],
-                "selector": {
-                  "kind": "objectLiteralMethod"
-                }
-              },
-              {
-                "formats": [
-                  "CONSTANT_CASE",
-                  "PascalCase",
-                  "camelCase",
-                  "snake_case"
-                ],
-                "selector": {
-                  "kind": "objectLiteralProperty"
-                }
-              },
-              {
-                "formats": [
-                  "CONSTANT_CASE",
-                  "PascalCase",
-                  "camelCase",
-                  "snake_case"
-                ],
-                "selector": {
-                  "kind": "objectLiteralSetter"
-                }
-              }
-            ],
-            "strictCase": false
-          }
-        },
         "useNodeAssertStrict": "error",
         "useNodejsImportProtocol": "error",
         "useNumberNamespace": "error",
@@ -247,17 +173,5 @@
         "useNumberToFixedDigitsArgument": "error"
       }
     }
-  },
-  "overrides": [
-    {
-      "includes": ["src/**/*.d.ts"],
-      "linter": {
-        "rules": {
-          "style": {
-            "useNamingConvention": "off"
-          }
-        }
-      }
-    }
-  ]
+  }
 }

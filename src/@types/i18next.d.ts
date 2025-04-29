@@ -4,9 +4,9 @@
  * @license zlib
  */
 
-import type commands from "@locales/en-US/commands.json";
-import type common from "@locales/en-US/common.json";
-import type errors from "@locales/en-US/errors.json";
+import type commands from "@/locales/en-US/commands.json";
+import type common from "@/locales/en-US/common.json";
+import type errors from "@/locales/en-US/errors.json";
 
 /** A valid locale dictionary key included in a localization file. */
 export type DictionaryKey =

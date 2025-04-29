@@ -4,22 +4,17 @@
  * @license zlib
  */
 
-import { bot } from "@root/bot.js";
-import { HibikiColors } from "@utils/constants.js";
-import { env } from "@utils/env.js";
-import { logger } from "@utils/logger.js";
-import {
-  ChannelType,
-  EmbedBuilder,
-  type Guild,
-  TimestampStyles,
-  time,
-} from "discord.js";
+import type { HibikiEvent } from "@/helpers/event.js";
+import { bot } from "@/root/bot.js";
+import { env } from "@/root/utils/env.js";
+import { HibikiColors } from "@/utils/constants.js";
+import { logger } from "@/utils/logger.js";
+import { ChannelType, EmbedBuilder, TimestampStyles, time } from "discord.js";
 
 export const guildCreate: HibikiEvent<"guildCreate"> = {
   event: "guildCreate",
 
-  async handle(guild: Guild) {
+  async handle(guild) {
     // Gets the guild owner
     const owner = await guild.fetchOwner();
 
