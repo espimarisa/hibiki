@@ -39,6 +39,7 @@
     "bracketSameLine": true,
     "indentStyle": "space"
   },
+  "html": {},
   "javascript": {
     "globals": ["Bun"]
   },
