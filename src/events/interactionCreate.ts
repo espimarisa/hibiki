@@ -8,7 +8,7 @@ import type { HibikiEvent } from "@/helpers/event.js";
 import { captureError, parseError, sendErrorReply } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
 import type { CommandInteraction } from "discord.js";
-import type { HibikiSlashCommand } from "../helpers/command.js";
+import type { HibikiCommand } from "../helpers/command.js";
 
 export const interactionCreate: HibikiEvent<"interactionCreate"> = {
   event: "interactionCreate",
@@ -19,7 +19,7 @@ export const interactionCreate: HibikiEvent<"interactionCreate"> = {
       return;
     }
 
-    // Runs interaction application command interactions
+    // Runs command interactions
     if (interaction.isCommand()) {
       await runCommand(interaction);
     }
@@ -27,7 +27,7 @@ export const interactionCreate: HibikiEvent<"interactionCreate"> = {
 };
 
 /**
- * Runs an interaction command.
+ * Runs a command.
  * @param interaction The interaction to run the command on.
  */
 
@@ -47,9 +47,9 @@ async function runCommand(interaction: CommandInteraction) {
     ? `${interaction.guild.name} (${interaction.guild.id})`
     : "DMs";
 
-  // Slash (chat input) command handler
+  // Slash command handler
   if (interaction.isChatInputCommand()) {
-    const command = commandToRun as HibikiSlashCommand;
+    const command = commandToRun as HibikiCommand;
     const commandName = command.data.name;
 
     try {
@@ -58,9 +58,7 @@ async function runCommand(interaction: CommandInteraction) {
       logger.info(`${user} ran slash command ${commandName} in ${guild}`);
     } catch (err) {
       const error = parseError(err);
-      logger.error(
-        `Error running slash command ${commandName}: ${error.message}`,
-      );
+      logger.error(`Error running command ${commandName}: ${error.message}`);
 
       // Captures the Error with Sentry
       captureError(err, {
@@ -78,7 +76,10 @@ async function runCommand(interaction: CommandInteraction) {
         {
           error: error.message,
         },
-      );
+      ).catch(() => {
+        logger.warn(`Failed to send error reply in ${guild}`);
+        return;
+      });
     }
   }
 }

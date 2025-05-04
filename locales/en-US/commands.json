@@ -1,6 +1,6 @@
 {
   "ABOUT_DESCRIPTION": "Gets information and current statistics about Hibiki.",
-  "ABOUT_DETAILS": "I'm a Discord bot with polished community, development, and informational tools. \n\nMade with love by [Espi Marisa](https://espi.me). 💖",
+  "ABOUT_DETAILS": "I'm a Discord bot with polished community and developer tools. \n\nMade with love by [Espi Marisa](https://espi.me). 💖",
   "ABOUT_LINKS": "[GitHub](https://github.com/espimarisa/hibiki) | [Invite](https://discord.com/api/oauth2/authorize?client_id={{id}}&permissions={{permissions}}&scope=bot%20applications.commands) | [Privacy](https://github.com/espimarisa/hibiki?tab=readme-ov-file#privacy-policy) | [Donate](https://ko-fi.com/espimarisa)",
   "ABOUT_NAME": "about",
   "ABOUT_STATISTICS_DETAILS": "{{servers}} servers \n{{users}} cached users \n{{commands}} loaded commands",

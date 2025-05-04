@@ -5,7 +5,7 @@
  */
 
 import type { HibikiEvent } from "@/helpers/event.js";
-import { bot } from "@/root/bot.js";
+import { client } from "@/root/client.js";
 import { env } from "@/root/utils/env.js";
 import { HibikiColors } from "@/utils/constants.js";
 import { logger } from "@/utils/logger.js";
@@ -33,7 +33,7 @@ export const guildDelete: HibikiEvent<"guildDelete"> = {
     // Send a message to DISCORD_DEV_CHANNEL_ID if set
     if (env.DISCORD_DEV_CHANNEL_ID && env.DISCORD_DEV_GUILD_ID) {
       // Gets the channel
-      const channel = await bot.channels.fetch(env.DISCORD_DEV_CHANNEL_ID);
+      const channel = await client.channels.fetch(env.DISCORD_DEV_CHANNEL_ID);
       if (!channel || channel.type !== ChannelType.GuildText) {
         return;
       }

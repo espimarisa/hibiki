@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { HibikiCommand } from "@/helpers/command.js";
 import { env } from "@/root/utils/env.js";
 import { HibikiColors } from "@/utils/constants.js";
 import { sendErrorReply } from "@/utils/error.js";
@@ -223,7 +223,7 @@ export const ipinfoCommand = {
     // Sends the interaction
     await interaction.followUp({ embeds: [embed] });
   },
-} satisfies HibikiSlashCommand;
+} satisfies HibikiCommand;
 
 /**
  * Possible IPInfo.IO API response.

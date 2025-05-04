@@ -5,7 +5,7 @@
  * @todo Register other things.
  */
 
-import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { HibikiCommand } from "@/helpers/command.js";
 import { env } from "@/root/utils/env.js";
 import { parseError } from "@/utils/error.js";
 import { getDirname, loadCommands } from "@/utils/fs.js";
@@ -28,7 +28,7 @@ const COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands");
 const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
 
 // Creates collections for storing modules in
-const hibikiCommands = new Collection<string, HibikiSlashCommand>();
+const hibikiCommands = new Collection<string, HibikiCommand>();
 
 // Determines if we should register to a development guild
 const isDevelop = env.NODE_ENV === "development" && env.DISCORD_DEV_GUILD_ID;

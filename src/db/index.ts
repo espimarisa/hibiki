@@ -15,7 +15,10 @@ import postgres from "postgres";
 // Creates a PostgreSQL client
 const pg = postgres(env.POSTGRES_URL);
 
-/** Drizzle's PostgreSQL database client. */
+/**
+ * Creates a Drizzle database client.
+ */
+
 export const db = drizzle(pg, {
   schema: {
     ...guildConfig,

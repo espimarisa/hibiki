@@ -1,25 +1,24 @@
-* text=auto
+* text=auto eol=lf
 
-*.bash text eol=lf
-*.css text diff=css
-*.htm text diff=html
-*.html text diff=html
-*.scss text diff=css
-*.sh text eol=lf
-*.markdown text diff=markdown
-*.md text diff=markdown
-*.lock text -diff
-tsconfig.json linguist-language=JSON-with-Comments
-
-*.gif binary
-*.ico binary
-*.jpg binary
-*.jpeg binary
-*.png binary
-*.svg text
-*.webp binary
-*.ttf binary
+*.bmp binary
 *.eot binary
+*.font binary
+*.gif binary
+*.heic binary
+*.heif binary
+*.ico binary
+*.jpeg binary
+*.jpg binary
+*.lock -diff -merge
+*.md text eol=lf diff=markdown
 *.otf binary
+*.pdf binary diff=pdf
+*.png binary
+*.sh text eol=lf executable
+*.tiff binary
+*.ttf binary
+*.webm binary
+*.webp binary
 *.woff binary
 *.woff2 binary
+tsconfig.json linguist-language=JSON-with-Comments

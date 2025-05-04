@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { HibikiCommand } from "@/helpers/command.js";
 import { MessageLimits } from "@/utils/constants.js";
 import { sendErrorReply } from "@/utils/error.js";
 import { hFetch } from "@/utils/fetch.js";
@@ -385,7 +385,7 @@ export const packageCommand = {
     // Sends the interaction
     await interaction.followUp({ embeds: [embed] });
   },
-} satisfies HibikiSlashCommand;
+} satisfies HibikiCommand;
 
 /**
  * AUR package response data.

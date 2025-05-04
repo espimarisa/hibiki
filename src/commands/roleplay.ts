@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { HibikiCommand } from "@/helpers/command.js";
 import type { DictionaryKey } from "@/types/i18next.js";
 import { HibikiColors } from "@/utils/constants.js";
 import { sendErrorReply } from "@/utils/error.js";
@@ -192,4 +192,4 @@ export const roleplaycommands = {
       ],
     });
   },
-} satisfies HibikiSlashCommand;
+} satisfies HibikiCommand;

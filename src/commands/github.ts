@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { HibikiCommand } from "@/helpers/command.js";
 import { HibikiColors } from "@/utils/constants.js";
 import { sendErrorReply } from "@/utils/error.js";
 import { hFetch } from "@/utils/fetch.js";
@@ -354,7 +354,7 @@ export const githubCommand = {
     // Sends the interaction
     await interaction.followUp({ embeds: [embed] });
   },
-} satisfies HibikiSlashCommand;
+} satisfies HibikiCommand;
 
 /**
  * GitHub API user response.

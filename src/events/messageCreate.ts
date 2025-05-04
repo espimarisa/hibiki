@@ -9,7 +9,7 @@ import type { HibikiEvent } from "@/helpers/event.js";
 export const messageCreate: HibikiEvent<"messageCreate"> = {
   event: "messageCreate",
 
-  // biome-ignore lint/suspicious/useAwait: <explanation>
+  // biome-ignore lint/suspicious/useAwait: grr
   async handle(msg) {
     // Do not process invalid message data
     if (!msg.id || msg.content.length === 0) {

@@ -16,7 +16,11 @@ const envSchema = z
     POSTGRES_URL: z
       .string()
       .trim()
-      .min(1, { message: "Missing PostgreSQL URL" }),
+      .url()
+      .refine((url) => url.startsWith("postgresql://"), {
+        message: "POSTGRES_URL does not start with postgresql://",
+      })
+      .default("postgresql://postgres:postgres@127.0.0.1:5432/hibiki"),
   })
   .parse(env);
 

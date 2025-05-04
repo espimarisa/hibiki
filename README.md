@@ -1,64 +1,57 @@
-# [Hibiki Development][hibiki]
+# [Hibiki][hibiki-website]
 
-> This branch is in active development and is not meant for self-hosting or production usage.
+[![License][badge-license]][zlib-license]
+[![Status][badge-checks]][hibiki-checks]
 
-## About
+> Hibiki v4 is currently in active development and is not ready for production usage!
 
-Hibiki is a Discord application that *really needs a better introduction written here*.
+Hibiki is a Discord bot with polished community and developer tools.
+
+## Features
+
+- TODO
 
 ## Invite
 
-You can invite Hibiki to your Discord server [using this install link][install].
+[Add Hibiki to your server][hibiki-invite] (TODO)
 
-The following information in this section applies only to [the official Hibiki instance][hibiki].
+- By using the official Hibiki instance, you agree to our [Terms of Service][terms-of-service] and [Privacy Policy][privacy-policy].
 
-### Terms of Service
+## Support
 
-By installing or interacting with the official Hibiki instance (username `Hibiki#1448`, User ID `493904957523623936`), you agree to abide by this Terms of Service and the associated Privacy Policy.
+[Join Hibiki's support server][hibiki-support] (TODO)
 
-- All usage must comply with [Discord’s Terms of Service][discord-tos] and [Community Guidelines][discord-guidelines].
-- Do not intentionally crash, exploit, or otherwise interfere with the application's functionality.
-- All usage must comply with applicable federal, state (Alabama), and local laws of the United States.
-- We reserve the right to remove the application from any server or user at our discretion, without notice.
+- Support is provided on a best-effort basis, but we're not miracle workers.
+- Support is only for the official Hibiki instance, not for self-hosting. Google is your friend.
 
-### Privacy Policy
+Contact Hibiki's owner if you have any other questions at:
 
-*No personally identifiable information (PII) is stored in Hibiki's database or on its host.*
+- **[Discord][espi-discord]**: `espimarisa`
+- **[Telegram][espi-telegram]**: `espimarisa`
+- **[Matrix][espi-matrix]**: `@espimarisa:matrix.org`
+- **[Email][espi-email]**: `contact <at> espi <dot> me`
 
-When an interaction is run, certain information is stored in-memory to enable application functionality:
+[espi-discord]: https://discord.com/users/647269760782041133 "Discord"
+[espi-email]: mailto:contact@espi.me?q=Hibiki "Email"
+[espi-matrix]: https://matrix.to/#/@espimarisa:matrix.org "Matrix"
+[espi-telegram]: https://t.me/espimarisa "Telegram"
 
-- The username and user ID of the interaction runner
-- The name and server ID where the interaction was run
-- The interaction runner's preferred locale returned from Discord
+## Localization
 
-When the application is added to or removed from a server, the following information is logged to a private Discord channel accessible only to the application owner:
-
-- The server’s creation date
-- The server’s name, icon, and ID
-- The server owner's username and ID
-- The total number of members in the server
-
-When an interaction is run, the following data is logged to the console and stored in log files, which may be retained for up to 30 days for debugging and service reliability:
-
-- The username and user ID of the interaction runner
-- The server name and server ID where the interaction occurred
-- Errors thrown by the application which may include any of the above
-
-### Contact
-
-If you need to contact the application owner, you may do so via the following channels:
-
-- **GitHub**: [espimarisa][hibiki] — preferred for reporting bugs and issues
-- **Discord**: [espimarisa][espi-discord] — please state your reason after sending a friend request
-- **Email**: [contact@espi.me][espi-email] — please include “Hibiki” in the subject line if using email
+TODO
 
 ## License
 
-[zlib](LICENSE)
+[Zlib][zlib-license] excluding [localizations][localizations], which are licensed under [CC-BY-SA 4.0][cc-license].
 
-[hibiki]: https://github.com/espimarisa/hibiki "Hibiki GitHub Repo"
-[install]: https://discord.com/oauth2/authorize?client_id=493904957523623936&permissions=563467534068800&scope=bot%20applications.commands "A link to install Hibiki to a Discord server."
-[discord-tos]: https://discord.com/terms "A link to Discord's Terms of Service."
-[discord-guidelines]: https://discord.com/guidelines "A Link to Discord's community guidelines."
-[espi-discord]: https://discord.com/users/647269760782041133 "A link to Espi's Discord profile."
-[espi-email]: mailto:contact@espi.me?subject=Hibiki "A link to email Espi."
+[cc-license]: ./locales/LICENSE.md "CC-BY-SA 4.0 License"
+[hibiki-invite]: https://add.hibiki.app "Invite URL for Hibiki"
+[hibiki-support]: https://hibiki.app/support "Hibiki's Support Server"
+[hibiki-website]: https://hibiki.app "Hibiki's Website"
+[localizations]: ./locales "Localizations"
+[privacy-policy]: .github/PRIVACY_POLICY.md "Hibiki's Privacy Policy"
+[terms-of-service]: .github/TERMS_OF_SERVICE.md "Hibiki's Terms of Service"
+[zlib-license]: LICENSE.md "Zlib License"
+[badge-license]: https://flat.badgen.net/static/license/Zlib/blue "License badge"
+[badge-checks]: https://flat.badgen.net/github/checks/espimarisa/hibiki/main "Unit testing badge"
+[hibiki-checks]: https://github.com/espimarisa/hibiki/actions/workflows/push.yml "Unit Testing"

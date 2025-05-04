@@ -7,7 +7,7 @@
   "IMAGE_FAILED": "Failed to get image response data. Try again later.",
   "IPINFO_INVALID": "The IP address you provided doesn't seem to be a valid external address.",
   "NO_OPTION": "A valid **{{option}}** needs to be provided.",
-  "XKCD": "No XKCD comic exists with that ID. Try a different one, or leave blank for a random comic.",
   "PACKAGE_QUERY": "No package was found for your query.",
-  "PACKAGE_VERSION": "No version of that package was found."
+  "PACKAGE_VERSION": "No version of that package was found.",
+  "XKCD": "No XKCD comic exists with that ID. Try a different one, or leave blank for a random comic."
 }

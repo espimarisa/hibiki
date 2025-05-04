@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { HibikiCommand } from "@/helpers/command.js";
 import { HibikiColors, MessageLimits } from "@/utils/constants.js";
 import { sendErrorReply } from "@/utils/error.js";
 import { hFetch } from "@/utils/fetch.js";
@@ -104,7 +104,7 @@ export const xkcdCommand = {
       ],
     });
   },
-} satisfies HibikiSlashCommand;
+} satisfies HibikiCommand;
 
 /**
  * XKCD comic API response.

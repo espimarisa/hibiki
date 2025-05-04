@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { HibikiCommand } from "@/helpers/command.js";
 import { HibikiColors } from "@/utils/constants.js";
 import { t, tO } from "@/utils/i18n.js";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
@@ -47,4 +47,4 @@ export const diceCommand = {
       ],
     });
   },
-} satisfies HibikiSlashCommand;
+} satisfies HibikiCommand;

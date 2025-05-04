@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { HibikiCommand } from "@/helpers/command.js";
 import { getTotalCachedUsers, getTotalGuilds } from "@/helpers/discord.js";
 import { env } from "@/root/utils/env.js";
 import { HibikiColors, INVITE_PERMISSIONS } from "@/utils/constants.js";
@@ -103,4 +103,4 @@ export const aboutCommand = {
       ],
     });
   },
-} satisfies HibikiSlashCommand;
+} satisfies HibikiCommand;

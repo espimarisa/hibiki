@@ -5,13 +5,14 @@
  */
 
 import type { Collection } from "discord.js";
+import type { HibikiCommand } from "@/helpers/command.js";
 
 declare module "discord.js" {
   interface Client {
-    /** The collection of loaded commands appended to the client at boot. */
-    commands: Collection<string, HibikiSlashCommand>;
+    /** A collection of loaded Hibiki commands. */
+    commands: Collection<string, HibikiCommand>;
 
-    /** A ShardingManager instance appended to the client at boot. */
+    /** The main ShardingManager instance. */
     sharder: ShardingManager;
   }
 }

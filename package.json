@@ -2,7 +2,7 @@
   "name": "@espimarisa/hibiki",
   "version": "4.0.0-alpha.1",
   "private": true,
-  "description": "A Discord bot with polished community, development, and informational tools.",
+  "description": "A Discord bot with polished community and developer tools.",
   "homepage": "https://github.com/espimarisa/hibiki",
   "bugs": {
     "url": "https://github.com/espimarisa/hibiki/issues"
@@ -20,27 +20,27 @@
   "type": "module",
   "main": "./dist/src/index.js",
   "scripts": {
-    "build": "rm -rf dist && bun run db:generate && tsc",
-    "check": "bun run db:generate && tsc --noEmit",
+    "build": "rm -rf dist && bun db:generate && tsc",
+    "check": "bun db:generate && tsc --noEmit",
     "db:generate": "bun drizzle-kit generate",
     "db:migrate": "bun drizzle-kit migrate",
     "db:push": "bun drizzle-kit push",
-    "dev": "NODE_ENV=development bun db:push && bun run src/index.ts",
-    "dev:register": "NODE_ENV=development bun run src/register.ts",
-    "dev:register:clear": "NODE_ENV=development bun run src/register.ts --clear",
+    "dev": "NODE_ENV=development bun db:generate && bun ./src/index.ts",
+    "dev:register": "NODE_ENV=development bun ./src/register.ts",
+    "dev:register:clear": "NODE_ENV=development bun src/register.ts --clear",
     "format": "biome format --fix .",
     "lint": "biome check .",
     "lint:fix": "biome lint --fix .",
-    "register": "NODE_ENV=production bun run dist/src/register.js",
-    "register:clear": "NODE_ENV=production bun run dist/src/register.js --clear",
-    "start": "NODE_ENV=production bun run dist/src/index.js",
-    "test": "NODE_ENV=development bun run check && bun run lint"
+    "register": "NODE_ENV=production bun ./dist/src/register.js",
+    "register:clear": "NODE_ENV=production bun ./dist/src/register.js --clear",
+    "start": "NODE_ENV=production bun ./dist/src/index.js",
+    "test": "NODE_ENV=test bun check && bun lint"
   },
   "dependencies": {
     "@chatsift/pino-rotate-file": "^0.5.1",
-    "@sentry/bun": "^9.14.0",
+    "@sentry/bun": "^9.15.0",
     "date-fns": "^4.1.0",
-    "discord.js": "^14.19.2",
+    "discord.js": "^14.19.3",
     "drizzle-orm": "^0.43.1",
     "i18next": "^25.0.2",
     "i18next-fs-backend": "^2.6.0",
@@ -51,12 +51,12 @@
     "zod": "^3.24.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.0.0-beta.1",
-    "@types/bun": "^1.2.10",
-    "drizzle-kit": "^0.31.0",
+    "@biomejs/biome": "2.0.0-beta.2",
+    "@types/bun": "^1.2.11",
+    "drizzle-kit": "^0.31.1",
     "typescript": "^5.8.3"
   },
-  "packageManager": "bun@1.2.10",
+  "packageManager": "bun@1.2.11",
   "engines": {
     "bun": ">=1.2.10"
   },

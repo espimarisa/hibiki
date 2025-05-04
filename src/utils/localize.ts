@@ -55,13 +55,13 @@ export function localizeTime(
 
   // List of units
   const units: (keyof LocalizedDuration)[] = [
-    "years",
-    "months",
-    "weeks",
     "days",
     "hours",
     "minutes",
+    "months",
     "seconds",
+    "weeks",
+    "years",
   ];
 
   // Iterates through each unit
@@ -81,11 +81,11 @@ export function localizeTime(
 
 // Type definition for a localized duration response
 type LocalizedDuration = {
-  years?: string;
-  months?: string;
-  weeks?: string;
   days?: string;
   hours?: string;
   minutes?: string;
+  months?: string;
   seconds?: string;
+  weeks?: string;
+  years?: string;
 };

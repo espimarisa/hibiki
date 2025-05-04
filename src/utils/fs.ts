@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { HibikiCommand } from "@/helpers/command.js";
 import type { HibikiEvent, HibikiListener } from "@/helpers/event.js";
 import { parseError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
@@ -15,7 +15,7 @@ import type { Collection } from "discord.js";
 
 const ESM_FILETYPE_REGEX = /\.(mjs|mts|ts|js)$/i;
 
-/** Typing for imported module result information. */
+// Typing for imported module result information
 type ModuleImportResult = {
   filePath: string;
   reason?: Error;
@@ -23,7 +23,7 @@ type ModuleImportResult = {
   value?: unknown;
 };
 
-/** Statistics returned by the module loader. */
+// Statistics returned by the module loader.
 type ModuleLoadStats = {
   failed: number;
   loaded: number;
@@ -108,8 +108,8 @@ async function importModules(directory: PathLike, recursive = false) {
           logger.error(`Failed to import module ${filePath}: ${error.message}`);
           return {
             filePath,
-            status: "rejected" as const,
             reason: error,
+            status: "rejected" as const,
           };
         });
 
@@ -202,21 +202,21 @@ export async function loadModules<T>(
  * @returns A boolean indicating success or failure.
  */
 
-export async function loadCommands(
+export function loadCommands(
   directory: PathLike,
-  collection: Collection<string, HibikiSlashCommand>,
+  collection: Collection<string, HibikiCommand>,
 ): Promise<ModuleLoadStats> {
   logger.info("Loading commands...");
 
   const validator = (moduleExport: unknown) => {
-    if (!isHibikiSlashCommand(moduleExport)) {
+    if (!isHibikiCommand(moduleExport)) {
       return false;
     }
 
     return true;
   };
 
-  return loadModules<HibikiSlashCommand>(directory, collection, validator);
+  return loadModules<HibikiCommand>(directory, collection, validator);
 }
 
 /**
@@ -226,7 +226,7 @@ export async function loadCommands(
  * @returns A boolean indicating success or failure.
  */
 
-export async function loadEvents(
+export function loadEvents(
   directory: PathLike,
   collection: Collection<string, HibikiEvent<HibikiListener>>,
 ) {
@@ -253,13 +253,13 @@ export async function loadEvents(
  * @returns A boolean indicating success or failure.
  */
 
-function isHibikiSlashCommand(obj: unknown): obj is HibikiSlashCommand {
+function isHibikiCommand(obj: unknown): obj is HibikiCommand {
   return (
     typeof obj === "object" &&
     obj !== null &&
     "data" in obj &&
     "run" in obj &&
-    typeof (obj as HibikiSlashCommand).run === "function"
+    typeof (obj as HibikiCommand).run === "function"
   );
 }
 

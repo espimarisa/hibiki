@@ -1,17 +1,17 @@
-# Security
+# Security Policy
 
-If you believe you have found a security vulnerability, please report it.
+**Please do not report security vulnerabilities through GitHub issues.**
 
-**Please do not report security vulnerabilities through public GitHub issues or pull requests.**
+Please report any suspected security vulnerabilities privately to Hibiki's owner. Be sure to include a detailed description of the vulnerability, steps to reproduce it, and the potential impact it may have.
 
-Instead, please send an email to contact[@]espi.me.
+You can contact Hibiki's owner via a method provided below.
 
-Please include as much of the information listed below as you can to help us better understand and resolve the issue:
+- **[Discord][espi-discord]**: `espimarisa`
+- **[Telegram][espi-telegram]**: `espimarisa`
+- **[Matrix][espi-matrix]**: `@espimarisa:matrix.org`
+- **[Email][espi-email]**: `contact <at> espi <dot> me`
 
-- The type of issue (e.g., buffer overflow, SQL injection, or cross-site scripting)
-- Full paths of source file(s) related to the manifestation of the issue
-- The location of the affected source code (tag/branch/commit or direct URL)
-- Any special configuration required to reproduce the issue
-- Step-by-step instructions to reproduce the issue
-- Proof-of-concept or exploit code (if possible)
-- Impact of the issue, including how an attacker might exploit the issue
+[espi-discord]: https://discord.com/users/647269760782041133 "Discord"
+[espi-email]: mailto:contact@espi.me?q=Hibiki "Email"
+[espi-matrix]: https://matrix.to/#/@espimarisa:matrix.org "Matrix"
+[espi-telegram]: https://t.me/espimarisa "Telegram"

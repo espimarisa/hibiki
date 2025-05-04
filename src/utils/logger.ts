@@ -29,7 +29,7 @@ const pinoRotateFileOptions = {
   mkdir: true,
 } satisfies PinoRotateFileOptions;
 
-/** Pino logger instance. */
+// Creates the pino logger instance
 export const logger = pino(
   {
     level: "info",

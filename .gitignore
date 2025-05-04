@@ -1,39 +1,92 @@
-# Other package managers
-package-lock.json
-pnpm-lock.yaml
-yarn.lock
-.yarn/*
-.pnp.*
+#
+# Cache & Temporary Files
+#
 
-# Modules
-node_modules
-
-# Logs
-*.log
+_site/
+.cache-loader/
+.cache/
+.eslintcache
+.fuse_hidden*
+.jekyll-cache/
+.jekyll-metadata
+.npm/
+.sass-cache/
+.temp/
+.tmp/
+.turbo/
+*.bak
+*.cache
+*.cachefile
+*.cover
+*.lock
 *.pid
-*.seed
-*.pid.lock
-logs
-pids
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
-# Cache
+*.tmp
 *.tsbuildinfo
-.cache
+*cover
+cache/
+node_cache/
+npm-cache/
+pids/
+temp/
+tmp/
+
+#
+# Dependencies
+#
+
+node_modules/
+
+#
+# Editor & IDE Files
+#
+
+.code-workspace
 .history
-.turbo
+.settings/
+.vscode/
 
-# Compiled code
-out
-dist
-.svelte-kit
+#
+# Logs
+#
 
-# Configs
-.env*
-!.env.example
-.vscode/*
-!.vscode/*.code-snippets
-!.vscode/extensions.json
-!.vscode/launch.json
-!.vscode/settings.json
-!.vscode/tasks.json
+*.log
+logs/
+replay_pid*
+stackdump.*
+
+#
+# Operating System Files
+#
+
+._*
+.apdisk
+.AppleDB
+.AppleDesktop
+.AppleDouble
+.com.apple.timemachine.donotpresent
+.DocumentRevisions-V100
+.DS_Store
+.DS_Store?
+.ehthumbs_vista.db
+.ehthumbs.db
+.fseventsd/
+.Icon?
+.localized
+.LSOverride
+.Spotlight-V100
+.TemporaryItems/
+.Trashes/
+.VolumeIcon.icns
+$RECYCLE.BIN/
+desktop.ini
+ehthumbs.db
+Icon?
+Thumbs.db
+Thumbs.db:encryptable
+
+#
+# Secrets
+#
+
+.env
+.env.*

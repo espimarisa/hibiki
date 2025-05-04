@@ -24,7 +24,7 @@ export async function hFetch(url: string, options?: RequestInit) {
       },
     });
 
-    // Return undefined if response.ok is not set to enforce valid handling
+    // Return undefined if response.ok is not ok to enforce valid parsing
     if (!response?.ok) {
       return;
     }

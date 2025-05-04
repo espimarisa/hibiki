@@ -39,10 +39,10 @@ export async function initI18Next(directory: PathLike) {
       interpolation: {
         skipOnVariables: false,
       },
-      preload: localeDirectoryData || [],
       lng: defaultLocale,
       load: "currentOnly",
       ns: ["commands", "common", "errors"],
+      preload: localeDirectoryData || [],
     });
 
     logger.info("Successfully initialized i18next");

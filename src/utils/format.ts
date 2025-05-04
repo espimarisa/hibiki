@@ -16,8 +16,8 @@ import { intervalToDuration } from "date-fns";
 
 export function getTimeSince(from: Date, to: Date) {
   return intervalToDuration({
-    start: from,
     end: to,
+    start: from,
   });
 }
 

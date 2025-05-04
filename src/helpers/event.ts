@@ -6,7 +6,10 @@
 
 import type { ClientEvents } from "discord.js";
 
-/** A valid Hibiki event listener. */
+/**
+ * A valid Hibiki event listener.
+ */
+
 export type HibikiEvent<K extends keyof ClientEvents> = {
   /** The client event to listen on and handle. */
   event: K;

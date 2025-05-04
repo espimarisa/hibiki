@@ -5,8 +5,7 @@
  */
 
 import { env } from "@/root/utils/env.js";
-import { parseError } from "@/utils/error.js";
-import { captureError } from "@/utils/error.js";
+import { captureError, parseError } from "@/utils/error.js";
 import { logger } from "@/utils/logger.js";
 import {
   ActivityType,
@@ -19,23 +18,23 @@ import {
 let activityState = 0;
 
 const intents = [
-  GatewayIntentBits.Guilds,
-  GatewayIntentBits.GuildMessages,
   GatewayIntentBits.GuildMembers,
-  GatewayIntentBits.MessageContent,
   GatewayIntentBits.GuildMessageReactions,
+  GatewayIntentBits.GuildMessages,
+  GatewayIntentBits.Guilds,
+  GatewayIntentBits.MessageContent,
 ];
 
-/** Primary Discord.js client instance. */
-export const bot = new Client({
-  intents: intents,
+/**
+ * Creates a Discord.js client instance.
+ */
 
-  // Cache sweeping settings
+export const client = new Client({
+  intents: intents,
   sweepers: {
     ...Options.DefaultSweeperSettings,
   },
 
-  // Cache making options
   makeCache: Options.cacheWithLimits({
     ...Options.DefaultMakeCacheSettings,
     GuildMemberManager: {
@@ -47,24 +46,24 @@ export const bot = new Client({
 });
 
 // Logs into Discord
-bot.login(env.DISCORD_TOKEN).catch((err) => {
+client.login(env.DISCORD_TOKEN).catch((err) => {
   const error = parseError(err);
   logger.fatal(`Failed to login to Discord: ${error.message}`);
   captureError(error);
 });
 
 // Ready listener
-bot.once("ready", async () => {
+client.once("ready", async () => {
   // Do not spawn the shard fully if the user does not exist
-  if (!bot.user) {
+  if (!client.user) {
     logger.fatal("No user object received from Discord.");
     return;
   }
 
   // Emits a ready event to the sharding manager
-  if (bot.shard) {
+  if (client.shard) {
     try {
-      await bot.shard.send({ type: "shardReady" });
+      await client.shard.send({ type: "shardReady" });
     } catch (err) {
       const error = parseError(err);
       logger.error(`Failed to emit ready event: ${error.message}`);
@@ -74,8 +73,8 @@ bot.once("ready", async () => {
 
   // Cycles client statuses if any are set
   if (env.DISCORD_STATUSES.length > 0) {
-    cycleStatuses(bot.user, env.DISCORD_STATUSES);
-    setInterval(cycleStatuses, 60000, bot.user, env.DISCORD_STATUSES);
+    cycleStatuses(client.user, env.DISCORD_STATUSES);
+    setInterval(cycleStatuses, 60000, client.user, env.DISCORD_STATUSES);
   }
 });
 

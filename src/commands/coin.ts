@@ -4,7 +4,7 @@
  * @license zlib
  */
 
-import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { HibikiCommand } from "@/helpers/command.js";
 import type { DictionaryKey } from "@/types/i18next.js";
 import { HibikiColors } from "@/utils/constants.js";
 import { t, tO } from "@/utils/i18n.js";
@@ -34,4 +34,4 @@ export const coinCommand = {
       ],
     });
   },
-} satisfies HibikiSlashCommand;
+} satisfies HibikiCommand;

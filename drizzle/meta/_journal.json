@@ -15,6 +15,13 @@
       "when": 1745733211459,
       "tag": "0001_fearless_santa_claus",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1746236408269,
+      "tag": "0002_nifty_goliath",
+      "breakpoints": true
     }
   ]
 }

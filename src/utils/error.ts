@@ -4,7 +4,7 @@
  * @author Espi Marisa <contact@espi.me>
  */
 
-/** biome-ignore-all lint/nursery/noProcessGlobal: Bun's process.on() is different from node:process.on */
+/** biome-ignore-all lint/nursery/noProcessGlobal: Bun's process.on() is different from node:process.on. */
 
 import { env } from "@/root/utils/env.js";
 import { HibikiColors } from "@/utils/constants.js";
@@ -88,13 +88,13 @@ export function parseError(error: unknown): Error {
     message = error;
   } else if (
     // Parses objects with "error" inside of them
-    typeof error === "object" &&
     error !== null &&
+    typeof error === "object" &&
     "message" in error
   ) {
+    // Extracts the message from a message object
     message = Bun.inspect((error as { message: unknown }).message);
   } else {
-    // Parses error objects
     message = Bun.inspect(error);
   }
 

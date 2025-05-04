@@ -7,5 +7,8 @@
 import { env } from "@/root/utils/env.js";
 import { RedisClient } from "bun";
 
-/** A Redis connection client. */
+/**
+ * Creates a Redis database client.
+ */
+
 export const redis = new RedisClient(env.REDIS_URL);

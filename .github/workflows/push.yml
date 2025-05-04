@@ -2,7 +2,7 @@ name: "Push Testing"
 
 on:
   push:
-    branches: [main, develop]
+    branches: ["develop", "main"]
 
 jobs:
   build-and-test:

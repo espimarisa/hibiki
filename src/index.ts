@@ -4,9 +4,9 @@
  * @license zlib
  */
 
-import type { HibikiSlashCommand } from "@/helpers/command.js";
+import type { HibikiCommand } from "@/helpers/command.js";
 import type { HibikiEvent, HibikiListener } from "@/helpers/event.js";
-import { bot } from "@/root/bot.js";
+import { client } from "@/root/client.js";
 import { env } from "@/root/utils/env.js";
 import { captureError, initSentry, parseError } from "@/utils/error.js";
 import { getDirname, loadCommands, loadEvents } from "@/utils/fs.js";
@@ -16,21 +16,19 @@ import { hostname } from "node:os";
 import { join } from "node:path";
 import { type ClientUser, Collection, ShardingManager } from "discord.js";
 
-// Gets the root directory and primary bot file
+// Gets the root directory and the bot client file
 const ROOT_DIRECTORY = getDirname(import.meta.url);
-const BOT_FILE_NAME = `bot.${env.NODE_ENV === "production" ? "js" : "ts"}`;
-const BOT_FILE = join(ROOT_DIRECTORY, BOT_FILE_NAME);
+const CLIENT_FILE_NAME = `client.${env.NODE_ENV === "production" ? "js" : "ts"}`;
+const CLIENT_FILE = join(ROOT_DIRECTORY, CLIENT_FILE_NAME);
 
 // Gets directories to load
 const COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands");
 const EVENTS_DIRECTORY = join(ROOT_DIRECTORY, "./events");
 const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
 
-// Creates collections for storing modules in
-const hibikiCommands = new Collection<string, HibikiSlashCommand>();
+// Creates collections to store modules into
+const hibikiCommands = new Collection<string, HibikiCommand>();
 const hibikiEvents = new Collection<string, HibikiEvent<HibikiListener>>();
-
-// Creates a set for storing a list of ready shards
 const readyShards = new Set();
 
 // Connects to Sentry
@@ -42,36 +40,51 @@ if (env.SENTRY_DSN) {
   });
 }
 
-/** The primary Discord.js ShardingManager controlling all client shards. */
-const sharder = new ShardingManager(BOT_FILE, {
+/**
+ * Creates the primary Discord.js sharding manager.
+ */
+
+const sharder = new ShardingManager(CLIENT_FILE, {
   mode: "process",
   respawn: true,
   token: env.DISCORD_TOKEN,
   totalShards: "auto",
 });
 
-// Loads i18next, commands, and listeners
+// Loads i18next, commands, and event listeners
 await initI18Next(LOCALES_DIRECTORY);
 await loadCommands(COMMANDS_DIRECTORY, hibikiCommands);
 await loadEvents(EVENTS_DIRECTORY, hibikiEvents);
 
-// Appends commands and the sharder to the spawned client
-bot.commands = hibikiCommands;
-bot.sharder = sharder;
+// Appends commands and the sharder to the client
+client.commands = hibikiCommands;
+client.sharder = sharder;
 
-// Logs specific sharding events
+/**
+ * Shard creation handler.
+ */
+
 sharder.on("shardCreate", (shard) => {
-  // Shard death
+  /**
+   * Shard death message handler.
+   */
+
   shard.on("death", () => {
     logger.error(`Shard #${shard.id} died`);
   });
 
-  // Shard disconnect
+  /**
+   * Shard disconnect message handler.
+   */
+
   shard.on("disconnect", () => {
     logger.error(`Shard #${shard.id} disconnected`);
   });
 
-  // Shard error
+  /**
+   * Shard error message handler.
+   */
+
   shard.on("error", (err) => {
     const error = parseError(err);
     logger.error(`Shard #${shard.id} encountered an error: ${error.message}`);
@@ -80,17 +93,26 @@ sharder.on("shardCreate", (shard) => {
     });
   });
 
-  // Shard ready
+  /**
+   * Shard ready message handler.
+   */
+
   shard.on("ready", () => {
     logger.info(`Shard #${shard.id} is ready`);
   });
 
-  // Shard spawn
+  /**
+   * Shard spawn message handler.
+   */
+
   shard.on("spawn", () => {
     logger.info(`Shard #${shard.id} spawned`);
   });
 
-  // Shard message
+  /**
+   * Shard message message handler.
+   */
+
   shard.on("message", async (message) => {
     if (message.type === "shardReady") {
       // Adds the shard to the ready list
@@ -101,7 +123,7 @@ sharder.on("shardCreate", (shard) => {
         logger.info("All shards are ready");
 
         // Gets client information from shard 0
-        const user = (await sharder.broadcastEval((bot) => bot.user, {
+        const user = (await sharder.broadcastEval((client) => client.user, {
           shard: 0,
         })) as ClientUser | undefined;
 
@@ -124,16 +146,16 @@ try {
 
   // Subscribes event handlers to their listeners
   for (const event of hibikiEvents.values()) {
+    // Runs event handlers that only fire once
     if (event.once) {
-      // Runs event handlers that only fire once
-      bot.once(event.event, async (...args) => await event.handle(...args));
+      client.once(event.event, async (...args) => await event.handle(...args));
     } else {
       // Runs event handlers on each event emitter
-      bot.on(event.event, async (...args) => await event.handle(...args));
+      client.on(event.event, async (...args) => await event.handle(...args));
     }
   }
 } catch (err) {
   const error = parseError(err);
-  logger.error(`Error spawning shards: ${error.message}`);
+  logger.fatal(`Error spawning shards: ${error.message}`);
   captureError(error);
 }
