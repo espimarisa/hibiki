@@ -1,14 +1,13 @@
 /**
  * @file Slash command for user-to-user roleplay.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
-import type { HibikiCommand } from "@/helpers/command.js";
-import type { DictionaryKey } from "@/types/i18next.js";
-import { HibikiColors } from "@/utils/constants.js";
-import { sendErrorReply } from "@/utils/error.js";
-import { t, tO } from "@/utils/i18n.js";
+import type { HibikiCommand } from "@/helpers/command.ts";
+import type { DictionaryKey } from "@/types/i18next.ts";
+import { HibikiColors } from "@/utils/constants.ts";
+import { sendErrorReply } from "@/utils/error.ts";
+import { t, tO } from "@/utils/i18n.ts";
 import {
   EmbedBuilder,
   InteractionContextType,
@@ -22,14 +21,14 @@ export const roleplaycommands = {
     .setDescription(t("commands:ROLEPLAY_DESCRIPTION"))
     .setDescriptionLocalizations(tO("commands:ROLEPLAY_DESCRIPTION"))
     .setContexts(InteractionContextType.Guild)
-    // Hug subcommand
+    // Hug subcommand.
     .addSubcommand((hug) =>
       hug
         .setName("hug")
         .setNameLocalizations(tO("commands:ROLEPLAY_HUG_NAME"))
         .setDescription(t("commands:ROLEPLAY_HUG_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ROLEPLAY_HUG_DESCRIPTION"))
-        // MEMBER option
+        // MEMBER option.
         .addUserOption((member) =>
           member
             .setName("member")
@@ -41,14 +40,14 @@ export const roleplaycommands = {
             .setRequired(true),
         ),
     )
-    // Cuddle subcommand
+    // Cuddle subcommand.
     .addSubcommand((cuddle) =>
       cuddle
         .setName("cuddle")
         .setNameLocalizations(tO("commands:ROLEPLAY_CUDDLE_NAME"))
         .setDescription(t("commands:ROLEPLAY_CUDDLE_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ROLEPLAY_CUDDLE_DESCRIPTION"))
-        // MEMBER option
+        // MEMBER option.
         .addUserOption((member) =>
           member
             .setName("member")
@@ -60,14 +59,14 @@ export const roleplaycommands = {
             .setRequired(true),
         ),
     )
-    // Kiss subcommand
+    // Kiss subcommand.
     .addSubcommand((kiss) =>
       kiss
         .setName("kiss")
         .setNameLocalizations(tO("commands:ROLEPLAY_KISS_NAME"))
         .setDescription(t("commands:ROLEPLAY_KISS_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ROLEPLAY_KISS_DESCRIPTION"))
-        // MEMBER option
+        // MEMBER option.
         .addUserOption((member) =>
           member
             .setName("member")
@@ -79,14 +78,14 @@ export const roleplaycommands = {
             .setRequired(true),
         ),
     )
-    // Pat subcommand
+    // Pat subcommand.
     .addSubcommand((pat) =>
       pat
         .setName("pat")
         .setNameLocalizations(tO("commands:ROLEPLAY_PAT_NAME"))
         .setDescription(t("commands:ROLEPLAY_PAT_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ROLEPLAY_PAT_DESCRIPTION"))
-        // MEMBER option
+        // MEMBER option.
         .addUserOption((member) =>
           member
             .setName("member")
@@ -98,14 +97,14 @@ export const roleplaycommands = {
             .setRequired(true),
         ),
     )
-    // Slap subcommand
+    // Slap subcommand.
     .addSubcommand((slap) =>
       slap
         .setName("slap")
         .setNameLocalizations(tO("commands:ROLEPLAY_SLAP_NAME"))
         .setDescription(t("commands:ROLEPLAY_SLAP_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ROLEPLAY_SLAP_DESCRIPTION"))
-        // MEMBER option
+        // MEMBER option.
         .addUserOption((member) =>
           member
             .setName("member")
@@ -119,27 +118,27 @@ export const roleplaycommands = {
     ),
 
   async run(interaction) {
-    // Initialize string and url to use later
+    // Initialize string and url to use later.
     let string: DictionaryKey;
     let url = "";
 
-    // Gets the subcommand and member
+    // Gets the subcommand and member.
     const member = interaction.options.getUser("member", true);
     const subcommand = interaction.options.getSubcommand();
 
-    // Don't allow self-roleplay
+    // Don't allow self-roleplay.
     if (interaction.user.id === member.id) {
       await sendErrorReply(interaction, "commands:ROLEPLAY_SELF_MESSAGE");
       return;
     }
 
-    // Don't allow roleplay with the bot
+    // Don't allow roleplay with the bot.
     if (interaction.client.user.id === member.id) {
       await sendErrorReply(interaction, "commands:ROLEPLAY_BOT_MESSAGE");
       return;
     }
 
-    // Gets the string and URL to use
+    // Gets the string and URL to use.
     switch (subcommand) {
       case "hug": {
         string = "commands:ROLEPLAY_HUG_MESSAGE";
@@ -176,7 +175,7 @@ export const roleplaycommands = {
       }
     }
 
-    // Sends the interaction
+    // Sends the interaction.
     await interaction.reply({
       embeds: [
         new EmbedBuilder()

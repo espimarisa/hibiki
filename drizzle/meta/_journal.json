@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1744667893225,
-      "tag": "0000_freezing_thunderbird",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1745733211459,
-      "tag": "0001_fearless_santa_claus",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1746236408269,
-      "tag": "0002_nifty_goliath",
+      "when": 1746439881593,
+      "tag": "0000_broken_microbe",
       "breakpoints": true
     }
   ]

@@ -1,10 +1,9 @@
 /**
  * @file Utilities performing formatting and normalization.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
-import type { MessageLimits } from "@/utils/constants.js";
+import type { MessageLimits } from "@/utils/constants.ts";
 import { intervalToDuration } from "date-fns";
 
 /**

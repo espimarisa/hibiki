@@ -1,13 +1,12 @@
 /**
  * @file Slash command to flip a coin.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
-import type { HibikiCommand } from "@/helpers/command.js";
-import type { DictionaryKey } from "@/types/i18next.js";
-import { HibikiColors } from "@/utils/constants.js";
-import { t, tO } from "@/utils/i18n.js";
+import type { HibikiCommand } from "@/helpers/command.ts";
+import type { DictionaryKey } from "@/types/i18next.ts";
+import { HibikiColors } from "@/utils/constants.ts";
+import { t, tO } from "@/utils/i18n.ts";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const coinCommand = {
@@ -18,14 +17,14 @@ export const coinCommand = {
     .setDescriptionLocalizations(tO("commands:COIN_DESCRIPTION")),
 
   async run(interaction) {
-    // Gets the face of the flipped coin and the string to use
+    // Gets the face of the flipped coin and the string to use.
     const face = Math.random() < 0.5 ? "heads" : "tails";
     const string: DictionaryKey =
       face === "heads"
         ? "commands:COIN_MESSAGE_HEADS"
         : "commands:COIN_MESSAGE_TAILS";
 
-    // Sends the interaction
+    // Sends the interaction.
     await interaction.reply({
       embeds: [
         new EmbedBuilder()

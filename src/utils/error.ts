@@ -1,14 +1,14 @@
 /**
  * @file Utilities interacting with and handling errors.
- * @license zlib
- * @author Espi Marisa <contact@espi.me>
+ * @license Zlib
+
  */
 
 /** biome-ignore-all lint/nursery/noProcessGlobal: Bun's process.on() is different from node:process.on. */
 
-import { env } from "@/root/utils/env.js";
-import { HibikiColors } from "@/utils/constants.js";
-import { logger } from "@/utils/logger.js";
+import { env } from "@/root/utils/env.ts";
+import { HibikiColors } from "@/utils/constants.ts";
+import { logger } from "@/utils/logger.ts";
 import { type BunOptions, captureException, captureMessage } from "@sentry/bun";
 import {
   type CommandInteraction,
@@ -16,7 +16,7 @@ import {
   MessageFlags,
 } from "discord.js";
 import { init, t } from "i18next";
-import type { DictionaryKey } from "../@types/i18next.js";
+import type { DictionaryKey } from "../@types/i18next.ts";
 
 const errorFallbackMessage = "Unknown";
 let sentryConnected = false;
@@ -42,7 +42,7 @@ export function initSentry(dsn: string, options?: BunOptions) {
     sentryConnected = true;
     logger.info(`Sentry connected to DSN ${dsn}`);
 
-    // Capture all errors that are not manually caught
+    // Capture all errors that are not manually caught.
     if (typeof process.on === "function") {
       process.on("unhandledRejection", captureError);
       process.on("uncaughtException", captureError);
@@ -83,28 +83,28 @@ export function parseError(error: unknown): Error {
     return error;
   }
 
-  // Parses string-only errors
+  // Parses string-only errors.
   if (typeof error === "string") {
     message = error;
   } else if (
-    // Parses objects with "error" inside of them
+    // Parses objects with "error" inside of them.
     error !== null &&
     typeof error === "object" &&
     "message" in error
   ) {
-    // Extracts the message from a message object
+    // Extracts the message from a message object.
     message = Bun.inspect((error as { message: unknown }).message);
   } else {
     message = Bun.inspect(error);
   }
 
-  // Generates the error cause
+  // Generates the error cause.
   const cause =
     typeof error === "object" && error !== null
       ? Bun.inspect(error)
       : undefined;
 
-  // Returns the error
+  // Returns the error.
   return new Error(message, cause ? { cause } : undefined);
 }
 
@@ -138,17 +138,17 @@ export async function sendErrorReply(
     });
 
   try {
-    // Creates the message to send
+    // Creates the message to send.
     const message = {
       flags: flags,
       embeds: [embed],
     };
 
     if (defer) {
-      // Follow up to deferred interactions
+      // Follow up to deferred interactions.
       await interaction.followUp(message);
     } else {
-      // Reply to interactions
+      // Reply to interactions.
       await interaction.reply(message);
     }
   } catch (err) {

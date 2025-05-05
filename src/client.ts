@@ -1,36 +1,33 @@
 /**
  * @file Creates a Discord.js client instance.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
-import { env } from "@/root/utils/env.js";
-import { captureError, parseError } from "@/utils/error.js";
-import { logger } from "@/utils/logger.js";
+import { env } from "@/root/utils/env.ts";
+import { captureError, parseError } from "@/utils/error.ts";
+import { logger } from "@/utils/logger.ts";
 import {
   ActivityType,
   Client,
   type ClientUser,
-  GatewayIntentBits,
+  IntentsBitField,
   Options,
+  Partials,
 } from "discord.js";
 
 let activityState = 0;
 
 const intents = [
-  GatewayIntentBits.GuildMembers,
-  GatewayIntentBits.GuildMessageReactions,
-  GatewayIntentBits.GuildMessages,
-  GatewayIntentBits.Guilds,
-  GatewayIntentBits.MessageContent,
+  IntentsBitField.Flags.GuildMessages,
+  IntentsBitField.Flags.GuildMessageReactions,
+  IntentsBitField.Flags.Guilds,
+  IntentsBitField.Flags.GuildMembers,
 ];
 
-/**
- * Creates a Discord.js client instance.
- */
-
+/** Creates a Discord.js Client instance. */
 export const client = new Client({
   intents: intents,
+  partials: [Partials.Message, Partials.Channel, Partials.Reaction],
   sweepers: {
     ...Options.DefaultSweeperSettings,
   },
@@ -38,29 +35,29 @@ export const client = new Client({
   makeCache: Options.cacheWithLimits({
     ...Options.DefaultMakeCacheSettings,
     GuildMemberManager: {
-      // Only keep 300 cached members in a guild; always cache self
+      // Only keep 300 cached members in a guild; always cache self.
       keepOverLimit: (member) => member.id === member.client.user.id,
       maxSize: 300,
     },
   }),
 });
 
-// Logs into Discord
+// Logs into Discord.
 client.login(env.DISCORD_TOKEN).catch((err) => {
   const error = parseError(err);
   logger.fatal(`Failed to login to Discord: ${error.message}`);
   captureError(error);
 });
 
-// Ready listener
+// Ready listener.
 client.once("ready", async () => {
-  // Do not spawn the shard fully if the user does not exist
+  // Do not spawn the shard fully if the user does not exist.
   if (!client.user) {
     logger.fatal("No user object received from Discord.");
     return;
   }
 
-  // Emits a ready event to the sharding manager
+  // Emits a ready event to the sharding manager.
   if (client.shard) {
     try {
       await client.shard.send({ type: "shardReady" });
@@ -71,7 +68,7 @@ client.once("ready", async () => {
     }
   }
 
-  // Cycles client statuses if any are set
+  // Cycles client statuses if any are set.
   if (env.DISCORD_STATUSES.length > 0) {
     cycleStatuses(client.user, env.DISCORD_STATUSES);
     setInterval(cycleStatuses, 60000, client.user, env.DISCORD_STATUSES);
@@ -89,11 +86,11 @@ function cycleStatuses(user: ClientUser, statuses: string[]) {
     return;
   }
 
-  // Gets the status to set
+  // Gets the status to set.
   activityState = (activityState + 1) % env.DISCORD_STATUSES.length;
   const presence = env.DISCORD_STATUSES[activityState];
 
-  // Sets the status
+  // Sets the status.
   if (presence) {
     user.setActivity(presence, {
       type: ActivityType.Custom,

@@ -1,16 +1,15 @@
 /**
  * @file Registers interactions to the Discord API.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  * @todo Register other things.
  */
 
-import type { HibikiCommand } from "@/helpers/command.js";
-import { env } from "@/root/utils/env.js";
-import { parseError } from "@/utils/error.js";
-import { getDirname, loadCommands } from "@/utils/fs.js";
-import { initI18Next } from "@/utils/i18n.js";
-import { logger } from "@/utils/logger.js";
+import type { HibikiCommand } from "@/helpers/command.ts";
+import { env } from "@/root/utils/env.ts";
+import { parseError } from "@/utils/error.ts";
+import { getDirname, loadCommands } from "@/utils/fs.ts";
+import { initI18Next } from "@/utils/i18n.ts";
+import { logger } from "@/utils/logger.ts";
 import { join } from "node:path";
 import { exit } from "node:process";
 import { parseArgs } from "node:util";
@@ -22,19 +21,19 @@ import {
   type User,
 } from "discord.js";
 
-// Gets directories to load
+// Gets directories to load.
 const ROOT_DIRECTORY = getDirname(import.meta.url);
 const COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands");
 const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
 
-// Creates collections for storing modules in
+// Creates collections for storing modules in.
 const hibikiCommands = new Collection<string, HibikiCommand>();
 
-// Determines if we should register to a development guild
+// Determines if we should register to a development guild.
 const isDevelop = env.NODE_ENV === "development" && env.DISCORD_DEV_GUILD_ID;
 const data: RESTPostAPIApplicationCommandsJSONBody[] = [];
 
-// Parses CLI arguments
+// Parses CLI arguments.
 const cliArgs = parseArgs({
   allowPositionals: true,
   args: Bun.argv,
@@ -49,28 +48,28 @@ const cliArgs = parseArgs({
   strict: true,
 });
 
-// Checks if clear is set and if we should perform guild operations
+// Checks if clear is set and if we should perform guild operations.
 const clear = cliArgs?.values?.clear === true;
 const guild =
   cliArgs?.values?.guild || (isDevelop ? env.DISCORD_DEV_GUILD_ID : undefined);
 
-// Loads i18next and commands
+// Loads i18next and commands.
 await initI18Next(LOCALES_DIRECTORY);
 await loadCommands(COMMANDS_DIRECTORY, hibikiCommands);
 
-// Creates a REST manager; gets the user object
+// Creates a REST manager; gets the user object.
 const rest = new REST({ version: "10" }).setToken(env.DISCORD_TOKEN);
 const user = (await rest.get("/oauth2/applications/@me")) as User | undefined;
 
-// Do not perform operations if no user object is returned
+// Do not perform operations if no user object is returned.
 if (!user?.id) {
   logger.error("No user returned from Discord, cannot register. Exiting.");
   exit(1);
 }
 
-// Maps the collection of commands
+// Maps the collection of commands.
 hibikiCommands.map((command) => {
-  // Convert command.data to JSON
+  // Convert command.data to JSON.
   if (command.data) {
     data.push(command.data.toJSON());
   } else {
@@ -78,20 +77,20 @@ hibikiCommands.map((command) => {
   }
 });
 
-// Exits if no data and clear isn't set
+// Exits if no data and clear isn't set.
 if (!(data || clear)) {
   logger.error("No data was provided. Cannot register. Exiting.");
   exit(1);
 }
 
-// Message to log to the console (clearing if clear, registering if not)
+// Message to log to the console (clearing if clear, registering if not).
 const message = clear ? "clearing all commands" : "registering commands";
 logger.info(`Registering as user ${user.id}`);
 
-// Individual guild operations
+// Individual guild operations.
 if (guild) {
   try {
-    // Registers/clears guild commands
+    // Registers/clears guild commands.
     const route = Routes.applicationGuildCommands(user.id, guild);
     await rest.put(route, { body: clear ? [] : data });
     logger.info(`Finished ${message} to ${guild}. Exiting.`);
@@ -102,7 +101,7 @@ if (guild) {
   }
 } else {
   try {
-    // Registers/clears global commands
+    // Registers/clears global commands.
     const route = Routes.applicationCommands(user.id);
     await rest.put(route, { body: clear ? [] : data });
     logger.info(`Finished ${message} globally. Exiting.`);

@@ -1,11 +1,10 @@
 /**
  * @file Fetches a network resource (wrapper around native fetch()).
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
-import { captureError, parseError } from "@/utils/error.js";
-import { logger } from "@/utils/logger.js";
+import { captureError, parseError } from "@/utils/error.ts";
+import { logger } from "@/utils/logger.ts";
 
 /**
  * Fetches a network resource (wrapper around native fetch()).
@@ -24,7 +23,7 @@ export async function hFetch(url: string, options?: RequestInit) {
       },
     });
 
-    // Return undefined if response.ok is not ok to enforce valid parsing
+    // Return undefined if response.ok is not ok to enforce valid parsing.
     if (!response?.ok) {
       return;
     }

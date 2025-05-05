@@ -1,13 +1,12 @@
 /**
  * @file Utilities for loading modules from the filesystem (Optimized).
- * @author Espi Marisa
- * @license zlib
+ * @license Zlib
  */
 
-import type { HibikiCommand } from "@/helpers/command.js";
-import type { HibikiEvent, HibikiListener } from "@/helpers/event.js";
-import { parseError } from "@/utils/error.js";
-import { logger } from "@/utils/logger.js";
+import type { HibikiCommand } from "@/helpers/command.ts";
+import type { HibikiEvent, HibikiListener } from "@/helpers/event.ts";
+import { parseError } from "@/utils/error.ts";
+import { logger } from "@/utils/logger.ts";
 import type { Dirent, PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
@@ -15,7 +14,7 @@ import type { Collection } from "discord.js";
 
 const ESM_FILETYPE_REGEX = /\.(mjs|mts|ts|js)$/i;
 
-// Typing for imported module result information
+// Typing for imported module result information.
 type ModuleImportResult = {
   filePath: string;
   reason?: Error;
@@ -51,12 +50,12 @@ function extractPrimaryExport(module: unknown) {
     return module;
   }
 
-  // Returns the default module
+  // Returns the default module.
   if ("default" in module) {
     return (module as { default: unknown }).default;
   }
 
-  // Gets each exported export; returns the first one
+  // Gets each exported export; returns the first one.
   const exports = Object.values(module);
   if (exports.length === 1) {
     return exports[0];
@@ -77,7 +76,7 @@ async function importModules(directory: PathLike, recursive = false) {
   let files: Dirent[];
 
   try {
-    // Reads each file
+    // Reads each file.
     files = await readdir(directoryPath, { withFileTypes: true });
   } catch (err) {
     const error = parseError(err);
@@ -85,18 +84,18 @@ async function importModules(directory: PathLike, recursive = false) {
     return [];
   }
 
-  // Creates an array of promises
+  // Creates an array of promises.
   const promises: Promise<ModuleImportResult | ModuleImportResult[]>[] = [];
 
-  // Iterates through each module file
+  // Iterates through each module file.
   for (const file of files) {
     const filePath = join(directoryPath, file.name);
 
-    // Store the promise for recursive results
+    // Store the promise for recursive results.
     if (file.isDirectory() && recursive) {
       promises.push(importModules(filePath, recursive));
     } else if (file.isFile() && ESM_FILETYPE_REGEX.test(file.name)) {
-      // Create a promise for importing the file
+      // Create a promise for importing the file.
       const importPromise = import(filePath)
         .then((moduleContent) => ({
           filePath,
@@ -117,13 +116,13 @@ async function importModules(directory: PathLike, recursive = false) {
     }
   }
 
-  // Wait for all imports/recursions to settle
+  // Wait for all imports/recursions to settle.
   const settledResults = await Promise.allSettled(promises);
   const finalResults: ModuleImportResult[] = [];
 
   for (const result of settledResults) {
     if (result.status === "fulfilled") {
-      // If fulfilled, the value could be a single result or an array from recursion
+      // If fulfilled, the value could be a single result or an array from recursion.
       if (Array.isArray(result.value)) {
         finalResults.push(...result.value);
       } else {
@@ -156,28 +155,28 @@ export async function loadModules<T>(
   ) => Promise<boolean> | boolean,
   recursive = true,
 ) {
-  // Imports each file
+  // Imports each file.
   const importResults = await importModules(directory, recursive);
   const stats: ModuleLoadStats = { loaded: 0, failed: 0, skipped: 0 };
 
-  // Process the results sequentially
+  // Process the results sequentially.
   for (const result of importResults) {
     const fileName = basename(result.filePath);
 
-    // Handle failed imports
+    // Handle failed imports.
     if (result.status === "rejected") {
       stats.failed++;
       continue;
     }
 
-    // Handle successfully imported modules
+    // Handle successfully imported modules.
     try {
       const primaryExport = extractPrimaryExport(result.value);
       const isValid = await validator(primaryExport, result.filePath); // Await validator
 
       if (isValid) {
         const key = fileName.replace(ESM_FILETYPE_REGEX, "");
-        // Assume validator confirmed structure, cast to T
+        // Assume validator confirmed structure, cast to T.
         collection.set(key, primaryExport as T);
         stats.loaded++;
         logger.info(`Successfully loaded ${fileName}`);

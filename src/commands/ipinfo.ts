@@ -1,15 +1,14 @@
 /**
  * @file Slash command to get information about an IP Address.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
-import type { HibikiCommand } from "@/helpers/command.js";
-import { env } from "@/root/utils/env.js";
-import { HibikiColors } from "@/utils/constants.js";
-import { sendErrorReply } from "@/utils/error.js";
-import { hFetch } from "@/utils/fetch.js";
-import { t, tO } from "@/utils/i18n.js";
+import type { HibikiCommand } from "@/helpers/command.ts";
+import { env } from "@/root/utils/env.ts";
+import { HibikiColors } from "@/utils/constants.ts";
+import { sendErrorReply } from "@/utils/error.ts";
+import { hFetch } from "@/utils/fetch.ts";
+import { t, tO } from "@/utils/i18n.ts";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { z } from "zod";
 
@@ -21,7 +20,7 @@ export const ipinfoCommand = {
     .setNameLocalizations(tO("commands:IPINFO_NAME"))
     .setDescription(t("commands:IPINFO_DESCRIPTION"))
     .setDescriptionLocalizations(tO("commands:IPINFO_DESCRIPTION"))
-    // Address option
+    // Address option.
     .addStringOption((address) =>
       address
         .setName("address")
@@ -32,15 +31,15 @@ export const ipinfoCommand = {
     ),
 
   async run(interaction) {
-    // Defers the reply
+    // Defers the reply.
     await interaction.deferReply();
 
-    // Gets the query
+    // Gets the query.
     const ipRegion: string[] = [];
     const query = interaction.options.getString("address", true);
     let ipAPIURL = "https://ipinfo.io";
 
-    // Parses the query; do not request invalid IPs
+    // Parses the query; do not request invalid IPs.
     if (!z.string().ip().safeParse(query).success) {
       await sendErrorReply(interaction, "errors:IPINFO_INVALID", true, true);
       return;
@@ -51,27 +50,27 @@ export const ipinfoCommand = {
       ipAPIURL = "https://v6.ipinfo.io";
     }
 
-    // Fetches the IP information
+    // Fetches the IP information.
     const ipResponse = await hFetch(`${ipAPIURL}/${query}/json`, {
       headers: {
         Authorization: `Bearer ${env.IPINFO_API_KEY}`,
       },
     });
 
-    // Error handler for invalid response
+    // Error handler for invalid response.
     if (!ipResponse) {
       await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
       return;
     }
 
-    // Converts IP information response to JSON
+    // Converts IP information response to JSON.
     const ipBody: IPInfoResponse = await ipResponse.json();
     if (!ipBody) {
       await sendErrorReply(interaction, "errors:IPINFO_INVALID", true, true);
       return;
     }
 
-    // Fetched AbuseIPDB information
+    // Fetched AbuseIPDB information.
     const abuseResponse = await hFetch(`${abuseAPIBaseURL}${query}`, {
       headers: {
         Accept: "application/json",
@@ -79,23 +78,23 @@ export const ipinfoCommand = {
       },
     });
 
-    // Error handler for invalid response
+    // Error handler for invalid response.
     if (!abuseResponse) {
       await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
       return;
     }
 
-    // Converts abuse information response to JSON
+    // Converts abuse information response to JSON.
     const abuseBody = await abuseResponse.json();
 
-    // Creates the embed
+    // Creates the embed.
     const embed = new EmbedBuilder().setColor(HibikiColors.Primary).setAuthor({
       iconURL: interaction.client.user.displayAvatarURL(),
       name: query.toString(),
       url: `${ipAPIURL}/${query}`,
     });
 
-    // Hostname
+    // Hostname.
     if (ipBody.hostname) {
       embed.addFields({
         name: t("commands:IPINFO_HOSTNAME", { lng: interaction.locale }),
@@ -104,7 +103,7 @@ export const ipinfoCommand = {
       });
     }
 
-    // ASN
+    // ASN.
     if (ipBody.org) {
       embed.addFields({
         name: t("commands:IPINFO_ASN", { lng: interaction.locale }),
@@ -113,7 +112,7 @@ export const ipinfoCommand = {
       });
     }
 
-    // Geolocation
+    // Geolocation.
     if (ipBody.loc) {
       embed.addFields({
         name: t("commands:IPINFO_GEOLOCATION", { lng: interaction.locale }),
@@ -122,30 +121,30 @@ export const ipinfoCommand = {
       });
     }
 
-    // IP city
+    // IP city.
     if (ipBody.city) {
       ipRegion.push(ipBody.city);
     }
 
-    // IP region
+    // IP region.
     if (ipBody.region) {
       ipRegion.push(ipBody.region);
     }
 
-    // IP country
+    // IP country.
     if (ipBody.country) {
       ipRegion.push(ipBody.country);
     }
 
-    // IP postal code
+    // IP postal code.
     if (ipBody.postal) {
       ipRegion.push(ipBody.postal);
     }
 
-    // Joins the IP region string
+    // Joins the IP region string.
     const regionString = ipRegion.join(", ");
 
-    // Region
+    // Region.
     if (regionString.length > 0) {
       embed.addFields({
         name: t("common:LOCATION", { lng: interaction.locale }),
@@ -154,7 +153,7 @@ export const ipinfoCommand = {
       });
     }
 
-    // Timezone
+    // Timezone.
     if (ipBody.timezone) {
       embed.addFields({
         name: t("common:TIMEZONE", { lng: interaction.locale }),
@@ -163,9 +162,9 @@ export const ipinfoCommand = {
       });
     }
 
-    // Abuse information
+    // Abuse information.
     if (!abuseBody.data?.errors) {
-      // ISP
+      // ISP.
       if (abuseBody.data.isp) {
         embed.addFields({
           name: t("commands:IPINFO_ISP", { lng: interaction.locale }),
@@ -174,7 +173,7 @@ export const ipinfoCommand = {
         });
       }
 
-      // Usage type
+      // Usage type.
       if (abuseBody.data.usageType) {
         embed.addFields({
           name: t("commands:IPINFO_USAGE_TYPE", { lng: interaction.locale }),
@@ -183,7 +182,7 @@ export const ipinfoCommand = {
         });
       }
 
-      // Domain
+      // Domain.
       if (abuseBody.data.domain) {
         embed.addFields({
           name: t("commands:IPINFO_DOMAIN", { lng: interaction.locale }),
@@ -192,7 +191,7 @@ export const ipinfoCommand = {
         });
       }
 
-      // Bogon/TOR
+      // Bogon/TOR.
       if (ipBody.bogon || abuseBody.data.tor) {
         embed.addFields({
           name: t("commands:IPINFO_NOTES", { lng: interaction.locale }),
@@ -206,7 +205,7 @@ export const ipinfoCommand = {
         });
       }
 
-      // Total reports
+      // Total reports.
       embed.addFields({
         name: t("commands:IPINFO_ABUSE_INFORMATION", {
           lng: interaction.locale,
@@ -220,27 +219,27 @@ export const ipinfoCommand = {
       });
     }
 
-    // Sends the interaction
+    // Sends the interaction.
     await interaction.followUp({ embeds: [embed] });
   },
 } satisfies HibikiCommand;
 
 /**
  * Possible IPInfo.IO API response.
- * @see https://ipinfo.io/developers#json-response
+ * @see https://ipinfo.io/developers#json-response.
  */
 
 type IPInfoResponse = {
+  anycast?: boolean;
   bogon?: boolean;
-  ip: string;
-  hostname?: string;
   city?: string;
-  region?: string;
   country?: string;
+  hostname?: string;
+  ip: string;
   loc?: string;
   org?: string;
   postal?: string;
-  timezone?: string;
   readme?: string;
-  anycast?: boolean;
+  region?: string;
+  timezone?: string;
 };

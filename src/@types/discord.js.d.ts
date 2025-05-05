@@ -1,11 +1,10 @@
 /**
  * @file Extended typing definitions for Discord.js.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
+import type { HibikiCommand } from "@/helpers/command.ts";
 import type { Collection } from "discord.js";
-import type { HibikiCommand } from "@/helpers/command.js";
 
 declare module "discord.js" {
   interface Client {

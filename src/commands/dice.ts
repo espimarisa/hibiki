@@ -1,12 +1,11 @@
 /**
  * @file Slash command to roll a die of varying sides.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
-import type { HibikiCommand } from "@/helpers/command.js";
-import { HibikiColors } from "@/utils/constants.js";
-import { t, tO } from "@/utils/i18n.js";
+import type { HibikiCommand } from "@/helpers/command.ts";
+import { HibikiColors } from "@/utils/constants.ts";
+import { t, tO } from "@/utils/i18n.ts";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const diceCommand = {
@@ -15,7 +14,7 @@ export const diceCommand = {
     .setNameLocalizations(tO("commands:DICE_NAME"))
     .setDescription(t("commands:DICE_DESCRIPTION"))
     .setDescriptionLocalizations(tO("commands:DICE_DESCRIPTION"))
-    // Sides option
+    // Sides option.
     .addIntegerOption((sides) =>
       sides
         .setName("sides")
@@ -28,11 +27,11 @@ export const diceCommand = {
     ),
 
   async run(interaction) {
-    // Gets the number of sides and calculates the roll
+    // Gets the number of sides and calculates the roll.
     const sides = interaction.options.getInteger("sides") || 6;
     const roll = Math.floor(Math.random() * sides) + 1;
 
-    // Sends the interaction
+    // Sends the interaction.
     await interaction.reply({
       embeds: [
         new EmbedBuilder()

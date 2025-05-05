@@ -18,23 +18,23 @@
     "url": "https://espi.me"
   },
   "type": "module",
-  "main": "./dist/src/index.js",
+  "main": "./src/index.ts",
   "scripts": {
-    "build": "rm -rf dist && bun db:generate && tsc",
-    "check": "bun db:generate && tsc --noEmit",
-    "db:generate": "bun drizzle-kit generate",
-    "db:migrate": "bun drizzle-kit migrate",
-    "db:push": "bun drizzle-kit push",
-    "dev": "NODE_ENV=development bun db:generate && bun ./src/index.ts",
-    "dev:register": "NODE_ENV=development bun ./src/register.ts",
-    "dev:register:clear": "NODE_ENV=development bun src/register.ts --clear",
+    "check": "bun run db:generate && tsc --noEmit",
+    "db:generate": "bun run drizzle-kit generate",
+    "db:migrate": "bun run drizzle-kit migrate",
+    "db:push": "bun run drizzle-kit push",
+    "db:studio": "bun run drizzle-kit studio",
+    "dev": "NODE_ENV=development bun run db:generate && bun run ./src/index.ts",
+    "dev:register": "NODE_ENV=development bun run ./src/register.ts",
+    "dev:register:clear": "NODE_ENV=development bun run ./src/register.ts --clear",
     "format": "biome format --fix .",
     "lint": "biome check .",
     "lint:fix": "biome lint --fix .",
-    "register": "NODE_ENV=production bun ./dist/src/register.js",
-    "register:clear": "NODE_ENV=production bun ./dist/src/register.js --clear",
-    "start": "NODE_ENV=production bun ./dist/src/index.js",
-    "test": "NODE_ENV=test bun check && bun lint"
+    "register": "NODE_ENV=production bun run ./src/register.ts",
+    "register:clear": "NODE_ENV=production bun run ./src/register.ts --clear",
+    "start": "NODE_ENV=production bun run ./src/index.ts",
+    "test": "NODE_ENV=test bun run check && bun run lint"
   },
   "dependencies": {
     "@chatsift/pino-rotate-file": "^0.5.1",
@@ -48,15 +48,15 @@
     "pino-pretty": "^13.0.0",
     "postgres": "^3.4.5",
     "tslib": "^2.8.1",
-    "zod": "^3.24.3"
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.0-beta.2",
-    "@types/bun": "^1.2.11",
+    "@types/bun": "^1.2.12",
     "drizzle-kit": "^0.31.1",
     "typescript": "^5.8.3"
   },
-  "packageManager": "bun@1.2.11",
+  "packageManager": "bun@1.2.12",
   "engines": {
     "bun": ">=1.2.10"
   },

@@ -1,11 +1,10 @@
 /**
  * @file Utilities for localizing structures.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
-import type { DictionaryKey } from "@/types/i18next.js";
-import { t } from "@/utils/i18n.js";
+import type { DictionaryKey } from "@/types/i18next.ts";
+import { t } from "@/utils/i18n.ts";
 import type { Duration } from "date-fns";
 
 /**
@@ -18,7 +17,7 @@ import type { Duration } from "date-fns";
 export function localizeBytes(bytes: number, locale: string) {
   const kb = 1024;
 
-  // Dictionary keys with storage sizes
+  // Dictionary keys with storage sizes.
   const strings = [
     "common:BYTES",
     "common:BYTES_KB",
@@ -27,13 +26,13 @@ export function localizeBytes(bytes: number, locale: string) {
     "common:BYTES_TB",
   ] satisfies DictionaryKey[];
 
-  // Calculates the digits
+  // Calculates the digits.
   const i = Math.min(
     Math.floor(Math.log(bytes) / Math.log(kb)),
     strings.length - 1,
   );
 
-  // Return string to use
+  // Return string to use.
   const value = Number.parseFloat((bytes / kb ** i).toFixed(0));
   return t(strings[i] as DictionaryKey, { lng: locale, count: value });
 }
@@ -53,7 +52,7 @@ export function localizeTime(
 ) {
   const formattedDuration: string[] = [];
 
-  // List of units
+  // List of units.
   const units: (keyof LocalizedDuration)[] = [
     "days",
     "hours",
@@ -64,14 +63,14 @@ export function localizeTime(
     "years",
   ];
 
-  // Iterates through each unit
+  // Iterates through each unit.
   for (const unit of units) {
-    // Removes disabled items
+    // Removes disabled items.
     if (time[unit] && !hide?.[unit]) {
-      // Gets the key to use
+      // Gets the key to use.
       const key = `common:${unit.toUpperCase()}` as DictionaryKey;
 
-      // Localizes and formats
+      // Localizes and formats.
       formattedDuration.push(t(key, { count: time[unit], lng: locale }));
     }
   }
@@ -79,7 +78,7 @@ export function localizeTime(
   return formattedDuration.join(", ");
 }
 
-// Type definition for a localized duration response
+// Type definition for a localized duration response.
 type LocalizedDuration = {
   days?: string;
   hours?: string;

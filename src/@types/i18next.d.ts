@@ -1,7 +1,6 @@
 /**
  * @file Extended typing definitions for i18next.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
 import type commands from "@/locales/en-US/commands.json";

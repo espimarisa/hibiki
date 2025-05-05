@@ -1,16 +1,15 @@
 /**
  * @file Slash command to get information and statistics about the bot.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
-import type { HibikiCommand } from "@/helpers/command.js";
+import type { HibikiCommand } from "@/helpers/command.ts";
 import { getTotalCachedUsers, getTotalGuilds } from "@/helpers/discord.js";
-import { env } from "@/root/utils/env.js";
-import { HibikiColors, INVITE_PERMISSIONS } from "@/utils/constants.js";
-import { getTimeSince } from "@/utils/format.js";
-import { t, tO } from "@/utils/i18n.js";
-import { localizeBytes, localizeTime } from "@/utils/localize.js";
+import { env } from "@/root/utils/env.ts";
+import { HibikiColors, INVITE_PERMISSIONS } from "@/utils/constants.ts";
+import { getTimeSince } from "@/utils/format.ts";
+import { t, tO } from "@/utils/i18n.ts";
+import { localizeBytes, localizeTime } from "@/utils/localize.ts";
 import { memoryUsage } from "node:process";
 import { EmbedBuilder, SlashCommandBuilder, version } from "discord.js";
 
@@ -24,20 +23,20 @@ export const aboutCommand = {
     .setDescriptionLocalizations(tO("commands:ABOUT_DESCRIPTION")),
 
   async run(interaction) {
-    // Defers the reply
+    // Defers the reply.
     await interaction.deferReply();
 
-    // Gets uptime and memory statistics
+    // Gets uptime and memory statistics.
     const uptime = getTimeSince(startupTimestamp, new Date());
     const memory = Math.round(memoryUsage().heapUsed);
     const localizedUptime = localizeTime(uptime, interaction.locale);
     const localizedMemory = localizeBytes(memory, interaction.locale);
 
-    // Gets the total amount of cached guilds and users
+    // Gets the total amount of cached guilds and users.
     const cachedGuilds = await getTotalGuilds(interaction.client.sharder);
     const cachedUsers = await getTotalCachedUsers(interaction.client.sharder);
 
-    // Sends the interaction
+    // Sends the interaction.
     await interaction.followUp({
       embeds: [
         new EmbedBuilder()
@@ -56,7 +55,7 @@ export const aboutCommand = {
           .setThumbnail(interaction.client.user.displayAvatarURL({ size: 512 }))
           .addFields(
             {
-              // Total servers
+              // Total servers.
               name: t("common:STATISTICS", { lng: interaction.locale }),
               value: t("commands:ABOUT_STATISTICS_DETAILS", {
                 lng: interaction.locale,
@@ -67,7 +66,7 @@ export const aboutCommand = {
               inline: true,
             },
             {
-              // Versioning
+              // Versioning.
               name: t("common:VERSION", { lng: interaction.locale }),
               value: t("commands:ABOUT_VERSION_DETAILS", {
                 lng: interaction.locale,
@@ -78,7 +77,7 @@ export const aboutCommand = {
               inline: true,
             },
             {
-              // Bot uptime
+              // Bot uptime.
               name: t("commands:ABOUT_SYSTEM", {
                 lng: interaction.locale,
               }),
@@ -90,7 +89,7 @@ export const aboutCommand = {
               inline: false,
             },
             {
-              // Links
+              // Links.
               name: "\u200b",
               value: t("commands:ABOUT_LINKS", {
                 lng: interaction.locale,

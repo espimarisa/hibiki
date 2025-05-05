@@ -1,0 +1,127 @@
+/**
+ * @file Starboard database schema.
+ * @license Zlib
+ */
+
+import { DISCORD_SNOWFLAKE_STRING_REGEX } from "@/utils/constants.ts";
+import { relations, sql } from "drizzle-orm";
+import {
+  check,
+  index,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+  unique,
+} from "drizzle-orm/pg-core";
+
+// Create a reusable sql fragment containing the raw pattern string
+const DISCORD_SNOWFLAKE_SQL_RAW = sql.raw(DISCORD_SNOWFLAKE_STRING_REGEX);
+
+// Starboard reaction data schema
+export const starboard_reactions = pgTable(
+  "starboard_reactions",
+  {
+    // The Discord message ID of the message reacted to.
+    message_id: text("message_id").notNull(),
+
+    // Timestamp indicating when a reaction was added by a user.
+    starred_at: timestamp("starred_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+
+    // The Discord user ID of the reactor.
+    user_id: text("user_id").notNull(),
+  },
+  (table) => [
+    // CHECK constraint: Validates message_id matches the Discord Snowflake pattern.
+    check(
+      "starboard_reactions_message_id_snowflake_check",
+      sql`${table.message_id} ~ '${DISCORD_SNOWFLAKE_SQL_RAW}'`,
+    ),
+
+    // CHECK constraint: Validates user_id matches the Discord Snowflake pattern.
+    check(
+      "starboard_reactions_user_id_snowflake_check",
+      sql`${table.user_id} ~ '${DISCORD_SNOWFLAKE_SQL_RAW}'`,
+    ),
+
+    // Message ID index.
+    index("starboard_reactions_message_id_index").on(table.message_id),
+
+    // Composite primary key to prevent a user from starring the same message multiple times.
+    primaryKey({
+      name: "starboard_reactions_pk",
+      columns: [table.message_id, table.user_id],
+    }),
+  ],
+);
+
+// Starboard entries schema
+export const starboard_entries = pgTable(
+  "starboard_entries",
+  {
+    // Timestamp indicating when the starboard entry was created.
+    created_at: timestamp("created_at", { mode: "date", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+
+    // The Discord guild ID where the original message is located.
+    guild_id: text("guild_id").notNull(),
+
+    // The Discord message ID of the original message.
+    message_id: text("message_id").primaryKey(),
+
+    // The Discord message ID of the message posted on the starboard channel.
+    starboard_message_id: text("starboard_message_id").notNull(),
+  },
+  (table) => [
+    // CHECK constraint: Validates guild_id matches the Discord Snowflake pattern.
+    check(
+      "starboard_entries_guild_id_snowflake_check",
+      sql`${table.guild_id} ~ '${DISCORD_SNOWFLAKE_SQL_RAW}'`,
+    ),
+
+    // CHECK constraint: Validates message_id matches the Discord Snowflake pattern.
+    check(
+      "starboard_entries_message_id_snowflake_check",
+      sql`${table.message_id} ~ '${DISCORD_SNOWFLAKE_SQL_RAW}'`,
+    ),
+
+    // CHECK constraint: Validates starboard_message_id matches the Discord Snowflake pattern.
+    check(
+      "starboard_entries_starboard_message_id_snowflake_check",
+      sql`${table.starboard_message_id} ~ '${DISCORD_SNOWFLAKE_SQL_RAW}'`,
+    ),
+
+    // UNIQUE constraint for starboard_message_id
+    unique("starboard_entries_starboard_message_id_unique").on(
+      table.starboard_message_id,
+    ),
+
+    // Guild ID index.
+    index("starboard_entries_guild_id_index").on(table.guild_id),
+  ],
+);
+
+// Defines relations between starboard_reactions and starboard_entries.
+export const starboard_reactions_relations = relations(
+  starboard_reactions,
+  ({ one }) => ({
+    message: one(starboard_entries, {
+      fields: [starboard_reactions.message_id],
+      references: [starboard_entries.message_id],
+    }),
+  }),
+);
+
+// Defines relations between starboard_entries and starboard_reactions.
+export const starboard_entries_relations = relations(
+  starboard_entries,
+  ({ many }) => ({
+    stars: many(starboard_reactions),
+  }),
+);
+
+export type StarboardReaction = typeof starboard_reactions.$inferSelect;
+export type StarboardEntry = typeof starboard_entries.$inferSelect;

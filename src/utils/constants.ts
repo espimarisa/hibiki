@@ -1,8 +1,21 @@
 /**
  * @file Commonly-used strings and helpers.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
+
+// A regex to validate Discord snowflakes with.
+export const DISCORD_SNOWFLAKE_REGEX = "^(?<id>\\d{17,20})$";
+
+// A string literal regex to validate Discord snowflakes with.
+export const DISCORD_SNOWFLAKE_STRING_REGEX = "^\\d{17,20}$";
+
+/** Commonly used durations in seconds. */
+export enum Durations {
+  Day = 86400,
+  Hour = 3600,
+  Minute = 60,
+  Week = 604800,
+}
 
 /** Commonly used colors. */
 export enum HibikiColors {

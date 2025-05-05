@@ -1,15 +1,14 @@
 /**
  * @file Slash command to get package information from various package registries.
- * @author Espi Marisa
- * @license zlib
+ * @license Zlib
  */
 
-import type { HibikiCommand } from "@/helpers/command.js";
-import { MessageLimits } from "@/utils/constants.js";
-import { sendErrorReply } from "@/utils/error.js";
-import { hFetch } from "@/utils/fetch.js";
-import { trimContent } from "@/utils/format.js";
-import { t, tO } from "@/utils/i18n.js";
+import type { HibikiCommand } from "@/helpers/command.ts";
+import { MessageLimits } from "@/utils/constants.ts";
+import { sendErrorReply } from "@/utils/error.ts";
+import { hFetch } from "@/utils/fetch.ts";
+import { trimContent } from "@/utils/format.ts";
+import { t, tO } from "@/utils/i18n.ts";
 import { EmbedBuilder, TimestampStyles, time } from "@discordjs/builders";
 import { SlashCommandBuilder } from "discord.js";
 
@@ -26,14 +25,14 @@ export const packageCommand = {
     .setNameLocalizations(tO("commands:PACKAGE_NAME"))
     .setDescription(t("commands:PACKAGE_NAME"))
     .setDescriptionLocalizations(tO("commands:PACKAGE_DESCRIPTION"))
-    // AUR subcommand
+    // AUR subcommand.
     .addSubcommand((aur) =>
       aur
         .setName("aur")
         .setNameLocalizations(tO("commands:PACKAGE_AUR_NAME"))
         .setDescription(t("commands:PACKAGE_AUR_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:PACKAGE_AUR_DESCRIPTION"))
-        // Package argument
+        // Package argument.
         .addStringOption((pkg) =>
           pkg
             .setName("package")
@@ -45,14 +44,14 @@ export const packageCommand = {
             .setRequired(true),
         ),
     )
-    // NPM subcommand
+    // NPM subcommand.
     .addSubcommand((npm) =>
       npm
         .setName("npm")
         .setNameLocalizations(tO("commands:PACKAGE_NPM_NAME"))
         .setDescription(t("commands:PACKAGE_NPM_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:PACKAGE_NPM_DESCRIPTION"))
-        // Package argument
+        // Package argument.
         .addStringOption((pkg) =>
           pkg
             .setName("package")
@@ -63,7 +62,7 @@ export const packageCommand = {
             )
             .setRequired(true),
         )
-        // Version argument
+        // Version argument.
         .addStringOption((version) =>
           version
             .setName("version")
@@ -77,44 +76,44 @@ export const packageCommand = {
     ),
 
   async run(interaction) {
-    // Defers the reply
+    // Defers the reply.
     await interaction.deferReply();
 
-    // Gets the subcommand, query, and optional version
+    // Gets the subcommand, query, and optional version.
     const subcommand = interaction.options.getSubcommand(true);
     const query = encodeURIComponent(
       interaction.options.getString("package", true),
     ).toLowerCase();
 
-    // Creates the embed
+    // Creates the embed.
     const embed = new EmbedBuilder();
 
-    // Gets information for the specific subcommand
+    // Gets information for the specific subcommand.
     switch (subcommand) {
       /**
-       * AUR data
-       * @see https://aur.archlinux.org/rpc/v5/info?arg[]=packageName
+       * AUR data.
+       * @see https://aur.archlinux.org/rpc/v5/info?arg[]=packageName.
        */
 
       case "aur": {
-        // Fetches AUR data
+        // Fetches AUR data.
         const response = await hFetch(`${aurAPIURL}${query}`);
         if (!response) {
           await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
           return;
         }
 
-        // Converts AUR data to JSON
+        // Converts AUR data to JSON.
         const aurBody: AURPackage = await response.json();
         if (!(aurBody?.results?.[0]?.ID && aurBody.results?.[0]?.Name)) {
           await sendErrorReply(interaction, "errors:PACKAGE_QUERY", true, true);
           return;
         }
 
-        // Shorthand for body results
+        // Shorthand for body results.
         const body = aurBody.results[0];
 
-        // Submitted on
+        // Submitted on.
         if (body.FirstSubmitted) {
           embed.addFields({
             name: t("common:SUBMITTED_ON", { lng: interaction.locale }),
@@ -126,7 +125,7 @@ export const packageCommand = {
           });
         }
 
-        // Modified on
+        // Modified on.
         if (body.LastModified) {
           embed.addFields({
             name: t("common:MODIFIED_ON", { lng: interaction.locale }),
@@ -138,7 +137,7 @@ export const packageCommand = {
           });
         }
 
-        // Maintainer
+        // Maintainer.
         if (body.Maintainer) {
           embed.addFields({
             name: t("common:MAINTAINERS", {
@@ -150,7 +149,7 @@ export const packageCommand = {
           });
         }
 
-        // Upvotes
+        // Upvotes.
         if (body.NumVotes) {
           embed.addFields({
             name: t("common:UPVOTES", {
@@ -162,7 +161,7 @@ export const packageCommand = {
           });
         }
 
-        // License
+        // License.
         if (body.License && body.License.length > 0) {
           embed.addFields({
             name: t("common:LICENSE", { lng: interaction.locale }),
@@ -171,7 +170,7 @@ export const packageCommand = {
           });
         }
 
-        // Provides
+        // Provides.
         if (body.Provides) {
           embed.addFields({
             name: t("commands:PACKAGE_PROVIDES", { lng: interaction.locale }),
@@ -183,7 +182,7 @@ export const packageCommand = {
           });
         }
 
-        // Keywords
+        // Keywords.
         if (body.Keywords && body.Keywords.length > 0) {
           embed.addFields({
             name: t("commands:PACKAGE_KEYWORDS", { lng: interaction.locale }),
@@ -195,7 +194,7 @@ export const packageCommand = {
           });
         }
 
-        // Conflicts
+        // Conflicts.
         if (body.Conflicts && body.Conflicts.length > 0) {
           embed.addFields({
             name: t("commands:PACKAGE_CONFLICTS", { lng: interaction.locale }),
@@ -207,7 +206,7 @@ export const packageCommand = {
           });
         }
 
-        // Dependencies
+        // Dependencies.
         if (body.Depends && body.Depends.length > 0) {
           embed.addFields({
             name: t("commands:PACKAGE_DEPENDENCIES", {
@@ -221,7 +220,7 @@ export const packageCommand = {
           });
         }
 
-        // Notes
+        // Notes.
         if (body.OutOfDate) {
           embed.addFields({
             name: t("commands:PACKAGE_NOTES", { lng: interaction.locale }),
@@ -232,16 +231,16 @@ export const packageCommand = {
           });
         }
 
-        // Sets the embed description
+        // Sets the embed description.
         if (body.Description) {
           embed.setDescription(
             trimContent(body.Description, MessageLimits.EmbedDescription),
           );
         }
-        // Sets the embed color
+        // Sets the embed color.
         embed.setColor(archLogoColor);
 
-        // Sets the embed author
+        // Sets the embed author.
         embed.setAuthor({
           iconURL: archLogoImage,
           name: `${body.Name} ${body.Version}`,
@@ -252,12 +251,12 @@ export const packageCommand = {
       }
 
       /**
-       * NPM data
-       * @see https://registry.npmjs.com/packageName
+       * NPM data.
+       * @see https://registry.npmjs.com/packageName.
        */
 
       case "npm": {
-        // Fetches NPM data
+        // Fetches NPM data.
         const version = interaction.options.getString("version", false);
         const npmResponse = await hFetch(`${npmAPIURL}/${query}`);
         if (!npmResponse) {
@@ -265,19 +264,19 @@ export const packageCommand = {
           return;
         }
 
-        // Converts NPM response to JSON
+        // Converts NPM response to JSON.
         const npmBody = await npmResponse.json();
         if (!npmBody?.["dist-tags"]?.latest || npmBody.error) {
           await sendErrorReply(interaction, "errors:PACKAGE_QUERY", true, true);
           return;
         }
 
-        // Gets the individual version data; default to latest
+        // Gets the individual version data; default to latest.
         const body: PartialNPMPackage = version
           ? npmBody.versions[version]
           : npmBody.versions[npmBody["dist-tags"].latest];
 
-        // Error handler; handle specific version errors
+        // Error handler; handle specific version errors.
         if (!body) {
           await sendErrorReply(
             interaction,
@@ -291,7 +290,7 @@ export const packageCommand = {
           return;
         }
 
-        // Created on
+        // Created on.
         embed.addFields({
           name: t("common:CREATED_ON", { lng: interaction.locale }),
           value: time(
@@ -301,7 +300,7 @@ export const packageCommand = {
           inline: true,
         });
 
-        // Updated on
+        // Updated on.
         embed.addFields({
           name: t("common:UPDATED_ON", { lng: interaction.locale }),
           value: time(
@@ -311,7 +310,7 @@ export const packageCommand = {
           inline: true,
         });
 
-        // Author
+        // Author.
         if (body.author) {
           embed.addFields({
             name: t("common:AUTHOR", { lng: interaction.locale }),
@@ -321,7 +320,7 @@ export const packageCommand = {
           });
         }
 
-        // License
+        // License.
         if (body.license) {
           embed.addFields({
             name: t("common:LICENSE", { lng: interaction.locale }),
@@ -330,7 +329,7 @@ export const packageCommand = {
           });
         }
 
-        // Maintainers
+        // Maintainers.
         if (body.maintainers && body.maintainers.length > 0) {
           embed.addFields({
             name: t("common:MAINTAINERS", {
@@ -345,7 +344,7 @@ export const packageCommand = {
           });
         }
 
-        // Keywords
+        // Keywords.
         if (body.keywords && body.keywords.length > 0) {
           embed.addFields({
             name: t("commands:PACKAGE_KEYWORDS", { lng: interaction.locale }),
@@ -357,17 +356,17 @@ export const packageCommand = {
           });
         }
 
-        // Sets the embed description
+        // Sets the embed description.
         if (body.description) {
           embed.setDescription(
             trimContent(body.description, MessageLimits.EmbedDescription),
           );
         }
 
-        // Sets the embed color
+        // Sets the embed color.
         embed.setColor(npmLogoColor);
 
-        // Sets the embed author
+        // Sets the embed author.
         embed.setAuthor({
           iconURL: npmLogoImage,
           name: body._id,
@@ -382,14 +381,14 @@ export const packageCommand = {
       }
     }
 
-    // Sends the interaction
+    // Sends the interaction.
     await interaction.followUp({ embeds: [embed] });
   },
 } satisfies HibikiCommand;
 
 /**
  * AUR package response data.
- * @see https://wiki.archlinux.org/title/Aurweb_RPC_interface#1.2.1
+ * @see https://wiki.archlinux.org/title/Aurweb_RPC_interface#1.2.1.
  */
 
 type AURPackage = {
@@ -425,7 +424,7 @@ type AURPackage = {
 
 /**
  * NPM package data response.
- * @see https://docs.npmjs.com/cli/v10/configuring-npm/package-json#people-fields-author-contributors
+ * @see https://docs.npmjs.com/cli/v10/configuring-npm/package-json#people-fields-author-contributors.
  */
 
 type PartialNPMPackage = {
@@ -447,7 +446,7 @@ type PartialNPMPackage = {
 
 /**
  * NPM package contact details.
- * @see https://docs.npmjs.com/cli/v10/configuring-npm/package-json#people-fields-author-contributors
+ * @see https://docs.npmjs.com/cli/v10/configuring-npm/package-json#people-fields-author-contributors.
  */
 
 type NPMContact = {

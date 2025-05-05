@@ -1,15 +1,14 @@
 /**
  * @file Slash command that returns pictures of different kinds of animals.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
-import type { HibikiCommand } from "@/helpers/command.js";
-import type { DictionaryKey } from "@/types/i18next.js";
-import { HibikiColors } from "@/utils/constants.js";
-import { sendErrorReply } from "@/utils/error.js";
-import { hFetch } from "@/utils/fetch.js";
-import { t, tO } from "@/utils/i18n.js";
+import type { HibikiCommand } from "@/helpers/command.ts";
+import type { DictionaryKey } from "@/types/i18next.ts";
+import { HibikiColors } from "@/utils/constants.ts";
+import { sendErrorReply } from "@/utils/error.ts";
+import { hFetch } from "@/utils/fetch.ts";
+import { t, tO } from "@/utils/i18n.ts";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 
 export const animalCommand = {
@@ -18,7 +17,7 @@ export const animalCommand = {
     .setNameLocalizations(tO("commands:ANIMAL_NAME"))
     .setDescription(t("commands:ANIMAL_DESCRIPTION"))
     .setDescriptionLocalizations(tO("commands:ANIMAL_DESCRIPTION"))
-    // Cat subcommand
+    // Cat subcommand.
     .addSubcommand((cat) =>
       cat
         .setName("cat")
@@ -26,7 +25,7 @@ export const animalCommand = {
         .setDescription(t("commands:ANIMAL_CAT_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ANIMAL_CAT_DESCRIPTION")),
     )
-    // Dog subcommand
+    // Dog subcommand.
     .addSubcommand((dog) =>
       dog
         .setName("dog")
@@ -34,7 +33,7 @@ export const animalCommand = {
         .setDescription(t("commands:ANIMAL_DOG_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:ANIMAL_DOG_DESCRIPTION")),
     )
-    // Fox subcommand
+    // Fox subcommand.
     .addSubcommand((fox) =>
       fox
         .setName("fox")
@@ -48,11 +47,11 @@ export const animalCommand = {
     let bodyKey = "";
     let titleString: DictionaryKey | "" = "";
 
-    // Gets the subcommand to run
+    // Gets the subcommand to run.
     const subcommand = interaction.options.getSubcommand(true);
 
     switch (subcommand) {
-      // Cat: Use CatAAS; body.url for image
+      // Cat: Use CatAAS; body.url for image.
       case "cat": {
         apiURL = "https://cataas.com/cat?json=true";
         bodyKey = "url";
@@ -60,7 +59,7 @@ export const animalCommand = {
         break;
       }
 
-      // Dog: Use random.dog; body.url for image
+      // Dog: Use random.dog; body.url for image.
       case "dog": {
         apiURL = "https://random.dog/woof.json";
         bodyKey = "url";
@@ -68,7 +67,7 @@ export const animalCommand = {
         break;
       }
 
-      // Fox: Use randomfox.ca; body.image for image
+      // Fox: Use randomfox.ca; body.image for image.
       case "fox": {
         apiURL = "https://randomfox.ca/floof/";
         bodyKey = "image";
@@ -81,21 +80,21 @@ export const animalCommand = {
       }
     }
 
-    // Fetches the response
+    // Fetches the response.
     const response = await hFetch(apiURL);
     if (!response) {
       await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
       return;
     }
 
-    // Converts the response to JSON
+    // Converts the response to JSON.
     const body = await response.json();
     if (!body?.[bodyKey]) {
       await sendErrorReply(interaction, "errors:IMAGE_FAILED", true, true);
       return;
     }
 
-    // Sends the interaction
+    // Sends the interaction.
     await interaction.reply({
       embeds: [
         new EmbedBuilder()

@@ -169,6 +169,7 @@
         "noFocusedTests": "error",
         "noMisplacedAssertion": "error",
         "noSkippedTests": "info",
+        "noVar": "error",
         "useAwait": "error",
         "useErrorMessage": "error",
         "useNumberToFixedDigitsArgument": "error"

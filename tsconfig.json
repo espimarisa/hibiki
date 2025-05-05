@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "allowImportingTsExtensions": false,
+    "allowImportingTsExtensions": true,
     "allowJs": false,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
@@ -23,7 +23,7 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "noEmit": false,
+    "noEmit": true,
     "noEmitHelpers": false,
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
@@ -65,5 +65,5 @@
     "verbatimModuleSyntax": true
   },
   "exclude": ["**/dist/*", "**/node_modules/*"],
-  "include": ["./src/**/*.ts", "./locales/**/*.json"]
+  "include": ["./src/**/*.ts", "./locales/**/*.json", "drizzle.config.ts"]
 }

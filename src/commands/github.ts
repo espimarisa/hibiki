@@ -1,14 +1,13 @@
 /**
  * @file Slash command to get information about a GitHub user or repository.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
-import type { HibikiCommand } from "@/helpers/command.js";
-import { HibikiColors } from "@/utils/constants.js";
-import { sendErrorReply } from "@/utils/error.js";
-import { hFetch } from "@/utils/fetch.js";
-import { t, tO } from "@/utils/i18n.js";
+import type { HibikiCommand } from "@/helpers/command.ts";
+import { HibikiColors } from "@/utils/constants.ts";
+import { sendErrorReply } from "@/utils/error.ts";
+import { hFetch } from "@/utils/fetch.ts";
+import { t, tO } from "@/utils/i18n.ts";
 import {
   EmbedBuilder,
   SlashCommandBuilder,
@@ -16,11 +15,11 @@ import {
   time,
 } from "discord.js";
 
-// GitHub API urls and headers
+// GitHub API urls and headers.
 const API_BASEURL = "https://api.github.com";
 const API_REQUIRED_HEADER = "application/vnd.github+json";
 
-// Regex to validate GitHub URLs
+// Regex to validate GitHub URLs.
 const GITHUB_URL_REGEX = /^https:\/\/(www\.)?github\.com\//;
 
 export const githubCommand = {
@@ -29,14 +28,14 @@ export const githubCommand = {
     .setNameLocalizations(tO("commands:GITHUB_NAME"))
     .setDescription(t("commands:GITHUB_DESCRIPTION"))
     .setDescriptionLocalizations(tO("commands:GITHUB_DESCRIPTION"))
-    // User subcommand
+    // User subcommand.
     .addSubcommand((user) =>
       user
         .setName("user")
         .setNameLocalizations(tO("commands:GITHUB_USER_USERNAME_NAME"))
         .setDescription(t("commands:GITHUB_USER_DESCRIPTION"))
         .setDescriptionLocalizations(tO("commands:GITHUB_USER_DESCRIPTION"))
-        // Username option
+        // Username option.
         .addStringOption((username) =>
           username
             .setName(t("commands:GITHUB_USER_USERNAME_NAME"))
@@ -48,7 +47,7 @@ export const githubCommand = {
             .setRequired(true),
         ),
     )
-    // Repository subcommand
+    // Repository subcommand.
     .addSubcommand((repository) =>
       repository
         .setName("repository")
@@ -57,7 +56,7 @@ export const githubCommand = {
         .setDescriptionLocalizations(
           tO("commands:GITHUB_REPOSITORY_DESCRIPTION"),
         )
-        // URL option
+        // URL option.
         .addStringOption((url) =>
           url
             .setName(t("commands:GITHUB_REPOSITORY_URL_NAME"))
@@ -71,16 +70,16 @@ export const githubCommand = {
     ),
 
   async run(interaction) {
-    // Defers the reply
+    // Defers the reply.
     await interaction.deferReply();
 
-    // Gets the subcommand and query
+    // Gets the subcommand and query.
     const subcommand = interaction.options.getSubcommand(true);
     let query = interaction.options.getString("query", true);
     let isRepository = false;
     let response: Response | undefined;
 
-    // Fetches a repository
+    // Fetches a repository.
     query = query.replace(GITHUB_URL_REGEX, "");
     if (subcommand === "repository") {
       isRepository = true;
@@ -90,7 +89,7 @@ export const githubCommand = {
         },
       });
     } else {
-      // Fetches a user
+      // Fetches a user.
       response = await hFetch(`${API_BASEURL}/users/${query}`, {
         headers: {
           Accept: API_REQUIRED_HEADER,
@@ -98,23 +97,23 @@ export const githubCommand = {
       });
     }
 
-    // Error handler for invalid response
+    // Error handler for invalid response.
     if (!response) {
       await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
       return;
     }
 
-    // Converts response into JSON
+    // Converts response into JSON.
     const body: PossibleGithubResponse = await response.json();
     if (!body?.id) {
       await sendErrorReply(interaction, "errors:GITHUB_QUERY", true, true);
       return;
     }
 
-    // Creates the embed
+    // Creates the embed.
     const embed = new EmbedBuilder().setColor(HibikiColors.Primary);
 
-    // Creation date
+    // Creation date.
     if (body.created_at) {
       embed.addFields({
         name: t("common:CREATED_ON"),
@@ -123,7 +122,7 @@ export const githubCommand = {
       });
     }
 
-    // Last updated
+    // Last updated.
     if (body.updated_at) {
       embed.addFields({
         name: t("common:UPDATED_ON", { lng: interaction.locale }),
@@ -132,7 +131,7 @@ export const githubCommand = {
       });
     }
 
-    // Repository owner
+    // Repository owner.
     if (body.owner?.login) {
       embed.addFields({
         name: t("common:OWNER", { lng: interaction.locale }),
@@ -141,7 +140,7 @@ export const githubCommand = {
       });
     }
 
-    // Repository template status
+    // Repository template status.
     if (body.template) {
       embed.addFields({
         name: t("commands:GITHUB_TEMPLATE", { lng: interaction.locale }),
@@ -150,7 +149,7 @@ export const githubCommand = {
       });
     }
 
-    // Repository archival status
+    // Repository archival status.
     if (body.archived) {
       embed.addFields({
         name: t("commands:GITHUB_ARCHIVED", { lng: interaction.locale }),
@@ -159,7 +158,7 @@ export const githubCommand = {
       });
     }
 
-    // Repository disabled status
+    // Repository disabled status.
     if (body.disabled) {
       embed.addFields({
         name: t("common:DISABLED", { lng: interaction.locale }),
@@ -168,7 +167,7 @@ export const githubCommand = {
       });
     }
 
-    // Repository fork information
+    // Repository fork information.
     if (body.fork && body.source?.full_name) {
       embed.addFields({
         name: t("commands:GITHUB_FORKED_FROM", { lng: interaction.locale }),
@@ -177,7 +176,7 @@ export const githubCommand = {
       });
     }
 
-    // Repository primary language
+    // Repository primary language.
     if (body.language) {
       embed.addFields({
         name: t("common:LANGUAGE", { lng: interaction.locale }),
@@ -186,7 +185,7 @@ export const githubCommand = {
       });
     }
 
-    // Repository license; ignore NOASSERTION
+    // Repository license; ignore NOASSERTION.
     if (body.license?.spdx_id && body.license.spdx_id !== "NOASSERTION") {
       embed.addFields({
         name: t("common:LICENSE"),
@@ -195,7 +194,7 @@ export const githubCommand = {
       });
     }
 
-    // Repository stars
+    // Repository stars.
     if (body.stargazers_count) {
       embed.addFields({
         name: t("commands:GITHUB_STARGAZERS", { lng: interaction.locale }),
@@ -204,7 +203,7 @@ export const githubCommand = {
       });
     }
 
-    // Repository watchers
+    // Repository watchers.
     if (body.subscribers_count) {
       embed.addFields({
         name: t("commands:GITHUB_WATCHERS", { lng: interaction.locale }),
@@ -213,7 +212,7 @@ export const githubCommand = {
       });
     }
 
-    // Repository issue count
+    // Repository issue count.
     if (body.open_issues) {
       embed.addFields({
         name: t("commands:GITHUB_ISSUES", { lng: interaction.locale }),
@@ -222,7 +221,7 @@ export const githubCommand = {
       });
     }
 
-    // Repository fork count
+    // Repository fork count.
     if (body.forks) {
       embed.addFields({
         name: t("commands:GITHUB_FORKS", { lng: interaction.locale }),
@@ -231,7 +230,7 @@ export const githubCommand = {
       });
     }
 
-    // Repository homepage
+    // Repository homepage.
     if (body.homepage) {
       embed.addFields({
         name: t("common:HOMEPAGE", { lng: interaction.locale }),
@@ -240,7 +239,7 @@ export const githubCommand = {
       });
     }
 
-    // Repository topics
+    // Repository topics.
     if (body.topics && body.topics.length > 0) {
       embed.addFields({
         name: t("commands:GITHUB_TOPICS"),
@@ -248,7 +247,7 @@ export const githubCommand = {
         inline: false,
       });
     }
-    // User's total repositories
+    // User's total repositories.
     if (body.public_repos) {
       embed.addFields({
         name: t("commands:GITHUB_REPOSITORIES", { lng: interaction.locale }),
@@ -257,7 +256,7 @@ export const githubCommand = {
       });
     }
 
-    // User's total followers
+    // User's total followers.
     if (body.followers) {
       embed.addFields({
         name: t("common:FOLLOWERS", {
@@ -269,7 +268,7 @@ export const githubCommand = {
       });
     }
 
-    // User's total following
+    // User's total following.
     if (body.following) {
       embed.addFields({
         name: t("common:FOLLOWING", { lng: interaction.locale }),
@@ -278,7 +277,7 @@ export const githubCommand = {
       });
     }
 
-    // User's total gists
+    // User's total gists.
     if (body.public_gists) {
       embed.addFields({
         name: t("commands:GITHUB_GISTS", { lng: interaction.locale }),
@@ -287,7 +286,7 @@ export const githubCommand = {
       });
     }
 
-    // User's location
+    // User's location.
     if (body.location) {
       embed.addFields({
         name: t("common:LOCATION", { lng: interaction.locale }),
@@ -296,7 +295,7 @@ export const githubCommand = {
       });
     }
 
-    // User's company
+    // User's company.
     if (body.company) {
       embed.addFields({
         name: t("commands:GITHUB_COMPANY", { lng: interaction.locale }),
@@ -305,7 +304,7 @@ export const githubCommand = {
       });
     }
 
-    // User's website
+    // User's website.
     if (body.blog) {
       embed.addFields({
         name: t("common:WEBSITE", { lng: interaction.locale }),
@@ -314,7 +313,7 @@ export const githubCommand = {
       });
     }
 
-    // User's X/Twitter
+    // User's X/Twitter.
     if (body.twitter_username) {
       embed.addFields({
         name: t("commands:GITHUB_XTWITTER", { lng: interaction.locale }),
@@ -323,7 +322,7 @@ export const githubCommand = {
       });
     }
 
-    // User's email
+    // User's email.
     if (body.email) {
       embed.addFields({
         name: t("common:EMAIL", { lng: interaction.locale }),
@@ -332,33 +331,33 @@ export const githubCommand = {
       });
     }
 
-    // Sets the embed description
+    // Sets the embed description.
     embed.setDescription(
       isRepository ? body.description || "" : body.bio || "",
     );
 
-    // Sets the embed author
+    // Sets the embed author.
     embed.setAuthor({
       iconURL: isRepository ? body.owner.avatar_url : body.avatar_url,
 
-      // Repository name or username
+      // Repository name or username.
       name: `${isRepository ? body.name || "" : body.login || ""} (${body.id})`,
       url: body.html_url || "",
     });
 
-    // Sets the embed thumbnail
+    // Sets the embed thumbnail.
     embed.setThumbnail(
       isRepository ? `${body.owner.avatar_url}.png` : `${body.avatar_url}.png`,
     );
 
-    // Sends the interaction
+    // Sends the interaction.
     await interaction.followUp({ embeds: [embed] });
   },
 } satisfies HibikiCommand;
 
 /**
  * GitHub API user response.
- * @see https://api.github.com/users/query
+ * @see https://api.github.com/users/query.
  */
 
 export type GithubUser = {
@@ -368,10 +367,10 @@ export type GithubUser = {
   company?: string;
   email?: string;
   events_url?: string;
-  followers?: number;
   followers_url?: string;
-  following?: number;
+  followers?: number;
   following_url?: string;
+  following?: number;
   gists_url?: string;
   gravatar_id?: string;
   html_url?: string;
@@ -394,7 +393,7 @@ export type GithubUser = {
 
 /**
  * GitHub API license response.
- * @see https://api.github.com/repos/query
+ * @see https://api.github.com/repos/query.
  */
 
 export type GithubLicense = {
@@ -407,7 +406,7 @@ export type GithubLicense = {
 
 /**
  * GitHub API repository response.
- * @see https://api.github.com/repos/query
+ * @see https://api.github.com/repos/query.
  */
 
 export type GithubRepository = {
@@ -432,9 +431,9 @@ export type GithubRepository = {
   downloads_url?: string;
   events_url?: string;
   fork?: boolean;
-  forks?: number;
   forks_count?: number;
   forks_url?: string;
+  forks?: number;
   full_name: string;
   git_commits_url?: string;
   git_refs_url?: string;
@@ -465,8 +464,8 @@ export type GithubRepository = {
   network_count?: number;
   node_id?: string;
   notifications_url?: string;
-  open_issues?: number;
   open_issues_count?: number;
+  open_issues?: number;
   owner: GithubUser;
   private?: boolean;
   pulls_url?: string;
@@ -491,14 +490,14 @@ export type GithubRepository = {
   updated_at?: Date;
   url?: string;
   visibility?: string;
-  watchers?: number;
   watchers_count?: number;
+  watchers?: number;
 };
 
 /**
  * Possible GitHub API response.
- * @see https://api.github.com/users/query
- * @see https://api.github.com/repos/query
+ * @see https://api.github.com/users/query.
+ * @see https://api.github.com/repos/query.
  */
 
 type PossibleGithubResponse = GithubRepository & GithubUser;

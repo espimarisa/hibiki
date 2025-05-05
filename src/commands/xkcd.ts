@@ -1,15 +1,14 @@
 /**
  * @file Slash command to send a specific or random XKCD comic.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
-import type { HibikiCommand } from "@/helpers/command.js";
-import { HibikiColors, MessageLimits } from "@/utils/constants.js";
-import { sendErrorReply } from "@/utils/error.js";
-import { hFetch } from "@/utils/fetch.js";
-import { trimContent } from "@/utils/format.js";
-import { tO } from "@/utils/i18n.js";
+import type { HibikiCommand } from "@/helpers/command.ts";
+import { HibikiColors, MessageLimits } from "@/utils/constants.ts";
+import { sendErrorReply } from "@/utils/error.ts";
+import { hFetch } from "@/utils/fetch.ts";
+import { trimContent } from "@/utils/format.ts";
+import { tO } from "@/utils/i18n.ts";
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { t } from "i18next";
 
@@ -19,7 +18,7 @@ export const xkcdCommand = {
     .setNameLocalizations(tO("commands:XKCD_NAME"))
     .setDescription(t("commands:XKCD_DESCRIPTION"))
     .setDescriptionLocalizations(tO("commands:XKCD_DESCRIPTION"))
-    // Number option
+    // Number option.
     .addIntegerOption((number) =>
       number
         .setName("number")
@@ -30,55 +29,55 @@ export const xkcdCommand = {
     ),
 
   async run(interaction) {
-    // Defers the reply
+    // Defers the reply.
     await interaction.deferReply();
 
-    // Gets the number and/or endpoint to use
+    // Gets the number and/or endpoint to use.
     const number = interaction.options.getInteger("number");
     let endpoint = number
       ? `https://xkcd.com/${number}/info.0.json`
       : "https://xkcd.com/info.0.json";
 
-    // Gets the specific comic or the latest one to calculate how many XKCD comics are available
+    // Gets the specific comic or the latest one to calculate how many XKCD comics are available.
     let response = await hFetch(endpoint);
     if (!response) {
       await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
       return;
     }
 
-    // Error handler if the comic doesn't exist
+    // Error handler if the comic doesn't exist.
     if (response.status === 404) {
       await sendErrorReply(interaction, "errors:XKCD", true, true);
       return;
     }
 
-    // Gets the initial body; throw 404 if not found
+    // Gets the initial body; throw 404 if not found.
     let body: XKCDResponse = await response.json();
     if (!body?.num) {
       await sendErrorReply(interaction, "errors:XKCD", true, true);
       return;
     }
 
-    // Sets a random comic if a number isn't set
+    // Sets a random comic if a number isn't set.
     if (!number) {
-      // Calculates the random comic to get
+      // Calculates the random comic to get.
       const randomNum = Math.floor(Math.random() * body.num) + 1;
       endpoint = `https://xkcd.com/${randomNum}/info.0.json`;
 
-      // Gets the comic
+      // Gets the comic.
       response = await hFetch(endpoint);
       if (!response) {
         await sendErrorReply(interaction, "errors:FETCH_FAILED", true, true);
         return;
       }
 
-      // Error handler if the comic doesn't exist
+      // Error handler if the comic doesn't exist.
       if (response.status === 404) {
         await sendErrorReply(interaction, "errors:XKCD", true, true);
         return;
       }
 
-      // Gets the body; throw 404 if not found
+      // Gets the body; throw 404 if not found.
       body = await response.json();
       if (!body?.num) {
         await sendErrorReply(interaction, "errors:XKCD", true, true);
@@ -86,7 +85,7 @@ export const xkcdCommand = {
       }
     }
 
-    // Sends the interaction
+    // Sends the interaction.
     await interaction.followUp({
       embeds: [
         new EmbedBuilder()
@@ -108,7 +107,7 @@ export const xkcdCommand = {
 
 /**
  * XKCD comic API response.
- * @see https://xkcd.com/info.0.json
+ * @see https://xkcd.com/info.0.json.
  */
 
 type XKCDResponse = {

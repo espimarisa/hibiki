@@ -1,7 +1,6 @@
 /**
  * @file Helpers interacting with Discord or Discord.js directly.
- * @author Espi Marisa <contact@espi.me>
- * @license zlib
+ * @license Zlib
  */
 
 import type { ShardingManager } from "discord.js";

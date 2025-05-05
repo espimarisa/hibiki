@@ -1,7 +1,7 @@
 /**
  * @file Helpers for Hibiki event handlers.
- * @license zlib
- * @author Espi Marisa <contact@espi.me>
+ * @license Zlib
+
  */
 
 import type { ClientEvents } from "discord.js";
@@ -16,7 +16,7 @@ export type HibikiEvent<K extends keyof ClientEvents> = {
 
   /**
    * Only runs the listener on the first event emission (client.once).
-   * @default false
+   * @default false.
    */
 
   once?: boolean;

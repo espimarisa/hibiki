@@ -1,7 +1,7 @@
 /**
  * @file Helpers for Hibiki commands.
- * @license zlib
- * @author Espi Marisa <contact@espi.me>
+ * @license Zlib
+
  */
 
 import type {
