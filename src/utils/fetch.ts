@@ -4,7 +4,7 @@
  */
 
 import { captureError, parseError } from "@/utils/error.ts";
-import { logger } from "@/utils/logger.ts";
+import { fetchLog } from "@/utils/logger.ts";
 
 /**
  * Fetches a network resource (wrapper around native fetch()).
@@ -23,20 +23,21 @@ export async function hFetch(url: string, options?: RequestInit) {
       },
     });
 
+    fetchLog.debug(
+      `URL ${url} returned status ${response.status} ${response.statusText}.`,
+    );
+
     // Return undefined if response.ok is not ok to enforce valid parsing.
     if (!response?.ok) {
+      fetchLog.debug(`Response for URL ${url} is not OK.`);
       return;
     }
 
     return response;
   } catch (err) {
     const error = parseError(err);
-    logger.warn(`Error fetching ${url}: ${error.message}`);
-    captureError(error, {
-      url: url,
-      options: options,
-    });
-
+    fetchLog.warn(`Error fetching ${url}: ${error.message}`);
+    captureError(error, { url: url, options: options });
     throw error;
   }
 }

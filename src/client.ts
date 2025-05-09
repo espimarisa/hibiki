@@ -5,7 +5,7 @@
 
 import { env } from "@/root/utils/env.ts";
 import { captureError, parseError } from "@/utils/error.ts";
-import { logger } from "@/utils/logger.ts";
+import { clientLog } from "@/utils/logger.ts";
 import {
   ActivityType,
   Client,
@@ -18,13 +18,13 @@ import {
 let activityState = 0;
 
 const intents = [
-  IntentsBitField.Flags.GuildMessages,
-  IntentsBitField.Flags.GuildMessageReactions,
-  IntentsBitField.Flags.Guilds,
   IntentsBitField.Flags.GuildMembers,
+  IntentsBitField.Flags.GuildMessageReactions,
+  IntentsBitField.Flags.GuildMessages,
+  IntentsBitField.Flags.Guilds,
 ];
 
-/** Creates a Discord.js Client instance. */
+// Creates a new Discord.js client.
 export const client = new Client({
   intents: intents,
   partials: [Partials.Message, Partials.Channel, Partials.Reaction],
@@ -45,7 +45,7 @@ export const client = new Client({
 // Logs into Discord.
 client.login(env.DISCORD_TOKEN).catch((err) => {
   const error = parseError(err);
-  logger.fatal(`Failed to login to Discord: ${error.message}`);
+  clientLog.fatal(`Failed to login to Discord: ${error.message}`);
   captureError(error);
 });
 
@@ -53,7 +53,7 @@ client.login(env.DISCORD_TOKEN).catch((err) => {
 client.once("ready", async () => {
   // Do not spawn the shard fully if the user does not exist.
   if (!client.user) {
-    logger.fatal("No user object received from Discord.");
+    clientLog.fatal("No user object received from Discord.");
     return;
   }
 
@@ -63,7 +63,7 @@ client.once("ready", async () => {
       await client.shard.send({ type: "shardReady" });
     } catch (err) {
       const error = parseError(err);
-      logger.error(`Failed to emit ready event: ${error.message}`);
+      clientLog.error(`Failed to emit ready event: ${error.message}`);
       captureError(error);
     }
   }

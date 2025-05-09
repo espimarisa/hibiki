@@ -5,6 +5,7 @@
   "BYTES_KB": "{{count}}KB",
   "BYTES_MB": "{{count}}MB",
   "BYTES_TB": "{{count}}TB",
+  "CREATED_AT": "Created at",
   "CREATED_ON": "Created on",
   "DAYS": "{{count}} days",
   "DAYS_one": "{{count}} day",
@@ -42,6 +43,7 @@
   "SUCCESS": "✅ Success",
   "TIMEZONE": "Timezone",
   "TRUE": "True",
+  "UPDATED_AT": "Updated at",
   "UPDATED_ON": "Updated on",
   "UPVOTES": "Upvotes",
   "UPVOTES_one": "Upvote",
@@ -51,5 +53,9 @@
   "WEEKS_one": "{{count}} week",
   "YEARS": "{{count}} years",
   "YEARS_one": "{{count}} year",
+  "STARS": "Stars",
+  "STARS_one": "Star",
+  "MESSAGE": "Message",
+  "JUMP_TO_MESSAGE": "Jump to message",
   "YES": "Yes"
 }

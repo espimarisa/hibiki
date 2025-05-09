@@ -26,6 +26,7 @@
   "css": {},
   "files": {
     "includes": [
+      "src/**/*.cjs",
       "src/**/*.ts",
       "locales/**/*.json",
       "biome.json",

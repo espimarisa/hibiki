@@ -4,34 +4,21 @@
  */
 
 import { db } from "@/db/index.ts";
+import { NOT_FOUND, redisKeys, TTL } from "@/db/redis.ts";
 import { type GuildConfig, guild_config } from "@/db/schema/guild_config.ts";
-import { Durations } from "@/utils/constants.ts";
 import { captureError, parseError } from "@/utils/error.ts";
-import { logger } from "@/utils/logger.ts";
+import { dbLog, redisLog } from "@/utils/logger.ts";
 import { redis } from "bun";
 import { eq } from "drizzle-orm";
 
-const NOT_FOUND = "__NOT_FOUND__";
-const NOT_FOUND_TTL = Durations.Minute * 5;
-
-// Logging prefixes.
-const LOG_REDIS = "Redis (guild_config):";
-const LOG_DB = "DB (guild_config):";
-
-// Redis keys to use for caching.
-const redisKeys = {
-  guild_config: (id: string) => `guild_config:${id}`,
-};
-
 /**
  * Gets a guild configuration.
- * @param id The guild ID to search for.
+ * @param guildID The guild ID to search for.
  * @returns A guild configuration.
  */
 
-export async function getGuildConfig(id: string) {
-  const redisKey = redisKeys.guild_config(id);
-  let config: GuildConfig | null;
+export async function getGuildConfig(guildID: string) {
+  const redisKey = redisKeys.guild_config(guildID);
 
   try {
     // Searches for cached data.
@@ -40,163 +27,133 @@ export async function getGuildConfig(id: string) {
     if (cached) {
       // Checks to see if the cache is set as NOT_FOUND.
       if (cached === NOT_FOUND) {
-        logger.debug(`${LOG_REDIS} ${id} not found.`);
-        return null;
+        redisLog.debug(`Guild ${guildID} is in the NOT_FOUND status.`);
+        return;
       }
 
-      try {
-        // Parses the cached data.
-        config = JSON.parse(cached);
+      // Parses the cached data.
+      const config = JSON.parse(cached) as GuildConfig;
 
-        // Ensures the ID matches the guild_id.
-        if (config?.guild_id !== id) {
-          logger.warn(
-            `${LOG_REDIS} ${id} has mismatched guild_id ${config?.guild_id}.`,
-          );
+      // Ensures the ID matches the guild_id.
+      if (!config?.guild_id || config?.guild_id !== guildID) {
+        redisLog.warn(
+          `Guild ${guildID} has missing/mismatched guild_id ${config?.guild_id}.`,
+        );
 
-          // Destroys the invalid cached data.
-          await redis.del(redisKey);
-          config = null;
-        } else {
-          logger.debug(`${LOG_REDIS} ${id} found.`);
-          return config;
-        }
-      } catch (err) {
-        const error = parseError(err);
-        logger.warn(`${LOG_REDIS} ${id} failed to parse: ${error.message}.`);
-        captureError(error, { extra: { cache: cached, guild: id } });
-        config = null;
+        // Destroys the invalid cached data.
+        await redis.del(redisKey);
+        return;
       }
-    } else {
-      logger.debug(`${LOG_REDIS} ${id} not cached.`);
+
+      // Returns the cached configuration.
+      redisLog.debug(`Found cached guild_config for ${guildID}.`);
+      return config;
     }
 
     // Searches for a configuration in the database.
-    const result = await db.query.guild_config.findFirst({
-      where: (config, { eq }) => eq(config.guild_id, id),
+    const config = await db.query.guild_config.findFirst({
+      where: (config, { eq }) => eq(config.guild_id, guildID),
     });
 
-    // Sets the config.
-    config = result ?? null;
-
     if (config) {
-      // Caches the found configuration.
-      await redis.set(redisKey, JSON.stringify(config), "EX", Durations.Day);
-      logger.debug(`${LOG_REDIS} ${id} cached.`);
-    } else {
-      // Manually sets the configuration as NOT_FOUND for performance reasons.
-      await redis.set(redisKey, NOT_FOUND, "EX", NOT_FOUND_TTL);
-      logger.debug(`${LOG_REDIS} ${id} set to NOT_FOUND status.`);
+      // Caches the configuration.
+      await redis.set(redisKey, JSON.stringify(config), "EX", TTL.Day);
+      redisLog.debug(`Cached guild_config for ${guildID}.`);
+
+      // Returns the configuration.
+      dbLog.debug(`Got guild_config for ${guildID}.`);
+      return config as GuildConfig;
     }
 
-    return config;
+    // Manually sets the configuration as NOT_FOUND.
+    await redis.set(redisKey, NOT_FOUND, "EX", TTL.NotFound);
+    redisLog.debug(`Set guild_config for ${guildID} to NOT_FOUND.`);
+    return;
   } catch (err) {
     const error = parseError(err);
-    logger.error(`${LOG_DB} Error getting ${id}: ${error.message}`);
-    captureError(error, { context: { guild: id } });
-    return null;
+    dbLog.error(`Failed to get guild_config for ${guildID}: ${error.message}`);
+    captureError(error, { guildID: guildID });
+    return;
   }
 }
 
 /**
  * Deletes a guild configuration.
- * @param id The guild ID to delete an associated config for.
+ * @param guildID The guild ID to delete an associated config for.
  * @returns A boolean indicating success or failure.
  */
 
-export async function deleteGuildConfig(id: string) {
-  const redisKey = redisKeys.guild_config(id);
+export async function deleteGuildConfig(guildID: string) {
+  const redisKey = redisKeys.guild_config(guildID);
 
   try {
     // Attempts to delete the data.
     const result = await db
       .delete(guild_config)
-      .where(eq(guild_config.guild_id, id))
+      .where(eq(guild_config.guild_id, guildID))
       .returning({ deletedId: guild_config.guild_id });
 
-    if (result.length > 0) {
-      logger.info(`${LOG_DB} ${id} deleted.`);
-    } else {
-      logger.info(`${LOG_DB} Attempted to delete ${id}, doesn't exist.`);
+    if (result) {
+      // Destroys the cached data.
+      await redis.del(redisKey);
+      dbLog.debug(`Deleted guild_config for ${guildID}`);
+      redisLog.debug(`Deleted cached guild_config for ${guildID}.`);
+      return true;
     }
-
-    // Destroys the cached data.
-    const deleted = await redis.del(redisKey);
-    logger.debug(`${LOG_REDIS} Invalidated ${redisKey}. Total: ${deleted}`);
-    return true;
   } catch (err) {
     const error = parseError(err);
-    logger.error(`${LOG_DB} Error deleting ${id}: ${error.message}`);
-    captureError(error, { context: { guild: id } });
-    return false;
+    dbLog.error(`Error deleting guild_id ${guildID}: ${error.message}`);
+    captureError(error, { guildID: guildID });
   }
+
+  return false;
 }
 
 /**
  * Updates a guild configuration.
- * @param id The guild ID to update an associated configuration for.
- * @param data An object containing the fields to update. Must include guild_id.
+ * @param guildID The guild ID to update an associated configuration for.
+ * @param data A valid guild configuration object.
  * @returns An updated guild configuration.
  */
 
-export async function updateGuildConfig(
-  id: string,
-  data: Partial<GuildConfig>,
-) {
-  const redisKey = redisKeys.guild_config(id);
+export async function updateGuildConfig(guildID: string, data: GuildConfig) {
+  const redisKey = redisKeys.guild_config(guildID);
 
   // Ensures that keys are not mismatched.
-  if (!data.guild_id || data.guild_id !== id) {
-    const errorMessage = "Missing or mismatched guild ID in updateGuildConfig";
-    logger.error(
-      `${LOG_DB} ${errorMessage}: Param ${id}, Data: ${data.guild_id ?? "MISSING"}`,
-    );
-
-    // Captures the error with Sentry.
-    captureError(new Error(errorMessage), { context: { guild: id, data } });
-    return null;
+  if (!data.guild_id || data.guild_id !== guildID) {
+    const errorMessage = `Mismatched guild_id ${data.guild_id} for ${guildID}.`;
+    dbLog.error(errorMessage);
+    captureError(errorMessage, { guildID: guildID, data });
+    return;
   }
 
-  // Creates an object to perform operations on.
-  const { id: inputUUID, guild_id: validatedGuildId, ...otherData } = data;
-
-  // Explicitly type the object to ensure guild_id is non-optional.
-  const dataForInsert: { guild_id: string } & Partial<
-    Omit<GuildConfig, "id" | "guild_id">
-  > = {
-    guild_id: validatedGuildId,
-    ...otherData,
-  };
-
   try {
-    // Creates the upsert query.
-    const upsertQuery = db
+    // Upserts the configuration data.
+    const result = await db
       .insert(guild_config)
-      .values(dataForInsert)
+      .values(data)
       .onConflictDoUpdate({
-        set: otherData,
+        set: data,
         target: guild_config.guild_id,
       })
       .returning();
 
-    // Gets the upsert result and final configuration object.
-    const upsertResult = await upsertQuery;
-    const finalConfig = upsertResult[0];
-    if (!finalConfig) {
-      throw new Error("Upsert operation failed to return.");
+    // Gets the final configuration object.
+    const config = result[0];
+    if (!config) {
+      dbLog.error(`Upsert operation for ${guildID} failed.`);
+      return;
     }
 
-    // Caches the new configuration.
-    logger.info(`${LOG_DB} Upserted guild config for guild ${id}`);
-    await redis.set(redisKey, JSON.stringify(finalConfig), "EX", Durations.Day);
-    logger.debug(`${LOG_REDIS} ${id} updated.`);
-
-    // Returns the new configuration.
-    return finalConfig;
+    // Caches and returns the new configuration.
+    dbLog.debug(`Updated guild_config for guild ${guildID}.`);
+    await redis.set(redisKey, JSON.stringify(config), "EX", TTL.Day);
+    redisLog.debug(`Updated cached guild_config for ${guildID}.`);
+    return config as GuildConfig;
   } catch (err) {
     const error = parseError(err);
-    logger.error(`${LOG_DB} Error upserting {id}: ${error.message}`);
-    captureError(error, { context: { guild: id, data: data } });
-    return null;
+    dbLog.error(`Error updating guild_config for ${guildID}: ${error.message}`);
+    captureError(error, { guildID: guildID, data: data });
+    return;
   }
 }

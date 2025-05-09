@@ -6,7 +6,7 @@
 import type { HibikiCommand } from "@/helpers/command.ts";
 import type { HibikiEvent, HibikiListener } from "@/helpers/event.ts";
 import { parseError } from "@/utils/error.ts";
-import { logger } from "@/utils/logger.ts";
+import { loaderLog } from "@/utils/logger.ts";
 import type { Dirent, PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
@@ -35,7 +35,7 @@ type ModuleLoadStats = {
  * @returns The directory path of the file.
  */
 
-export function getDirname(importMetaUrl: string): string {
+export function getDirname(importMetaUrl: string) {
   return dirname(Bun.fileURLToPath(importMetaUrl));
 }
 
@@ -80,7 +80,9 @@ async function importModules(directory: PathLike, recursive = false) {
     files = await readdir(directoryPath, { withFileTypes: true });
   } catch (err) {
     const error = parseError(err);
-    logger.error(`Failed to read directory ${directoryPath}: ${error.message}`);
+    loaderLog.error(
+      `Failed to read directory ${directoryPath}: ${error.message}`,
+    );
     return [];
   }
 
@@ -104,7 +106,9 @@ async function importModules(directory: PathLike, recursive = false) {
         }))
         .catch((err) => {
           const error = parseError(err);
-          logger.error(`Failed to import module ${filePath}: ${error.message}`);
+          loaderLog.error(
+            `Failed to import module ${filePath}: ${error.message}`,
+          );
           return {
             filePath,
             reason: error,
@@ -130,7 +134,7 @@ async function importModules(directory: PathLike, recursive = false) {
       }
     } else {
       const error = parseError(result.reason);
-      logger.error(`Error processing directory structure: ${error.message}`);
+      loaderLog.error(`Error processing directory structure: ${error.message}`);
     }
   }
 
@@ -179,15 +183,15 @@ export async function loadModules<T>(
         // Assume validator confirmed structure, cast to T.
         collection.set(key, primaryExport as T);
         stats.loaded++;
-        logger.info(`Successfully loaded ${fileName}`);
+        loaderLog.info(`Successfully loaded ${fileName}.`);
       } else {
         stats.skipped++;
-        logger.warn(`${fileName} failed validation, skipping.`);
+        loaderLog.warn(`${fileName} failed validation, skipping.`);
       }
     } catch (err) {
       stats.failed++;
       const error = parseError(err);
-      logger.error(`Failed to validate ${fileName}: ${error.message}`);
+      loaderLog.error(`Failed to validate ${fileName}: ${error.message}`);
     }
   }
 
@@ -204,8 +208,8 @@ export async function loadModules<T>(
 export function loadCommands(
   directory: PathLike,
   collection: Collection<string, HibikiCommand>,
-): Promise<ModuleLoadStats> {
-  logger.info("Loading commands...");
+) {
+  loaderLog.info("Loading commands...");
 
   const validator = (moduleExport: unknown) => {
     if (!isHibikiCommand(moduleExport)) {
@@ -229,9 +233,9 @@ export function loadEvents(
   directory: PathLike,
   collection: Collection<string, HibikiEvent<HibikiListener>>,
 ) {
-  logger.info("Loading event listeners...");
+  loaderLog.info("Loading event listeners...");
 
-  const validator = (moduleExport: unknown): boolean => {
+  const validator = (moduleExport: unknown) => {
     if (!isHibikiEvent(moduleExport)) {
       return false;
     }
@@ -252,7 +256,7 @@ export function loadEvents(
  * @returns A boolean indicating success or failure.
  */
 
-function isHibikiCommand(obj: unknown): obj is HibikiCommand {
+function isHibikiCommand(obj: unknown) {
   return (
     typeof obj === "object" &&
     obj !== null &&
@@ -268,7 +272,7 @@ function isHibikiCommand(obj: unknown): obj is HibikiCommand {
  * @returns A boolean indicating success or failure.
  */
 
-function isHibikiEvent(obj: unknown): obj is HibikiEvent<HibikiListener> {
+function isHibikiEvent(obj: unknown) {
   return (
     typeof obj === "object" &&
     obj !== null &&

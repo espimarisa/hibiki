@@ -113,19 +113,19 @@ export const githubCommand = {
     // Creates the embed.
     const embed = new EmbedBuilder().setColor(HibikiColors.Primary);
 
-    // Creation date.
+    // Created at.
     if (body.created_at) {
       embed.addFields({
-        name: t("common:CREATED_ON"),
+        name: t("common:CREATED_AT"),
         value: time(new Date(body.created_at), TimestampStyles.ShortDateTime),
         inline: false,
       });
     }
 
-    // Last updated.
+    // Updated at.
     if (body.updated_at) {
       embed.addFields({
-        name: t("common:UPDATED_ON", { lng: interaction.locale }),
+        name: t("common:UPDATED_AT", { lng: interaction.locale }),
         value: time(new Date(body.updated_at), TimestampStyles.ShortDateTime),
         inline: false,
       });

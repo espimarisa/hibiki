@@ -1,5 +1,5 @@
 /**
- * @file Spawns shards and creates a bot client.
+ * @file Manages shards and spawns a Discord.js client.
  * @license Zlib
  */
 
@@ -10,12 +10,12 @@ import { env } from "@/root/utils/env.ts";
 import { captureError, initSentry, parseError } from "@/utils/error.ts";
 import { getDirname, loadCommands, loadEvents } from "@/utils/fs.ts";
 import { initI18Next } from "@/utils/i18n.ts";
-import { logger } from "@/utils/logger.ts";
+import { clientLog, sharderLog } from "@/utils/logger.ts";
 import { hostname } from "node:os";
 import { join } from "node:path";
 import { type ClientUser, Collection, ShardingManager } from "discord.js";
 
-// Gets the root directory and the bot client file.
+// Gets the root directory and the client file.
 const ROOT_DIRECTORY = getDirname(import.meta.url);
 const CLIENT_FILE = join(ROOT_DIRECTORY, "client.ts");
 
@@ -38,10 +38,7 @@ if (env.SENTRY_DSN) {
   });
 }
 
-/**
- * Creates the primary Discord.js sharding manager.
- */
-
+// Creates the primary Discord.js sharding manager.
 const sharder = new ShardingManager(CLIENT_FILE, {
   mode: "process",
   respawn: true,
@@ -58,59 +55,39 @@ await loadEvents(EVENTS_DIRECTORY, hibikiEvents);
 client.commands = hibikiCommands;
 client.sharder = sharder;
 
-/**
- * Shard creation handler.
- */
-
+// Shard creation handler.
 sharder.on("shardCreate", (shard) => {
-  /**
-   * Shard death message handler.
-   */
-
+  // Shard death handler.
   shard.on("death", () => {
-    logger.error(`Shard #${shard.id} died`);
+    sharderLog.error(`Shard #${shard.id} died`);
   });
 
-  /**
-   * Shard disconnect message handler.
-   */
-
+  // Shard disconnect handler.
   shard.on("disconnect", () => {
-    logger.error(`Shard #${shard.id} disconnected`);
+    sharderLog.error(`Shard #${shard.id} disconnected`);
   });
 
-  /**
-   * Shard error message handler.
-   */
-
+  // Shard error handler.
   shard.on("error", (err) => {
     const error = parseError(err);
-    logger.error(`Shard #${shard.id} encountered an error: ${error.message}`);
-    captureError(error, {
-      shard: shard.id,
-    });
+    sharderLog.error(
+      `Shard #${shard.id} encountered an error: ${error.message}`,
+    );
+
+    captureError(error, { shard: shard.id });
   });
 
-  /**
-   * Shard ready message handler.
-   */
-
+  // Shard ready handler.
   shard.on("ready", () => {
-    logger.info(`Shard #${shard.id} is ready`);
+    sharderLog.info(`Shard #${shard.id} is ready`);
   });
 
-  /**
-   * Shard spawn message handler.
-   */
-
+  // Shard spawn handler.
   shard.on("spawn", () => {
-    logger.info(`Shard #${shard.id} spawned`);
+    sharderLog.info(`Shard #${shard.id} spawned`);
   });
 
-  /**
-   * Shard message message handler.
-   */
-
+  // Shard message handler.
   shard.on("message", async (message) => {
     if (message.type === "shardReady") {
       // Adds the shard to the ready list.
@@ -118,7 +95,7 @@ sharder.on("shardCreate", (shard) => {
 
       // Log when all shards are ready.
       if (readyShards.size === sharder.totalShards) {
-        logger.info("All shards are ready");
+        sharderLog.info("All shards are ready.");
 
         // Gets client information from shard 0.
         const user = (await sharder.broadcastEval((client) => client.user, {
@@ -127,12 +104,12 @@ sharder.on("shardCreate", (shard) => {
 
         // Logs if a user object is not returned.
         if (!user) {
-          logger.fatal("No user object received from Discord. This is bad!");
+          sharderLog.fatal("No user object received from Discord. Stopping.");
           return;
         }
 
         // Logs user information when fully connected.
-        logger.info(`Connected to Discord as ${user.username} (${user.id})`);
+        sharderLog.info(`Connected to Discord as ${user.username}/${user.id}.`);
       }
     }
   });
@@ -141,19 +118,27 @@ sharder.on("shardCreate", (shard) => {
 // Spawns shards.
 try {
   await sharder.spawn();
-
-  // Subscribes event handlers to their listeners.
-  for (const event of hibikiEvents.values()) {
-    // Runs event handlers that only fire once.
-    if (event.once) {
-      client.once(event.event, async (...args) => await event.handle(...args));
-    } else {
-      // Runs event handlers on each event emitter.
-      client.on(event.event, async (...args) => await event.handle(...args));
-    }
-  }
 } catch (err) {
   const error = parseError(err);
-  logger.fatal(`Error spawning shards: ${error.message}`);
+  sharderLog.fatal(`Error spawning shards: ${error.message}`);
   captureError(error);
+}
+
+// Subscribes event handlers to their listeners.
+for (const event of hibikiEvents.values()) {
+  event.once
+    ? client.once
+    : client.on(event.event, async (...args) => {
+        clientLog.debug(`Running event handler for ${event.event}.`);
+
+        // Runs the event.
+        await event.handle(...args).catch((err) => {
+          const error = parseError(err);
+          clientLog.error(
+            `Error running event handler for event ${event.event}: ${error.message}`,
+          );
+
+          captureError(error, { event: event.event });
+        });
+      });
 }

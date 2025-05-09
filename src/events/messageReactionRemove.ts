@@ -1,16 +1,16 @@
 /**
- * @file Event listener for messageReactionAdd.
+ * @file Event listener for messageReactionRemove.
  * @license Zlib
  */
 
 import type { HibikiEvent } from "@/helpers/event.ts";
-import { handleStarAdd } from "@/helpers/starboard.ts";
+import { handleStarRemove } from "@/helpers/starboard.ts";
 import { captureError, parseError } from "@/utils/error.ts";
 import { clientLog } from "@/utils/logger.ts";
 import type { MessageReaction, User } from "discord.js";
 
-export const messageReactionAdd = {
-  event: "messageReactionAdd",
+export const messageReactionRemove = {
+  event: "messageReactionRemove",
 
   async handle(reaction, user) {
     let fetchedReaction = reaction as MessageReaction;
@@ -57,11 +57,11 @@ export const messageReactionAdd = {
 
     try {
       // Runs the starboard handler.
-      await handleStarAdd(fetchedReaction, fetchedUser);
+      await handleStarRemove(fetchedReaction, fetchedUser);
     } catch (err) {
       const error = parseError(err);
       clientLog.error(`Error handling event ${this.event}: ${error.message}`);
       captureError(error, { messageID: reaction.message.id, userID: user.id });
     }
   },
-} satisfies HibikiEvent<"messageReactionAdd">;
+} satisfies HibikiEvent<"messageReactionRemove">;

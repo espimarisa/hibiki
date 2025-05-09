@@ -3,7 +3,7 @@
  * @license Zlib
  */
 
-import { DISCORD_SNOWFLAKE_STRING_REGEX } from "@/utils/constants.ts";
+import { DISCORD_SNOWFLAKE_REGEX } from "@/utils/constants.ts";
 import { relations, sql } from "drizzle-orm";
 import {
   check,
@@ -15,10 +15,9 @@ import {
   unique,
 } from "drizzle-orm/pg-core";
 
-// Create a reusable sql fragment containing the raw pattern string
-const DISCORD_SNOWFLAKE_SQL_RAW = sql.raw(DISCORD_SNOWFLAKE_STRING_REGEX);
+const DISCORD_SNOWFLAKE = sql.raw(DISCORD_SNOWFLAKE_REGEX);
 
-// Starboard reaction data schema
+// Starboard reaction data schema.
 export const starboard_reactions = pgTable(
   "starboard_reactions",
   {
@@ -34,16 +33,16 @@ export const starboard_reactions = pgTable(
     user_id: text("user_id").notNull(),
   },
   (table) => [
-    // CHECK constraint: Validates message_id matches the Discord Snowflake pattern.
+    // Validates message_id, ensuring that it is a snowflake.
     check(
       "starboard_reactions_message_id_snowflake_check",
-      sql`${table.message_id} ~ '${DISCORD_SNOWFLAKE_SQL_RAW}'`,
+      sql`${table.message_id} ~ '${DISCORD_SNOWFLAKE}'`,
     ),
 
-    // CHECK constraint: Validates user_id matches the Discord Snowflake pattern.
+    // Validates user_Id, ensuring that it is a snowflake.
     check(
       "starboard_reactions_user_id_snowflake_check",
-      sql`${table.user_id} ~ '${DISCORD_SNOWFLAKE_SQL_RAW}'`,
+      sql`${table.user_id} ~ '${DISCORD_SNOWFLAKE}'`,
     ),
 
     // Message ID index.
@@ -57,7 +56,7 @@ export const starboard_reactions = pgTable(
   ],
 );
 
-// Starboard entries schema
+// Starboard entries schema.
 export const starboard_entries = pgTable(
   "starboard_entries",
   {
@@ -76,25 +75,25 @@ export const starboard_entries = pgTable(
     starboard_message_id: text("starboard_message_id").notNull(),
   },
   (table) => [
-    // CHECK constraint: Validates guild_id matches the Discord Snowflake pattern.
+    // Validates guild_id, ensuring that it is a snowflake.
     check(
       "starboard_entries_guild_id_snowflake_check",
-      sql`${table.guild_id} ~ '${DISCORD_SNOWFLAKE_SQL_RAW}'`,
+      sql`${table.guild_id} ~ '${DISCORD_SNOWFLAKE}'`,
     ),
 
-    // CHECK constraint: Validates message_id matches the Discord Snowflake pattern.
+    // Validates message_id, ensuring that it is a snowflake.
     check(
       "starboard_entries_message_id_snowflake_check",
-      sql`${table.message_id} ~ '${DISCORD_SNOWFLAKE_SQL_RAW}'`,
+      sql`${table.message_id} ~ '${DISCORD_SNOWFLAKE}'`,
     ),
 
-    // CHECK constraint: Validates starboard_message_id matches the Discord Snowflake pattern.
+    // Validates starboard_message_id, ensuring that it is a snowflake.
     check(
       "starboard_entries_starboard_message_id_snowflake_check",
-      sql`${table.starboard_message_id} ~ '${DISCORD_SNOWFLAKE_SQL_RAW}'`,
+      sql`${table.starboard_message_id} ~ '${DISCORD_SNOWFLAKE}'`,
     ),
 
-    // UNIQUE constraint for starboard_message_id
+    // Constraint for starboard_message_id.
     unique("starboard_entries_starboard_message_id_unique").on(
       table.starboard_message_id,
     ),

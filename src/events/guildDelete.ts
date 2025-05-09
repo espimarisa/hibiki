@@ -3,31 +3,23 @@
  * @license Zlib
  */
 
+import { getGuildString, getUserString } from "@/helpers/discord.ts";
 import type { HibikiEvent } from "@/helpers/event.ts";
 import { client } from "@/root/client.ts";
 import { env } from "@/root/utils/env.ts";
 import { HibikiColors } from "@/utils/constants.ts";
-import { logger } from "@/utils/logger.ts";
+import { clientLog } from "@/utils/logger.ts";
 import { ChannelType, EmbedBuilder, TimestampStyles, time } from "discord.js";
 
 export const guildDelete: HibikiEvent<"guildDelete"> = {
   event: "guildDelete",
 
   async handle(guild) {
-    // Gets the guild owner.
+    // Gets the guild owner and name.
     const owner = await guild.fetchOwner();
-
-    // String for the guild name.
-    const guildName = guild.name
-      ? `${guild.name} (${guild.id})`
-      : guild.id || "Unknown";
-
-    // String for the guild owner.
-    const guildOwner = owner?.user
-      ? `${owner.user.username} (${owner.id})`
-      : owner.id || "Unknown";
-
-    logger.info(`Removed from guild ${guildName} owned by ${guildOwner}`);
+    const ownerString = getUserString(owner.user);
+    const guildString = getGuildString(guild);
+    clientLog.info(`Removed from ${guildString} owned by ${guildString}.`);
 
     // Send a message to DISCORD_DEV_CHANNEL_ID if set.
     if (env.DISCORD_DEV_CHANNEL_ID && env.DISCORD_DEV_GUILD_ID) {
@@ -39,7 +31,7 @@ export const guildDelete: HibikiEvent<"guildDelete"> = {
 
       // Creates the embed.
       const embed = new EmbedBuilder()
-        .setTitle(`❌ Removed from guild: ${guildName}`)
+        .setTitle(`❌ Removed from ${guild.name || "Unknown Guild"}`)
         .setColor(HibikiColors.Success)
         .addFields(
           {
@@ -48,7 +40,7 @@ export const guildDelete: HibikiEvent<"guildDelete"> = {
             inline: false,
           },
           {
-            name: "Created on",
+            name: "Created at",
             value: time(guild.createdAt, TimestampStyles.ShortDateTime),
             inline: false,
           },
@@ -59,7 +51,7 @@ export const guildDelete: HibikiEvent<"guildDelete"> = {
       // Owner.
       embed.addFields({
         name: "Owner",
-        value: guildOwner,
+        value: ownerString,
         inline: false,
       });
 

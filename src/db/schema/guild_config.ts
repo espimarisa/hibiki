@@ -3,7 +3,7 @@
  * @license Zlib
  */
 
-import { DISCORD_SNOWFLAKE_STRING_REGEX } from "@/utils/constants.ts";
+import { DISCORD_SNOWFLAKE_REGEX } from "@/utils/constants.ts";
 import { sql } from "drizzle-orm";
 import {
   check,
@@ -14,9 +14,9 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-// Create a reusable sql fragment containing the raw pattern string
-const DISCORD_SNOWFLAKE_SQL_RAW = sql.raw(DISCORD_SNOWFLAKE_STRING_REGEX);
+const DISCORD_SNOWFLAKE = sql.raw(DISCORD_SNOWFLAKE_REGEX);
 
+// Guild configuration schema.
 export const guild_config = pgTable(
   "guild_config",
   {
@@ -33,25 +33,25 @@ export const guild_config = pgTable(
     starboard_count: integer("starboard_count"),
   },
   (table) => [
-    // CHECK constraint: Validates guild_id matches the Discord Snowflake pattern.
+    // Validates guild_id, ensuring that it is a snowflake.
     check(
       "guild_config_guild_id_snowflake_check",
-      sql`${table.guild_id} ~ '${DISCORD_SNOWFLAKE_SQL_RAW}'`,
+      sql`${table.guild_id} ~ '${DISCORD_SNOWFLAKE}'`,
     ),
 
-    // CHECK constraint: Validates starboard_channel is either NULL or matches the Snowflake pattern.
+    // Validates starboard_channel, ensuring that it is a snowflake or null.
     check(
       "guild_config_starboard_channel_snowflake_check",
-      sql`(${table.starboard_channel} IS NULL OR ${table.starboard_channel} ~ '${DISCORD_SNOWFLAKE_SQL_RAW}')`,
+      sql`(${table.starboard_channel} IS NULL OR ${table.starboard_channel} ~ '${DISCORD_SNOWFLAKE}')`,
     ),
 
-    // CHECK constraint: Validates starboard_count is either NULL or greater than 0.
+    // Validates starboard_count, ensuring that it is > 0 or null.
     check(
       "guild_config_starboard_count_positive_check",
       sql`(${table.starboard_count} IS NULL OR ${table.starboard_count} > 0)`,
     ),
 
-    // UNIQUE index: Ensures guild_id is unique across all rows in this table.
+    // Ensures guild_id is unique across all rows in the table.
     uniqueIndex("guild_config_guild_id_index").on(table.guild_id),
   ],
 );

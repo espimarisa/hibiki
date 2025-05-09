@@ -1,7 +1,6 @@
 /**
  * @file Registers interactions to the Discord API.
  * @license Zlib
- * @todo Register other things.
  */
 
 import type { HibikiCommand } from "@/helpers/command.ts";
@@ -9,7 +8,7 @@ import { env } from "@/root/utils/env.ts";
 import { parseError } from "@/utils/error.ts";
 import { getDirname, loadCommands } from "@/utils/fs.ts";
 import { initI18Next } from "@/utils/i18n.ts";
-import { logger } from "@/utils/logger.ts";
+import { loaderLog } from "@/utils/logger.ts";
 import { join } from "node:path";
 import { exit } from "node:process";
 import { parseArgs } from "node:util";
@@ -63,7 +62,7 @@ const user = (await rest.get("/oauth2/applications/@me")) as User | undefined;
 
 // Do not perform operations if no user object is returned.
 if (!user?.id) {
-  logger.error("No user returned from Discord, cannot register. Exiting.");
+  loaderLog.error("No user returned from Discord, cannot register. Exiting.");
   exit(1);
 }
 
@@ -73,19 +72,19 @@ hibikiCommands.map((command) => {
   if (command.data) {
     data.push(command.data.toJSON());
   } else {
-    logger.error(`Command data is undefined for command: ${command}`);
+    loaderLog.error(`Command data is undefined for command: ${command}`);
   }
 });
 
 // Exits if no data and clear isn't set.
 if (!(data || clear)) {
-  logger.error("No data was provided. Cannot register. Exiting.");
+  loaderLog.error("No data was provided. Cannot register. Exiting.");
   exit(1);
 }
 
 // Message to log to the console (clearing if clear, registering if not).
 const message = clear ? "clearing all commands" : "registering commands";
-logger.info(`Registering as user ${user.id}`);
+loaderLog.info(`Registering as ${user.id}.`);
 
 // Individual guild operations.
 if (guild) {
@@ -93,10 +92,10 @@ if (guild) {
     // Registers/clears guild commands.
     const route = Routes.applicationGuildCommands(user.id, guild);
     await rest.put(route, { body: clear ? [] : data });
-    logger.info(`Finished ${message} to ${guild}. Exiting.`);
+    loaderLog.info(`Finished ${message} to ${guild}. Exiting.`);
   } catch (err) {
     const error = parseError(err);
-    logger.error(`Failed ${message} to ${guild}: ${error.message}`);
+    loaderLog.error(`Failed ${message} to ${guild}: ${error.message}`);
     exit(1);
   }
 } else {
@@ -104,10 +103,10 @@ if (guild) {
     // Registers/clears global commands.
     const route = Routes.applicationCommands(user.id);
     await rest.put(route, { body: clear ? [] : data });
-    logger.info(`Finished ${message} globally. Exiting.`);
+    loaderLog.info(`Finished ${message} globally. Exiting.`);
   } catch (err) {
     const error = parseError(err);
-    logger.error(`Failed ${message} globally: ${error.message}`);
+    loaderLog.error(`Failed ${message} globally: ${error.message}`);
     exit(1);
   }
 }

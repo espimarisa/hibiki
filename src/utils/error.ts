@@ -7,8 +7,9 @@
 /** biome-ignore-all lint/nursery/noProcessGlobal: Bun's process.on() is different from node:process.on. */
 
 import { env } from "@/root/utils/env.ts";
+import type { DictionaryKey } from "@/types/i18next.ts";
 import { HibikiColors } from "@/utils/constants.ts";
-import { logger } from "@/utils/logger.ts";
+import { clientLog, loaderLog } from "@/utils/logger.ts";
 import { type BunOptions, captureException, captureMessage } from "@sentry/bun";
 import {
   type CommandInteraction,
@@ -16,7 +17,6 @@ import {
   MessageFlags,
 } from "discord.js";
 import { init, t } from "i18next";
-import type { DictionaryKey } from "../@types/i18next.ts";
 
 const errorFallbackMessage = "Unknown";
 let sentryConnected = false;
@@ -40,7 +40,7 @@ export function initSentry(dsn: string, options?: BunOptions) {
     });
 
     sentryConnected = true;
-    logger.info(`Sentry connected to DSN ${dsn}`);
+    loaderLog.info(`Sentry connected to DSN ${dsn}.`);
 
     // Capture all errors that are not manually caught.
     if (typeof process.on === "function") {
@@ -48,7 +48,8 @@ export function initSentry(dsn: string, options?: BunOptions) {
       process.on("uncaughtException", captureError);
     }
   } catch (err) {
-    logger.error(`Error initializing Sentry: ${parseError(err).message}`);
+    const error = parseError(err);
+    loaderLog.error(`Error initializing Sentry: ${error.message}.`);
   }
 }
 
@@ -76,7 +77,7 @@ export function captureError(err: unknown, context?: Record<string, unknown>) {
  * @returns A valid Error instance.
  */
 
-export function parseError(error: unknown): Error {
+export function parseError(error: unknown) {
   let message = errorFallbackMessage;
 
   if (error instanceof Error) {
@@ -153,7 +154,7 @@ export async function sendErrorReply(
     }
   } catch (err) {
     const error = parseError(err);
-    logger.error(`Failed to send error reply: ${error.message}`);
+    clientLog.error(`Failed to send error reply: ${error.message}`);
     captureError(error, { interaction: interaction.id });
   }
 }

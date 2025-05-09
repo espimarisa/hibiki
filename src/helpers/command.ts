@@ -11,7 +11,7 @@ import type {
   SlashCommandSubcommandsOnlyBuilder,
 } from "discord.js";
 
-/** A valid Hibiki command. */
+// A valid Hibiki command.
 export type HibikiCommand = {
   /** Expected command data. */
   data:

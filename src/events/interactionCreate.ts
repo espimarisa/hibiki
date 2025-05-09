@@ -5,22 +5,33 @@
 
 import type { HibikiEvent } from "@/helpers/event.ts";
 import { captureError, parseError, sendErrorReply } from "@/utils/error.ts";
-import { logger } from "@/utils/logger.ts";
+import { clientLog, commandLog } from "@/utils/logger.ts";
 import type { CommandInteraction } from "discord.js";
-import type { HibikiCommand } from "../helpers/command.ts";
+import { getGuildString, getUserString } from "../helpers/discord.ts";
 
 export const interactionCreate: HibikiEvent<"interactionCreate"> = {
   event: "interactionCreate",
 
   async handle(interaction) {
-    // Only process supported interaction types.
-    if (!(interaction.isButton() || interaction.isCommand())) {
-      return;
-    }
+    const guildString = interaction.guild
+      ? getGuildString(interaction.guild)
+      : "DMs";
+
+    clientLog.debug(
+      `Received interaction ${interaction.id} in ${guildString}.`,
+    );
 
     // Runs command interactions.
     if (interaction.isCommand()) {
+      clientLog.debug(
+        `Received command interaction ${interaction.commandName} in ${guildString}.`,
+      );
+
+      // Runs the command on the interaction.
       await runCommand(interaction);
+    } else {
+      clientLog.warn(`No handler for interaction type ${interaction.type}.`);
+      return;
     }
   },
 };
@@ -32,51 +43,52 @@ export const interactionCreate: HibikiEvent<"interactionCreate"> = {
 
 async function runCommand(interaction: CommandInteraction) {
   // Finds the command to run.
-  const commandToRun = interaction.client.commands.get(interaction.commandName);
+  const command = interaction.client.commands.get(interaction.commandName);
 
   // Do not run invalid commands.
-  if (!commandToRun) {
-    logger.warn(`No command found for ${interaction.commandName}`);
+  if (!command) {
+    commandLog.warn(`No command for interaction ${interaction.commandName}.`);
     return;
   }
 
   // Gets the user/guild name and ID to log.
-  const user = `${interaction.user.username} (${interaction.user.id})`;
-  const guild = interaction.guild
-    ? `${interaction.guild.name} (${interaction.guild.id})`
+  const userString = getUserString(interaction.user);
+  const guildString = interaction.guild
+    ? getGuildString(interaction.guild)
     : "DMs";
 
   // Slash command handler.
   if (interaction.isChatInputCommand()) {
-    const command = commandToRun as HibikiCommand;
-    const commandName = command.data.name;
-
     try {
-      // Runs the command.
+      // Runs the command and logs it.
       await command.run(interaction);
-      logger.info(`${user} ran slash command ${commandName} in ${guild}`);
+      commandLog.info(
+        `${userString} ran ${command.data.name} in ${guildString}.`,
+      );
     } catch (err) {
       const error = parseError(err);
-      logger.error(`Error running command ${commandName}: ${error.message}`);
+      commandLog.error(
+        `Error running command ${command.data.name}: ${error.message}`,
+      );
 
       // Captures the Error with Sentry.
       captureError(err, {
-        command: commandName,
-        guild: guild,
-        user: user,
+        command: command.data.name,
+        guild: guildString,
+        user: userString,
       });
 
       // Sends an error reply.
       await sendErrorReply(
         interaction,
         "errors:ERROR_STACK",
-        interaction.deferred ?? false,
+        interaction.deferred,
         interaction.ephemeral ?? false,
         {
           error: error.message,
         },
       ).catch(() => {
-        logger.warn(`Failed to send error reply in ${guild}`);
+        commandLog.warn(`Failed to send error reply in ${guildString}.`);
         return;
       });
     }

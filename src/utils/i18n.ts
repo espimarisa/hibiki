@@ -5,7 +5,7 @@
 
 import type { DictionaryKey } from "@/types/i18next.ts";
 import { captureError, parseError } from "@/utils/error.ts";
-import { logger } from "@/utils/logger.ts";
+import { i18nLog } from "@/utils/logger.ts";
 import type { PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
 import i18next, { type TOptions } from "i18next";
@@ -21,7 +21,7 @@ const defaultLocale = "en-US";
 
 export async function initI18Next(directory: PathLike) {
   try {
-    logger.info("Initializing i18next...");
+    i18nLog.info("Initializing i18next...");
 
     // Gets the contents of the directory.
     const directoryPath = directory.toString();
@@ -44,10 +44,10 @@ export async function initI18Next(directory: PathLike) {
       preload: localeDirectoryData || [],
     });
 
-    logger.info("Successfully initialized i18next");
+    i18nLog.info("Successfully initialized i18next.");
   } catch (err) {
     const error = parseError(err);
-    logger.error(`Error initializing i18next: ${error.message}`);
+    i18nLog.error(`Error initializing i18next: ${error.message}`);
     captureError(err, {
       directory: directory,
     });
@@ -69,10 +69,8 @@ async function getLocaleFiles(directory: string) {
     return files.filter((file) => file.isDirectory()).map((f) => f.name);
   } catch (err) {
     const error = parseError(err);
-    logger.error(`Failed to load locales from ${directory}: ${error.message}`);
-    captureError(err, {
-      directory: directory,
-    });
+    i18nLog.error(`Failed loading locales in ${directory}: ${error.message}`);
+    captureError(err, { directory: directory });
   }
 
   return [];
@@ -86,11 +84,11 @@ async function getLocaleFiles(directory: string) {
  */
 
 export function t(key: DictionaryKey, options?: TOptions) {
+  i18nLog.debug(`Localizing key ${key} to ${options?.lng || defaultLocale}.`);
+
   try {
     const translation = i18next.t(key, {
       // Use defaultLocale as a fallback.
-      // NOTE: i18next *has* fallback support, but it is quirky.
-      // This wrapper allows us to perform future arguments more easily anyways.
       lng: defaultLocale,
       ...options,
     });
@@ -98,7 +96,7 @@ export function t(key: DictionaryKey, options?: TOptions) {
     return translation;
   } catch (err) {
     const error = parseError(err);
-    logger.warn(`Failed to localize key ${key}: ${error.message}`);
+    i18nLog.warn(`Failed localizing key ${key}: ${error.message}`);
     captureError(error, {
       key: key,
       locale: options?.lng || defaultLocale,
@@ -121,15 +119,12 @@ export function tO(key: DictionaryKey) {
   for (const locale of localeDirectoryData) {
     try {
       // Sets the translated locale.
-      const translation = t(key, { lng: locale });
-      localizations[locale] = translation;
+      const localization = t(key, { lng: locale });
+      localizations[locale] = localization;
     } catch (err) {
       const error = parseError(err);
-      logger.warn(`No translation for ${key} in ${locale}: ${error.message}`);
-      captureError(err, {
-        key: key,
-        locale: locale,
-      });
+      i18nLog.warn(`No localization for ${key} in ${locale}: ${error.message}`);
+      captureError(err, { key: key, locale: locale });
     }
   }
 

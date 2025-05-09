@@ -1,55 +1,64 @@
 /**
- * @file Creates a pino logger for console and log file output.
+ * @file Logging utilities wrapping around Pino.
  * @license Zlib
  */
 
-import { env } from "@/root/utils/env.ts";
-import { getDirname } from "@/utils/fs.ts";
-import { join } from "node:path";
-import type { PinoRotateFileOptions } from "@chatsift/pino-rotate-file";
-import { multistream, pino, transport } from "pino";
+import { env } from "@/utils/env";
+import { getDirname } from "@/utils/fs";
+import { join, resolve as resolvePath } from "node:path";
+import { type LoggerOptions, pino, type TransportTargetOptions } from "pino";
 import type { PrettyOptions } from "pino-pretty";
 
-// Gets the directory to store log files in.
+// Gets the logs directory and the file to write.
 const CURRENT_DIRECTORY = getDirname(import.meta.url);
-const LOGS_DIRECTORY = join(CURRENT_DIRECTORY, "../../logs");
+const LOGS_DIRECTORY = resolvePath(CURRENT_DIRECTORY, "../../logs");
+const LOG_FILE = join(LOGS_DIRECTORY, "hibiki.log");
 
+// Determines the minimum level to log based on the environment.
 const logLevel = env.NODE_ENV === "development" ? "debug" : "info";
+const targets: TransportTargetOptions[] = [];
 
-// Options for pino-pretty.
-const pinoPrettyOptions = {
-  colorize: true,
-  levelFirst: false,
-  translateTime: "SYS:yyyy-mm-dd HH:MM:ss TT",
-} satisfies PrettyOptions;
-
-// Options for log rotation.
-const pinoRotateFileOptions = {
-  dir: LOGS_DIRECTORY,
-  maxAgeDays: 14,
-  mkdir: true,
-} satisfies PinoRotateFileOptions;
-
-// Creates the pino logger instance.
-export const logger = pino(
-  {
-    level: logLevel,
-    name: `${env.npm_package_name}/${env.npm_package_version}`,
+// JSON file rotation transport; always active.
+targets.push({
+  level: logLevel,
+  target: "pino-roll",
+  options: {
+    file: LOG_FILE,
+    frequency: "daily",
+    maxFiles: 14,
+    mkdir: true,
+    size: "10M",
   },
-  multistream([
-    {
-      level: logLevel,
-      stream: transport({
-        options: pinoPrettyOptions,
-        target: "pino-pretty",
-      }),
-    },
-    {
-      level: logLevel,
-      stream: transport({
-        options: pinoRotateFileOptions,
-        target: "@chatsift/pino-rotate-file",
-      }),
-    },
-  ]),
-);
+});
+
+// Pino-pretty transport for console output in development mode.
+if (env.NODE_ENV === "development") {
+  targets.push({
+    level: logLevel,
+    target: "pino-pretty",
+    options: {
+      colorize: true,
+      hideObject: true,
+      ignore: "pid,hostname",
+      levelFirst: false,
+      messageFormat: "[{context}] {msg}",
+      translateTime: "SYS:yyyy-mm-dd HH:MM:ss",
+    } satisfies PrettyOptions,
+  });
+}
+
+// Creates the main transport stream and base logger.
+const transport = pino.transport({ targets });
+const baseLoggerOptions: LoggerOptions = { level: logLevel };
+const baseLogger = pino(baseLoggerOptions, transport);
+
+// Creates child loggers with prefixes. This seems bad, but actually isn't! :)
+export const clientLog = baseLogger.child({ context: "CLIENT" });
+export const commandLog = baseLogger.child({ context: "COMMAND" });
+export const dbLog = baseLogger.child({ context: "DATABASE" });
+export const loaderLog = baseLogger.child({ context: "LOADER" });
+export const redisLog = baseLogger.child({ context: "REDIS" });
+export const sharderLog = baseLogger.child({ context: "SHARDER" });
+export const starboardLog = baseLogger.child({ context: "STARBOARD" });
+export const i18nLog = baseLogger.child({ context: "i18n" });
+export const fetchLog = baseLogger.child({ context: "FETCH" });

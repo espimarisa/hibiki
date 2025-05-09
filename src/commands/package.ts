@@ -290,9 +290,9 @@ export const packageCommand = {
           return;
         }
 
-        // Created on.
+        // Created at.
         embed.addFields({
-          name: t("common:CREATED_ON", { lng: interaction.locale }),
+          name: t("common:CREATED_AT", { lng: interaction.locale }),
           value: time(
             new Date(npmBody.time.created),
             TimestampStyles.ShortDateTime,
@@ -300,9 +300,9 @@ export const packageCommand = {
           inline: true,
         });
 
-        // Updated on.
+        // Updated at.
         embed.addFields({
-          name: t("common:UPDATED_ON", { lng: interaction.locale }),
+          name: t("common:UPDATED_AT", { lng: interaction.locale }),
           value: time(
             new Date(npmBody.time[body.version]),
             TimestampStyles.ShortDateTime,

@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "allowImportingTsExtensions": true,
-    "allowJs": false,
+    "allowJs": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "alwaysStrict": true,
     "baseUrl": ".",
-    "checkJs": false,
+    "checkJs": true,
     "declaration": true,
     "declarationMap": true,
     "downlevelIteration": false,
@@ -65,5 +65,10 @@
     "verbatimModuleSyntax": true
   },
   "exclude": ["**/dist/*", "**/node_modules/*"],
-  "include": ["./src/**/*.ts", "./locales/**/*.json", "drizzle.config.ts"]
+  "include": [
+    "./src/**/*.ts",
+    "./locales/**/*.json",
+    "drizzle.config.ts",
+    "src/helpers/logger.cjs"
+  ]
 }
