@@ -1,6 +1,6 @@
 # Terms of Service
 
-**_Updated on May 2nd, 2025_**
+**_Updated at May 2nd, 2025_**
 
 The following applies to the official Hibiki instance with the Discord username `Hibiki#1448` and user ID `493904957523623936`.
 
