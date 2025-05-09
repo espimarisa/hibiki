@@ -4,12 +4,10 @@
 
 Please report any suspected security vulnerabilities privately to Hibiki's owner. Be sure to include a detailed description of the vulnerability, steps to reproduce it, and the potential impact it may have.
 
-You can contact Hibiki's owner via a method provided below.
-
-- **[Discord][espi-discord]**: `espimarisa`
-- **[Telegram][espi-telegram]**: `espimarisa`
-- **[Matrix][espi-matrix]**: `@espimarisa:matrix.org`
-- **[Email][espi-email]**: `contact <at> espi <dot> me`
+- **[Discord][espi-discord]** - `espimarisa`
+- **[Telegram][espi-telegram]** - `espimarisa`
+- **[Matrix][espi-matrix]** - `@espimarisa:matrix.org`
+- **[Email][espi-email]** - `contact <at> espi <dot> me`
 
 [espi-discord]: https://discord.com/users/647269760782041133 "Discord"
 [espi-email]: mailto:contact@espi.me?q=Hibiki "Email"

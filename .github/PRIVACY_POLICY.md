@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**_Updated at May 2nd, 2025_**
+**_Updated at May 9th, 2025_**
 
 The following applies to the official Hibiki instance with the Discord username `Hibiki#1448` and user ID `493904957523623936`.
 
@@ -10,20 +10,29 @@ The following applies to the official Hibiki instance with the Discord username 
 
 **When running a command, the following is logged:**
 
-- Any arguments or options provided to the command.
-- Your account's public Discord username and user ID.
-- The public Discord server name and server ID where ran.
+- Any arguments provided to the command.
+- Your account's username and unique user ID.
+- The name and unique server ID of the server the command was ran in.
 
 **When installing or removing Hibiki, the following is logged:**
 
-- Your Discord account's public username and user ID.
-- Your Discord server's public creation date, icon, name, member count, and server ID.
+- Your account's username and unique user ID.
+- Your server's creation date, icon, name, member count, and unique server ID.
 
 **When configuring Hibiki, the following is stored in the database:**
 
-- Your Discord server's public server ID.
-- If provided, the Discord channel ID of your configured starboard channel.
+- Your Discord server's unique server ID.
+- If provided, the unique channel ID of your configured starboard channel.
 - If provided, the amount of star reactions required before starring a message.
+
+**When adding a message to the starboard, the following is stored in the database:**
+
+- The unique user ID(s) of user(s) that reacted with a star.
+- The unique server ID where the original message is located.
+- The unique message ID and creation date of the original message.
+- The unique message ID and creation date of the starboard message.
+
+> _No message content is stored. To opt-out of the starboard, see the Data requests clause. Please note that the starboard will no longer count your reactions nor function for you if you opt-out._
 
 ## Data requests
 
@@ -31,12 +40,12 @@ The following applies to the official Hibiki instance with the Discord username 
 
 You may remove your server's configuration data from the database by running the `/setup clear` command.
 
-To request a copy of your information or to request log files be deleted sooner than 30 days, please contact Hibiki's owner using a method provided below.
+If you would like to opt-out of features that may store information pertaining to your Discord account, (typically just your Discord account's unique user ID), to request a copy of any information we have related to your Discord account or server, please contact Hibiki's owner using a method provided below.
 
-- **[Discord][espi-discord]**: `espimarisa`
-- **[Telegram][espi-telegram]**: `espimarisa`
-- **[Matrix][espi-matrix]**: `@espimarisa:matrix.org`
-- **[Email][espi-email]**: `contact <at> espi <dot> me`
+- **[Discord][espi-discord]** - `espimarisa`
+- **[Telegram][espi-telegram]** - `espimarisa`
+- **[Matrix][espi-matrix]** - `@espimarisa:matrix.org`
+- **[Email][espi-email]** - `contact <at> espi <dot> me`
 
 [espi-discord]: https://discord.com/users/647269760782041133 "Discord"
 [espi-email]: mailto:contact@espi.me?q=Hibiki "Email"
