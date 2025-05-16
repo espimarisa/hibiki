@@ -1,9 +1,9 @@
 /**
- * @file Starboard database schema.
- * @license Zlib
+ * @file Drizzle database schema for starboard data.
+ * @license zlib
  */
 
-import { DISCORD_SNOWFLAKE_REGEX } from "@/utils/constants.ts";
+import { DISCORD_SNOWFLAKE_REGEX_SQL } from "@/db/constants.ts";
 import { relations, sql } from "drizzle-orm";
 import {
   check,
@@ -15,9 +15,7 @@ import {
   unique,
 } from "drizzle-orm/pg-core";
 
-const DISCORD_SNOWFLAKE = sql.raw(DISCORD_SNOWFLAKE_REGEX);
-
-// Starboard reaction data schema.
+// Creates the starboard reaction data schema.
 export const starboard_reactions = pgTable(
   "starboard_reactions",
   {
@@ -36,13 +34,13 @@ export const starboard_reactions = pgTable(
     // Validates message_id, ensuring that it is a snowflake.
     check(
       "starboard_reactions_message_id_snowflake_check",
-      sql`${table.message_id} ~ '${DISCORD_SNOWFLAKE}'`,
+      sql`${table.message_id} ~ '${DISCORD_SNOWFLAKE_REGEX_SQL}'`,
     ),
 
     // Validates user_Id, ensuring that it is a snowflake.
     check(
       "starboard_reactions_user_id_snowflake_check",
-      sql`${table.user_id} ~ '${DISCORD_SNOWFLAKE}'`,
+      sql`${table.user_id} ~ '${DISCORD_SNOWFLAKE_REGEX_SQL}'`,
     ),
 
     // Message ID index.
@@ -56,7 +54,7 @@ export const starboard_reactions = pgTable(
   ],
 );
 
-// Starboard entries schema.
+// Creates the starboard entries schema.
 export const starboard_entries = pgTable(
   "starboard_entries",
   {
@@ -78,19 +76,19 @@ export const starboard_entries = pgTable(
     // Validates guild_id, ensuring that it is a snowflake.
     check(
       "starboard_entries_guild_id_snowflake_check",
-      sql`${table.guild_id} ~ '${DISCORD_SNOWFLAKE}'`,
+      sql`${table.guild_id} ~ '${DISCORD_SNOWFLAKE_REGEX_SQL}'`,
     ),
 
     // Validates message_id, ensuring that it is a snowflake.
     check(
       "starboard_entries_message_id_snowflake_check",
-      sql`${table.message_id} ~ '${DISCORD_SNOWFLAKE}'`,
+      sql`${table.message_id} ~ '${DISCORD_SNOWFLAKE_REGEX_SQL}'`,
     ),
 
     // Validates starboard_message_id, ensuring that it is a snowflake.
     check(
       "starboard_entries_starboard_message_id_snowflake_check",
-      sql`${table.starboard_message_id} ~ '${DISCORD_SNOWFLAKE}'`,
+      sql`${table.starboard_message_id} ~ '${DISCORD_SNOWFLAKE_REGEX_SQL}'`,
     ),
 
     // Constraint for starboard_message_id.
@@ -122,5 +120,8 @@ export const starboard_entries_relations = relations(
   }),
 );
 
+// Typing for valid starboard reaction data.
 export type StarboardReaction = typeof starboard_reactions.$inferSelect;
+
+// Typing for valid starboard entry.
 export type StarboardEntry = typeof starboard_entries.$inferSelect;

@@ -1,5 +1,5 @@
 {
-  "id": "6afa5e6d-1148-4de3-a451-d9b335c0cfd9",
+  "id": "af77511d-0bc1-4f2c-bdc9-9611dd6a89fb",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -58,11 +58,11 @@
       "checkConstraints": {
         "guild_config_guild_id_snowflake_check": {
           "name": "guild_config_guild_id_snowflake_check",
-          "value": "\"guild_config\".\"guild_id\" ~ '^\\d{17,20}$'"
+          "value": "\"guild_config\".\"guild_id\" ~ '^(?<id>\\d{17,20})$'"
         },
         "guild_config_starboard_channel_snowflake_check": {
           "name": "guild_config_starboard_channel_snowflake_check",
-          "value": "(\"guild_config\".\"starboard_channel\" IS NULL OR \"guild_config\".\"starboard_channel\" ~ '^\\d{17,20}$')"
+          "value": "(\"guild_config\".\"starboard_channel\" IS NULL OR \"guild_config\".\"starboard_channel\" ~ '^(?<id>\\d{17,20})$')"
         },
         "guild_config_starboard_count_positive_check": {
           "name": "guild_config_starboard_count_positive_check",
@@ -133,15 +133,15 @@
       "checkConstraints": {
         "starboard_entries_guild_id_snowflake_check": {
           "name": "starboard_entries_guild_id_snowflake_check",
-          "value": "\"starboard_entries\".\"guild_id\" ~ '^\\d{17,20}$'"
+          "value": "\"starboard_entries\".\"guild_id\" ~ '^(?<id>\\d{17,20})$'"
         },
         "starboard_entries_message_id_snowflake_check": {
           "name": "starboard_entries_message_id_snowflake_check",
-          "value": "\"starboard_entries\".\"message_id\" ~ '^\\d{17,20}$'"
+          "value": "\"starboard_entries\".\"message_id\" ~ '^(?<id>\\d{17,20})$'"
         },
         "starboard_entries_starboard_message_id_snowflake_check": {
           "name": "starboard_entries_starboard_message_id_snowflake_check",
-          "value": "\"starboard_entries\".\"starboard_message_id\" ~ '^\\d{17,20}$'"
+          "value": "\"starboard_entries\".\"starboard_message_id\" ~ '^(?<id>\\d{17,20})$'"
         }
       },
       "isRLSEnabled": false
@@ -202,11 +202,11 @@
       "checkConstraints": {
         "starboard_reactions_message_id_snowflake_check": {
           "name": "starboard_reactions_message_id_snowflake_check",
-          "value": "\"starboard_reactions\".\"message_id\" ~ '^\\d{17,20}$'"
+          "value": "\"starboard_reactions\".\"message_id\" ~ '^(?<id>\\d{17,20})$'"
         },
         "starboard_reactions_user_id_snowflake_check": {
           "name": "starboard_reactions_user_id_snowflake_check",
-          "value": "\"starboard_reactions\".\"user_id\" ~ '^\\d{17,20}$'"
+          "value": "\"starboard_reactions\".\"user_id\" ~ '^(?<id>\\d{17,20})$'"
         }
       },
       "isRLSEnabled": false
@@ -253,7 +253,7 @@
       "checkConstraints": {
         "user_config_user_id_snowflake_check": {
           "name": "user_config_user_id_snowflake_check",
-          "value": "\"user_config\".\"user_id\" ~ '^\\d{17,20}$'"
+          "value": "\"user_config\".\"user_id\" ~ '^(?<id>\\d{17,20})$'"
         }
       },
       "isRLSEnabled": false

@@ -1,24 +1,24 @@
 /**
- * @file Performs CRUD operations for Starboard data.
- * @license Zlib
+ * @file Performs database operations for starboard data.
+ * @license zlib
  */
 
 import { db } from "@/db/index.ts";
 import { NOT_FOUND, redis, redisKeys, TTL } from "@/db/redis.ts";
+import type { StarboardEntry } from "@/db/schema/starboard.ts";
 import {
-  type StarboardEntry,
   starboard_entries,
   starboard_reactions,
 } from "@/db/schema/starboard.ts";
-import { captureError, parseError } from "@/utils/error.ts";
 import { dbLog, redisLog } from "@/utils/logger.ts";
+import { captureException } from "@sentry/bun";
 import { and, count, eq } from "drizzle-orm";
 
 /**
  * Checks if a user has already starred a message.
- * @param messageID The ID of the message.
- * @param userID The ID of the user.
- * @returns Boolean indicating if a user has starred a message.
+ * @param messageID The message ID of the message to check.
+ * @param userID The user ID of the user.
+ * @returns A promise resolving to a boolean indicating true or false.
  */
 
 export async function hasUserStarred(messageID: string, userID: string) {
@@ -28,7 +28,7 @@ export async function hasUserStarred(messageID: string, userID: string) {
     // Searches the cache for star data.
     const cached = await redis.exists(cacheKey);
     if (cached) {
-      redisLog.debug(`Star from user ${userID} on ${messageID} exists.`);
+      redisLog.debug(`Got star_user data from ${userID} on ${messageID}.`);
       return true;
     }
 
@@ -46,6 +46,7 @@ export async function hasUserStarred(messageID: string, userID: string) {
 
     // Return false if no result is found.
     if (!result[0]?.count) {
+      redisLog.debug(`No star_user data from ${userID} on ${messageID}.`);
       return false;
     }
 
@@ -54,33 +55,33 @@ export async function hasUserStarred(messageID: string, userID: string) {
     if (exists) {
       // Caches and returns the user's reaction.
       await redis.set(cacheKey, "1", "EX", TTL.Hour);
-      redisLog.debug(`Updated star from user ${userID} on ${messageID}.`);
+      redisLog.debug(`Updated star_user data for ${userID} on ${messageID}.`);
       return true;
     }
 
     return false;
   } catch (err) {
-    const error = parseError(err);
     dbLog.error(
-      `Error getting star from user ${userID} on message ${messageID}: ${error.message}`,
+      err,
+      `Error getting star_user data from ${userID} on ${messageID}.`,
     );
 
-    captureError(error, { messageID: messageID, userID: userID });
+    captureException(err, { extra: { messageID: messageID, userID: userID } });
     return false;
   }
 }
 
 /**
- * Adds a star reaction record to the database.
+ * Adds a star reaction to the database.
  * @param message The ID of the message.
  * @param userID The ID of the user.
- * @returns The updated star count, or -1 if an error.
+ * @returns A promise resolving to the updated star count or -1 on error.
  */
 
 export async function addStarReaction(messageID: string, userID: string) {
   const countCacheKey = redisKeys.star_count(messageID);
   const userCacheKey = redisKeys.star_user(messageID, userID);
-  let count = 0;
+  let starCount = 0;
 
   try {
     // Inserts the updated data into the database.
@@ -90,38 +91,34 @@ export async function addStarReaction(messageID: string, userID: string) {
       .onConflictDoNothing();
 
     // Updates the cache atomically.
-    dbLog.debug(`Added star from user ${userID} on message ${messageID}.`);
-    count = await redis.incr(countCacheKey);
+    dbLog.debug(`Added star_count data from ${userID} to ${messageID}.`);
+    starCount = await redis.incr(countCacheKey);
 
     // Updates the TTL of the star.
     await redis.expire(countCacheKey, TTL.Hour);
     await redis.set(userCacheKey, "1", "EX", TTL.Hour);
 
     // Returns the star count.
-    redisLog.debug(`Set star count for message ${messageID} to ${count}.`);
-    return count;
+    redisLog.debug(`Set star_count for ${messageID} to ${starCount}.`);
+    return starCount;
   } catch (err) {
-    const error = parseError(err);
-    dbLog.error(
-      `Error adding star from user ${userID} on message ${messageID}: ${error.message}`,
-    );
-
-    captureError(error, { messageID: messageID, userID: userID });
+    dbLog.error(err, `Error adding star from ${userID} on ${messageID}.`);
+    captureException(err, { extra: { messageID: messageID, userID: userID } });
     return -1;
   }
 }
 
 /**
- * Removes a user's starred reaction.
- * @param message The ID of the starred message.
- * @param userID The ID of the user.
- * @returns The updated star count, or -1 if an error.
+ * Removes a user's starred reaction from the database.
+ * @param message The message ID of the starred message.
+ * @param userID The user ID of the user.
+ * @returns A promise resolving to the updated star count or -1 on error.
  */
 
 export async function removeStarReaction(messageID: string, userID: string) {
   const countCacheKey = redisKeys.star_count(messageID);
   const userCacheKey = redisKeys.star_user(messageID, userID);
-  let count = 0;
+  let starCount = 0;
   let updated = false;
 
   try {
@@ -142,40 +139,40 @@ export async function removeStarReaction(messageID: string, userID: string) {
     // Updates the cache.
     if (updated) {
       // Decrements the counter and deletes the user's cached data.
-      count = await redis.decr(countCacheKey);
+      starCount = await redis.decr(countCacheKey);
       await redis.del(userCacheKey);
 
       // Deletes empty reactions from the cache.
-      if (count <= 0) {
-        count = 0;
+      if (starCount <= 0) {
+        starCount = 0;
         await redis.del(countCacheKey);
-        redisLog.debug(`Deleted star data for message ${messageID}.`);
+        redisLog.debug(`Deleted star_count by ${userID} on ${messageID}.`);
       } else {
         // Updates the TTL of the cached item.
         await redis.expire(countCacheKey, TTL.Hour);
-        redisLog.debug(`Decremented star count for message ${messageID}.`);
+        redisLog.debug(`Reduced star_count for ${messageID}.`);
       }
 
-      return count;
+      return starCount;
     }
 
-    // If nothing changed, get the current count.
+    // If nothing changed, gets the current count as a fallback.
     return getStarCount(messageID);
   } catch (err) {
-    const error = parseError(err);
     dbLog.error(
-      `Error removing star by user ${userID} on message ${messageID}: ${error.message}`,
+      err,
+      `Error removing star_user data for ${userID} on ${messageID}.`,
     );
 
-    captureError(error, { messageId: messageID, userId: userID });
+    captureException(err, { extra: { messageID: messageID, userID: userID } });
     return -1;
   }
 }
 
 /**
  * Gets the current star count for a message.
- * @param message The ID of the message.
- * @returns The total star count
+ * @param messageID The ID of the message.
+ * @returns A promise resolving to the current star count.
  */
 
 export async function getStarCount(messageID: string) {
@@ -185,7 +182,7 @@ export async function getStarCount(messageID: string) {
     // Checks to see if the star count is cached.
     const cache = await redis.get(cacheKey);
     if (cache) {
-      redisLog.debug(`Got star count for message ${messageID}.`);
+      redisLog.debug(`Got star_count for ${messageID}, is ${cache}.`);
       return Number.parseInt(cache, 10);
     }
 
@@ -197,29 +194,26 @@ export async function getStarCount(messageID: string) {
 
     // Checks to see if the value exists.
     if (!result[0]?.value) {
-      dbLog.debug(`No star data found for message ${messageID}.`);
+      dbLog.debug(`No star_count data found for ${messageID}.`);
       return 0;
     }
 
     // Caches and returns the current star count.
-    await redis.set(cacheKey, result[0].value.toString(), "EX", TTL.Hour);
-    dbLog.debug(`Got star count for message ${messageID}.`);
+    const starCount = result[0].value.toString();
+    await redis.set(cacheKey, starCount, "EX", TTL.Hour);
+    dbLog.debug(`Got star_count data for ${messageID}, is ${starCount}.`);
     return result[0].value;
   } catch (err) {
-    const error = parseError(err);
-    dbLog.error(
-      `Error getting star count for message ${messageID}: ${error.message}`,
-    );
-
-    captureError(error, { messageID: messageID });
+    dbLog.error(err, `Error getting star_count for ${messageID}.`);
+    captureException(err, { extra: { messageID: messageID } });
     return 0;
   }
 }
 
 /**
  * Gets the starboard entry associated with a message ID.
- * @param message The ID of the original message.
- * @returns A StarboardEntry.
+ * @param message The ID of the originally starred message.
+ * @returns A promise resolving to a starboard entry object or undefined.
  */
 
 export async function getStarboardEntry(messageID: string) {
@@ -234,7 +228,7 @@ export async function getStarboardEntry(messageID: string) {
       // Checks to see if the data is set as explicitly not found.
       if (cached === NOT_FOUND) {
         redisLog.debug(
-          `Starboard entry for message ${messageID} is in the NOT_FOUND status.`,
+          `star_entry data for ${messageID} is currently NOT_FOUND.`,
         );
 
         return;
@@ -246,7 +240,7 @@ export async function getStarboardEntry(messageID: string) {
       // Validates the data to ensure IDs match.
       if (entry?.message_id !== messageID) {
         redisLog.warn(
-          `Starboard entry for message ${messageID} has mismatched message_id (${entry?.message_id}).`,
+          `star_entry data for ${messageID} has mismatched message_id ${entry?.message_id}.`,
         );
 
         // Destroys the invalid cache data.
@@ -255,48 +249,40 @@ export async function getStarboardEntry(messageID: string) {
       }
 
       // Returns the cached entry.
-      redisLog.debug(`Got starboard entry for message ${messageID}.`);
+      redisLog.debug(`Got star_entry data for ${messageID}.`);
       return entry;
     }
 
     // Checks for data in the database.
-    redisLog.debug(`Starboard entry for message ${messageID} is not cached.`);
     const result = await db.query.starboard_entries.findFirst({
       where: eq(starboard_entries.message_id, messageID),
     });
 
     if (result) {
       // Caches the starboard entry and returns the data.
-      dbLog.debug(`Got starboard entry for message ${messageID}.`);
+      dbLog.debug(`Got star_entry data for ${messageID}.`);
       await redis.set(cacheKey, JSON.stringify(result), "EX", TTL.Hour);
-      redisLog.debug(
-        `Starboard entry for message ${messageID} has been cached.`,
-      );
-
+      redisLog.debug(`Set star_entry data for ${messageID}.`);
       return result;
     }
 
     // Sets the entry as not found.
     await redis.set(cacheKey, NOT_FOUND, "EX", TTL.NotFound);
-    redisLog.debug(`Starboard entry ${messageID} set to NOT_FOUND.`);
+    redisLog.debug(`star_entry data for ${messageID} set to NOT_FOUND.`);
     return;
   } catch (err) {
-    const error = parseError(err);
-    dbLog.error(
-      `Error getting starboard entry for message ${messageID}: ${error.message}`,
-    );
-
-    captureError(error, { messageID: messageID });
+    dbLog.error(err, `Error getting star_entry data for ${messageID}.`);
+    captureException(err, { extra: { messageID: messageID } });
     return;
   }
 }
 
 /**
  * Creates a new starboard entry in the database.
- * @param guildID The ID of the guild where the message is from.
+ * @param guildID The ID of the guild where the message is in.
  * @param messageID The ID of the message.
- * @param starID The ID of the message posted in the starboard channel.
- * @returns A starboard entry.
+ * @param starID The ID of the starboard entry message.
+ * @returns A promise resolving to a starboard entry or undefined.
  */
 
 export async function createStarboardEntry(
@@ -325,24 +311,18 @@ export async function createStarboardEntry(
     // Gets the entry data.
     const starEntry = result[0];
     if (!starEntry) {
-      dbLog.error(`Upsert operation for starred message ${starID} failed.`);
+      dbLog.error(`Upsert operation for star_entry ${starID} failed.`);
       return;
     }
 
-    // Updates the cache.
+    // Updates the cache and returns the updated entry.
     await redis.set(cacheKey, JSON.stringify(starEntry), "EX", TTL.Hour);
-    redisLog.debug(`Cached starboard entry for message ${messageID}.`);
-
-    // Returns the updated starboard entry.
-    dbLog.debug(`Updated starboard entry for message ${messageID}.`);
+    redisLog.debug(`Set star_entry for ${messageID}.`);
+    dbLog.debug(`Updated star_entry for ${messageID}.`);
     return starEntry;
   } catch (err) {
-    const error = parseError(err);
-    dbLog.error(
-      `Error updating starboard entry for message ${messageID}: ${error.message}`,
-    );
-
-    captureError(error, { entryData });
+    dbLog.error(err, `Error updating star_entry for ${messageID}.`);
+    captureException(err, { extra: { entryData: entryData } });
     return;
   }
 }
@@ -350,7 +330,7 @@ export async function createStarboardEntry(
 /**
  * Deletes a starboard entry from the database.
  * @param message The ID of the original message.
- * @returns A boolean indicating success or failure.
+ * @returns A promise resolving to a boolean indicating success or failure.
  */
 
 export async function deleteStarboardEntry(messageID: string) {
@@ -364,20 +344,16 @@ export async function deleteStarboardEntry(messageID: string) {
       .returning({ deleted: starboard_entries.message_id });
 
     if (result.length > 0) {
-      dbLog.debug(`Deleted starboard entry for message ${messageID}.`);
+      dbLog.debug(`Deleted star_entry for ${messageID}.`);
     }
 
     // Invalidates the cached data.
     await redis.del(cacheKey);
-    redisLog.debug(`Deleted starboard entry for message ${messageID}.`);
+    redisLog.debug(`Deleted star_entry for ${messageID}.`);
     return true;
   } catch (err) {
-    const error = parseError(err);
-    dbLog.error(
-      `Error deleting starboard entry for message ${messageID}: ${error.message}`,
-    );
-
-    captureError(error, { messageID: messageID });
+    dbLog.error(err, `Error deleting star_entry for ${messageID}.`);
+    captureException(err, { extra: { messageID: messageID } });
     return false;
   }
 }

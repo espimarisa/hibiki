@@ -1,6 +1,6 @@
 /**
- * @file Starboard functionality helpers.
- * @license Zlib
+ * @file Helper to handle starboard functionality.
+ * @license zlib
  */
 
 import { getGuildConfig } from "@/db/services/guildConfig.ts";
@@ -12,44 +12,34 @@ import {
   hasUserStarred,
   removeStarReaction,
 } from "@/db/services/starboard.ts";
-import { getValidTextChannel } from "@/helpers/discord.ts";
-import { HibikiColors, MessageLimits } from "@/utils/constants.ts";
-import { captureError, parseError } from "@/utils/error.ts";
+import { getTextChannel } from "@/helpers/discord.ts";
+import { HibikiColors } from "@/utils/constants.ts";
+import { trimContent } from "@/utils/format.ts";
 import { starboardLog } from "@/utils/logger.ts";
-import { logger } from "@sentry/bun";
-import {
-  type Client,
-  DiscordAPIError,
-  EmbedBuilder,
-  type Message,
-  type MessageReaction,
-  type User,
-} from "discord.js";
+import { captureException, logger } from "@sentry/bun";
+import type { Client, Message, MessageReaction, User } from "discord.js";
+import { DiscordAPIError, EmbedBuilder } from "discord.js";
 
 export const STAR_EMOJI = "⭐";
 export const DEFAULT_THRESHOLD = 3;
 
 /**
  * Creates a starboard embed.
- * @param message The message object to parse starboard data for.
- * @param starCount The total amount of stars to set on the embed.
- * @returns A generated starboard embed.
+ * @param message The message object to parse.
+ * @param starCount The total amount of stars.
+ * @returns A generated starboard embed object.
  */
 
 function createStarEmbed(message: Message, starCount: number) {
   const embed = new EmbedBuilder()
-    .setAuthor({
-      name: `${message.author.displayName ? `${message.author.displayName} (${message.author.username})` : message.author.username}`,
-      iconURL: message.author.displayAvatarURL(),
-      url: message.url,
-    })
-    .setDescription(
-      message.content.length > MessageLimits.EmbedDescription
-        ? `${message.content.substring(0, MessageLimits.EmbedDescription - 20)}...`
-        : message.content,
-    )
+    .setDescription(trimContent(message.content, "EmbedDescription", true))
     .setColor(HibikiColors.Starboard)
     .setTimestamp(message.createdAt)
+    .setAuthor({
+      iconURL: message.author.displayAvatarURL(),
+      name: `${message.author.displayName ? `${message.author.displayName} (${message.author.username})` : message.author.username}`,
+      url: message.url,
+    })
     .setFooter({
       text: `${STAR_EMOJI} ${starCount}`,
     });
@@ -70,27 +60,28 @@ function createStarEmbed(message: Message, starCount: number) {
 }
 
 /**
- * Posts a starboard message to a channel.
- * @param client A Discord.js client instance.
+ * Sends a starboard message to a channel.
+ * @param client A ready Discord.js client instance.
  * @param message The message object to post starboard data about.
- * @param starboardChannelID The starboard channel ID to send a message to.
+ * @param channelID The starboard channel ID to send a message to.
  * @param starCount The total number of stars.
- * @returns A message object of the newly sent starboard message.
+ * @returns A promise resolving to the message object of the starboard message or undefined.
  */
 
-async function sendStar(
+async function sendStarMessage(
   client: Client<true>,
   message: Message,
-  starboardChannelID: string,
+  channelID: string,
   starCount: number,
 ) {
-  // Gets the starboard channel and content.
-  const channel = await getValidTextChannel(client, starboardChannelID);
+  // Gets the starboard channel.
+  const channel = await getTextChannel(client, channelID);
   if (!channel) {
     return;
   }
 
   try {
+    // Creates the starboard embed.
     const embed = createStarEmbed(message, starCount);
 
     // Sends the starboard message.
@@ -99,19 +90,21 @@ async function sendStar(
     });
 
     starboardLog.debug(
-      `Posted starboard message ${starboardMessage.id} for original message ${message.id} in channel ${starboardChannelID}.`,
+      `Sent starboard message ${starboardMessage.id} for ${message.id} in ${channelID}.`,
     );
 
     return starboardMessage;
   } catch (err) {
-    const error = parseError(err);
     starboardLog.warn(
-      `Failed to post starboard message for message ${message.id} to starboard channel ${starboardChannelID}: ${error.message}`,
+      err,
+      `Failed to send starboard message ${message.id} to ${channelID}.`,
     );
 
-    captureError(error, {
-      messageID: message.id,
-      starboardChannelID: starboardChannelID,
+    captureException(err, {
+      extra: {
+        messageID: message.id,
+        starboardChannelID: channelID,
+      },
     });
 
     return;
@@ -120,60 +113,56 @@ async function sendStar(
 
 /**
  * Edits a starboard message.
- * @param client A Discord.js client instance.
- * @param starboardChannelID The channel ID of the starboard channel.
- * @param starboardMessageID The message ID of the starboard message to edit.
- * @param messageChannelID The message ID of the original message.
+ * @param client A ready Discord.js client instance.
+ * @param channelID The channel ID of the starboard channel.
+ * @param entryID The message ID of the starboard message to edit.
  * @param starCount The total number of stars.
- * @returns A boolean indicating success or failure.
+ * @returns A promise resolving to a boolean indicating success or failure.
  */
 
 async function editStar(
   client: Client<true>,
-  starboardChannelID: string,
-  starboardMessageID: string,
+  channelID: string,
+  entryID: string,
   starCount: number,
 ) {
-  const channel = await getValidTextChannel(client, starboardChannelID);
+  // Gets the starboard channel.
+  const channel = await getTextChannel(client, channelID);
   if (!channel) {
     return false;
   }
 
   try {
     // Gets the message and original embed content.
-    const message = await channel.messages.fetch(starboardMessageID);
+    const message = await channel.messages.fetch(entryID);
     const originalEmbed = message.embeds?.[0];
     if (!originalEmbed) {
-      starboardLog.debug(`No embed found for message ${starboardMessageID}.`);
+      starboardLog.debug(`No embed found for ${entryID}.`);
       return;
     }
 
-    // Updates the embed.
+    // Updates the starboard entry.
     const embed = createStarEmbed(message, starCount);
     await message.edit({ embeds: [embed] });
 
     starboardLog.debug(
-      `Updated starboard message ${starboardMessageID} count to ${starCount}.`,
+      `Updated starboard entry message ${entryID} count to ${starCount}.`,
     );
 
     return true;
   } catch (err) {
-    const error = parseError(err);
+    starboardLog.warn(err, `Failed editing message ${entryID}.`);
 
-    // Unknown message; return true to avoid cycling.
-    if (error instanceof DiscordAPIError && error.code === 10008) {
-      starboardLog.debug(`Starboard message ${starboardMessageID} not found.`);
+    // Unknown message; return true since we *technically* are OK with this.
+    if (err instanceof DiscordAPIError && err.code === 10_008) {
+      starboardLog.debug(`Starboard message ${entryID} not found to edit.`);
       return true;
     }
 
-    starboardLog.warn(
-      `Failed editing message ${starboardMessageID}: ${error.message}`,
-    );
-
-    captureError(error, {
-      context: {
-        starboardMessageId: starboardMessageID,
-        starboardChannelId: starboardMessageID,
+    captureException(err, {
+      extra: {
+        starboardMessageId: entryID,
+        starboardChannelId: entryID,
         newStarCount: starCount,
       },
     });
@@ -184,53 +173,41 @@ async function editStar(
 
 /**
  * Deletes a starboard message.
- * @param client A Discord.js client instance.
- * @param starboardChannelID The starboard channel ID.
- * @param starboardMessageID The message ID of the starboard message to delete.
+ * @param client A ready Discord.js client instance.
+ * @param channelID The starboard channel ID.
+ * @param messageID The message ID of the starboard message to delete.
  * @returns A boolean indicating success or failure.
  */
 
 async function deleteStar(
   client: Client<true>,
-  starboardChannelID: string,
-  starboardMessageID: string,
+  channelID: string,
+  messageID: string,
 ) {
   // Gets the starboard channel.
-  const channel = await getValidTextChannel(client, starboardChannelID);
+  const channel = await getTextChannel(client, channelID);
   if (!channel) {
     return false;
   }
 
   try {
     // Fetches the messages and attempts to delete the message.
-    const message = await channel.messages.fetch(starboardMessageID);
+    const message = await channel.messages.fetch(messageID);
     await message.delete();
-    starboardLog.debug(
-      `Deleted starboard message ${starboardMessageID} in channel ${starboardChannelID}.`,
-    );
-
+    starboardLog.debug(`Deleted ${messageID} in ${channelID}.`);
     return true;
   } catch (err) {
-    const error = parseError(err);
-
     // Unknown message handler; likely deleted.
-    if (error instanceof DiscordAPIError && error.code === 10008) {
-      starboardLog.debug(
-        `Starboard message ${starboardMessageID} has already been deleted.`,
-      );
-
-      // Return success as the message is already deleted.
+    if (err instanceof DiscordAPIError && err.code === 10_008) {
+      starboardLog.debug(`${messageID} has already been deleted.`);
       return true;
     }
 
-    starboardLog.error(
-      `Failed to delete starboard message ${starboardMessageID} in channel ${starboardChannelID}: ${error.message}`,
-    );
-
-    captureError(error, {
-      context: {
-        starboardMessageId: starboardMessageID,
-        starboardChannelId: starboardChannelID,
+    starboardLog.error(err, `Failed to delete ${messageID} in ${channelID}.`);
+    captureException(err, {
+      extra: {
+        starboardMessageId: messageID,
+        starboardChannelId: channelID,
       },
     });
 
@@ -241,16 +218,15 @@ async function deleteStar(
 /**
  * Handles star reactions being added.
  * @param reaction The reaction to handle.
- * @param user The user who added a star reaction.
+ * @param user The user that added a star reaction.
+ * @param message The message object a reaction was added on.
  */
 
-export async function handleStarAdd(reaction: MessageReaction, user: User) {
-  // Gets the message.
-  let message = reaction.message;
-  if (message.partial) {
-    message = await message.fetch();
-  }
-
+export async function handleStarAdd(
+  reaction: MessageReaction,
+  user: User,
+  message: Message,
+) {
   // Do not handle non-star reactions or DMs.
   if (!message.guild || reaction.emoji.name !== STAR_EMOJI) {
     return;
@@ -341,7 +317,7 @@ export async function handleStarAdd(reaction: MessageReaction, user: User) {
     );
   } else {
     // Creates a starboard message.
-    const starboardMessage = await sendStar(
+    const starboardMessage = await sendStarMessage(
       reaction.client,
       message,
       starboardChannelID,
@@ -369,16 +345,15 @@ export async function handleStarAdd(reaction: MessageReaction, user: User) {
 /**
  * Handles star reactions being removed.
  * @param reaction The reaction to handle.
- * @param user The user who removed their reaction.
+ * @param user The user that added a star reaction.
+ * @param message The message object a reaction was removed from.
  */
 
-export async function handleStarRemove(reaction: MessageReaction, user: User) {
-  // Gets the message.
-  let message = reaction.message;
-  if (reaction.partial) {
-    message = await message.fetch();
-  }
-
+export async function handleStarRemove(
+  reaction: MessageReaction,
+  user: User,
+  message: Message,
+) {
   // Ignore reactions in DMs or from bots/self.
   if (!message?.guild || user.bot || reaction.me) {
     return;

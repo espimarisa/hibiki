@@ -1,14 +1,15 @@
 /**
- * @file Configuration file for Drizzle.
- * @license Zlib.
+ * @file Configuration file for Drizzle ORM.
+ * @license zlib
  */
 
 /** biome-ignore-all lint/style/noDefaultExport: Drizzle config requires a default export. */
 
-import { type Config, defineConfig } from "drizzle-kit";
-import { env } from "./src/utils/env";
+import { env } from "@/utils/env.ts";
+import type { Config } from "drizzle-kit";
+import { defineConfig } from "drizzle-kit";
 
-// Configures drizzle
+// Configures drizzle.
 export default defineConfig({
   dbCredentials: {
     url: env.POSTGRES_URL,

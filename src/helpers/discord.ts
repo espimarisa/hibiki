@@ -1,117 +1,200 @@
 /**
- * @file Helpers to interact with Discord or Discord.js directly.
- * @license Zlib
+ * @file Helper utilities interacting with Discord or Discord.js.
+ * @license zlib
  */
 
-import { captureError, parseError } from "@/utils/error.ts";
 import { clientLog, sharderLog } from "@/utils/logger.ts";
-import {
-  type Client,
-  type Guild,
-  type PartialUser,
-  type ShardingManager,
-  TextChannel,
-  type User,
+import { captureException } from "@sentry/bun";
+import type {
+  Client,
+  Message,
+  MessageReaction,
+  PartialMessage,
+  PartialMessageReaction,
+  PartialUser,
+  ShardingManager,
+  User,
 } from "discord.js";
+import { TextChannel } from "discord.js";
 
-// Error message for when a text channel fails to validate.
-const textChannelFail = "failing text channel validation.";
+const DISCORD_NAME_REGEX = /^[-_\p{L}\p{N}\p{sc=Deva}\p{sc=Thai}]{1,32}$/u;
 
 /**
- * Returns a formatted username/userID string.
- * @param user The user object to parse.
+ * Validates a command/option name against Discord's requirements.
+ * @param content The text content of the name to validate against Discord's requirements.
+ * @returns A boolean indicating validity.
  */
 
-export function getUserString(user: User | PartialUser) {
-  return `${user?.username || "Unknown User"}/${user?.id || "Unknown ID"}`;
+export function isValidName(content: string) {
+  return DISCORD_NAME_REGEX.test(content);
 }
 
 /**
- * Returns a formatted guild/guildID string.
- * @param guild The guild object to parse.
+ * Validates a command/option name against Discord's requirements.
+ * @param content The text content of the description to validate against Discord's requirements.
+ * @returns A boolean indicating validity.
  */
 
-export function getGuildString(guild: Guild) {
-  return `${guild?.name || "Unknown Guild"}/${guild?.id || "Unknown ID"}`;
+export function isValidDescription(content: string) {
+  return content.length > 0 && content.length <= 100;
 }
 
 /**
  * Gets and validates a guild text channel.
- * @param client A Discord.js client instance.
- * @param channelID The ID of the channel to validate.
- * @returns A text channel object, if valid.
+ * @param client A ready Discord.js client instance.
+ * @param id The ID of the channel to validate.
+ * @returns A validated text channel object or undefined if validation fails.
  */
 
-export async function getValidTextChannel(
-  client: Client<true>,
-  channelID: string,
-) {
+export async function getTextChannel(client: Client<true>, id: string) {
   try {
     // Fetches the channel.
-    clientLog.debug(`Validating text channel ${channelID}.`);
-    const channel = await client.channels.fetch(channelID);
+    clientLog.debug(`Validating text channel ${id}.`);
+    const channel = await client.channels.fetch(id);
 
     // Ensures that the channel exists.
     if (!channel) {
-      clientLog.warn(`Failed to fetch channel ${channelID}.`);
+      clientLog.warn(`Failed to fetch text channel ${id}.`);
       return;
     }
 
     // Ensures that the channel is a text channel.
     if (!(channel instanceof TextChannel)) {
-      clientLog.warn(
-        `Channel ${channelID} is not a text channel, ${textChannelFail}.`,
-      );
-
+      clientLog.debug(`Channel ${id} is not a text channel.`);
       return;
     }
 
     // Gets permissions of the channel.
     const permissions = channel.permissionsFor(client.user.id);
     if (!permissions) {
-      clientLog.debug(
-        `No permissions object found for channel ${channelID}, ${textChannelFail}.`,
-      );
-
+      clientLog.debug(`No permissions object found for text channel ${id}.`);
       return;
     }
 
     // Ensures the client has SEND_MESSAGES.
     if (!permissions.has("SendMessages")) {
-      clientLog.debug(
-        `Lacking SEND_MESSAGES permission for channel ${channelID}, ${textChannelFail}.`,
-      );
-
+      clientLog.debug(`Lacking SEND_MESSAGES in text channel ${id}.`);
       return;
     }
 
     // Ensures the client has EMBED_LINKS.
     if (!permissions.has("EmbedLinks")) {
-      clientLog.debug(
-        `Lacking EMBED_LINKS permission for channel ${channelID}, ${textChannelFail}.`,
-      );
-
+      clientLog.debug(`Lacking EMBED_LINKS in text channel ${id}.`);
       return;
     }
 
     // Ensures the client has READ_MESSAGE_HISTORY.
     if (!permissions.has("ReadMessageHistory")) {
-      clientLog.debug(
-        `Lacking READ_MESSAGE_HISTORY permission for channel ${channelID}, ${textChannelFail}.`,
-      );
-
+      clientLog.debug(`Lacking READ_MESSAGE_HISTORY in text channel ${id}.`);
       return;
     }
 
     return channel;
   } catch (err) {
-    const error = parseError(err);
-    clientLog.warn(
-      `Failed to fetch channel ${channelID}, ${textChannelFail}: ${error.message}`,
+    clientLog.warn(err, `Failed fetching text channel ${id}.`);
+    captureException(err, { extra: { channelID: id } });
+    return;
+  }
+}
+
+/**
+ * Fetches the full object from a partial message.
+ * @param message The partial message object to resolve.
+ * @returns A promise resolving to a fully fetched message object or undefined if it failed to fetch.
+ */
+
+export async function resolvePartialMessage(
+  message: PartialMessage | Message | undefined,
+) {
+  // Do not process non-partials further.
+  if (!message?.partial) {
+    return message;
+  }
+
+  try {
+    // Fetches the full object.
+    const resolved = await message.fetch();
+
+    // Return undefined if it is a partial still for further checking.
+    if (!resolved || resolved.partial) {
+      clientLog.warn(`Failed fetching message ${message.id} from partial.`);
+      return;
+    }
+
+    // Returns the resolved object.
+    return resolved;
+  } catch (err) {
+    clientLog.error(err, "Failed fetching full message from partial.");
+    captureException(err, { extra: { messageID: message.id } });
+    return;
+  }
+}
+
+/**
+ * Fetches the full object from a partial reaction.
+ * @param reaction The partial reaction object to resolve.
+ * @returns A promise resolving to a fully fetched reaction object or undefined if it failed to fetch.
+ */
+
+export async function resolvePartialReaction(
+  reaction: PartialMessageReaction | MessageReaction | undefined,
+) {
+  // Do not process non-partials further.
+  if (!reaction?.partial) {
+    return reaction;
+  }
+
+  try {
+    // Fetches the full object.
+    const resolved = await reaction.fetch();
+
+    // Return undefined if it is a partial still for further checking.
+    if (!resolved || resolved.partial) {
+      clientLog.warn("Failed fetching reaction from partial.");
+      return;
+    }
+
+    // Returns the resolved object.
+    return resolved;
+  } catch (err) {
+    clientLog.error(
+      err,
+      `Failed fetching full reaction on ${reaction.message.id} from partial.`,
     );
 
-    captureError(error, { channelID: channelID });
-    return false;
+    captureException(err, { extra: { messageID: reaction.message.id } });
+    return;
+  }
+}
+
+/**
+ * Fetches the full object from a partial user.
+ * @param user The partial user object to resolve.
+ * @returns A promise resolving to a fully fetched user object or undefined if it failed to fetch.
+ */
+
+export async function resolvePartialUser(user: PartialUser | User | undefined) {
+  // Do not process non-partials further.
+  if (!user?.partial) {
+    return user;
+  }
+
+  try {
+    // Fetches the full object.
+    const resolved = await user.fetch();
+
+    // Return undefined if it is a partial still for further checking.
+    if (!resolved || resolved.partial) {
+      clientLog.warn(`Failed fetching user ${user.id} from partial.`);
+      return;
+    }
+
+    // Returns the resolved object.
+    return resolved;
+  } catch (err) {
+    clientLog.error(err, `Failed fetching user ${user.id} from partial.`);
+    captureException(err, { extra: { userID: user.id } });
+    return;
   }
 }
 
@@ -145,7 +228,7 @@ export async function getTotalCachedGuilds(sharder: ShardingManager) {
   )) as number[];
 
   if (total.length === 0) {
-    return;
+    return 0;
   }
 
   return total.reduce((a, b) => a + b);
@@ -165,7 +248,7 @@ export async function getTotalCachedUsers(sharder: ShardingManager) {
   )) as number[];
 
   if (total.length === 0) {
-    return;
+    return 0;
   }
 
   return total.reduce((a, b) => a + b);

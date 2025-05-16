@@ -1,41 +1,66 @@
 /**
- * @file Redis client and utilities.
- * @license Zlib
+ * @file Primary Redis database client and utilities.
+ * @license zlib
  */
 
 import { env } from "@/utils/env.ts";
 import { RedisClient } from "bun";
 
-// Creates a new Redis client.
-export const redis = new RedisClient(env.REDIS_URL);
-
 // Explicit string for not found Redis queries.
 export const NOT_FOUND = "__NOT_FOUND__";
 
-// TTL values, in seconds.
+// Commonly used TTL values, in seconds.
 export enum TTL {
-  NotFound = 300,
-  Day = 86400,
-  Minute = 60,
-  FiveMinutes = 60 * 5,
+  Day = 86_400,
   Hour = 3600,
+  Minute = 60,
+  NotFound = 300,
 }
 
-// Keys used for caching.
+// Keys allowed for Redis queries.
 export const redisKeys = {
-  // Cached guild config.
+  /**
+   * Redis key for storing guild_config data.
+   * @param guildID The Discord guild ID to use for the Redis query.
+   * @returns A Redis key formatted as guild_config:guildID.
+   */
+
   guild_config: (guildID: string) => `guild_config:${guildID}`,
 
-  // Cached star count on a message.
-  star_count: (messageID: string) => `star_count:${messageID}`,
+  /**
+   * Redis key for storing star_count data.
+   * @param userID The Discord user ID of the user.
+   * @returns A Redis key formatted as star_count:userID.
+   */
 
-  // Cached star entry.
-  star_entry: (messageID: string) => `star_entry:${messageID}`,
+  star_count: (userID: string) => `star_count:${userID}`,
 
-  // Cached star user.
+  /**
+   * Redis key for storing star_entry data.
+   * @param starID The Discord message ID of the starboard entry message.
+   * @returns A Redis key formatted as star_entry:starID.
+   */
+
+  star_entry: (starID: string) => `star_entry:${starID}`,
+
+  /**
+   * Redis key for storing star_user data.
+   * @param messageID The Discord message ID of the starred message.
+   * @param userID The Discord user ID of the user.
+   * @returns A Redis key formatted as star_user:messageID:userID.
+   */
+
   star_user: (messageID: string, userID: string) =>
     `star_user:${messageID}:${userID}`,
 
-  // Cached user config.
+  /**
+   * Redis key for storing user_config data.
+   * @param userID The Discord user ID to use for the Redis query.
+   * @returns A Redis key formatted as user_config:userID.
+   */
+
   user_config: (userID: string) => `user_config:${userID}`,
-};
+} as const;
+
+// Creates a new Redis client.
+export const redis = new RedisClient(env.REDIS_URL);

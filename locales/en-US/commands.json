@@ -1,113 +1,98 @@
 {
-  "ABOUT_DESCRIPTION": "Gets information and current statistics about Hibiki.",
-  "ABOUT_DETAILS": "I'm a Discord bot with polished community and developer tools. \n\nMade with love by [Espi Marisa](https://espi.me). 💖",
-  "ABOUT_LINKS": "[GitHub](https://github.com/espimarisa/hibiki) | [Invite](https://discord.com/api/oauth2/authorize?client_id={{id}}&permissions={{permissions}}&scope=bot%20applications.commands) | [Privacy](https://github.com/espimarisa/hibiki?tab=readme-ov-file#privacy-policy) | [Donate](https://ko-fi.com/espimarisa)",
-  "ABOUT_NAME": "about",
-  "ABOUT_STATISTICS_DETAILS": "{{servers}} servers \n{{users}} cached users \n{{commands}} loaded commands",
-  "ABOUT_SYSTEM": "System",
-  "ABOUT_SYSTEM_DETAILS": "Using {{memory}} of memory \n{{uptime}} of uptime",
-  "ABOUT_TITLE": "✨ Hi, I'm {{username}}!",
-  "ABOUT_VERSION_DETAILS": "Hibiki {{- hibiki}} \nDiscord.js {{- djs}} \nBun {{- bun}}",
-  "ANIMAL_CAT_DESCRIPTION": "Sends a random cat picture.",
-  "ANIMAL_CAT_MESSAGE": "😺 Meow!",
-  "ANIMAL_CAT_NAME": "cat",
-  "ANIMAL_DESCRIPTION": "Sends pictures of various animals.",
-  "ANIMAL_DOG_DESCRIPTION": "Sends a random dog picture.",
-  "ANIMAL_DOG_MESSAGE": "🐶 Woof!",
-  "ANIMAL_DOG_NAME": "dog",
-  "ANIMAL_FOX_DESCRIPTION": "Sends a random fox picture.",
-  "ANIMAL_FOX_MESSAGE": "🦊 Bark!",
-  "ANIMAL_FOX_NAME": "fox",
-  "ANIMAL_NAME": "animal",
-  "COIN_DESCRIPTION": "Flips a coin.",
-  "COIN_MESSAGE_HEADS": "🔵 Your coin landed on heads.",
-  "COIN_MESSAGE_TAILS": "🟠 Your coin landed on tails.",
-  "COIN_NAME": "coin",
-  "DICE_DESCRIPTION": "Rolls a die.",
-  "DICE_MESSAGE": "🎲 You rolled a {{roll}} on your {{sides}}-sided die.",
-  "DICE_NAME": "dice",
-  "DICE_SIDES_DESCRIPTION": "The amount of sides on the die. Defaults to 6; max is 120.",
-  "DICE_SIDES_NAME": "sides",
-  "GITHUB_ARCHIVED": "Archived",
-  "GITHUB_COMPANY": "Company",
-  "GITHUB_DESCRIPTION": "Gets information about a GitHub user or repository.",
-  "GITHUB_FORKED_FROM": "Forked from",
-  "GITHUB_FORKS": "Forks",
-  "GITHUB_GISTS": "Gists",
-  "GITHUB_ISSUES": "Issues",
-  "GITHUB_NAME": "github",
-  "GITHUB_REPOSITORIES": "Repositories",
-  "GITHUB_REPOSITORY_DESCRIPTION": "Gets information about a GitHub repository",
-  "GITHUB_REPOSITORY_NAME": "repository",
-  "GITHUB_REPOSITORY_URL_DESCRIPTION": "The GitHub repository URL to get information about.",
-  "GITHUB_REPOSITORY_URL_NAME": "url",
-  "GITHUB_STARGAZERS": "Stargazers",
-  "GITHUB_TEMPLATE": "Template",
-  "GITHUB_TOPICS": "Topics",
-  "GITHUB_USER_DESCRIPTION": "Gets information about a GitHub user.",
-  "GITHUB_USER_USERNAME_DESCRIPTION": "The username of the GitHub user to get information about.",
-  "GITHUB_USER_USERNAME_NAME": "username",
-  "GITHUB_WATCHERS": "Watchers",
-  "GITHUB_XTWITTER": "X/Twitter",
-  "IPINFO_ABUSE_INFORMATION": "Abuse Information",
-  "IPINFO_ABUSE_STATISTICS": "{{reports}} total reports; {{confidence}}% confidence score",
-  "IPINFO_ADDRESS_DESCRIPTION": "The IP address to get information about.",
-  "IPINFO_ADDRESS_NAME": "address",
-  "IPINFO_ASN": "ASN",
-  "IPINFO_BOGON": "Bogon Address",
-  "IPINFO_DESCRIPTION": "Gets information about an IP address.",
-  "IPINFO_DOMAIN": "Domain",
-  "IPINFO_GEOLOCATION": "Geolocation",
-  "IPINFO_HOSTNAME": "Hostname",
-  "IPINFO_ISP": "ISP",
-  "IPINFO_NAME": "ipinfo",
-  "IPINFO_NOTES": "Notes",
-  "IPINFO_TOR": "TOR Address",
-  "IPINFO_USAGE_TYPE": "Usage Type",
-  "PACKAGE_AUR_DESCRIPTION": "Gets details about an AUR (Arch User Repository) package.",
-  "PACKAGE_AUR_NAME": "aur",
-  "PACKAGE_CONFLICTS": "Conflicts",
-  "PACKAGE_DEPENDENCIES": "Dependencies",
-  "PACKAGE_DESCRIPTION": "Gets package details from various package registrars.",
-  "PACKAGE_KEYWORDS": "Keywords",
-  "PACKAGE_NAME": "package",
-  "PACKAGE_NOTES": "Notes",
-  "PACKAGE_NPM_DESCRIPTION": "Gets details about a NPM package.",
-  "PACKAGE_NPM_NAME": "npm",
-  "PACKAGE_OUT_OF_DATE": "Marked as out-of-date",
-  "PACKAGE_PROVIDES": "Provides",
-  "PACKAGE_TARGET_DESCRIPTION": "Name of the package to search for.",
-  "PACKAGE_TARGET_NAME": "package",
-  "PACKAGE_VERSION_DESCRIPTION": "Specific package version to target. Defaults to latest.",
-  "PACKAGE_VERSION_NAME": "version",
-  "PING_DESCRIPTION": "Gets my latency and current status.",
-  "PING_LATENCY": "This reply took {{ping}}ms to send. \nShard latency: {{latency}}ms.",
-  "PING_MESSAGE": "🏓 Pong! All seems OK!",
-  "PING_NAME": "ping",
-  "ROLEPLAY_BOT_MESSAGE": "I'd rather not do that with you. Please keep your paws away from me.",
-  "ROLEPLAY_CUDDLE_DESCRIPTION": "Cuddle someone!",
-  "ROLEPLAY_CUDDLE_MESSAGE": "💖 {{user}} cuddled {{target}}!",
-  "ROLEPLAY_CUDDLE_NAME": "cuddle",
-  "ROLEPLAY_DESCRIPTION": "Interact and roleplay with other members.",
-  "ROLEPLAY_HUG_DESCRIPTION": "Hug someone!",
-  "ROLEPLAY_HUG_MESSAGE": "❤️ {{user}} hugged {{target}}!",
-  "ROLEPLAY_HUG_NAME": "hug",
-  "ROLEPLAY_KISS_DESCRIPTION": "Kiss someone!",
-  "ROLEPLAY_KISS_MESSAGE": "💕 {{user}} gave {{target}} a kiss!",
-  "ROLEPLAY_KISS_NAME": "kiss",
-  "ROLEPLAY_MEMBER_DESCRIPTION": "The member that you want to interact with.",
-  "ROLEPLAY_MEMBER_NAME": "member",
-  "ROLEPLAY_NAME": "roleplay",
-  "ROLEPLAY_PAT_DESCRIPTION": "Pat someone!",
-  "ROLEPLAY_PAT_MESSAGE": "💙 {{user}} pat {{target}}!",
-  "ROLEPLAY_PAT_NAME": "pat",
-  "ROLEPLAY_SELF_MESSAGE": "How about you interact with someone else in the world for once?",
-  "ROLEPLAY_SLAP_DESCRIPTION": "Slap someone!",
-  "ROLEPLAY_SLAP_MESSAGE": "💢 {{user}} slapped {{target}}! You all play nice, now!",
-  "ROLEPLAY_SLAP_NAME": "slap",
-  "XKCD_DESCRIPTION": "Sends a XKCD comic.",
-  "XKCD_FOOTER": "Published on {{- date}}",
-  "XKCD_NAME": "xkcd",
-  "XKCD_NUMBER_DESCRIPTION": "Specific XKCD comic ID to send. Sends a random comic by default.",
-  "XKCD_NUMBER_NAME": "number"
+  "animal": {
+    "cat": {
+      "description": "Sends a random cat picture.",
+      "name": "cat",
+      "response": "😺 Meow!"
+    },
+    "dog": {
+      "description": "Sends a random dog picture.",
+      "name": "dog",
+      "response": "🐶 Woof!"
+    }
+  },
+  "coin": {
+    "description": "Flips a coin.",
+    "name": "coin",
+    "responseHeads": "🔵 The coin landed on heads.",
+    "responseTails": "🟠 The coin landed on tails."
+  },
+  "dice": {
+    "description": "Rolls a die.",
+    "name": "dice",
+    "options": {
+      "sides": {
+        "description": "The amount of sides on the die. Defaults to 6; max is 120.",
+        "name": "sides"
+      }
+    },
+    "response": "🎲 Your {{sides}}-sided die rolled a **{{roll}}**."
+  },
+  "ping": {
+    "description": "Checks my current status and latency to Discord.",
+    "name": "ping",
+    "pong": "🏓 Pong! All seems OK!",
+    "response": "This reply took {{ping}}ms to send. Current latency for shard #{{shard}} is {{latency}}ms."
+  },
+  "roleplay": {
+    "description": "Interact and roleplay with other members.",
+    "name": "roleplay",
+    "errorSelf": "How about you interact with someone else in the world for once?",
+    "errorBot": "I'd rather not do that with you. Keep your paws away from me.",
+    "cuddle": {
+      "description": "Cuddle someone!",
+      "name": "cuddle",
+      "options": {
+        "member": {
+          "description": "The member that you'd like to cuddle with.",
+          "name": "member"
+        }
+      },
+      "response": "💖 {{user}} gave {{target}} some cuddles."
+    },
+    "hug": {
+      "description": "Give someone a warm hug!",
+      "name": "hug",
+      "options": {
+        "member": {
+          "description": "The member that you'd like to give a hug to.",
+          "name": "member"
+        }
+      },
+      "response": "❤️ {{user}} gave {{target}} a warm hug."
+    },
+    "kiss": {
+      "description": "Give someone a kiss!",
+      "name": "kiss",
+      "options": {
+        "member": {
+          "description": "The member that you'd like to kiss.",
+          "name": "member"
+        }
+      },
+      "response": "💕 {{user}} gave {{target}} a kiss."
+    },
+    "pat": {
+      "description": "Give someone a headpat!",
+      "name": "pat",
+      "options": {
+        "member": {
+          "description": "The member that you'd like to give a headpat to.",
+          "name": "member"
+        }
+      },
+      "response": "💙 {{user}} gave {{target}} some headpats."
+    },
+    "slap": {
+      "description": "Slap someone playfully!",
+      "name": "slap",
+      "options": {
+        "member": {
+          "description": "The member that you'd like to playfully slap.",
+          "name": "member"
+        }
+      },
+      "response": "💢 {{user}} slapped {{target}} playfully. Play nice, now!"
+    }
+  }
 }

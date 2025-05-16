@@ -1,15 +1,13 @@
 /**
  * @file Event listener for messageCreate.
- * @license Zlib
+ * @license zlib
  */
 
-import type { HibikiEvent } from "@/helpers/event.ts";
-
-export const messageCreate: HibikiEvent<"messageCreate"> = {
+export const messageCreate = {
   event: "messageCreate",
 
   // biome-ignore lint/suspicious/useAwait: grr.
-  async handle(message) {
+  handle: async (message) => {
     // Do not process invalid message data.
     if (!message.id || message.content.length === 0) {
       return;
@@ -19,7 +17,5 @@ export const messageCreate: HibikiEvent<"messageCreate"> = {
     if (message.author.id === message.client.user.id || message.author.bot) {
       return;
     }
-
-    return;
   },
-};
+} satisfies HibikiListener<"messageCreate">;

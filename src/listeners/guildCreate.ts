@@ -1,25 +1,24 @@
 /**
- * @file Event listener for guildDelete.
- * @license Zlib
+ * @file Event handler for guildCreate.
+ * @license zlib
  */
 
-import { getGuildString, getUserString } from "@/helpers/discord.ts";
-import type { HibikiEvent } from "@/helpers/event.ts";
 import { client } from "@/root/client.ts";
-import { env } from "@/root/utils/env.ts";
 import { HibikiColors } from "@/utils/constants.ts";
+import { env } from "@/utils/env.ts";
+import { getGuildString, getUserString } from "@/utils/format.ts";
 import { clientLog } from "@/utils/logger.ts";
 import { ChannelType, EmbedBuilder, TimestampStyles, time } from "discord.js";
 
-export const guildDelete: HibikiEvent<"guildDelete"> = {
-  event: "guildDelete",
+export const guildCreate = {
+  event: "guildCreate",
 
-  async handle(guild) {
+  handle: async (guild) => {
     // Gets the guild owner and name.
     const owner = await guild.fetchOwner();
     const ownerString = getUserString(owner.user);
     const guildString = getGuildString(guild);
-    clientLog.info(`Removed from ${guildString} owned by ${guildString}.`);
+    clientLog.info(`Added to ${guildString} owned by ${ownerString}.`);
 
     // Send a message to DISCORD_DEV_CHANNEL_ID if set.
     if (env.DISCORD_DEV_CHANNEL_ID && env.DISCORD_DEV_GUILD_ID) {
@@ -31,7 +30,7 @@ export const guildDelete: HibikiEvent<"guildDelete"> = {
 
       // Creates the embed.
       const embed = new EmbedBuilder()
-        .setTitle(`❌ Removed from ${guild.name || "Unknown Guild"}`)
+        .setTitle(`✅ Added to ${guild.name || "Unknown Guild"}`)
         .setColor(HibikiColors.Success)
         .addFields(
           {
@@ -68,4 +67,4 @@ export const guildDelete: HibikiEvent<"guildDelete"> = {
       await channel.send({ embeds: [embed] });
     }
   },
-};
+} satisfies HibikiListener<"guildCreate">;

@@ -1,284 +1,178 @@
 /**
- * @file Utilities for loading modules from the filesystem (Optimized).
- * @license Zlib
+ * @file Utilities interacting with the filesystem.
+ * @license zlib
  */
 
-import type { HibikiCommand } from "@/helpers/command.ts";
-import type { HibikiEvent, HibikiListener } from "@/helpers/event.ts";
-import { parseError } from "@/utils/error.ts";
-import { loaderLog } from "@/utils/logger.ts";
-import type { Dirent, PathLike } from "node:fs";
+import { MODULE_FILETYPE_REGEX } from "@/utils/constants.ts";
+import { fsLog } from "@/utils/logger.ts";
+import type { ObjectEncodingOptions, PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
-import { basename, dirname, join } from "node:path";
-import type { Collection } from "discord.js";
+import { join } from "node:path";
+import { captureException } from "@sentry/bun";
+import type { ClientEvents, Collection } from "discord.js";
 
-const ESM_FILETYPE_REGEX = /\.(mjs|mts|ts|js)$/i;
-
-// Typing for imported module result information.
-type ModuleImportResult = {
-  filePath: string;
-  reason?: Error;
-  status: "fulfilled" | "rejected";
-  value?: unknown;
+// Valid fs.readdir() options.
+type ReaddirOptions = ObjectEncodingOptions & {
+  recursive?: boolean;
+  withFileTypes?: boolean;
 };
 
-// Statistics returned by the module loader.
-type ModuleLoadStats = {
-  failed: number;
-  loaded: number;
-  skipped: number;
+// Expected structure of an ESM import.
+type ESMImport = {
+  default?: unknown;
+  [key: string]: unknown;
 };
 
 /**
- * Returns the directory of a URL (__dirname replacement).
- * @param importMetaUrl The `import.meta.url` of the calling module.
- * @returns The directory path of the file.
+ * Imports ESM modules from a directory.
+ * @param directory The directory to import modules from.
+ * @param recursive If set, runs the importer recursively. Defaults to true.
+ * @returns A promise resolving to a map of imported modules, keyed by filename.
  */
 
-export function getDirname(importMetaUrl: string) {
-  return dirname(Bun.fileURLToPath(importMetaUrl));
-}
+export async function importDirectory(directory: PathLike, recursive = true) {
+  const importedModules = new Map<string, unknown>();
+  const basePath = directory.toString();
+  fsLog.debug(`Importing modules from ${basePath}.`);
 
-/**
- * Extracts the primary export from a module.
- * @param module The module to extract an import from.
- * @returns The primary export from a module.
- */
+  // Options to use for fs.readdir.
+  const readdirOptions = {
+    encoding: "utf-8",
+    recursive: recursive ?? true,
+    withFileTypes: true,
+  } satisfies ReaddirOptions;
 
-function extractPrimaryExport(module: unknown) {
-  if (!module || typeof module !== "object") {
-    return module;
-  }
+  // Reads the directory for files.
+  const files = await readdir(basePath, readdirOptions);
 
-  // Returns the default module.
-  if ("default" in module) {
-    return (module as { default: unknown }).default;
-  }
-
-  // Gets each exported export; returns the first one.
-  const exports = Object.values(module);
-  if (exports.length === 1) {
-    return exports[0];
-  }
-
-  return module;
-}
-
-/**
- * Imports all ESM modules in a directory recursively.
- * @param directory The directory path to scan.
- * @param recursive If set, scans subdirectories recursively.
- * @returns A promise resolving to an array of module import results.
- */
-
-async function importModules(directory: PathLike, recursive = false) {
-  const directoryPath = directory.toString();
-  let files: Dirent[];
-
-  try {
-    // Reads each file.
-    files = await readdir(directoryPath, { withFileTypes: true });
-  } catch (err) {
-    const error = parseError(err);
-    loaderLog.error(
-      `Failed to read directory ${directoryPath}: ${error.message}`,
-    );
-    return [];
-  }
-
-  // Creates an array of promises.
-  const promises: Promise<ModuleImportResult | ModuleImportResult[]>[] = [];
-
-  // Iterates through each module file.
+  // Iterates through each file.
   for (const file of files) {
-    const filePath = join(directoryPath, file.name);
+    const filePath = join(file.parentPath ?? basePath, file.name);
+    const fileName = file.name
+      .replace(MODULE_FILETYPE_REGEX, "")
+      .replace(/\\/g, "/");
 
-    // Store the promise for recursive results.
-    if (file.isDirectory() && recursive) {
-      promises.push(importModules(filePath, recursive));
-    } else if (file.isFile() && ESM_FILETYPE_REGEX.test(file.name)) {
-      // Create a promise for importing the file.
-      const importPromise = import(filePath)
-        .then((moduleContent) => ({
-          filePath,
-          status: "fulfilled" as const,
-          value: moduleContent,
-        }))
-        .catch((err) => {
-          const error = parseError(err);
-          loaderLog.error(
-            `Failed to import module ${filePath}: ${error.message}`,
+    // Only attempt to import files that match ESM filetypes.
+    if (file.isFile() && MODULE_FILETYPE_REGEX.test(file.name)) {
+      try {
+        // Imports the module.
+        const importedFile: ESMImport = await import(filePath);
+        let extractedExport: unknown;
+
+        // Use the default export if specified.
+        if (importedFile.default !== undefined) {
+          extractedExport = importedFile.default;
+        } else {
+          // Filters out the default key to search for named exports.
+          const exportKeys = Object.keys(importedFile).filter(
+            (key) => key !== "default",
           );
-          return {
-            filePath,
-            reason: error,
-            status: "rejected" as const,
-          };
-        });
 
-      promises.push(importPromise);
-    }
-  }
+          // Uses the first named export as the module.
+          if (exportKeys[0]) {
+            // Gets the key of the export and extracts it.
+            const firstKey = exportKeys[0];
+            extractedExport = importedFile[firstKey];
+          } else {
+            fsLog.warn(`Module ${fileName} has no exports.`);
+          }
+        }
 
-  // Wait for all imports/recursions to settle.
-  const settledResults = await Promise.allSettled(promises);
-  const finalResults: ModuleImportResult[] = [];
-
-  for (const result of settledResults) {
-    if (result.status === "fulfilled") {
-      // If fulfilled, the value could be a single result or an array from recursion.
-      if (Array.isArray(result.value)) {
-        finalResults.push(...result.value);
-      } else {
-        finalResults.push(result.value);
+        // Adds the extracted import to the set.
+        if (extractedExport) {
+          importedModules.set(fileName, extractedExport);
+          fsLog.debug(`Successfully imported ${fileName}.`);
+        }
+      } catch (err) {
+        fsLog.error(err, `Failed to import ${filePath}.`);
+        captureException(err, { extra: { path: filePath } });
       }
-    } else {
-      const error = parseError(result.reason);
-      loaderLog.error(`Error processing directory structure: ${error.message}`);
     }
   }
 
-  return finalResults;
-}
-
-/**
- * Loads modules from a directory into a collection.
- * @param directory The directory path to load modules from.
- * @param collection The collection to populate.
- * @param validator A function returning true if a module is valid to import.
- * @param recursive Whether to load modules recursively. Default: true.
- * @returns Statistics about the loading process.
- */
-
-export async function loadModules<T>(
-  directory: PathLike,
-  collection: Collection<string, T>,
-  validator: (
-    moduleExport: unknown,
-    filePath: string,
-  ) => Promise<boolean> | boolean,
-  recursive = true,
-) {
-  // Imports each file.
-  const importResults = await importModules(directory, recursive);
-  const stats: ModuleLoadStats = { loaded: 0, failed: 0, skipped: 0 };
-
-  // Process the results sequentially.
-  for (const result of importResults) {
-    const fileName = basename(result.filePath);
-
-    // Handle failed imports.
-    if (result.status === "rejected") {
-      stats.failed++;
-      continue;
-    }
-
-    // Handle successfully imported modules.
-    try {
-      const primaryExport = extractPrimaryExport(result.value);
-      const isValid = await validator(primaryExport, result.filePath); // Await validator
-
-      if (isValid) {
-        const key = fileName.replace(ESM_FILETYPE_REGEX, "");
-        // Assume validator confirmed structure, cast to T.
-        collection.set(key, primaryExport as T);
-        stats.loaded++;
-        loaderLog.info(`Successfully loaded ${fileName}.`);
-      } else {
-        stats.skipped++;
-        loaderLog.warn(`${fileName} failed validation, skipping.`);
-      }
-    } catch (err) {
-      stats.failed++;
-      const error = parseError(err);
-      loaderLog.error(`Failed to validate ${fileName}: ${error.message}`);
-    }
-  }
-
-  return stats;
+  return importedModules;
 }
 
 /**
  * Loads commands from a directory.
  * @param directory The directory to load commands from.
- * @param collection The collection to insert loaded commands into.
- * @returns A boolean indicating success or failure.
+ * @param data A Discord.js Collection to store loaded commands in.
+ * @returns A promise resolving to the updated collection, or undefined.
  */
 
-export function loadCommands(
+export async function loadCommands(
   directory: PathLike,
-  collection: Collection<string, HibikiCommand>,
+  data: Collection<string, HibikiCommand>,
 ) {
-  loaderLog.info("Loading commands...");
+  const directoryName = directory.toString();
+  fsLog.debug(`Loading commands from ${directoryName}.`);
 
-  const validator = (moduleExport: unknown) => {
-    if (!isHibikiCommand(moduleExport)) {
-      return false;
+  // Imports the commands from the directory.
+  const importedModules = (await importDirectory(directoryName)) as Map<
+    string | undefined,
+    HibikiCommand | undefined
+  >;
+
+  // Do not continue if no valid commands were found.
+  if (importedModules.size === 0) {
+    fsLog.debug(`No commands found in ${directoryName}.`);
+    return;
+  }
+
+  // Iterates over each command entry.
+  for (const [commandName, command] of importedModules.entries()) {
+    // Loads the command.
+    if (typeof command === "object" && command.data) {
+      data.set(command.data.name, command);
+      fsLog.debug(`Loaded command ${command.data.name}.`);
+    } else {
+      fsLog.warn(`Command ${commandName} is invalid, skipping.`);
     }
+  }
 
-    return true;
-  };
-
-  return loadModules<HibikiCommand>(directory, collection, validator);
+  // Logs when complete and returns the map.
+  fsLog.info(`Loaded ${data.size} commands.`);
+  return data;
 }
 
 /**
- * Loads events from a directory.
+ * Loads event listeners from a directory.
  * @param directory The directory to load event listeners from.
- * @param collection The collection to insert loaded event listeners into.
- * @returns A boolean indicating success or failure.
+ * @param data A Discord.js Collection to store loaded event handlers in.
+ * @returns A promise resolving to the updated collection, or undefined.
  */
 
-export function loadEvents(
+export async function loadListeners(
   directory: PathLike,
-  collection: Collection<string, HibikiEvent<HibikiListener>>,
+  data: Collection<string, HibikiListener<keyof ClientEvents>>,
 ) {
-  loaderLog.info("Loading event listeners...");
+  const directoryName = directory.toString();
+  fsLog.debug(`Loading event listeners from ${directoryName}.`);
 
-  const validator = (moduleExport: unknown) => {
-    if (!isHibikiEvent(moduleExport)) {
-      return false;
+  // Imports the listeners from the directory.
+  const importedModules = (await importDirectory(directoryName)) as Map<
+    string | undefined,
+    HibikiListener<keyof ClientEvents> | undefined
+  >;
+
+  // Do not continue if no valid event listeners were found.
+  if (importedModules.size === 0) {
+    fsLog.debug(`No event listeners found in ${directoryName}.`);
+    return;
+  }
+
+  // Iterates over each event listener entry.
+  for (const [name, listener] of importedModules.entries()) {
+    // Loads the event listener.
+    if (typeof listener === "object" && listener.event) {
+      data.set(listener.event, listener);
+      fsLog.debug(`Loaded event listener for ${listener.event}.`);
+    } else {
+      fsLog.warn(`Event listener ${name} is invalid, skipping.`);
     }
+  }
 
-    return true;
-  };
-
-  return loadModules<HibikiEvent<HibikiListener>>(
-    directory,
-    collection,
-    validator,
-  );
-}
-
-/**
- * Helper type guard to validate a Hibiki slash command.
- * @param obj The object to validate.
- * @returns A boolean indicating success or failure.
- */
-
-function isHibikiCommand(obj: unknown) {
-  return (
-    typeof obj === "object" &&
-    obj !== null &&
-    "data" in obj &&
-    "run" in obj &&
-    typeof (obj as HibikiCommand).run === "function"
-  );
-}
-
-/**
- * Helper type guard to validate a Hibiki event.
- * @param obj The object to validate.
- * @returns A boolean indicating success or failure.
- */
-
-function isHibikiEvent(obj: unknown) {
-  return (
-    typeof obj === "object" &&
-    obj !== null &&
-    "event" in obj &&
-    typeof obj.event === "string" &&
-    "handle" in obj &&
-    typeof obj.handle === "function"
-  );
+  // Logs when complete and returns the map.
+  fsLog.info(`Loaded ${data.size} event listeners.`);
+  return data;
 }

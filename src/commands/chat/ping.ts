@@ -1,21 +1,22 @@
 /**
- * @file Slash command to return current shard latency and status.
+ * @file Chat command to check the current latency and shard status.
  * @license Zlib
  */
 
-import type { HibikiCommand } from "@/helpers/command.ts";
 import { HibikiColors } from "@/utils/constants.ts";
-import { t, tO } from "@/utils/i18n.ts";
+import { t, tAllDescriptions, tAllNames, tDescription } from "@/utils/i18n.ts";
 import { EmbedBuilder, SlashCommandBuilder, SnowflakeUtil } from "discord.js";
 
-export const pingCommand = {
-  data: new SlashCommandBuilder()
-    .setName("ping")
-    .setNameLocalizations(tO("commands:PING_NAME"))
-    .setDescription(t("commands:PING_DESCRIPTION"))
-    .setDescriptionLocalizations(tO("commands:PING_DESCRIPTION")),
+const commandData = new SlashCommandBuilder()
+  .setName("ping")
+  .setNameLocalizations(tAllNames("commands:ping.name"))
+  .setDescription(tDescription("commands:ping.description"))
+  .setDescriptionLocalizations(tAllDescriptions("commands:ping.description"));
 
-  async run(interaction) {
+export const pingCommand = {
+  data: commandData,
+
+  run: async (interaction) => {
     // Calculates the current ping and shard latency.
     const ping = Date.now() - SnowflakeUtil.timestampFrom(interaction.id);
     const shard = interaction.guild ? interaction.guild.shardId : 0;
@@ -25,16 +26,17 @@ export const pingCommand = {
     await interaction.reply({
       embeds: [
         new EmbedBuilder()
-          .setTitle(t("commands:PING_MESSAGE"))
+          .setTitle(t("commands:ping.pong", { lng: interaction.locale }))
           .setDescription(
-            t("commands:PING_LATENCY", {
+            t("commands:ping.response", {
               lng: interaction.locale,
-              ping: ping,
               latency: latency,
+              ping: ping,
+              shard: shard,
             }),
           )
           .setColor(HibikiColors.Primary),
       ],
     });
   },
-} satisfies HibikiCommand;
+} satisfies HibikiChatCommand;

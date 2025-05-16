@@ -1,130 +1,198 @@
 /**
- * @file Creates an i18next instance and handles key localization.
- * @license Zlib
+ * @file Utilities to perform i18n.
+ * @license zlib
  */
 
-import type { DictionaryKey } from "@/types/i18next.ts";
-import { captureError, parseError } from "@/utils/error.ts";
-import { i18nLog } from "@/utils/logger.ts";
-import type { PathLike } from "node:fs";
+import { isValidDescription, isValidName } from "@/helpers/discord.ts";
+import type { DictionaryKey } from "@/types/i18next.d.ts";
+import { LOCALES_DIRECTORY } from "@/utils/constants.ts";
+import { i18NLog } from "@/utils/logger.ts";
 import { readdir } from "node:fs/promises";
-import i18next, { type TOptions } from "i18next";
+import { captureException } from "@sentry/bun";
+import { Locale } from "discord.js";
+import i18next, { type InitOptions, type TOptions } from "i18next";
 import i18NexFsBackend, { type FsBackendOptions } from "i18next-fs-backend";
 
-let localeDirectoryData: string[] = [];
-const defaultLocale = "en-US";
+// Valid Discord localization codes.
+const DISCORD_LOCALES = Object.values(Locale);
+
+// i18next variables.
+const defaultLng = "en-US";
+export const defaultNS = "common";
+export const ns = ["commands", "common", "errors"] as const;
+
+// Gets an array of files inside of the LOCALES_DIRECTORY.
+const localeFiles = await readdir(LOCALES_DIRECTORY, {
+  encoding: "utf-8",
+  withFileTypes: true,
+}).then((files) => {
+  return files.filter((file) => file.isDirectory()).map((f) => f.name);
+});
+
+// Initializes i18next.
+await i18next.use(i18NexFsBackend).init<FsBackendOptions>({
+  backend: {
+    loadPath: `${LOCALES_DIRECTORY}/{{lng}}/{{ns}}.json`,
+  } satisfies FsBackendOptions,
+  defaultNS: defaultNS,
+  fallbackLng: defaultLng,
+  interpolation: {
+    escapeValue: false,
+  },
+  load: "currentOnly",
+  lng: defaultLng,
+  initAsync: true,
+  ns: ns,
+  preload: localeFiles || {},
+  returnNull: false,
+} satisfies InitOptions);
 
 /**
- * Initializes i18next and loads locales.
- * @param directory The directory to search for locales in.
- */
-
-export async function initI18Next(directory: PathLike) {
-  try {
-    i18nLog.info("Initializing i18next...");
-
-    // Gets the contents of the directory.
-    const directoryPath = directory.toString();
-    localeDirectoryData = await getLocaleFiles(directoryPath);
-
-    // Starts i18next.
-    await i18next.use(i18NexFsBackend).init<FsBackendOptions>({
-      backend: {
-        loadPath: `${directoryPath}/{{lng}}/{{ns}}.json`,
-      },
-      defaultNS: "common",
-      fallbackLng: defaultLocale,
-      initAsync: true,
-      interpolation: {
-        skipOnVariables: false,
-      },
-      lng: defaultLocale,
-      load: "currentOnly",
-      ns: ["commands", "common", "errors"],
-      preload: localeDirectoryData || [],
-    });
-
-    i18nLog.info("Successfully initialized i18next.");
-  } catch (err) {
-    const error = parseError(err);
-    i18nLog.error(`Error initializing i18next: ${error.message}`);
-    captureError(err, {
-      directory: directory,
-    });
-  }
-
-  return;
-}
-
-/**
- * Reads locale files from a directory.
- * @param directory The directory to search for locales in.
- * @returns An array of locale filenames.
- */
-
-async function getLocaleFiles(directory: string) {
-  try {
-    // Iterates over each file.
-    const files = await readdir(directory, { withFileTypes: true });
-    return files.filter((file) => file.isDirectory()).map((f) => f.name);
-  } catch (err) {
-    const error = parseError(err);
-    i18nLog.error(`Failed loading locales in ${directory}: ${error.message}`);
-    captureError(err, { directory: directory });
-  }
-
-  return [];
-}
-
-/**
- * Localizes an i18next dictionary key.
- * @param key The dictionary key to localize.
- * @param options Additional i18next options.
- * @returns A localized dictionary key.
+ * Translates a singular i18next key (wrapper around i18n.t).
+ * @param key A dictionary key to translate.
+ * @param options Additional i18next TFunction options.
+ * @returns A translated string in the locale set in options.lng or in the fallbackLng if unset.
  */
 
 export function t(key: DictionaryKey, options?: TOptions) {
-  i18nLog.debug(`Localizing key ${key} to ${options?.lng || defaultLocale}.`);
+  // Gets the locale.
+  const lng = options?.lng || defaultLng;
+  i18NLog.debug(`Translating ${key} to ${lng}.`);
 
   try {
-    const translation = i18next.t(key, {
-      // Use defaultLocale as a fallback.
-      lng: defaultLocale,
+    // Gets the translation.
+    return i18next.t(key, {
+      // Explicitly set lng just to be safe.
+      lng: lng,
       ...options,
     });
-
-    return translation;
   } catch (err) {
-    const error = parseError(err);
-    i18nLog.warn(`Failed localizing key ${key}: ${error.message}`);
-    captureError(error, {
-      key: key,
-      locale: options?.lng || defaultLocale,
-    });
-
-    return key;
+    i18NLog.error(err, `Failed to translate ${key} to ${lng}.`);
+    captureException(err, { extra: { key: key, lng: lng } });
   }
+
+  // Return the key if an error was thrown just to be safe.
+  return key;
 }
 
 /**
- * Returns an object containing all localizations of a key.
- * @param key The key to get all localizations for.
- * @returns An object containing all localizations of a key.
+ * Translates a command/option name to the default locale.
+ * @param key The dictionary key to translate.
+ * @returns A translated name string in the default locale, or a placeholder string if it is invalid.
  */
 
-export function tO(key: DictionaryKey) {
+export function tName(key: DictionaryKey) {
+  const translation = i18next.t(key, { lng: defaultLng });
+
+  // Checks if the translation exists and is not empty.
+  if (translation === key || !translation) {
+    i18NLog.error(`Name not found for ${key} in ${defaultLng}.`);
+    return "nameInvalid";
+  }
+
+  // Ensures the name is valid.
+  if (!isValidName(translation)) {
+    i18NLog.error(`Name for ${key} is invalid.`);
+    return "nameInvalid";
+  }
+
+  return translation;
+}
+
+/**
+ * Localizes a command/option description to the default locale.
+ * @param key The dictionary key to localize.
+ * @returns A localized description string in the default locale, or an empty string if it is invalid.
+ */
+
+export function tDescription(key: DictionaryKey) {
+  const translation = i18next.t(key, { lng: defaultLng });
+
+  // Checks if the translation exists and is not empty.
+  if (translation === key || !translation) {
+    i18NLog.error(`Description not found for ${key} in ${defaultLng}.`);
+    return "";
+  }
+
+  // Ensures the description is valid.
+  if (!isValidDescription(translation)) {
+    i18NLog.error(`Description for ${key} is invalid.`);
+    return "";
+  }
+
+  return translation;
+}
+
+/**
+ * Generates an object of all localizations of a command/option name.
+ * @param key The dictionary key to localize.
+ * @returns An object containing localizations keyed by their locale code, or an empty object.
+ */
+
+export function tAllNames(key: DictionaryKey) {
   const localizations: Record<string, string> = {};
 
-  // Iterates through each locale.
-  for (const locale of localeDirectoryData) {
-    try {
-      // Sets the translated locale.
-      const localization = t(key, { lng: locale });
-      localizations[locale] = localization;
-    } catch (err) {
-      const error = parseError(err);
-      i18nLog.warn(`No localization for ${key} in ${locale}: ${error.message}`);
-      captureError(err, { key: key, locale: locale });
+  // Iterates over possible locales.
+  for (const locale of localeFiles) {
+    // Do not append defaultLng to the object.
+    if (locale === defaultLng) {
+      continue;
+    }
+
+    // Do not parse locales that Discord does not support.
+    if (!DISCORD_LOCALES.includes(locale as Locale)) {
+      i18NLog.warn(`${locale} is not supported by Discord.`);
+      continue;
+    }
+
+    // Skip keys that are not translated yet.
+    if (!i18next.exists(key, { lng: locale })) {
+      i18NLog.debug(`${key} is not translated to ${locale}, skipping.`);
+      continue;
+    }
+
+    // Gets the localized translation.
+    const translation = i18next.t(key, { lng: locale });
+    if (isValidName(translation)) {
+      localizations[locale] = translation;
+    }
+  }
+
+  return localizations;
+}
+
+/**
+ * Generates an object of all localizations of a command/option description.
+ * @param key The dictionary key to localize.
+ * @returns An object containing localizations keyed by their locale code, or an empty object.
+ */
+
+export function tAllDescriptions(key: DictionaryKey) {
+  const localizations: Record<string, string> = {};
+
+  // Iterates over possible locales.
+  for (const locale of localeFiles) {
+    // Do not append defaultLng to the object.
+    if (locale === defaultLng) {
+      continue;
+    }
+
+    // Do not parse locales that Discord does not support.
+    if (!DISCORD_LOCALES.includes(locale as Locale)) {
+      i18NLog.warn(`${locale} is not supported by Discord.`);
+      continue;
+    }
+
+    // Skip keys that are not translated yet.
+    if (!i18next.exists(key, { lng: locale })) {
+      i18NLog.debug(`${key} is not translated to ${locale}, skipping.`);
+      continue;
+    }
+
+    // Gets the localized translation.
+    const translation = i18next.t(key, { lng: locale });
+    if (isValidDescription(translation)) {
+      localizations[locale] = translation;
     }
   }
 

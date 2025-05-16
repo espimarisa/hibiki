@@ -1,37 +1,44 @@
 /**
- * @file Creates a Discord.js client instance.
- * @license Zlib
+ * @file Creates a Discord.js client.
+ * @license zlib
  */
 
-import { env } from "@/root/utils/env.ts";
-import { captureError, parseError } from "@/utils/error.ts";
+import { env } from "@/utils/env.ts";
 import { clientLog } from "@/utils/logger.ts";
+import { captureException } from "@sentry/bun";
 import {
   ActivityType,
   Client,
-  type ClientUser,
-  IntentsBitField,
+  GatewayIntentBits,
   Options,
   Partials,
 } from "discord.js";
 
 let activityState = 0;
 
+// Intents to enable.
 const intents = [
-  IntentsBitField.Flags.GuildMembers,
-  IntentsBitField.Flags.GuildMessageReactions,
-  IntentsBitField.Flags.GuildMessages,
-  IntentsBitField.Flags.Guilds,
+  // GUILDS is required for general functionality.
+  GatewayIntentBits.Guilds,
+
+  // GUILD_MEMBERS is required for member resolution.
+  GatewayIntentBits.GuildMembers,
+
+  // GUILD_MESSAGE_REACTIONS and GUILD_MESSAGES are required for the starboard.
+  GatewayIntentBits.GuildMessageReactions,
+  GatewayIntentBits.GuildMessages,
 ];
+
+// Partials to enable.
+const partials = [Partials.Message, Partials.Reaction, Partials.User];
 
 // Creates a new Discord.js client.
 export const client = new Client({
   intents: intents,
-  partials: [Partials.Message, Partials.Channel, Partials.Reaction],
+  partials: partials,
   sweepers: {
     ...Options.DefaultSweeperSettings,
   },
-
   makeCache: Options.cacheWithLimits({
     ...Options.DefaultMakeCacheSettings,
     GuildMemberManager: {
@@ -43,57 +50,37 @@ export const client = new Client({
 });
 
 // Logs into Discord.
-client.login(env.DISCORD_TOKEN).catch((err) => {
-  const error = parseError(err);
-  clientLog.fatal(`Failed to login to Discord: ${error.message}`);
-  captureError(error);
-});
+try {
+  client.login(env.DISCORD_TOKEN);
+} catch (err) {
+  clientLog.error(err, "Failed to login to Discord.");
+  captureException(err);
+}
 
 // Ready listener.
-client.once("ready", async () => {
-  // Do not spawn the shard fully if the user does not exist.
-  if (!client.user) {
-    clientLog.fatal("No user object received from Discord.");
-    return;
-  }
-
+client.once("ready", async (readyClient) => {
   // Emits a ready event to the sharding manager.
-  if (client.shard) {
+  if (readyClient.shard) {
     try {
-      await client.shard.send({ type: "shardReady" });
+      await readyClient.shard.send({ type: "shardReady" });
     } catch (err) {
-      const error = parseError(err);
-      clientLog.error(`Failed to emit ready event: ${error.message}`);
-      captureError(error);
+      clientLog.error(err, "Failed to emit ready event.");
+      captureException(err);
     }
   }
 
-  // Cycles client statuses if any are set.
+  // Cycles through configured statuses every 3 minutes.
   if (env.DISCORD_STATUSES.length > 0) {
-    cycleStatuses(client.user, env.DISCORD_STATUSES);
-    setInterval(cycleStatuses, 60000, client.user, env.DISCORD_STATUSES);
+    setInterval(() => {
+      activityState = (activityState + 1) % env.DISCORD_STATUSES.length;
+      const presence = env.DISCORD_STATUSES[activityState];
+
+      // Sets the status.
+      if (presence) {
+        readyClient.user.setActivity(presence, {
+          type: ActivityType.Custom,
+        });
+      }
+    }, 60_000 * 3);
   }
 });
-
-/**
- * Cycles through an array of bot client statuses.
- * @param user The client user to set the status on.
- * @param statuses An array of statuses to cycle through.
- */
-
-function cycleStatuses(user: ClientUser, statuses: string[]) {
-  if (!(user && statuses.length > 0)) {
-    return;
-  }
-
-  // Gets the status to set.
-  activityState = (activityState + 1) % env.DISCORD_STATUSES.length;
-  const presence = env.DISCORD_STATUSES[activityState];
-
-  // Sets the status.
-  if (presence) {
-    user.setActivity(presence, {
-      type: ActivityType.Custom,
-    });
-  }
-}

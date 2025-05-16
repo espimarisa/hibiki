@@ -1,9 +1,9 @@
 /**
- * @file Guild configuration database schema.
- * @license Zlib
+ * @file Drizzle database schema for guild configurations.
+ * @license zlib
  */
 
-import { DISCORD_SNOWFLAKE_REGEX } from "@/utils/constants.ts";
+import { DISCORD_SNOWFLAKE_REGEX_SQL } from "@/db/constants.ts";
 import { sql } from "drizzle-orm";
 import {
   check,
@@ -14,9 +14,7 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-const DISCORD_SNOWFLAKE = sql.raw(DISCORD_SNOWFLAKE_REGEX);
-
-// Guild configuration schema.
+// Creates the guild configuration schema.
 export const guild_config = pgTable(
   "guild_config",
   {
@@ -36,13 +34,13 @@ export const guild_config = pgTable(
     // Validates guild_id, ensuring that it is a snowflake.
     check(
       "guild_config_guild_id_snowflake_check",
-      sql`${table.guild_id} ~ '${DISCORD_SNOWFLAKE}'`,
+      sql`${table.guild_id} ~ '${DISCORD_SNOWFLAKE_REGEX_SQL}'`,
     ),
 
     // Validates starboard_channel, ensuring that it is a snowflake or null.
     check(
       "guild_config_starboard_channel_snowflake_check",
-      sql`(${table.starboard_channel} IS NULL OR ${table.starboard_channel} ~ '${DISCORD_SNOWFLAKE}')`,
+      sql`(${table.starboard_channel} IS NULL OR ${table.starboard_channel} ~ '${DISCORD_SNOWFLAKE_REGEX_SQL}')`,
     ),
 
     // Validates starboard_count, ensuring that it is > 0 or null.
@@ -56,4 +54,5 @@ export const guild_config = pgTable(
   ],
 );
 
+// Typing for a valid guild configuration.
 export type GuildConfig = typeof guild_config.$inferSelect;
