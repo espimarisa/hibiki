@@ -1,39 +1,39 @@
 /**
- * @file Global typing definitions.
+ * @file Global typing aliases and definitions.
  * @license zlib
  */
 
 /** biome-ignore-all lint/correctness/noUnusedVariables: Global typings file. */
 
+// A singular i18next Dictionary key identifier.
+type DictionaryKey = import("@/types/i18next.d.ts").DictionaryKey;
+
 // Typing for a Hibiki chat input (slash) command.
 type HibikiChatCommand = {
-  /** Expected command data. */
-  data:
-    | PSlashCommandBuilder
-    | PSlashCommandOptionsOnlyBuilder
-    | PSlashCommandSubcommandsOnlyBuilder;
+  /** Builds command data. */
+  setData: () => ChatInputCommandData;
 
   /**
    * Runs a chat input (slash) command.
    * @param interaction The interaction to run the command on.
    */
 
-  run: (interaction: PChatInputCommandInteraction) => Promise<void>;
+  run: (interaction: ChatInputCommandInteraction) => Promise<void>;
 };
 
 // Typing for a possible type of Hibiki command.
 type HibikiCommand = HibikiChatCommand;
 
-// Typing for a possible Hibiki client event.
-type HibikiEvent = keyof PClientEvents;
+// Typing for a single client event.
+type ClientEvent = keyof ClientEvents;
 
 // Typing for a Hibiki event listener.
-type HibikiListener<K extends keyof PClientEvents> = {
+type HibikiListener<K extends keyof ClientEvents> = {
   /** The client event to handle. */
   event: K;
 
   /**
-   * Only run the handler on first emission.
+   * Only runs the handler on first emission.
    * @default false
    */
 
@@ -44,18 +44,15 @@ type HibikiListener<K extends keyof PClientEvents> = {
    * @param args Client event arguments.
    */
 
-  handle: (...args: PClientEvents[K]) => Promise<void>;
+  handle: (...args: ClientEvents[K]) => Promise<void>;
 };
 
 /**
  * Inline typing imports to preserve global typing definition functionality.
  */
 
-type PClientEvents = import("discord.js").ClientEvents;
-type PChatInputCommandInteraction =
+type ClientEvents = import("discord.js").ClientEvents;
+type ChatInputCommandData =
+  import("discord.js").RESTPostAPIChatInputApplicationCommandsJSONBody;
+type ChatInputCommandInteraction =
   import("discord.js").ChatInputCommandInteraction;
-type PSlashCommandBuilder = import("discord.js").SlashCommandBuilder;
-type PSlashCommandOptionsOnlyBuilder =
-  import("discord.js").SlashCommandOptionsOnlyBuilder;
-type PSlashCommandSubcommandsOnlyBuilder =
-  import("discord.js").SlashCommandSubcommandsOnlyBuilder;

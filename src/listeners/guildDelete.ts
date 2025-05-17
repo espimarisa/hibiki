@@ -8,9 +8,9 @@ import { HibikiColors } from "@/utils/constants.ts";
 import { env } from "@/utils/env.ts";
 import { getGuildString, getUserString } from "@/utils/format.ts";
 import { clientLog } from "@/utils/logger.ts";
-import { ChannelType, EmbedBuilder, TimestampStyles, time } from "discord.js";
+import { ChannelType, TimestampStyles, time } from "discord.js";
 
-export const guildDelete = {
+export const guildDelete: HibikiListener<"guildDelete"> = {
   event: "guildDelete",
 
   handle: async (guild) => {
@@ -18,7 +18,7 @@ export const guildDelete = {
     const owner = await guild.fetchOwner();
     const ownerString = getUserString(owner.user);
     const guildString = getGuildString(guild);
-    clientLog.info(`Removed from ${guildString} owned by ${guildString}.`);
+    clientLog.info(`Removed from ${guildString} owned by ${ownerString}.`);
 
     // Send a message to DISCORD_DEV_CHANNEL_ID if set.
     if (env.DISCORD_DEV_CHANNEL_ID && env.DISCORD_DEV_GUILD_ID) {
@@ -28,43 +28,45 @@ export const guildDelete = {
         return;
       }
 
-      // Creates the embed.
-      const embed = new EmbedBuilder()
-        .setTitle(`❌ Removed from ${guild.name || "Unknown Guild"}`)
-        .setColor(HibikiColors.Success)
-        .addFields(
-          {
-            name: "ID",
-            value: guild.id,
-            inline: false,
-          },
-          {
-            name: "Created at",
-            value: time(guild.createdAt, TimestampStyles.ShortDateTime),
-            inline: false,
-          },
-        )
-        .setImage(guild.bannerURL())
-        .setThumbnail(guild.iconURL());
-
-      // Owner.
-      embed.addFields({
-        name: "Owner",
-        value: ownerString,
-        inline: false,
-      });
-
-      // Member count.
-      if (guild.memberCount) {
-        embed.addFields({
-          name: "Members",
-          value: guild.memberCount.toString(),
-          inline: false,
-        });
-      }
-
       // Logs to the logging channel.
-      await channel.send({ embeds: [embed] });
+      await channel.send({
+        embeds: [
+          {
+            title: `❌ Removed from ${guild.name || "Unknown Guild"}`,
+            color: HibikiColors.Error,
+            image: {
+              url: guild.bannerURL() || "",
+            },
+            thumbnail: {
+              url: guild.iconURL() || "",
+            },
+            fields: [
+              {
+                name: "ID",
+                value: guild.id,
+                inline: false,
+              },
+              {
+                name: "Created at",
+                value: time(guild.createdAt, TimestampStyles.ShortDateTime),
+                inline: false,
+              },
+              {
+                name: "Owner",
+                value: ownerString,
+                inline: false,
+              },
+              {
+                name: "Members",
+                value: guild.memberCount
+                  ? guild.memberCount.toString()
+                  : "Unknown",
+                inline: false,
+              },
+            ],
+          },
+        ],
+      });
     }
   },
-} satisfies HibikiListener<"guildDelete">;
+};

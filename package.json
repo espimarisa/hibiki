@@ -25,15 +25,19 @@
     "db:migrate": "bun run drizzle-kit migrate",
     "db:push": "bun run drizzle-kit push",
     "db:studio": "bun run drizzle-kit studio",
-    "dev": "NODE_ENV=development bun run db:generate && bun run ./src/index.ts",
+    "dev": "NODE_ENV=DEVELOPMENT bun run db:generate && bun run ./src/index.ts",
+    "dev:register": "NODE_ENV=DEVELOPMENT bun run ./src/register.ts",
+    "dev:register:clear": "NODE_ENV=DEVELOPMENT bun run ./src/register.ts --clear",
     "format": "biome format --fix .",
     "lint": "biome check .",
     "lint:fix": "biome lint --fix .",
-    "start": "NODE_ENV=production bun run ./src/index.ts",
-    "test": "NODE_ENV=test bun run check && bun run lint"
+    "register": "NODE_ENV=PRODUCTION bun run ./src/register.ts",
+    "register:clear": "NODE_ENV=PRODUCTION bun run ./src/register.ts --clear",
+    "start": "NODE_ENV=PRODUCTION bun run ./src/index.ts",
+    "test": "NODE_ENV=TEST bun run check && bun run lint"
   },
   "dependencies": {
-    "@sentry/bun": "^9.18.0",
+    "@sentry/bun": "^9.19.0",
     "discord.js": "^14.19.3",
     "drizzle-orm": "^0.43.1",
     "i18next": "^25.1.3",

@@ -8,17 +8,13 @@ import { clientLog, commandLog } from "@/utils/logger.ts";
 import { captureException } from "@sentry/bun";
 import type { CommandInteraction } from "discord.js";
 
-export const interactionCreate = {
+export const interactionCreate: HibikiListener<"interactionCreate"> = {
   event: "interactionCreate",
 
   handle: async (interaction) => {
     const guildString = interaction.guild
       ? getGuildString(interaction.guild)
       : "DMs";
-
-    clientLog.debug(
-      `Received interaction ${interaction.id} in ${guildString}.`,
-    );
 
     // Runs command interactions.
     if (interaction.isCommand()) {
@@ -33,7 +29,7 @@ export const interactionCreate = {
       return;
     }
   },
-} satisfies HibikiListener<"interactionCreate">;
+};
 
 /**
  * Runs a command.
@@ -42,7 +38,7 @@ export const interactionCreate = {
 
 async function runCommand(interaction: CommandInteraction) {
   // Finds the command to run.
-  const command = interaction.client.chatCommands.get(interaction.commandName);
+  const command = interaction.client.commands.get(interaction.commandName);
 
   // Do not run invalid commands.
   if (!command) {
@@ -57,7 +53,7 @@ async function runCommand(interaction: CommandInteraction) {
     : "DMs";
 
   /**
-   * Slash (chat input) command handler.
+   * Chat input command handler.
    */
 
   if (interaction.isChatInputCommand()) {
@@ -68,10 +64,10 @@ async function runCommand(interaction: CommandInteraction) {
         `${userString} ran ${interaction.commandName} in ${guildString}.`,
       );
     } catch (err) {
-      commandLog.error(err, `Error running command ${command.data.name}.`);
+      commandLog.error(err, `Error running ${interaction.commandName}.`);
       captureException(err, {
         extra: {
-          command: command.data.name,
+          command: interaction.commandName,
           guildID: interaction.guild?.id || "DMs",
           userID: interaction.user.id,
         },

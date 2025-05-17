@@ -11,7 +11,7 @@ import {
 import { handleStarRemove } from "@/helpers/starboard.ts";
 import type { Message, MessageReaction, User } from "discord.js";
 
-export const messageReactionRemove = {
+export const messageReactionRemove: HibikiListener<"messageReactionRemove"> = {
   event: "messageReactionRemove",
 
   handle: async (reaction, user) => {
@@ -39,4 +39,4 @@ export const messageReactionRemove = {
       await handleStarRemove(fetchedReaction, fetchedUser, fetchedMessage);
     }
   },
-} satisfies HibikiListener<"messageReactionRemove">;
+};

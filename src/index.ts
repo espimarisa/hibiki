@@ -22,8 +22,8 @@ import { Collection, ShardingManager } from "discord.js";
 const CLIENT_FILE = join(SRC_DIRECTORY, "client.ts");
 
 // Creates collections to store modules into.
-const chatCommands = new Collection<string, HibikiChatCommand>();
-const eventListeners = new Collection<string, HibikiListener<HibikiEvent>>();
+const hibikiCommands = new Collection<string, HibikiCommand>();
+const eventListeners = new Collection<string, HibikiListener<ClientEvent>>();
 const readyShards = new Set();
 
 // Initializes Sentry.
@@ -47,14 +47,14 @@ const sharder = new ShardingManager(CLIENT_FILE, {
 // Initializes i18next.
 import "@/utils/i18n.ts";
 
-// Loads chat commands.
-await loadCommands(COMMANDS_DIRECTORY, chatCommands);
+// Loads commands.
+await loadCommands(COMMANDS_DIRECTORY, hibikiCommands);
 
 // Loads event listeners.
 await loadListeners(LISTENERS_DIRECTORY, eventListeners);
 
 // Appends commands and the sharder to the client.
-client.chatCommands = chatCommands;
+client.commands = hibikiCommands;
 client.sharder = sharder;
 
 // Shard creation handler.

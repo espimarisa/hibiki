@@ -108,7 +108,7 @@ export async function loadCommands(
   fsLog.debug(`Loading commands from ${directoryName}.`);
 
   // Imports the commands from the directory.
-  const importedModules = (await importDirectory(directoryName)) as Map<
+  const importedModules = (await importDirectory(directoryName, true)) as Map<
     string | undefined,
     HibikiCommand | undefined
   >;
@@ -122,9 +122,10 @@ export async function loadCommands(
   // Iterates over each command entry.
   for (const [commandName, command] of importedModules.entries()) {
     // Loads the command.
-    if (typeof command === "object" && command.data) {
-      data.set(command.data.name, command);
-      fsLog.debug(`Loaded command ${command.data.name}.`);
+    if (typeof command === "object" && command.setData) {
+      const commandData = command.setData();
+      data.set(commandData.name, command);
+      fsLog.debug(`Loaded command ${commandData.name}.`);
     } else {
       fsLog.warn(`Command ${commandName} is invalid, skipping.`);
     }

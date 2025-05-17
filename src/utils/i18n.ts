@@ -81,7 +81,7 @@ export function t(key: DictionaryKey, options?: TOptions) {
  * @returns A translated name string in the default locale, or a placeholder string if it is invalid.
  */
 
-export function tName(key: DictionaryKey) {
+export function tN(key: DictionaryKey) {
   const translation = i18next.t(key, { lng: defaultLng });
 
   // Checks if the translation exists and is not empty.
@@ -105,7 +105,7 @@ export function tName(key: DictionaryKey) {
  * @returns A localized description string in the default locale, or an empty string if it is invalid.
  */
 
-export function tDescription(key: DictionaryKey) {
+export function tD(key: DictionaryKey) {
   const translation = i18next.t(key, { lng: defaultLng });
 
   // Checks if the translation exists and is not empty.
@@ -129,7 +129,7 @@ export function tDescription(key: DictionaryKey) {
  * @returns An object containing localizations keyed by their locale code, or an empty object.
  */
 
-export function tAllNames(key: DictionaryKey) {
+export function tAllN(key: DictionaryKey) {
   const localizations: Record<string, string> = {};
 
   // Iterates over possible locales.
@@ -167,7 +167,7 @@ export function tAllNames(key: DictionaryKey) {
  * @returns An object containing localizations keyed by their locale code, or an empty object.
  */
 
-export function tAllDescriptions(key: DictionaryKey) {
+export function tAllD(key: DictionaryKey) {
   const localizations: Record<string, string> = {};
 
   // Iterates over possible locales.

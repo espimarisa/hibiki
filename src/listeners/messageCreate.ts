@@ -3,7 +3,7 @@
  * @license zlib
  */
 
-export const messageCreate = {
+export const messageCreate: HibikiListener<"messageCreate"> = {
   event: "messageCreate",
 
   // biome-ignore lint/suspicious/useAwait: grr.
@@ -18,4 +18,4 @@ export const messageCreate = {
       return;
     }
   },
-} satisfies HibikiListener<"messageCreate">;
+};

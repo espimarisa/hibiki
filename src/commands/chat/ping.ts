@@ -4,39 +4,40 @@
  */
 
 import { HibikiColors } from "@/utils/constants.ts";
-import { t, tAllDescriptions, tAllNames, tDescription } from "@/utils/i18n.ts";
-import { EmbedBuilder, SlashCommandBuilder, SnowflakeUtil } from "discord.js";
+import { t, tAllD, tAllN, tD } from "@/utils/i18n.ts";
+import { InteractionContextType, SnowflakeUtil } from "discord.js";
 
-const commandData = new SlashCommandBuilder()
-  .setName("ping")
-  .setNameLocalizations(tAllNames("commands:ping.name"))
-  .setDescription(tDescription("commands:ping.description"))
-  .setDescriptionLocalizations(tAllDescriptions("commands:ping.description"));
-
-export const pingCommand = {
-  data: commandData,
-
+export const pingCommand: HibikiChatCommand = {
   run: async (interaction) => {
     // Calculates the current ping and shard latency.
     const ping = Date.now() - SnowflakeUtil.timestampFrom(interaction.id);
     const shard = interaction.guild ? interaction.guild.shardId : 0;
     const latency = interaction.client.ws.shards.get(shard)?.ping || 0;
 
-    // Sends the interaction.
+    // Sends the reply.
     await interaction.reply({
       embeds: [
-        new EmbedBuilder()
-          .setTitle(t("commands:ping.pong", { lng: interaction.locale }))
-          .setDescription(
-            t("commands:ping.response", {
-              lng: interaction.locale,
-              latency: latency,
-              ping: ping,
-              shard: shard,
-            }),
-          )
-          .setColor(HibikiColors.Primary),
+        {
+          color: HibikiColors.Primary,
+          title: t("commands:ping.pong", { lng: interaction.locale }),
+          description: t("commands:ping.response", {
+            lng: interaction.locale,
+            latency: latency,
+            ping: ping,
+            shard: shard,
+          }),
+        },
       ],
     });
   },
-} satisfies HibikiChatCommand;
+
+  setData: () => {
+    return {
+      name: "ping",
+      description: tD("commands:ping.description"),
+      name_localizations: tAllN("commands:ping.name"),
+      description_localizations: tAllD("commands:ping.description"),
+      contexts: [InteractionContextType.Guild],
+    };
+  },
+};

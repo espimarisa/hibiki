@@ -8,9 +8,9 @@ import { HibikiColors } from "@/utils/constants.ts";
 import { env } from "@/utils/env.ts";
 import { getGuildString, getUserString } from "@/utils/format.ts";
 import { clientLog } from "@/utils/logger.ts";
-import { ChannelType, EmbedBuilder, TimestampStyles, time } from "discord.js";
+import { ChannelType, TimestampStyles, time } from "discord.js";
 
-export const guildCreate = {
+export const guildCreate: HibikiListener<"guildCreate"> = {
   event: "guildCreate",
 
   handle: async (guild) => {
@@ -28,43 +28,45 @@ export const guildCreate = {
         return;
       }
 
-      // Creates the embed.
-      const embed = new EmbedBuilder()
-        .setTitle(`✅ Added to ${guild.name || "Unknown Guild"}`)
-        .setColor(HibikiColors.Success)
-        .addFields(
-          {
-            name: "ID",
-            value: guild.id,
-            inline: false,
-          },
-          {
-            name: "Created at",
-            value: time(guild.createdAt, TimestampStyles.ShortDateTime),
-            inline: false,
-          },
-        )
-        .setImage(guild.bannerURL())
-        .setThumbnail(guild.iconURL());
-
-      // Owner.
-      embed.addFields({
-        name: "Owner",
-        value: ownerString,
-        inline: false,
-      });
-
-      // Member count.
-      if (guild.memberCount) {
-        embed.addFields({
-          name: "Members",
-          value: guild.memberCount.toString(),
-          inline: false,
-        });
-      }
-
       // Logs to the logging channel.
-      await channel.send({ embeds: [embed] });
+      await channel.send({
+        embeds: [
+          {
+            title: `✅ Added to ${guild.name || "Unknown Guild"}`,
+            color: HibikiColors.Success,
+            image: {
+              url: guild.bannerURL() || "",
+            },
+            thumbnail: {
+              url: guild.iconURL() || "",
+            },
+            fields: [
+              {
+                name: "ID",
+                value: guild.id,
+                inline: false,
+              },
+              {
+                name: "Created at",
+                value: time(guild.createdAt, TimestampStyles.ShortDateTime),
+                inline: false,
+              },
+              {
+                name: "Owner",
+                value: ownerString,
+                inline: false,
+              },
+              {
+                name: "Members",
+                value: guild.memberCount
+                  ? guild.memberCount.toString()
+                  : "Unknown",
+                inline: false,
+              },
+            ],
+          },
+        ],
+      });
     }
   },
-} satisfies HibikiListener<"guildCreate">;
+};
