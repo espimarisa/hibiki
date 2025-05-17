@@ -40,7 +40,7 @@
     "errorSelf": "How about you interact with someone else in the world for once?",
     "errorBot": "I'd rather not do that with you. Keep your paws away from me.",
     "cuddle": {
-      "description": "Cuddle someone!",
+      "description": "Give someone some cuddles.",
       "name": "cuddle",
       "options": {
         "member": {
@@ -51,7 +51,7 @@
       "response": "💖 {{user}} gave {{target}} some cuddles."
     },
     "hug": {
-      "description": "Give someone a warm hug!",
+      "description": "Give someone a warm hug.",
       "name": "hug",
       "options": {
         "member": {
@@ -62,7 +62,7 @@
       "response": "❤️ {{user}} gave {{target}} a warm hug."
     },
     "kiss": {
-      "description": "Give someone a kiss!",
+      "description": "Give someone a kiss.",
       "name": "kiss",
       "options": {
         "member": {
@@ -73,7 +73,7 @@
       "response": "💕 {{user}} gave {{target}} a kiss."
     },
     "pat": {
-      "description": "Give someone a headpat!",
+      "description": "Give someone a headpat.",
       "name": "pat",
       "options": {
         "member": {
@@ -84,7 +84,7 @@
       "response": "💙 {{user}} gave {{target}} some headpats."
     },
     "slap": {
-      "description": "Slap someone playfully!",
+      "description": "Slap someone playfully.",
       "name": "slap",
       "options": {
         "member": {
