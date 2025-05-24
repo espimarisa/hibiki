@@ -3,7 +3,6 @@
  * @license zlib
  */
 
-import { DISCORD_SNOWFLAKE_REGEX_SQL } from "@/db/constants.ts";
 import { sql } from "drizzle-orm";
 import {
   check,
@@ -13,6 +12,8 @@ import {
   uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
+
+const DISCORD_SNOWFLAKE_REGEX_SQL = sql.raw("^(?<id>\\d{17,20})$");
 
 // Creates the guild configuration schema.
 export const guild_config = pgTable(

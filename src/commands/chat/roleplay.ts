@@ -3,9 +3,9 @@
  * @license Zlib
  */
 
-import type { DictionaryKey } from "@/types/i18next.d.ts";
-import { HibikiColors } from "@/utils/constants.ts";
-import { t, tAllD, tAllN, tD } from "@/utils/i18n.ts";
+import type { DictionaryKey } from "@/types/i18next.d.js";
+import { HibikiColors } from "@/utils/constants.js";
+import { t, tAllD, tAllN, tD } from "@/utils/i18n.js";
 import {
   ApplicationCommandOptionType,
   InteractionContextType,

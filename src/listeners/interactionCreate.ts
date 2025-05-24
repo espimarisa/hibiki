@@ -3,8 +3,8 @@
  * @license zlib
  */
 
-import { getGuildString, getUserString } from "@/utils/format.ts";
-import { clientLog, commandLog } from "@/utils/logger.ts";
+import { getGuildString, getUserString } from "@/utils/format.js";
+import { clientLog, commandLog } from "@/utils/logger.js";
 import { captureException } from "@sentry/bun";
 import type { CommandInteraction } from "discord.js";
 

@@ -3,12 +3,12 @@
  * @license zlib
  */
 
-import { db } from "@/db/index.ts";
-import { NOT_FOUND, redisKeys, TTL } from "@/db/redis.ts";
-import type { UserConfig } from "@/db/schema/user_config.ts";
-import { user_config } from "@/db/schema/user_config.ts";
-import { dbLog, redisLog } from "@/utils/logger.ts";
-import { redis } from "bun";
+import { db } from "@/db/index.js";
+import type { UserConfig } from "@/db/schema/user_config.js";
+import { user_config } from "@/db/schema/user_config.js";
+import { NOT_FOUND, TTL, valkeyKeys } from "@/db/valkey";
+import { valkey } from "@/db/valkey.js";
+import { dbLog, valkeyLog } from "@/utils/logger.js";
 import { captureException } from "@sentry/bun";
 import { eq as equals } from "drizzle-orm";
 
@@ -19,16 +19,16 @@ import { eq as equals } from "drizzle-orm";
  */
 
 export async function getUserConfig(userID: string) {
-  const redisKey = redisKeys.user_config(userID);
+  const valkeyKey = valkeyKeys.user_config(userID);
 
   try {
     // Searches for cached data.
-    const cached = await redis.get(redisKey);
+    const cached = await valkey.get(valkeyKey);
 
     if (cached) {
       // Checks to see if the cache is set as NOT_FOUND.
       if (cached === NOT_FOUND) {
-        redisLog.debug(
+        valkeyLog.debug(
           `user_config data for ${userID} is currently NOT_FOUND.`,
         );
 
@@ -40,17 +40,17 @@ export async function getUserConfig(userID: string) {
 
       // Ensures the ID matches the user_id.
       if (!config?.user_id || config?.user_id !== userID) {
-        redisLog.warn(
+        valkeyLog.warn(
           `user_config data for ${userID} has missing/mismatched user_id ${config?.user_id}.`,
         );
 
         // Destroys the invalid cached data.
-        await redis.del(redisKey);
+        await valkey.del(valkeyKey);
         return;
       }
 
       // Returns the cached configuration.
-      redisLog.debug(`Got user_config data for ${userID}.`);
+      valkeyLog.debug(`Got user_config data for ${userID}.`);
       return config;
     }
 
@@ -61,8 +61,8 @@ export async function getUserConfig(userID: string) {
 
     if (config) {
       // Caches the configuration.
-      await redis.set(redisKey, JSON.stringify(config), "EX", TTL.Day);
-      redisLog.debug(`Cached user_config data for ${userID}.`);
+      await valkey.set(valkeyKey, JSON.stringify(config), "EX", TTL.Day);
+      valkeyLog.debug(`Cached user_config data for ${userID}.`);
 
       // Returns the configuration.
       dbLog.debug(`Got user_config data for ${userID}.`);
@@ -70,8 +70,8 @@ export async function getUserConfig(userID: string) {
     }
 
     // Manually sets the configuration as NOT_FOUND.
-    await redis.set(redisKey, NOT_FOUND, "EX", TTL.NotFound);
-    redisLog.debug(`Set user_config data for ${userID} to NOT_FOUND.`);
+    await valkey.set(valkeyKey, NOT_FOUND, "EX", TTL.NotFound);
+    valkeyLog.debug(`Set user_config data for ${userID} to NOT_FOUND.`);
     return;
   } catch (err) {
     dbLog.error(err, `Failed to get user_config data for ${userID}.`);
@@ -87,7 +87,7 @@ export async function getUserConfig(userID: string) {
  */
 
 export async function deleteUserConfig(userID: string) {
-  const redisKey = redisKeys.user_config(userID);
+  const valkeyKey = valkeyKeys.user_config(userID);
 
   try {
     // Attempts to delete the data.
@@ -98,9 +98,9 @@ export async function deleteUserConfig(userID: string) {
 
     if (result) {
       // Destroys the cached data.
-      await redis.del(redisKey);
+      await valkey.del(valkeyKey);
       dbLog.debug(`Deleted user_config data for ${userID}`);
-      redisLog.debug(`Deleted user_config data for ${userID}.`);
+      valkeyLog.debug(`Deleted user_config data for ${userID}.`);
       return true;
     }
   } catch (err) {
@@ -120,7 +120,7 @@ export async function deleteUserConfig(userID: string) {
  */
 
 export async function updateUserConfig(userID: string, data: UserConfig) {
-  const redisKey = redisKeys.user_config(userID);
+  const valkeyKey = valkeyKeys.user_config(userID);
 
   // Ensures that keys are not mismatched.
   if (!data.user_id || data.user_id !== userID) {
@@ -148,8 +148,8 @@ export async function updateUserConfig(userID: string, data: UserConfig) {
 
     // Caches and returns the new configuration.
     dbLog.debug(`Updated user_config data for ${userID}.`);
-    await redis.set(redisKey, JSON.stringify(config), "EX", TTL.Day);
-    redisLog.debug(`Updated user_config data for ${userID}.`);
+    await valkey.set(valkeyKey, JSON.stringify(config), "EX", TTL.Day);
+    valkeyLog.debug(`Updated user_config data for ${userID}.`);
     return config;
   } catch (err) {
     dbLog.error(err, `Error updating user_config data for ${userID}.`);

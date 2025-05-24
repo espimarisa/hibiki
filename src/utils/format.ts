@@ -3,7 +3,7 @@
  * @license zlib
  */
 
-import { DiscordLimits } from "@/utils/constants.ts";
+import { DiscordLimits } from "@/utils/constants.js";
 import type { Guild, PartialUser, User } from "discord.js";
 
 /**

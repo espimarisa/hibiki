@@ -3,13 +3,16 @@
  * @license zlib
  */
 
-import { IS_DEVELOPMENT, LOGS_DIRECTORY } from "@/utils/constants.ts";
+import { IS_DEVELOPMENT } from "@/utils/constants.js";
+import { getDirname } from "@/utils/fs.js";
 import { join } from "node:path";
 import { pino } from "pino";
 import type { PrettyOptions } from "pino-pretty";
 
 // Gets the logs directory and the file to write.
-const LOG_FILE = join(LOGS_DIRECTORY, "../../logs/hibiki.log");
+const SRC_DIRECTORY = getDirname(import.meta.url);
+const LOGS_DIRECTORY = join(SRC_DIRECTORY, "../../logs");
+const LOG_FILE = join(LOGS_DIRECTORY, "hibiki.log");
 
 // Determines the minimum level to log.
 const logLevel = IS_DEVELOPMENT ? "debug" : "info";
@@ -53,7 +56,7 @@ export const clientLog = baseLogger.child({ context: "CLIENT" });
 export const commandLog = baseLogger.child({ context: "COMMAND" });
 export const dbLog = baseLogger.child({ context: "DATABASE" });
 export const fsLog = baseLogger.child({ context: "FS" });
-export const redisLog = baseLogger.child({ context: "REDIS" });
+export const valkeyLog = baseLogger.child({ context: "VALKEY" });
 export const sharderLog = baseLogger.child({ context: "SHARDER" });
 export const starboardLog = baseLogger.child({ context: "STARBOARD" });
 export const i18NLog = baseLogger.child({ context: "i18n" });

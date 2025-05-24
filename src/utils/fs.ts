@@ -3,11 +3,11 @@
  * @license zlib
  */
 
-import { MODULE_FILETYPE_REGEX } from "@/utils/constants.ts";
-import { fsLog } from "@/utils/logger.ts";
+import { MODULE_FILETYPE_REGEX } from "@/utils/constants.js";
+import { fsLog } from "@/utils/logger.js";
 import type { ObjectEncodingOptions, PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { captureException } from "@sentry/bun";
 import type { ClientEvents, Collection } from "discord.js";
 
@@ -22,6 +22,16 @@ type ESMImport = {
   default?: unknown;
   [key: string]: unknown;
 };
+
+/**
+ * Returns the directory of a URL (__dirname replacement).
+ * @param path The URL to get the directory name from.
+ * @returns The directory that a file is located in.
+ */
+
+export function getDirname(path: string) {
+  return dirname(Bun.fileURLToPath(path));
+}
 
 /**
  * Imports ESM modules from a directory.

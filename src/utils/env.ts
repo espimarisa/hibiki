@@ -4,122 +4,123 @@
  */
 
 import { env as processEnv } from "node:process";
-import { z } from "zod";
+import { z } from "zod/v4";
 
-// A regex to validate Discord tokens.
+// Regex used to validate Discord tokens with.
 const DISCORD_TOKEN_REGEX = /[\w-]{24}\.[\w-]{6}\.[\w-]{27}/;
 
-/**
- * Zod helper function to validate an optional string environment variable.
- * @returns A validated optional string environment variable.
- */
-
-function validateOptionalString() {
-  return z.string().trim().optional().default("");
-}
-
-/**
- * Zod helper function to validate a prefixed string environment variable.
- * @param prefix The prefix to validate (i.e postgresql://).
- * @param message A message to log if validation fails.
- * @returns A validated prefixed string environment variable.
- */
-
-function validatePrefixedString(prefix: string, message: string) {
-  return z
-    .string()
-    .trim()
-    .url()
-    .refine((url) => url.startsWith(prefix), { message: message });
-}
-
-/**
- * Zod helper function to validate a required string environment variable.
- * @param message A message to log if validation fails.
- * @returns A validated string environment variable.
- */
-
-function validateRequiredString(message: string) {
-  return z.string().trim().min(1, { message: message });
-}
-
-// Schema for environment variable validation.
-const envSchema = z.object({
+// Schema for valid Hibiki environment variables.
+const schema = z.object({
   /**
    * Discord bot token to authenticate with.
    * @see https://discord.com/developers/docs/quick-start/getting-started
    */
 
-  DISCORD_TOKEN: validateRequiredString("Missing DISCORD_TOKEN").regex(
-    DISCORD_TOKEN_REGEX,
-    "Malformed DISCORD_TOKEN",
-  ),
+  BOT_TOKEN: z.string().regex(DISCORD_TOKEN_REGEX),
 
   /**
-   * Discord guild ID to deploy development-mode commands and log certain events to.
-   * @see https://discord.com/developers/docs/resources/guild
-   */
-
-  DISCORD_DEV_GUILD_ID: validateOptionalString(),
-
-  /**
-   * Discord channel ID (inside of DISCORD_DEV_GUILD_ID) to log certain events to.
-   * @see https://discord.com/developers/docs/resources/guild
-   */
-
-  DISCORD_DEV_CHANNEL_ID: validateOptionalString(),
-
-  /**
-   * Comma-space delimited ('one, two') list of bot statuses to cycle through.
+   * Comma-space delimited list (or a single) statuses to cycle through.
+   * @example BOT_STATUSES="status 1, status 2, status 3" or BOT_STATUSES="single status"
    * @see https://en.wikipedia.org/wiki/Comma-separated_values
    */
 
-  DISCORD_STATUSES: validateOptionalString().transform((value) =>
-    value ? value.split(",").map((item) => item.trim()) : [],
-  ),
+  BOT_STATUSES: z
+    .string()
+    .optional()
+    .transform((value) => {
+      return value ? value.split(",").map((item) => item.trim()) : [];
+    }),
 
   /**
-   * Redis server URL to connect to.
-   * @see https://redis.io/docs/latest/develop/clients/nodejs/connect/
-   * @default redis://127.0.0.1:6379
+   * Discord channel ID to log certain events to.
+   * @see https://discord.com/developers/docs/resources/guild
    */
 
-  REDIS_URL: validatePrefixedString(
-    "redis://",
-    "REDIS_URL must start with redis://",
-  ),
+  DEV_CHANNEL_ID: z.string().optional(),
 
   /**
-   * PostgreSQL database connection URL to connect to.
-   * @see https://www.postgresql.org/docs/6.4/jdbc19100.htm
-   * @default postgresql://postgres:postgres@127.0.0.1:5432/hibiki
+   * Discord guild ID to log certain events to.
+   * @see https://discord.com/developers/docs/resources/guild
    */
 
-  POSTGRES_URL: validatePrefixedString(
-    "postgresql://",
-    "POSTGRES_URL must start with postgres://",
-  ),
+  DEV_GUILD_ID: z.string().optional(),
 
   /**
-   * Sentry.io DSN URL to submit and log errors to.
+   * Sentry.io DSN URL to upload errors to.
    * @see https://docs.sentry.io/concepts/key-terms/dsn-explainer/#where-to-find-your-data-source-name-dsn
    */
 
-  SENTRY_DSN: z.string().trim().url().optional().default(""),
+  SENTRY_DSN: z.url().optional(),
 
   /**
-   * IPinfo.io API key used to get IP address information.
-   * @see https://ipinfo.io/signup
-   */
-
-  IPINFO_API_KEY: z.string().trim().optional().default(""),
-
-  /**
-   * AbuseIPDB API key used to get IP address abuse information.
+   * AbuseIPDB API key used for certain commands.
    * @see https://www.abuseipdb.com/api.html
    */
 
-  ABUSEIPDB_API_KEY: z.string().trim().optional().default(""),
+  API_KEY_ABUSEIPDB: z.string().optional(),
+
+  /**
+   * IPInfo.IO API key used for certain commands.
+   * @see https://ipinfo.io/signup
+   */
+
+  API_KEY_IPINFO: z.string().optional(),
+
+  /**
+   * PostgreSQL database to connect to.
+   * @default postgres
+   */
+
+  POSTGRES_DB: z.string().optional().default("postgres"),
+
+  /**
+   * PostgreSQL host to connect to.
+   * @default 127.0.0.1
+   */
+
+  POSTGRES_HOST: z.string().optional().default("127.0.0.1"),
+
+  /**
+   * PostgreSQL password to authenticate with.
+   * @default postgres
+   */
+
+  POSTGRES_PASSWORD: z.string().optional().default("postgres"),
+
+  /**
+   * PostgreSQL port to connect to (the host port).
+   * @default 5432
+   */
+
+  POSTGRES_PORT: z.coerce.number().optional().default(5432),
+
+  /**
+   * PostgreSQL username to authenticate with.
+   * @default postgres
+   */
+
+  POSTGRES_USER: z.string().optional().default("postgres"),
+
+  /**
+   * Valkey password to authenticate with.
+   * @default ""
+   */
+
+  VALKEY_PASSWORD: z.string().optional(),
+
+  /**
+   * Valkey port to connect to (the host port).
+   * @default 6379
+   */
+
+  VALKEY_PORT: z.coerce.number().optional().default(6379),
+
+  /**
+   * Valkey URL to connect to.
+   * @default valkey://127.0.0.1:6379
+   */
+
+  VALKEY_URL: z.string().optional().default("valkey://127.0.0.1:6379"),
 
   /**
    * The current NODE_ENV environment.
@@ -146,15 +147,15 @@ const envSchema = z.object({
   npm_package_version: z.string().default("develop"),
 });
 
-// Parses and validates the env schema.
-const validatedSchema = envSchema.safeParse(processEnv);
-if (!validatedSchema.success) {
+// Parses and validates the schema.
+const parsed = schema.safeParse(processEnv);
+if (!parsed.success) {
   throw new Error(
-    `Failed validating variables:\n${validatedSchema.error.errors
+    `Failed validating environment variables:\n${parsed.error.issues
       .map((err) => `${err.path.join(".")}: ${err.message}`)
       .join("\n")}`,
   );
 }
 
-/** A Zod object containing parsed environment variables. */
-export const env: z.infer<typeof envSchema> = validatedSchema.data;
+// An object of parsed environment variables.
+export const env: z.infer<typeof schema> = parsed.data;

@@ -3,27 +3,8 @@
  * @license zlib
  */
 
-import { env } from "@/utils/env.ts";
-import { join } from "node:path";
-
-/**
- * Directories.
- */
-
-// The directory that commands are stored in.
-export const COMMANDS_DIRECTORY = join(import.meta.dirname, "../commands");
-
-// The directory that event listeners are stored in.
-export const LISTENERS_DIRECTORY = join(import.meta.dirname, "../listeners");
-
-// The directory that locales are stored in.
-export const LOCALES_DIRECTORY = join(import.meta.dirname, "../../locales");
-
-// The directory that log files are stored in.
-export const LOGS_DIRECTORY = join(import.meta.dirname, "../../logs");
-
-// The root src directory.
-export const SRC_DIRECTORY = join(import.meta.dirname, "..");
+import { env } from "@/utils/env.js";
+import { Locale } from "discord.js";
 
 /**
  * Regexes.
@@ -35,6 +16,9 @@ export const MODULE_FILETYPE_REGEX = /\.(mjs|mts|ts|js)$/i;
 /**
  * Strings and variables.
  */
+
+// Valid Discord localization codes.
+export const DISCORD_LOCALE_CODES = Object.values(Locale);
 
 // The current running version of the application.
 export const HIBIKI_VERSION = env.npm_package_version ?? "develop";

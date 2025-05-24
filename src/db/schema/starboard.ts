@@ -3,7 +3,6 @@
  * @license zlib
  */
 
-import { DISCORD_SNOWFLAKE_REGEX_SQL } from "@/db/constants.ts";
 import { relations, sql } from "drizzle-orm";
 import {
   check,
@@ -14,6 +13,8 @@ import {
   timestamp,
   unique,
 } from "drizzle-orm/pg-core";
+
+const DISCORD_SNOWFLAKE_REGEX_SQL = sql.raw("^(?<id>\\d{17,20})$");
 
 // Creates the starboard reaction data schema.
 export const starboard_reactions = pgTable(

@@ -3,12 +3,11 @@
  * @license zlib
  */
 
-import { db } from "@/db/index.ts";
-import { NOT_FOUND, redisKeys, TTL } from "@/db/redis.ts";
-import type { GuildConfig } from "@/db/schema/guild_config.ts";
-import { guild_config } from "@/db/schema/guild_config.ts";
-import { dbLog, redisLog } from "@/utils/logger.ts";
-import { redis } from "bun";
+import { db } from "@/db/index.js";
+import type { GuildConfig } from "@/db/schema/guild_config.js";
+import { guild_config } from "@/db/schema/guild_config.js";
+import { NOT_FOUND, TTL, valkey, valkeyKeys } from "@/db/valkey.js";
+import { dbLog, valkeyLog } from "@/utils/logger.js";
 import { captureException } from "@sentry/bun";
 import { eq as equals } from "drizzle-orm";
 
@@ -19,16 +18,16 @@ import { eq as equals } from "drizzle-orm";
  */
 
 export async function getGuildConfig(guildID: string) {
-  const redisKey = redisKeys.guild_config(guildID);
+  const valkeyKey = valkeyKeys.guild_config(guildID);
 
   try {
     // Searches for cached data.
-    const cached = await redis.get(redisKey);
+    const cached = await valkey.get(valkeyKey);
 
     if (cached) {
       // Checks to see if the cache is set as NOT_FOUND.
       if (cached === NOT_FOUND) {
-        redisLog.debug(
+        valkeyLog.debug(
           `guild_config data for ${guildID} is currently NOT_FOUND.`,
         );
 
@@ -40,17 +39,17 @@ export async function getGuildConfig(guildID: string) {
 
       // Ensures the ID matches the guild_id.
       if (!config?.guild_id || config?.guild_id !== guildID) {
-        redisLog.warn(
+        valkeyLog.warn(
           `guild_config data for ${guildID} has missing/mismatched guild_id ${config?.guild_id}.`,
         );
 
         // Destroys the invalid cached data.
-        await redis.del(redisKey);
+        await valkey.del(valkeyKey);
         return;
       }
 
       // Returns the cached configuration.
-      redisLog.debug(`Got guild_config data for ${guildID}.`);
+      valkeyLog.debug(`Got guild_config data for ${guildID}.`);
       return config;
     }
 
@@ -61,8 +60,8 @@ export async function getGuildConfig(guildID: string) {
 
     if (config) {
       // Caches the configuration.
-      await redis.set(redisKey, JSON.stringify(config), "EX", TTL.Day);
-      redisLog.debug(`Cached guild_config data for ${guildID}.`);
+      await valkey.set(valkeyKey, JSON.stringify(config), "EX", TTL.Day);
+      valkeyLog.debug(`Cached guild_config data for ${guildID}.`);
 
       // Returns the configuration.
       dbLog.debug(`Got guild_config data for ${guildID}.`);
@@ -70,8 +69,8 @@ export async function getGuildConfig(guildID: string) {
     }
 
     // Manually sets the configuration as NOT_FOUND.
-    await redis.set(redisKey, NOT_FOUND, "EX", TTL.NotFound);
-    redisLog.debug(`Set guild_config data for ${guildID} to NOT_FOUND.`);
+    await valkey.set(valkeyKey, NOT_FOUND, "EX", TTL.NotFound);
+    valkeyLog.debug(`Set guild_config data for ${guildID} to NOT_FOUND.`);
     return;
   } catch (err) {
     dbLog.error(err, `Failed to get guild_config data for ${guildID}.`);
@@ -87,7 +86,7 @@ export async function getGuildConfig(guildID: string) {
  */
 
 export async function deleteGuildConfig(guildID: string) {
-  const redisKey = redisKeys.guild_config(guildID);
+  const valkeyKey = valkeyKeys.guild_config(guildID);
 
   try {
     // Attempts to delete the data.
@@ -98,9 +97,9 @@ export async function deleteGuildConfig(guildID: string) {
 
     if (result) {
       // Destroys the cached data.
-      await redis.del(redisKey);
+      await valkey.del(valkeyKey);
       dbLog.debug(`Deleted guild_config data for ${guildID}`);
-      redisLog.debug(`Deleted guild_config data for ${guildID}.`);
+      valkeyLog.debug(`Deleted guild_config data for ${guildID}.`);
       return true;
     }
   } catch (err) {
@@ -120,7 +119,7 @@ export async function deleteGuildConfig(guildID: string) {
  */
 
 export async function updateGuildConfig(guildID: string, data: GuildConfig) {
-  const redisKey = redisKeys.guild_config(guildID);
+  const valkeyKey = valkeyKeys.guild_config(guildID);
 
   // Ensures that keys are not mismatched.
   if (!data.guild_id || data.guild_id !== guildID) {
@@ -150,8 +149,8 @@ export async function updateGuildConfig(guildID: string, data: GuildConfig) {
 
     // Caches and returns the new configuration.
     dbLog.debug(`Updated guild_config data for ${guildID}.`);
-    await redis.set(redisKey, JSON.stringify(config), "EX", TTL.Day);
-    redisLog.debug(`Updated guild_config data for ${guildID}.`);
+    await valkey.set(valkeyKey, JSON.stringify(config), "EX", TTL.Day);
+    valkeyLog.debug(`Updated guild_config data for ${guildID}.`);
     return config;
   } catch (err) {
     dbLog.error(err, `Error updating guild_config data for ${guildID}.`);

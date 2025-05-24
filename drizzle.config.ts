@@ -5,14 +5,18 @@
 
 /** biome-ignore-all lint/style/noDefaultExport: Drizzle config requires a default export. */
 
-import { env } from "@/utils/env.ts";
+import { env } from "@/utils/env";
 import type { Config } from "drizzle-kit";
 import { defineConfig } from "drizzle-kit";
 
 // Configures drizzle.
 export default defineConfig({
   dbCredentials: {
-    url: env.POSTGRES_URL,
+    database: env.POSTGRES_DB,
+    host: env.POSTGRES_HOST,
+    password: env.POSTGRES_PASSWORD,
+    port: env.POSTGRES_PORT,
+    user: env.POSTGRES_USER,
   },
   dialect: "postgresql",
   out: "./drizzle",

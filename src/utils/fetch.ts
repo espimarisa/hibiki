@@ -3,7 +3,7 @@
  * @license zlbi
  */
 
-import { fetchLog } from "@/utils/logger.ts";
+import { fetchLog } from "@/utils/logger.js";
 import { captureException } from "@sentry/bun";
 
 /**

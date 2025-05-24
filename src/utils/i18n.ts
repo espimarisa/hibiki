@@ -3,49 +3,104 @@
  * @license zlib
  */
 
-import { isValidDescription, isValidName } from "@/helpers/discord.ts";
-import type { DictionaryKey } from "@/types/i18next.d.ts";
-import { LOCALES_DIRECTORY } from "@/utils/constants.ts";
-import { i18NLog } from "@/utils/logger.ts";
+import { isValidDescription, isValidName } from "@/helpers/discord.js";
+import type { DictionaryKey } from "@/types/i18next.d.js";
+import { DISCORD_LOCALE_CODES } from "@/utils/constants.js";
+import { i18NLog } from "@/utils/logger.js";
+import type { PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
 import { captureException } from "@sentry/bun";
-import { Locale } from "discord.js";
+import type { Locale } from "discord.js";
 import i18next, { type InitOptions, type TOptions } from "i18next";
 import i18NexFsBackend, { type FsBackendOptions } from "i18next-fs-backend";
-
-// Valid Discord localization codes.
-const DISCORD_LOCALES = Object.values(Locale);
 
 // i18next variables.
 const defaultLng = "en-US";
 export const defaultNS = "common";
 export const ns = ["commands", "common", "errors"] as const;
 
-// Gets an array of files inside of the LOCALES_DIRECTORY.
-const localeFiles = await readdir(LOCALES_DIRECTORY, {
-  encoding: "utf-8",
-  withFileTypes: true,
-}).then((files) => {
-  return files.filter((file) => file.isDirectory()).map((f) => f.name);
-});
+let localeDirectoryData: string[] = [];
 
-// Initializes i18next.
-await i18next.use(i18NexFsBackend).init<FsBackendOptions>({
-  backend: {
-    loadPath: `${LOCALES_DIRECTORY}/{{lng}}/{{ns}}.json`,
-  } satisfies FsBackendOptions,
-  defaultNS: defaultNS,
-  fallbackLng: defaultLng,
-  interpolation: {
-    escapeValue: false,
-  },
-  load: "currentOnly",
-  lng: defaultLng,
-  initAsync: true,
-  ns: ns,
-  preload: localeFiles || {},
-  returnNull: false,
-} satisfies InitOptions);
+/**
+ * Initializes i18next and loads locales into memory.
+ * @param directory The directory to scan for locales in.
+ */
+
+export async function initI18Next(directory: PathLike) {
+  const directoryName = directory.toString();
+  i18NLog.debug("Initializing i18next...");
+
+  try {
+    // Gets contents of the locales directory.
+    i18NLog.debug(`Loading locales from ${directoryName}.`);
+    localeDirectoryData = await getLocaleSubdirectories(directoryName);
+
+    await i18next.use(i18NexFsBackend).init<FsBackendOptions>({
+      backend: {
+        loadPath: `${directoryName}/{{lng}}/{{ns}}.json`,
+      } satisfies FsBackendOptions,
+      defaultNS: defaultNS,
+      fallbackLng: defaultLng,
+      interpolation: {
+        escapeValue: false,
+      },
+      load: "currentOnly",
+      lng: defaultLng,
+      initAsync: true,
+      ns: ns,
+      preload: localeDirectoryData || {},
+      returnNull: false,
+    } satisfies InitOptions);
+  } catch (err) {
+    i18NLog.error(err, "Failed to initialize i18next.");
+    captureException(err);
+    throw err;
+  }
+
+  i18NLog.info(`${localeDirectoryData.length} locales loaded.`);
+}
+
+/**
+ * Gets locale subdirectories from the primary locales directory.
+ * @param directory The directory to search for locales in.
+ * @returns A promise resolving to an array of locale subdirectory names.
+ */
+
+async function getLocaleSubdirectories(directory: PathLike) {
+  const directoryName = directory.toString();
+  const localeDirectories: string[] = [];
+  i18NLog.debug(`Reading locales from ${directoryName}.`);
+
+  try {
+    const directories = await readdir(directoryName, {
+      encoding: "utf-8",
+      withFileTypes: true,
+    });
+
+    for (const dir of directories) {
+      // Do not attempt to load non-directories.
+      const dirName = dir.name.toString();
+      if (!dir.isDirectory()) {
+        continue;
+      }
+
+      // Do not parse locales that Discord does not support.
+      if (!DISCORD_LOCALE_CODES.includes(dirName as Locale)) {
+        i18NLog.warn(`${dirName} is not supported by Discord.`);
+        continue;
+      }
+
+      // Loads the directory.
+      localeDirectories.push(dirName);
+    }
+
+    return localeDirectories;
+  } catch (err) {
+    i18NLog.error(err, `Failed reading locales from ${directoryName}.`);
+    captureException(err, { extra: { directory: directoryName } });
+    throw err;
+  }
+}
 
 /**
  * Translates a singular i18next key (wrapper around i18n.t).
@@ -133,14 +188,19 @@ export function tAllN(key: DictionaryKey) {
   const localizations: Record<string, string> = {};
 
   // Iterates over possible locales.
-  for (const locale of localeFiles) {
+  for (const locale of localeDirectoryData) {
+    // Do not attempt to load non-json files.
+    if (!locale.endsWith(".json")) {
+      continue;
+    }
+
     // Do not append defaultLng to the object.
     if (locale === defaultLng) {
       continue;
     }
 
     // Do not parse locales that Discord does not support.
-    if (!DISCORD_LOCALES.includes(locale as Locale)) {
+    if (!DISCORD_LOCALE_CODES.includes(locale as Locale)) {
       i18NLog.warn(`${locale} is not supported by Discord.`);
       continue;
     }
@@ -171,14 +231,19 @@ export function tAllD(key: DictionaryKey) {
   const localizations: Record<string, string> = {};
 
   // Iterates over possible locales.
-  for (const locale of localeFiles) {
+  for (const locale of localeDirectoryData) {
+    // Do not attempt to load non-json files.
+    if (!locale.endsWith(".json")) {
+      continue;
+    }
+
     // Do not append defaultLng to the object.
     if (locale === defaultLng) {
       continue;
     }
 
     // Do not parse locales that Discord does not support.
-    if (!DISCORD_LOCALES.includes(locale as Locale)) {
+    if (!DISCORD_LOCALE_CODES.includes(locale as Locale)) {
       i18NLog.warn(`${locale} is not supported by Discord.`);
       continue;
     }

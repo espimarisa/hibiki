@@ -3,14 +3,14 @@
  * @license zlib
  */
 
-import { db } from "@/db/index.ts";
-import { NOT_FOUND, redis, redisKeys, TTL } from "@/db/redis.ts";
-import type { StarboardEntry } from "@/db/schema/starboard.ts";
+import { db } from "@/db/index.js";
+import type { StarboardEntry } from "@/db/schema/starboard.js";
 import {
   starboard_entries,
   starboard_reactions,
-} from "@/db/schema/starboard.ts";
-import { dbLog, redisLog } from "@/utils/logger.ts";
+} from "@/db/schema/starboard.js";
+import { NOT_FOUND, TTL, valkey, valkeyKeys } from "@/db/valkey";
+import { dbLog, valkeyLog } from "@/utils/logger.js";
 import { captureException } from "@sentry/bun";
 import { and, count, eq } from "drizzle-orm";
 
@@ -22,13 +22,13 @@ import { and, count, eq } from "drizzle-orm";
  */
 
 export async function hasUserStarred(messageID: string, userID: string) {
-  const cacheKey = redisKeys.star_user(messageID, userID);
+  const cacheKey = valkeyKeys.star_user(messageID, userID);
 
   try {
     // Searches the cache for star data.
-    const cached = await redis.exists(cacheKey);
+    const cached = await valkey.exists(cacheKey);
     if (cached) {
-      redisLog.debug(`Got star_user data from ${userID} on ${messageID}.`);
+      valkeyLog.debug(`Got star_user data from ${userID} on ${messageID}.`);
       return true;
     }
 
@@ -46,7 +46,7 @@ export async function hasUserStarred(messageID: string, userID: string) {
 
     // Return false if no result is found.
     if (!result[0]?.count) {
-      redisLog.debug(`No star_user data from ${userID} on ${messageID}.`);
+      valkeyLog.debug(`No star_user data from ${userID} on ${messageID}.`);
       return false;
     }
 
@@ -54,8 +54,8 @@ export async function hasUserStarred(messageID: string, userID: string) {
     const exists = result[0]?.count > 0;
     if (exists) {
       // Caches and returns the user's reaction.
-      await redis.set(cacheKey, "1", "EX", TTL.Hour);
-      redisLog.debug(`Updated star_user data for ${userID} on ${messageID}.`);
+      await valkey.set(cacheKey, "1", "EX", TTL.Hour);
+      valkeyLog.debug(`Updated star_user data for ${userID} on ${messageID}.`);
       return true;
     }
 
@@ -79,8 +79,8 @@ export async function hasUserStarred(messageID: string, userID: string) {
  */
 
 export async function addStarReaction(messageID: string, userID: string) {
-  const countCacheKey = redisKeys.star_count(messageID);
-  const userCacheKey = redisKeys.star_user(messageID, userID);
+  const countCacheKey = valkeyKeys.star_count(messageID);
+  const userCacheKey = valkeyKeys.star_user(messageID, userID);
   let starCount = 0;
 
   try {
@@ -92,14 +92,14 @@ export async function addStarReaction(messageID: string, userID: string) {
 
     // Updates the cache atomically.
     dbLog.debug(`Added star_count data from ${userID} to ${messageID}.`);
-    starCount = await redis.incr(countCacheKey);
+    starCount = await valkey.incr(countCacheKey);
 
     // Updates the TTL of the star.
-    await redis.expire(countCacheKey, TTL.Hour);
-    await redis.set(userCacheKey, "1", "EX", TTL.Hour);
+    await valkey.expire(countCacheKey, TTL.Hour);
+    await valkey.set(userCacheKey, "1", "EX", TTL.Hour);
 
     // Returns the star count.
-    redisLog.debug(`Set star_count for ${messageID} to ${starCount}.`);
+    valkeyLog.debug(`Set star_count for ${messageID} to ${starCount}.`);
     return starCount;
   } catch (err) {
     dbLog.error(err, `Error adding star from ${userID} on ${messageID}.`);
@@ -116,8 +116,8 @@ export async function addStarReaction(messageID: string, userID: string) {
  */
 
 export async function removeStarReaction(messageID: string, userID: string) {
-  const countCacheKey = redisKeys.star_count(messageID);
-  const userCacheKey = redisKeys.star_user(messageID, userID);
+  const countCacheKey = valkeyKeys.star_count(messageID);
+  const userCacheKey = valkeyKeys.star_user(messageID, userID);
   let starCount = 0;
   let updated = false;
 
@@ -139,18 +139,18 @@ export async function removeStarReaction(messageID: string, userID: string) {
     // Updates the cache.
     if (updated) {
       // Decrements the counter and deletes the user's cached data.
-      starCount = await redis.decr(countCacheKey);
-      await redis.del(userCacheKey);
+      starCount = await valkey.decr(countCacheKey);
+      await valkey.del(userCacheKey);
 
       // Deletes empty reactions from the cache.
       if (starCount <= 0) {
         starCount = 0;
-        await redis.del(countCacheKey);
-        redisLog.debug(`Deleted star_count by ${userID} on ${messageID}.`);
+        await valkey.del(countCacheKey);
+        valkeyLog.debug(`Deleted star_count by ${userID} on ${messageID}.`);
       } else {
         // Updates the TTL of the cached item.
-        await redis.expire(countCacheKey, TTL.Hour);
-        redisLog.debug(`Reduced star_count for ${messageID}.`);
+        await valkey.expire(countCacheKey, TTL.Hour);
+        valkeyLog.debug(`Reduced star_count for ${messageID}.`);
       }
 
       return starCount;
@@ -176,13 +176,13 @@ export async function removeStarReaction(messageID: string, userID: string) {
  */
 
 export async function getStarCount(messageID: string) {
-  const cacheKey = redisKeys.star_count(messageID);
+  const cacheKey = valkeyKeys.star_count(messageID);
 
   try {
     // Checks to see if the star count is cached.
-    const cache = await redis.get(cacheKey);
+    const cache = await valkey.get(cacheKey);
     if (cache) {
-      redisLog.debug(`Got star_count for ${messageID}, is ${cache}.`);
+      valkeyLog.debug(`Got star_count for ${messageID}, is ${cache}.`);
       return Number.parseInt(cache, 10);
     }
 
@@ -200,7 +200,7 @@ export async function getStarCount(messageID: string) {
 
     // Caches and returns the current star count.
     const starCount = result[0].value.toString();
-    await redis.set(cacheKey, starCount, "EX", TTL.Hour);
+    await valkey.set(cacheKey, starCount, "EX", TTL.Hour);
     dbLog.debug(`Got star_count data for ${messageID}, is ${starCount}.`);
     return result[0].value;
   } catch (err) {
@@ -217,17 +217,17 @@ export async function getStarCount(messageID: string) {
  */
 
 export async function getStarboardEntry(messageID: string) {
-  const cacheKey = redisKeys.star_entry(messageID);
+  const cacheKey = valkeyKeys.star_entry(messageID);
   let entry: StarboardEntry;
 
   try {
     // Checks the cache for the data.
-    const cached = await redis.get(cacheKey);
+    const cached = await valkey.get(cacheKey);
 
     if (cached) {
       // Checks to see if the data is set as explicitly not found.
       if (cached === NOT_FOUND) {
-        redisLog.debug(
+        valkeyLog.debug(
           `star_entry data for ${messageID} is currently NOT_FOUND.`,
         );
 
@@ -239,17 +239,17 @@ export async function getStarboardEntry(messageID: string) {
 
       // Validates the data to ensure IDs match.
       if (entry?.message_id !== messageID) {
-        redisLog.warn(
+        valkeyLog.warn(
           `star_entry data for ${messageID} has mismatched message_id ${entry?.message_id}.`,
         );
 
         // Destroys the invalid cache data.
-        await redis.del(cacheKey);
+        await valkey.del(cacheKey);
         return;
       }
 
       // Returns the cached entry.
-      redisLog.debug(`Got star_entry data for ${messageID}.`);
+      valkeyLog.debug(`Got star_entry data for ${messageID}.`);
       return entry;
     }
 
@@ -261,14 +261,14 @@ export async function getStarboardEntry(messageID: string) {
     if (result) {
       // Caches the starboard entry and returns the data.
       dbLog.debug(`Got star_entry data for ${messageID}.`);
-      await redis.set(cacheKey, JSON.stringify(result), "EX", TTL.Hour);
-      redisLog.debug(`Set star_entry data for ${messageID}.`);
+      await valkey.set(cacheKey, JSON.stringify(result), "EX", TTL.Hour);
+      valkeyLog.debug(`Set star_entry data for ${messageID}.`);
       return result;
     }
 
     // Sets the entry as not found.
-    await redis.set(cacheKey, NOT_FOUND, "EX", TTL.NotFound);
-    redisLog.debug(`star_entry data for ${messageID} set to NOT_FOUND.`);
+    await valkey.set(cacheKey, NOT_FOUND, "EX", TTL.NotFound);
+    valkeyLog.debug(`star_entry data for ${messageID} set to NOT_FOUND.`);
     return;
   } catch (err) {
     dbLog.error(err, `Error getting star_entry data for ${messageID}.`);
@@ -290,7 +290,7 @@ export async function createStarboardEntry(
   messageID: string,
   starID: string,
 ) {
-  const cacheKey = redisKeys.star_entry(messageID);
+  const cacheKey = valkeyKeys.star_entry(messageID);
   const entryData = {
     guild_id: guildID,
     message_id: messageID,
@@ -316,8 +316,8 @@ export async function createStarboardEntry(
     }
 
     // Updates the cache and returns the updated entry.
-    await redis.set(cacheKey, JSON.stringify(starEntry), "EX", TTL.Hour);
-    redisLog.debug(`Set star_entry for ${messageID}.`);
+    await valkey.set(cacheKey, JSON.stringify(starEntry), "EX", TTL.Hour);
+    valkeyLog.debug(`Set star_entry for ${messageID}.`);
     dbLog.debug(`Updated star_entry for ${messageID}.`);
     return starEntry;
   } catch (err) {
@@ -334,7 +334,7 @@ export async function createStarboardEntry(
  */
 
 export async function deleteStarboardEntry(messageID: string) {
-  const cacheKey = redisKeys.star_entry(messageID);
+  const cacheKey = valkeyKeys.star_entry(messageID);
 
   try {
     // Deletes the data from the database.
@@ -348,8 +348,8 @@ export async function deleteStarboardEntry(messageID: string) {
     }
 
     // Invalidates the cached data.
-    await redis.del(cacheKey);
-    redisLog.debug(`Deleted star_entry for ${messageID}.`);
+    await valkey.del(cacheKey);
+    valkeyLog.debug(`Deleted star_entry for ${messageID}.`);
     return true;
   } catch (err) {
     dbLog.error(err, `Error deleting star_entry for ${messageID}.`);

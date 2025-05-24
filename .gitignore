@@ -2,7 +2,6 @@
 # Cache & Temporary Files
 #
 
-_site/
 .cache-loader/
 .cache/
 .eslintcache
@@ -29,6 +28,13 @@ npm-cache/
 pids/
 temp/
 tmp/
+
+#
+# Compiled files
+#
+
+_site/
+dist/
 
 #
 # Dependencies
@@ -88,5 +94,5 @@ Thumbs.db:encryptable
 # Secrets
 #
 
-.env
-.env.*
+*.env*
+!env.example

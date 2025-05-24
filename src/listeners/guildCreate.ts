@@ -3,11 +3,11 @@
  * @license zlib
  */
 
-import { client } from "@/root/client.ts";
-import { HibikiColors } from "@/utils/constants.ts";
-import { env } from "@/utils/env.ts";
-import { getGuildString, getUserString } from "@/utils/format.ts";
-import { clientLog } from "@/utils/logger.ts";
+import { client } from "@/root/client.js";
+import { HibikiColors } from "@/utils/constants.js";
+import { env } from "@/utils/env.js";
+import { getGuildString, getUserString } from "@/utils/format.js";
+import { clientLog } from "@/utils/logger.js";
 import { ChannelType, TimestampStyles, time } from "discord.js";
 
 export const guildCreate: HibikiListener<"guildCreate"> = {
@@ -20,10 +20,10 @@ export const guildCreate: HibikiListener<"guildCreate"> = {
     const guildString = getGuildString(guild);
     clientLog.info(`Added to ${guildString} owned by ${ownerString}.`);
 
-    // Send a message to DISCORD_DEV_CHANNEL_ID if set.
-    if (env.DISCORD_DEV_CHANNEL_ID && env.DISCORD_DEV_GUILD_ID) {
+    // Send a message to DISCORD_DEV_CHANNEL if set.
+    if (env.DEV_CHANNEL_ID && env.DEV_GUILD_ID) {
       // Gets the channel.
-      const channel = await client.channels.fetch(env.DISCORD_DEV_CHANNEL_ID);
+      const channel = await client.channels.fetch(env.DEV_CHANNEL_ID);
       if (!channel || channel.type !== ChannelType.GuildText) {
         return;
       }

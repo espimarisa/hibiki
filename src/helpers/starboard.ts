@@ -3,7 +3,7 @@
  * @license zlib
  */
 
-import { getGuildConfig } from "@/db/services/guildConfig.ts";
+import { getGuildConfig } from "@/db/services/guildConfig.js";
 import {
   addStarReaction,
   createStarboardEntry,
@@ -11,11 +11,11 @@ import {
   getStarboardEntry,
   hasUserStarred,
   removeStarReaction,
-} from "@/db/services/starboard.ts";
-import { getTextChannel } from "@/helpers/discord.ts";
-import { HibikiColors } from "@/utils/constants.ts";
-import { trimContent } from "@/utils/format.ts";
-import { starboardLog } from "@/utils/logger.ts";
+} from "@/db/services/starboard.js";
+import { getTextChannel } from "@/helpers/discord.js";
+import { HibikiColors } from "@/utils/constants.js";
+import { trimContent } from "@/utils/format.js";
+import { starboardLog } from "@/utils/logger.js";
 import { captureException, logger } from "@sentry/bun";
 import type { Client, Message, MessageReaction, User } from "discord.js";
 import { DiscordAPIError, EmbedBuilder } from "discord.js";

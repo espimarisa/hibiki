@@ -18,45 +18,46 @@
     "url": "https://espi.me"
   },
   "type": "module",
-  "main": "./src/index.ts",
   "scripts": {
-    "check": "bun run db:generate && tsc --noEmit",
-    "db:generate": "bun run drizzle-kit generate",
-    "db:migrate": "bun run drizzle-kit migrate",
-    "db:push": "bun run drizzle-kit push",
-    "db:studio": "bun run drizzle-kit studio",
-    "dev": "NODE_ENV=DEVELOPMENT bun run db:generate && bun run ./src/index.ts",
-    "dev:register": "NODE_ENV=DEVELOPMENT bun run ./src/register.ts",
-    "dev:register:clear": "NODE_ENV=DEVELOPMENT bun run ./src/register.ts --clear",
+    "build": "bun run db:generate && tsc --build --verbose",
+    "check": "tsc --noEmit && bun run lint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "deploy": "bun run db:migrate && bun run register && bun run start",
+    "dev": "NODE_ENV=DEVELOPMENT bun run db:push && bun run --bun --hot ./src/index.ts",
+    "dev:register": "NODE_ENV=DEVELOPMENT bun run --bun ./src/register.ts",
+    "dev:register:clear": "NODE_ENV=DEVELOPMENT bun run --bun ./src/register.ts --clear",
     "format": "biome format --fix .",
     "lint": "biome check .",
     "lint:fix": "biome lint --fix .",
-    "register": "NODE_ENV=PRODUCTION bun run ./src/register.ts",
-    "register:clear": "NODE_ENV=PRODUCTION bun run ./src/register.ts --clear",
-    "start": "NODE_ENV=PRODUCTION bun run ./src/index.ts",
-    "test": "NODE_ENV=TEST bun run check && bun run lint"
+    "register": "NODE_ENV=PRODUCTION bun run --bun ./src/register.js",
+    "register:clear": "NODE_ENV=PRODUCTION bun run --bun ./src/register.js --clear",
+    "start": "NODE_ENV=PRODUCTION bun run --bun ./src/index.js",
+    "test": "NODE_ENV=TEST bun run db:generate && bun run check"
   },
   "dependencies": {
-    "@sentry/bun": "^9.19.0",
+    "@sentry/bun": "^9.22.0",
     "discord.js": "^14.19.3",
+    "drizzle-kit": "^0.31.1",
     "drizzle-orm": "^0.43.1",
-    "i18next": "^25.1.3",
+    "i18next": "^25.2.0",
     "i18next-fs-backend": "^2.6.0",
-    "pino": "^9.6.0",
+    "pino": "^9.7.0",
     "pino-pretty": "^13.0.0",
     "pino-roll": "^3.1.0",
-    "postgres": "^3.4.5",
-    "zod": "^3.24.4"
+    "postgres": "^3.4.7",
+    "zod": "^3.25.28"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.0.0-beta.4",
-    "@types/bun": "^1.2.13",
-    "drizzle-kit": "^0.31.1",
+    "@biomejs/biome": "2.0.0-beta.5",
+    "@types/bun": "^1.2.14",
     "typescript": "^5.8.3"
   },
-  "packageManager": "bun@1.2.13",
+  "packageManager": "bun@1.2.14",
   "engines": {
-    "bun": ">=1.2.13"
+    "bun": ">=1.2.14"
   },
   "trustedDependencies": [
     "@biomejs/biome",

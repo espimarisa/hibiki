@@ -3,8 +3,8 @@
  * @license zlib
  */
 
-import { env } from "@/utils/env.ts";
-import { clientLog } from "@/utils/logger.ts";
+import { env } from "@/utils/env.js";
+import { clientLog } from "@/utils/logger.js";
 import { captureException } from "@sentry/bun";
 import {
   ActivityType,
@@ -51,7 +51,7 @@ export const client = new Client({
 
 // Logs into Discord.
 try {
-  client.login(env.DISCORD_TOKEN);
+  client.login(env.BOT_TOKEN);
 } catch (err) {
   clientLog.error(err, "Failed to login to Discord.");
   captureException(err);
@@ -70,10 +70,10 @@ client.once("ready", async (readyClient) => {
   }
 
   // Cycles through configured statuses every 3 minutes.
-  if (env.DISCORD_STATUSES.length > 0) {
+  if (env.BOT_STATUSES.length > 0) {
     setInterval(() => {
-      activityState = (activityState + 1) % env.DISCORD_STATUSES.length;
-      const presence = env.DISCORD_STATUSES[activityState];
+      activityState = (activityState + 1) % env.BOT_STATUSES.length;
+      const presence = env.BOT_STATUSES[activityState];
 
       // Sets the status.
       if (presence) {

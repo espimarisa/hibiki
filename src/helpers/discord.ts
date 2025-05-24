@@ -3,7 +3,7 @@
  * @license zlib
  */
 
-import { clientLog, sharderLog } from "@/utils/logger.ts";
+import { clientLog, sharderLog } from "@/utils/logger.js";
 import { captureException } from "@sentry/bun";
 import type {
   Client,

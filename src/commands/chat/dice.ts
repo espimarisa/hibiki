@@ -3,8 +3,8 @@
  * @license Zlib
  */
 
-import { HibikiColors } from "@/utils/constants.ts";
-import { t, tAllD, tAllN, tD } from "@/utils/i18n.ts";
+import { HibikiColors } from "@/utils/constants.js";
+import { t, tAllD, tAllN, tD } from "@/utils/i18n.js";
 import { ApplicationCommandOptionType } from "discord.js";
 
 export const coinCommand: HibikiChatCommand = {

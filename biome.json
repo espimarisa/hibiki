@@ -98,6 +98,7 @@
         "noBarrelFile": "error",
         "noDelete": "error",
         "noImgElement": "error",
+        "noNamespaceImport": "error",
         "noReExportAll": "error",
         "recommended": true,
         "useTopLevelRegex": "error"
@@ -115,7 +116,6 @@
         "noImplicitBoolean": "error",
         "noInferrableTypes": "error",
         "noNamespace": "error",
-        "noNamespaceImport": "error",
         "noNegationElse": "error",
         "noNestedTernary": "error",
         "noNonNullAssertion": "error",

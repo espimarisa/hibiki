@@ -3,16 +3,23 @@
  * @license zlib
  */
 
-import { COMMANDS_DIRECTORY, IS_DEVELOPMENT } from "@/utils/constants.ts";
-import { env } from "@/utils/env.ts";
-import { loadCommands } from "@/utils/fs.ts";
-import { clientLog } from "@/utils/logger.ts";
+import { IS_DEVELOPMENT } from "@/utils/constants.js";
+import { env } from "@/utils/env.js";
+import { getDirname, loadCommands } from "@/utils/fs.js";
+import { initI18Next } from "@/utils/i18n.js";
+import { clientLog } from "@/utils/logger.js";
+import { join } from "node:path";
 import { exit } from "node:process";
 import { parseArgs } from "node:util";
 import type { RESTPostAPIApplicationCommandsJSONBody, User } from "discord.js";
 import { Collection, REST, Routes } from "discord.js";
 
-// Creates collections for storing modules in.
+// Gets directories to use.
+const SRC_DIRECTORY = getDirname(import.meta.url);
+const COMMANDS_DIRECTORY = join(SRC_DIRECTORY, "./commands");
+const LOCALES_DIRECTORY = join(SRC_DIRECTORY, "../locales");
+
+// Creates collections to store modules in.
 const hibikiCommands = new Collection<string, HibikiCommand>();
 const data: RESTPostAPIApplicationCommandsJSONBody[] = [];
 
@@ -34,15 +41,14 @@ const cliArgs = parseArgs({
 // Checks if clear is set and if we should perform guild operations.
 const clear = cliArgs?.values?.clear === true;
 const guild =
-  cliArgs?.values?.guild ||
-  (IS_DEVELOPMENT ? env.DISCORD_DEV_GUILD_ID : undefined);
+  cliArgs?.values?.guild || (IS_DEVELOPMENT ? env.DEV_GUILD_ID : undefined);
 
 // Loads i18next and commands.
-import "@/utils/i18n.ts";
+await initI18Next(LOCALES_DIRECTORY);
 await loadCommands(COMMANDS_DIRECTORY, hibikiCommands);
 
 // Creates a REST manager; gets the user object.
-const rest = new REST({ version: "10" }).setToken(env.DISCORD_TOKEN);
+const rest = new REST({ version: "10" }).setToken(env.BOT_TOKEN);
 const user = (await rest.get("/oauth2/applications/@me")) as User | undefined;
 
 // Do not perform operations if no user object is returned.

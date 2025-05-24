@@ -3,25 +3,29 @@
  * @license zlib
  */
 
-import { client } from "@/root/client.ts";
-import {
-  COMMANDS_DIRECTORY,
-  LISTENERS_DIRECTORY,
-  SRC_DIRECTORY,
-} from "@/utils/constants.ts";
-import { env } from "@/utils/env.ts";
-import { loadCommands, loadListeners } from "@/utils/fs.ts";
-import { clientLog, sharderLog } from "@/utils/logger.ts";
+import { client } from "@/root/client.js";
+import { IS_DEVELOPMENT } from "@/utils/constants.js";
+import { env } from "@/utils/env.js";
+import { getDirname, loadCommands, loadListeners } from "@/utils/fs.js";
+import { initI18Next } from "@/utils/i18n.js";
+import { clientLog, sharderLog } from "@/utils/logger.js";
 import { hostname } from "node:os";
 import { join } from "node:path";
 import { captureException, init } from "@sentry/bun";
 import type { ClientUser } from "discord.js";
 import { Collection, ShardingManager } from "discord.js";
 
-// Gets the root directory and the client file.
-const CLIENT_FILE = join(SRC_DIRECTORY, "client.ts");
+// Gets directories to use.
+const SRC_DIRECTORY = getDirname(import.meta.url);
+const COMMANDS_DIRECTORY = join(SRC_DIRECTORY, "./commands");
+const LISTENERS_DIRECTORY = join(SRC_DIRECTORY, "./listeners");
+const LOCALES_DIRECTORY = join(SRC_DIRECTORY, "../locales");
 
-// Creates collections to store modules into.
+// Gets the client file to initialize.
+const CLIENT_FILE_NAME = `client.${IS_DEVELOPMENT ? "ts" : "js"}`;
+const CLIENT_FILE_PATH = join(SRC_DIRECTORY, CLIENT_FILE_NAME);
+
+// Creates collections to store modules in.
 const hibikiCommands = new Collection<string, HibikiCommand>();
 const eventListeners = new Collection<string, HibikiListener<ClientEvent>>();
 const readyShards = new Set();
@@ -37,20 +41,16 @@ if (env.SENTRY_DSN) {
 }
 
 // Creates the primary Discord.js sharding manager.
-const sharder = new ShardingManager(CLIENT_FILE, {
+const sharder = new ShardingManager(CLIENT_FILE_PATH, {
   mode: "process",
   respawn: true,
-  token: env.DISCORD_TOKEN,
+  token: env.BOT_TOKEN,
   totalShards: "auto",
 });
 
-// Initializes i18next.
-import "@/utils/i18n.ts";
-
-// Loads commands.
+// Loads i18next, commands, and listeners.
+await initI18Next(LOCALES_DIRECTORY);
 await loadCommands(COMMANDS_DIRECTORY, hibikiCommands);
-
-// Loads event listeners.
 await loadListeners(LISTENERS_DIRECTORY, eventListeners);
 
 // Appends commands and the sharder to the client.
