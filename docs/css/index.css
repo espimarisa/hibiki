@@ -1,0 +1,62 @@
+:root {
+  --black: #000000;
+  --black-contrast: #101010;
+  --orange: #ffa500;
+  --pink: #ff0070;
+  --white: #ffffff;
+  --white-contrast: #efefef;
+}
+
+body {
+  background: var(--white);
+  color: var(--black);
+  display: flex;
+  flex-direction: column;
+  font-family: "Atkinson Hyperlegible Next", sans-serif;
+  font-optical-sizing: auto;
+  font-size: 1.25rem;
+  font-style: normal;
+  height: 100vh;
+  margin: 0;
+  max-width: 70rem;
+  min-height: 100vh;
+  padding: 2rem;
+  width: 100vw;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: auto;
+}
+
+a {
+  color: var(--pink);
+
+  &:visited {
+    color: var(--pink);
+  }
+
+  &:hover {
+    opacity: 90%;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: var(--black);
+    color: var(--white);
+  }
+
+  a {
+    color: var(--orange);
+
+    &:visited {
+      color: var(--orange);
+    }
+  }
+}
