@@ -132,8 +132,8 @@ export async function loadCommands(
   // Iterates over each command entry.
   for (const [commandName, command] of importedModules.entries()) {
     // Loads the command.
-    if (typeof command === "object" && command.setData) {
-      const commandData = command.setData();
+    if (typeof command === "object" && command.data) {
+      const commandData = command.data();
       data.set(commandData.name, command);
       fsLog.debug(`Loaded command ${commandData.name}.`);
     } else {

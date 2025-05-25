@@ -26,7 +26,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "deploy": "bun run db:migrate && bun run register && bun run start",
-    "dev": "NODE_ENV=DEVELOPMENT bun run db:push && bun run --bun --hot ./src/index.ts",
+    "dev": "NODE_ENV=DEVELOPMENT bun run db:push && bun run --bun ./src/index.ts",
     "dev:register": "NODE_ENV=DEVELOPMENT bun run --bun ./src/register.ts",
     "dev:register:clear": "NODE_ENV=DEVELOPMENT bun run --bun ./src/register.ts --clear",
     "format": "biome format --fix .",
@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@sentry/bun": "^9.22.0",
+    "date-fns": "^4.1.0",
     "discord.js": "^14.19.3",
     "drizzle-kit": "^0.31.1",
     "drizzle-orm": "^0.43.1",

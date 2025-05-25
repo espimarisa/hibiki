@@ -32,12 +32,21 @@ const readyShards = new Set();
 
 // Initializes Sentry.
 if (env.SENTRY_DSN) {
-  init({
-    dsn: env.SENTRY_DSN,
-    environment: env.NODE_ENV,
-    release: env.npm_package_version,
-    serverName: hostname(),
-  });
+  clientLog.debug("Initializing Sentry...");
+
+  // Spawns the Sentry client.
+  try {
+    init({
+      dsn: env.SENTRY_DSN,
+      environment: env.NODE_ENV,
+      release: env.npm_package_version,
+      serverName: hostname(),
+    });
+
+    clientLog.info("Sentry has been initialized.");
+  } catch (err) {
+    clientLog.error(err, "Failed to initialize Sentry.");
+  }
 }
 
 // Creates the primary Discord.js sharding manager.
@@ -66,7 +75,7 @@ sharder.on("shardCreate", (shard) => {
 
   // Shard disconnect handler.
   shard.on("disconnect", () => {
-    sharderLog.error(`Shard #${shard.id} disconnected.`);
+    sharderLog.debug(`Shard #${shard.id} disconnected.`);
   });
 
   // Shard error handler.
@@ -77,12 +86,12 @@ sharder.on("shardCreate", (shard) => {
 
   // Shard ready handler.
   shard.on("ready", () => {
-    sharderLog.info(`Shard #${shard.id} is ready.`);
+    sharderLog.debug(`Shard #${shard.id} is ready.`);
   });
 
   // Shard spawn handler.
   shard.on("spawn", () => {
-    sharderLog.info(`Shard #${shard.id} spawned.`);
+    sharderLog.debug(`Shard #${shard.id} spawned.`);
   });
 
   // Shard message handler.
@@ -100,7 +109,7 @@ sharder.on("shardCreate", (shard) => {
 
         // Very weird edge case handler; things will likely break but hey, we can try.
         if (!user) {
-          sharderLog.warn("No user object returned from Discord.");
+          sharderLog.error("No user object returned from Discord.");
           return;
         }
 

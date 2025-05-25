@@ -29,6 +29,9 @@ export const INVITE_PERMISSIONS = "563467534068800";
 // A boolean indicating if the application is running in development mode.
 export const IS_DEVELOPMENT = env.NODE_ENV === "DEVELOPMENT";
 
+// Zero width space.
+export const ZWSP = "\u200b";
+
 // Common Discord content length limits.
 export enum DiscordLimits {
   Content = 2000,

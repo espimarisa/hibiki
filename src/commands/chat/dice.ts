@@ -1,6 +1,6 @@
 /**
  * @file Chat command that rolls a die.
- * @license Zlib
+ * @license zlib
  */
 
 import { HibikiColors } from "@/utils/constants.js";
@@ -28,7 +28,7 @@ export const coinCommand: HibikiChatCommand = {
     });
   },
 
-  setData: () => {
+  data: () => {
     return {
       name: "dice",
       description: tD("commands:dice.description"),

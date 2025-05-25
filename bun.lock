@@ -5,6 +5,7 @@
       "name": "@espimarisa/hibiki",
       "dependencies": {
         "@sentry/bun": "^9.22.0",
+        "date-fns": "^4.1.0",
         "discord.js": "^14.19.3",
         "drizzle-kit": "^0.31.1",
         "drizzle-orm": "^0.43.1",

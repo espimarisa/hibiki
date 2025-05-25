@@ -1,8 +1,9 @@
 /**
  * @file Chat command for member-to-member roleplay.
- * @license Zlib
+ * @license zlib
  */
 
+import { errorReply } from "@/helpers/reply.js";
 import type { DictionaryKey } from "@/types/i18next.d.js";
 import { HibikiColors } from "@/utils/constants.js";
 import { t, tAllD, tAllN, tD } from "@/utils/i18n.js";
@@ -23,19 +24,13 @@ export const roleplayCommand: HibikiChatCommand = {
 
     // Don't allow self-roleplay.
     if (interaction.user.id === member.id) {
-      await interaction.reply(
-        t("commands:roleplay.errorSelf", { lng: interaction.locale }),
-      );
-
+      await errorReply(interaction, "commands:roleplay.errorSelf", false);
       return;
     }
 
     // Don't allow roleplay with the bot.
     if (interaction.client.user.id === member.id) {
-      await interaction.reply(
-        t("commands:roleplay.errorBot", { lng: interaction.locale }),
-      );
-
+      await errorReply(interaction, "commands:roleplay.errorBot", false);
       return;
     }
 
@@ -94,7 +89,7 @@ export const roleplayCommand: HibikiChatCommand = {
     });
   },
 
-  setData: () => {
+  data: () => {
     return {
       name: "roleplay",
       description: tD("commands:roleplay.description"),

@@ -70,11 +70,11 @@
     "website": "Website"
   },
   "sizes": {
-    "BYTES": "{{count}}B",
-    "GIGABYTES": "{{count}}GB",
-    "KILOBYTES": "{{count}}KB",
-    "MEGABYTES": "{{count}}MB",
-    "TERABYTES": "{{count}}TB"
+    "bytes": "{{count}}B",
+    "gigabytes": "{{count}}GB",
+    "kilobytes": "{{count}}KB",
+    "megabytes": "{{count}}MB",
+    "terabytes": "{{count}}TB"
   },
   "time": {
     "createdAt": "Created at",

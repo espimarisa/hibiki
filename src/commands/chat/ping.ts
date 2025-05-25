@@ -1,6 +1,6 @@
 /**
  * @file Chat command to check the current latency and shard status.
- * @license Zlib
+ * @license zlib
  */
 
 import { HibikiColors } from "@/utils/constants.js";
@@ -16,6 +16,7 @@ export const pingCommand: HibikiChatCommand = {
 
     // Sends the reply.
     await interaction.reply({
+      flags: ["Ephemeral"],
       embeds: [
         {
           color: HibikiColors.Primary,
@@ -31,7 +32,7 @@ export const pingCommand: HibikiChatCommand = {
     });
   },
 
-  setData: () => {
+  data: () => {
     return {
       name: "ping",
       description: tD("commands:ping.description"),

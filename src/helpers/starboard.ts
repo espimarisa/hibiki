@@ -1,5 +1,5 @@
 /**
- * @file Helper to handle starboard functionality.
+ * @file Starboard functionality handlers.
  * @license zlib
  */
 
@@ -17,7 +17,15 @@ import { HibikiColors } from "@/utils/constants.js";
 import { trimContent } from "@/utils/format.js";
 import { starboardLog } from "@/utils/logger.js";
 import { captureException, logger } from "@sentry/bun";
-import type { Client, Message, MessageReaction, User } from "discord.js";
+import type {
+  Client,
+  Message,
+  MessageReaction,
+  PartialMessage,
+  PartialMessageReaction,
+  PartialUser,
+  User,
+} from "discord.js";
 import { DiscordAPIError, EmbedBuilder } from "discord.js";
 
 export const STAR_EMOJI = "⭐";
@@ -30,7 +38,11 @@ export const DEFAULT_THRESHOLD = 3;
  * @returns A generated starboard embed object.
  */
 
-function createStarEmbed(message: Message, starCount: number) {
+function createStarEmbed(message: Message | PartialMessage, starCount: number) {
+  if (message.partial) {
+    return {};
+  }
+
   const embed = new EmbedBuilder()
     .setDescription(trimContent(message.content, "EmbedDescription", true))
     .setColor(HibikiColors.Starboard)
@@ -70,7 +82,7 @@ function createStarEmbed(message: Message, starCount: number) {
 
 async function sendStarMessage(
   client: Client<true>,
-  message: Message,
+  message: Message | PartialMessage,
   channelID: string,
   starCount: number,
 ) {
@@ -83,6 +95,9 @@ async function sendStarMessage(
   try {
     // Creates the starboard embed.
     const embed = createStarEmbed(message, starCount);
+    if (Object.keys(embed).length === 0) {
+      return;
+    }
 
     // Sends the starboard message.
     const starboardMessage = await channel.send({
@@ -223,9 +238,9 @@ async function deleteStar(
  */
 
 export async function handleStarAdd(
-  reaction: MessageReaction,
-  user: User,
-  message: Message,
+  reaction: MessageReaction | PartialMessageReaction,
+  user: User | PartialUser,
+  message: Message | PartialMessage,
 ) {
   // Do not handle non-star reactions or DMs.
   if (!message.guild || reaction.emoji.name !== STAR_EMOJI) {
@@ -233,7 +248,7 @@ export async function handleStarAdd(
   }
 
   // Ignore bot and client stars.
-  if (!user.bot || reaction.me) {
+  if (user.bot || reaction.me) {
     starboardLog.debug(`Ignoring bot star from user ${user.id}.`);
     return;
   }
@@ -350,9 +365,9 @@ export async function handleStarAdd(
  */
 
 export async function handleStarRemove(
-  reaction: MessageReaction,
-  user: User,
-  message: Message,
+  reaction: MessageReaction | PartialMessageReaction,
+  user: User | PartialUser,
+  message: Message | PartialMessage,
 ) {
   // Ignore reactions in DMs or from bots/self.
   if (!message?.guild || user.bot || reaction.me) {

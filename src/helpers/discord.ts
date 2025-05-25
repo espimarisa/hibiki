@@ -1,5 +1,5 @@
 /**
- * @file Helper utilities interacting with Discord or Discord.js.
+ * @file Helpers for interacting with Discord or Discord.js.
  * @license zlib
  */
 
@@ -17,6 +17,7 @@ import type {
 } from "discord.js";
 import { TextChannel } from "discord.js";
 
+// Regex that validates valid Discord command/option names.
 const DISCORD_NAME_REGEX = /^[-_\p{L}\p{N}\p{sc=Deva}\p{sc=Thai}]{1,32}$/u;
 
 /**
@@ -103,9 +104,7 @@ export async function getTextChannel(client: Client<true>, id: string) {
  * @returns A promise resolving to a fully fetched message object or undefined if it failed to fetch.
  */
 
-export async function resolvePartialMessage(
-  message: PartialMessage | Message | undefined,
-) {
+export async function resolvePartialMessage(message: PartialMessage | Message) {
   // Do not process non-partials further.
   if (!message?.partial) {
     return message;
@@ -118,7 +117,7 @@ export async function resolvePartialMessage(
     // Return undefined if it is a partial still for further checking.
     if (!resolved || resolved.partial) {
       clientLog.warn(`Failed fetching message ${message.id} from partial.`);
-      return;
+      return message;
     }
 
     // Returns the resolved object.
@@ -126,18 +125,18 @@ export async function resolvePartialMessage(
   } catch (err) {
     clientLog.error(err, "Failed fetching full message from partial.");
     captureException(err, { extra: { messageID: message.id } });
-    return;
+    return message;
   }
 }
 
 /**
  * Fetches the full object from a partial reaction.
  * @param reaction The partial reaction object to resolve.
- * @returns A promise resolving to a fully fetched reaction object or undefined if it failed to fetch.
+ * @returns A promise resolving to a fully fetched reaction object or the partial.
  */
 
 export async function resolvePartialReaction(
-  reaction: PartialMessageReaction | MessageReaction | undefined,
+  reaction: PartialMessageReaction | MessageReaction,
 ) {
   // Do not process non-partials further.
   if (!reaction?.partial) {
@@ -151,7 +150,7 @@ export async function resolvePartialReaction(
     // Return undefined if it is a partial still for further checking.
     if (!resolved || resolved.partial) {
       clientLog.warn("Failed fetching reaction from partial.");
-      return;
+      return reaction;
     }
 
     // Returns the resolved object.
@@ -163,17 +162,17 @@ export async function resolvePartialReaction(
     );
 
     captureException(err, { extra: { messageID: reaction.message.id } });
-    return;
+    return reaction;
   }
 }
 
 /**
  * Fetches the full object from a partial user.
  * @param user The partial user object to resolve.
- * @returns A promise resolving to a fully fetched user object or undefined if it failed to fetch.
+ * @returns A promise resolving to a fully fetched user object or the partial.
  */
 
-export async function resolvePartialUser(user: PartialUser | User | undefined) {
+export async function resolvePartialUser(user: PartialUser | User) {
   // Do not process non-partials further.
   if (!user?.partial) {
     return user;
@@ -186,7 +185,7 @@ export async function resolvePartialUser(user: PartialUser | User | undefined) {
     // Return undefined if it is a partial still for further checking.
     if (!resolved || resolved.partial) {
       clientLog.warn(`Failed fetching user ${user.id} from partial.`);
-      return;
+      return user;
     }
 
     // Returns the resolved object.
@@ -194,7 +193,7 @@ export async function resolvePartialUser(user: PartialUser | User | undefined) {
   } catch (err) {
     clientLog.error(err, `Failed fetching user ${user.id} from partial.`);
     captureException(err, { extra: { userID: user.id } });
-    return;
+    return user;
   }
 }
 

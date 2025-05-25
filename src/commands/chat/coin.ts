@@ -1,6 +1,6 @@
 /**
  * @file Chat command that flips a coin.
- * @license Zlib
+ * @license zlib
  */
 
 import { HibikiColors } from "@/utils/constants.js";
@@ -26,7 +26,7 @@ export const coinCommand: HibikiChatCommand = {
     });
   },
 
-  setData: () => {
+  data: () => {
     return {
       name: "coin",
       description: tD("commands:coin.description"),

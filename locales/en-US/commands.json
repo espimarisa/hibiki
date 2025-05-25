@@ -1,15 +1,30 @@
 {
+  "about": {
+    "description": "Shows information and statistics about me.",
+    "links": "[GitHub](https://github.com/espimarisa/hibiki) • [Invite](https://discord.com/api/oauth2/authorize?client_id={{id}}&permissions={{permissions}}&scope=bot%20applications.commands) • [Privacy Policy](https://github.com/espimarisa/hibiki/blob/develop/.github/PRIVACY_POLICY.md) • [Donate](https://ko-fi.com/espimarisa)",
+    "name": "about",
+    "responseDescription": "I'm a Discord bot with polished community and developer tools. \n\nMade with love by [Espi Marisa](https://espi.me). 💖",
+    "responseTitle": "✨ {{ username }}",
+    "statisticDetails": "{{guilds}} servers\n{{users}} cached users\n{{commands}} loaded commands",
+    "statistics": "Statistics",
+    "system": "System",
+    "systemDetails": "Using {{memory}} of memory\n{{uptime}} of uptime",
+    "version": "Version",
+    "versionDetails": "Hibiki {{- hibiki}}\nDiscord.js {{- djs}} \nBun {{- bun}}"
+  },
   "animal": {
     "cat": {
       "description": "Sends a random cat picture.",
       "name": "cat",
       "response": "😺 Meow!"
     },
+    "description": "Gets pictures of different types of animals.",
     "dog": {
       "description": "Sends a random dog picture.",
       "name": "dog",
       "response": "🐶 Woof!"
-    }
+    },
+    "name": "animal"
   },
   "coin": {
     "description": "Flips a coin.",
@@ -35,10 +50,6 @@
     "response": "This reply took {{ping}}ms to send. Current latency for shard #{{shard}} is {{latency}}ms."
   },
   "roleplay": {
-    "description": "Interact and roleplay with other members.",
-    "name": "roleplay",
-    "errorSelf": "How about you interact with someone else in the world for once?",
-    "errorBot": "I'd rather not do that with you. Keep your paws away from me.",
     "cuddle": {
       "description": "Give someone some cuddles.",
       "name": "cuddle",
@@ -50,6 +61,9 @@
       },
       "response": "💖 {{user}} gave {{target}} some cuddles."
     },
+    "description": "Interact and roleplay with other members.",
+    "errorBot": "I'd rather not do that with you. Keep your paws away from me.",
+    "errorSelf": "How about you interact with someone else in the world for once?",
     "hug": {
       "description": "Give someone a warm hug.",
       "name": "hug",
@@ -72,6 +86,7 @@
       },
       "response": "💕 {{user}} gave {{target}} a kiss."
     },
+    "name": "roleplay",
     "pat": {
       "description": "Give someone a headpat.",
       "name": "pat",

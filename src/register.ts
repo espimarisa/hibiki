@@ -59,7 +59,7 @@ if (!user?.id) {
 
 // Maps command data to the data array.
 for (const command of hibikiCommands.values()) {
-  const commandData = command.setData();
+  const commandData = command.data();
   data.push(commandData);
 }
 

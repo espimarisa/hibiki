@@ -9,15 +9,14 @@ import {
   resolvePartialUser,
 } from "@/helpers/discord.js";
 import { handleStarRemove } from "@/helpers/starboard.js";
-import type { Message, MessageReaction, User } from "discord.js";
 
 export const messageReactionRemove: HibikiListener<"messageReactionRemove"> = {
   event: "messageReactionRemove",
 
   handle: async (reaction, user) => {
-    let fetchedReaction: MessageReaction | undefined;
-    let fetchedUser: User | undefined;
-    let fetchedMessage: Message | undefined;
+    let fetchedReaction = reaction;
+    let fetchedUser = user;
+    let fetchedMessage = reaction.message;
 
     // Fetches the reaction if it is a partial.
     if (reaction.partial) {

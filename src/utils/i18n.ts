@@ -1,5 +1,5 @@
 /**
- * @file Utilities to perform i18n.
+ * @file Initializes i18next and performs common localization.
  * @license zlib
  */
 

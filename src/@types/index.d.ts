@@ -11,7 +11,7 @@ type DictionaryKey = import("@/types/i18next.d.ts").DictionaryKey;
 // Typing for a Hibiki chat input (slash) command.
 type HibikiChatCommand = {
   /** Builds command data. */
-  setData: () => ChatInputCommandData;
+  data: () => ChatInputCommandData;
 
   /**
    * Runs a chat input (slash) command.

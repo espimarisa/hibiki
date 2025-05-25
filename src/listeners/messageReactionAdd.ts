@@ -8,16 +8,15 @@ import {
   resolvePartialReaction,
   resolvePartialUser,
 } from "@/helpers/discord.js";
-import { handleStarRemove } from "@/helpers/starboard.js";
-import type { Message, MessageReaction, User } from "discord.js";
+import { handleStarAdd } from "@/helpers/starboard.js";
 
 export const messageReactionAdd: HibikiListener<"messageReactionAdd"> = {
   event: "messageReactionAdd",
 
   handle: async (reaction, user) => {
-    let fetchedReaction: MessageReaction | undefined;
-    let fetchedUser: User | undefined;
-    let fetchedMessage: Message | undefined;
+    let fetchedReaction = reaction;
+    let fetchedUser = user;
+    let fetchedMessage = reaction.message;
 
     // Fetches the reaction if it is a partial.
     if (reaction.partial) {
@@ -36,7 +35,7 @@ export const messageReactionAdd: HibikiListener<"messageReactionAdd"> = {
 
     // Runs the starboard handler if all partials resolve.
     if (fetchedMessage && fetchedReaction && fetchedUser) {
-      await handleStarRemove(fetchedReaction, fetchedUser, fetchedMessage);
+      await handleStarAdd(fetchedReaction, fetchedUser, fetchedMessage);
     }
   },
 };
