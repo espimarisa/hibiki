@@ -43,7 +43,7 @@
     "discord.js": "^14.19.3",
     "drizzle-kit": "^0.31.1",
     "drizzle-orm": "^0.43.1",
-    "i18next": "^25.2.0",
+    "i18next": "^25.2.1",
     "i18next-fs-backend": "^2.6.0",
     "pino": "^9.7.0",
     "pino-pretty": "^13.0.0",
