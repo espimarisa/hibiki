@@ -25,7 +25,6 @@ RUN bun install --frozen-lockfile --production --verbose
 COPY --from=builder /usr/src/app/dist/ ./
 COPY --from=builder /usr/src/app/drizzle ./drizzle
 COPY --from=builder /usr/src/app/drizzle.config.ts ./
-COPY --from=builder /usr/src/app/locales ./locales
 COPY --from=builder /usr/src/app/package.json ./
 COPY --from=builder /usr/src/app/tsconfig.json ./
 

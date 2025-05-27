@@ -28,12 +28,10 @@ Contact Hibiki's owner if you have any other questions at:
 
 - [Discord][espi-discord] - `espimarisa`
 - [Telegram][espi-telegram] - `espimarisa`
-- [Matrix][espi-matrix] - `@espimarisa:matrix.org`
 - [Email][espi-email] - `contact <at> espi <dot> me`
 
 [espi-discord]: https://discord.com/users/647269760782041133 "Discord"
 [espi-email]: mailto:contact@espi.me?subject=Hibiki "Email"
-[espi-matrix]: https://matrix.to/#/@espimarisa:matrix.org "Matrix"
 [espi-telegram]: https://t.me/espimarisa "Telegram"
 
 ## Localization
@@ -42,9 +40,9 @@ TODO
 
 ## License
 
-[zlib][zlib-license] excluding [localizations][localizations], which are licensed under [CC-BY-SA 4.0][cc-license].
+[zlib][zlib-license] excluding [localizations][localizations], which are licensed under [CC-BY-SA-4.0][cc-license].
 
-[cc-license]: ./locales/LICENSE.md "CC-BY-SA 4.0 License"
+[cc-license]: ./src/locales/LICENSE.md "CC-BY-SA 4.0 License"
 [hibiki-invite]: https://add.hibiki.app "Invite URL for Hibiki"
 [hibiki-support]: https://hibiki.app/support "Hibiki's Support Server"
 [hibiki-website]: https://hibiki.app "Hibiki's Website"

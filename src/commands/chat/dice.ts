@@ -18,7 +18,7 @@ export const coinCommand: HibikiChatCommand = {
       embeds: [
         {
           color: HibikiColors.Primary,
-          title: t("commands:dice.response", {
+          title: t("commands:dice.response.result", {
             lng: interaction.locale,
             roll: roll,
             sides: sides,
@@ -31,18 +31,18 @@ export const coinCommand: HibikiChatCommand = {
   data: () => {
     return {
       name: "dice",
-      description: tD("commands:dice.description"),
-      name_localizations: tAllN("commands:dice.name"),
-      description_localizations: tAllD("commands:dice.description"),
+      name_localizations: tAllN("commands:dice._data.name"),
+      description: tD("commands:dice._data.description"),
+      description_localizations: tAllD("commands:dice._data.description"),
       options: [
         {
           // Sides option.
           type: ApplicationCommandOptionType.Integer,
           name: "sides",
-          description: tD("commands:dice.options.sides.description"),
-          name_localizations: tAllN("commands:dice.options.sides.name"),
+          name_localizations: tAllN("commands:dice._data.options.sides.name"),
+          description: tD("commands:dice._data.options.sides.description"),
           description_localizations: tAllD(
-            "commands:dice.options.sides.description",
+            "commands:dice._data.options.sides.description",
           ),
           required: false,
           min_value: 1,

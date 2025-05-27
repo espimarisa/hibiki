@@ -1,18 +1,33 @@
 /**
- * @file Initializes i18next and performs common localization.
+ * @file Utilities for working with i18next and performing i18n.
  * @license zlib
  */
 
 import { isValidDescription, isValidName } from "@/helpers/discord.js";
 import type { DictionaryKey } from "@/types/i18next.d.js";
-import { DISCORD_LOCALE_CODES } from "@/utils/constants.js";
+import {
+  DISCORD_LOCALE_CODES,
+  MODULE_FILETYPE_REGEX,
+} from "@/utils/constants.js";
 import { i18NLog } from "@/utils/logger.js";
 import type { PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
 import { captureException } from "@sentry/bun";
+import type { Duration } from "date-fns";
 import type { Locale } from "discord.js";
 import i18next, { type InitOptions, type TOptions } from "i18next";
 import i18NexFsBackend, { type FsBackendOptions } from "i18next-fs-backend";
+
+// Type definition for a localized duration response.
+type LocalizedDuration = {
+  days?: string;
+  hours?: string;
+  minutes?: string;
+  months?: string;
+  seconds?: string;
+  weeks?: string;
+  years?: string;
+};
 
 // i18next variables.
 const defaultLng = "en-US";
@@ -37,7 +52,7 @@ export async function initI18Next(directory: PathLike) {
 
     await i18next.use(i18NexFsBackend).init<FsBackendOptions>({
       backend: {
-        loadPath: `${directoryName}/{{lng}}/{{ns}}.json`,
+        loadPath: `${directoryName}/{{lng}}/{{ns}}`,
       } satisfies FsBackendOptions,
       defaultNS: defaultNS,
       fallbackLng: defaultLng,
@@ -190,7 +205,7 @@ export function tAllN(key: DictionaryKey) {
   // Iterates over possible locales.
   for (const locale of localeDirectoryData) {
     // Do not attempt to load non-json files.
-    if (!locale.endsWith(".json")) {
+    if (!MODULE_FILETYPE_REGEX.test(locale)) {
       continue;
     }
 
@@ -233,7 +248,7 @@ export function tAllD(key: DictionaryKey) {
   // Iterates over possible locales.
   for (const locale of localeDirectoryData) {
     // Do not attempt to load non-json files.
-    if (!locale.endsWith(".json")) {
+    if (!MODULE_FILETYPE_REGEX.test(locale)) {
       continue;
     }
 
@@ -262,4 +277,73 @@ export function tAllD(key: DictionaryKey) {
   }
 
   return localizations;
+}
+
+/**
+ * Localizes storage amounts.
+ * @param bytes The storage amount to localize.
+ * @param locale The locale to use for localization.
+ * @returns An object containing localized storage units.
+ */
+
+export function tBytes(bytes: number, locale: string) {
+  const kb = 1024;
+
+  // Dictionary keys with storage sizes.
+  const strings = [
+    "common:size.bytes",
+    "common:size.kilobytes",
+    "common:size.megabytes",
+    "common:size.gigabytes",
+    "common:size.terabytes",
+  ] satisfies DictionaryKey[];
+
+  // Calculates the digits.
+  const i = Math.min(
+    Math.floor(Math.log(bytes) / Math.log(kb)),
+    strings.length - 1,
+  );
+
+  // Return the string to use.
+  const value = Number.parseFloat((bytes / kb ** i).toFixed(0));
+  return t(strings[i] as DictionaryKey, { lng: locale, count: value });
+}
+
+/**
+ * Localizes a date-fns duration object.
+ * @param time The date-fns duration object to localize.
+ * @param locale The locale to use for localization.
+ * @param hide An optional object of digits to ignore.
+ * @returns A localized and human-readable time string.
+ */
+
+export function tTime(
+  time: Duration,
+  locale: string,
+  hide?: LocalizedDuration,
+) {
+  const formattedDuration: string[] = [];
+
+  // List of units.
+  const units: (keyof LocalizedDuration)[] = [
+    "days",
+    "hours",
+    "minutes",
+    "months",
+    "seconds",
+    "weeks",
+    "years",
+  ];
+
+  // Iterates through each unit.
+  for (const unit of units) {
+    // Removes disabled items.
+    if (time[unit] && !hide?.[unit]) {
+      // Localizes and formats.
+      const key: DictionaryKey = `common:time.${unit}`;
+      formattedDuration.push(t(key, { count: time[unit], lng: locale }));
+    }
+  }
+
+  return formattedDuration.join(", ");
 }

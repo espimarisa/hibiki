@@ -24,44 +24,44 @@ export const roleplayCommand: HibikiChatCommand = {
 
     // Don't allow self-roleplay.
     if (interaction.user.id === member.id) {
-      await errorReply(interaction, "commands:roleplay.errorSelf", false);
+      await errorReply(interaction, "commands:roleplay.errors.self", false);
       return;
     }
 
     // Don't allow roleplay with the bot.
     if (interaction.client.user.id === member.id) {
-      await errorReply(interaction, "commands:roleplay.errorBot", false);
+      await errorReply(interaction, "commands:roleplay.errors.bot", false);
       return;
     }
 
     // Gets the string and URL to use.
     switch (subcommand) {
       case "hug": {
-        string = "commands:roleplay.hug.response";
+        string = "commands:roleplay.subcommands.hug.response.message";
         url = "https://cdn.weeb.sh/images/B10Tfknqf.gif";
         break;
       }
 
       case "cuddle": {
-        string = "commands:roleplay.cuddle.response";
+        string = "commands:roleplay.subcommands.cuddle.response.message";
         url = "https://cdn.weeb.sh/images/rkA6SU7w-.gif";
         break;
       }
 
       case "kiss": {
-        string = "commands:roleplay.kiss.response";
+        string = "commands:roleplay.subcommands.kiss.response.message";
         url = "https://cdn.weeb.sh/images/SkKL3adPb.gif";
         break;
       }
 
       case "pat": {
-        string = "commands:roleplay.pat.response";
+        string = "commands:roleplay.subcommands.pat.response.message";
         url = "https://cdn.weeb.sh/images/HJRIlihCZ.gif";
         break;
       }
 
       case "slap": {
-        string = "commands:roleplay.slap.response";
+        string = "commands:roleplay.subcommands.slap.response.message";
         url = "https://cdn.weeb.sh/images/HkA6mJFP-.gif";
         break;
       }
@@ -92,134 +92,158 @@ export const roleplayCommand: HibikiChatCommand = {
   data: () => {
     return {
       name: "roleplay",
-      description: tD("commands:roleplay.description"),
-      name_localizations: tAllN("commands:roleplay.name"),
-      description_localizations: tAllD("commands:roleplay.description"),
+      name_localizations: tAllN("commands:roleplay._data.name"),
+      description: tD("commands:roleplay._data.description"),
+      description_localizations: tAllD("commands:roleplay._data.description"),
       contexts: [InteractionContextType.Guild],
       options: [
         {
           // Cuddle subcommand.
-          type: ApplicationCommandOptionType.Subcommand,
           name: "cuddle",
-          description: tD("commands:roleplay.cuddle.description"),
-          name_localizations: tAllN("commands:roleplay.cuddle.name"),
-          description_localizations: tAllD(
-            "commands:roleplay.cuddle.description",
+          name_localizations: tAllN(
+            "commands:roleplay.subcommands.cuddle._data.name",
           ),
+          description: tD(
+            "commands:roleplay.subcommands.cuddle._data.description",
+          ),
+          description_localizations: tAllD(
+            "commands:roleplay.subcommands.cuddle._data.description",
+          ),
+          type: ApplicationCommandOptionType.Subcommand,
           options: [
             {
               // Member option.
-              type: ApplicationCommandOptionType.User,
               name: "member",
               description: tD(
-                "commands:roleplay.cuddle.options.member.description",
+                "commands:roleplay.subcommands.cuddle._data.options.member.description",
               ),
               name_localizations: tAllN(
-                "commands:roleplay.cuddle.options.member.name",
+                "commands:roleplay.subcommands.cuddle._data.options.member.name",
               ),
               description_localizations: tAllD(
-                "commands:roleplay.cuddle.options.member.description",
+                "commands:roleplay.subcommands.cuddle._data.options.member.description",
               ),
+              type: ApplicationCommandOptionType.User,
             },
           ],
         },
         {
           // Hug subcommand.
-          type: ApplicationCommandOptionType.Subcommand,
           name: "hug",
-          description: tD("commands:roleplay.hug.description"),
-          name_localizations: tAllN("commands:roleplay.hug.name"),
-          description_localizations: tAllD("commands:roleplay.hug.description"),
+          name_localizations: tAllN(
+            "commands:roleplay.subcommands.hug._data.name",
+          ),
+          description: tD(
+            "commands:roleplay.subcommands.hug._data.description",
+          ),
+          description_localizations: tAllD(
+            "commands:roleplay.subcommands.hug._data.description",
+          ),
+          type: ApplicationCommandOptionType.Subcommand,
           options: [
             {
               // Member option.
-              type: ApplicationCommandOptionType.User,
               name: "member",
-              description: tD(
-                "commands:roleplay.hug.options.member.description",
-              ),
               name_localizations: tAllN(
-                "commands:roleplay.hug.options.member.name",
+                "commands:roleplay.subcommands.hug._data.options.member.name",
+              ),
+              description: tD(
+                "commands:roleplay.subcommands.hug._data.options.member.description",
               ),
               description_localizations: tAllD(
-                "commands:roleplay.hug.options.member.description",
+                "commands:roleplay.subcommands.hug._data.options.member.description",
               ),
+              type: ApplicationCommandOptionType.User,
             },
           ],
         },
         {
           // Kiss subcommand.
-          type: ApplicationCommandOptionType.Subcommand,
           name: "kiss",
-          description: tD("commands:roleplay.kiss.description"),
-          name_localizations: tAllN("commands:roleplay.kiss.name"),
-          description_localizations: tAllD(
-            "commands:roleplay.kiss.description",
+          name_localizations: tAllN(
+            "commands:roleplay.subcommands.kiss._data.name",
           ),
+          description: tD(
+            "commands:roleplay.subcommands.kiss._data.description",
+          ),
+          description_localizations: tAllD(
+            "commands:roleplay.subcommands.kiss._data.description",
+          ),
+          type: ApplicationCommandOptionType.Subcommand,
           options: [
             {
               // Member option.
-              type: ApplicationCommandOptionType.User,
               name: "member",
-              description: tD(
-                "commands:roleplay.kiss.options.member.description",
-              ),
               name_localizations: tAllN(
-                "commands:roleplay.kiss.options.member.name",
+                "commands:roleplay.subcommands.kiss._data.options.member.name",
+              ),
+              description: tD(
+                "commands:roleplay.subcommands.kiss._data.options.member.description",
               ),
               description_localizations: tAllD(
-                "commands:roleplay.kiss.options.member.description",
+                "commands:roleplay.subcommands.kiss._data.options.member.description",
               ),
+              type: ApplicationCommandOptionType.User,
             },
           ],
         },
         {
           // Pat subcommand.
-          type: ApplicationCommandOptionType.Subcommand,
           name: "pat",
-          description: tD("commands:roleplay.pat.description"),
-          name_localizations: tAllN("commands:roleplay.pat.name"),
-          description_localizations: tAllD("commands:roleplay.pat.description"),
+          name_localizations: tAllN(
+            "commands:roleplay.subcommands.pat._data.name",
+          ),
+          description: tD(
+            "commands:roleplay.subcommands.pat._data.description",
+          ),
+          description_localizations: tAllD(
+            "commands:roleplay.subcommands.pat._data.description",
+          ),
+          type: ApplicationCommandOptionType.Subcommand,
           options: [
             {
               // Member option.
-              type: ApplicationCommandOptionType.User,
               name: "member",
-              description: tD(
-                "commands:roleplay.pat.options.member.description",
-              ),
               name_localizations: tAllN(
-                "commands:roleplay.pat.options.member.name",
+                "commands:roleplay.subcommands.pat._data.options.member.name",
+              ),
+              description: tD(
+                "commands:roleplay.subcommands.pat._data.options.member.description",
               ),
               description_localizations: tAllD(
-                "commands:roleplay.pat.options.member.description",
+                "commands:roleplay.subcommands.pat._data.options.member.description",
               ),
+              type: ApplicationCommandOptionType.User,
             },
           ],
         },
         {
           // Slap subcommand.
-          type: ApplicationCommandOptionType.Subcommand,
-          name: "slap",
-          description: tD("commands:roleplay.slap.description"),
-          name_localizations: tAllN("commands:roleplay.slap.name"),
-          description_localizations: tAllD(
-            "commands:roleplay.slap.description",
+          name: "member",
+          name_localizations: tAllN(
+            "commands:roleplay.subcommands.slap._data.name",
           ),
+          description: tD(
+            "commands:roleplay.subcommands.slap._data.description",
+          ),
+          description_localizations: tAllD(
+            "commands:roleplay.subcommands.slap._data.description",
+          ),
+          type: ApplicationCommandOptionType.Subcommand,
           options: [
             {
               // Member option.
-              type: ApplicationCommandOptionType.User,
               name: "member",
-              description: tD(
-                "commands:roleplay.slap.options.member.description",
-              ),
               name_localizations: tAllN(
-                "commands:roleplay.slap.options.member.name",
+                "commands:roleplay.subcommands.slap._data.options.member.name",
+              ),
+              description: tD(
+                "commands:roleplay.subcommands.slap._data.options.member.description",
               ),
               description_localizations: tAllD(
-                "commands:roleplay.slap.options.member.description",
+                "commands:roleplay.subcommands.slap._data.options.member.description",
               ),
+              type: ApplicationCommandOptionType.User,
             },
           ],
         },

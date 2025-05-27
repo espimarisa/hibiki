@@ -12,8 +12,8 @@ export const coinCommand: HibikiChatCommand = {
     const face = Math.random() < 0.5 ? "heads" : "tails";
     const string =
       face === "heads"
-        ? "commands:coin.responseHeads"
-        : "commands:coin.responseTails";
+        ? "commands:coin.response.heads"
+        : "commands:coin.response.tails";
 
     // Sends the reply.
     await interaction.reply({
@@ -29,9 +29,9 @@ export const coinCommand: HibikiChatCommand = {
   data: () => {
     return {
       name: "coin",
-      description: tD("commands:coin.description"),
-      name_localizations: tAllN("commands:coin.name"),
-      description_localizations: tAllD("commands:coin.description"),
+      name_localizations: tAllN("commands:coin._data.name"),
+      description: tD("commands:coin._data.description"),
+      description_localizations: tAllD("commands:coin._data.description"),
     };
   },
 };

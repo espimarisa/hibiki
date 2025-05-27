@@ -18,9 +18,9 @@ Hi! Here's a short list of guidelines you should try and stick to when contribut
    - If you don't see your language listed, submit a GitHub issue.
 3. In the file listing, select a file to work on.
 
-   - `commands.json` includes strings used in commands.
-   - `common.json` includes commonly-used strings.
-   - `errors.json` includes error messages.
+   - `commands.ts` includes strings used in commands.
+   - `common.ts` includes commonly-used strings.
+   - `errors.ts` includes error messages.
 
 4. Start navigating through any strings that are red or incomplete. The content on the top is the source, and the content on the bottom is what you should write.
    - Ensure that you copy any emoji that exist in the string.

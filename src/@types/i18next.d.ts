@@ -3,9 +3,9 @@
  * @license zlib
  */
 
-import type commands from "@/locales/en-US/commands.json";
-import type common from "@/locales/en-US/common.json";
-import type errors from "@/locales/en-US/errors.json";
+import type { commands } from "@/locales/en-US/commands.js";
+import type { common } from "@/locales/en-US/common.js";
+import type { errors } from "@/locales/en-US/errors.js";
 import type { defaultNS, ns } from "@/utils/i18n.js";
 import type { ParseKeys } from "i18next";
 

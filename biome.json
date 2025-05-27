@@ -32,7 +32,6 @@
     "includes": [
       "docs/**/*.{css,html}",
       "src/**/*.ts",
-      "locales/**/*.json",
       "biome.json",
       "drizzle.config.ts",
       "package.json",

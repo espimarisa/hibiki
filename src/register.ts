@@ -17,7 +17,7 @@ import { Collection, REST, Routes } from "discord.js";
 // Gets directories to use.
 const SRC_DIRECTORY = getDirname(import.meta.url);
 const COMMANDS_DIRECTORY = join(SRC_DIRECTORY, "./commands");
-const LOCALES_DIRECTORY = join(SRC_DIRECTORY, "../locales");
+const LOCALES_DIRECTORY = join(SRC_DIRECTORY, "./locales");
 
 // Creates collections to store modules in.
 const hibikiCommands = new Collection<string, HibikiCommand>();

@@ -4,6 +4,7 @@
  */
 
 import { DiscordLimits } from "@/utils/constants.js";
+import { intervalToDuration } from "date-fns";
 import type { Guild, PartialUser, User } from "discord.js";
 
 /**
@@ -50,4 +51,15 @@ export function trimContent(
 
   // Returns the content.
   return input;
+}
+
+/**
+ * Gets the amount of time that has passed since a date.
+ * @param from The initial date to use in the calculation.
+ * @param to The current date to use in the calculation.
+ * @returns A duration object of the amount of time that has passed.
+ */
+
+export function getTimeSince(from: Date, to: Date) {
+  return intervalToDuration({ end: to, start: from });
 }

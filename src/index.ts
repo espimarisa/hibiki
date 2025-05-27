@@ -19,7 +19,7 @@ import { Collection, ShardingManager } from "discord.js";
 const SRC_DIRECTORY = getDirname(import.meta.url);
 const COMMANDS_DIRECTORY = join(SRC_DIRECTORY, "./commands");
 const LISTENERS_DIRECTORY = join(SRC_DIRECTORY, "./listeners");
-const LOCALES_DIRECTORY = join(SRC_DIRECTORY, "../locales");
+const LOCALES_DIRECTORY = join(SRC_DIRECTORY, "./locales");
 
 // Gets the client file to initialize.
 const CLIENT_FILE_NAME = `client.${IS_DEVELOPMENT ? "ts" : "js"}`;
@@ -43,7 +43,7 @@ if (env.SENTRY_DSN) {
       serverName: hostname(),
     });
 
-    clientLog.info("Sentry has been initialized.");
+    clientLog.info("Successfully initialized Sentry.");
   } catch (err) {
     clientLog.error(err, "Failed to initialize Sentry.");
   }

@@ -1,5 +1,5 @@
 /**
- * @file Starboard functionality handlers.
+ * @file Starboard functionality helpers.
  * @license zlib
  */
 

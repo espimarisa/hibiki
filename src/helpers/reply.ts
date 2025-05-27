@@ -41,7 +41,7 @@ export async function errorReply(
     .setColor(HibikiColors.Error)
     .setFooter({
       iconURL: interaction.client.user.displayAvatarURL(),
-      text: t("errors:general.errorFooter", { lng: interaction.locale }),
+      text: t("errors:general.spottedABug", { lng: interaction.locale }),
     });
 
   try {

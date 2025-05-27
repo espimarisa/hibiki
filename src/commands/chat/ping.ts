@@ -5,7 +5,7 @@
 
 import { HibikiColors } from "@/utils/constants.js";
 import { t, tAllD, tAllN, tD } from "@/utils/i18n.js";
-import { InteractionContextType, SnowflakeUtil } from "discord.js";
+import { SnowflakeUtil } from "discord.js";
 
 export const pingCommand: HibikiChatCommand = {
   run: async (interaction) => {
@@ -20,8 +20,8 @@ export const pingCommand: HibikiChatCommand = {
       embeds: [
         {
           color: HibikiColors.Primary,
-          title: t("commands:ping.pong", { lng: interaction.locale }),
-          description: t("commands:ping.response", {
+          title: t("commands:ping.response.pong", { lng: interaction.locale }),
+          description: t("commands:ping.response.result", {
             lng: interaction.locale,
             latency: latency,
             ping: ping,
@@ -35,10 +35,9 @@ export const pingCommand: HibikiChatCommand = {
   data: () => {
     return {
       name: "ping",
-      description: tD("commands:ping.description"),
-      name_localizations: tAllN("commands:ping.name"),
-      description_localizations: tAllD("commands:ping.description"),
-      contexts: [InteractionContextType.Guild],
+      name_localizations: tAllN("commands:ping._data.name"),
+      description: tD("commands:ping._data.description"),
+      description_localizations: tAllD("commands:ping._data.description"),
     };
   },
 };

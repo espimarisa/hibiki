@@ -6,7 +6,6 @@
 !bun.lock
 !drizzle.config.ts
 !drizzle/
-!locales/
 !package.json
 !src/
 !tsconfig.json

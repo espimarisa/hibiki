@@ -43,7 +43,7 @@
       "@/db/*": ["./src/db/*"],
       "@/helpers/*": ["./src/helpers/*"],
       "@/listeners/*": ["./src/listeners/*"],
-      "@/locales/*": ["./locales/*"],
+      "@/locales/*": ["./src/locales/*"],
       "@/root/*": ["./src/*"],
       "@/types/*": ["./src/@types/*"],
       "@/utils/*": ["./src/utils/*"]
@@ -67,5 +67,5 @@
     "verbatimModuleSyntax": true
   },
   "exclude": ["**/dist/*", "**/node_modules/*", ".tsbuildinfo"],
-  "include": ["./src/**/*.ts", "./locales/**/*.json", "drizzle.config.ts"]
+  "include": ["./src/**/*.ts", "drizzle.config.ts"]
 }

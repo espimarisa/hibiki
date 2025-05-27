@@ -9,10 +9,16 @@ import { hFetch } from "@/utils/fetch.js";
 import { t, tAllD, tAllN, tD } from "@/utils/i18n.js";
 import { ApplicationCommandOptionType } from "discord.js";
 
+// Typing for a possible Animal API response.
+type AnimalApiResponse = {
+  url?: string;
+  [key: string]: string;
+};
+
 export const animalCommand: HibikiChatCommand = {
   run: async (interaction) => {
-    let api = "";
-    let key = "";
+    let apiURL = "";
+    let bodyKey = "";
     let string: DictionaryKey | "" = "";
 
     // Gets the subcommand to run.
@@ -21,17 +27,17 @@ export const animalCommand: HibikiChatCommand = {
     switch (subcommand) {
       // Cat: Use CatAAS; body.url for image.
       case "cat": {
-        api = "https://cataas.com/cat?json=true";
-        key = "url";
-        string = "commands:animal.cat.response";
+        apiURL = "https://cataas.com/cat?json=true";
+        bodyKey = "url";
+        string = "commands:animal.subcommands.cat.response.meow";
         break;
       }
 
       // Dog: Use random.dog; body.url for image.
       case "dog": {
-        api = "https://random.dog/woof.json";
-        key = "url";
-        string = "commands:animal.dog.response";
+        apiURL = "https://random.dog/woof.json";
+        bodyKey = "url";
+        string = "commands:animal.subcommands.dog.response.woof";
         break;
       }
 
@@ -41,15 +47,16 @@ export const animalCommand: HibikiChatCommand = {
     }
 
     // Fetches the response.
-    const response = await hFetch(api);
+    const response = await hFetch(apiURL);
     if (!response) {
-      await errorReply(interaction, "errors:fetch.fetch");
+      await errorReply(interaction, "errors:fetch.failed");
       return;
     }
 
     // Converts the response to JSON.
-    const body = await response.json();
-    if (!body?.[key]) {
+    const body = (await response.json()) as AnimalApiResponse;
+    const imageUrl = body[bodyKey];
+    if (!imageUrl) {
       await errorReply(interaction, "errors:fetch.image");
       return;
     }
@@ -61,7 +68,7 @@ export const animalCommand: HibikiChatCommand = {
           title: t(string, { lng: interaction.locale }),
           color: HibikiColors.Primary,
           image: {
-            url: body[key],
+            url: imageUrl,
           },
         },
       ],
@@ -70,26 +77,34 @@ export const animalCommand: HibikiChatCommand = {
 
   data: () => {
     return {
-      name: t("commands:animal.name"),
-      description: tD("commands:animal.description"),
-      name_localizations: tAllN("commands:animal.name"),
-      description_localizations: tAllD("commands:animal.description"),
+      name: t("commands:animal._data.name"),
+      name_localizations: tAllN("commands:animal._data.name"),
+      description: tD("commands:animal._data.description"),
+      description_localizations: tAllD("commands:animal._data.description"),
       options: [
         {
           // Cat subcommand.
           type: ApplicationCommandOptionType.Subcommand,
           name: "cat",
-          description: t("commands:animal.cat.description"),
-          name_localizations: tAllN("commands:animal.cat.name"),
-          description_localizations: tAllD("commands:animal.cat.description"),
+          name_localizations: tAllN(
+            "commands:animal.subcommands.cat._data.name",
+          ),
+          description: t("commands:animal.subcommands.cat._data.description"),
+          description_localizations: tAllD(
+            "commands:animal.subcommands.cat._data.description",
+          ),
         },
         {
           // Dog subcommand.
           type: ApplicationCommandOptionType.Subcommand,
           name: "dog",
-          description: t("commands:animal.dog.description"),
-          name_localizations: tAllN("commands:animal.dog.name"),
-          description_localizations: tAllD("commands:animal.dog.description"),
+          name_localizations: tAllN(
+            "commands:animal.subcommands.dog._data.name",
+          ),
+          description: t("commands:animal.subcommands.dog._data.description"),
+          description_localizations: tAllD(
+            "commands:animal.subcommands.dog._data.description",
+          ),
         },
       ],
     };
