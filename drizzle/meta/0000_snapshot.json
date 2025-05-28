@@ -1,0 +1,273 @@
+{
+  "id": "1414fc94-635b-43b4-a0ee-0c7617076b2d",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.guild_config": {
+      "name": "guild_config",
+      "schema": "",
+      "columns": {
+        "guild_id": {
+          "name": "guild_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "starboard_channel": {
+          "name": "starboard_channel",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "starboard_count": {
+          "name": "starboard_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "guild_config_guild_id_index": {
+          "name": "guild_config_guild_id_index",
+          "columns": [
+            {
+              "expression": "guild_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "guild_config_guild_id_snowflake_check": {
+          "name": "guild_config_guild_id_snowflake_check",
+          "value": "\"guild_config\".\"guild_id\" ~ '^(?<id>\\d{17,20})$'"
+        },
+        "guild_config_starboard_channel_snowflake_check": {
+          "name": "guild_config_starboard_channel_snowflake_check",
+          "value": "(\"guild_config\".\"starboard_channel\" IS NULL OR \"guild_config\".\"starboard_channel\" ~ '^(?<id>\\d{17,20})$')"
+        },
+        "guild_config_starboard_count_positive_check": {
+          "name": "guild_config_starboard_count_positive_check",
+          "value": "(\"guild_config\".\"starboard_count\" IS NULL OR \"guild_config\".\"starboard_count\" > 0)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.starboard_entries": {
+      "name": "starboard_entries",
+      "schema": "",
+      "columns": {
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "guild_id": {
+          "name": "guild_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "message_id": {
+          "name": "message_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "starboard_message_id": {
+          "name": "starboard_message_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "starboard_entries_guild_id_index": {
+          "name": "starboard_entries_guild_id_index",
+          "columns": [
+            {
+              "expression": "guild_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "starboard_entries_starboard_message_id_unique": {
+          "name": "starboard_entries_starboard_message_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "starboard_message_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "starboard_entries_guild_id_snowflake_check": {
+          "name": "starboard_entries_guild_id_snowflake_check",
+          "value": "\"starboard_entries\".\"guild_id\" ~ '^(?<id>\\d{17,20})$'"
+        },
+        "starboard_entries_message_id_snowflake_check": {
+          "name": "starboard_entries_message_id_snowflake_check",
+          "value": "\"starboard_entries\".\"message_id\" ~ '^(?<id>\\d{17,20})$'"
+        },
+        "starboard_entries_starboard_message_id_snowflake_check": {
+          "name": "starboard_entries_starboard_message_id_snowflake_check",
+          "value": "\"starboard_entries\".\"starboard_message_id\" ~ '^(?<id>\\d{17,20})$'"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.starboard_reactions": {
+      "name": "starboard_reactions",
+      "schema": "",
+      "columns": {
+        "message_id": {
+          "name": "message_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "starred_at": {
+          "name": "starred_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "starboard_reactions_message_id_index": {
+          "name": "starboard_reactions_message_id_index",
+          "columns": [
+            {
+              "expression": "message_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "starboard_reactions_pk": {
+          "name": "starboard_reactions_pk",
+          "columns": [
+            "message_id",
+            "user_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "starboard_reactions_message_id_snowflake_check": {
+          "name": "starboard_reactions_message_id_snowflake_check",
+          "value": "\"starboard_reactions\".\"message_id\" ~ '^(?<id>\\d{17,20})$'"
+        },
+        "starboard_reactions_user_id_snowflake_check": {
+          "name": "starboard_reactions_user_id_snowflake_check",
+          "value": "\"starboard_reactions\".\"user_id\" ~ '^(?<id>\\d{17,20})$'"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.user_config": {
+      "name": "user_config",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "user_config_user_id_index": {
+          "name": "user_config_user_id_index",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "user_config_user_id_snowflake_check": {
+          "name": "user_config_user_id_snowflake_check",
+          "value": "\"user_config\".\"user_id\" ~ '^(?<id>\\d{17,20})$'"
+        }
+      },
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
