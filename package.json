@@ -35,7 +35,7 @@
     "register": "NODE_ENV=PRODUCTION bun run --bun ./src/register.js",
     "register:clear": "NODE_ENV=PRODUCTION bun run --bun ./src/register.js --clear",
     "start": "NODE_ENV=PRODUCTION bun run --bun ./src/index.js",
-    "test": "NODE_ENV=TEST bun run db:generate && bun run check"
+    "test": "NODE_ENV=TEST bun run check"
   },
   "dependencies": {
     "@sentry/bun": "^9.22.0",

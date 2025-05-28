@@ -23,5 +23,6 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
+      - run: cp .env.example .env
       - run: bun install
       - run: bun run test
