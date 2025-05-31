@@ -5,9 +5,9 @@
 
 /** biome-ignore-all lint/style/noDefaultExport: Drizzle config requires a default export. */
 
-import { env } from "@/utils/env";
 import type { Config } from "drizzle-kit";
 import { defineConfig } from "drizzle-kit";
+import { env } from "@/utils/env.ts";
 
 // Configures drizzle.
 export default defineConfig({

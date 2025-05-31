@@ -38,16 +38,14 @@ The following applies to the official Hibiki instance with the Discord username 
 
 **Please do not submit GitHub issues for data requests.**
 
-You may remove your server's configuration data from the database by running the `/setup clear` command.
+You may remove your server's configuration data from the database by running the `/setup clear` command, if you are the owner.
 
-If you would like to opt-out of features that may store information pertaining to your Discord account, (typically just your Discord account's unique user ID), to request a copy of any information we have related to your Discord account or server, please contact Hibiki's owner using a method provided below.
+If you would like to opt-out of features that may store information pertaining to your account, or to request a copy of any information we have related to your account or server, please contact Hibiki's owner via:
 
-- [Discord][espi-discord] - `espimarisa`
-- [Telegram][espi-telegram] - `espimarisa`
-- [Matrix][espi-matrix] - `@espimarisa:matrix.org`
-- [Email][espi-email] - `contact <at> espi <dot> me`
+- **[Discord][espi-discord]**: espimarisa
+- **[Telegram][espi-telegram]**: espimarisa
+- **[Email][espi-email]**: contact (at) espi (dot) me
 
 [espi-discord]: https://discord.com/users/647269760782041133 "Discord"
 [espi-email]: mailto:contact@espi.me?subject=Hibiki "Email"
-[espi-matrix]: https://matrix.to/#/@espimarisa:matrix.org "Matrix"
 [espi-telegram]: https://t.me/espimarisa "Telegram"

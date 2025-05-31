@@ -3,16 +3,16 @@
  * @license zlib
  */
 
-import { db } from "@/db/index.js";
-import type { StarboardEntry } from "@/db/schema/starboard.js";
+import { captureException } from "@sentry/bun";
+import { and, count, eq } from "drizzle-orm";
+import { db } from "@/db/index.ts";
+import type { StarboardEntry } from "@/db/schema/starboard.ts";
 import {
   starboard_entries,
   starboard_reactions,
-} from "@/db/schema/starboard.js";
+} from "@/db/schema/starboard.ts";
 import { NOT_FOUND, TTL, valkey, valkeyKeys } from "@/db/valkey";
-import { dbLog, valkeyLog } from "@/utils/logger.js";
-import { captureException } from "@sentry/bun";
-import { and, count, eq } from "drizzle-orm";
+import { dbLog, valkeyLog } from "@/utils/logger.ts";
 
 /**
  * Checks if a user has already starred a message.

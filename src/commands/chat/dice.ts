@@ -3,9 +3,9 @@
  * @license zlib
  */
 
-import { HibikiColors } from "@/utils/constants.js";
-import { t, tAllD, tAllN, tD } from "@/utils/i18n.js";
 import { ApplicationCommandOptionType } from "discord.js";
+import { HibikiColors } from "@/utils/constants.ts";
+import { t, tAllD, tAllN, tD } from "@/utils/i18n.ts";
 
 export const coinCommand: HibikiChatCommand = {
   run: async (interaction) => {
@@ -18,7 +18,7 @@ export const coinCommand: HibikiChatCommand = {
       embeds: [
         {
           color: HibikiColors.Primary,
-          title: t("commands:dice.response.result", {
+          title: t("commands:dice.response", {
             lng: interaction.locale,
             roll: roll,
             sides: sides,
@@ -31,18 +31,18 @@ export const coinCommand: HibikiChatCommand = {
   data: () => {
     return {
       name: "dice",
-      name_localizations: tAllN("commands:dice._data.name"),
-      description: tD("commands:dice._data.description"),
-      description_localizations: tAllD("commands:dice._data.description"),
+      name_localizations: tAllN("commands:dice.name"),
+      description: tD("commands:dice.description"),
+      description_localizations: tAllD("commands:dice.description"),
       options: [
         {
           // Sides option.
           type: ApplicationCommandOptionType.Integer,
           name: "sides",
-          name_localizations: tAllN("commands:dice._data.options.sides.name"),
-          description: tD("commands:dice._data.options.sides.description"),
+          name_localizations: tAllN("commands:dice.options.sides.name"),
+          description: tD("commands:dice.options.sides.description"),
           description_localizations: tAllD(
-            "commands:dice._data.options.sides.description",
+            "commands:dice.options.sides.description",
           ),
           required: false,
           min_value: 1,

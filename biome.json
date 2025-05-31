@@ -5,17 +5,7 @@
       "source": {
         "organizeImports": {
           "level": "on",
-          "options": {
-            "groups": [
-              ":ALIAS:",
-              ":BUN:",
-              ":NODE:",
-              ":PACKAGE:",
-              ":PACKAGE_WITH_PROTOCOL:",
-              ":PATH:",
-              ":URL:"
-            ]
-          }
+          "options": {}
         },
         "useSortedAttributes": "on",
         "useSortedKeys": "off",
@@ -30,12 +20,11 @@
   },
   "files": {
     "includes": [
-      "docs/**/*.{css,html}",
-      "src/**/*.ts",
-      "biome.json",
-      "drizzle.config.ts",
-      "package.json",
-      "tsconfig.json"
+      "./**/*.{css,json,html,ts}",
+      "!drizzle/**",
+      "!dist/**",
+      "!node_modules/**",
+      "!bun.lock"
     ]
   },
   "formatter": {
@@ -119,7 +108,6 @@
       },
       "style": {
         "noCommonJs": "error",
-        "noDefaultExport": "error",
         "noDoneCallback": "error",
         "noExportedImports": "error",
         "noHeadElement": "error",

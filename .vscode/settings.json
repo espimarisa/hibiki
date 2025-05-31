@@ -1,0 +1,31 @@
+{
+  "[css][html][json][jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascript][typescript][javascriptreact][typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome",
+    "javascript.preferences.importModuleSpecifier": "relative",
+    "javascript.preferences.importModuleSpecifierEnding": "auto",
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "typescript.preferences.importModuleSpecifierEnding": "auto",
+    "typescript.preferences.useAliasesForRenames": false
+  },
+  "[markdown][yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[shellscript][dockerfile]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "biome.enabled": true,
+  "dotenv.enableAutocloaking": false,
+  "editor.codeActionsOnSave": {
+    "source.biome": "explicit",
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  "editor.formatOnSave": true,
+  "eslint.enable": false,
+  "files.associations": {
+    "*.env*": "dotenv"
+  }
+}

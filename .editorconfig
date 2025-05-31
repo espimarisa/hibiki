@@ -8,10 +8,10 @@ indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-# Do not remove trailing whitespace from markdown
+# Do not remove trailing whitespace from markdown.
 [*.md]
 trim_trailing_whitespace = false
 
-# YAML standard
+# YAML standard.
 [*.{yaml,yml}]
 indent_size = 2

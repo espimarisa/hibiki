@@ -3,14 +3,14 @@
  * @license zlib
  */
 
-import { db } from "@/db/index.js";
-import type { UserConfig } from "@/db/schema/user_config.js";
-import { user_config } from "@/db/schema/user_config.js";
-import { NOT_FOUND, TTL, valkeyKeys } from "@/db/valkey";
-import { valkey } from "@/db/valkey.js";
-import { dbLog, valkeyLog } from "@/utils/logger.js";
 import { captureException } from "@sentry/bun";
 import { eq as equals } from "drizzle-orm";
+import { db } from "@/db/index.ts";
+import type { UserConfig } from "@/db/schema/user_config.ts";
+import { user_config } from "@/db/schema/user_config.ts";
+import { NOT_FOUND, TTL, valkeyKeys } from "@/db/valkey";
+import { valkey } from "@/db/valkey.ts";
+import { dbLog, valkeyLog } from "@/utils/logger.ts";
 
 /**
  * Gets a user's user configuration.

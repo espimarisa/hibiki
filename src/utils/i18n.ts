@@ -3,13 +3,6 @@
  * @license zlib
  */
 
-import { isValidDescription, isValidName } from "@/helpers/discord.js";
-import type { DictionaryKey } from "@/types/i18next.d.js";
-import {
-  DISCORD_LOCALE_CODES,
-  MODULE_FILETYPE_REGEX,
-} from "@/utils/constants.js";
-import { i18NLog } from "@/utils/logger.js";
 import type { PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
 import { captureException } from "@sentry/bun";
@@ -17,6 +10,26 @@ import type { Duration } from "date-fns";
 import type { Locale } from "discord.js";
 import i18next, { type InitOptions, type TOptions } from "i18next";
 import i18NexFsBackend, { type FsBackendOptions } from "i18next-fs-backend";
+import { isValidDescription, isValidName } from "@/helpers/discord.ts";
+import type { DictionaryKey } from "@/types/i18next.d.ts";
+import {
+  DISCORD_LOCALE_CODES,
+  MODULE_FILETYPE_REGEX,
+} from "@/utils/constants.ts";
+import { i18NLog } from "@/utils/logger.ts";
+
+// i18next variables.
+let localeDirectoryData: string[] = [];
+const defaultLng = "en-US";
+export const defaultNS = "common";
+export const ns = [
+  "booleans",
+  "commands",
+  "common",
+  "discord",
+  "errors",
+  "units",
+] as const;
 
 // Type definition for a localized duration response.
 type LocalizedDuration = {
@@ -28,13 +41,6 @@ type LocalizedDuration = {
   weeks?: string;
   years?: string;
 };
-
-// i18next variables.
-const defaultLng = "en-US";
-export const defaultNS = "common";
-export const ns = ["commands", "common", "errors"] as const;
-
-let localeDirectoryData: string[] = [];
 
 /**
  * Initializes i18next and loads locales into memory.
@@ -50,9 +56,10 @@ export async function initI18Next(directory: PathLike) {
     i18NLog.debug(`Loading locales from ${directoryName}.`);
     localeDirectoryData = await getLocaleSubdirectories(directoryName);
 
+    // Initializes i18next.
     await i18next.use(i18NexFsBackend).init<FsBackendOptions>({
       backend: {
-        loadPath: `${directoryName}/{{lng}}/{{ns}}`,
+        loadPath: `${directoryName}/{{lng}}/{{ns}}.json`,
       } satisfies FsBackendOptions,
       defaultNS: defaultNS,
       fallbackLng: defaultLng,
@@ -60,11 +67,10 @@ export async function initI18Next(directory: PathLike) {
         escapeValue: false,
       },
       load: "currentOnly",
-      lng: defaultLng,
-      initAsync: true,
-      ns: ns,
-      preload: localeDirectoryData || {},
       returnNull: false,
+      lng: defaultLng,
+      ns: ns,
+      preload: localeDirectoryData || [],
     } satisfies InitOptions);
   } catch (err) {
     i18NLog.error(err, "Failed to initialize i18next.");
@@ -106,6 +112,7 @@ async function getLocaleSubdirectories(directory: PathLike) {
       }
 
       // Loads the directory.
+      i18NLog.debug(`Adding ${dirName} to the list of locales.`);
       localeDirectories.push(dirName);
     }
 
@@ -291,11 +298,11 @@ export function tBytes(bytes: number, locale: string) {
 
   // Dictionary keys with storage sizes.
   const strings = [
-    "common:size.bytes",
-    "common:size.kilobytes",
-    "common:size.megabytes",
-    "common:size.gigabytes",
-    "common:size.terabytes",
+    "units:sizes.bytes",
+    "units:sizes.kilobytes",
+    "units:sizes.megabytes",
+    "units:sizes.gigabytes",
+    "units:sizes.terabytes",
   ] satisfies DictionaryKey[];
 
   // Calculates the digits.
@@ -340,7 +347,7 @@ export function tTime(
     // Removes disabled items.
     if (time[unit] && !hide?.[unit]) {
       // Localizes and formats.
-      const key: DictionaryKey = `common:time.${unit}`;
+      const key: DictionaryKey = `units:time.${unit}`;
       formattedDuration.push(t(key, { count: time[unit], lng: locale }));
     }
   }

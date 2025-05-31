@@ -1,24 +1,6 @@
 * text=auto eol=lf
 
-*.bmp binary
-*.eot binary
-*.font binary
-*.gif binary
-*.heic binary
-*.heif binary
-*.ico binary
-*.jpeg binary
-*.jpg binary
 *.lock -diff -merge
 *.md text eol=lf diff=markdown
-*.otf binary
-*.pdf binary diff=pdf
-*.png binary
 *.sh text eol=lf executable
-*.tiff binary
-*.ttf binary
-*.webm binary
-*.webp binary
-*.woff binary
-*.woff2 binary
 tsconfig.json linguist-language=JSON-with-Comments

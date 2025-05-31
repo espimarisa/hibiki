@@ -5,12 +5,12 @@
 
 /** biome-ignore-all lint/performance/noNamespaceImport: Drizzle requires a namespace import. */
 
-import * as guild_config_schema from "@/db/schema/guild_config.js";
-import * as starboard_schema from "@/db/schema/starboard.js";
-import * as user_config_schema from "@/db/schema/user_config.js";
-import { env } from "@/utils/env.js";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
+import * as guild_config_schema from "@/db/schema/guild_config.ts";
+import * as starboard_schema from "@/db/schema/starboard.ts";
+import * as user_config_schema from "@/db/schema/user_config.ts";
+import { env } from "@/utils/env.ts";
 
 // Creates a PostgreSQL client.
 const pg = postgres({

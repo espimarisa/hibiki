@@ -3,8 +3,8 @@
  * @license zlib
  */
 
-import { env } from "@/utils/env.js";
 import { RedisClient as ValkeyClient } from "bun";
+import { env } from "@/utils/env.ts";
 
 // Explicit string for not found Valkey queries.
 export const NOT_FOUND = "__NOT_FOUND__";

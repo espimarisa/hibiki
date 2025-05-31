@@ -3,12 +3,12 @@
  * @license zlib
  */
 
-import { client } from "@/root/client.js";
-import { HibikiColors } from "@/utils/constants.js";
-import { env } from "@/utils/env.js";
-import { getGuildString, getUserString } from "@/utils/format.js";
-import { clientLog } from "@/utils/logger.js";
 import { ChannelType, TimestampStyles, time } from "discord.js";
+import { client } from "@/src/client.js";
+import { HibikiColors } from "@/utils/constants.ts";
+import { env } from "@/utils/env.ts";
+import { getGuildString, getUserString } from "@/utils/format.ts";
+import { clientLog } from "@/utils/logger.ts";
 
 export const guildDelete: HibikiListener<"guildDelete"> = {
   event: "guildDelete",

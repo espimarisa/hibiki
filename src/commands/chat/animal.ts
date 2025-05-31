@@ -3,11 +3,11 @@
  * @license zlib
  */
 
-import { errorReply } from "@/helpers/reply.js";
-import { HibikiColors } from "@/utils/constants.js";
-import { hFetch } from "@/utils/fetch.js";
-import { t, tAllD, tAllN, tD } from "@/utils/i18n.js";
 import { ApplicationCommandOptionType } from "discord.js";
+import { errorReply } from "@/helpers/reply.ts";
+import { HibikiColors } from "@/utils/constants.ts";
+import { hFetch } from "@/utils/fetch.ts";
+import { t, tAllD, tAllN, tD } from "@/utils/i18n.ts";
 
 // Typing for a possible Animal API response.
 type AnimalApiResponse = {
@@ -29,7 +29,7 @@ export const animalCommand: HibikiChatCommand = {
       case "cat": {
         apiURL = "https://cataas.com/cat?json=true";
         bodyKey = "url";
-        string = "commands:animal.subcommands.cat.response.meow";
+        string = "commands:animal.subcommands.cat.response";
         break;
       }
 
@@ -37,7 +37,7 @@ export const animalCommand: HibikiChatCommand = {
       case "dog": {
         apiURL = "https://random.dog/woof.json";
         bodyKey = "url";
-        string = "commands:animal.subcommands.dog.response.woof";
+        string = "commands:animal.subcommands.dog.response";
         break;
       }
 
@@ -77,33 +77,29 @@ export const animalCommand: HibikiChatCommand = {
 
   data: () => {
     return {
-      name: t("commands:animal._data.name"),
-      name_localizations: tAllN("commands:animal._data.name"),
-      description: tD("commands:animal._data.description"),
-      description_localizations: tAllD("commands:animal._data.description"),
+      name: "animal",
+      name_localizations: tAllN("commands:animal.name"),
+      description: tD("commands:animal.description"),
+      description_localizations: tAllD("commands:animal.description"),
       options: [
         {
           // Cat subcommand.
           type: ApplicationCommandOptionType.Subcommand,
           name: "cat",
-          name_localizations: tAllN(
-            "commands:animal.subcommands.cat._data.name",
-          ),
-          description: t("commands:animal.subcommands.cat._data.description"),
+          name_localizations: tAllN("commands:animal.subcommands.cat.name"),
+          description: t("commands:animal.subcommands.cat.description"),
           description_localizations: tAllD(
-            "commands:animal.subcommands.cat._data.description",
+            "commands:animal.subcommands.cat.description",
           ),
         },
         {
           // Dog subcommand.
           type: ApplicationCommandOptionType.Subcommand,
           name: "dog",
-          name_localizations: tAllN(
-            "commands:animal.subcommands.dog._data.name",
-          ),
-          description: t("commands:animal.subcommands.dog._data.description"),
+          name_localizations: tAllN("commands:animal.subcommands.dog.name"),
+          description: t("commands:animal.subcommands.dog.description"),
           description_localizations: tAllD(
-            "commands:animal.subcommands.dog._data.description",
+            "commands:animal.subcommands.dog.description",
           ),
         },
       ],

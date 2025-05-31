@@ -1,0 +1,13 @@
+{
+  "common": {
+    "error": "Error",
+    "errorStack": "\n```ts\n{{- error}}\n```",
+    "errorWithEmoji": "❌ Error",
+    "noOption": "A valid **{{option}}** was not provided.",
+    "spottedABug": "Spotted a bug? - github.com/espimarisa/hibiki"
+  },
+  "fetch": {
+    "failed": "Failed to fetch information. Try again later.",
+    "image": "Failed to get image response data. Try again later."
+  }
+}

@@ -3,27 +3,25 @@
  * @license zlib
  */
 
-import { client } from "@/root/client.js";
-import { IS_DEVELOPMENT } from "@/utils/constants.js";
-import { env } from "@/utils/env.js";
-import { getDirname, loadCommands, loadListeners } from "@/utils/fs.js";
-import { initI18Next } from "@/utils/i18n.js";
-import { clientLog, sharderLog } from "@/utils/logger.js";
 import { hostname } from "node:os";
 import { join } from "node:path";
 import { captureException, init } from "@sentry/bun";
 import type { ClientUser } from "discord.js";
 import { Collection, ShardingManager } from "discord.js";
+import { client } from "@/src/client.ts";
+import { env } from "@/utils/env.ts";
+import { getDirname, loadCommands, loadListeners } from "@/utils/fs.ts";
+import { initI18Next } from "@/utils/i18n.ts";
+import { clientLog, sharderLog } from "@/utils/logger.ts";
 
 // Gets directories to use.
-const SRC_DIRECTORY = getDirname(import.meta.url);
-const COMMANDS_DIRECTORY = join(SRC_DIRECTORY, "./commands");
-const LISTENERS_DIRECTORY = join(SRC_DIRECTORY, "./listeners");
-const LOCALES_DIRECTORY = join(SRC_DIRECTORY, "./locales");
+const ROOT_DIRECTORY = getDirname(import.meta.url);
+const COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands");
+const LISTENERS_DIRECTORY = join(ROOT_DIRECTORY, "./listeners");
+const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
 
 // Gets the client file to initialize.
-const CLIENT_FILE_NAME = `client.${IS_DEVELOPMENT ? "ts" : "js"}`;
-const CLIENT_FILE_PATH = join(SRC_DIRECTORY, CLIENT_FILE_NAME);
+const CLIENT_FILE_PATH = join(ROOT_DIRECTORY, "client.ts");
 
 // Creates collections to store modules in.
 const hibikiCommands = new Collection<string, HibikiCommand>();

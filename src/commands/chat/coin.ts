@@ -3,8 +3,8 @@
  * @license zlib
  */
 
-import { HibikiColors } from "@/utils/constants.js";
-import { t, tAllD, tAllN, tD } from "@/utils/i18n.js";
+import { HibikiColors } from "@/utils/constants.ts";
+import { t, tAllD, tAllN, tD } from "@/utils/i18n.ts";
 
 export const coinCommand: HibikiChatCommand = {
   run: async (interaction) => {
@@ -29,9 +29,9 @@ export const coinCommand: HibikiChatCommand = {
   data: () => {
     return {
       name: "coin",
-      name_localizations: tAllN("commands:coin._data.name"),
-      description: tD("commands:coin._data.description"),
-      description_localizations: tAllD("commands:coin._data.description"),
+      name_localizations: tAllN("commands:coin.name"),
+      description: tD("commands:coin.description"),
+      description_localizations: tAllD("commands:coin.description"),
     };
   },
 };

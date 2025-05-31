@@ -3,8 +3,8 @@
  * @license zlib
  */
 
-import { fetchLog } from "@/utils/logger.js";
 import { captureException } from "@sentry/bun";
+import { fetchLog } from "@/utils/logger.ts";
 
 /**
  * Fetches a network resource (wrapper around native fetch()).

@@ -3,13 +3,13 @@
  * @license zlib
  */
 
-import { MODULE_FILETYPE_REGEX } from "@/utils/constants.js";
-import { fsLog } from "@/utils/logger.js";
 import type { ObjectEncodingOptions, PathLike } from "node:fs";
 import { readdir } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { captureException } from "@sentry/bun";
 import type { ClientEvents, Collection } from "discord.js";
+import { MODULE_FILETYPE_REGEX } from "@/utils/constants.ts";
+import { fsLog } from "@/utils/logger.ts";
 
 // Valid fs.readdir() options.
 type ReaddirOptions = ObjectEncodingOptions & {

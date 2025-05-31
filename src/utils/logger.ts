@@ -3,15 +3,15 @@
  * @license zlib
  */
 
-import { IS_DEVELOPMENT } from "@/utils/constants.js";
-import { getDirname } from "@/utils/fs.js";
 import { join } from "node:path";
 import { pino } from "pino";
 import type { PrettyOptions } from "pino-pretty";
+import { IS_DEVELOPMENT } from "@/utils/constants.ts";
+import { getDirname } from "@/utils/fs.ts";
 
 // Gets the logs directory and the file to write.
-const SRC_DIRECTORY = getDirname(import.meta.url);
-const LOGS_DIRECTORY = join(SRC_DIRECTORY, "../../logs");
+const ROOT_DIRECTORY = getDirname(import.meta.url);
+const LOGS_DIRECTORY = join(ROOT_DIRECTORY, "../../logs");
 const LOG_FILE = join(LOGS_DIRECTORY, "hibiki.log");
 
 // Determines the minimum level to log.

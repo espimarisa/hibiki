@@ -3,8 +3,6 @@
  * @license zlib
  */
 
-import { env } from "@/utils/env.js";
-import { clientLog } from "@/utils/logger.js";
 import { captureException } from "@sentry/bun";
 import {
   ActivityType,
@@ -13,6 +11,8 @@ import {
   Options,
   Partials,
 } from "discord.js";
+import { env } from "@/utils/env.ts";
+import { clientLog } from "@/utils/logger.ts";
 
 let activityState = 0;
 

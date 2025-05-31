@@ -3,13 +3,13 @@
  * @license zlib
  */
 
-import { db } from "@/db/index.js";
-import type { GuildConfig } from "@/db/schema/guild_config.js";
-import { guild_config } from "@/db/schema/guild_config.js";
-import { NOT_FOUND, TTL, valkey, valkeyKeys } from "@/db/valkey.js";
-import { dbLog, valkeyLog } from "@/utils/logger.js";
 import { captureException } from "@sentry/bun";
 import { eq as equals } from "drizzle-orm";
+import { db } from "@/db/index.ts";
+import type { GuildConfig } from "@/db/schema/guild_config.ts";
+import { guild_config } from "@/db/schema/guild_config.ts";
+import { NOT_FOUND, TTL, valkey, valkeyKeys } from "@/db/valkey.ts";
+import { dbLog, valkeyLog } from "@/utils/logger.ts";
 
 /**
  * Gets a guild configuration.

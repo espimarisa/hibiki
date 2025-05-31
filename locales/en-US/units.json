@@ -1,0 +1,29 @@
+{
+  "sizes": {
+    "bytes": "{{count}}B",
+    "gigabytes": "{{count}}GB",
+    "kilobytes": "{{count}}KB",
+    "megabytes": "{{count}}MB",
+    "terabytes": "{{count}}TB"
+  },
+  "time": {
+    "createdAt": "Created at",
+    "days": "{{count}} days",
+    "days_ONE": "{{count}} day",
+    "hours": "{{count}} hours",
+    "hours_ONE": "{{count}} hour",
+    "minutes": "{{count}} minutes",
+    "minutes_ONE": "{{count}} minute",
+    "modifiedAt": "Modified at",
+    "months": "{{count}} months",
+    "months_ONE": "{{count}} month",
+    "seconds": "{{count}} seconds",
+    "seconds_ONE": "{{count}} second",
+    "submittedAt": "Submitted at",
+    "updatedAt": "Updated at",
+    "weeks": "{{count}} weeks",
+    "weeks_ONE": "{{count}} week",
+    "years": "{{count}} years",
+    "years_ONE": "{{count}} year"
+  }
+}

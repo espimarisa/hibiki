@@ -3,11 +3,15 @@
  * @license zlib
  */
 
-import type { commands } from "@/locales/en-US/commands.js";
-import type { common } from "@/locales/en-US/common.js";
-import type { errors } from "@/locales/en-US/errors.js";
-import type { defaultNS, ns } from "@/utils/i18n.js";
 import type { ParseKeys } from "i18next";
+import type { defaultNS, ns } from "@/utils/i18n.ts";
+
+import type booleans from "@/locales/en-US/booleans.json";
+import type commands from "@/locales/en-US/commands.json";
+import type common from "@/locales/en-US/common.json";
+import type discord from "@/locales/en-US/discord.json";
+import type errors from "@/locales/en-US/errors.json";
+import type units from "@/locales/en-US/units.json";
 
 declare module "i18next" {
   interface CustomTypeOptions {
@@ -15,9 +19,12 @@ declare module "i18next" {
     ns: readonly typeof ns;
     returnNull: false;
     resources: {
+      booleans: readonly typeof booleans;
       commands: readonly typeof commands;
       common: readonly typeof common;
+      discord: readonly typeof discord;
       errors: readonly typeof errors;
+      units: readonly typeof units;
     };
   }
 }

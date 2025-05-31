@@ -1,9 +1,16 @@
 services:
+  # Primary Hibiki service
   hibiki:
     container_name: hibiki
     restart: unless-stopped
-    depends_on: [postgres, valkey]
     networks: [hibiki-network]
+    tty: true
+    stdin_open: true
+    depends_on:
+      postgres:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
     env_file:
       - .env
     build:
@@ -12,55 +19,84 @@ services:
     volumes:
       - hibiki-logs:/usr/src/app/logs
 
+  # PostgreSQL service
   postgres:
     container_name: postgres
     image: postgres:alpine
     restart: unless-stopped
     networks: [hibiki-network]
-    ports:
-      - ${POSTGRES_PORT:-5432}:5432
+    command: postgres -p ${POSTGRES_PORT}
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_PORT=${POSTGRES_PORT}
       - POSTGRES_USER=${POSTGRES_USER}
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - hibiki-postgres:/var/lib/postgresql/data
+    healthcheck:
+      interval: 5s
+      retries: 5
+      timeout: 5s
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -h localhost -p ${POSTGRES_PORT}",
+        ]
 
+  # Valkey service
   valkey:
     container_name: valkey
     image: valkey/valkey:alpine
     restart: unless-stopped
     networks: [hibiki-network]
-    ports:
-      - ${VALKEY_PORT:-6379}:6379
-    volumes:
-      - hibiki-valkey:/data
     command: >
       valkey-server
-      --requirepass ${VALKEY_PASSWORD}
       --appendonly yes
-      --save ""
       --io-threads 4
       --io-threads-do-reads yes
-      --rename-command FLUSHDB ""
-      --rename-command FLUSHALL ""
+      --port ${VALKEY_PORT}
       --rename-command CONFIG ""
+      --rename-command FLUSHALL ""
+      --rename-command FLUSHDB ""
+      --requirepass ${VALKEY_PASSWORD}
+      --save ""
+    environment:
+      - VALKEY_PORT=${VALKEY_PORT}
+      - VALKEY_PASSWORD=${VALKEY_PASSWORD}
+    ports:
+      - ${VALKEY_PORT}:${VALKEY_PORT}
+    volumes:
+      - hibiki-valkey:/data
+    healthcheck:
+      interval: 5s
+      retries: 5
+      timeout: 5s
+      test:
+        [
+          "CMD",
+          "valkey-cli",
+          "-h",
+          "localhost",
+          "-p",
+          "${VALKEY_PORT}",
+          "-a",
+          "${VALKEY_PASSWORD}",
+          "ping",
+        ]
 
 networks:
   hibiki-network:
     driver: bridge
-    external: true
     name: hibiki-network
 
 volumes:
   hibiki-logs:
-    external: true
     name: hibiki-logs
 
   hibiki-postgres:
-    external: true
     name: hibiki-postgres
 
   hibiki-valkey:
-    external: true
     name: hibiki-valkey

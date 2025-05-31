@@ -3,7 +3,6 @@
  * @license zlib
  */
 
-import { clientLog, sharderLog } from "@/utils/logger.js";
 import { captureException } from "@sentry/bun";
 import type {
   Client,
@@ -16,6 +15,7 @@ import type {
   User,
 } from "discord.js";
 import { TextChannel } from "discord.js";
+import { clientLog, sharderLog } from "@/utils/logger.ts";
 
 // Regex that validates valid Discord command/option names.
 const DISCORD_NAME_REGEX = /^[-_\p{L}\p{N}\p{sc=Deva}\p{sc=Thai}]{1,32}$/u;

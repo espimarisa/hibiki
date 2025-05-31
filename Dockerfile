@@ -1,36 +1,39 @@
-# Use Bun's official Alpine image as the base.
+# Use the official bun:alpine image.
 FROM oven/bun:alpine AS base
 WORKDIR /usr/src/app
-ENV NODE_ENV=PRODUCTION
 
-# Installs all dependencies.
-FROM base AS install_deps
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile --verbose
+# Installs all dependencies into the temp directory.
+FROM base AS install
+RUN mkdir -p /temp/dev
+COPY package.json bun.lock /temp/dev/
+RUN cd /temp/dev && bun install --frozen-lockfile
 
-# Copies node_modules to the builder.
+# Installs production dependencies into the temp directory.
+RUN mkdir -p /temp/prod
+COPY package.json bun.lock /temp/prod/
+RUN cd /temp/prod && bun install --frozen-lockfile --production
+
+# Copies cached node_modules and all project files into the image.
 FROM base AS builder
+COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
-COPY --from=install_deps /usr/src/app/node_modules ./node_modules
-RUN bun run build
 
-# Installs production dependencies.
-FROM base AS final
-ENV NODE_ENV=PRODUCTION
+# Copies production dependencies and the source into the final image.
+FROM base AS release
 WORKDIR /usr/src/app
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile --production --verbose
-
-# Copies required files from the builder to the final image.
-COPY --from=builder /usr/src/app/dist/ ./
+COPY --from=install /temp/prod/node_modules node_modules
+COPY --from=builder /usr/src/app/src ./src
 COPY --from=builder /usr/src/app/drizzle ./drizzle
+COPY --from=builder /usr/src/app/locales ./locales
 COPY --from=builder /usr/src/app/drizzle.config.ts ./
 COPY --from=builder /usr/src/app/package.json ./
 COPY --from=builder /usr/src/app/tsconfig.json ./
 
-# Creates the logs directory and takes ownership of it.
-RUN mkdir -p /usr/src/app/logs && chown bun:bun /usr/src/app/logs
+# Creates the logs directory.
+RUN mkdir -p /usr/src/app/logs
+RUN chown bun:bun /usr/src/app/logs
 USER bun
 
-# Runs the application.
+# Starts the application.
+ENV NODE_ENV=PRODUCTION
 ENTRYPOINT ["bun", "run", "deploy"]

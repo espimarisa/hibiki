@@ -1,0 +1,121 @@
+{
+  "about": {
+    "description": "Gets information and statistics about the bot.",
+    "name": "about",
+    "response": {
+      "description": "I'm a Discord bot with polished community and developer tools.\n\nMade with love by [Espi Marisa](https://espi.me). 💖",
+      "links": "[GitHub](https://github.com/espimarisa/hibiki) | [Invite](https://discord.com/api/oauth2/authorize?client_id={{id}}&permissions={{permissions}}&scope=bot%20applications.commands) | [Privacy Policy](https://github.com/espimarisa/hibiki/blob/develop/.github/PRIVACY_POLICY.md) | [Donate](https://ko-fi.com/espimarisa)",
+      "systemDetails": "{{memory}} memory usage\nUp for {{uptime}}",
+      "title": "✨ About {{ username }}",
+      "versionDetails": "Hibiki {{- hibiki}}\nDiscord.js {{- djs}}\nBun {{- bun}}"
+    }
+  },
+  "animal": {
+    "description": "Get pictures of various animals.",
+    "name": "animal",
+    "subcommands": {
+      "cat": {
+        "description": "Gets a random cat picture.",
+        "name": "cat",
+        "response": "🐱 Meow!"
+      },
+      "dog": {
+        "description": "Gets a random dog picture.",
+        "name": "dog",
+        "response": "🐶 Woof!"
+      }
+    }
+  },
+  "coin": {
+    "description": "Flips a coin.",
+    "name": "coin",
+    "response": {
+      "heads": "🔵 The coin landed on heads.",
+      "tails": "🟠 The coin landed on tails."
+    }
+  },
+  "dice": {
+    "description": "Rolls a die.",
+    "name": "name",
+    "options": {
+      "sides": {
+        "description": "The amount of sides on the die. Defaults to 6.",
+        "name": "sides"
+      }
+    },
+    "response": "🎲 You rolled a **{{roll}}**."
+  },
+  "ping": {
+    "description": "Checks the bot's current status and latency.",
+    "name": "ping",
+    "response": {
+      "pong": "🏓 Pong! All seems OK!",
+      "result": "This reply took {{ping}}ms to send. Current latency for shard #{{shard}}: {{latency}}ms."
+    }
+  },
+  "roleplay": {
+    "description": "Roleplay with other members.",
+    "name": "roleplay",
+    "response": {
+      "errorBot": "I'd rather not do that with you. Keep your paws away from me.",
+      "errorSelf": "How about you interact with someone else in the world for once?"
+    },
+    "subcommands": {
+      "cuddle": {
+        "description": "Give someone some cuddles.",
+        "name": "cuddle",
+        "options": {
+          "member": {
+            "description": "The member that you'd like to cuddle.",
+            "name": "member"
+          }
+        },
+        "response": "💖 {{user}} gave {{target}} some cuddles."
+      },
+      "hug": {
+        "description": "Give someone a hug.",
+        "name": "hug",
+        "options": {
+          "member": {
+            "description": "The member that you'd like to hug.",
+            "name": "member"
+          }
+        },
+        "response": "❤️ {{user}} gave {{target}} a warm hug."
+      },
+      "kiss": {
+        "description": "Give someone a kiss.",
+        "name": "kiss",
+        "options": {
+          "member": {
+            "description": "The member that you'd like to kiss.",
+            "name": "member"
+          }
+        },
+        "response": "💕 {{user}} gave {{target}} a kiss."
+      },
+      "pat": {
+        "description": "Give someone a headpat.",
+        "name": "pat",
+        "options": {
+          "member": {
+            "description": "The member that you'd like to headpat.",
+            "name": "member"
+          }
+        },
+        "response": "💙 {{user}} gave {{target}} some headpats."
+      },
+      "slap": {
+        "description": "Give someone a (playful) slap on the face.",
+        "name": "slap",
+        "options": {
+          "member": {
+            "description": "The member that you'd like to slap.",
+            "name": "member"
+          }
+        },
+        "response": "💢 {{user}} slapped {{target}} playfully. Play nice, now!"
+      }
+    }
+  }
+}

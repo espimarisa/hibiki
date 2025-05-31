@@ -3,8 +3,8 @@
  * @license zlib
  */
 
-import { env } from "@/utils/env.js";
 import { Locale } from "discord.js";
+import { env } from "@/utils/env.ts";
 
 /**
  * Regexes.

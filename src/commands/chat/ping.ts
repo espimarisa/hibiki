@@ -3,9 +3,9 @@
  * @license zlib
  */
 
-import { HibikiColors } from "@/utils/constants.js";
-import { t, tAllD, tAllN, tD } from "@/utils/i18n.js";
 import { SnowflakeUtil } from "discord.js";
+import { HibikiColors } from "@/utils/constants.ts";
+import { t, tAllD, tAllN, tD } from "@/utils/i18n.ts";
 
 export const pingCommand: HibikiChatCommand = {
   run: async (interaction) => {
@@ -35,9 +35,9 @@ export const pingCommand: HibikiChatCommand = {
   data: () => {
     return {
       name: "ping",
-      name_localizations: tAllN("commands:ping._data.name"),
-      description: tD("commands:ping._data.description"),
-      description_localizations: tAllD("commands:ping._data.description"),
+      name_localizations: tAllN("commands:ping.name"),
+      description: tD("commands:ping.description"),
+      description_localizations: tAllD("commands:ping.description"),
     };
   },
 };

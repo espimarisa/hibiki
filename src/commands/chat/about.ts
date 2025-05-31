@@ -3,13 +3,13 @@
  * @license zlib
  */
 
-import { getTotalCachedUsers, getTotalGuilds } from "@/helpers/discord.js";
-import { HibikiColors, INVITE_PERMISSIONS, ZWSP } from "@/utils/constants.js";
-import { env } from "@/utils/env.js";
-import { getTimeSince } from "@/utils/format.js";
-import { t, tAllD, tAllN, tBytes, tD, tTime } from "@/utils/i18n.js";
 import { memoryUsage } from "node:process";
 import { version } from "discord.js";
+import { getTotalCachedUsers, getTotalGuilds } from "@/helpers/discord.ts";
+import { HibikiColors, INVITE_PERMISSIONS, ZWSP } from "@/utils/constants.ts";
+import { env } from "@/utils/env.ts";
+import { getTimeSince } from "@/utils/format.ts";
+import { t, tAllD, tAllN, tBytes, tD, tTime } from "@/utils/i18n.ts";
 
 const startupTimestamp = new Date();
 
@@ -47,9 +47,7 @@ export const aboutCommand: HibikiChatCommand = {
           fields: [
             {
               // Statistics.
-              name: t("commands:about.response.statistics", {
-                lng: interaction.locale,
-              }),
+              name: t("common:statistics", { lng: interaction.locale }),
               value: t("commands:about.response.systemDetails", {
                 lng: interaction.locale,
                 guilds: totalGuilds,
@@ -60,9 +58,7 @@ export const aboutCommand: HibikiChatCommand = {
             },
             {
               // Versioning.
-              name: t("commands:about.response.version", {
-                lng: interaction.locale,
-              }),
+              name: t("common:version", { lng: interaction.locale }),
               value: t("commands:about.response.versionDetails", {
                 lng: interaction.locale,
                 hibiki: env.npm_package_version,
@@ -73,9 +69,7 @@ export const aboutCommand: HibikiChatCommand = {
             },
             {
               // System.
-              name: t("commands:about.response.system", {
-                lng: interaction.locale,
-              }),
+              name: t("common:system", { lng: interaction.locale }),
               value: t("commands:about.response.systemDetails", {
                 lng: interaction.locale,
                 uptime: localizedUptime,
@@ -102,9 +96,9 @@ export const aboutCommand: HibikiChatCommand = {
   data: () => {
     return {
       name: "about",
-      name_localizations: tAllN("commands:about._data.name"),
-      description: tD("commands:about._data.description"),
-      description_localizations: tAllD("commands:about._data.description"),
+      name_localizations: tAllN("commands:about.name"),
+      description: tD("commands:about.description"),
+      description_localizations: tAllD("commands:about.description"),
     };
   },
 };

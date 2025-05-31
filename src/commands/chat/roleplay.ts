@@ -3,14 +3,14 @@
  * @license zlib
  */
 
-import { errorReply } from "@/helpers/reply.js";
-import type { DictionaryKey } from "@/types/i18next.d.js";
-import { HibikiColors } from "@/utils/constants.js";
-import { t, tAllD, tAllN, tD } from "@/utils/i18n.js";
 import {
   ApplicationCommandOptionType,
   InteractionContextType,
 } from "discord.js";
+import { errorReply } from "@/helpers/reply.ts";
+import type { DictionaryKey } from "@/types/i18next.d.ts";
+import { HibikiColors } from "@/utils/constants.ts";
+import { t, tAllD, tAllN, tD } from "@/utils/i18n.ts";
 
 export const roleplayCommand: HibikiChatCommand = {
   run: async (interaction) => {
@@ -24,44 +24,52 @@ export const roleplayCommand: HibikiChatCommand = {
 
     // Don't allow self-roleplay.
     if (interaction.user.id === member.id) {
-      await errorReply(interaction, "commands:roleplay.errors.self", false);
+      await errorReply(
+        interaction,
+        "commands:roleplay.response.errorSelf",
+        false,
+      );
       return;
     }
 
     // Don't allow roleplay with the bot.
     if (interaction.client.user.id === member.id) {
-      await errorReply(interaction, "commands:roleplay.errors.bot", false);
+      await errorReply(
+        interaction,
+        "commands:roleplay.response.errorBot",
+        false,
+      );
       return;
     }
 
     // Gets the string and URL to use.
     switch (subcommand) {
       case "hug": {
-        string = "commands:roleplay.subcommands.hug.response.message";
+        string = "commands:roleplay.subcommands.hug.response";
         url = "https://cdn.weeb.sh/images/B10Tfknqf.gif";
         break;
       }
 
       case "cuddle": {
-        string = "commands:roleplay.subcommands.cuddle.response.message";
+        string = "commands:roleplay.subcommands.cuddle.response";
         url = "https://cdn.weeb.sh/images/rkA6SU7w-.gif";
         break;
       }
 
       case "kiss": {
-        string = "commands:roleplay.subcommands.kiss.response.message";
+        string = "commands:roleplay.subcommands.kiss.response";
         url = "https://cdn.weeb.sh/images/SkKL3adPb.gif";
         break;
       }
 
       case "pat": {
-        string = "commands:roleplay.subcommands.pat.response.message";
+        string = "commands:roleplay.subcommands.pat.response";
         url = "https://cdn.weeb.sh/images/HJRIlihCZ.gif";
         break;
       }
 
       case "slap": {
-        string = "commands:roleplay.subcommands.slap.response.message";
+        string = "commands:roleplay.subcommands.slap.response";
         url = "https://cdn.weeb.sh/images/HkA6mJFP-.gif";
         break;
       }
@@ -92,22 +100,20 @@ export const roleplayCommand: HibikiChatCommand = {
   data: () => {
     return {
       name: "roleplay",
-      name_localizations: tAllN("commands:roleplay._data.name"),
-      description: tD("commands:roleplay._data.description"),
-      description_localizations: tAllD("commands:roleplay._data.description"),
+      name_localizations: tAllN("commands:roleplay.name"),
+      description: tD("commands:roleplay.description"),
+      description_localizations: tAllD("commands:roleplay.description"),
       contexts: [InteractionContextType.Guild],
       options: [
         {
           // Cuddle subcommand.
           name: "cuddle",
           name_localizations: tAllN(
-            "commands:roleplay.subcommands.cuddle._data.name",
+            "commands:roleplay.subcommands.cuddle.name",
           ),
-          description: tD(
-            "commands:roleplay.subcommands.cuddle._data.description",
-          ),
+          description: tD("commands:roleplay.subcommands.cuddle.description"),
           description_localizations: tAllD(
-            "commands:roleplay.subcommands.cuddle._data.description",
+            "commands:roleplay.subcommands.cuddle.description",
           ),
           type: ApplicationCommandOptionType.Subcommand,
           options: [
@@ -115,13 +121,13 @@ export const roleplayCommand: HibikiChatCommand = {
               // Member option.
               name: "member",
               description: tD(
-                "commands:roleplay.subcommands.cuddle._data.options.member.description",
+                "commands:roleplay.subcommands.cuddle.options.member.description",
               ),
               name_localizations: tAllN(
-                "commands:roleplay.subcommands.cuddle._data.options.member.name",
+                "commands:roleplay.subcommands.cuddle.options.member.name",
               ),
               description_localizations: tAllD(
-                "commands:roleplay.subcommands.cuddle._data.options.member.description",
+                "commands:roleplay.subcommands.cuddle.options.member.description",
               ),
               type: ApplicationCommandOptionType.User,
             },
@@ -130,14 +136,10 @@ export const roleplayCommand: HibikiChatCommand = {
         {
           // Hug subcommand.
           name: "hug",
-          name_localizations: tAllN(
-            "commands:roleplay.subcommands.hug._data.name",
-          ),
-          description: tD(
-            "commands:roleplay.subcommands.hug._data.description",
-          ),
+          name_localizations: tAllN("commands:roleplay.subcommands.hug.name"),
+          description: tD("commands:roleplay.subcommands.hug.description"),
           description_localizations: tAllD(
-            "commands:roleplay.subcommands.hug._data.description",
+            "commands:roleplay.subcommands.hug.description",
           ),
           type: ApplicationCommandOptionType.Subcommand,
           options: [
@@ -145,13 +147,13 @@ export const roleplayCommand: HibikiChatCommand = {
               // Member option.
               name: "member",
               name_localizations: tAllN(
-                "commands:roleplay.subcommands.hug._data.options.member.name",
+                "commands:roleplay.subcommands.hug.options.member.name",
               ),
               description: tD(
-                "commands:roleplay.subcommands.hug._data.options.member.description",
+                "commands:roleplay.subcommands.hug.options.member.description",
               ),
               description_localizations: tAllD(
-                "commands:roleplay.subcommands.hug._data.options.member.description",
+                "commands:roleplay.subcommands.hug.options.member.description",
               ),
               type: ApplicationCommandOptionType.User,
             },
@@ -160,14 +162,10 @@ export const roleplayCommand: HibikiChatCommand = {
         {
           // Kiss subcommand.
           name: "kiss",
-          name_localizations: tAllN(
-            "commands:roleplay.subcommands.kiss._data.name",
-          ),
-          description: tD(
-            "commands:roleplay.subcommands.kiss._data.description",
-          ),
+          name_localizations: tAllN("commands:roleplay.subcommands.kiss.name"),
+          description: tD("commands:roleplay.subcommands.kiss.description"),
           description_localizations: tAllD(
-            "commands:roleplay.subcommands.kiss._data.description",
+            "commands:roleplay.subcommands.kiss.description",
           ),
           type: ApplicationCommandOptionType.Subcommand,
           options: [
@@ -175,13 +173,13 @@ export const roleplayCommand: HibikiChatCommand = {
               // Member option.
               name: "member",
               name_localizations: tAllN(
-                "commands:roleplay.subcommands.kiss._data.options.member.name",
+                "commands:roleplay.subcommands.kiss.options.member.name",
               ),
               description: tD(
-                "commands:roleplay.subcommands.kiss._data.options.member.description",
+                "commands:roleplay.subcommands.kiss.options.member.description",
               ),
               description_localizations: tAllD(
-                "commands:roleplay.subcommands.kiss._data.options.member.description",
+                "commands:roleplay.subcommands.kiss.options.member.description",
               ),
               type: ApplicationCommandOptionType.User,
             },
@@ -190,14 +188,10 @@ export const roleplayCommand: HibikiChatCommand = {
         {
           // Pat subcommand.
           name: "pat",
-          name_localizations: tAllN(
-            "commands:roleplay.subcommands.pat._data.name",
-          ),
-          description: tD(
-            "commands:roleplay.subcommands.pat._data.description",
-          ),
+          name_localizations: tAllN("commands:roleplay.subcommands.pat.name"),
+          description: tD("commands:roleplay.subcommands.pat.description"),
           description_localizations: tAllD(
-            "commands:roleplay.subcommands.pat._data.description",
+            "commands:roleplay.subcommands.pat.description",
           ),
           type: ApplicationCommandOptionType.Subcommand,
           options: [
@@ -205,13 +199,13 @@ export const roleplayCommand: HibikiChatCommand = {
               // Member option.
               name: "member",
               name_localizations: tAllN(
-                "commands:roleplay.subcommands.pat._data.options.member.name",
+                "commands:roleplay.subcommands.pat.options.member.name",
               ),
               description: tD(
-                "commands:roleplay.subcommands.pat._data.options.member.description",
+                "commands:roleplay.subcommands.pat.options.member.description",
               ),
               description_localizations: tAllD(
-                "commands:roleplay.subcommands.pat._data.options.member.description",
+                "commands:roleplay.subcommands.pat.options.member.description",
               ),
               type: ApplicationCommandOptionType.User,
             },
@@ -220,14 +214,10 @@ export const roleplayCommand: HibikiChatCommand = {
         {
           // Slap subcommand.
           name: "member",
-          name_localizations: tAllN(
-            "commands:roleplay.subcommands.slap._data.name",
-          ),
-          description: tD(
-            "commands:roleplay.subcommands.slap._data.description",
-          ),
+          name_localizations: tAllN("commands:roleplay.subcommands.slap.name"),
+          description: tD("commands:roleplay.subcommands.slap.description"),
           description_localizations: tAllD(
-            "commands:roleplay.subcommands.slap._data.description",
+            "commands:roleplay.subcommands.slap.description",
           ),
           type: ApplicationCommandOptionType.Subcommand,
           options: [
@@ -235,13 +225,13 @@ export const roleplayCommand: HibikiChatCommand = {
               // Member option.
               name: "member",
               name_localizations: tAllN(
-                "commands:roleplay.subcommands.slap._data.options.member.name",
+                "commands:roleplay.subcommands.slap.options.member.name",
               ),
               description: tD(
-                "commands:roleplay.subcommands.slap._data.options.member.description",
+                "commands:roleplay.subcommands.slap.options.member.description",
               ),
               description_localizations: tAllD(
-                "commands:roleplay.subcommands.slap._data.options.member.description",
+                "commands:roleplay.subcommands.slap.options.member.description",
               ),
               type: ApplicationCommandOptionType.User,
             },

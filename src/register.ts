@@ -3,21 +3,21 @@
  * @license zlib
  */
 
-import { IS_DEVELOPMENT } from "@/utils/constants.js";
-import { env } from "@/utils/env.js";
-import { getDirname, loadCommands } from "@/utils/fs.js";
-import { initI18Next } from "@/utils/i18n.js";
-import { clientLog } from "@/utils/logger.js";
 import { join } from "node:path";
 import { exit } from "node:process";
 import { parseArgs } from "node:util";
 import type { RESTPostAPIApplicationCommandsJSONBody, User } from "discord.js";
 import { Collection, REST, Routes } from "discord.js";
+import { IS_DEVELOPMENT } from "@/utils/constants.ts";
+import { env } from "@/utils/env.ts";
+import { getDirname, loadCommands } from "@/utils/fs.ts";
+import { initI18Next } from "@/utils/i18n.ts";
+import { clientLog } from "@/utils/logger.ts";
 
 // Gets directories to use.
-const SRC_DIRECTORY = getDirname(import.meta.url);
-const COMMANDS_DIRECTORY = join(SRC_DIRECTORY, "./commands");
-const LOCALES_DIRECTORY = join(SRC_DIRECTORY, "./locales");
+const ROOT_DIRECTORY = getDirname(import.meta.url);
+const COMMANDS_DIRECTORY = join(ROOT_DIRECTORY, "./commands");
+const LOCALES_DIRECTORY = join(ROOT_DIRECTORY, "../locales");
 
 // Creates collections to store modules in.
 const hibikiCommands = new Collection<string, HibikiCommand>();
@@ -82,7 +82,7 @@ if (guild) {
     clientLog.info(`Finished ${message} to ${guild}.`);
   } catch (err) {
     clientLog.error(err, `Failed ${message} to ${guild}.`);
-    exit(1);
+    throw err;
   }
 } else {
   try {
@@ -92,7 +92,7 @@ if (guild) {
     clientLog.info(`Finished ${message} globally.`);
   } catch (err) {
     clientLog.error(err, `Failed ${message} globally.`);
-    exit(1);
+    throw err;
   }
 }
 

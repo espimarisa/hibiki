@@ -7,8 +7,8 @@ import {
   resolvePartialMessage,
   resolvePartialReaction,
   resolvePartialUser,
-} from "@/helpers/discord.js";
-import { handleStarRemove } from "@/helpers/starboard.js";
+} from "@/helpers/discord.ts";
+import { handleStarRemove } from "@/helpers/starboard.ts";
 
 export const messageReactionRemove: HibikiListener<"messageReactionRemove"> = {
   event: "messageReactionRemove",

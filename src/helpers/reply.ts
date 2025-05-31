@@ -3,14 +3,14 @@
  * @license zlib
  */
 
-import type { DictionaryKey } from "@/types/i18next.js";
-import { HibikiColors } from "@/utils/constants.js";
-import { t } from "@/utils/i18n.js";
-import { clientLog } from "@/utils/logger.js";
 import { captureException } from "@sentry/bun";
 import type { CommandInteraction, InteractionReplyOptions } from "discord.js";
 import { EmbedBuilder, MessageFlags } from "discord.js";
 import type { TOptions } from "i18next";
+import type { DictionaryKey } from "@/types/i18next.ts";
+import { HibikiColors } from "@/utils/constants.ts";
+import { t } from "@/utils/i18n.ts";
+import { clientLog } from "@/utils/logger.ts";
 
 /**
  * Sends an error reply to an interaction.
@@ -36,12 +36,12 @@ export async function errorReply(
 
   // Generates the embed.
   const embed = new EmbedBuilder()
-    .setTitle(t("errors:general.errorWithEmoji"))
+    .setTitle(t("errors:common.errorWithEmoji"))
     .setDescription(t(description, { ...opts, lng: interaction.locale }))
     .setColor(HibikiColors.Error)
     .setFooter({
       iconURL: interaction.client.user.displayAvatarURL(),
-      text: t("errors:general.spottedABug", { lng: interaction.locale }),
+      text: t("errors:common.spottedABug", { lng: interaction.locale }),
     });
 
   try {
