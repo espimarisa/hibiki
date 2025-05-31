@@ -30,7 +30,7 @@ export const aboutCommand: HibikiChatCommand = {
 
     // Sends the reply.
     await interaction.followUp({
-      // flags: ["Ephemeral"],
+      flags: ["Ephemeral"],
       embeds: [
         {
           color: HibikiColors.Primary,
