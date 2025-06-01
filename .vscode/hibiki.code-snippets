@@ -1,0 +1,49 @@
+{
+  "Hibiki Chat Command": {
+    "body": [
+      "/**",
+      " * @file $1",
+      " * @license zlib",
+      " */",
+      "",
+      "import { t, tAllD, tAllN, tD } from \"@/utils/i18n.ts\";",
+      "",
+      "export const $2Command: HibikiChatCommand = {",
+      "  run: async (interaction) => {",
+      "    $7",
+      "  },",
+      "",
+      "  data: () => {",
+      "    return {",
+      "      name: \"$3\",",
+      "      name_localizations: tAllN(\"commands:$4.name\"),",
+      "      description: tD(\"commands:$5.description\"),",
+      "      description_localizations: tAllD(\"commands:$6.description\"),",
+      "    };",
+      "  },",
+      "};",
+      ""
+    ],
+    "description": "Template for a new Hibiki chat command.",
+    "prefix": "hibiki-chat-command"
+  },
+  "Hibiki Event Listener": {
+    "body": [
+      "/**",
+      " * @file $1",
+      " * @license zlib",
+      " */",
+      "",
+      "export const $2: HibikiListener<\"$2\"> = {",
+      "  event: \"$2\",",
+      "",
+      "  handle: async ($3) => {",
+      "    $4",
+      "  },",
+      "};",
+      ""
+    ],
+    "description": "Template for a new Hibiki event listener.",
+    "prefix": "hibiki-listener"
+  }
+}
